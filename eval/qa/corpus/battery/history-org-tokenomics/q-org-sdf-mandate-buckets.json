@@ -33,7 +33,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-13",
-    "reverifyBy": "2027-02-03",
+    "reverifyBy": "2027-04-22",
     "sources": [
       {
         "class": "A",
@@ -84,12 +84,17 @@
       }
     ],
     "verified": {
-      "date": "2026-10-27",
-      "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-02)",
       "evidence": [
-        "Live re-check 2026-10-27 (A): https://stellar.org/foundation/mandate — still renders the 2025-era buckets (SDF Development, Stellar Growth, Product and Innovation, Assets and Liquidity) and still contains the 'imminently' real-time-balance wording beside balance rows.",
-        "Live re-check 2026-10-27 (A): https://stellar.org/foundation/mandate/2019 — still lists Direct Development, Ecosystem Support, Use-Case Investment, and User Acquisition, with per-section 'Last updated' stamps that differ (Oct 9–14, 2026), confirming the asynchronous-rows caution.",
-        "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
+        "[A] golden.keyFacts[2] (confirmed-as-of): https://stellar.org/foundation/mandate :: \"In 2019, SDF divided its XLM holdings into four main accounts: Direct Development, Ecosystem Support, Use-Case Investment and User Acquisition. ... in 2025, the accounts are being updated ...: SDF Development, Stellar Growth, Product and Innovation and Assets and Liquidity.\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[2] (confirmed-as-of): https://stellar.org/foundation/mandate/2019 :: \"Direct Development ... Ecosystem Support ... Use-Case Investment ... User Acquisition\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[2] (confirmed-as-of): https://x.com/StellarOrg/status/2019804472789119127 (2026-02-06) :: \"Foundation accounts now map clearly to the four mandate allocations ... -Development -Product & Innovation -Growth -Assets & Liquidity\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[3] (confirmed-as-of): https://stellar.org/foundation/mandate :: \"real-time public balances of XLM held by SDF will be made available again on this page imminently ... Last updated: October 31, 2026 at 12.19 AM UTC / October 31, 2026 at 9.08 AM UTC / October 31, 2026 at 1.08 AM UTC / October 28, 2026 at 6.11 PM UTC\" (observedAt 2026-11-02)",
+        "[A] golden.avoid[0] (contradicted): https://stellar.org/foundation/mandate/2017 :: \"50% for distribution via the Direct Sign-up Program 25% ... Partnership Program 20% ... Bitcoin Program 5% held by SDF\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-structure-mandate checked; bucket taxonomy consistent.",
+        "No judge-facing change; prior verification event 2026-10-27 is in git history.",
+        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
       ],
       "rootCause": [
         "freshness-drift"

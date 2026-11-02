@@ -28,7 +28,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -56,18 +56,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
-        "catalog/manifest.json#scout.explainRepo",
-        "inventory/stellar-light.json",
-        "Live re-check (class A, 2026-08-29): catalog/manifest.json#scout.explainRepo labels the answer source-grounded and allows a null answer.",
-        "Sibling sweep (2026-08-29): explainRepo, outer-envelope, payload-status, and source-grounded cases showed no contradiction."
-      ],
-      "rootCause": [
-        "solo://project/49/scratchpad/p4/n1-gapops",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case).",
+        "golden.answer confirmed-as-of: C Raven execute scout.explainRepo({q:'where are transaction result codes handled',repo:'stellar/stellar-core'}) — 'ok true; answered true; routedVia explicit; answerSource deepwiki; repoMeta.lastCommitAt 2026-10-22; sources.repoUrl https://github.com/stellar/stellar-core; sources.deepWikiUrl https://deepwiki.com/stellar/stellar-core' (observedAt 2026-11-02).",
+        "golden.answer: A https://stellarlight.xyz/api/openapi.json via catalog/manifest.json#scout.explainRepo — 'the upstream payload carries its own ok flag at data.ok - distinct from the envelope call-status ok.' (observedAt 2026-11-02).",
+        "golden.avoid[0] contradicted: C scout.explainRepo payload — 'codeVerified.isDeployableContract: false; repoMeta.kind platform' | B https://github.com/stellar/stellar-core — validator node software, not a deployable contract (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-ti-explain-repo-payload-status, q-soroban-deploy-cli checked; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

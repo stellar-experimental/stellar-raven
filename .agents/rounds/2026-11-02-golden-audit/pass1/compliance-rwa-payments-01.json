@@ -1,0 +1,1149 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "compliance-rwa-payments-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-agent-identity-erc8004-stellar",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "ERC-8004 defines identity, reputation, and validation registries",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/ethereum/ERCs/master/ERCS/erc-8004.md",
+       "observedAt": "2026-11-02",
+       "quote": "**Reputation Registry** - A standard interface for posting and fetching feedback signals."
+      },
+      {
+       "class": "D",
+       "ref": "https://arxiv.org/abs/2606.26028",
+       "observedAt": "2026-11-02",
+       "quote": "built around three on-chain registries for Identity, Reputation, and Validation"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Registry entries/feedback are signals, not trust guarantees or payment proofs",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/ethereum/ERCs/master/ERCS/erc-8004.md",
+       "observedAt": "2026-11-02",
+       "quote": "Payments are orthogonal to this protocol and not covered here."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/ethereum/ERCs/master/ERCS/erc-8004.md",
+       "observedAt": "2026-11-02",
+       "quote": "it cannot cryptographically guarantee that advertised capabilities are functional and non-malicious."
+      },
+      {
+       "class": "D",
+       "ref": "https://arxiv.org/abs/2606.26028",
+       "observedAt": "2026-11-02",
+       "quote": "the Registry, as currently deployed, cannot function as a trust signal"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Stellar8004 Soroban port is a community implementation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/trionlabs/stellar-8004",
+       "observedAt": "2026-11-02",
+       "quote": "The 8004 stack on Soroban: three smart contracts for identity, reputation, and validation, a TypeScript SDK ... Deployed on testnet and mainnet."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=8004 (via Raven scout.searchProjects)",
+       "observedAt": "2026-11-02",
+       "quote": "Mainnet Soroban implementation of ERC-8004 ... By Trion Labs"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs query \"ERC-8004 agent identity\"",
+       "observedAt": "2026-11-02",
+       "quote": "No developers.stellar.org page names ERC-8004; top hits are unrelated (agent-cli troubleshooting, state archival)."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Deployment/audit claims need current project evidence",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/trionlabs/stellar-8004",
+       "observedAt": "2026-11-02",
+       "quote": "Single source of truth for addresses: webapp/packages/sdk/src/core/config.ts"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar8004.com/intro",
+       "observedAt": "2026-11-02",
+       "quote": "74 Tests Mainnet Live Open Source"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Not an official Stellar feature; identity record is not payment proof",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/ethereum/ERCs/master/ERCS/erc-8004.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: Draft ... category: ERC"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/ethereum/ERCs/master/ERCS/erc-8004.md",
+       "observedAt": "2026-11-02",
+       "quote": "Payments are orthogonal to this protocol"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-agent-identity-stellar-experimental; q-mpp-discovery-and-modes"
+  },
+  {
+   "id": "q-agent-payment-standard-choice",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "x402 V2 provides extensions and discovery; core leaves session handling out of scope",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+       "observedAt": "2026-11-02",
+       "quote": "**Out of Scope**: This specification does not include: ... Session handling mechanisms"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+       "observedAt": "2026-11-02",
+       "quote": "## 8. Discovery API ... Extensions enable modular optional functionality beyond core payment mechanics."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "The catalog can also be queried by AI agents through an MCP discovery server"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "MPP Charge settles on-chain; Session uses cumulative off-chain channel commitments",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Each payment is a Soroban SEP-41 `transfer` settled on-chain individually."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "makes many off-chain payments by signing cumulative commitments — no per-payment on-chain transactions."
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/",
+       "observedAt": "2026-11-02",
+       "quote": "Session intent for metered payments ... Channel: Accept high-frequency Stellar payments with one-way payment channels"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "AP2 above-rail mandates; ACP beta commerce protocol",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "The specification is maintained by **OpenAI** and **Stripe** and is currently in `beta`."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md",
+       "observedAt": "2026-11-02",
+       "quote": "A linked Payment Mandate and Receipt for the payment of the ..."
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/google-agentic-commerce/AP2 (repo README)",
+       "observedAt": "2026-11-02",
+       "quote": "Agent Payments Protocol mandates"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "MPP always needs one on-chain tx per paid response (false)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "no per-payment on-chain transactions"
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/",
+       "observedAt": "2026-11-02",
+       "quote": "Accept high-frequency off-chain payments ... Payment Channel"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-agentic-payment-standards-compare; q-mpp-discovery-and-modes; q-defi-x402-on-stellar-what"
+  },
+  {
+   "id": "q-cctp-v2-usdc-stellar",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Circle support 2026-05-18; public-live 2026-05-19",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/release-notes/cctp-2026",
+       "observedAt": "2026-11-02",
+       "quote": "2026.05.18 Added support for Stellar mainnet."
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/StellarOrg/status/2056797748264116265 (via Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": ".@circle CCTP is live on Stellar. ... 6:02 PM · May 19, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "Lumenloop research via Perplexity: https://lumenloop.com/research/stellar-weekly-roundup-week-15-2026",
+       "observedAt": "2026-11-02",
+       "quote": "Circle's Cross-Chain Transfer Protocol went live on Stellar on May 19"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "CctpForwarder for G/M/C; 7 vs 6 decimals; domain 27",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "On the source burn, both `mintRecipient` and `destinationCaller` must be set to the `CctpForwarder`"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Regardless of direction, the `amount` field in a CCTP message is always in six-decimal subunits."
+      },
+      {
+       "class": "F",
+       "ref": "https://developers.circle.com/cctp/references/stellar code sample",
+       "observedAt": "2026-11-02",
+       "quote": "destinationDomain: 27"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Fees 27->0 0/0, 0->27 1/0 (dated 2026-07-11)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+       "observedAt": "2026-11-02",
+       "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]"
+      },
+      {
+       "class": "F",
+       "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/0/27",
+       "observedAt": "2026-11-02",
+       "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":1},{\"finalityThreshold\":2000,\"minimumFee\":0}]"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-hist-cctp-stellar-live-announcement; q-tool-cctp-stellar-integration; q-token-circle-usdc-on-stellar; q-defi-bridge-evm-to-stellar-axelar"
+  },
+  {
+   "id": "q-comp-anchor-compliance-stack",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "SEP-10 for G/M; SEP-45 for C accounts",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0010.md",
+       "observedAt": "2026-11-02",
+       "quote": "A Stellar account (`G...`) or a muxed account (`M...`)."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Stellar Web Authentication for Contract Accounts ... Status: Draft ... Version: 0.1.1"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-10 — Web authentication using challenge/response transactions"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (SEP-6/12/24 auth)",
+     "claim": "SEP-12 always JWT; SEP-6 auth conditional; SEP-12 PUT /customer",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors and clients must support at least one of SEP-10 or SEP-45 web authentication and use it for all SEP-12 endpoints."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors may support SEP-10 and/or SEP-45 web authentications to enable authenticated deposits, withdrawals, or transaction"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md",
+       "observedAt": "2026-11-02",
+       "quote": "`PUT /customer`: Idempotent upload of customer info"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "SEP-8 needs Required + Revocable; wallet submits",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md",
+       "observedAt": "2026-11-02",
+       "quote": "Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md",
+       "observedAt": "2026-11-02",
+       "quote": "Why doesn't the approval service submit transactions to the network?"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/anchor-tools#demo-wallet",
+       "observedAt": "2026-11-02",
+       "quote": "demo wallet to test Regulated Assets (SEP-8)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-comp-sep8-regulated-assets-approval-server; q-sep-45-contract-auth; q-sep-12-kyc; q-comp-sep6-vs-sep12-roles; q-pay-anchor-msb-licensing"
+  },
+  {
+   "id": "q-comp-auth-flags-overview",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.notes (flag values)",
+     "claim": "AUTH_REQUIRED 0x1, REVOCABLE 0x2, IMMUTABLE 0x4, CLAWBACK_ENABLED 0x8",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "AUTH_REQUIRED_FLAG = 0x1 ... AUTH_REVOCABLE_FLAG = 0x2 ... AUTH_IMMUTABLE_FLAG = 0x4 ... AUTH_CLAWBACK_ENABLED_FLAG = 0x8"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "#### Authorization Required (0x1) ... #### Clawback Enabled (0x8) ... #### Authorization Immutable (0x4)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "AUTH_CLAWBACK_ENABLED lets the issuer claw back any holder's balance",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any _subsequent_ trustlines established with this account will have clawbacks enabled."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-17-improvements",
+       "observedAt": "2026-11-02",
+       "quote": "Asset clawback also can't be retroactively applied, so it won't impact any assets that currently exist on the network."
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "The issuing account uses this operation to remove clawback capabilities on a specific trustline by removing the `TRUSTLINE_CLAWBACK_ENABLED_FLAG`"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Clawback works without AUTH_REVOCABLE (false)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "Setting only `AUTH_CLAWBACK_ENABLED_FLAG` without `AUTH_REVOCABLE_FLAG` already set will result in `SET_OPTIONS_AUTH_REVOCABLE_REQUIRED`."
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "Note that this flag requires that revocable is also set."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "AUTH_IMMUTABLE locks flags (and blocks merge)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "With this setting, none of the other authorization flags (`AUTH_REQUIRED_FLAG`, `AUTH_REVOCABLE_FLAG`) can be set, and the issuing account can't be merged."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.liquidmercury.com/resources/stellar-rwa-tokenization",
+       "observedAt": "2026-11-02",
+       "quote": "Locks the other flags and stops the issuing account being merged"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "AUTH_CLAWBACK_ENABLED lets the issuer burn balances on trustlines created after it is set.",
+     "reason": "Docs and CAP-0035 limit clawback to trustlines created after the flag is set; 'any holder' is overbroad and conflicts with sibling q-sep-clawback-prereq-flag."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "- **`AUTH_REQUIRED`** — the issuer must **approve a trustline** before an account can hold/receive the\n  asset [1].\n- **`AUTH_REVOCABLE`** — the issuer can **revoke/freeze** an existing trustline's authorization (downgrade\n  to limited or remove it) [1].\n- **`AUTH_CLAWBACK_ENABLED`** — every subsequent trustline is clawback-enabled, letting the issuer **claw\n  back / burn** the asset from holders on those trustlines; the docs state this flag **requires `AUTH_REVOCABLE` to also be\n  set** [1][2].\n- **`AUTH_IMMUTABLE`** — **locks** the authorization flags (and blocks account merge) once set; fin…",
+     "reason": "Same scope fix in the answer: 'from any holder' -> 'from holders on those trustlines' (the preceding clause already names subsequent trustlines)."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: keyFact and answer generalized clawback to 'any holder', dropping the subsequent-trustline scope stated in the same answer and in control-asset-access docs."
+   ],
+   "siblings": "q-sep-clawback-prereq-flag; q-aas-issuer-fees-supply-cap-freeze; q-comp-clawback-cap0035; q-comp-clawback-holder-risk; q-comp-sep8-regulated-assets-approval-server"
+  },
+  {
+   "id": "q-comp-clawback-cap0035",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Clawback introduced by CAP-0035 in Protocol 17 (2021-06-01)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP: 0035 Title: Asset Clawback ... Status: Final ... Protocol version: 17"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-17-upgrade-complete",
+       "observedAt": "2026-11-02",
+       "quote": "Today, June 1, 2021 at 1500 UTC, the Stellar public network successfully upgraded to Protocol 17."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 17 6-1-2021 - CAP-0035 (Asset clawback for regulatroy compliance.)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Issuer can burn a specified amount from any holding account",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "When the flag is set, trustlines created to the account inherit the flag and the balances within those trustlines may be clawed back by the issuer."
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any _subsequent_ trustlines established with this account will have clawbacks enabled."
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "The issuing account uses this operation to remove clawback capabilities on a specific trustline by removing the `TRUSTLINE_CLAWBACK_ENABLED_FLAG`"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "No holder cooperation required",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "This operation does not require the affected account's signature."
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "allow an asset issuer to burn a specific amount of a clawback-enabled asset from a trustline or claimable balance"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Requires AUTH_REVOCABLE and AUTH_CLAWBACK_ENABLED",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "If an issuing account wants to set the `AUTH_CLAWBACK_ENABLED_FLAG`, it must have the `AUTH_REVOCABLE_FLAG` set."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "If an issuer wishes to set `AUTH_CLAWBACK_ENABLED_FLAG`, it must also have `AUTH_REVOCABLE_FLAG` set."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Wrong protocol/CAP; Soroban required; any account can claw back (false)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol version: 17"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-17-upgrade-complete",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 17 introduces a new feature – Asset Clawback"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "An issuer can burn a specified amount from a holder's clawback-enabled trustline.",
+     "reason": "CAP-0035 and docs limit clawback to trustlines that inherited the clawback flag; 'any holding account' is overbroad."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "- Clawback lets an **asset issuer burn a specified amount of a clawback-enabled asset from a holder's clawback-enabled\n  trustline (or claimable balance)** — without the holder's cooperation; the assets are **burned, not\n  returned** to the issuer [1].\n- Introduced by **CAP-0035 (\"Asset Clawback\") in Protocol 17** (activated ~2021-06-01) [1][2].\n- The issuer must have set **`AUTH_REVOCABLE` first, then `AUTH_CLAWBACK_ENABLED`** — only then are new\n  trustlines clawback-eligible [1].\n- It was **designed to help issuers meet securities/regulatory obligations** (revoke after fraud, error,\n  or re…",
+     "reason": "Same scope fix in the answer: 'from any holder's trustline' -> 'from a holder's clawback-enabled trustline'."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: keyFact and answer said 'any holder', dropping CAP-0035's rule that only trustlines created with the clawback flag set are clawback-enabled."
+   ],
+   "siblings": "q-sep-clawback-prereq-flag; q-comp-auth-flags-overview; q-comp-clawback-holder-risk; q-aas-burn-clawback-redemption-mechanics; q-rwa-stellar-vs-erc20-regulated; q-raph-stolen-wallet-recovery"
+  },
+  {
+   "id": "q-comp-clawback-holder-risk",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Clawback is intentional, issuer-only, regulatory tool not a vulnerability",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "They were designed to allow asset issuers to meet securities regulations"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-17-improvements",
+       "observedAt": "2026-11-02",
+       "quote": "Asset clawback is designed for businesses issuing regulated financial instruments"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "This proposal provides the Issuer with a means to clawback (and reissue if desired)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "All assets including XLM are clawbackable (false)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-17-improvements",
+       "observedAt": "2026-11-02",
+       "quote": "clawback can't be enabled on XLM – Stellar's native network token — because XLM doesn't have an issuing account or require a trustline."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "When the flag is set, trustlines created to the account inherit the flag"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Issuer can burn an asset from a holder's balance",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline."
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "effectively destroying it and removing it from a recipient's balance."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-comp-clawback-cap0035; q-sep-clawback-prereq-flag; q-scf-sdf-bug-bounty"
+  },
+  {
+   "id": "q-comp-cross-bitso-sep31",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Scout lists Bitso as live LATAM anchor for USDC/local-fiat ramps (Mexico, Colombia)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Bitso&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "\"name\": \"Bitso\", \"category\": \"Anchor\", ... providing fiat on/off-ramps between USDC and local currency in Mexico and Colombia ... \"status\": \"Live\", \"statusAsOf\"…"
+      },
+      {
+       "class": "A",
+       "ref": "http://stellar.org/case-studies/felix-bitso",
+       "observedAt": "2026-11-02",
+       "quote": "Bitso provides on/off ramps currently for clients in Mexico and Colombia"
+      },
+      {
+       "class": "A",
+       "ref": "https://blog.bitso.com/blog/usdc-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "USDC is Now Available on Stellar ... Published Jun 11, 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0],[2]",
+     "claim": "Scout Bitso SEP list is empty; no listed SEP support",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Bitso&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "\"anchorProfile\": {\"slug\": \"anchor-bitso\", ... \"seps\": [] ...}"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?q=Bitso&all=1&limit=20",
+       "observedAt": "2026-11-02",
+       "quote": "\"seps\": null, \"tomlSourceUrl\": null"
+      },
+      {
+       "class": "F",
+       "ref": "https://bitso.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_search \"Bitso Stellar SEP-31 anchor\"",
+       "observedAt": "2026-11-02",
+       "quote": "No primary page found that states Bitso implements SEP-31 or SEP-24."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "SEP-31 sending->receiving anchor; SEP-24 hosted interactive",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md",
+       "observedAt": "2026-11-02",
+       "quote": "A **Sending Anchor**: The business receiving funds from the Sending Client and delivering them to the Receiving Anchor"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Hosted Deposit and Withdrawal"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"SEP-24 hosted deposit and withdrawal SEP-31 cross-border\"",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-24: Hosted Deposit and Withdrawal SEP-31: Cross Border"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-comp-finclusive-caas; q-sep-31-cross-border; q-sep-6-vs-31-misnumber-trap"
+  },
+  {
+   "id": "q-comp-cross-moneygram-partnership-sep24",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Lumenloop indexes 2026-04-22 partnership extension; expanded stablecoin services (Colombia -> El Salvador)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/search_content_semantic (query MoneyGram Stellar extend partnership)",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\": \"MoneyGram and Stellar Extend Partnership to Scale Real-World Stablecoin Utility Globally\", \"publishing_date\": \"2026-04-22 07:00:00+00\" ... now offers …"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally",
+       "observedAt": "2026-11-02",
+       "quote": "(indexed SDF press URL; title as above)"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.prnewswire.com/news-releases/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally-302749574.html",
+       "observedAt": "2026-11-02",
+       "quote": "publishing_date 2026-04-22 13:00 UTC (per Lumenloop row)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Scout lists MoneyGram Access/Ramps as live USDC fiat on/off-ramp with SEP-24",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?q=MoneyGram&all=1&limit=20",
+       "observedAt": "2026-11-02",
+       "quote": "\"MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor on Stellar. Via the SEP-24 standard\" ... \"seps\": [\"sep-24\"]"
+      },
+      {
+       "class": "F",
+       "ref": "https://stellar.moneygram.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/sep24\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "SEP-24 hosted interactive wallet-to-anchor deposit/withdrawal",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Hosted Deposit and Withdrawal ... Status: Active ... Version 3.8.0"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs",
+       "observedAt": "2026-11-02",
+       "quote": "As a wallet, the most important SEPs are SEP-24: Hosted Deposit and Withdrawal, and SEP-31: Cross Border"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-anchor-moneygram-ramps; q-crp-custodial-vs-noncustodial-wallets; q-crp-remittance-founder-advisory"
+  },
+  {
+   "id": "q-comp-finclusive-caas",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "FinClusive markets CaaS, KYC/KYB, FinCID, Stellar gateway connectivity",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://finclusive.com/products/compliance-as-a-service",
+       "observedAt": "2026-11-02",
+       "quote": "FinCID: Compliance-Backed Verifiable Credentials ... Global know-your-customer/business (KYC/KYB) coverage"
+      },
+      {
+       "class": "A",
+       "ref": "https://finclusive.com/products/caas-gateway",
+       "observedAt": "2026-11-02",
+       "quote": "Access US banking through FinClusive's nodes across multiple blockchain and Defi networks (Stellar, Algorand, Cardano, Celo and more)."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?q=FinClusive&all=1&limit=20",
+       "observedAt": "2026-11-02",
+       "quote": "\"Compliance-first banking-as-a-service with SEP-6/24/31 rails on Stellar\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (TPSP self-description)",
+     "claim": "Not a bank or licensed MSB; exempt TPSP",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://finclusive.com/company/operating-provisions",
+       "observedAt": "2026-11-02",
+       "quote": "FinClusive is not a bank, does not have a banking charter and is not a licensed Money Services Business. Rather FinClusive is an exempt third party services pro…"
+      },
+      {
+       "class": "A",
+       "ref": "https://finclusive.com/products/caas-gateway",
+       "observedAt": "2026-11-02",
+       "quote": "FinClusive does not receive, store, custody, or transmit monetary value/currency/payment instruments."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "2020 SDF article; Biccos use case; shared verification",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/policy/drive-inclusion-through-compliance",
+       "observedAt": "2026-11-02",
+       "quote": "FinClusive CEO Amit Sharma joined SDF's General Counsel in a webinar on Sep. 9, 2020. ... Use Case: Biccos"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/policy/drive-inclusion-through-compliance",
+       "observedAt": "2026-11-02",
+       "quote": "they can do a near-instant verification validation of these clients across the network as a shared utility."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-crp-anchors-by-corridor; q-comp-anchor-compliance-stack; q-comp-cross-bitso-sep31; q-pay-anchor-msb-licensing; q-pay-travel-rule-aid-flows"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-comp-auth-flags-overview",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "Old 'any holder's asset balance' is overbroad: clawback applies only to trustlines carrying TRUSTLINE_CLAWBACK_ENABLED_FLAG, set at trustline creation while the issuer flag is on; not retroactive. New text is 90 chars (at, not past, the limit). It tightens a false universal, does not punish a true claim; stable protocol fact, no as-of needed.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+      "observedAt": "2026-11-02",
+      "quote": "With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any *subsequent* trustlines established with this account will have clawbacks enabled. ... Note that this flag r…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+      "observedAt": "2026-11-02",
+      "quote": "This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+      "observedAt": "2026-11-02",
+      "quote": "In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the as…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ClawbackOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "if (!isClawbackEnabledOnTrustline(trust)) { innerResult(res).code(CLAWBACK_NOT_CLAWBACK_ENABLED); return false; }"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'AUTH_CLAWBACK_ENABLED subsequent trustlines clawback' -> https://developers.stellar.org/docs/tokens/control-asset-access#clawback-enabled-0x8",
+      "observedAt": "2026-11-02T16:19:58.705Z",
+      "quote": "With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any subsequent trustlines established with this account will have clawbacks enabled."
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_ask (cites developers.stellar.org clawbacks, stellaratlas.net/protocol/cap-0035)",
+      "observedAt": "2026-11-02",
+      "quote": "Setting `AUTH_CLAWBACK_ENABLED` does not make previously established trustlines clawback-enabled. The issuer can claw back from a trustline only if that trustli…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-auth-flags-overview",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Narrows 'from any holder' to 'from holders on those trustlines', consistent with the same bullet's 'every subsequent trustline'. All other text unchanged.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+      "observedAt": "2026-11-02",
+      "quote": "With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any *subsequent* trustlines established with this account will have clawbacks enabled. ... Note that this flag r…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+      "observedAt": "2026-11-02",
+      "quote": "This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+      "observedAt": "2026-11-02",
+      "quote": "In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the as…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-clawback-cap0035",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "81 chars. ClawbackOp fails with CLAWBACK_NOT_CLAWBACK_ENABLED unless the trustline flag is set (stellar-core). Old 'any holding account' is false for pre-flag or flag-cleared trustlines.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+      "observedAt": "2026-11-02",
+      "quote": "This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+      "observedAt": "2026-11-02",
+      "quote": "In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the as…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ClawbackOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "if (!isClawbackEnabledOnTrustline(trust)) { innerResult(res).code(CLAWBACK_NOT_CLAWBACK_ENABLED); return false; }"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_ask (cites developers.stellar.org clawbacks, stellaratlas.net/protocol/cap-0035)",
+      "observedAt": "2026-11-02",
+      "quote": "Setting `AUTH_CLAWBACK_ENABLED` does not make previously established trustlines clawback-enabled. The issuer can claw back from a trustline only if that trustli…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-clawback-cap0035",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "- Clawback lets an **asset issuer burn a specified amount of a clawback-enabled asset from a holder's clawback-enabled\n  trustline (or an entire clawback-enabled claimable balance)** — without the holder's cooperation; the assets are **burned, not\n  returned** to the issuer [1].\n- Introduced by **CAP-0035 (\"Asset Clawback\") in Protocol 17** (activated ~2021-06-01) [1][2].\n- The issuer must have set **`AUTH_REVOCABLE` first, then `AUTH_CLAWBACK_ENABLED`** — only then are new\n  trustlines clawback-eligible [1].\n- It was **designed to help issuers meet securities/regulatory obligations** (revoke …",
+    "note": "Proposed trustline narrowing accepted. Also corrects a pre-existing imprecision in the same clause: a claimable balance is clawed back in full, not by a specified amount (docs: 'You must claw back the entire claimable balance'; CAP-0035: 'all or nothing', op takes only balanceID). Change from proposal: '(or claimable balance)' -> '(or an entire clawback-enabled claimable balance)'.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+      "observedAt": "2026-11-02",
+      "quote": "This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+      "observedAt": "2026-11-02",
+      "quote": "This operation claws back a claimable balance, returning the asset to the issuer account, burning it. You must claw back the entire claimable balance, not just …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+      "observedAt": "2026-11-02",
+      "quote": "In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the as…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+      "observedAt": "2026-11-02",
+      "quote": "Claimable balances are immutable and so any functionality to clawback a claimable balance is all or nothing. ... struct ClawbackClaimableBalanceOp { ClaimableBa…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://developers.stellar.org/docs/tokens/control-asset-access",
+   "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+   "gh api repos/stellar/stellar-core/contents/src/transactions/ClawbackOpFrame.cpp",
+   "Raven stellarDocs.search_docs (2 queries)",
+   "Perplexity perplexity_ask"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-comp-auth-flags-overview; q-comp-clawback-cap0035",
+  "verifiedOnly": "q-agent-identity-erc8004-stellar; q-agent-payment-standard-choice; q-cctp-v2-usdc-stellar; q-comp-anchor-compliance-stack; q-comp-clawback-holder-risk; q-comp-cross-bitso-sep31; q-comp-cross-moneygram-partnership-sep24; q-comp-finclusive-caas",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-cctp-v2-usdc-stellar",
+    "issue": "truth.reverifyBy kept at 2027-02-05, not moved into the 2027-05 window: eval/qa/consistency-register.json disposition text names 'q-cctp-v2-usdc-stellar reverifyBy 2027-02-05' (date-trap lint). The register is a shared file outside this batch. To move it to 2027-05-17, edit that disposition and the case together."
+   },
+   {
+    "id": "all-batch-ids",
+    "issue": "lifecycle-registry 'caseContentSha256 is stale' errors for all 10 ids remain. They clear only when the orchestrator runs npm run eval:qa:register, which this lane must not run."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-comp-auth-flags-overview",
+    "log": "keyFacts[2] -> 'AUTH_CLAWBACK_ENABLED lets the issuer burn balances on trustlines created after it is set.' and answer 'from any holder' -> 'from holders on those trustlines' (verifier accept); truth.verified with rootCause (authoring flaw); verifier sources added; new confirmed corroboration row."
+   },
+   {
+    "id": "q-comp-clawback-cap0035",
+    "log": "keyFacts[0] -> 'An issuer can burn a specified amount from a holder's clawback-enabled trustline.' (accept); answer uses verifier modify text ('a holder's clawback-enabled trustline (or an entire clawback-enabled claimable balance)'); corroboration[0] claim text synced plus new evidence; new keyFact corroboration row; truth.verified with rootCause."
+   },
+   {
+    "id": "q-agent-identity-erc8004-stellar",
+    "log": "No gospel change; truth.verified refreshed; asOf 2026-11-02; reverifyBy 2026-11-15 -> 2027-05-03; old rootCause dropped (no gospel change this event)."
+   },
+   {
+    "id": "q-agent-payment-standard-choice",
+    "log": "No gospel change; truth.verified refreshed; asOf 2026-11-02; reverifyBy 2026-12-22 -> 2027-05-10."
+   },
+   {
+    "id": "q-cctp-v2-usdc-stellar",
+    "log": "No gospel change; truth.verified refreshed; asOf 2026-11-02; reverifyBy held at 2027-02-05 to match the consistency-register disposition (escalated)."
+   },
+   {
+    "id": "q-comp-anchor-compliance-stack",
+    "log": "No gospel change; truth.verified refreshed (stable case, no asOf/reverifyBy)."
+   },
+   {
+    "id": "q-comp-clawback-holder-risk",
+    "log": "No gospel change; truth.verified refreshed (keyFacts[3] already says 'a holder', no overbroad phrasing)."
+   },
+   {
+    "id": "q-comp-cross-bitso-sep31",
+    "log": "No gospel change; truth.verified refreshed; asOf 2026-11-02; reverifyBy 2026-12-17 -> 2027-05-24."
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "log": "No gospel change; truth.verified refreshed; asOf 2026-11-02; reverifyBy 2026-12-10 -> 2027-05-31."
+   },
+   {
+    "id": "q-comp-finclusive-caas",
+    "log": "No gospel change; truth.verified refreshed; asOf 2026-08-30 -> 2026-11-02 (stable, no reverifyBy)."
+   }
+  ]
+ }
+}

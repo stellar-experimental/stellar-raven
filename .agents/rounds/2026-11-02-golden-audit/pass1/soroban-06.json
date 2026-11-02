@@ -1,0 +1,1532 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "soroban-06",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-soroban-resource-limits",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Names event, return, entry-size, footprint, I/O, CPU, and memory limits.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-10-28",
+       "quote": "All resources mentioned in the prior section are subject to a per-transaction limit. A transaction's memory (RAM) is also capped, though not subject to any char…"
+      },
+      {
+       "class": "F",
+       "ref": "stellar network settings --no-cache -n mainnet --output json (stellar 28.1.0; warns network protocol 29 > CLI 28)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"contract_max_size_bytes\":131072}; contract_compute_v0 {\"tx_max_instructions\":\"400000000\",\"tx_memory_limit\":41943040,\"ledger_max_instructions\":\"580000000\"}; {\"…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-contract-config-setting.x",
+       "observedAt": "2026-11-02",
+       "quote": "// Memory limit per transaction. Unlike instructions, there is no fee // for memory, just the limit. uint32 txMemoryLimit; (no ledger-wide memory setting among …"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Includes transaction/envelope size among Soroban resource limits.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-10-28",
+       "quote": "All resources mentioned in the prior section are subject to a per-transaction limit. A transaction's memory (RAM) is also capped, though not subject to any char…"
+      },
+      {
+       "class": "F",
+       "ref": "stellar network settings --no-cache -n mainnet --output json (stellar 28.1.0; warns network protocol 29 > CLI 28)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"contract_max_size_bytes\":131072}; contract_compute_v0 {\"tx_max_instructions\":\"400000000\",\"tx_memory_limit\":41943040,\"ledger_max_instructions\":\"580000000\"}; {\"…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Validation/preflight and apply-time enforcement are different phases.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-10-28",
+       "quote": "All resources mentioned in the prior section are subject to a per-transaction limit. A transaction's memory (RAM) is also capped, though not subject to any char…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0066.md",
+       "observedAt": "2026-11-02",
+       "quote": "txMaxFootprintEntries sets the limit on the total number of entries in the transaction footprint"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Current config has a transaction memory cap without a separate ledger memory cap; many but not all resources have ledger aggregates.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-contract-config-setting.x",
+       "observedAt": "2026-11-02",
+       "quote": "// Memory limit per transaction. Unlike instructions, there is no fee // for memory, just the limit. uint32 txMemoryLimit; (no ledger-wide memory setting among …"
+      },
+      {
+       "class": "F",
+       "ref": "stellar network settings --no-cache -n mainnet --output json (stellar 28.1.0; warns network protocol 29 > CLI 28)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"contract_max_size_bytes\":131072}; contract_compute_v0 {\"tx_max_instructions\":\"400000000\",\"tx_memory_limit\":41943040,\"ledger_max_instructions\":\"580000000\"}; {\"…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0066.md",
+       "observedAt": "2026-11-02",
+       "quote": "The footprint size limits are not required wrt transaction execution time ... no respective ledger wide read limit is necessary"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Cached-docs caution for sd-024 (fixed upstream 2026-07-31).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "improvements/resolved.json sd-024",
+       "observedAt": "2026-11-02",
+       "quote": "resolved: 2026-07-31; refundableFee and bare readBytes are gone"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Single gas scalar / frozen numbers / execution-only / every-resource-ledger-analogue are false.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-10-28",
+       "quote": "All resources mentioned in the prior section are subject to a per-transaction limit. A transaction's memory (RAM) is also capped, though not subject to any char…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-contract-config-setting.x",
+       "observedAt": "2026-11-02",
+       "quote": "// Memory limit per transaction. Unlike instructions, there is no fee // for memory, just the limit. uint32 txMemoryLimit; (no ledger-wide memory setting among …"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-zk-verification-resource-budget; q-infra-simulate-transaction-howto; q-soroban-simulate-resource-fee"
+  },
+  {
+   "id": "q-soroban-sdk-cve",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Three rs-soroban-sdk repository advisories with CVE/GHSA/package/patched-version mappings (25.0.2/23.5.1/22.0.9; 25.1.1/23.5.2/22.0.10; 25.3.0/23.5.3/22.0.11).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/rs-soroban-sdk/security-advisories",
+       "observedAt": "2026-11-02",
+       "quote": "GHSA-x2hw-px52-wp4m CVE-2026-32322 published medium soroban-sdk patched:25.3.0|23.5.3|22.0.11; GHSA-4chv-4c6w-w254 CVE-2026-26267 published high soroban-sdk-mac…"
+      },
+      {
+       "class": "D",
+       "ref": "https://api.osv.dev/v1/query (crates.io soroban-sdk, soroban-sdk-macros)",
+       "observedAt": "2026-11-02",
+       "quote": "soroban-sdk: GHSA-96xm-fv9w-pf3f [CVE-2026-24889], GHSA-x2hw-px52-wp4m [CVE-2026-32322]; soroban-sdk-macros: GHSA-4chv-4c6w-w254 [CVE-2026-26267]"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (proposed append)",
+     "claim": "GHSA-pm4j-7r4q-ccg8 is a soroban-env-host advisory (rs-soroban-env), low severity, patched in 26.0.0 / Protocol 26, not an rs-soroban-sdk repository advisory.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/rs-soroban-env/security-advisories",
+       "observedAt": "2026-11-02",
+       "quote": "GHSA-pm4j-7r4q-ccg8 published low 2026-03-06 soroban-env-host patched:26.0.0 Muxed address<->ScVal conversions may break after a conversion failure"
+      },
+      {
+       "class": "D",
+       "ref": "https://api.osv.dev/v1/vulns/GHSA-pm4j-7r4q-ccg8",
+       "observedAt": "2026-11-02",
+       "quote": "soroban-env-host ... introduced 0 fixed 26.0.0 ... The bug will be fixed in protocol 26"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Names three mappings; requires live recheck and upgrade/recompile review.",
+     "verdict": "confirmed-as-of",
+     "sources": []
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Only-one-advisory / frozen-list / universal-impact claims are false.",
+     "verdict": "confirmed",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "str_replace",
+     "new": "As of **2026-11-02**,",
+     "reason": "Re-verified live: still exactly three repository advisories; refresh the as-of date of the volatile list."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\n2026-11-02: GHSA-pm4j-7r4q-ccg8 is a low-severity soroban-env-host advisory in rs-soroban-env, patched in 26.0.0 (Protocol 26); it is not an rs-soroban-sdk repository advisory. Naming it as an adjacent host advisory is not a wrong claim.",
+     "reason": "Adjacent true advisory exists in the host crate the SDK test harness depends on; prevents a true mention from being graded as fabrication."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verification date."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-03-01",
+     "reason": "Staggered quarter-granular reverify in batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": ""
+  },
+  {
+   "id": "q-soroban-sdk-macros",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "#[contract] marks the contract type; #[contractimpl] exports public functions; #[contracttype] generates Val conversions and spec entries.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/lib.rs",
+       "observedAt": "2026-11-02",
+       "quote": "/// Marks a type as being the type that contract functions are attached for. ... /// Exports the publicly accessible functions to the Soroban environment. ... /…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage",
+       "observedAt": "2026-10-01",
+       "quote": "#[contracttype] pub enum DataKey { ... } #[contractimpl] impl LoyaltyPointsContract"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "A crate may contain multiple #[contract] types but exports one combined contract.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/lib.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Note that a crate only ever exports a single contract. While there can be multiple types in a crate with `#[contract]`, when built as a wasm file ..."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-rust-soroban-sdk"
+  },
+  {
+   "id": "q-soroban-simulate-resource-fee",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0]",
+     "claim": "simulateTransaction returns transactionData and minResourceFee added on top of the inclusion fee.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+       "observedAt": "2026-10-27",
+       "quote": "minResourceFee ... Recommended minimum resource fee to add when submitting the transaction. This fee is to be added on top of the Stellar network fee ... transa…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/methods/simulate_transaction.go",
+       "observedAt": "2026-11-02",
+       "quote": "func getRestorePreamble(preflight preflight.Preflight, format string) (*protocol.RestorePreamble, error) ... validateAuthMode(op.Body, &request.AuthMode)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "auth/restorePreamble and supported instructionLeeway.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+       "observedAt": "2026-10-27",
+       "quote": "resourceConfig ... instructionLeeway number Allow this many extra instructions when budgeting resources ... restorePreamble ... indicates that the simulation de…"
+      },
+      {
+       "class": "B",
+       "ref": "gh api search/code repo:stellar/stellar-rpc instructionLeeway",
+       "observedAt": "2026-11-02",
+       "quote": "cmd/stellar-rpc/internal/preflight/preflight.go"
+      },
+      {
+       "class": "F",
+       "ref": "stellar tx simulate --help (CLI 28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "Simulate a transaction envelope from stdin"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..4]",
+     "claim": "Whole call-chain footprint; missing entry -> HostError; simulation computes inner-call footprint.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-10-26",
+       "quote": "A Soroban transaction that has a key to an archived Persistent entry in the footprint, but not in the transaction's restore list, will fail immediately ... the …"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-infra-simulate-transaction-howto; q-soroban-resource-limits"
+  },
+  {
+   "id": "q-soroban-storage-migration",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "A Wasm upgrade does not automatically transform existing contract storage.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/storage/migrate-contract-storage.mdx (gh api contents) and https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+       "observedAt": "2026-11-02",
+       "quote": "Lazy migration (convert on read) ... Eager migration (batch conversion) ... a single transaction cannot migrate an unbounded number of records ... This traps wi…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/_migrating/v28_contracttype_unpacking.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Fields absent from the map unpack as void. Void unpacks into an Option field as None ... A field of any other type errors ... Keys in the map that are not field…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+       "observedAt": "2026-10-30",
+       "quote": "When upgrading a contract, the key function used is env.deployer().update_current_contract, which takes a ContractExecutable wrapping the Wasm hash of the new c…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Versioned records support lazy migration or a controlled explicit entrypoint.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/storage/migrate-contract-storage.mdx (gh api contents) and https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+       "observedAt": "2026-11-02",
+       "quote": "Lazy migration (convert on read) ... Eager migration (batch conversion) ... a single transaction cannot migrate an unbounded number of records ... This traps wi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+       "observedAt": "2026-11-01",
+       "quote": "Pattern 1: Eager Migration (Bounded Data) ... set_schema_version / get_schema_version ... Pattern 2: Lazy Migration (Unbounded Data) ... Pattern 3: Enum Wrapper…"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs({query:'migrate contract storage version marker lazy migration'})",
+       "observedAt": "2026-11-02",
+       "quote": "migrate-contract-storage#lazy-migration-convert-on-read; #lazy-vs-eager-migration"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Large migrations should be idempotent and batched to fit transaction resources.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/storage/migrate-contract-storage.mdx (gh api contents) and https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+       "observedAt": "2026-11-02",
+       "quote": "Lazy migration (convert on read) ... Eager migration (batch conversion) ... a single transaction cannot migrate an unbounded number of records ... This traps wi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+       "observedAt": "2026-11-01",
+       "quote": "Pattern 1: Eager Migration (Bounded Data) ... set_schema_version / get_schema_version ... Pattern 2: Lazy Migration (Unbounded Data) ... Pattern 3: Enum Wrapper…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (missing nuance)",
+     "claim": "Since soroban-sdk v28 / Protocol 28 (CAP-86), named-field contracttype structs unpack sparsely: added Option fields read as None, removed fields are ignored; other changes still need migration.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "Deploying and upgrading take a ContractExecutable (CAP-85). deploy_contract replaces deploy_v2, and update_current_contract replaces update_current_contract_was…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/_migrating/v28_contracttype_unpacking.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Fields absent from the map unpack as void. Void unpacks into an Option field as None ... A field of any other type errors ... Keys in the map that are not field…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP: 0086 Title: Host functions for sparse Symbol-keyed map creation and unpacking Status: Final ... Protocol version: 28"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28 (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-86 added host functions that unpack maps sparsely ... v28 of the SDK uses them for contracttype unpacking. A field absent from the map unpacks as void ... a…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions (via Parallel web_search)",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 28 (Mainnet, September 16, 2026) ... Externally Managed Contract Executables: CAP-85 ... Host Functions for Sparse Symbol-Keyed Map Creation and Unpack…"
+      },
+      {
+       "class": "D",
+       "ref": "https://cryptorank.io/vi/news/feed/0b36a-stellar-activates-protocol-28-as-network-hits-record-throughput-and-rwa-value-climbs",
+       "observedAt": "2026-09-17",
+       "quote": "Stellar activated Protocol 28 after a mainnet vote ... CAP-85 for atomic multi-contract upgrades, CAP-86 sparse-map functions for safer data migrations"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Auto re-encode on upload; every migration fits one transaction.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/storage/migrate-contract-storage.mdx (gh api contents) and https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+       "observedAt": "2026-11-02",
+       "quote": "Lazy migration (convert on read) ... Eager migration (batch conversion) ... a single transaction cannot migrate an unbounded number of records ... This traps wi…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/_migrating/v28_contracttype_unpacking.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Fields absent from the map unpack as void. Void unpacks into an Option field as None ... A field of any other type errors ... Keys in the map that are not field…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "str_replace",
+     "new": "it does not rewrite stored values into a new schema. As of 2026-11-02, contracts built with soroban-sdk v28+ (Protocol 28, CAP-86) read named-field `#[contracttype]` structs sparsely: an added `Option` field reads as `None` and a removed field is ignored, so only those changes can skip migration.",
+     "reason": "Protocol 28/SDK v28 changed struct unpacking after the last verification; a true current answer needs this version-qualified nuance."
+    },
+    {
+     "field": "golden.notes",
+     "op": "add",
+     "new": "As of 2026-11-02: CAP-86 sparse unpacking applies only to contracts rebuilt with soroban-sdk v28+. Non-Option field additions, type changes, enums, and tuple structs still need migration. Recommending versioned records for every schema change remains correct.",
+     "reason": "Symmetric grading guidance for a version-dependent fact."
+    },
+    {
+     "field": "tags.freshness",
+     "op": "replace",
+     "new": "scheduled",
+     "reason": "Golden now carries an SDK-version-dependent, dated fact."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "add",
+     "new": "2026-11-02",
+     "reason": "Scheduled cases require asOf."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "add",
+     "new": "2027-03-15",
+     "reason": "Scheduled cases require reverifyBy."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-soroban-upgradeable-storage-compat; q-soroban-oz-upgradeable-macro"
+  },
+  {
+   "id": "q-soroban-storage-types",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "3 SDK accessors (instance/persistent/temporary); XDR ContractDataDurability has only Persistent/Temporary.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-10-26",
+       "quote": "When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible; When a Persistent or Instance entry TTL is 0, it is \"archived\"…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "enum ContractDataDurability { TEMPORARY = 0, PERSISTENT = 1 };"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Persistent long-lived per-key; Temporary cheap short-lived; Instance small config tied to instance.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage",
+       "observedAt": "2026-10-01",
+       "quote": "Persistent | env.storage().persistent() | Most expensive | Data is archived ... Temporary ... Data is removed forever ... Instance ... Data is archived | Limite…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-10-26",
+       "quote": "When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible; When a Persistent or Instance entry TTL is 0, it is \"archived\"…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "TTL expiry: P/I archived and restorable; Temporary deleted permanently.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage",
+       "observedAt": "2026-10-01",
+       "quote": "Persistent | env.storage().persistent() | Most expensive | Data is archived ... Temporary ... Data is removed forever ... Instance ... Data is archived | Limite…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-10-26",
+       "quote": "When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible; When a Persistent or Instance entry TTL is 0, it is \"archived\"…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "P23+ auto-restore needs RW footprint + archivedSorobanEntries; RestoreFootprintOp is fallback.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "// Vector of indices representing what Soroban // entries in the footprint are archived, based on the // order of keys provided in the readWrite footprint. uint…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0066.md",
+       "observedAt": "2026-11-02",
+       "quote": "readWrite footprint. Because restores are a write operation, no archived key should be in the readOnly footprint."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-10-26",
+       "quote": "When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible; When a Persistent or Instance entry TTL is 0, it is \"archived\"…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Cached-docs caution for sd-007 (fixed 2026-07-27).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage",
+       "observedAt": "2026-10-01",
+       "quote": "It can then be restored when needed — usually automatically, by including the entry in a transaction's restore list ... or manually using the RestoreFootprintOp…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..3]",
+     "claim": "Solidity storage types; Temporary restorable; P/I deleted; RestoreFootprintOp always required; auto-restore without metadata; Instance durability.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-10-26",
+       "quote": "When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible; When a Persistent or Instance entry TTL is 0, it is \"archived\"…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "enum ContractDataDurability { TEMPORARY = 0, PERSISTENT = 1 };"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "// Vector of indices representing what Soroban // entries in the footprint are archived, based on the // order of keys provided in the readWrite footprint. uint…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-ttl-defaults-extend; q-soroban-vuln-classes; q-sor-p23-auto-restore-extendto"
+  },
+  {
+   "id": "q-soroban-token-transfer-pattern",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "transfer uses MuxedAddress for the direct destination.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); ... fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: i128)…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-10-24",
+       "quote": "As of Whisk, Protocol 23 (CAP-67), the to argument of the SAC's transfer function is a MuxedAddress ... transfer is the only SAC function that accepts a MuxedAd…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Direct transfer requires from authorization.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/soroban-examples/main/token/src/contract.rs",
+       "observedAt": "2026-11-02",
+       "quote": "fn transfer(e: Env, from: Address, to_muxed: MuxedAddress, amount: i128) { from.require_auth();"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2],[4]",
+     "claim": "Immediate contract invoker auto-authorized; authorize_as_current_contract for deeper calls.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+       "observedAt": "2026-10-27",
+       "quote": "all the require_auth calls made on behalf of the direct invoker contract Address are considered to be authorized (but not any calls on behalf of the contract de…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/main/soroban-sdk/src/env.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub fn authorize_as_current_contract(&self, auth_entries: Vec<InvokerContractAuthEntry>)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "transfer_from uses spender auth with prior bounded allowance.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-10-24",
+       "quote": "The exceptions are xfer_from and burn_from operations where the Address that require authorization from the 'spender' entity that has got an allowance from anot…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SEP-41 is Draft.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft; Updated: 2026-08-24; Version 0.5.2"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "ERC-20 allowance for every transfer / external signature for own balance / plain Address destination.",
+     "verdict": "confirmed",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-sep41-transfer-vs-transferfrom; q-sep-41-token-interface; q-tool-sep41-status-live"
+  },
+  {
+   "id": "q-soroban-unit-testing",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Env/testutils, registration (incl. constructor args), generated client, assertions.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/testing/unit-tests",
+       "observedAt": "2026-10-09",
+       "quote": "Register the contract(s) to be tested. Include as a second parameter any constructor parameters. let contract_id = env.register(IncrementContract, ());"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/env.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub fn register<'a, C, A>(&self, contract: C, constructor_args: A) -> Address; testutils feature in Cargo.toml"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Blanket mock_all_auths vs mock_auths / env.auths / negative paths.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/env.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub fn mock_auths(&self, auths: &[MockAuth]) ... pub fn mock_all_auths(&self) ... pub fn auths(&self) -> std::vec::Vec<(Address, AuthorizedInvocation)>"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs({query:'mock_all_auths unit test authorization'})",
+       "observedAt": "2026-11-02",
+       "quote": "deployer#test-code ... env.mock_all_auths"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Testnet required; mock_all_auths proves auth.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/testing/unit-tests",
+       "observedAt": "2026-10-09",
+       "quote": "The Env created at the beginning of the test is not a simulation ... test utilities are enabled, and the storage backend is different."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-decode-hosterror-codes"
+  },
+  {
+   "id": "q-soroban-upgradeable-storage-compat",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Compatible keys/value layouts or explicit migration; unmigrated key/type changes strand or mis-decode data.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/storage/migrate-contract-storage.mdx (gh api contents) and https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+       "observedAt": "2026-11-02",
+       "quote": "Lazy migration (convert on read) ... Eager migration (batch conversion) ... a single transaction cannot migrate an unbounded number of records ... This traps wi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+       "observedAt": "2026-11-01",
+       "quote": "Pattern 1: Eager Migration (Bounded Data) ... set_schema_version / get_schema_version ... Pattern 2: Lazy Migration (Unbounded Data) ... Pattern 3: Enum Wrapper…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/_migrating/v28_contracttype_unpacking.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Fields absent from the map unpack as void. Void unpacks into an Option field as None ... A field of any other type errors ... Keys in the map that are not field…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "`env.deployer().update_current_contract_wasm(new_wasm_hash)` installs uploaded Wasm.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+       "observedAt": "2026-11-02",
+       "quote": "#[deprecated(note = \"use update_current_contract\")] pub fn update_current_contract_wasm(...) ... pub fn update_current_contract(&self, executable: ContractExecu…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "Deploying and upgrading take a ContractExecutable (CAP-85). deploy_contract replaces deploy_v2, and update_current_contract replaces update_current_contract_was…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+       "observedAt": "2026-10-30",
+       "quote": "When upgrading a contract, the key function used is env.deployer().update_current_contract, which takes a ContractExecutable wrapping the Wasm hash of the new c…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/packages/contract-utils/src/upgradeable/storage.rs",
+       "observedAt": "2026-11-02",
+       "quote": "e.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash.clone())); (workspace soroban-sdk = \"28.0.0\")"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs({query:'update_current_contract ContractExecutable upgrade'})",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts#how-it-works ... env.deployer().update_current_contract(ContractExecutable::Was…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0085.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP: 0085 Title: Externally managed contract executables Status: Final ... Protocol version: 28"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Replacement keeps contract address and storage.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+       "observedAt": "2026-10-30",
+       "quote": "When upgrading a contract, the key function used is env.deployer().update_current_contract, which takes a ContractExecutable wrapping the Wasm hash of the new c…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (OZ patterns)",
+     "claim": "OZ documents eager migrate with schema version, lazy versioned, plan-ahead enum wrapper, Upgrader contract.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+       "observedAt": "2026-11-01",
+       "quote": "Pattern 1: Eager Migration (Bounded Data) ... set_schema_version / get_schema_version ... Pattern 2: Lazy Migration (Unbounded Data) ... Pattern 3: Enum Wrapper…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (missing nuance)",
+     "claim": "SDK v28+/P28 CAP-86 sparse struct unpacking.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "Deploying and upgrading take a ContractExecutable (CAP-85). deploy_contract replaces deploy_v2, and update_current_contract replaces update_current_contract_was…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/_migrating/v28_contracttype_unpacking.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Fields absent from the map unpack as void. Void unpacks into an Option field as None ... A field of any other type errors ... Keys in the map that are not field…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP: 0086 Title: Host functions for sparse Symbol-keyed map creation and unpacking Status: Final ... Protocol version: 28"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28 (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-86 added host functions that unpack maps sparsely ... v28 of the SDK uses them for contracttype unpacking. A field absent from the map unpacks as void ... a…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions (via Parallel web_search)",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 28 (Mainnet, September 16, 2026) ... Externally Managed Contract Executables: CAP-85 ... Host Functions for Sparse Symbol-Keyed Map Creation and Unpack…"
+      },
+      {
+       "class": "D",
+       "ref": "https://cryptorank.io/vi/news/feed/0b36a-stellar-activates-protocol-28-as-network-hits-record-throughput-and-rwa-value-climbs",
+       "observedAt": "2026-09-17",
+       "quote": "Stellar activated Protocol 28 after a mainnet vote ... CAP-85 for atomic multi-contract upgrades, CAP-86 sparse-map functions for safer data migrations"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Upgrade wipes storage; EVM slot-collision model.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+       "observedAt": "2026-10-30",
+       "quote": "When upgrading a contract, the key function used is env.deployer().update_current_contract, which takes a ContractExecutable wrapping the Wasm hash of the new c…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Upgrade installs uploaded Wasm via update_current_contract (or deprecated _wasm variant).",
+     "reason": "soroban-sdk v28+ deprecates update_current_contract_wasm in favor of update_current_contract(ContractExecutable::Wasm(..)); accept both."
+    },
+    {
+     "field": "golden.answer",
+     "op": "str_replace",
+     "new": "  without migration leaves old data **stranded or mis-decoded (a trap)**. [oz]\n- As of 2026-11-02, contracts built with soroban-sdk v28+ (Protocol 28, CAP-86) unpack named-field\n  `#[contracttype]` structs sparsely: an added `Option` field reads as `None` and a removed field is\n  ignored (and dropped on rewrite). Other key or type changes still need migration. [sdk]\n",
+     "reason": "Version-qualified CAP-86 nuance."
+    },
+    {
+     "field": "golden.answer",
+     "op": "str_replace",
+     "new": "- The **contract address is preserved**, so external callers/integrations keep working. [sdf]\n- Install the uploaded Wasm with `env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))`\n  (SDK v28+, CAP-85); `update_current_contract_wasm` is deprecated but still works. [sdf]\n",
+     "reason": "Current upgrade API per official docs and SDK."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nAs of 2026-11-02 (soroban-sdk v28+, Protocol 28): `update_current_contract(ContractExecutable::Wasm(..))` and the deprecated `update_current_contract_wasm` are both correct upgrade calls. CAP-86 sparse unpacking needs an SDK v28+ rebuild; recommending versioned or enum migration for struct changes remains correct.",
+     "reason": "Symmetric grading guidance for version-dependent facts."
+    },
+    {
+     "field": "tags.freshness",
+     "op": "replace",
+     "new": "scheduled",
+     "reason": "Golden now carries SDK-version-dependent dated facts."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "add",
+     "new": "2026-11-02",
+     "reason": "Scheduled cases require asOf."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "add",
+     "new": "2027-03-15",
+     "reason": "Scheduled cases require reverifyBy."
+    },
+    {
+     "field": "truth.corroboration[0].claim",
+     "op": "replace",
+     "new": "Soroban supports in-place Wasm replacement: upload the new Wasm, then have the contract call `env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))` (SDK v28+; deprecated `update_current_contract_wasm` still works) to swap its code while keeping the same address and storage.",
+     "reason": "Corroboration claim names the deprecated API as the only call."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-soroban-storage-migration; q-soroban-oz-upgradeable-macro; q-soroban-factory-pattern; q-soroban-contract-id-derivation"
+  },
+  {
+   "id": "q-soroban-vuln-classes",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Authorization, storage, external-call, arithmetic/input, DoS, economic/state-transition families.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://www.certora.com/blog/roadmap-to-a-soroban-security-audit",
+       "observedAt": "2026-11-02",
+       "quote": "Check your code for authorization/authentication issues, integer overflow, arithmetic bugs and rounding errors, improper error handling, and storage key collisi…"
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/Soroban-Cookbook/Soroban-Cookbook-/blob/main/docs/security-audit/audit-scope.md",
+       "observedAt": "2026-11-02",
+       "quote": "Authorization ... Panics & availability ... Cross-contract & reentrancy"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "P23+ restoration semantics; atomic failure semantics.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-10-26",
+       "quote": "When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible; When a Persistent or Instance entry TTL is 0, it is \"archived\"…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-10-28",
+       "quote": "All resources mentioned in the prior section are subject to a per-transaction limit. A transaction's memory (RAM) is also capped, though not subject to any char…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Reentrancy into the same contract is disallowed by the host.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md",
+       "observedAt": "2026-11-02",
+       "quote": "The custom account authentication is the only case of contract invocation with self-reentrancy allowed ... re-entering any other contract than A in the example …"
+      },
+      {
+       "class": "D",
+       "ref": "https://docs.layerzero.network/v2/developers/stellar/technical-overview",
+       "observedAt": "2026-11-02",
+       "quote": "Soroban prohibits reentrancy -- contracts cannot call themselves (directly or indirectly) in the same transaction."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Exhaustive checklist / EVM-only imports / pre-P23 manual-only restoration / automatic permanent brick.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-10-26",
+       "quote": "When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible; When a Persistent or Instance entry TTL is 0, it is \"archived\"…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-evm-to-soroban-porting; q-soroban-auth-recursion-dos-audit"
+  },
+  {
+   "id": "q-soroban-wasm-language",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0]",
+     "claim": "Rust/soroban-sdk to wasm32v1-none, no_std, no floating point, optional alloc feature.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+       "observedAt": "2026-10-20",
+       "quote": "New Soroban contracts should be built with Rust v1.84.0 or later, and use the wasm32v1-none target ... Floating-point arithmetic in the guest is completely proh…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Allocator used by contracts built with the `alloc` feature. The `alloc` feature is **disabled by default**."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer/keyFacts[1]",
+     "claim": "As of 2026-07-28 Mainnet/Testnet code cap 131072 bytes; 64 KiB data-entry cap distinct.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar network settings --no-cache -n mainnet --output json (stellar 28.1.0; warns network protocol 29 > CLI 28)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"contract_max_size_bytes\":131072}; contract_compute_v0 {\"tx_max_instructions\":\"400000000\",\"tx_memory_limit\":41943040,\"ledger_max_instructions\":\"580000000\"}; {\"…"
+      },
+      {
+       "class": "F",
+       "ref": "stellar network settings --no-cache -n testnet --output json",
+       "observedAt": "2026-11-02",
+       "quote": "Same contract_max_size_bytes 131072, tx_memory_limit 41943040, contract_data_entry_size_bytes 65536 as mainnet"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "'core_version': 'stellar-core 30.0.0 ...', 'current_protocol_version': 29"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Solidity/EVM runtime; allocation impossible; 64 KiB code cap.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar network settings --no-cache -n mainnet --output json (stellar 28.1.0; warns network protocol 29 > CLI 28)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"contract_max_size_bytes\":131072}; contract_compute_v0 {\"tx_max_instructions\":\"400000000\",\"tx_memory_limit\":41943040,\"ledger_max_instructions\":\"580000000\"}; {\"…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-wasm-size-limit; q-sor-build-target-wasm32v1; q-tool-rust-soroban-sdk"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-soroban-sdk-cve",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Still exactly three repository advisories with unchanged patched mappings on 2026-11-02; date bump is supported.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/rs-soroban-sdk/security-advisories",
+      "observedAt": "2026-11-02",
+      "quote": "GHSA-x2hw-px52-wp4m CVE-2026-32322 medium ... soroban-sdk patched:25.3.0; 23.5.3; 22.0.11 | GHSA-4chv-4c6w-w254 CVE-2026-26267 high ... soroban-sdk-macros patch…"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.osv.dev/v1/query (crates.io soroban-sdk, soroban-sdk-macros)",
+      "observedAt": "2026-11-02",
+      "quote": "soroban-sdk: GHSA-96xm-fv9w-pf3f [CVE-2026-24889], GHSA-x2hw-px52-wp4m [CVE-2026-32322]; soroban-sdk-macros: GHSA-4chv-4c6w-w254 [CVE-2026-26267]"
+     },
+     {
+      "class": "D",
+      "ref": "https://opencve.alliance.unm.edu/cve/?vendor=stellar&product=rs-soroban-sdk (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Search Results (3 CVEs found)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-sdk-cve",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Protective note; prevents penalizing a true adjacent claim. Protocol-26 label follows the env-major = protocol convention (A page not re-fetched for P26).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/rs-soroban-env/security-advisories",
+      "observedAt": "2026-11-02",
+      "quote": "GHSA-pm4j-7r4q-ccg8 low published 2026-03-06 Muxed address<->ScVal conversions may break after a conversion failure soroban-env-host patched:26.0.0 vuln:<26.0.0"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.osv.dev/v1/vulns/GHSA-pm4j-7r4q-ccg8",
+      "observedAt": "2026-11-02",
+      "quote": "soroban-env-host crates.io introduced 0 fixed 26.0.0; severity LOW"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-env/releases/tag/v26.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "published 2026-03-25"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-sdk-cve",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/rs-soroban-sdk/security-advisories",
+      "observedAt": "2026-11-02",
+      "quote": "three published advisories"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-sdk-cve",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-01 is inside the batch window.",
+    "sources": []
+   },
+   {
+    "id": "q-soroban-storage-migration",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Behavior confirmed and live on mainnet (P29). CONFLICT FOR ORCHESTRATOR: the official guide https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage (live 2026-11-02) still says reading DataV1 as DataV2 'traps with Error(Object, UnexpectedSize)' with no SDK-version scope; true only for pre-v28 builds. Candidate improvements/ finding (Stellar Docs freshness).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "A contracttype struct can be read from stored data with extra or missing fields (CAP-86). A field missing from the map reads as None if it is an Option, and err…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v28.0.0/soroban-sdk-macros/src/derive_struct.rs",
+      "observedAt": "2026-11-02",
+      "quote": "env.sparse_map_unpack_to_slice(map, &KEYS, &mut vals) (v27.0.6 used env.map_unpack_to_slice)"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... Protocol version: 28 ... if the expected key is not present in the map, it will be fetched as Void value (which maps to None in the UDTs)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+      "observedAt": "2026-11-02",
+      "quote": "v28 of the SDK uses them for contracttype unpacking. A field absent from the map unpacks as void. Void unpacks into an Option as None"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating",
+      "observedAt": "2026-11-02",
+      "quote": "A key in the map that is not a field of the struct is ignored and discarded, and is lost if the value is packed and written back."
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Host Functions for Sparse Symbol-Keyed Map Creation and Unpacking: CAP-86 (Protocol 28 Mainnet, September 16, 2026)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ and https://mainnet.sorobanrpc.com getNetwork",
+      "observedAt": "2026-11-02",
+      "quote": "current_protocol_version 29; protocolVersion 29"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-storage-migration",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "As of 2026-11-02: CAP-86 sparse unpacking applies only to contracts rebuilt with soroban-sdk v28+. Non-Option field additions, type changes, enums, and tuple structs still need migration. Recommending versioned records for every schema change remains correct. A claim that reading old entries with a changed struct traps (Error(Object, UnexpectedSize)) is correct for pre-v28 builds; it is not a wrong claim unless the answer asserts it for v28+ builds.",
+    "note": "Proposed note is true; add a symmetric clause so answers that follow the still-live official guide are not penalized for a version-scoped true claim. Not a canonical-page caution (the page is true for pre-v28).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+      "observedAt": "2026-11-02",
+      "quote": "This traps with Error(Object, UnexpectedSize). The Soroban host validates the field count of the XDR-encoded value against the type definition"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "where both used to panic"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-storage-migration",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "SDK-version-scoped behavior is now volatile.",
+    "sources": []
+   },
+   {
+    "id": "q-soroban-storage-migration",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "",
+    "sources": []
+   },
+   {
+    "id": "q-soroban-storage-migration",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-15 is inside the batch window.",
+    "sources": []
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "89 chars (<=90). Old keyFact would have under-credited answers that use the current official API.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v28.0.0/soroban-sdk/src/deploy.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use update_current_contract\")] pub fn update_current_contract_wasm ... pub fn update_current_contract(&self, executable: ContractExecutable…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+      "observedAt": "2026-11-02",
+      "quote": "env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'update_current_contract ContractExecutable Wasm upgrade'",
+      "observedAt": "2026-11-02",
+      "quote": "upgrading-contracts#how-it-works: env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "CAP-86 bullet (str_replace 1).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "a map key that is not a field of the struct is ignored and dropped ... Writing is unchanged and still writes every field."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating",
+      "observedAt": "2026-11-02",
+      "quote": "is lost if the value is packed and written back"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+      "observedAt": "2026-11-02",
+      "quote": "a field added to a struct as an Option reads back as None from data stored before the field existed"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Install-call bullet (str_replace 2); [sdf] tag is apt since the SDF guide shows this call.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "Deploying and upgrading take a ContractExecutable (CAP-85). ... update_current_contract replaces update_current_contract_wasm; the old ones still work but are d…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+      "observedAt": "2026-11-02",
+      "quote": "the key function used is env.deployer().update_current_contract, which takes a ContractExecutable wrapping the Wasm hash"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "\nAs of 2026-11-02 (soroban-sdk v28+, Protocol 28): `update_current_contract(ContractExecutable::Wasm(..))` and the deprecated `update_current_contract_wasm` are both correct upgrade calls. CAP-86 sparse unpacking needs an SDK v28+ rebuild; recommending versioned or enum migration for struct changes remains correct. A claim that a changed struct traps on read is correct for pre-v28 builds; it is not a wrong claim unless asserted for v28+ builds.",
+    "note": "Same symmetric pre-v28 clause as the sibling q-soroban-storage-migration, for consistency.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+      "observedAt": "2026-11-02",
+      "quote": "This traps with Error(Object, UnexpectedSize)."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "",
+    "sources": []
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "",
+    "sources": []
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-15 inside window.",
+    "sources": []
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "truth.corroboration[0].claim",
+    "decision": "accept",
+    "note": "Evidence rows on this claim need observedAt 2026-11-02 refresh with the URLs above.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use update_current_contract\")] (unchanged in v29.0.1)"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://api.github.com/repos/stellar/rs-soroban-sdk/security-advisories",
+   "https://api.github.com/repos/stellar/rs-soroban-env/security-advisories",
+   "https://api.osv.dev/v1/vulns/GHSA-pm4j-7r4q-ccg8",
+   "https://api.osv.dev/v1/query",
+   "https://api.github.com/repos/stellar/rs-soroban-sdk/releases",
+   "https://api.github.com/repos/stellar/rs-soroban-env/releases",
+   "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0",
+   "https://api.github.com/repos/stellar/rs-soroban-env/releases/tags/v26.0.0",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0085.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.6/soroban-sdk/src/deploy.rs",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v28.0.0/soroban-sdk/src/deploy.rs",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.6/soroban-sdk-macros/src/derive_struct.rs",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v28.0.0/soroban-sdk-macros/src/derive_struct.rs",
+   "https://horizon.stellar.org/",
+   "https://horizon-testnet.stellar.org/",
+   "https://soroban-testnet.stellar.org (getNetwork)",
+   "https://mainnet.sorobanrpc.com (getNetwork)",
+   "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+   "https://developers.stellar.org/docs/networks/software-versions",
+   "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+   "https://api.github.com/repos/stellar/stellar-docs/commits?path=docs/build/guides/storage/migrate-contract-storage.mdx",
+   "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating",
+   "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+   "https://stellar.org/blog/developers/adapter-protocol-28-upgrade-guide",
+   "https://stellar.org/blog/developers/introducing-adapter-protocol-28-on-stellar",
+   "https://advisories.gitlab.com/pkg/cargo/soroban-sdk/",
+   "https://opencve.alliance.unm.edu/cve/?vendor=stellar&product=rs-soroban-sdk",
+   "Raven stellarDocs.search_docs x4 (observedAt 2026-11-02T16:36:56Z)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-soroban-sdk-cve; q-soroban-storage-migration; q-soroban-upgradeable-storage-compat",
+  "verifiedOnly": "q-soroban-resource-limits; q-soroban-sdk-macros; q-soroban-simulate-resource-fee; q-soroban-storage-types; q-soroban-token-transfer-pattern; q-soroban-unit-testing; q-soroban-vuln-classes; q-soroban-wasm-language",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-soroban-oz-upgradeable-macro",
+    "issue": "Sibling outside batch: golden says OZ wraps env.deployer().update_current_contract_wasm(new_wasm_hash); OZ main (soroban-sdk 28.0.0) calls update_current_contract(ContractExecutable::Wasm(..)) and SDK v28 deprecates the _wasm call. Needs a golden-truth update so it accepts the current API."
+   },
+   {
+    "id": "q-soroban-contract-id-derivation",
+    "issue": "Sibling outside batch: names only update_current_contract_wasm; SDK v28+ (CAP-85) uses update_current_contract(ContractExecutable::Wasm(..)) and deprecates the old call. Should accept both."
+   },
+   {
+    "id": "q-soroban-storage-migration",
+    "issue": "Candidate improvements/ finding (not filed; applier edits case files only): https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage still says reading DataV1 as DataV2 traps with Error(Object, UnexpectedSize) with no soroban-sdk v28/CAP-86 scope. Golden notes carry a symmetric pre-v28 caution meanwhile."
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "issue": "Same Stellar Docs migrate-contract-storage freshness gap as q-soroban-storage-migration; both cases set rootCause freshness-drift only, so add the improvements/ path to rootCause once the finding is filed."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-soroban-sdk-cve",
+    "log": "Bumped answer as-of to 2026-11-02, added GHSA-pm4j adjacent-advisory note, refreshed sources/corroboration/verified, asOf 2026-11-02, reverifyBy 2027-03-01."
+   },
+   {
+    "id": "q-soroban-storage-migration",
+    "log": "Added dated CAP-86/SDK v28+ sparse-unpacking nuance to answer, new golden.notes with symmetric pre-v28 trap caution, freshness stable->scheduled, asOf 2026-11-02, reverifyBy 2027-03-15, new sources/corroboration/verified."
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "log": "keyFact[2] now names update_current_contract (deprecated _wasm accepted), answer gains CAP-86 and CAP-85 bullets, notes gain v28 grading caution, freshness stable->scheduled, asOf 2026-11-02, reverifyBy 2027-03-15, corroboration[0] claim and evidence refreshed, new CAP-86 row, verified refreshed."
+   },
+   {
+    "id": "q-soroban-resource-limits",
+    "log": "Verification-only refresh of truth.verified (no gospel change); reverifyBy -> 2027-03-05."
+   },
+   {
+    "id": "q-soroban-sdk-macros",
+    "log": "Verification-only refresh of truth.verified (no gospel change); stable case, no reverifyBy."
+   },
+   {
+    "id": "q-soroban-simulate-resource-fee",
+    "log": "Verification-only refresh of truth.verified (no gospel change); reverifyBy -> 2027-03-09."
+   },
+   {
+    "id": "q-soroban-storage-types",
+    "log": "Verification-only refresh of truth.verified (no gospel change); reverifyBy -> 2027-03-19."
+   },
+   {
+    "id": "q-soroban-token-transfer-pattern",
+    "log": "Verification-only refresh of truth.verified (no gospel change); reverifyBy -> 2027-03-23."
+   },
+   {
+    "id": "q-soroban-unit-testing",
+    "log": "Verification-only refresh of truth.verified (no gospel change); reverifyBy -> 2027-03-26."
+   },
+   {
+    "id": "q-soroban-vuln-classes",
+    "log": "Verification-only refresh of truth.verified (no gospel change); reverifyBy -> 2027-03-29."
+   },
+   {
+    "id": "q-soroban-wasm-language",
+    "log": "Verification-only refresh of truth.verified (no gospel change); reverifyBy -> 2027-03-31."
+   }
+  ]
+ }
+}

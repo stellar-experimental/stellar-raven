@@ -5,10 +5,10 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A **factory contract deploys child contracts on-chain** using the **`env.deployer()`** API — Soroban\ncontracts can deploy other contracts, no off-chain CLI step required. The flow:\n\n1. **Upload the child Wasm once** (`stellar contract upload`, or an upload host call) to get its\n   **Wasm hash**; the factory references the child **by hash**, not by re-embedding bytecode each\n   deploy.\n2. The factory calls `env.deployer().with_address(deployer_addr, salt)` /\n   `with_current_contract(salt)` then `.deploy_v2(wasm_hash, constructor_args)` to instantiate a\n   child.\n\nThe child's **contract ID/address is deterministic** from the network ID plus the deployer\naddress/preimage and **salt**, so the factory can pre-compute and control child addresses for a given\ndeployer/salt pair. The **Wasm hash selects the executable code** used for the deployment; it is not\npart of the contract ID/address derivation. A child **`__constructor`** can initialize each instance\natomically at deploy time.\n\nThis is **not** Solidity `new Contract()` / `CREATE2` — it is the native `env.deployer()` mechanism.\nSee the soroban-examples **`deployer`** example.",
+    "answer": "A **factory contract deploys child contracts on-chain** using the **`env.deployer()`** API — Soroban\ncontracts can deploy other contracts, no off-chain CLI step required. The flow:\n\n1. **Upload the child Wasm once** (`stellar contract upload`, or an upload host call) to get its\n   **Wasm hash**; the factory references the child **by hash**, not by re-embedding bytecode each\n   deploy.\n2. The factory calls `env.deployer().with_address(deployer_addr, salt)` /\n   `with_current_contract(salt)` then `.deploy_contract(ContractExecutable::Wasm(wasm_hash),\n   constructor_args)` to instantiate a child. As of soroban-sdk 28 (2026-09-18), `deploy_contract`\n   replaces `deploy_v2(wasm_hash, constructor_args)`, which still works but is deprecated.\n\nThe child's **contract ID/address is deterministic** from the network ID plus the deployer\naddress/preimage and **salt**, so the factory can pre-compute and control child addresses for a given\ndeployer/salt pair. The **Wasm hash selects the executable code** used for the deployment; it is not\npart of the contract ID/address derivation. A child **`__constructor`** can initialize each instance\natomically at deploy time.\n\nThis is **not** Solidity `new Contract()` / `CREATE2` — it is the native `env.deployer()` mechanism.\nSee the soroban-examples **`deployer`** example.",
     "keyFacts": [
       "Factory uses env.deployer() for on-chain child-contract deployment.",
-      "Names deploy_v2, with_current_contract, and with_address as deployment APIs.",
+      "Names deploy_contract (or deprecated deploy_v2) with with_current_contract/with_address.",
       "Requires an already-uploaded Wasm hash and a salt.",
       "Gives deterministic child ID/address from network ID, deployer address/preimage, and salt.",
       "Uses the Wasm hash to select executable code."
@@ -18,12 +18,12 @@
       "Do NOT claim contracts can only be deployed off-chain via the CLI and never from another contract.",
       "Do NOT claim the Wasm hash is part of the child contract ID/address derivation."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Trap: Solidity new/CREATE2; claiming no on-chain deploy; claiming Wasm hash is part of contract ID/address derivation. scout_repos acceptable. Verified: on-chain deploy is via env.deployer() from an uploaded Wasm hash + salt; contract ID/address is deterministic from network ID + deployer address/preimage + salt; __constructor can init atomically.\nAlso good if the answer: The Wasm of the child must be uploaded first; the factory references it by hash rather than re-embedding bytecode each deploy. | A constructor (`__constructor`) can initialize each child atomically at deploy time.\nGolden cites: A developers.stellar.org deployer/factory guide or soroban-examples deployer example."
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Trap: Solidity new/CREATE2; claiming no on-chain deploy; claiming Wasm hash is part of contract ID/address derivation. scout_repos acceptable. Verified: on-chain deploy is via env.deployer() from an uploaded Wasm hash + salt; contract ID/address is deterministic from network ID + deployer address/preimage + salt; __constructor can init atomically.\nAlso good if the answer: The Wasm of the child must be uploaded first; the factory references it by hash rather than re-embedding bytecode each deploy. | A constructor (`__constructor`) can initialize each child atomically at deploy time.\nGolden cites: A developers.stellar.org deployer/factory guide or soroban-examples deployer example.\nAPI note (as of 2026-11-02): soroban-sdk 28+ (CAP-85) uses `deploy_contract(ContractExecutable::Wasm(hash), args)`; `deploy_v2` is deprecated but still compiles. Accept either name; do not penalize an answer for naming only the current `deploy_contract` or only `deploy_v2` with the deprecation omitted."
   },
   "tags": {
     "category": "soroban",
     "service": "stellarDocs",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -42,6 +42,30 @@
         "class": "B",
         "ref": "https://github.com/stellar/soroban-examples/tree/main/deployer",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+        "note": "SDK 28 release notes: deploy_contract replaces deprecated deploy_v2 (CAP-85)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+        "note": "SDK v29.0.1 deploy.rs: deploy_v2 deprecated, deploy_contract current",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs",
+        "note": "soroban-examples main deployer uses deploy_contract",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating/index.html",
+        "note": "docs.rs SDK 28 migration guide",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -59,7 +83,13 @@
             "class": "B",
             "ref": "https://github.com/stellar/soroban-examples/blob/13b9f51d184aabde23dec820e44eed056cf9690f/deployer/deployer/src/lib.rs",
             "observedAt": "2026-08-29",
-            "note": "Exact source says the example deploys contracts ‘via `env.deployer()`’ and calls `.deploy_v2(...)` inside the contract."
+            "note": "Exact source says the example deploys contracts ‘via `env.deployer()`’ and calls `.deploy_v2(...)` inside the contract. Historical (pre-SDK-28) observation; the current main example calls `.deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args)` (re-observed 2026-11-02)."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs",
+            "observedAt": "2026-11-02",
+            "note": "Current main example: `.deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);` (Cargo.toml soroban-sdk 28.0.0)."
           }
         ]
       },
@@ -77,7 +107,13 @@
             "class": "B",
             "ref": "https://github.com/stellar/soroban-examples/blob/13b9f51d184aabde23dec820e44eed056cf9690f/deployer/deployer/src/lib.rs",
             "observedAt": "2026-08-29",
-            "note": "Observed source passes the uploaded `wasm_hash` and `salt` to `.deploy_v2(wasm_hash, constructor_args)`; it does not embed bytecode."
+            "note": "Observed source passes the uploaded `wasm_hash` and `salt` to `.deploy_v2(wasm_hash, constructor_args)`; it does not embed bytecode. Historical (pre-SDK-28) observation; the current main example calls `.deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args)` (re-observed 2026-11-02)."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs",
+            "observedAt": "2026-11-02",
+            "note": "Current main example: `.deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);` (Cargo.toml soroban-sdk 28.0.0)."
           }
         ]
       },
@@ -102,6 +138,12 @@
             "ref": "https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-transaction.x",
             "observedAt": "2026-08-29",
             "note": "Exact XDR puts `SCAddress address` and `uint256 salt` in `ContractIDPreimage`; `ContractExecutable executable` is a separate CreateContractArgs field."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs",
+            "observedAt": "2026-11-02",
+            "note": "Current main example: `.deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);` (Cargo.toml soroban-sdk 28.0.0)."
           }
         ]
       },
@@ -119,31 +161,72 @@
             "class": "B",
             "ref": "https://github.com/stellar/soroban-examples/blob/13b9f51d184aabde23dec820e44eed056cf9690f/deployer/deployer/src/lib.rs",
             "observedAt": "2026-08-29",
-            "note": "Exact native mechanism: `env.deployer().with_address(env.current_contract_address(), salt).deploy_v2(wasm_hash, constructor_args)`."
+            "note": "Exact native mechanism: `env.deployer().with_address(env.current_contract_address(), salt).deploy_v2(wasm_hash, constructor_args)`. Historical (pre-SDK-28) observation; the current main example calls `.deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args)` (re-observed 2026-11-02)."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs",
+            "observedAt": "2026-11-02",
+            "note": "Current main example: `.deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);` (Cargo.toml soroban-sdk 28.0.0)."
+          }
+        ]
+      },
+      {
+        "claim": "As of soroban-sdk 28 (2026-09-18), `deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args)` replaces `deploy_v2(wasm_hash, constructor_args)`, which still works but is deprecated.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: '`deploy_contract` replaces `deploy_v2`, and `update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated.' Release published 2026-09-18T03:34:58Z."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact source: `#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>(` and `pub fn deploy_contract<A>(&self, executable: ContractExecutable, constructor_args: A) -> Address`."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: '.with_address(env.current_contract_address(), salt) .deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);'"
+          },
+          {
+            "class": "D",
+            "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating/index.html",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: '`DeployerWithAddress::deploy_contract` and `Deployer::update_current_contract` replace `DeployerWithAddress::deploy_v2` and `Deployer::update_current_contract_wasm`, which are deprecated.'"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task soroban-api)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (compound-predicate): Split two compound facts into five atomic facts; the existing avoid retains the Wasm-hash derivation trap.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — a factory contract still deploys children through env.deployer().",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — deploy_v2, with_current_contract, and with_address remain the shown deployment APIs.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — deployment still takes an uploaded Wasm hash and salt.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — the child address remains deterministic from the deployer address and salt; the network ID remains part of the address preimage.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — the Wasm hash still selects the deployed implementation.",
-        "Sibling sweep 2026-08-27: grep env.deployer|deploy_v2|with_current_contract|with_address|Wasm hash → q-passkey-smart-account-architecture, q-sor-stale-spec-after-upgrade, q-soroban-contract-id-derivation, q-soroban-factory-pattern, q-soroban-oz-upgradeable-macro, q-soroban-upgradeable-storage-compat, q-ti-enumerate-all-contracts; no contradiction",
-        "Corroboration audit 2026-08-29: added 4 row(s) for on-chain factory deployment and address derivation; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 4 corroboration row(s) (Grok final review finding 1)"
+        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — \".with_address(env.current_contract_address(), salt) .deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);\" (observedAt 2026-11-02)",
+        "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0 — \"`deploy_contract` replaces `deploy_v2`, and `update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated.\" (observedAt 2026-11-02; release 2026-09-18)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs — \"#[deprecated(note = \\\"use deploy_contract\\\")] pub fn deploy_v2<A>(\" and \"pub fn with_current_contract(\" / \"pub fn with_address(\" (observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs — \".deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);\" (observedAt 2026-11-02)",
+        "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating/index.html — \"`DeployerWithAddress::deploy_contract` ... replace `DeployerWithAddress::deploy_v2` ... which are deprecated.\" (observedAt 2026-11-02)",
+        "Raven stellarDocs.search_docs 'deploy_contract ContractExecutable factory deployer' — deployer#code: \".deploy_contract(ContractExecutable::Wasm(wasm_hash\" (observedAt 2026-11-02)",
+        "F: Horizon mainnet current_protocol_version 29; testnet getVersionInfo protocolVersion 29 (observedAt 2026-11-02)",
+        "Independent verifier (verify/soroban-05.json): accept on golden.answer, golden.keyFacts[1], golden.notes.",
+        "Sibling sweep 2026-11-02: grep deploy_v2 → only this case; grep update_current_contract_wasm → q-soroban-oz-upgradeable-macro (fixed in this batch), q-soroban-upgradeable-storage-compat (keyFact still names update_current_contract_wasm; deprecated-but-working, escalated), q-soroban-contract-id-derivation (truth note only). Address-derivation siblings q-ti-enumerate-all-contracts, q-passkey-smart-account-architecture, q-sor-stale-spec-after-upgrade: no contradiction.",
+        "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0 — \"`deploy_contract` replaces `deploy_v2`, and `update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated. (published_at 2026-09-18T03:34:58Z)\" (class B, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs — \"#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>( ... #[deprecated(note = \"use update_current_contract\")] pub fn update_current_contract_wasm\" (class B, observedAt 2026-11-02)",
+        "https://crates.io/api/v1/crates/soroban-sdk — \"max_stable_version 29.0.1\" (class C, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02 (pass 2): freshness tag and reverifyBy only; golden text unchanged, so no sibling can newly contradict it. q-soroban-upgradeable-storage-compat states the same deprecated-but-working update_current_contract_wasm fact (consistent).",
+        "Pass-2 proposer matrix, proposals, and independent verifier decisions: .agents/rounds/2026-11-02-golden-audit.md, task soroban-api."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-soroban-factory-pattern"
+    "origin": "raven-next q-soroban-factory-pattern",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-21"
   }
 }

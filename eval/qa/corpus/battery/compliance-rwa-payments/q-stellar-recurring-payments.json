@@ -125,20 +125,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
-        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts",
-        "Structural re-form (long-fact): Split two long recurring-payment facts into four atomic facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the official guide defines policy signers, time rules, and scoped session keys for delegated actions.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — the official lifecycle treats each transaction as a separately created and submitted command.",
-        "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/smart_account/mod.rs — current source exposes context-rule expiry updates and removal controls.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — the official guide requires status polling and safe retry handling for duplicate, failed, and uncertain submissions.",
-        "Sibling sweep 2026-08-29: grep recurring billing|standing order|contract-account policy|idempotency|revocation → q-stellar-recurring-payments, q-smart-account-scoped-policy-signers, q-agent-payment-standard-choice, q-defi-agentic-payment-standards-compare, q-defi-streaming-payments-prior-art, q-ti-classic-submission-errors, q-ti-tx-too-late-resubmit; no contradiction."
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns (observedAt 2026-11-02): \"Store a record for the session key with its expiry, allowed scope, and remaining allowance; reduce the allowance on each authorized call.\"; \"Block execution until a specific ledger timestamp, or add a cooldown\" (time rules gate authorization; they do not schedule execution).",
+        "stellarDocs.search_docs 'session keys policy signers recurring payments smart account' -> https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets (observedAt 2026-11-02): \"you can also use Ed25519 keys, policy signers, session keys or anything the contract can\".",
+        "Sibling sweep 2026-11-02: q-sor-recurring-escrow-patterns, q-smart-account-scoped-policy-signers, q-raph-merchant-payments, q-defi-streaming-payments-prior-art; no contradiction."
       ]
     },
     "origin": "kaan recurring-subscriptions-stellar"

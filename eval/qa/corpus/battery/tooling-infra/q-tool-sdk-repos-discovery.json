@@ -18,7 +18,7 @@
       "Do NOT infer SDF ownership, security, correctness, maintenance quality, or production readiness from official-doc inclusion, repoScore, stars, or rank.",
       "Do NOT return retired package/repository names without a current migration or alias explanation."
     ],
-    "notes": "GT-56 DISCOVERY CORRECTION 2026-07-11: require current observed Scout rows with generatedAt, direct URLs, role, maintainer, archive/activity, and corroboration. No static top/star/order requirement; repoScore and rank are navigation, not quality, security, or ownership proof."
+    "notes": "GT-56 DISCOVERY CORRECTION 2026-07-11: require current observed Scout rows with generatedAt, direct URLs, role, maintainer, archive/activity, and corroboration. No static top/star/order requirement; repoScore and rank are navigation, not quality, security, or ownership proof. Scout's row `tier` (quality/community/archive) is the index's quality tier, not maintainer tier; a null tierReason means the code-tier lane has not judged the row, so the value is the schema default, not a verdict. On 2026-11-02 stellar/go-stellar-sdk showed tier community with null tierReason, while official docs say SDF maintains the Go SDK. Take maintainer tier from official docs or the owner."
   },
   "tags": {
     "category": "tooling-infra",
@@ -32,8 +32,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-09-03",
-    "reverifyBy": "2026-12-24",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-21",
     "sources": [
       {
         "class": "C",
@@ -59,6 +59,24 @@
         "class": "D",
         "ref": "https://github.com/StellarCN/py-stellar-base",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=go-stellar-sdk&limit=10",
+        "note": "generatedAt 2026-11-02T16:41:34Z: stellar/go-stellar-sdk tier community, tierReason null, repoScore 100.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/openapi.json",
+        "note": "tier enum [quality, community, archive]; tierReason 'Null until that lane has judged the row: a bare tier with no reason means the value is the schema default, not a verdict.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+        "note": "'**The Go SDK is maintained by SDF.**' linking https://github.com/stellar/go-stellar-sdk.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -98,26 +116,44 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Scout's row tier is the index's quality tier, not a maintainer tier: a bare tier with null tierReason is the schema default; on 2026-11-02 stellar/go-stellar-sdk showed tier community while official docs say SDF maintains the Go SDK.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/repos/search?q=go-stellar-sdk&limit=10",
+            "observedAt": "2026-11-02",
+            "note": "stellar/go-stellar-sdk tier community, tierReason null (generatedAt 2026-11-02T16:41:34Z)."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/openapi.json",
+            "observedAt": "2026-11-02",
+            "note": "tier described as 'Quality tier (tag-and-demote)'; tierReason null means schema default."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+            "observedAt": "2026-11-02",
+            "note": "'The Go SDK is maintained by SDF.'"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-06)",
       "evidence": [
-        "C returned current SDK rows. A/B confirmed current ownership and repository identity.",
-        "Sibling sweep 2026-09-03: q-tool-indexer-repos-discovery keeps the same source-bound discovery rule; no contradiction found.",
-        "C: https://stellarlight.xyz/api/repos/search?q=sdk&limit=10 at 2026-08-05T20:47:26.563Z returned 10 of 334 current rows, including stellar/js-stellar-sdk, stellar/rs-soroban-sdk, and stellar/go-stellar-sdk with answer-time rank/activity metadata; an XDR probe separately returned stellar/stellar-xdr and stellar/rs-stellar-xdr.",
-        "A/B: https://developers.stellar.org/docs/tools/sdks/client-sdks, https://developers.stellar.org/docs/tools/sdks/contract-sdks, the direct repository APIs, and the @stellar/stellar-sdk package independently confirmed role, owner, language, archive state, activity, and package identity.",
-        "Uncertainty remains source-bounded: Scout rank, score, stars, and current rows do not establish global coverage, security, correctness, ownership, or production readiness.",
-        "Sibling sweep: q-tool-indexer-repos-discovery preserves the same no-static-roster/no-repoScore-quality rule, and q-tool-skill-detail-install remains a separate exact-detail lane.",
-        "Structural re-form (negative-predicate): split the repository fields into atomic facts and moved the ranking and inference traps to their existing avoid items; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/sdks/client-sdks — confirmed current client SDK roles, source URLs, and maintainer tiers.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/sdks/contract-sdks — confirmed the separate contract SDK role used for repository classification.",
-        "Sibling sweep 2026-08-27: grep generatedAt|repoScore|client SDK|contract SDK → q-tool-indexer-repos-discovery; no contradiction"
+        "C https://stellarlight.xyz/api/repos/search?q=go-stellar-sdk&limit=10 (generatedAt 2026-11-02T16:41:34Z; Raven scout.searchRepos asOf 2026-11-02T16:42:14Z): 'stellar/go-stellar-sdk tier community, tierReason null, repoScore 100; stellar/js-stellar-sdk tier quality, tierReason null'.",
+        "C https://stellarlight.xyz/api/openapi.json (observedAt 2026-11-02): tier enum [quality, community, archive] 'Quality tier (tag-and-demote): quality = high-grade, community = alive but unproven, archive = ...'; tierReason 'Null until that lane has judged the row: a bare tier with no reason means the value is the schema default, not a verdict.'",
+        "A https://developers.stellar.org/docs/tools/sdks/client-sdks (observedAt 2026-11-02): '**The Go SDK is maintained by SDF.** ... [Go SDK](https://github.com/stellar/go-stellar-sdk)'.",
+        "C https://stellarlight.xyz/api/repos/search?q=stellar%20sdk&limit=10 (generatedAt 2026-11-02T16:22:03.441Z): returned 10 of 635 rows with fullName, url, primaryLanguage, isArchived, lastCommitAt, successorRepo, repoScore, tier.",
+        "Sibling sweep 2026-11-02: q-tool-smart-wallet-repos-discovery, q-tool-zk-repo-live, q-tool-which-sdk-comparison, q-tool-indexer-repos-discovery, q-tool-oracle-repo-live, and q-tool-passkey-repo-live do not equate Scout tier with maintainer tier; no contradiction."
       ],
       "rootCause": [
-        "freshness-recheck",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Eval-side authoring ambiguity: keyFact 'maintainer tier' did not distinguish Scout's row `tier` (index quality tier) from official maintainer labels; the grader note now states the difference."
       ]
     },
     "origin": "raven-next q-tool-sdk-repos-discovery"

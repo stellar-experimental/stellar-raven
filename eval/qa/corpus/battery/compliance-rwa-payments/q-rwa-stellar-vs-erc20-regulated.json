@@ -110,21 +110,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-11 protocol comparison matrices",
-        "Structural re-form (negative-predicate): Split the four-layer taxonomy and moved the legal-compliance negation into a concrete avoid item; truth unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — classic authorization flags and clawback appeared as ledger-level issuer controls.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — SEP-8 defined an off-chain approval-server workflow layered on authorization flags.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md — SAC provided a distinct native contract compatibility layer for classic assets.",
-        "Live re-check 2026-08-27: https://eips.ethereum.org/EIPS/eip-3643 — ERC-3643 defined technical identity and compliance interfaces whose parameters still follow issuer or regulator requirements.",
-        "Sibling sweep 2026-08-27: grep SEP-8|ERC-3643|T-REX|CAP-0046-06|regulated-token → q-sep-8-regulated-assets, q-comp-anchor-compliance-stack, q-comp-sep8-regulated-assets-approval-server, q-crp-oz-rwa-erc3643-trex, q-sep-41-token-interface; no contradiction"
-      ],
-      "rootCause": [
-        "Protocol primitives, off-chain SEP workflow, SAC, and contract suites were collapsed into native versus custom.",
-        "An engineering tradeoff was promoted into categorical legal advice.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md (observedAt 2026-11-02): \"Title: Asset Clawback ... Status: Final\".",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md (observedAt 2026-11-02): \"Title: Smart Contract Standardized Asset (Stellar Asset Contract) ... Status: Final\".",
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md (observedAt 2026-11-02): \"Title: Regulated Assets ... Status: Active ... Version 1.7.4\".",
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md (observedAt 2026-11-02): \"Title: T-REX (Token for Regulated EXchanges) Author: OpenZeppelin ... Status: Draft Updated: 2026-09-08 Version: 0.4.0\".",
+        "https://raw.githubusercontent.com/ethereum/ERCs/master/ERCS/erc-3643.md (observedAt 2026-11-02): \"status: Final\"; pause, setAddressFrozen, forcedTransfer, recoveryAddress interfaces.",
+        "stellarDocs.search_docs -> https://developers.stellar.org/docs/tokens/control-asset-access#authorization-revocable-0x2 and https://developers.stellar.org/docs/tokens/anatomy-of-an-asset#compliance (observedAt 2026-11-02): revocable authorization freezes holdings; SEP-8 regulated assets require issuer approval.",
+        "Sibling sweep 2026-11-02: q-crp-oz-rwa-erc3643-trex, q-rwa-tokenization-standards, q-sor-evm-to-soroban-porting, q-sep-8-regulated-assets, q-comp-sep8-regulated-assets-approval-server; no contradiction."
       ]
     },
     "origin": "raven-next q-rwa-stellar-vs-erc20-regulated"

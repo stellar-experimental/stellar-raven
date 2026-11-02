@@ -30,8 +30,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-09-03",
-    "reverifyBy": "2026-12-17",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-15",
     "sources": [
       {
         "class": "A",
@@ -44,19 +44,27 @@
         "note": "class inferred at migration"
       },
       {
-        "class": "D",
-        "ref": "https://github.com/soroswap/docs",
-        "note": "class inferred at migration"
+        "class": "B",
+        "ref": "https://github.com/soroswap/sdk",
+        "note": "Operator-owned repo README: 'Official TypeScript SDK for Soroswap.Finance - The first DEX and exchange aggregator built on Stellar, powered by smart contracts on Soroban.' Replaces https://github.com/soroswap/docs (HTTP 404 on 2026-11-02).",
+        "observedAt": "2026-11-02"
       },
       {
-        "class": "D",
+        "class": "F",
         "ref": "https://api.llama.fi/protocol/soroswap",
-        "note": "class inferred at migration"
+        "note": "Direct series fetch 2026-11-02: Soroswap AMM currentChainTvls Stellar 1165054; series max 9799848 (2025-07-18).",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "D",
         "ref": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/soroswap/index.js",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.soroswap.finance/",
+        "note": "Live operator docs site ('The Swap Aggregator for Stellar - Soroswap Finance'); no $1B TVL figure on the home page.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -87,6 +95,12 @@
             "ref": "D: independent chronology conflict sweep",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/soroswap/sdk/main/README.md",
+            "observedAt": "2026-11-02",
+            "note": "'The first DEX and exchange aggregator built on Stellar, powered by smart contracts on Soroban.' (attributed operator marketing)"
           }
         ]
       },
@@ -95,32 +109,37 @@
         "verdict": "unverifiable",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://github.com/soroswap/docs",
-            "observedAt": "2026-07-11",
-            "note": "Fetched operator-owned documentation does not substantiate a $1B TVL figure."
+            "class": "B",
+            "ref": "https://github.com/soroswap/sdk",
+            "observedAt": "2026-11-02",
+            "note": "Operator-owned README carries the firstness wording and no $1B TVL figure; https://github.com/soroswap/docs now returns 404."
           },
           {
             "class": "F",
             "ref": "https://api.llama.fi/protocol/soroswap",
             "observedAt": "2026-09-03",
             "note": "Direct protocol-series fetch returned current Stellar TVL about $1.19M and a historical maximum below $10M; it does not establish $1B."
+          },
+          {
+            "class": "F",
+            "ref": "https://api.llama.fi/protocol/soroswap-amm",
+            "observedAt": "2026-11-02",
+            "note": "Current Stellar TVL 1165054 (about $1.17M); series max 9799848 on 2025-07-18; it does not establish $1B."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
       "evidence": [
-        "A/B: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md and https://stellar.org/blog/developers/protocol-18-upgrade-guide confirm Protocol 18/CAP-0038 AMM chronology before Soroswap.",
-        "D/F: https://api.llama.fi/protocol/soroswap on 2026-09-03 returned current Stellar TVL about $1.19M; the historical maximum remains below $10M. Neither supports $1B, and TVL remains distinct from routed/cumulative volume.",
-        "A/D: current Soroswap operator docs call it the first DEX and exchange aggregator built on Stellar; that firstness remains attributed operator marketing rather than independent chronology.",
-        "Sibling sweep: q-protocol-amm-cap-0038 and q-defi-soroswap-what-is agree on native Protocol-18 AMM versus Soroswap's Soroban product layer.",
-        "Structural re-form (compound-predicate): split first-aggregator attribution and the $1B TVL rejection into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/soroswap/docs — the current operator docs still supply the attributed first-DEX and first-aggregator wording.",
-        "Live re-check 2026-08-27: https://defillama.com/protocol/soroswap — the current provider page still shows TVL far below $1B and keeps cumulative volume separate.",
-        "Sibling sweep 2026-08-27: grep Soroswap|first AMM|CAP-0038|Protocol 18|TVL → q-protocol-amm-cap-0038, q-asset-sdex-vs-amm, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx, q-edge-fresh-latest-blend-tvl; no contradiction"
+        "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar (observedAt 2026-11-02): 'November 3, 2021 — Today at 15:00 UTC, Stellar validators voted to upgrade the network to Protocol 18, which adds Automated Market Maker (AMM) functionality'.",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0038.md (observedAt 2026-11-02): 'CAP: 0038 Title: Automated Market Makers ... Status: Final ... Protocol version: 18'.",
+        "https://raw.githubusercontent.com/soroswap/sdk/main/README.md (observedAt 2026-11-02): 'The first DEX and exchange aggregator built on Stellar, powered by smart contracts on Soroban.'; gh api repos/soroswap/docs -> 404 Not Found.",
+        "https://api.llama.fi/protocol/soroswap-amm (observedAt 2026-11-02): currentChainTvls Stellar 1165054; series max 9799848 (2025-07-18). The 2026-09-03 example (about $1.19M, max below $10M) stays accurate; $1B remains false.",
+        "Perplexity ask (observedAt 2026-11-02, cites defillama.com/protocol/soroswap): 'DefiLlama reports $1.17 million. Its recorded all-time high is $9.8 million'.",
+        "Independent verifier decision: accept (provenance repair; judge-blind).",
+        "Sibling sweep 2026-11-02: grep 'soroswap/docs' -> q-eco-dex-saturation, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx also cite the dead repo (other batches); judge-facing content of q-protocol-amm-cap-0038, q-asset-sdex-vs-amm, q-defi-soroswap-what-is unchanged and consistent."
       ],
       "rootCause": [
         "freshness-drift"

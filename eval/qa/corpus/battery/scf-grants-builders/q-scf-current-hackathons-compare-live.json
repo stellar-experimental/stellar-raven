@@ -1,1 +1,108 @@
-{"id":"q-scf-current-hackathons-compare-live","question":"Using current event data, compare the latest Stellar ZK hackathon with the recent agents/x402 hackathon.","surface":["scout.getHackathons","scout.compareHackathons"],"golden":{"answer":"Discover the current matching event slugs, compare them, and report dates, source, status, registered hackers and prize pools only as returned. Cite both event URLs and generatedAt; distinguish registered hackers from submissions and null from zero.","keyFacts":["Discovers current slugs before calling the comparison.","Reports sourced dates/status/hacker/prize fields with generatedAt.","Reports registered hackers, submissions, field absence, and zero with distinct meanings."],"avoid":["Uses archived event totals or equates registered hackers with submissions."]},"tags":{"category":"scf-grants-builders","service":"scout","freshness":"live"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/hackathons"},{"class":"D","ref":"https://dorahacks.io/hackathon/stellar-hacks-zk/detail"},{"class":"B","ref":"catalog/manifest.json#scout.compareHackathons"},{"class":"A","ref":"https://developers.stellar.org/meetings/2026/04/23"}],"corroboration":[{"claim":"A valid comparison resolves live slugs, sources each field, dates the response, and preserves field semantics.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/hackathons","observedAt":"2026-07-11"},{"class":"D","ref":"https://dorahacks.io/hackathon/stellar-hacks-zk/detail","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.compareHackathons","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/meetings/2026/04/23","observedAt":"2026-07-11"}]},{"claim":"Archived totals remain current or hackers equal submissions.","verdict":"contradicted","evidence":[{"class":"B","ref":"catalog/manifest.json#scout.compareHackathons","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-08-27","by":"golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","catalog/manifest.json#scout.compareHackathons","https://developers.stellar.org/meetings/2026/04/23","Structural re-form (negative-predicate): Restated the compared field semantics as distinct reported meanings; truth unchanged.","Live re-check 2026-08-27: https://stellarlight.xyz/ — showed the live Hackathons section as the current event-discovery entry point.","Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — showed sourced hackathon fields and generatedAt in the current operation contract.","Live re-check 2026-08-27: https://developers.stellar.org/meetings/2026/04/23 — showed about 600 hackers and more than 260 submitted projects as distinct metrics.","Sibling sweep 2026-08-27: grep registered hackers|hackersCount|generatedAt|stellar-hacks-zk → live hackathon comparison cases; no contradiction."],"rootCause":["freshness-drift",".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"]},"origin":"core-35 compare-current-hackathons"}}
+{
+  "id": "q-scf-current-hackathons-compare-live",
+  "question": "Using current event data, compare the latest Stellar ZK hackathon with the recent agents/x402 hackathon.",
+  "surface": [
+    "scout.getHackathons",
+    "scout.compareHackathons"
+  ],
+  "golden": {
+    "answer": "Discover the current matching event slugs, compare them, and report dates, source, status, registered hackers and prize pools only as returned. Cite both event URLs and generatedAt; distinguish registered hackers from submissions and null from zero.",
+    "keyFacts": [
+      "Discovers current slugs before calling the comparison.",
+      "Reports sourced dates/status/hacker/prize fields with generatedAt.",
+      "Reports registered hackers, submissions, field absence, and zero with distinct meanings."
+    ],
+    "avoid": [
+      "Uses archived event totals or equates registered hackers with submissions."
+    ]
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons"
+      },
+      {
+        "class": "D",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk/detail"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.compareHackathons"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/meetings/2026/04/23"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-zk,stellar-agents-x402-stripe-mpp",
+        "note": "meta.generatedAt 2026-11-02T16:08:34.955Z; zk hackersCount 678 submissionCount 319; agents hackersCount 591 submissionCount 249",
+        "observedAt": "2026-11-02"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A valid comparison resolves live slugs, sources each field, dates the response, and preserves field semantics.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "D",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk/detail",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.compareHackathons",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/2026/04/23",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "Archived totals remain current or hackers equal submissions.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.compareHackathons",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier refreshed provenance; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-03)",
+      "evidence": [
+        "C 2026-11-02: https://stellarlight.xyz/api/hackathons — stellar-hacks-zk 'Stellar Hacks: Real-World ZK' completed 2026-06-15..2026-07-03, hackersCount 678; stellar-agents-x402-stripe-mpp 'Stellar Hacks: Agents' completed 2026-03-30..2026-04-13, hackersCount 591; no newer ZK or agents event (newest HackMeridian 2026).",
+        "C 2026-11-02: https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-zk,stellar-agents-x402-stripe-mpp — generatedAt 2026-11-02T16:08:34.955Z; zk hackersCount 678 vs submissionCount 319; agents 591 vs 249 (hackers stay distinct from submissions).",
+        "D 2026-11-02: https://dorahacks.io/hackathon/stellar-hacks-zk/detail (Parallel search) — 'Submission 2026/06/15 07:00 Deadline 2026/06/29 19:00 Extended 2026/07/03 17:00 ... Builds 345 Hackers 678'.",
+        "B 2026-11-02: catalog/manifest.json#scout.compareHackathons — prizePoolUSD 'null when the source publishes none: unknown, never zero.'",
+        "Behavioral golden re-verified; no gospel change. Sibling sweep: q-scf-hackathon-compare-live, q-gap-compare-hackathons, q-scf-hackathons-active; no contradiction."
+      ]
+    },
+    "origin": "core-35 compare-current-hackathons"
+  }
+}

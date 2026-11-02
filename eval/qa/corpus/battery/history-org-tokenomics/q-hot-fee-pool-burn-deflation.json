@@ -13,12 +13,12 @@
     "avoid": [
       "Do NOT call ongoing fees automatically burned from total supply, cite CAP-5 for inflation removal, pay fees to validators, or merge the fee pool with SDF's 2019 burn."
     ],
-    "notes": "GT-27 2026-07-10: Core/source confirms the fee pool remains inside totalCoins conservation and is inaccessible/non-circulating under current rules, not automatically burned. CAP-26 inflation removal and SDF's treasury burn are separate.\nGT-27 CORRECTION 2026-07-10: replace the ongoing-burn framing with source-level fee-pool accounting."
+    "notes": "GT-27 2026-07-10: Core/source confirms the fee pool remains inside totalCoins conservation and is inaccessible/non-circulating under current rules, not automatically burned. CAP-26 inflation removal and SDF's treasury burn are separate.\nGT-27 CORRECTION 2026-07-10: replace the ongoing-burn framing with source-level fee-pool accounting.\n2026-11-02 freshness note: SDF's discussion paper \"Evolving Network Utility: Evaluating the Activation of Stellar's Fee Pool\" (October 2026, linked from stellar.org/xlm-utility, presented at Meridian 2026 on 2026-10-28) explores a possible rewards mechanism for locked XLM funded from the existing fee pool. As of 2026-11-02 it is a discussion paper only: SDF states it has not decided to fund or support any such mechanism, and any proposal needs a validator vote. Do not penalize an answer that cites it as a dated proposal; grade a claim that the fee pool already pays holder rewards, or that the proposal is adopted, as wrong."
   },
   "tags": {
     "category": "history-org-tokenomics",
     "service": "stellarDocs",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -52,6 +52,36 @@
         "class": "A",
         "ref": "https://stellar.org/blog/foundation-news/sdfs-next-steps",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/xlm-utility",
+        "note": "SDF XLM Rewards Pool Explorer page; models rewards for locked XLM from the existing fee pool and links the discussion paper and the GitHub Tokenomics discussion category.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+        "note": "\"Evolving Network Utility: Evaluating the Activation of Stellar's Fee Pool\", SDF discussion paper (October 2026): \"SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only\"; any proposal needs a validator vote.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/orgs/stellar/discussions/2051",
+        "note": "Tokenomics discussion 'Rewards and locked up xlm', created 2026-10-28; community thread, no CAP found.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.tokenpost.com/news/technology/42721",
+        "note": "Third-party report (2026-10-28) of the Meridian 2026 fee-pool rewards proposal.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://x.com/StellarOrg/status/2115410923582292477",
+        "note": "StellarOrg post, 2026-10-28: 'could a rewards mechanism created from the network's existing fee pool improve the network's utility? @tomerweller at #Meridian2026'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -76,25 +106,112 @@
             "ref": "A/F: Lumens docs, SDF burn announcement, and live supply API",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-11-02",
+            "note": "ledger 65271107 (2026-11-02T17:41:59Z): total_coins 105443902087.3472865, fee_pool 10966513.7857213, protocol_version 29; fee_pool grew from 10966277.6399585 at ledger 65269887 while total_coins stayed equal."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/accounts/GALAXYVOIDAOPZTDLHILAJQKCVVFMD4IKLXLSZV5YHO7VY74IWZILUTO",
+            "observedAt": "2026-11-02",
+            "note": "native balance 55442115249.9502152; master weight 0; thresholds 0/0/0."
+          },
+          {
+            "class": "A",
+            "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+            "observedAt": "2026-11-02",
+            "note": "\"validators adopted Protocol 12 and ended the mechanism in October 2019. The following month, SDF burned 55.44 billion XLM\"; \"Every fee paid on Stellar accrues to a protocol-level fee pool that, under current rules, cannot be spent.\""
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, SDF's October 2026 fee-pool activation paper is a discussion paper only: SDF has not decided to fund or support a rewards mechanism, no CAP or validator vote exists, and the fee pool pays no holder or validator rewards.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+            "observedAt": "2026-11-02",
+            "note": "\"DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026 ... voted on by network validators prior to implementation ... SDF has not decided to fund or support any such mechanism\""
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/orgs/stellar/discussions/2051",
+            "observedAt": "2026-11-02",
+            "note": "Tokenomics discussion created 2026-10-28; follow-up #2052 created 2026-10-31; no CAP linked."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-11-02",
+            "note": "ledger 65269887 (2026-11-02T16:00:19Z): total_coins 105443902087.3472865, fee_pool 10966277.6399585, protocol_version 29; fee pool still accrues inside total_coins."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.tokenpost.com/news/technology/42721",
+            "observedAt": "2026-11-02",
+            "note": "\"raised a possible rewards mechanism funded through its existing fee pool ... tied to Meridian 2026\" (2026-10-28)."
+          },
+          {
+            "class": "A",
+            "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+            "observedAt": "2026-11-02",
+            "note": "Re-fetched 2026-11-02 (publish_date 2026-10-26): \"It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only.\"; \"any fee-pool redistribution or new issuance would require protocol development, public review and validator adoption.\""
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/commits (since 2026-10-20)",
+            "observedAt": "2026-11-02",
+            "note": "Commits: CAP-0090 custom signature payload (2026-11-02), CAP-89 host functions (2026-10-20/26), status update (2026-10-22); no fee-pool or rewards CAP. GitHub Discussions Tokenomics: #2051 (2026-10-28) and #2052 (2026-10-31), community threads only."
+          },
+          {
+            "class": "D",
+            "ref": "Perplexity search + ask, 2026-11-02",
+            "observedAt": "2026-11-02",
+            "note": "Lumen Loop roundup (2026-10-30): \"Framed as an early discussion rather than a finalized protocol change\"; Protocol 30 (Bell, mainnet vote 2026-11-23) contains CAP-84, CAP-87, CAP-88 and none changes fee-pool accounting."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task full-reverify)",
       "evidence": [
-        "Solo scratchpad 575 GT-27 primary 3270 and blind 3272; fee/supply sibling sweep.",
-        "Structural re-form (negative-predicate): Split the accounting and historical event distinctions into independent facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens still places the inaccessible fee pool inside total supply.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0026.md and https://stellar.org/blog/foundation-news/sdfs-next-steps still document inflation removal and the one-time SDF burn as different events.",
-        "Sibling sweep 2026-08-27: grep fee pool|inflation mechanism|SDF burn across eval/qa/corpus/battery found no contradictory accounting or event taxonomy."
+        "[B] golden.answer (confirmed): https://raw.githubusercontent.com/stellar/stellar-core/master/src/invariant/ConservationOfLumens.cpp :: \"if (!addBalance(sumBalance, header.feePool)) ... if (sumBalance != header.totalCoins)\" (observedAt 2026-11-02)",
+        "[B] golden.answer (confirmed): https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp :: \"header.current().feePool += fee;\" (observedAt 2026-11-02)",
+        "[A] golden.answer (confirmed): https://developers.stellar.org/docs/learn/fundamentals/lumens :: \"No one has access to the fee pool, so these lumens are non-circulating. Network validators could theoretically vote for a protocol change that would affect the fee pool, so we include it in the total supply.\" (observedAt 2026-11-02)",
+        "[F] golden.answer (confirmed): https://horizon.stellar.org/ledgers?order=desc&limit=1 :: \"ledger 65269887 (2026-11-02T16:00:19Z): total_coins 105443902087.3472865, fee_pool 10966277.6399585, protocol_version 29\" (observedAt 2026-11-02)",
+        "[B] golden.answer (confirmed): https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md :: \"Title: Disable Inflation Mechanism / Status: Final / Protocol version: 12\" (observedAt 2026-11-02)",
+        "[A] golden.answer (confirmed): https://developers.stellar.org/docs/learn/fundamentals/lumens :: \"This \"network inflation\" was ended by validator vote on October 28, 2019.\" (observedAt 2026-11-02)",
+        "[D] golden.answer (confirmed): perplexity_ask (bullrunners.com/blog/xrp-vs-stellar-xlm, 2026-11-02) :: \"October 28, 2019: validators voted to end inflation.\" (observedAt 2026-11-02)",
+        "[A] golden.answer (confirmed): https://stellar.org/blog/foundation-news/sdfs-next-steps :: \"To burn the lumens, we have sent them to a Stellar account with no signers ... GALAXYVOIDAOPZTDLHILAJQKCVVFMD4IKLXLSZV5YHO7VY74IWZILUTO\" (observedAt 2026-11-02)",
+        "[F] golden.answer (confirmed): https://horizon.stellar.org/accounts/GALAXYVOIDAOPZTDLHILAJQKCVVFMD4IKLXLSZV5YHO7VY74IWZILUTO :: \"native balance 55442115249.9502152\" (observedAt 2026-11-02)",
+        "[D] golden.answer (confirmed): perplexity_ask 2026-11-02 citing developers.stellar.org lumens page :: \"The SDF burn occurred on November 4, 2019: it sent 55,442,095,285.7418 XLM to an inaccessible account.\" (observedAt 2026-11-02)",
+        "[B] golden.avoid[0] (contradicted): https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md :: \"Title: Disable Inflation Mechanism\" (observedAt 2026-11-02)",
+        "[B] golden.avoid[0] (contradicted): https://raw.githubusercontent.com/stellar/stellar-core/master/src/invariant/ConservationOfLumens.cpp :: \"sumBalance (incl. feePool) must equal header.totalCoins\" (observedAt 2026-11-02)",
+        "[A] golden.answer (confirmed-as-of): https://stellar.org/xlm-utility :: \"XLM Rewards Pool Explorer: Model how network growth, fee levels, and funding choices could support rewards for locked XLM over ten years. | Download the whitepaper | Join the discussion\" (observedAt 2026-11-02)",
+        "[A] golden.answer (confirmed-as-of): https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf :: \"PDF title: Evolving Network Utility: Evaluating the Activation of Stellar's Fee Pool; Author: Stellar Development Foundation; CreationDate 2026-10-26; sections '2. A Rewards Mechanism?', '5.2 Inflation as a separate policy question', '8. Open Questions'\" (observedAt 2026-11-02)",
+        "[C] golden.answer (confirmed-as-of): Raven lumenloop.search_content_semantic 'XLM rewards mechanism funded from fee pool Meridian 2026' :: \"XLM Rewards Pool Explorer ... a whitepaper and interactive modeling tool designed to help the ecosystem understand how network growth, transaction fees, and funding allocation could support sustainable rewards for locked XLM\" (observedAt 2026-11-02)",
+        "[D] golden.answer (confirmed-as-of): https://tearsheet.co/blockchain-crypto/at-meridian-stellar-makes-the-case-that-utility-should-drive-the-network/ :: \"An SDF post featuring Tomer Weller ... asks whether a rewards mechanism funded from the network's existing fee pool could improve the network's utility.\" (observedAt 2026-11-02)",
+        "[D] golden.answer (confirmed-as-of): https://x.com/StellarOrg/status/2115410923582292477 :: \"But could a rewards mechanism created from the network's existing fee pool improve the network's utility? @tomerweller at #Meridian2026\" (observedAt 2026-11-02)",
+        "[B] golden.answer (confirmed-as-of): https://github.com/orgs/stellar/discussions/2051 :: \"'Rewards and locked up xlm' (Tokenomics category, created 2026-10-28); community thread, no CAP yet\" (observedAt 2026-11-02)",
+        "[A] golden.notes (verifier modify): https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf :: \"It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only.\" (observedAt 2026-11-02)",
+        "[D] golden.notes: https://meridian.stellar.org/event-details :: \"Meridian 2026 is a two-day in-person conference taking place October 28-29, 2026\" (observedAt 2026-11-02)",
+        "[C] golden.notes: https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026 :: \"Framed as an early discussion rather than a finalized protocol change\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep 'fee pool|feePool|fee_pool|xlm-utility|rewards for locked' across eval/qa/corpus/battery -> q-protocol-ledger-header-fields, q-pc-fee-bump-channel-accounts-feepool, q-protocol-24-whisk-incident, q-pc-surge-griefing-threat-model, q-ti-tx-too-late-resubmit, q-ti-java-sdk-wallet-feebump, q-ti-channel-accounts-throughput, q-token-initial-supply-distribution; none claims fee-pool rewards or a burn; no contradiction.",
+        "Full re-verification 2026-11-02 (pass 2): [F] Horizon ledger 65271107 (2026-11-02T17:41:59Z) total_coins 105443902087.3472865, fee_pool 10966513.7857213, protocol 29; [F] GALAXYVOID balance 55442115249.9502152, master weight 0; [A] discussion paper re-fetched (\"SDF has not decided to fund or support any such mechanism\"); [B] stellar-protocol has no fee-pool CAP (latest CAP-0090, 2026-11-02); [D] Perplexity: Bell (Protocol 30) CAP-84/87/88 do not touch fee accounting.",
+        "Freshness: tags.freshness moved from stable to scheduled because golden.notes now carries a dated volatile status (the October 2026 discussion paper is not adopted as of 2026-11-02). truth.reverifyBy 2027-02-26: the community feedback period and any CAP could change that status within one quarter.",
+        "Sibling sweep 2026-11-02 (pass 2): q-raph-xlm-staking carries the same dated discussion-paper caution (consistent); q-edge-noinfo-stellar-pos-staking-rewards lacks it (pass-1 consistency-entities F15, not in this edit set); q-hot-sdf-xlm-holdings-sales has no fee-pool rewards claim; no contradiction."
       ],
       "rootCause": [
-        "Fee-pool lockup, inflation removal, and SDF treasury burn were compressed into one deflation narrative.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-hot-fee-pool-burn-deflation"
+    "origin": "raven-next q-hot-fee-pool-burn-deflation",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-26"
   }
 }

@@ -5,12 +5,12 @@
     "skills.stellar-dev.agentic-payments"
   ],
   "golden": {
-    "answer": "In Stellar x402, the payer wallet signs the required **Soroban authorization entries**, not the facilitator's entire settlement transaction. The facilitator reconstructs the transaction with its source account, sponsors fees, verifies/simulates the authorization, signs, submits, and the client retries the paid request.\n\nAs of **2026-07-28**, the official Stellar x402 page lists Freighter Browser Extension, Albedo, Hana, HOT, Klever, and OneKey and says Freighter Mobile is unsupported, but that roster is **disputed** by implementation evidence. Freighter's owner documentation exposes `signAuthEntry` for the extension and `stellar_signAuthEntry` for mobile over direct WalletConnect, while Stellar Wallets Kit explicitly throws that Albedo does not support `signAuthEntry`. Wallets Kit contains auth-entry adapters for Hana, HOT, Klever, and OneKey, but this review did not find wallet-owner documentation proving each wallet's current end-to-end x402 compatibility. Separate raw auth-entry capability from a tested x402 integration and test the exact wallet/transport; do not present the official roster as independently verified.\n\nThe hosted provider is **Build on Stellar Relayer with the OpenZeppelin x402 Plugin**, backed by OpenZeppelin Channels; that hosted setup requires a bearer API key. Do not imply that x402 itself, the payer wallet, or every facilitator intrinsically requires an API key. Coinbase remains Testnet-only in the official roster; use any compatible SEP-41 token, with USDC the default example.",
+    "answer": "In Stellar x402, the payer wallet signs the required **Soroban authorization entries**, not the facilitator's entire settlement transaction. The facilitator reconstructs the transaction with its source account, sponsors fees, verifies/simulates the authorization, signs, submits, and the client retries the paid request.\n\nAs of **2026-11-02**, the official Stellar x402 page lists the Varial (formerly Freighter) Browser Extension, Varial Mobile through WalletConnect, Albedo, Hana, HOT, Klever, OneKey, and Scopuly. Varial's owner documentation exposes `signAuthEntry` for the extension and `stellar_signAuthEntry` for mobile over WalletConnect, which matches the page. The roster stays **disputed** for Albedo: Stellar Wallets Kit explicitly throws that Albedo does not support `signAuthEntry`, and Albedo's intent library has no auth-entry intent. Wallets Kit contains auth-entry adapters for Hana, HOT, Klever, OneKey, and Scopuly, but this review did not find wallet-owner documentation proving each wallet's current end-to-end x402 compatibility. Separate raw auth-entry capability from a tested x402 integration and test the exact wallet/transport; do not present the official roster as independently verified.\n\nThe hosted provider is **Build on Stellar Relayer with the OpenZeppelin x402 Plugin**, backed by OpenZeppelin Channels; that hosted setup requires a bearer API key. Do not imply that x402 itself, the payer wallet, or every facilitator intrinsically requires an API key. Coinbase remains Testnet-only in the official roster; use any compatible SEP-41 token, with USDC the default example.",
     "keyFacts": [
       "Separates payer auth-entry signing from facilitator transaction sponsorship/submission.",
       "Marks the official wallet roster as disputed.",
       "Separates raw auth-entry support from end-to-end x402 compatibility.",
-      "Identifies the specific Freighter/Albedo evidence conflict.",
+      "Flags Albedo's official listing as contradicted by Wallets Kit's signAuthEntry error.",
       "Dates provider/network coverage and narrows API-key requirements to the hosted setup."
     ],
     "avoid": [
@@ -18,7 +18,7 @@
       "Do NOT repeat the official wallet roster as independently verified or equate a Wallets Kit adapter with wallet-owner proof.",
       "Do NOT generalize one hosted API-key requirement or provider network coverage to the x402 protocol."
     ],
-    "notes": "Freshness:true — wallet/facilitator support is moving. 2026-07-28 re-verification found that the official Stellar x402 roster conflicts with Freighter owner documentation and the current Stellar Wallets Kit Albedo module. Grade the stable payment flow and honest disclosure of roster uncertainty, not rote repetition of the official list.\nAlso good if the answer: Flow: server returns HTTP 402 with payment requirements → wallet signs the Soroban auth entry → facilitator verifies and settles → request is retried/completed.\nGolden cites: The Stellar x402 page plus wallet-owner docs/source for any wallet-specific claim.\nGT-48 CORRECTION 2026-07-11: current provider label is Build on Stellar Relayer with OZ plugin/Channels; API-key scope is hosted-provider-specific."
+    "notes": "Freshness:true — wallet/facilitator support is moving. 2026-11-02 re-verification: on 2026-10-29 the official page renamed Freighter to Varial and added Varial Mobile through WalletConnect, so it now agrees with Varial owner documentation; its Albedo listing still conflicts with the Stellar Wallets Kit Albedo module and Albedo's intent library. An answer that reports the earlier \"Freighter Mobile unsupported\" wording as a dated historical page state is not wrong. Grade the stable payment flow and honest disclosure of roster uncertainty, not rote repetition of the official list.\nAlso good if the answer: Flow: server returns HTTP 402 with payment requirements → wallet signs the Soroban auth entry → facilitator verifies and settles → request is retried/completed.\nGolden cites: The Stellar x402 page plus wallet-owner docs/source for any wallet-specific claim.\nGT-48 CORRECTION 2026-07-11: current provider label is Build on Stellar Relayer with OZ plugin/Channels; API-key scope is hosted-provider-specific.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name."
   },
   "tags": {
     "category": "soroban",
@@ -32,8 +32,8 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-08-11",
-    "reverifyBy": "2026-11-19",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-04",
     "sources": [
       {
         "class": "A",
@@ -58,6 +58,66 @@
       {
         "class": "B",
         "ref": "https://github.com/OpenZeppelin/relayer-plugin-x402-facilitator"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+        "note": "SDF announcement of the Freighter-to-Varial rename; RSS pubDate 2026-10-29.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+        "note": "First release under the Varial name, published 2026-10-29.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/freighter",
+        "note": "README: \"Varial (formerly Freighter)\"; manifest name \"Varial Wallet\".",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+        "note": "Redirect to https://varialwallet.com/ and https://docs.varialwallet.com/.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory",
+        "note": "Independent report dating the rename to the 2026-10-29 SDF post (Parallel + Perplexity).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.varialwallet.com/",
+        "note": "\"Freighter is now Varial. Same wallet, new name.\"; mobile stellar_signAuthEntry over WalletConnect.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.varialwallet.com/extension-varial-sdk/signing",
+        "note": "Owner docs: signAuthEntry() signs an authorization entry preimage.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-docs/commit/de38543086",
+        "note": "2026-10-29 \"docs: rename Freighter to Varial and switch to @stellar/varial-sdk (#2956)\"; earlier text said Freighter Mobile does not support x402.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar-expert/albedo/blob/master/intent/src/intent-interface.js",
+        "note": "Intents public_key, sign_message, tx, pay, trust, exchange, implicit_flow, manage_account, batch; no auth-entry intent (also @albedo-link/intent 0.13.0).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/scopuly.module.ts",
+        "note": "ScopulyModule.signAuthEntry calls provider.signAuthEntry.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -78,37 +138,43 @@
         ]
       },
       {
-        "claim": "Freighter Browser, Albedo, Hana, HOT, Klever and OneKey support the auth-entry signing x402 needs, while Freighter Mobile does not.",
+        "claim": "As of 2026-11-02 the official x402 page lists Varial Browser Extension, Varial Mobile through WalletConnect, Albedo, Hana, HOT, Klever, OneKey and Scopuly as able to sign the auth entries x402 needs.",
         "verdict": "disputed",
         "evidence": [
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
-            "observedAt": "2026-07-28",
-            "note": "Lists the six browser wallets and marks Freighter Mobile unsupported."
+            "observedAt": "2026-11-02",
+            "note": "Page roster: \"Varial Browser Extension; Varial Mobile (through WalletConnect); Albedo; Hana; HOT; Klever; OneKey; Scopuly\"."
           },
           {
             "class": "A",
-            "ref": "https://docs.freighter.app/extension-freighter-api/signing",
-            "observedAt": "2026-07-28",
-            "note": "Wallet-owner documentation confirms extension signAuthEntry."
+            "ref": "https://docs.varialwallet.com/extension-varial-sdk/signing",
+            "observedAt": "2026-11-02",
+            "note": "Wallet-owner docs confirm the Varial part: \"`signAuthEntry()` Sign an authorization entry preimage\"; mobile `stellar_signAuthEntry` over WalletConnect."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/freighter-developer-docs/blob/main/mobile/signing.md",
-            "observedAt": "2026-07-28",
-            "note": "Wallet-owner repository documents mobile stellar_signAuthEntry over direct WalletConnect."
+            "ref": "https://github.com/stellar/stellar-docs/commit/de38543086",
+            "observedAt": "2026-11-02",
+            "note": "The 2026-10-29 docs commit renamed Freighter to Varial; the earlier \"Freighter Mobile does not currently support x402\" wording is now history."
           },
           {
             "class": "B",
             "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts",
-            "observedAt": "2026-07-28",
-            "note": "Current integration source explicitly throws that Albedo does not support signAuthEntry."
+            "observedAt": "2026-11-02",
+            "note": "Other side: \"Albedo does not support the \\\"signAuthEntry\\\" function\"."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar-expert/albedo/blob/master/intent/src/intent-interface.js",
+            "observedAt": "2026-11-02",
+            "note": "Other side: Albedo intent library has no auth-entry intent."
           }
         ]
       },
       {
-        "claim": "Hana, HOT, Klever and OneKey have Wallets Kit auth-entry adapters, but current wallet-owner evidence establishes each wallet's end-to-end x402 compatibility.",
+        "claim": "Hana, HOT, Klever, OneKey and Scopuly have Wallets Kit auth-entry adapters, but current wallet-owner evidence establishes each wallet's end-to-end x402 compatibility.",
         "verdict": "unverifiable",
         "evidence": [
           {
@@ -116,6 +182,12 @@
             "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main/src/sdk/modules",
             "observedAt": "2026-07-28",
             "note": "The adapters implement signAuthEntry calls, but no wallet-owner documentation confirming all four wallets' current x402 compatibility was found in this review."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/scopuly.module.ts",
+            "observedAt": "2026-11-02",
+            "note": "Adapter only; no wallet-owner x402 documentation found for these five wallets on 2026-11-02."
           }
         ]
       },
@@ -132,33 +204,75 @@
             "class": "B",
             "ref": "https://github.com/OpenZeppelin/relayer-plugin-x402-facilitator",
             "observedAt": "2026-07-28"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+            "observedAt": "2026-11-02",
+            "note": "Re-read 2026-11-02: Coinbase Testnet-only; Build on Stellar Relayer with the OpenZeppelin x402 plugin still listed."
+          }
+        ]
+      },
+      {
+        "claim": "SDF renamed the Freighter wallet to Varial on 2026-10-29; Freighter and Varial name the same SDF-maintained wallet, and extension 5.50.0 is the first Varial release.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+            "observedAt": "2026-11-02",
+            "note": "\"Freighter is now Varial, with a new name and a new focus\"; RSS pubDate Thu, 29 Oct 2026."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+            "observedAt": "2026-11-02",
+            "note": "\"Freighter is now **Varial**. This is the first release under the new name.\""
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/freighter",
+            "observedAt": "2026-11-02",
+            "note": "\"Varial (formerly Freighter) is a non-custodial wallet extension\"; rebrand commit db6d022b 2026-10-28."
+          },
+          {
+            "class": "D",
+            "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory",
+            "observedAt": "2026-11-02",
+            "note": "\"according to a Stellar Foundation blog post published on 2026-10-29\"."
+          },
+          {
+            "class": "F",
+            "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+            "observedAt": "2026-11-02",
+            "note": "www.freighter.app -> https://varialwallet.com/ ; docs.freighter.app -> https://docs.varialwallet.com/."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task wallets-hackathons-safety)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/agentic-payments/x402",
-        "https://docs.freighter.app/extension-freighter-api/signing",
-        "https://docs.freighter.app/mobile-walletconnect/signing",
-        "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts",
-        "https://github.com/OpenZeppelin/relayer-plugin-x402-facilitator",
-        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
-        "Structural re-form (compound-predicate): Split the disputed-roster compound fact into three atomic facts; payment flow, dispute, compatibility distinction, evidence conflict, and hosted scope are unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar — the payer still signs an auth entry while the facilitator verifies and settles.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — the official wallet roster remains published as current.",
-        "Live re-check 2026-08-27: https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts — implementation evidence still conflicts with the official Albedo roster claim.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — auth-entry capability remains the stated wallet prerequisite, not proof of tested end-to-end compatibility.",
-        "Live re-check 2026-08-27: https://docs.freighter.app/extension-freighter-api/signing — Freighter still documents signAuthEntry, preserving the Freighter/Albedo evidence conflict.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — provider networks and hosted API-key requirements remain provider-scoped.",
-        "Sibling sweep 2026-08-27: grep x402|signAuthEntry|auth-entry|Albedo|Freighter Mobile → q-agent-payment-standard-choice, q-defi-agentic-payment-standards-compare, q-defi-x402-on-stellar-what, q-hist-x402-stellar-announcement, q-soroban-x402-auth-entry-signing, q-ti-openzeppelin-relayer, q-tool-wallets-comparison, q-x402-payment-verification; no contradiction"
+        "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml pubDate Thu, 29 Oct 2026) — \"Freighter is now Varial, with a new name and a new focus\" (observedAt 2026-11-02).",
+        "https://github.com/stellar/freighter/releases/tag/5.50.0 (published_at 2026-10-29T20:32:42Z) — \"Freighter is now **Varial**. This is the first release under the new name.\" (observedAt 2026-11-02).",
+        "https://github.com/stellar/freighter README and rebrand commit db6d022b (2026-10-28, \"Freighter is now Varial (#3048)\") — \"Varial (formerly Freighter) is a non-custodial wallet extension\"; manifest name \"Varial Wallet\" (observedAt 2026-11-02).",
+        "curl -I: https://www.freighter.app -> 301 https://varialwallet.com/ ; https://docs.freighter.app -> 307 https://docs.varialwallet.com/ (observedAt 2026-11-02).",
+        "General web (Parallel search + Perplexity, one class): https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory ; https://www.tokenpost.com/news/technology/43511 — \"according to a Stellar Foundation blog post published on 2026-10-29\" (observedAt 2026-11-02).",
+        "Store and maintainer: Chrome Web Store listing \"Varial Wallet\" 5.51.0; Firefox AMO API still names \"Freighter\" 5.49.0; repo stays stellar/freighter and npm packages stay under the SDF @stellar scope (observedAt 2026-11-02).",
+        "https://developers.stellar.org/docs/build/agentic-payments/x402 — roster \"Varial Browser Extension; Varial Mobile (through WalletConnect); Albedo; Hana; HOT; Klever; OneKey; Scopuly\" (observedAt 2026-11-02).",
+        "https://github.com/stellar/stellar-docs/commit/de38543086 (2026-10-29) — \"docs: rename Freighter to Varial and switch to @stellar/varial-sdk (#2956)\"; previous text \"Freighter Mobile does not currently support x402\" (observedAt 2026-11-02).",
+        "https://docs.varialwallet.com/extension-varial-sdk/signing — \"### `signAuthEntry()` Sign an authorization entry preimage\" (observedAt 2026-11-02).",
+        "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts — \"Albedo does not support the \\\"signAuthEntry\\\" function\"; @albedo-link/intent 0.13.0 and stellar-expert/albedo master intent-interface.js have no auth-entry intent (observedAt 2026-11-02).",
+        "Raven stellarDocs.search_docs 'x402 compatible wallets auth-entry signing' -> https://developers.stellar.org/docs/build/agentic-payments/x402#x402-compatible-wallets indexed (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: grep -rli 'freighter|varial' eval/qa/corpus/battery -> 20 Freighter cases; 11 are in batch varial-dev; the other Varial-lane siblings (q-eco-freighter-wallet, q-tool-freighter-wallet, q-ti-find-export-secret-key) already state the same 2026-10-29 rename and same-product identity; no sibling names a different date, a different wallet, or a removed @stellar/freighter-api.",
+        "Pass 2 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/agentic-payments/x402/index.mdx line 22 'The following wallets support auth-entry signing:' with line 26 '- Albedo'; https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts lines 57-61 throw 'Albedo does not support the \"signAuthEntry\" function'. keyFacts[3] is reworded without the lint-flagged negative predicate 'rejects'; the fact is unchanged.",
+        "Sibling sweep pass 2 2026-11-02: q-x402-payment-verification, q-smart-wallet-fee-sponsorship, q-eco-freighter-wallet, q-tool-freighter-wallet; no sibling names a different x402 wallet roster."
       ],
       "rootCause": [
         "freshness-drift",
-        "Official wallet roster and independently checked implementation evidence still conflict; preserve the dispute rather than pinning either source.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Add the Varial rename to the goldens that name Freighter",
+        "improvements/stellar-docs/sd-060-x402-wallet-list-albedo-auth-entry.md — the official x402 roster lists Albedo while Wallets Kit and the Albedo intent library show no auth-entry signing."
       ]
     },
     "origin": "raven-next q-soroban-x402-auth-entry-signing"

@@ -18,7 +18,7 @@
       "Noir is the only supported way to build ZK applications on Stellar.",
       "Protocol 25 automatically makes every Stellar payment private."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence."
+    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence. As of 2026-11-02, the Stellar privacy docs and the rs-soroban-ultrahonk verifier README say that verifier accepts only non-zero-knowledge UltraHonk proofs (no witness hiding); do not penalize an answer that states this limit."
   },
   "tags": {
     "category": "soroban",
@@ -33,7 +33,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2027-03-25",
+    "reverifyBy": "2027-04-20",
     "sources": [
       {
         "class": "A",
@@ -42,6 +42,24 @@
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+        "note": "'The current verifier accepts only non-zero-knowledge UltraHonk proofs ... Zero-knowledge verification is in progress.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/NethermindEth/rs-soroban-ultrahonk/blob/main/crates/ultrahonk-soroban-verifier/README.md",
+        "note": "'Supported flavor: UltraKeccakFlavor \u2014 non-ZK, non-recursive ... no witness-hiding guarantee ... UltraZKFlavor is not implemented.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/confidential/proof-system",
+        "note": "OpenZeppelin docs: 'That verifier supports only the non-zero-knowledge flavor of UltraHonk'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -124,24 +142,45 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, the rs-soroban-ultrahonk Soroban verifier accepts only non-zero-knowledge UltraHonk proofs and gives no witness-hiding guarantee.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+            "observedAt": "2026-11-02",
+            "note": "'The current verifier accepts only non-zero-knowledge UltraHonk proofs, so OpenZeppelin does not guarantee that proofs keep balances and amounts private.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/NethermindEth/rs-soroban-ultrahonk/blob/main/crates/ultrahonk-soroban-verifier/README.md",
+            "observedAt": "2026-11-02",
+            "note": "'It provides no witness-hiding guarantee ... UltraZKFlavor is not implemented.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/confidential/proof-system",
+            "observedAt": "2026-11-02",
+            "note": "'Don't pass --zk: the on-chain verifier implements only the non-zero-knowledge flavor.' The other listed UltraHonk contract (github.com/indextree/ultrahonk_soroban_contract) README makes no ZK-flavor claim, so the note names rs-soroban-ultrahonk only."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-07)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/apps/zk",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
-        "Structural re-form (compound-predicate): Split three compound facts into five atomic facts; truth unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/zk — Stellar's workflow examples still include Noir without requiring it.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — the page still covers RISC Zero/Groth16, Circom, and Noir verifier paths.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — onchain verification still uses smart contracts built on matching cryptographic host functions.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — CAP-0074 and CAP-0075 still map BN254 and Poseidon/Poseidon2 to Protocol 25.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/zk — Protocol 25 primitives remain building blocks without automatic end-to-end private payments.",
-        "Sibling sweep 2026-08-27: grep BN254|Poseidon/Poseidon2|Noir|RISC Zero|Groth16|verifier → q-protocol-bn254-poseidon-xray, q-zk-host-functions-status, q-zk-circuit-setup, q-zk-verification-resource-budget, q-sor-cross-warmancer-zk-stack; no contradiction"
+        "Gospel change: golden.notes adds a dated leniency note for the non-ZK UltraHonk verifier limit; verifier decision modify (scoped to rs-soroban-ultrahonk, since indextree/ultrahonk_soroban_contract makes no flavor claim).",
+        "A https://developers.stellar.org/docs/build/apps/privacy \u2014 'The current verifier accepts only non-zero-knowledge UltraHonk proofs ... Zero-knowledge verification is in progress.' (observedAt 2026-11-02).",
+        "B https://github.com/NethermindEth/rs-soroban-ultrahonk/blob/main/crates/ultrahonk-soroban-verifier/README.md \u2014 'Supported flavor: UltraKeccakFlavor \u2014 non-ZK, non-recursive ... no witness-hiding guarantee' (observedAt 2026-11-02).",
+        "A https://docs.openzeppelin.com/stellar-contracts/tokens/confidential/proof-system \u2014 'That verifier supports only the non-zero-knowledge flavor of UltraHonk' (observedAt 2026-11-02).",
+        "A https://developers.stellar.org/docs/build/apps/zk \u2014 workflow examples still include Circom, Noir, and RISC Zero without requiring Noir (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-sor-confidential-tokens, q-scf-confidential-tokens-preview, q-edge-noinfo-stellar-native-privacy-default (states the same non-ZK limit as of 2026-11-02), q-zk-circuit-setup, q-zk-host-functions-status, q-protocol-bn254-poseidon-xray checked; no contradiction."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "kaan zk-proving-systems-languages"

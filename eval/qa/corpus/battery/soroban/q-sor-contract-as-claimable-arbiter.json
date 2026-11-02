@@ -57,24 +57,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (negative-predicate): split long facts and made the classic/Soroban taxonomy positive; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/overview — contracts cannot interact with classic claimable balances",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — contracts hold and move Stellar assets through SAC",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — approve remains a SEP-41 token-interface call",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — address authorization governs contract invocation trees",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — classic claim predicates govern claimable-balance release",
-        "Sibling sweep 2026-08-27: grep claimable balance|Soroban escrow|approve → q-asset-claimable-balance, q-aas-claimable-predicates-expiry-reserves, q-soroban-greenfield-escrow-prior-art-preflight, q-sor-sep41-transfer-vs-transferfrom; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case).",
+        "golden.keyFacts[0] (negative claim): A https://developers.stellar.org/docs/build/smart-contracts/overview — 'Soroban contracts cannot interact with the SDEX, claimable balances, or sponsorships.' | E Raven stellarDocs.search_docs hit overview#stellar-smart-contract-faqs | B stellar-protocol core/README.md — no Final/Implemented CAP through CAP-0088 (Protocol 30) adds contract access to claimable balances | D Parallel web sweep found no contrary source (observedAt 2026-11-02).",
+        "golden.keyFacts[1]: A https://developers.stellar.org/docs/tokens/stellar-asset-contract — 'When the SAC transfers assets between contracts, it uses Contract Data ledger entries to store the balances for contracts.' (observedAt 2026-11-02).",
+        "golden.keyFacts[2]: A stellar-asset-contract — 'fn approve(env: Env, from: Address, spender: Address, amount: i128, live_until_ledger: u32);' | A contract-interactions/stellar-transaction — 'This tree is authorized by a user specified in `credentials`.' (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-sor-classic-dex-from-contract, q-asset-claimable-balance, q-aas-claimable-predicates-expiry-reserves, q-sor-sep41-transfer-vs-transferfrom checked; no contradiction."
       ]
     },
     "origin": "raven-next q-sor-contract-as-claimable-arbiter",

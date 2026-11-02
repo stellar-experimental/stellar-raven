@@ -32,8 +32,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-17",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-24",
     "sources": [
       {
         "class": "C",
@@ -93,23 +93,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
       "evidence": [
-        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
-        "Sibling sweep: Bitso, SEP-31, and SEP-24 cases reviewed; no direct Bitso SEP-31 implementation claim made",
-        "Structural re-form (long-fact): shortened the Bitso role and split the SEP-31 and SEP-24 distinctions; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=Bitso&limit=10 — the live Scout source lists Bitso as a live Stellar anchor with USDC/local-fiat ramps in LATAM.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration — the official docs provide the SEP-31 definition and integration flow.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration — the official guide names sending and receiving anchors in the cross-border flow.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official docs define SEP-24 as a hosted interactive wallet-to-anchor deposit/withdrawal flow.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=Bitso&limit=10 — the live Bitso record has empty SEP arrays and does not list SEP support.",
-        "Sibling sweep 2026-08-29: grep Bitso|sending anchor|receiving anchor → q-comp-cross-bitso-sep31, q-comp-finclusive-caas, q-sep-31-cross-border, q-sep-6-vs-31-misnumber-trap; no contradiction.",
-        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): moved the presentation-shaped fact 'Does not assert unlisted SEP support for Bitso' into golden.avoid as a concrete false-content trap; truth unchanged versus HEAD."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Proposer golden.keyFacts[0] [confirmed-as-of]: Live re-check 2026-11-02: https://stellarlight.xyz/api/projects/search?q=Bitso&limit=10 — \"\"name\": \"Bitso\", \"category\": \"Anchor\", ... providing fiat on/off-ramps between USDC and local currency in Mexico and Colombia ... \"status\": \"Live\", \"statusAsOf\": \"2026-09-02\"\" (class C)",
+        "Proposer golden.keyFacts[0] [confirmed-as-of]: Live re-check 2026-11-02: http://stellar.org/case-studies/felix-bitso — \"Bitso provides on/off ramps currently for clients in Mexico and Colombia\" (class A)",
+        "Proposer golden.keyFacts[0] [confirmed-as-of]: Live re-check 2026-11-02: https://blog.bitso.com/blog/usdc-stellar — \"USDC is Now Available on Stellar ... Published Jun 11, 2026\" (class A)",
+        "Proposer golden.avoid[0],[2] [confirmed-as-of]: Live re-check 2026-11-02: https://stellarlight.xyz/api/projects/search?q=Bitso&limit=10 — \"\"anchorProfile\": {\"slug\": \"anchor-bitso\", ... \"seps\": [] ...}\" (class C)",
+        "Proposer golden.avoid[0],[2] [confirmed-as-of]: Live re-check 2026-11-02: https://stellarlight.xyz/api/partners?q=Bitso&all=1&limit=20 — \"\"seps\": null, \"tomlSourceUrl\": null\" (class C)",
+        "Proposer golden.avoid[0],[2] [confirmed-as-of]: Live re-check 2026-11-02: https://bitso.com/.well-known/stellar.toml — \"HTTP 404\" (class F)",
+        "Proposer golden.avoid[0],[2] [confirmed-as-of]: Live re-check 2026-11-02: Parallel web_search \"Bitso Stellar SEP-31 anchor\" — \"No primary page found that states Bitso implements SEP-31 or SEP-24.\" (class D)",
+        "Proposer golden.keyFacts[2..3] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md — \"A **Sending Anchor**: The business receiving funds from the Sending Client and delivering them to the Receiving Anchor\" (class B)",
+        "Proposer golden.keyFacts[2..3] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"Title: Hosted Deposit and Withdrawal\" (class B)",
+        "Proposer golden.keyFacts[2..3] [confirmed]: Live re-check 2026-11-02: stellarDocs.search_docs \"SEP-24 hosted deposit and withdrawal SEP-31 cross-border\" — \"SEP-24: Hosted Deposit and Withdrawal SEP-31: Cross Border\" (class E)",
+        "Sibling sweep 2026-11-02: proposer checked q-comp-finclusive-caas, q-sep-31-cross-border, q-sep-6-vs-31-misnumber-trap; no judge-facing field changed in this case, and no sibling contradicts the confirmed claims."
       ]
     },
     "origin": "authored 2026-07 (cross-service)"

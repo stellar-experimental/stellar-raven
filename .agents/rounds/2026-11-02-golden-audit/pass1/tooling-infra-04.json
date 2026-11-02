@@ -1,0 +1,1740 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "tooling-infra-04",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-ti-self-host-retention-backfill",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / golden.keyFacts[0]",
+     "claim": "RPC defaults HISTORY_RETENTION_WINDOW=120960, SERVE_LEDGERS_FROM_DATASTORE=false, BACKFILL=false (pinned to v27.1.1 as of 2026-07-11)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+       "observedAt": "2026-11-02",
+       "quote": "Name: \"history-retention-window\" ... DefaultValue: uint32(SevenDayOfLedgers), Validate: positive; Name: \"backfill\" ... DefaultValue: false; Name: \"serve-ledgers…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/releases/tag/v30.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "v30.0.0 published 2026-10-21; Breaking Changes: `getEvents` no longer returns the `inSuccessfulContractCall` field (no retention/backfill change in v28.0.0-v30.…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring",
+       "observedAt": "2026-11-02",
+       "quote": "HISTORY_RETENTION_WINDOW = 120960 ... Set `BACKFILL = true` ... This option was added in RPC v25.1.0 and defaults to `false`."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "RPC retention is a positive ledger count; zero invalid; no seven-day maximum",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+       "observedAt": "2026-11-02",
+       "quote": "Validate: positive ... the default value is %d which corresponds to about 7 days of history"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring",
+       "observedAt": "2026-11-02",
+       "quote": "RPC treats this value as a target, not an exact count."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Fresh empty DB starts at the HAS tip; larger window does not restore pruned/never-ingested rows",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "improvements/stellar-docs/sd-053-rpc-backfill-fresh-start-and-gap-check.md",
+       "observedAt": "2026-11-02",
+       "quote": "On db.ErrEmptyDB the service reads archive.GetRootHAS() and sets nextLedgerSeq = root.CurrentLedger (v28.0.1 service.go)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/data-lake-integration",
+       "observedAt": "2026-11-02",
+       "quote": "All other RPC endpoints will still operate based on the `HISTORY_RETENTION_WINDOW` configured on your node."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "BACKFILL requires SERVE_LEDGERS_FROM_DATASTORE=true; coverage/local state/checkpoint limit range",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+       "observedAt": "2026-11-02",
+       "quote": "if cfg.Backfill && !cfg.ServeLedgersFromDatastore { return errors.New(\"backfill requires serving ledgers from datastore to be enabled...\")"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring",
+       "observedAt": "2026-11-02",
+       "quote": "Datastore coverage, ledgers already in the local database, and checkpoint boundaries can each reduce what the node fetches. `BACKFILL` also requires datastore s…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3]",
+     "claim": "Datastore fallback is getLedgers-only",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/tree/v30.0.0/cmd/stellar-rpc/internal/methods",
+       "observedAt": "2026-11-02",
+       "quote": "get_ledgers.go imports rpcdatastore and uses datastoreLedgerReader; get_transaction.go, get_transactions.go, get_events.go contain no datastore reference"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/data-lake-integration",
+       "observedAt": "2026-11-02",
+       "quote": "RPC version 23.0 introduces data lake integration for the `getLedgers` endpoint ... All other RPC endpoints will still operate based on the `HISTORY_RETENTION_W…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[4]",
+     "claim": "Horizon HISTORY_RETENTION_COUNT executable default 0/unlimited (v27.0.0) and official 518400 wording conflicts",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go",
+       "observedAt": "2026-11-02",
+       "quote": "Name: \"history-retention-count\" ... FlagDefault: uint(0), Usage: \"... (0 = retain an unlimited number of ledgers)\""
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+       "observedAt": "2026-11-02",
+       "quote": "It is defaulted to 0, which means it will not purge any history from the database. To enact the recommended sliding window of one month, set this to 518400"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+       "observedAt": "2026-11-02",
+       "quote": "Note that you must set this explicitly: Horizon's default is `HISTORY_RETENTION_COUNT=0`, which retains all history and never purges ingested data."
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json",
+       "observedAt": "2026-11-02",
+       "quote": "sd-028 'Official Horizon administration pages disagree on the executable default for HISTORYRETENTIONCOUNT' resolved 2026-07-27"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[5]",
+     "claim": "Missing Horizon history needs db reingest range; nonzero retention purges outside window; ledger 1 normalizes to 2",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/ingest/fsm_reingest_history_range_state.go",
+       "observedAt": "2026-11-02",
+       "quote": "if h.fromLedger == 1 { log.Warn(\"Ledger 1 is pregenerated and not available, starting from ledger 2.\"); h.fromLedger = 2 }"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+       "observedAt": "2026-11-02",
+       "quote": "When setting a temporal limit on history with `HISTORY_RETENTION_COUNT=<LEDGER_COUNT>`, the temporal limit takes precedence, and any data ingested beyond that l…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..5]",
+     "claim": "All six avoid items punish claims false today",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+       "observedAt": "2026-11-02",
+       "quote": "see above"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+       "observedAt": "2026-11-02",
+       "quote": "see above"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "sd-029 flag omission fixed on 2026-09-14",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/pull/2789",
+       "observedAt": "2026-11-02",
+       "quote": "merged_at 2026-09-14T19:39:04Z 'Document RPC BACKFILL flag and refresh sample config'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of **2026-11-02**, RPC **v30.0.0** (unchanged since v27.1.1) defaults",
+     "reason": "freshness-drift: latest release v30.0.0 (2026-10-21) keeps the same defaults"
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Horizon **v30.0.0** (unchanged since v27.0.0) has a different executable default",
+     "reason": "freshness-drift: Horizon v30.0.0 flags.go keeps FlagDefault uint(0)"
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Current official docs agree: `518400` is the recommended approximate one-month window, not the binary default.",
+     "reason": "freshness-drift: sd-028 fixed the official prose on 2026-07-27; current pages state default 0"
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "States dated RPC defaults: 120960 retention, false datastore serving, false BACKFILL.",
+     "reason": "version-pinned keyFact fails a true answer citing v30.0.0"
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "op": "replace",
+     "new": "States Horizon 0/unlimited default; 518400 is only the recommended one-month window.",
+     "reason": "official-wording conflict no longer exists"
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRe-verified 2026-11-02: stellar-rpc v30.0.0 and stellar-horizon v30.0.0 keep these defaults and behaviors. Since sd-028 (2026-07-27) the official Horizon pages state the 0 default, so an answer need not report an official-prose conflict.",
+     "reason": "record re-verification and that a conflict report is not required"
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "re-verified"
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-infra-rpc-methods-list; q-infra-rpc-provider-archive-tier; q-crp-export-tx-history-taxes; q-ti-block-explorer-basics"
+  },
+  {
+   "id": "q-ti-skill-builder-quickstart",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Clarify then map idea to explicit Stellar primitives before stack",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-builder-quickstart/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "### 1. Clarify the idea and map it to a Stellar primitive ... Name each primitive explicitly — that list drives steps 2–4."
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-builder-quickstart\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-builder-quickstart/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1] / avoid[0]",
+     "claim": "Check LumenLoop prior art and prefer integration over rebuilding",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-builder-quickstart/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "### 2. Check ecosystem prior art via the MCP — don't reinvent. Before recommending a build, see what already ships."
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-builder-quickstart\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-builder-quickstart/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "Emit a build plan with deeper build references",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-builder-quickstart/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Four steps: clarify → check prior art → decide primitives + stack → emit a build plan."
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-builder-quickstart\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-builder-quickstart/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[1]",
+     "claim": "LumenLoop is discovery, not implementation guidance",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-builder-quickstart/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "LumenLoop tells you *what exists* and *what's been said*; it does not write contracts. For the actual build, follow the named Stellar build skills and https://d…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-builder-quickstart\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-builder-quickstart/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-skill-integration-finder"
+  },
+  {
+   "id": "q-ti-skill-content-auditor",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Resolve named projects to canonical records and handles",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "### 2. Resolve each project to its canonical entry ... `get_project(compact=true)` returns the canonical title, `twitter_handles`, and website — this is your so…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-content-auditor\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-content-auditor/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Separate supported from unsupported claims",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Claim supported by indexed content → attach the citation. Claim with no supporting content → mark unverified (do not fabricate a source)."
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-content-auditor\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-content-auditor/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2] / avoid[1]",
+     "claim": "Preserve source URLs; summaries are not primary quotes",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Content tools return summaries + a `url`, not full text — cite the `url`; don't present a summary as a verbatim source quote."
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-content-auditor\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-content-auditor/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do not guess a handle",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Never invent handles or citations. If a project isn't in the directory ... say so explicitly."
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-content-auditor\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-content-auditor/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-ti-skill-integration-finder",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Start from capability, short directory queries, semantic neighbours, then compare",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-integration-finder/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "### 1. Seed by capability — short `search_directory` queries ... ### 2. Add context — `search_content_semantic` ... ### 3. Deep-dive each candidate ... ### 4. S…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-integration-finder\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-integration-finder/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Route chosen dependency to matching build workflow",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-integration-finder/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "### 5. Route to building. Once a dependency is chosen, name the relevant Stellar build reference and hand off."
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-integration-finder\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-integration-finder/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do not rank by name recognition",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-integration-finder/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Score on **integration fit**, not popularity."
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-integration-finder\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-integration-finder/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1] / answer 'state coverage gaps'",
+     "claim": "Do not claim unsupported compatibility/region support",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-integration-finder/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Then state the recommendation and the single deciding factor (custody model, region coverage, SDK language, SEP support, license, maintenance signal from step 2…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read(\"skills.lumenloop.stellar-integration-finder\")",
+       "observedAt": "2026-11-02",
+       "quote": "served body matches pinned commit d92c56bd; same section text returned"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-integration-finder/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "main SKILL.md sha1 identical to pinned d92c56bd (no upstream change since 2026-06-16; latest repo commit a87ca95730 2026-10-12 is CI-only)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-skill-builder-quickstart"
+  },
+  {
+   "id": "q-ti-tx-too-late-resubmit",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "txTOO_LATE = close time after maxTime; maxTime=0 no upper bound; distinct from txBAD_SEQ",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "if (tb->maxTime && (tb->maxTime < (closeTime.timePoint() + upperBoundCloseTimeOffset))) ... txResult.setInnermostError(txTOO_LATE);"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions",
+       "observedAt": "2026-11-02",
+       "quote": "tx_too_late txTOO_LATE The ledger closeTime was after the maxTime. ... tx_bad_seq txBAD_SEQ sequence number does not match source account"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1-4] / avoid",
+     "claim": "Precondition rejection applies nothing; polling, rebuild, re-sign, new hash; signed-XDR edits invalidate signatures",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "isTooLate check returns std::nullopt during validity checks before apply"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions",
+       "observedAt": "2026-11-02",
+       "quote": "tx_too_late txTOO_LATE The ledger closeTime was after the maxTime."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-ti-video-tutorials",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Official SDF channel and Developer Tutorials playlist exist",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Developer Tutorials - YouTube</title>; owner 'Stellar Development Foundation'"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 'Stellar Development Foundation YouTube Developer Tutorials playlist'",
+       "observedAt": "2026-11-02",
+       "quote": "'Using Soroban Auto-complete | Developer Tutorial | 10/15/2023' ... Stellar Development Foundation"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11: 59 entries, latest update 2026-03-12, one unavailable item",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i",
+       "observedAt": "2026-11-02",
+       "quote": "\"stats\":[{\"runs\":[{\"text\":\"58\"},{\"text\":\" videos\"}]},{\"simpleText\":\"568 views\"},{\"runs\":[{\"text\":\"Last updated on \"},{\"text\":\"Jun 1, 2026\"}]}]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Lab docs link a Lumen Loop Lab playlist; Scaffold docs provide a video series; getting-started docs give entry points",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab",
+       "observedAt": "2026-11-02",
+       "quote": "Video Tutorials for Lab are available on [Lumen Loop's YouTube Channel](https://www.youtube.com/watch?v=sv2gV13q7FI&list=PLj3KReXFn3x73pPlgSun-2FYTrP4tZVPL)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/scaffold-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Check out the [Scaffold Stellar video series on YouTube](https://www.youtube.com/playlist?list=PLmr3tp_7-7Gjj6gn5-bBn-QTMyaWzwOU5)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started",
+       "observedAt": "2026-11-02",
+       "quote": "Start with [Scaffold Stellar](https://scaffoldstellar.org/docs/quick-start) for the fastest path to a working dApp on Stellar."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[4] / avoid[2]",
+     "claim": "LumenLoop AV start_offset is opaque, not playback seconds",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools (find_av_passages)",
+       "observedAt": "2026-11-02",
+       "quote": "start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds; do not render it as a timestamp or build a deep…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json lumenloop.find_av_passages",
+       "observedAt": "2026-11-02",
+       "quote": "returns AI summaries of the matching passages plus an opaque ordering offset (NOT a playback timestamp)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2-3]",
+     "claim": "Older Soroban videos may carry drifted commands",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://www.youtube.com/watch?v=pqTEUPcR9po",
+       "observedAt": "2026-11-02",
+       "quote": "'Using Soroban Auto-complete | Developer Tutorial | 10/15/2023' ... auto-completion with the Soroban CLI"
+      },
+      {
+       "class": "F",
+       "ref": "stellar --version",
+       "observedAt": "2026-11-02",
+       "quote": "stellar 28.1.0 — the CLI binary is `stellar`, not `soroban`"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of **2026-11-02**, the Developer Tutorials playlist page showed 58 videos and \"Last updated on Jun 1, 2026\".",
+     "reason": "freshness-drift: live playlist page differs from the 2026-07-11 observation"
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRe-observed 2026-11-02: the playlist page showed 58 videos and \"Last updated on Jun 1, 2026\"; these remain non-gating observations.",
+     "reason": "record observation date"
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "re-verified"
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-03-25",
+     "reason": "stagger within batch window"
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-gap-av-offset-not-timestamp; q-soroban-av-passkeys-talk"
+  },
+  {
+   "id": "q-ti-vocab-content-tags-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "get_tags_vocabulary is the vocabulary source for this question",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_tags_vocabulary (POST, direct, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "data: array of 33 rows like {id:2,name:\"Anchors\",slug:\"anchors\",article_count:3,av_count:0}"
+      },
+      {
+       "class": "A",
+       "ref": "https://api.lumenloop.com/v1/tools",
+       "observedAt": "2026-11-02",
+       "quote": "get_tags_vocabulary | Get the controlled vocabulary of content tags from the orchestrator. These tags are used for articles and AV content, NOT for directory pr…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json lumenloop.get_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "manifest description matches upstream"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1] / avoid[0]",
+     "claim": "Content tags differ from project tags",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_tags_vocabulary vs get_project_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "33 content tags vs 85 project tags; 11 shared names; content 'Anchors' vs project 'Anchor'; content-only e.g. 'Bridges','CBDC','Horizon'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-lumen-content-tag-vocabulary; q-tool-taxonomy-dispatch-live"
+  },
+  {
+   "id": "q-ti-vocab-project-categories-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "get_categories is the vocabulary source for this question",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_categories (POST, direct, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "{count:5, categories:[Applications, Developer Tooling, Education & Community, Financial Protocols, Infrastructure & Services]}"
+      },
+      {
+       "class": "A",
+       "ref": "https://api.lumenloop.com/v1/tools",
+       "observedAt": "2026-11-02",
+       "quote": "get_categories | Get the controlled vocabulary of categories. Use these exact values when setting project categories."
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json lumenloop.get_categories",
+       "observedAt": "2026-11-02",
+       "quote": "manifest description matches upstream"
+      }
+     ]
+    },
+    {
+     "field": "avoid[1]",
+     "claim": "Scout category taxonomy differs from LumenLoop's",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects?limit=200",
+       "observedAt": "2026-11-02",
+       "quote": "category values: User-Facing App, Protocol/Contract, Infrastructure, Tooling, Asset, Anchor"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-lumenloop-categories-vocab; q-tool-taxonomy-dispatch-live"
+  },
+  {
+   "id": "q-ti-vocab-project-tags-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "get_project_tags_vocabulary is the vocabulary source for this question",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary (POST, direct, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "{count:85, tags:[{id:131,name:\"Accounting\",slug:\"accounting\"},{id:3,name:\"AI\",slug:\"ai\"},...]}"
+      },
+      {
+       "class": "A",
+       "ref": "https://api.lumenloop.com/v1/tools",
+       "observedAt": "2026-11-02",
+       "quote": "get_project_tags_vocabulary | Get the controlled vocabulary of project tags. Use these exact tag values when setting directory project tags."
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json lumenloop.get_project_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "manifest description matches upstream"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Project-category vocabulary is small",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_categories",
+       "observedAt": "2026-11-02",
+       "quote": "count: 5"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-lumen-project-tag-vocabulary; q-tool-taxonomy-dispatch-live"
+  },
+  {
+   "id": "q-ti-vocab-regions-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "get_regions is the vocabulary source for this question",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_regions (POST, direct, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "{count:100, regions:[\"africa\",\"Africa\",\"Angola\",...,\"Europe\",\"Europe & Central Asia\",...]}"
+      },
+      {
+       "class": "A",
+       "ref": "https://api.lumenloop.com/v1/tools",
+       "observedAt": "2026-11-02",
+       "quote": "get_regions | Get all distinct region values (based_in + operating_region) currently used in the directory"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json lumenloop.get_regions",
+       "observedAt": "2026-11-02",
+       "quote": "manifest description matches upstream"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1] / avoid[1]",
+     "claim": "Region values are variant-prone, not a clean enum",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_regions",
+       "observedAt": "2026-11-02",
+       "quote": "case-duplicate pairs: africa/Africa, asia/Asia, europe/Europe, global, latam, mena; granularity mix: Europe vs Europe & Central Asia vs Estonia"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-builder-lumenloop-regions-vocab; q-tool-taxonomy-dispatch-live"
+  },
+  {
+   "id": "q-tool-cctp-stellar-integration",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "CCTP V2 public-live announcement 2026-05-19",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news",
+       "observedAt": "2026-11-02",
+       "quote": "May 19, 2026 • Stellar Development Foundation  Circle CCTP is Live on Stellar"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/circle/status/2056767949445472739",
+       "observedAt": "2026-11-02",
+       "quote": "CCTP is now live on @StellarOrg ... May 19, 2026"
+      },
+      {
+       "class": "D",
+       "ref": "https://nansen.ai/post/stellar-q2-2026-report",
+       "observedAt": "2026-11-02",
+       "quote": "Circle CCTP launched on Stellar (May 19)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[0] / avoid[0]",
+     "claim": "Stellar is Circle domain 27 on Mainnet and Testnet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/concepts/supported-chains-and-domains",
+       "observedAt": "2026-11-02",
+       "quote": "| 27 | Stellar |"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "`get_local_domain` ... Expected to be 27 for Stellar."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
+       "observedAt": "2026-11-02",
+       "quote": "const STELLAR_DOMAIN = 27; // Source domain ID for Stellar Testnet"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Mainnet/Testnet TokenMessengerMinter, MessageTransmitter, CctpForwarder addresses",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "Mainnet TokenMessengerMinter CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL; MessageTransmitter CACMENFFJPJMSDAJQLX4R7K3SFZIW2LJSE3R2UMLGSWHFHS353FVXA…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
+       "observedAt": "2026-11-02",
+       "quote": "STELLAR_TOKEN_MESSENGER_MINTER = \"CDNG7HXAPBWICI2E3AUBP3YZWZELJLYSB6F5CC7WLDTLTHVM74SLRTHP\"; STELLAR_CCTP_FORWARDER = \"CA66Q2WFBND6V4UEB7RD4SAXSVIWMD6RA4X3U32EL…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "USDC SAC mainnet CCW67... and testnet CBIELTK... are the deterministic SACs of classic Circle USDC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar contract id asset --asset USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN (pubnet passphrase), stellar 28.1.0",
+       "observedAt": "2026-11-02",
+       "quote": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract id asset --asset USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 --network testnet",
+       "observedAt": "2026-11-02",
+       "quote": "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; Stellar Testnet USDC-GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "7→6 decimal normalization; dust stays with sender",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/circlefin/stellar-cctp/blob/45746f2c803198bc6cd586475eb3c925f12bb488/contracts/token-messenger-minter-v2/src/deposit.rs",
+       "observedAt": "2026-11-02",
+       "quote": "For Stellar USDC (7 decimals) vs other chains (6 decimals), we normalize the amount to remove dust before burning, leaving the dust in the user's account."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
+       "observedAt": "2026-11-02",
+       "quote": "const AMOUNT = 10_000_000n; // 1 USDC (Stellar has 7 decimals)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3-4] / avoid[2-3]",
+     "claim": "Both mintRecipient and destinationCaller = CctpForwarder; v0 hook layout; atomic mint_and_forward; Forwarding Service distinct",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Set both `mintRecipient` and `destinationCaller` to the `CctpForwarder` contract address ... | 0-23 | bytes24 | Magic ... | 24-27 | uint32 | Version; set to 0 |…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/circlefin/stellar-cctp/blob/45746f2c803198bc6cd586475eb3c925f12bb488/contracts/cctp-forwarder/src/contract.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub fn mint_and_forward(e: &Env, message: Bytes, attestation: Bytes)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "`mint_and_forward` ... Atomic, any failure reverts."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[5] / avoid[5]",
+     "claim": "Stellar-source Fast dispute: quickstart passes 1000 labeled Fast, matrices say N/A/omit",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
+       "observedAt": "2026-11-02",
+       "quote": "nativeToScVal(1000, { type: \"u32\" }), // Fast Transfer finality threshold"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/concepts/supported-chains-and-domains",
+       "observedAt": "2026-11-02",
+       "quote": "| Stellar | ✅ | N/A | ❌ | ❌ |"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/concepts/finality-and-block-confirmations",
+       "observedAt": "2026-11-02",
+       "quote": "Fast Transfer table omits Stellar; Standard: | Stellar | 1 | ~5 seconds |"
+      },
+      {
+       "class": "C",
+       "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+       "observedAt": "2026-11-02",
+       "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[6] / avoid[6]",
+     "claim": "Docs say handle_receive_*; source uses handle_recv_*",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "| `handle_receive_finalized_message` | Mints USDC upon receiving a fully finalized message. |"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/circlefin/stellar-cctp/blob/45746f2c803198bc6cd586475eb3c925f12bb488/contracts/token-messenger-minter-v2/src/contract.rs",
+       "observedAt": "2026-11-02",
+       "quote": "line 375: fn handle_recv_finalized_message( ; line 428: fn handle_recv_unfinalized_message("
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of **2026-11-02**, Mainnet used",
+     "reason": "as-of refresh; all addresses re-verified unchanged"
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRe-verified 2026-11-02: addresses, domain 27, decimal handling, hook format, and both Circle conflicts persist; Iris /v2/burn/USDC/fees/27/0 still lists a finalityThreshold 1000 row.",
+     "reason": "record re-verification"
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "re-verified"
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-03-04",
+     "reason": "near-due; stagger within batch window"
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-cctp-v2-usdc-stellar; q-hist-cctp-stellar-live-announcement; q-token-circle-usdc-on-stellar; q-raph-usdc-onto-stellar; q-defi-bridge-evm-to-stellar-axelar"
+  },
+  {
+   "id": "q-tool-cli-skills-discovery",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[2] / avoid[0]",
+     "claim": "listSkills valid kinds skill-md, mcp-server, sdk, cli, agent-kit, tool; sources sdf, stellarlight, lumenloop, external, community",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills",
+       "observedAt": "2026-11-02",
+       "quote": "\"validSources\": [\"sdf\", \"stellarlight\", \"lumenloop\", \"external\", \"community\"], \"validKinds\": [\"skill-md\", \"mcp-server\", \"sdk\", \"cli\", \"agent-kit\", \"tool\"], gene…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "Scout OpenAPI (same publisher, documents the endpoint)"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3] / avoid[0]",
+     "claim": "Valid enums can have zero rows (empty categories are valid)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills?kind=agent-kit",
+       "observedAt": "2026-11-02",
+       "quote": "counts.returned: 0, skills: []"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills",
+       "observedAt": "2026-11-02",
+       "quote": "kinds: skill-md 68, sdk 9, mcp-server 2, tool 2, cli 1, agent-kit 0; total 82; bySource sdf 8, stellarlight 15, lumenloop 8, external 12, community 39"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4] / avoid[1]",
+     "claim": "Rows carry install commands, repo/docs URLs; distinguish SDF vs community",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills?kind=mcp-server",
+       "observedAt": "2026-11-02",
+       "quote": "stellar-scout-mcp (stellarlight) 'npx @stellar-light/scout-mcp'; lumenloop-mcp (lumenloop) 'claude mcp add --transport http lumenloop https://mcp.lumenloop.com'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills?kind=cli",
+       "observedAt": "2026-11-02",
+       "quote": "stellar-cli source 'external', install 'cargo install --locked stellar-cli'"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Skills skills.stellar.org ... /plugin marketplace add stellar/stellar-dev-skill"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "re-verified"
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-03-11",
+     "reason": "stagger within batch window"
+    }
+   ],
+   "rootCause": [],
+   "siblings": "q-gap-scout-list-skill-directory; q-tool-skill-detail-install; q-gap-scout-get-skill-detail"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5); proposer matrix not read",
+  "decisions": [
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "golden.answer (substring: RPC version/date)",
+    "decision": "accept",
+    "note": "RPC v30.0.0 is the latest stable release and keeps 120960 / false / false. 'Unchanged since v27.1.1' holds for the three defaults and for the BACKFILL/datastore semantics; internal backfill performance code changed but not the behavior the golden states.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+      "observedAt": "2026-11-02",
+      "quote": "Name: \"history-retention-window\" ... DefaultValue: uint32(SevenDayOfLedgers), Validate: positive; Name: \"backfill\" ... DefaultValue: false; Name: \"serve-ledgers…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-rpc/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v30.0.0 2026-10-21T06:07:32Z prerelease=false (latest); v29.0.1, v29.0.0, v28.0.1, v28.0.0, v27.1.1 earlier"
+     },
+     {
+      "class": "B",
+      "ref": "options.go diff v27.1.1, v28.0.1, v29.0.1 vs v30.0.0 (backfill, history-retention-window, ServeLedgersFromDatastore definitions)",
+      "observedAt": "2026-11-02",
+      "quote": "identical in all four tags"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/compare/v27.1.1...v30.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "backfill.go +4 -3 (frontfill bound max(), buffer cap 256); service.go +27 -4 (fetch-ahead goroutine); get_ledgers.go unchanged; BACKFILL still errors without se…"
+     },
+     {
+      "class": "E",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring#backfilling-history-on-startup (Raven stellarDocs.search_docs)",
+      "observedAt": "2026-11-02T16:41:42Z",
+      "quote": "BACKFILL also requires datastore serving. Set SERVE_LEDGERS_FROM_DATASTORE = true."
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search -> https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring and https://github.com/stellar/stellar-rpc/releases",
+      "observedAt": "2026-11-02",
+      "quote": "This option was added in RPC v25.1.0 and defaults to `false`. ... The default is `120960` ledgers, which is about 7 days. | v30.0.0 Latest ... 21 Oct"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "golden.answer (substring: Horizon version)",
+    "decision": "accept",
+    "note": "Horizon flag, reaper and db reingest source are byte-identical from v27.0.0 to v30.0.0.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go",
+      "observedAt": "2026-11-02",
+      "quote": "Name: \"history-retention-count\", ... FlagDefault: uint(0), Usage: \"the minimum number of ledgers to maintain within Horizon's history tables (0 = retain an unli…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api contents ?ref=v27.0.0 vs ?ref=v30.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "internal/flags.go blob 4754bf19 = 4754bf19; internal/ingest/reap.go 2d9ef2fd = 2d9ef2fd; cmd/db.go 849a1455 = 849a1455 (byte-identical)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-horizon/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v30.0.0 2026-10-21T08:38:20Z prerelease=false (latest)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "It is defaulted to 0, which means it will not purge any history from the database."
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "golden.answer (substring: official-prose conflict sentence)",
+    "decision": "accept",
+    "note": "The old sentence 'Official prose conflicts' is now false for live docs. The new sentence is true. The existing symmetric caution for cached copies stays in golden.notes, so an answer that quotes an older page is still capped at partial, not wrong.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "By default (`HISTORY_RETENTION_COUNT=0`), Horizon retains all ingested history and never purges it. ... To enact the recommended sliding window of one month, se…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+      "observedAt": "2026-11-02",
+      "quote": "Note that you must set this explicitly: Horizon's default is `HISTORY_RETENTION_COUNT=0`, which retains all history and never purges ingested data."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/horizon/admin-guide/configuring.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "line 103: It is defaulted to 0 ... To enact the recommended sliding window of one month, set this to 518400 (518400 otherwise appears only as an example table v…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs -> configuring#ingestion-role-instance and ingestion#determine-storage-space",
+      "observedAt": "2026-11-02T16:41:42Z",
+      "quote": "By default (HISTORY_RETENTION_COUNT=0), Horizon retains all ingested history"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "85 characters. The keyFact still requires a dated statement, and the answer carries the version and as-of date, so no as-of is dropped. Removing the stale v27.1.1 pin avoids penalizing a correct v30 answer.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+      "observedAt": "2026-11-02",
+      "quote": "DefaultValue: uint32(SevenDayOfLedgers) / DefaultValue: false (backfill) / DefaultValue: false (serve-ledgers-from-datastore)"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "golden.keyFacts[4]",
+    "decision": "accept",
+    "note": "84 characters. The old keyFact required an answer to report a docs conflict that no longer exists. That would punish a correct current answer.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go",
+      "observedAt": "2026-11-02",
+      "quote": "FlagDefault: uint(0) ... (0 = retain an unlimited number of ledgers)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "To enact the recommended sliding window of one month, set this to 518400"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "golden.notes (append)",
+    "decision": "accept",
+    "note": "Accurate. The 2026-07-27 sd-028 fix date matches the existing caution in this case. Editor: the GT-54 sentence earlier in notes ('518400 is conflicting official recommendation/default prose') and truth.corroboration[1].claim ('despite conflicting official wording') now read as history; consider a dated qualifier in the same diff.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "stellar-rpc v30.0.0 options.go; stellar-horizon v30.0.0 flags.go/reap.go/db.go",
+      "observedAt": "2026-11-02",
+      "quote": "defaults and files unchanged as described above"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon's default is `HISTORY_RETENTION_COUNT=0`"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "2026-11-02 is supported by the re-derivation in this file.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "stellar-rpc and stellar-horizon v30.0.0 source",
+      "observedAt": "2026-11-02",
+      "quote": "see above"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "It is defaulted to 0"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-video-tutorials",
+    "field": "golden.answer (substring: playlist observation)",
+    "decision": "accept",
+    "note": "The count is confirmed by two classes. The 'Last updated on Jun 1, 2026' string is from the live page only, but it is a dated, non-gating observation that the avoid list already keeps out of grading. Dropping the 'one unavailable item' clause is correct: the live page shows no private or deleted entries.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i (direct fetch, SDF-owned page)",
+      "observedAt": "2026-11-02T16:41:54Z",
+      "quote": "\"stats\":[{\"runs\":[{\"text\":\"58\"},{\"text\":\" videos\"}]},{\"simpleText\":\"568 views\"},{\"runs\":[{\"text\":\"Last updated on \"},{\"text\":\"Jun 1, 2026\"}]}]; 58 unique videoI…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_fetch cached copy of the same playlist (acquired 2026-10-01)",
+      "observedAt": "2026-11-02",
+      "quote": "Developer Tutorials by Stellar Development Foundation • Playlist • 58 videos • 565 views"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-video-tutorials",
+    "field": "golden.notes (append)",
+    "decision": "accept",
+    "note": "Matches the live page. It keeps the non-gating framing.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i",
+      "observedAt": "2026-11-02T16:41:54Z",
+      "quote": "58 videos ... Last updated on Jun 1, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-video-tutorials",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Supported by the live observation.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i",
+      "observedAt": "2026-11-02",
+      "quote": "58 videos"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-video-tutorials",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-25 is in the batch window 2027-03-01..2027-03-31 and is later than the new asOf. The playlist is volatile, so a 4.7-month window is reasonable.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-cctp-stellar-integration",
+    "field": "golden.answer (substring: address as-of date)",
+    "decision": "accept",
+    "note": "All eight addresses in the answer match Circle's live reference and CLI derivation.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/cctp/references/stellar-contracts.md",
+      "observedAt": "2026-11-02",
+      "quote": "Mainnet: TokenMessengerMinter | 27 | CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL; MessageTransmitter | 27 | CACMENFFJPJMSDAJQLX4R7K3SFZIW2LJSE3R2UM…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar | USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; Stellar Testnet | USDC-GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5"
+     },
+     {
+      "class": "F",
+      "ref": "stellar CLI 28.1.0 contract id asset --network mainnet / --network testnet",
+      "observedAt": "2026-11-02",
+      "quote": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75 / CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract info interface --contract-id CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL --network mainnet",
+      "observedAt": "2026-11-02",
+      "quote": "fn deposit_for_burn( ... fn deposit_for_burn_with_hook( ... fn handle_recv_finalized_message( ... fn handle_recv_unfinalized_message("
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search -> developers.circle.com/cctp/concepts/supported-chains-and-domains (domain list)",
+      "observedAt": "2026-11-02",
+      "quote": "27 | Stellar"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-cctp-stellar-integration",
+    "field": "golden.notes (append)",
+    "decision": "modify",
+    "newText": "\nRe-verified 2026-11-02: addresses, domain 27, decimal handling, hook format, and both Circle conflicts persist. Iris /v2/burn/USDC/fees/27/0 lists finalityThreshold 1000 and 2000 rows, but Iris also lists a 1000 row for Fast-N/A sources such as Avalanche (1) and Sui (8), so that row does not settle Stellar-source Fast support.",
+    "note": "The proposed note is factually true but incomplete. Iris returns a generic 1000/2000 table for every source, including chains that Circle marks Fast N/A. Without that context, a grader could read the 1000 row as evidence for Stellar-source Fast and credit an answer that pins Fast support, which the golden's dispute forbids.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+      "observedAt": "2026-11-02T16:42:24Z",
+      "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]"
+     },
+     {
+      "class": "C",
+      "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/1/0 and /8/0",
+      "observedAt": "2026-11-02",
+      "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}] (both)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/cctp/concepts/supported-chains-and-domains",
+      "observedAt": "2026-11-02",
+      "quote": "| Stellar | ✅ | N/A | ❌ | ❌ | ... | Avalanche | ✅ | N/A | ..."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
+      "observedAt": "2026-11-02",
+      "quote": "nativeToScVal(1000, { type: \"u32\" }), // Fast Transfer finality threshold"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/cctp/references/stellar-contracts.md",
+      "observedAt": "2026-11-02",
+      "quote": "| `handle_receive_finalized_message` | Mints USDC upon receiving a fully finalized message."
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/circlefin/stellar-cctp/blob/main/contracts/token-messenger-minter-v2/src/contract.rs (HEAD 45746f2c8031, 2026-06-18)",
+      "observedAt": "2026-11-02",
+      "quote": "375: fn handle_recv_finalized_message( / 428: fn handle_recv_unfinalized_message("
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/cctp/references/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "bytes 0–23: reserved (zeroed) / bytes 24–27: hook data version (u32 BE, currently 0) / bytes 28–31: forward_recipient byte length (u32 BE) ... a seven-decimal U…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-cctp-stellar-integration",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Supported. truth.status stays disputed, which is correct because the Stellar-source Fast conflict persists.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/cctp/references/stellar-contracts.md",
+      "observedAt": "2026-11-02",
+      "quote": "addresses as above"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract info interface (mainnet)",
+      "observedAt": "2026-11-02",
+      "quote": "handle_recv_*"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-cctp-stellar-integration",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-04 is in the batch window and later than asOf. The case carries an open Circle dispute, so it should not slip later than the window start.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-cli-skills-discovery",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "The judge-facing golden still holds: the enums are unchanged and agent-kit is still a valid but empty filter. The catalog changed a lot, though: 82 rows (was 42-43), and source=community now returns 39 rows (it was empty at the 2026-07-11 stamp). Editor: add a 2026-11-02 corroboration evidence row with these counts in the same diff, so the asOf bump is backed in the file; keep the 2026-07-11 'comm…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/skills",
+      "observedAt": "2026-11-02T16:41:08Z",
+      "quote": "\"generatedAt\": \"2026-11-02T16:41:08.683Z\", \"counts\": {\"returned\": 82, \"total\": 82, \"bySource\": {\"sdf\": 8, \"stellarlight\": 15, \"lumenloop\": 8, \"external\": 12, \"c…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/skills?kind=agent-kit",
+      "observedAt": "2026-11-02T16:43:25Z",
+      "quote": "0 rows (generatedAt 2026-11-02T16:43:25.815Z)"
+     },
+     {
+      "class": "A",
+      "ref": "https://skills.stellar.org/llms.txt",
+      "observedAt": "2026-11-02",
+      "quote": "# Stellar Skills ... Agent-readable Stellar developer documentation (HTTP 200; 63 list items)"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-cli-skills-discovery",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-11 is in the batch window and later than asOf. The catalog is volatile (rows doubled in two months), so a shorter window would also be defensible.",
+    "sources": []
+   }
+  ],
+  "urlsHit": [
+   "gh api repos/stellar/stellar-rpc/releases",
+   "gh api repos/stellar/stellar-horizon/releases",
+   "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+   "https://github.com/stellar/stellar-rpc/blob/v29.0.1/cmd/stellar-rpc/internal/config/options.go",
+   "https://github.com/stellar/stellar-rpc/blob/v28.0.1/cmd/stellar-rpc/internal/config/options.go",
+   "https://github.com/stellar/stellar-rpc/blob/v27.1.1/cmd/stellar-rpc/internal/config/options.go",
+   "https://github.com/stellar/stellar-rpc/compare/v27.1.1...v30.0.0",
+   "https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go",
+   "https://github.com/stellar/stellar-horizon/compare/v27.0.0...v30.0.0 (blob SHAs of internal/flags.go, internal/ingest/reap.go, cmd/db.go)",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/horizon/admin-guide/configuring.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/horizon/admin-guide/ingestion.mdx",
+   "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+   "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+   "Raven stellarDocs.search_docs (2 queries) 2026-11-02T16:41:42Z",
+   "Perplexity search: Stellar RPC v30.0.0 HISTORY_RETENTION_WINDOW BACKFILL",
+   "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i (Parallel web_fetch cache 2026-10-01, and direct curl 2026-11-02T16:41:54Z)",
+   "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+   "https://iris-api.circle.com/v2/burn/USDC/fees/0/27",
+   "https://iris-api.circle.com/v2/burn/USDC/fees/1/0",
+   "https://iris-api.circle.com/v2/burn/USDC/fees/8/0",
+   "https://iris-api-sandbox.circle.com/v2/burn/USDC/fees/27/0",
+   "https://developers.circle.com/cctp/references/stellar",
+   "https://developers.circle.com/cctp/references/stellar-contracts.md",
+   "https://developers.circle.com/cctp/references/contract-addresses",
+   "https://developers.circle.com/cctp/concepts/supported-chains-and-domains",
+   "https://developers.circle.com/cctp/concepts/finality-and-block-confirmations",
+   "https://developers.circle.com/cctp/concepts/fees",
+   "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
+   "https://developers.circle.com/stablecoins/usdc-contract-addresses.md",
+   "https://github.com/circlefin/stellar-cctp/blob/main/contracts/token-messenger-minter-v2/src/contract.rs (HEAD 45746f2c8031)",
+   "stellar CLI 28.1.0: contract id asset (mainnet, testnet); contract info interface CAE2G5Z7... and CBZL2IH7... on mainnet",
+   "Parallel web_search: Circle CCTP Stellar domain 27 / Fast Transfer source",
+   "https://stellarlight.xyz/api/skills (plus ?kind=agent-kit and ?source=community)",
+   "https://skills.stellar.org/ and https://skills.stellar.org/llms.txt"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-ti-self-host-retention-backfill; q-ti-video-tutorials; q-tool-cctp-stellar-integration",
+  "verifiedOnly": "q-ti-skill-builder-quickstart; q-ti-skill-content-auditor; q-ti-skill-integration-finder; q-ti-tx-too-late-resubmit; q-ti-vocab-content-tags-live; q-ti-vocab-project-categories-live; q-ti-vocab-project-tags-live; q-ti-vocab-regions-live; q-tool-cli-skills-discovery",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-tool-cctp-stellar-integration",
+    "issue": "Shared eval/qa/consistency-register.json (cluster disposition, line ~3696) still says 'q-tool-cctp-stellar-integration reverifyBy 2026-11-26 (re-verified 2026-08-11)'; the case now has reverifyBy 2027-03-04 (re-verified 2026-11-02). The orchestrator must update that text (and rerun register-helper) to clear the date-trap lint error; this lane may edit only case files."
+   },
+   {
+    "id": "q-ti-skill-builder-quickstart",
+    "issue": "Upstream defect (not a golden change): lumenloop-skills stellar-builder-quickstart and stellar-integration-finder (lines 34, 149) still name Freighter, now Varial per stellar/freighter README 'Varial (formerly Freighter)'. Neither golden grades a wallet name; consider an improvements/ finding for lumenloop-skills."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "log": "Re-dated RPC/Horizon to v30.0.0, replaced the stale docs-conflict sentence, unpinned keyFacts[0]/[4], appended dated note, asOf 2026-11-02, 2 sources + 2 corroboration rows, verified refreshed."
+   },
+   {
+    "id": "q-ti-video-tutorials",
+    "log": "Replaced the 2026-07-11 playlist observation with the 2026-11-02 one, appended dated note, asOf 2026-11-02, reverifyBy 2027-03-25, 1 source + 1 corroboration row, verified refreshed."
+   },
+   {
+    "id": "q-tool-cctp-stellar-integration",
+    "log": "Re-dated address as-of to 2026-11-02, appended verifier-modified Iris caution note, asOf 2026-11-02, reverifyBy 2027-03-04, status disputed kept, 2 sources + 2 corroboration rows (confirmed-as-of, disputed), verified refreshed."
+   },
+   {
+    "id": "q-tool-cli-skills-discovery",
+    "log": "Verified only: asOf 2026-11-02, reverifyBy 2027-03-11, 1 dated corroboration row (82 rows, community 39, agent-kit 0), verified refreshed."
+   },
+   {
+    "id": "q-ti-skill-builder-quickstart",
+    "log": "Verified only: re-read pinned/main upstream SKILL.md (B) and Raven-served body (C); verified refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-ti-skill-content-auditor",
+    "log": "Verified only: re-read pinned/main upstream SKILL.md (B) and Raven-served body (C); verified refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-ti-skill-integration-finder",
+    "log": "Verified only: re-read pinned/main upstream SKILL.md (B) and Raven-served body (C); verified refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-ti-tx-too-late-resubmit",
+    "log": "Verified only: Core TransactionFrame.cpp (B) and Horizon result-code docs (A) re-read; verified refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-ti-vocab-content-tags-live",
+    "log": "Verified only: live Lumenloop get_tags_vocabulary read (C) + upstream tool listing (A); asOf 2026-11-02; verified refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-ti-vocab-project-categories-live",
+    "log": "Verified only: live Lumenloop get_categories read (C) + upstream tool listing (A); asOf 2026-11-02; verified refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-ti-vocab-project-tags-live",
+    "log": "Verified only: live Lumenloop get_project_tags_vocabulary read (C) + upstream tool listing (A); asOf 2026-11-02; verified refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-ti-vocab-regions-live",
+    "log": "Verified only: live Lumenloop get_regions read (C) + upstream tool listing (A); asOf 2026-11-02; verified refreshed; gospel unchanged."
+   }
+  ]
+ }
+}

@@ -1,0 +1,1705 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "scf-grants-builders-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-gap-upcoming-hackathon-fallback",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "A zero-upcoming Scout result is a successful response that carries meta.fallbackChannels (BuildOnStellar, Scout page, DoraHacks)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons?status=upcoming",
+       "observedAt": "2026-11-02T16:07:09Z",
+       "quote": "\"counts\": {\"curated\": 0, \"dorahacks\": 0, \"returned\": 0, \"total\": 0}, \"fallbackChannels\": {\"summary\": \"No upcoming or active hackathons in stellarlight's feed ri…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) getHackathons description",
+       "observedAt": "2026-11-02",
+       "quote": "zero-result forward-looking queries return meta.fallbackChannels (surface them, don't dead-end)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Treat zero-upcoming as success with fallback channels; surface fallbackChannels",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons?status=upcoming",
+       "observedAt": "2026-11-02T16:07:09Z",
+       "quote": "\"partial\": false, \"failedReads\": []}, \"hackathons\": []"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do NOT fabricate an upcoming event or say no future hackathon can exist",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons?status=upcoming",
+       "observedAt": "2026-11-02",
+       "quote": "\"between events. Check live channels for the next announcement.\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-rfps-hackathons-live"
+  },
+  {
+   "id": "q-gap-vet-pitch-vertical-null",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "vertical: null means the idea did not map to the measurable vertical axis, not market absence",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) vetIdea description",
+       "observedAt": "2026-11-02",
+       "quote": "vertical=null means the idea doesn't map onto the measurable vertical axis, not that no market exists."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/vet-idea?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+       "observedAt": "2026-11-02T16:07:11Z",
+       "quote": "meta.note: \"vertical=null means the idea doesn't map onto the measurable vertical axis, not that no market exists.\" report.vertical: null"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Null gap and funding blocks are unavailable vertical-derived analyses, not zero",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/vet-idea?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+       "observedAt": "2026-11-02T16:07:11Z",
+       "quote": "\"gap\": null, \"funding\": null"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/scf-pitch?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+       "observedAt": "2026-11-02T16:07:11Z",
+       "quote": "meta.note: \"fundedPeers/fundingBar ... both are null when the idea maps to no vertical (not computed, not zero).\" report.fundedPeers: null, report.fundingBar: n…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Competitor, maturity, prior-art blocks are still returned and read on their stated basis",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/vet-idea?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+       "observedAt": "2026-11-02T16:07:11Z",
+       "quote": "report keys: idea, vertical, competitors, maturity, priorArt, gap, funding; maturity {\"auditedProjects\": 38, \"liveOnMainnetRepos\": 0, \"basis\": \"auditedProjects …"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / avoid[2]",
+     "claim": "scfPitch round block is independent of the null vertical; evaluate round.source",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/scf-pitch?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+       "observedAt": "2026-11-02T16:07:11Z",
+       "quote": "\"vertical\": null, \"round\": {\"source\": \"live\", \"open\": [{\"round\": 46, \"phase\": \"Submission\", \"submissionDeadline\": \"2026-11-09\"}]"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02",
+       "quote": "SCF #46 Submission (official awards index; see scf-round-rfps matrix)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Do NOT treat null vertical as proof of no market; do NOT convert null gap/funding to zero",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/scf-pitch?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+       "observedAt": "2026-11-02",
+       "quote": "\"not computed, not zero\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-scf-academic-research-grant",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Proposal budget cap $150,000; rough historical average $75,000",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://research.stellar.org/research-grants",
+       "observedAt": "2026-10-22 (Parallel cache); re-read 2026-11-02",
+       "quote": "Budget not to exceed $150,000 (a rough historical average of funded proposals is $75,000)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/research/blob/72c6249eb3/docs/research-grants/index.md (last commit 2026-05-13T17:43:53Z)",
+       "observedAt": "2026-11-02",
+       "quote": "- Budget not to exceed $150,000 (a rough historical average of funded proposals is $75,000)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2..3]",
+     "claim": "Applicant/recipient is a degree-granting institution; PI-led; students and individuals not eligible; supports one grad student or postdoc for 12 months",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/research/blob/72c6249eb3/docs/research-grants/index.md (last commit 2026-05-13T17:43:53Z)",
+       "observedAt": "2026-11-02",
+       "quote": "To qualify, your institution must be a degree-granting institution whose primary mission is research or higher education ... Students, consultants, for-profit b…"
+      },
+      {
+       "class": "A",
+       "ref": "https://research.stellar.org/research-grants",
+       "observedAt": "2026-10-22",
+       "quote": "To qualify, your institution must be a degree-granting ... graduate student or one post-doc for 12 months, plus"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Deadlines Mar 31, Jun 30, Sep 30, Dec 31; max two proposals per calendar year",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://research.stellar.org/research-grants",
+       "observedAt": "2026-10-22",
+       "quote": "The submission deadlines are March 31, June 30, September 30, and December 31. There is a limit of maximum 2 submissions per calendar year."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/research/blob/72c6249eb3/docs/research-grants/index.md (last commit 2026-05-13T17:43:53Z)",
+       "observedAt": "2026-11-02",
+       "quote": "The submission deadlines are March 31, June 30, September 30, and December 31. There is a limit of maximum 2 submissions per calendar year."
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.searchResearch(q=\"SDF academic research grants university\")",
+       "observedAt": "2026-11-02T16:12:43Z",
+       "quote": "Stellar Academic Research Grants: eligibility, deadlines, budget cap (research.stellar.org) ... The submission deadlines are March 31, June 30, September 30, an…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[2]",
+     "claim": "Not the SCF Build path; an ineligible applicant may separately consider SCF",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/research/blob/72c6249eb3/docs/research-grants/index.md (last commit 2026-05-13T17:43:53Z)",
+       "observedAt": "2026-11-02",
+       "quote": "If you do not qualify, please take a look at the [Stellar Community Fund](https://communityfund.stellar.org/) instead."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Students or individuals do not apply or receive directly",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/research/blob/72c6249eb3/docs/research-grants/index.md (last commit 2026-05-13T17:43:53Z)",
+       "observedAt": "2026-11-02",
+       "quote": "Awards are paid to academic institutions only and never to individuals."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-scf-ambassador-program",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer[bullet1] / keyFacts[0]",
+     "claim": "Program supports builders and educators forming regional chapters",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/ambassador-program",
+       "observedAt": "2026-10-27 (Parallel live fetch)",
+       "quote": "SAP 2.0 officially launched in July 2026. ... Lead Organizations: Ambassador Chapters are now operated by organizations with defined deliverables, reporting req…"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/riseinweb3/status/2097721034690466116 (Perplexity search)",
+       "observedAt": "2026-09-09 post; retrieved 2026-11-02",
+       "quote": "It runs on SAP 2.0, launched in July 2026, with country-focused chapters led by Lead Organizations and a standardized Ambassador Tier framework."
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/worktoearn_en/status/2084588480672461085 (Parallel search)",
+       "observedAt": "2026-08-04 post; retrieved 2026-11-02",
+       "quote": "SAP 2.0 (July 2026 Update) - Country-based chapters (stronger local focus) - Lead"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Covers chapter events, meetups, and documentation",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/ambassador-program",
+       "observedAt": "2026-10-27",
+       "quote": "create resources in multiple languages ... celebrate local activations and contributions through events, online engagement, and collaborative programming"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.risein.com/stellar-ambassadors",
+       "observedAt": "2026-11-02",
+       "quote": "Host in-person meetups, workshops and hackathons ... Produce content, translate resources"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2] / answer bullet2",
+     "claim": "Under SCF v7.0 ambassadors can recommend Instawards for early-stage builders; no open application",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-10-25",
+       "quote": "Through Instawards, ambassadors may recommend projects for small awards of up to $15K per project ... All award decisions remain subject to SDF’s review and app…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/1e04b79973/scf-awards/instawards/official-rules.md",
+       "observedAt": "2026-11-02",
+       "quote": "Instawards don’t have a standard open application process, but opportunities to apply can be made available by the local Ambassador Chapter leads"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Caps each Instaward at $15K in XLM",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/1e04b79973/scf-awards/instawards/official-rules.md",
+       "observedAt": "2026-11-02",
+       "quote": "Most proposals successfully accepted by SDF begin with an initial Instaward in the range of $1,000 – $5,000 USD, paid in XLM ... a certain follow-on funding may…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-10-25",
+       "quote": "small awards of up to $15K per project"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer bullets 3-4 / avoid[0]",
+     "claim": "Chapters can referral-route; Instaward may prepare for Build; not automatic; ambassadors do not approve $150K Build",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-the-stellar-ambassador-program",
+       "observedAt": "2026-10-27",
+       "quote": "Chapter referrals and Instawards can lead eligible projects into the Stellar Community Fund Build Award pipeline, where they may receive up to $150K in XLM"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "2. **Panel Review** A panel of SDF employees and community reviewers ... 4. **Community Vote (for Open Track only)** Verified SCF community members vote on all …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/1e04b79973/scf-awards/instawards/official-rules.md",
+       "observedAt": "2026-11-02",
+       "quote": "Such determinations are subject to SDF’s independent review and final approval."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Do NOT confuse Ambassador Program with Verified Member / NQG roles",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/quarterly-governance-process.md",
+       "observedAt": "2026-11-02",
+       "quote": "Delegate eligibility and NQG voting weight defined separately from chapters"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "- The **Stellar Ambassador Program** supports builders, educators, and organizers through local chapters for events, meetups, education, documentation, and local growth. As of 2026-11-02, SAP 2.0 (launched July 2026) runs country-focused chapters operated by Lead Organizations.\n- Under SCF v7, ambassadors can recommend **Instawards** for early-stage builders, up to $15,000 in XLM in total per project (initial awards are typically $1,000–$5,000); there is no open Instaward application.\n- Chapters may recommend or referral-route teams, and an Instaward may help an eligible project prepare for a …",
+     "reason": "SAP 2.0 (July 2026) chapters are country-focused and run by Lead Organizations; $15K is the per-project total."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "Supports builders and educators through local (now country-focused) chapters.",
+     "reason": "Drift: regional chapters transitioned to country-focused chapters under SAP 2.0."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "replace",
+     "new": "Caps Instaward funding at $15K per project, paid in XLM.",
+     "reason": "Official rules: $15,000 is the total including follow-ons; matches sibling q-scf-instawards."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "CORRECTION 2026-08-04: preserve direct-award authority versus referral-pipeline progression. Chapters can recommend/referral-route and Instawards can prepare an eligible project for a separate Build application; SDF/SCF retains approval and no funding/progression is automatic.\nUPDATE 2026-11-02: SAP 2.0 (July 2026) moved to country-focused chapters operated by Lead Organizations; accept either \"regional\" or \"country\" chapter wording. The $15,000 figure is the per-project total including conditional follow-ons; a typical initial Instaward is $1,000–$5,000. Neither detail is required.",
+     "reason": "Grader guidance for both chapter wordings and the per-project total."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "New verification date."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-04-08",
+     "reason": "Staggered quarter-granular reverify in the batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-scf-instawards; q-scf-regional-india; q-scf-v7-changes; q-scf-nqg-voting; q-scf-eligibility-criteria; q-edge-scf-v7-centralization-myths"
+  },
+  {
+   "id": "q-scf-audit-bank",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SDF-managed program for SCF-funded projects covering up to 100% of audit cost; not cash grant or bug bounty",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/11f0d4d8aa/supporting-programs/audit-bank/official-rules.md (last commit 2026-08-07T21:23:56Z)",
+       "observedAt": "2026-11-02",
+       "quote": "Managed by the Stellar Development Foundation (“SDF”), the Program schedules audits for projects and covers up to 100% of the audit cost"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/soroban-audit-bank",
+       "observedAt": "2026-10-22",
+       "quote": "The Soroban Security Audit Bank provides comprehensive, structured security audits for eligible projects funded through the Stellar Community Fund (SCF)"
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.searchResearch(q=\"Soroban Security Audit Bank co-payment\")",
+       "observedAt": "2026-11-02T16:12:41Z",
+       "quote": "Official Rules ... covers up to 1[00% of the audit cost]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[1]",
+     "claim": "No published fixed dollar cap",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/11f0d4d8aa/supporting-programs/audit-bank/official-rules.md (last commit 2026-08-07T21:23:56Z)",
+       "observedAt": "2026-11-02",
+       "quote": "grep of official-rules.md for $ amounts returns only firm marketing figures and TVL thresholds ($10,000,000; $100,000,000; $1,000,000+; $100,000); no per-audit …"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/soroban-audit-bank",
+       "observedAt": "2026-10-22",
+       "quote": "Audit Bank funding can be used to help cover costs of security review by industry-leading audit firms at pre-negotiated rates."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Scope includes testnet/near-mainnet and qualifying mainnet/follow-up",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/11f0d4d8aa/supporting-programs/audit-bank/official-rules.md (last commit 2026-08-07T21:23:56Z)",
+       "observedAt": "2026-11-02",
+       "quote": "This intake form is provided to SCF-funded projects which have reached Testnet stage or are already on Mainnet."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/soroban-audit-bank",
+       "observedAt": "2026-10-22",
+       "quote": "Complimentary, extensive follow-up audits are available as projects achieve critical traction milestones (e.g., $10M and $100M Total Value Locked)."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Four priority categories",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/11f0d4d8aa/supporting-programs/audit-bank/official-rules.md (last commit 2026-08-07T21:23:56Z)",
+       "observedAt": "2026-11-02",
+       "quote": "**Financial Protocols** ... **Widely Used Applications** ... **Infrastructure Contracts** ... Yield-Bearing Token Protocols"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+       "observedAt": "2026-11-01",
+       "quote": "Priority Categories: Financial Protocols ... Widely Used Applications ... Infrastructure Contracts ... Yield-Bearing Token Protocols"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[1]",
+     "claim": "5% refundable initial copay (20 business days); Growth/Scale 0%; pre-traction follow-ups 20% then 50%",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/11f0d4d8aa/supporting-programs/audit-bank/official-rules.md (last commit 2026-08-07T21:23:56Z)",
+       "observedAt": "2026-11-02",
+       "quote": "Initial Audit | None for priority categories | 5% with potential refund* ... Growth Audit | >$10,000,000 TVL or equivalent | 0% ... Scale Audit | >$100,000,000 …"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/soroban-audit-bank",
+       "observedAt": "2026-10-22",
+       "quote": "a co-payment will be required (20% of total audit cost for 2nd audit, 50% of total audit cost for 3rd audit)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Not cash funding or SDF Bug Bounty",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/soroban-audit-bank",
+       "observedAt": "2026-10-22",
+       "quote": "Prior to an eligible project's initial audit ... SDF will pay the entire first audit cost to the selected audit firm."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-comp-security-disclosure-programs; q-scf-sdf-bug-bounty"
+  },
+  {
+   "id": "q-scf-blend-winners-live",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0..1]",
+     "claim": "Resolve exact slug via getHackathons, then getHackathon",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons?q=blend",
+       "observedAt": "2026-11-02T16:07:09Z",
+       "quote": "\"name\":\"Stellar Hacks: Blend\",\"slug\":\"stellar-hacks-blend\" ... \"status\":\"completed\" ... \"prizePoolUSD\":6000,\"hackersCount\":136"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) getHackathon",
+       "observedAt": "2026-11-02",
+       "quote": "Needs an exact slug — resolve via getHackathons first."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Infer rank only from explicit placement fields",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+       "observedAt": "2026-11-02T16:07:24Z",
+       "quote": "\"hackathonPlacement\": \"1st Place\" ... \"placementRank\": 1 ... \"2nd Place\" ... \"placementRank\": 2 ... \"3rd Place\" ... \"placementRank\": 3; winnersRanked true"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getHackathon",
+       "observedAt": "2026-11-02",
+       "quote": "winner order is only meaningful when hackathonPlacement is ordinal (1st Place, 2nd Place, ...) and placementRank is a number"
+      }
+     ]
+    },
+    {
+     "field": "(new) golden.notes dated roster",
+     "claim": "Current record lists 1st Blend Pool Creator, 2nd Comet x Hoops Finance, 3rd YieldBack.Cash; prizeUsd null",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+       "observedAt": "2026-11-02T16:07:24Z",
+       "quote": "winners: Blend Pool Creator \"The Blend Pool Creator simplifies launching custom lending pools on Stellar network.\" 1st Place; Comet x Hoops Finance \"Fully funct…"
+      },
+      {
+       "class": "A",
+       "ref": "https://staging.tophacker.com/hackathon/stellar-hacks-blend/winner (DoraHacks winner page mirror, via Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "1st Place ($3,000 XLM): Blend Pool Creator by ELDEVODE 2nd Place ($2,000 XLM): Comet x Hoops Finance by punkrockerkoh & silence48 3rd Place ($1,000 XLM): YieldB…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend/",
+       "observedAt": "2026-11-02 (post 2025-07-14)",
+       "quote": "1st Place: Blend Pool Creator ... 2nd Place: Comet x Hoops Finance ... 3rd Place: YieldBack.Cash"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Reconstructs a winner roster from the archived Boxy answer when the live record is empty or changed",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "eval/corpus/raven-golden-qa/boxy.json#sl-hackathon-blend-winners",
+       "observedAt": "2026-11-02",
+       "quote": "mustInclude: Names all three winners with correct placement: Blend Pool Creator = 1st, Comet x Hoops Finance = 2nd, YieldBack.Cash = 3rd."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "Cite event source; report fields only when returned; state generatedAt and handle missing detail",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+       "observedAt": "2026-11-02T16:07:24Z",
+       "quote": "meta: {\"source\": \"https://dorahacks.io/hackathon/stellar-hacks-blend/detail\", \"generatedAt\": \"2026-11-02T16:07:24.713Z\", \"note\": \"DoraHacks event. Submissions, …"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT report winners, placements, or projects that the current event record does not return.",
+     "reason": "Existing avoid references an archive the judge cannot see (judge-blind)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "add",
+     "new": "Live event-record case. As of 2026-11-02, scout.getHackathon(\"stellar-hacks-blend\") returns winnersRanked: true with placementRank 1–3: Blend Pool Creator (a tool for creating Blend lending pools), Comet x Hoops Finance (a swap UI for Blend's backstop), and YieldBack.Cash (a Blend coupon bond). Its prizeUsd and award fields are null. DoraHacks and SDF's announcement list the same three placements. Grade a later answer against the record it observes.",
+     "reason": "Dated observation lets the judge check placements; live contract retained."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "New verification date."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: golden.avoid[0] cites the archived Boxy answer, which the judge never sees (judge-blind avoid)."
+   ],
+   "siblings": "q-scf-hackathon-compare-live"
+  },
+  {
+   "id": "q-scf-build-award-cap",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "SCF Build single-award cap is $150,000 worth of XLM",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14)",
+       "observedAt": "2026-11-02",
+       "quote": "* **Award size:** up to $150,000 worth of XLM\\*"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-10-22",
+       "quote": "$150K in XLM* Max. Award Amount"
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.searchResearch(q=\"SCF Build Award maximum award XLM tranches\")",
+       "observedAt": "2026-11-02T16:12:44Z",
+       "quote": "Award size: up to $150,000 worth of XLM* - Structure: Milestone-based funding (paid in tranches)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Paid through milestone-based tranches",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14)",
+       "observedAt": "2026-11-02",
+       "quote": "* **Structure:** Milestone-based funding (paid in tranches)"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-10-14",
+       "quote": "Structure: Milestone-based funding (paid in tranches)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes / avoid[1]",
+     "claim": "USD-equivalent paid in XLM at scheduled-payment valuation; not fixed XLM/USDC/USD",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/.gitbook/includes/xlm-award-valuation-disclaimer.md",
+       "observedAt": "2026-11-02",
+       "quote": "The USD valuation of XLM for any particular Award shall be calculated using the CF Stellar Lumens-Dollar Settlement Price ... reported on the day such Award is …"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "$500K belongs to another SDF program; $300K is lifecycle total not single award",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-10-25",
+       "quote": "up to $300K in total funding over the project’s full lifecycle"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/matching-fund",
+       "observedAt": "2026-11-02",
+       "quote": "funds will be matched 1:1 up to US $500,000 (per scf-round-rfps matrix)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes / avoid[1]",
+     "claim": "v7 launched January 2026; Build predates v7",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook",
+       "observedAt": "2026-11-02 (Perplexity)",
+       "quote": "SCF 7.0 officially launched in January 2026."
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/Stellar-Light/awesome-stellar-community-fund/blob/main/docs/scf-history.md",
+       "observedAt": "2026-11-02",
+       "quote": "SCF 7.0, announced January 16, 2026 ... Build Award (Integration Track, Open Track, RFP Track)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-build-tracks; q-scf-how-to-apply; q-scf-v7-changes"
+  },
+  {
+   "id": "q-scf-build-tracks",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "Three tracks: Open, Integration, RFP",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14)",
+       "observedAt": "2026-11-02",
+       "quote": "**SCF Build consists of 3 distinct tracks: Open, Integration, and RFP.**"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-10-14",
+       "quote": "SCF Build consists of 3 distinct tracks: Open, Integration, and RFP."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Resubmission is a path, not a track",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/resubmission.md",
+       "observedAt": "2026-11-02",
+       "quote": "You may resubmit your project to any future SCF round as long as the submission window is open"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[0]",
+     "claim": "Open is for experienced builders proposing novel protocols/apps and may include existing traction; not brand-new-only",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/open-track.md (last edit 1e04b79973, 2026-07-23)",
+       "observedAt": "2026-11-02",
+       "quote": "* Builders proposing novel protocols or primitives that solve for key ecosystem needs and do not fall under other Build Tracks\n* Projects with existing traction…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-11-02 (Perplexity)",
+       "quote": "The Open Track is open to all builders, with no requirement to integrate a pre-defined building block"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14)",
+       "observedAt": "2026-11-02",
+       "quote": "The Open Track is for: * All-star teams with a plan to build something brand-new on Stellar."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[4] / avoid[1]",
+     "claim": "Only Open goes to community/NQG vote; Integration and RFP are panel decisions; community input selects Integration building blocks",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14)",
+       "observedAt": "2026-11-02",
+       "quote": "4. **Community Vote (for Open Track only)**"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/quarterly-governance-process.md",
+       "observedAt": "2026-11-02",
+       "quote": "Integration ... Panel Review only ... Open ... Panel Review & Community Vote ... RFP ... Panel Review only; Updated resources go through final SDF legal review …"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-11-02 (Perplexity)",
+       "quote": "Eligible applications will be reviewed by a quarterly-rotating panel of (SCF Pilot) delegates, and the use cases and building blocks will be decided by quarterl…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Integration funds work on existing building blocks or teams with significant traction",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14)",
+       "observedAt": "2026-11-02",
+       "quote": "The Integration Track is for: * Ready-to-build teams who want to incorporate an existing Stellar “building block” into their project. * Teams with existing sign…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Cap up to $150K in XLM; roughly 3–6 months",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14)",
+       "observedAt": "2026-11-02",
+       "quote": "* **Award size:** up to $150,000 worth of XLM\\* ... * **Timeline:** Typically 3–6 months per project"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-10-22",
+       "quote": "$150K in XLM* Max. Award Amount"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "RFP funds published ecosystem tooling needs; reviewer selected",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02",
+       "quote": "The RFP (Request for Proposals) Track funds developer tooling that solves known problems in the ecosystem. ... 3. Submissions are reviewed by 2 reviewers from t…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-36 CORRECTION 2026-07-10: Open is not brand-new-build-only. Grade the three track identities and distinguish Open project voting, Integration building-block input, and reviewer-selected Integration/RFP awards.\nGT-36 independently confirmed by processes 3290/3291.\nCLARIFICATION 2026-11-02: the Build Award overview page says the Open Track is for \"All-star teams with a plan to build something brand-new on Stellar\", while the Open Track page also admits \"Projects with existing traction\". Quoting \"brand-new\" with attribution does not fire the first avoid; only a claim that Open excludes existin…",
+     "reason": "Keep the brand-new-only avoid from firing on attributed official overview wording."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "New verification date."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: avoid[0] did not account for the official Build overview page's own \"brand-new\" wording, so an attributed quote risked a false avoid hit."
+   ],
+   "siblings": "q-scf-how-to-apply; q-scf-build-award-cap; q-scf-v7-changes; q-scf-open-rfps; q-scf-rfp-tooling"
+  },
+  {
+   "id": "q-scf-contract-verification-rfp-live",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Report status and requirements from the current RFP result",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+       "observedAt": "2026-11-02T16:07:09Z",
+       "quote": "{\"id\": \"contract-source-verification\", \"title\": \"Contract Source Verification Service\", ... \"quarter\": \"q2-2026\", ... \"status\": \"closed\", \"url\": \"https://stella…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/1e04b79973/scf-awards/build-award/rfp-track.md vs 4d3b1d0f03 (2026-07-24)",
+       "observedAt": "2026-11-02",
+       "quote": "1e04b79973 (2026-07-23): \"May 11, 2026: New Q2 RFPs are open ... <summary><strong>Contract Source Verification Service</strong></summary> ... _Added: Q2 2026_\";…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02",
+       "quote": "_**October 2026: New Q4 RFPs are coming soon.**_ ... <summary><strong>Coming Soon</strong></summary>"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1] / keyFacts[3] / avoid[1]",
+     "claim": "Cite brief URL plus round verifyAt; verifyAt does not prove an open submission phase",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?limit=100",
+       "observedAt": "2026-11-02T16:07:09Z",
+       "quote": "\"scfRound\": {\"currentRound\": 46, \"currentPhase\": \"Submission\", ... \"submissionWindow\": {\"opens\": null, \"closes\": \"2026-11-09\"}, ... \"asOf\": \"2026-11-02\", \"sourc…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116)",
+       "observedAt": "2026-11-02",
+       "quote": "open means the sponsor brief is still soliciting; it does NOT prove the SCF proposal window accepts submissions today ... verifyAt before asserting any negative…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Include as-of; scope absence to the served set",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=closed&limit=100",
+       "observedAt": "2026-11-02T16:07Z",
+       "quote": "counts {total 16, open 2, closed 14, matched 14}; Contract Source Verification Service | closed | q2-2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Calling the archived brief open without current status evidence",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+       "observedAt": "2026-11-02",
+       "quote": "\"status\": \"closed\""
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02",
+       "quote": "October 2026: New Q4 RFPs are coming soon."
+      }
+     ]
+    },
+    {
+     "field": "(new) golden.notes requirements text",
+     "claim": "Scout row requirements differ from the published handbook brief",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+       "observedAt": "2026-11-02",
+       "quote": "\"technicalRequirements\": \"Deterministic Build: Reproducible WASM compilation pipeline (e.g., via Docker) ... Registry API: Public API and UI to submit, verify, …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/e37c0d541d/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02",
+       "quote": "Design and deliver a public, hosted contract source verification service for Soroban smart contracts. The service consumes the [SEP-58] metadata vocabulary (bld…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "add",
+     "new": "Live case. As of 2026-11-02, Scout /api/rfps returns the Q2 2026 \"Contract Source Verification Service\" brief with status closed. The official SCF RFP Track page dropped it in July 2026 and now lists no open brief (\"October 2026: New Q4 RFPs are coming soon.\"). A correct answer for that date says no open RFP covers contract source verification. It may describe the closed brief's asks from either the Scout row or the archived handbook brief (SEP-58 hosted verification service), with attribution. #46 accepts submissions through 2026-11-09, which says nothing about the brief.",
+     "reason": "Dated current state (closed brief, no official open brief) gives the judge a check point."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "New verification date."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-scf-open-rfps; q-scf-rfp-tooling; q-scf-current-round; q-edge-fresh-latest-scf-round; q-gap-explainrepo-payload-ok"
+  },
+  {
+   "id": "q-scf-cross-decaf-sep24",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Decaf Pay SCF #17 application names a MoneyGram integration using SEP-24 and plans reuse with other anchors",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Lumenloop POST https://api.lumenloop.com/v1/tools/get_scf_submissions {\"name\":\"Decaf\"}",
+       "observedAt": "2026-11-02T16:08Z",
+       "quote": "title \"Decaf Pay\", round \"SCF #17\", award_type \"Legacy v4.0 Award\", submission_url https://communityfund.stellar.org/submissions/recp4q5jA9dXq7to6; application:…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=decaf",
+       "observedAt": "2026-11-02T16:07:10Z",
+       "quote": "\"scfAwardedRounds\": [17], \"scfRoundAwards\": [{\"round\": 17, \"amountUSD\": 150000, \"awardType\": \"Legacy v4.0 Award\"}], \"scfSourceUrl\": \"https://communityfund.stell…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.newsfilecorp.com/release/161302/Decaf-Integrates-with-Global-CryptotoCash-Service-Powered-by-MoneyGram-and-Stellar",
+       "observedAt": "2026-11-02 (Perplexity)",
+       "quote": "Decaf ... is proud to announce an integration with the global on/off-ramp service for digital wallets powered by MoneyGram and the Stellar Development Foundatio…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1..2]",
+     "claim": "Scout lists Decaf as a live non-custodial cross-border wallet on Stellar and Solana using MoneyGram and partner ramps between fiat and USDC",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=decaf",
+       "observedAt": "2026-11-02T16:07:10Z",
+       "quote": "\"shortDescription\": \"Decaf is a non-custodial wallet on the Solana and Stellar networks for cross-border money movement across nearly 200 countries. Users on/of…"
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/stellar/",
+       "observedAt": "2026-11-02",
+       "quote": "Already live on Stellar: LOBSTR, Beans, Vesseo and Decaf give their users USDC cash-in and cash-out at MoneyGram locations."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html",
+       "observedAt": "2026-10-31",
+       "quote": "Decaf is a global payments platform for businesses, organizations and individuals. It combines non-custodial wallets and stablecoin settlement with bank, card a…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3..4]",
+     "claim": "SEP-24 is the anchor-hosted interactive deposit/withdrawal flow; anchor collects KYC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal",
+       "observedAt": "2026-10-22",
+       "quote": "the user’s application must open a webview hosted by a third-party anchor for the user to provide the information necessary to complete the transaction. With SE…"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_anchor_sep_docs(query=\"SEP-24 hosted deposit withdrawal interactive\")",
+       "observedAt": "2026-11-02T16:12:41Z",
+       "quote": "With **SEP-24**, the anchor collects KYC information from the user"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (final sentence)",
+     "claim": "SEP-24 is the bridge between the historical proposal and today's wallet/ramp record",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/stellar/",
+       "observedAt": "2026-11-02",
+       "quote": "Integrate USDC cash-in and cash-out for Stellar wallets with the Ramps widget SDK and API keys. ... Existing whitelist partners on the legacy SEP-10 / SEP-24 pa…"
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer/guides/web-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "This guide is for Stellar wallets integrating through the widget + API keys model . You do not implement SEP-10 or SEP-24 directly."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/meetings/2026/04/23.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "launched the MoneyGram Ramps API so developers can plug into the network directly"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "SEP-31 is not the MoneyGram wallet-hosted deposit/withdrawal flow in the proposal",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+       "observedAt": "2026-10-22",
+       "quote": "SEP-24: Hosted Deposit and Withdrawal; SEP-31: Cross Border Payments API"
+      },
+      {
+       "class": "C",
+       "ref": "Lumenloop POST https://api.lumenloop.com/v1/tools/get_scf_submissions {\"name\":\"Decaf\"}",
+       "observedAt": "2026-11-02",
+       "quote": "\"Sep24 - we have built this integration with MoneyGram\""
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Decaf is not a custodial bank account or a MoneyGram-owned wallet",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html",
+       "observedAt": "2026-10-31",
+       "quote": "It combines non-custodial wallets and stablecoin settlement with bank, card and cash payment partners. ... Those customers can hold a U.S. dollar account in the…"
+      },
+      {
+       "class": "A",
+       "ref": "https://decaf.so/",
+       "observedAt": "2026-10-26",
+       "quote": "The payments platform for global business. Receive, hold, convert, pay, and automate money globally through one Decaf account. [Open a business account]"
+      },
+      {
+       "class": "A",
+       "ref": "https://decaf.so/.well-known/stellar.toml",
+       "observedAt": "2026-10-29",
+       "quote": "# DECAF Stellar Wallet and POS <decaf.so> ... ORG_NAME=\"DECAF\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Decaf Pay's SCF #17 application says its international-payment product had built a MoneyGram integration using SEP-24 and planned to reuse that integration pattern with other anchors. As observed on 2026-11-02, Scout describes Decaf as a live, non-custodial wallet on Stellar and Solana for cross-border money movement, using MoneyGram and partner ramps to move between fiat and USDC and cash out without a bank account. Official Stellar docs define SEP-24 as the hosted, interactive deposit-and-withdrawal flow: the wallet opens the anchor's experience and the anchor collects the information/KYC ne…",
+     "reason": "Refresh the Scout observation date; replace the unverified claim that SEP-24 is still Decaf's ramp with a dated, attributed MoneyGram statement."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Grant application, current directory record, and SEP semantics must all appear.\nUPDATE 2026-11-02: an answer may say, with attribution, that MoneyGram now offers a Ramps widget SDK and calls SEP-10/SEP-24 legacy, or that Decaf also sells Decaf Business accounts (USD accounts on OwlPay Harbor, 2026-10-14). Neither statement fires the custodial or MoneyGram-owned avoid. Do not require either.",
+     "reason": "Keep avoids from punishing true attributed MoneyGram and Decaf Business facts."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "New verification date."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-04-22",
+     "reason": "Staggered quarter-granular reverify in the batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-anchor-moneygram-ramps; q-crp-custodial-vs-noncustodial-wallets; q-hist-remittance-corridors"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-scf-ambassador-program",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "SAP 2.0 (July 2026), country-focused chapters, Lead Organizations confirmed by the SAP handbook (A) and Rise In, a lead organization (D). $1K-$5K initial and $15K aggregate cap confirmed by the Instawards official rules. The as-of date is in the text.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/ambassador-program",
+      "observedAt": "2026-11-02",
+      "quote": "SAP 2.0 officially launched in July 2026. ... Lead Organizations: Ambassador Chapters are now operated by organizations ... Country-Focused Chapter Model: Regio…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/ambassador-program",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Ambassador Program (\"SAP\") supports builders, educators, organizers, and ecosystem contributors"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+      "observedAt": "2026-11-02",
+      "quote": "Most proposals successfully accepted by SDF begin with an initial Instaward in the range of $1,000 – $5,000 USD, paid in XLM ... may increase the total funding …"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+      "observedAt": "2026-11-02",
+      "quote": "Applicants may be eligible for multiple Instawards, up to a total cap of $15,000 paid in XLM"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+      "observedAt": "2026-11-02",
+      "quote": "Instawards don't have a standard open application process, but opportunities to apply can be made available by the local Ambassador Chapter leads ... only SDF m…"
+     },
+     {
+      "class": "D",
+      "ref": "https://x.com/riseinweb3/status/2097721034690466116 (via perplexity_search)",
+      "observedAt": "2026-11-02",
+      "quote": "It runs on SAP 2.0, launched in July 2026, with country-focused chapters led by Lead Organizations and a standardized Ambassador Tier framework."
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchResearch q='Stellar Ambassador Program Instawards chapters'",
+      "observedAt": "2026-11-02",
+      "quote": "rows: Instawards (stellar.gitbook.io/scf-handbook/scf-awards/instawards); Introducing the Stellar Ambassador Program (stellar.org/blog, 2026-08-03); Official Ru…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-ambassador-program",
+    "field": "golden.keyFacts[0]",
+    "decision": "modify",
+    "newText": "Supports builders and educators through local chapters (regional or country-focused).",
+    "note": "The proposed text '(now country-focused)' can read as required. stellar.org/community still says 'regional chapters' (observed 2026-11-02), so both wordings are true. The new text accepts both. Length is 85 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/ambassador-program",
+      "observedAt": "2026-11-02",
+      "quote": "SAP 2.0 officially launched in July 2026. ... Lead Organizations: Ambassador Chapters are now operated by organizations ... Country-Focused Chapter Model: Regio…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/community",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Ambassador Program helps builders and educators form regional chapters, run events, and connect their communities with resources to build on Stellar…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-ambassador-program",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "Old text 'Caps each Instaward at $15K' is imprecise. The rules set an aggregate cap of $15,000 in XLM across multiple Instawards. The new text matches the rules.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+      "observedAt": "2026-11-02",
+      "quote": "Most proposals successfully accepted by SDF begin with an initial Instaward in the range of $1,000 – $5,000 USD, paid in XLM ... may increase the total funding …"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+      "observedAt": "2026-11-02",
+      "quote": "Applicants may be eligible for multiple Instawards, up to a total cap of $15,000 paid in XLM"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-ambassador-program",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Correct. The note tells the judge to accept both chapter wordings and does not require the $1K-$5K detail.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/ambassador-program",
+      "observedAt": "2026-11-02",
+      "quote": "SAP 2.0 officially launched in July 2026. ... Lead Organizations: Ambassador Chapters are now operated by organizations ... Country-Focused Chapter Model: Regio…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/community",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Ambassador Program helps builders and educators form regional chapters, run events, and connect their communities with resources to build on Stellar…"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+      "observedAt": "2026-11-02",
+      "quote": "Most proposals successfully accepted by SDF begin with an initial Instaward in the range of $1,000 – $5,000 USD, paid in XLM ... may increase the total funding …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-ambassador-program",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified on 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/ambassador-program",
+      "observedAt": "2026-11-02",
+      "quote": "SAP 2.0 officially launched in July 2026. ... Lead Organizations: Ambassador Chapters are now operated by organizations ... Country-Focused Chapter Model: Regio…"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+      "observedAt": "2026-11-02",
+      "quote": "Most proposals successfully accepted by SDF begin with an initial Instaward in the range of $1,000 – $5,000 USD, paid in XLM ... may increase the total funding …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-ambassador-program",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-04-08 falls in the batch window 2027-04-01..2027-04-30 and is quarter-granular.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-blend-winners-live",
+    "field": "golden.avoid[0]",
+    "decision": "modify",
+    "newText": "Do NOT report winners or placements that the current event record does not return.",
+    "note": "The old avoid cites the 'archived Boxy answer', which the judge cannot see. The new avoid is judge-checkable against the event record. I removed 'or projects', because it could fire on a mention of Blend or of non-winning submissions, and those claims can be true. Not score laundering: the avoid stays strict on the winner roster.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "winnersRanked: true; Blend Pool Creator placementRank 1 'simplifies launching custom lending pools'; Comet x Hoops Finance placementRank 2 'Fully functional UI …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-blend-winners-live",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Live event-record case. As of 2026-11-02, scout.getHackathon(\"stellar-hacks-blend\") returns winnersRanked: true with placementRank 1-3: Blend Pool Creator (a tool for creating Blend lending pools), Comet x Hoops Finance (a swap UI for Blend's backstop), and YieldBack.Cash (a Blend coupon bond). The winner rows' prizeUsd and award fields are null; the event's prizeTiers list $3,000, $2,000, and $1,000 in XLM. DoraHacks' winner announcement and a July 2025 r/Stellar winners post list the same three placements. Grade a later answer against the record it observes.",
+    "note": "The roster and descriptions are confirmed in C and D. Two corrections: (1) 'Its prizeUsd and award fields are null' is true only for the winner rows. The event carries prizePoolUSD 6000 and prizeTiers 3000/2000/1000 XLM, so an answer that quotes tier amounts must not look unsupported. (2) I could not confirm that the r/Stellar post is an 'SDF announcement', so the note now names the post.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "winnersRanked: true; Blend Pool Creator placementRank 1 'simplifies launching custom lending pools'; Comet x Hoops Finance placementRank 2 'Fully functional UI …"
+     },
+     {
+      "class": "D",
+      "ref": "https://staging.tophacker.com/hackathon/stellar-hacks-blend/winner (DoraHacks mirror, via perplexity_search)",
+      "observedAt": "2026-11-02",
+      "quote": "1st Place ($3,000 XLM): Blend Pool Creator by ELDEVODE 2nd Place ($2,000 XLM): Comet x Hoops Finance ... 3rd Place ($1,000 XLM): YieldBack.Cash by KBenster"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend/",
+      "observedAt": "2026-11-02",
+      "quote": "1st Place: Blend Pool Creator ... 2nd Place: Comet x Hoops Finance ... 3rd Place: YieldBack.Cash"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-blend-winners-live",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Live record observed on 2026-11-02.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "winnersRanked: true; Blend Pool Creator placementRank 1 'simplifies launching custom lending pools'; Comet x Hoops Finance placementRank 2 'Fully functional UI …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-build-tracks",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Both quotes are exact and current on stellar/scf-handbook main. The clarification stops the avoid from firing on a true, attributed quote. Side observation, no change proposed: the Build README says both 'ship in 3–5 months' and 'Typically 3–6 months per project'. The answer's '3–6 months' is supported.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "The Open Track is for: * All-star teams with a plan to build something brand-new on Stellar."
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/open-track.md",
+      "observedAt": "2026-11-02",
+      "quote": "Projects with existing traction or deep, proven Stellar / domain knowledge"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "latest commits 0d5dbc1269 2026-08-14, 1e04b79973 2026-07-23 (current wording is on main)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-build-tracks",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified on 2026-11-02. The answer's dated example (2026-07-10) stays as an illustration; the case is live with no reverifyBy.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "The Open Track is for: * All-star teams with a plan to build something brand-new on Stellar."
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/open-track.md",
+      "observedAt": "2026-11-02",
+      "quote": "Projects with existing traction or deep, proven Stellar / domain knowledge"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Live case. As of 2026-11-02, Scout /api/rfps returns the Q2 2026 \"Contract Source Verification Service\" brief with status closed. The official SCF RFP Track page dropped it on 2026-07-23/24, when the Q3 RFPs replaced it, and now lists no open brief (\"October 2026: New Q4 RFPs are coming soon.\"). Scout still marks two unrelated Q3 briefs (LayerZero DVN, x402 Facilitator) open; an attributed report of either source's status is not wrong. A correct answer for that date says no open RFP covers contract source verification. It may describe the closed brief's asks from either the Scout row or the ar…",
+    "note": "Core claims confirmed: Scout row closed (C); handbook git history shows the brief present at 1e04b79973 (2026-07-23) and removed at 4d3b1d0f03 (2026-07-24T00:31Z) (B); the live page says 'October 2026: New Q4 RFPs are coming soon.' (A); the archived brief consumes SEP-58 (B). Corrections: (1) the official awards page says the #46 deadline is November 8, 2026, but Scout says 2026-11-09. The note re…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps",
+      "observedAt": "2026-11-02",
+      "quote": "contract-source-verification 'Contract Source Verification Service' quarter q2-2026 status closed; open rfp rows: layerzero-dvn (q3-2026, open), x402-facilitato…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarcommunityfund.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+      "observedAt": "2026-11-02",
+      "quote": "Current Open RFPs  October 2026: New Q4 RFPs are coming soon. ... Coming Soon"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook commits on scf-awards/build-award/rfp-track.md: 1e04b79973 (2026-07-23T15:38Z), 4d3b1d0f03 (2026-07-24T00:31Z), e07b4bfce1 (2026-10-16)",
+      "observedAt": "2026-11-02",
+      "quote": "1e04b79973 lists 'Contract Source Verification Service' ('The service consumes the SEP-58 metadata vocabulary ... rebuilds submitted source ... compares the res…"
+     },
+     {
+      "class": "D",
+      "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "4 projects were awarded this round across two RFPs. x402 Facilitator with Bazaar ... Stellar-compatible LayerZero DVN"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified on 2026-11-02.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps",
+      "observedAt": "2026-11-02",
+      "quote": "contract-source-verification 'Contract Source Verification Service' quarter q2-2026 status closed; open rfp rows: layerzero-dvn (q3-2026, open), x402-facilitato…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarcommunityfund.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+      "observedAt": "2026-11-02",
+      "quote": "Current Open RFPs  October 2026: New Q4 RFPs are coming soon. ... Coming Soon"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-cross-decaf-sep24",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "Decaf Pay's SCF #17 application says its international-payment product had built a MoneyGram integration using SEP-24 and planned to reuse that integration pattern with other anchors. As observed on 2026-11-02, Scout describes Decaf as a live, non-custodial wallet on Stellar and Solana for cross-border money movement, using MoneyGram and partner ramps to move between fiat and USDC and cash out without a bank account. Official Stellar docs define SEP-24 as the hosted, interactive deposit-and-withdrawal flow: the wallet opens the anchor's experience and the anchor collects the information/KYC ne…",
+    "note": "Facts confirmed: SCF #17 text (C, Lumenloop), Scout description (C), SEP-24 docs (E), and MoneyGram legacy/widget wording (A). The proposed 'so do not assume Decaf's current ramp still uses SEP-24' over-reaches. MoneyGram says 'Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 path'. Decaf is a long-standing MoneyGram partner, so current SEP-24 use is possibly true and…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.get_scf_submissions {slug:'decaf'}",
+      "observedAt": "2026-11-02",
+      "quote": "Decaf Pay, SCF #17: 'Sep24 - we have built this integration with MoneyGram, we were the first'"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=decaf",
+      "observedAt": "2026-11-02",
+      "quote": "Decaf is a non-custodial wallet on the Solana and Stellar networks for cross-border money movement ... Users on/off-ramp between fiat and USDC via MoneyGram and…"
+     },
+     {
+      "class": "E",
+      "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/integration#ready-to-receive-funds (Raven stellarDocs.search_docs)",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-24: Hosted Deposit and Withdrawal - Interactive deposit/withdrawal flow; 'The first step of the deposit flow after starting the deposit itself is collecting…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/",
+      "observedAt": "2026-11-02",
+      "quote": "USDC on Solana and Stellar. Both chains use the Ramps widget SDK and API keys. Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 pa…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model. New Stellar wallet integrations should use the widg…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/",
+      "observedAt": "2026-11-02",
+      "quote": "MoneyGram Ramps has been transformative for Decaf users."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-cross-decaf-sep24",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Grant application, current directory record, and SEP semantics must all appear.\nUPDATE 2026-11-02: an answer may say, with attribution, that MoneyGram now offers a Ramps widget SDK and calls SEP-10/SEP-24 legacy, or that Decaf also sells Decaf Business accounts (USD accounts on OwlPay Harbor, 2026-10-14). Neither statement fires the custodial or MoneyGram-owned avoid. Do not require either. A claim that Decaf still uses SEP-24 with MoneyGram today is unverified, not wrong.",
+    "note": "The proposed note is accurate: GlobeNewswire 2026-10-14 (D) and the SEC EX-99.1 filing (A) confirm Decaf Business on OwlPay Harbor. I added one sentence so that a possibly-true claim (Decaf still on the legacy SEP-24 path) is not punished.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/",
+      "observedAt": "2026-11-02",
+      "quote": "USDC on Solana and Stellar. Both chains use the Ramps widget SDK and API keys. Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 pa…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model. New Stellar wallet integrations should use the widg…"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html",
+      "observedAt": "2026-11-02",
+      "quote": "Decaf ... has embedded OwlPay Harbor as regulated payment infrastructure behind Decaf Business ... now opening U.S. dollar account access to eligible companies …"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.sec.gov/Archives/edgar/data/2025416/000119312526421071/owls-ex99_1.htm",
+      "observedAt": "2026-11-02",
+      "quote": "Decaf Business, Decaf's company account product, has been in production on Harbor since August 2026."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-cross-decaf-sep24",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified on 2026-11-02.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=decaf",
+      "observedAt": "2026-11-02",
+      "quote": "Decaf is a non-custodial wallet on the Solana and Stellar networks for cross-border money movement ... Users on/off-ramp between fiat and USDC via MoneyGram and…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.get_scf_submissions {slug:'decaf'}",
+      "observedAt": "2026-11-02",
+      "quote": "Decaf Pay, SCF #17: 'Sep24 - we have built this integration with MoneyGram, we were the first'"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-cross-decaf-sep24",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-04-22 falls in the batch window and is staggered from the ambassador case (2027-04-08).",
+    "sources": []
+   }
+  ],
+  "urlsHit": [
+   "Raven lumenloop.get_scf_submissions {slug:'decaf'}",
+   "Raven scout.searchResearch q='Stellar Ambassador Program Instawards chapters'",
+   "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/README.md",
+   "https://archive.org/wayback/available (429, no data)",
+   "https://communityfund.stellar.org/awards",
+   "https://communityfund.stellar.org/rfp (404)",
+   "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/integration#ready-to-receive-funds (Raven stellarDocs.search_docs)",
+   "https://github.com/stellar/scf-handbook commits on scf-awards/build-award/rfp-track.md: 1e04b79973 (2026-07-23T15:38Z), 4d3b1d0f03 (2026-07-24T00:31Z), e07b4bfce1 (2026-10-16)",
+   "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (via Parallel web_search)",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/open-track.md",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+   "https://staging.tophacker.com/hackathon/stellar-hacks-blend/winner (DoraHacks mirror, via perplexity_search)",
+   "https://stellar.gitbook.io/ambassador-program",
+   "https://stellar.org/community",
+   "https://stellarcommunityfund.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+   "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+   "https://stellarlight.xyz/api/projects/search?q=decaf",
+   "https://stellarlight.xyz/api/rfps",
+   "https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html",
+   "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend/",
+   "https://www.sec.gov/Archives/edgar/data/2025416/000119312526421071/owls-ex99_1.htm",
+   "https://x.com/riseinweb3/status/2097721034690466116 (via perplexity_search)",
+   "https://xramps.moneygram.com/",
+   "https://xramps.moneygram.com/ops/developer/guides/stellar"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-scf-ambassador-program; q-scf-blend-winners-live; q-scf-build-tracks; q-scf-contract-verification-rfp-live; q-scf-cross-decaf-sep24",
+  "verifiedOnly": "q-scf-academic-research-grant; q-scf-audit-bank; q-scf-build-award-cap",
+  "untouched": "q-gap-upcoming-hackathon-fallback; q-gap-vet-pitch-vertical-null",
+  "escalations": [
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "issue": "Proposer found an upstream defect with no improvements/ file: Stellar Light /api/rfps contract-source-verification row carries the Ideas-page requirements (Deterministic Build / Registry API / Explorer hook), not the published SCF Q2 2026 handbook brief (SEP-58 hosted service). The applier recorded it in truth.verified.evidence only; filing is for the improvements lane."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-scf-ambassador-program",
+    "log": "answer (SAP 2.0 country-focused chapters, Lead Organizations, $15K total with $1K-$5K initial), keyFacts[0] (verifier modify: regional or country-focused), keyFacts[3] ($15K per project), notes UPDATE; asOf 2026-11-02; reverifyBy 2027-02-04 -> 2027-04-08; +5 sources, corroboration row 0 refreshed, new SAP 2.0 row, row 2 evidence; verified + rootCause freshness-drift."
+   },
+   {
+    "id": "q-scf-blend-winners-live",
+    "log": "avoid[0] rewritten to judge-checkable test (verifier modify); notes added with dated roster and prize tiers (verifier modify); asOf 2026-11-02; +3 sources; avoid corroboration row updated; new roster row; verified + authoring-flaw rootCause. File reformatted from compact to 2-space JSON."
+   },
+   {
+    "id": "q-scf-build-tracks",
+    "log": "notes CLARIFICATION on 'brand-new' overview wording; asOf 2026-11-02; +2 sources; new corroboration row; verified + authoring-flaw rootCause."
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "log": "notes added (verifier modify: brief closed, removed 2026-07-23/24, Scout vs official Q3 status, #46 deadline Nov 8 vs 2026-11-09 pinned from neither); asOf 2026-11-02; +5 sources; 2 corroboration rows; verified + freshness-drift."
+   },
+   {
+    "id": "q-scf-cross-decaf-sep24",
+    "log": "answer (verifier modify: MoneyGram legacy SEP-10/SEP-24 wording, current path unknown); notes UPDATE (verifier modify); asOf 2026-11-02; reverifyBy 2026-12-03 -> 2027-04-22; +6 sources; row 0 evidence; 2 new corroboration rows; verified + freshness-drift."
+   },
+   {
+    "id": "q-scf-academic-research-grant",
+    "log": "truth.verified refreshed (A+B+C evidence, no gospel change); prior rootCause dropped since this event changed no gospel."
+   },
+   {
+    "id": "q-scf-audit-bank",
+    "log": "truth.verified refreshed (A+B+C evidence, no gospel change)."
+   },
+   {
+    "id": "q-scf-build-award-cap",
+    "log": "truth.verified refreshed (A+B+C evidence, no gospel change)."
+   },
+   {
+    "id": "q-gap-upcoming-hackathon-fallback",
+    "log": "untouched: confirmed, but evidence is Stellar Light's live record plus its own OpenAPI spec (the aggregator corroborating itself), so not refreshed as multi-class."
+   },
+   {
+    "id": "q-gap-vet-pitch-vertical-null",
+    "log": "untouched: confirmed, but evidence is Stellar Light's live record plus its own OpenAPI spec (single class), so not refreshed."
+   }
+  ]
+ }
+}

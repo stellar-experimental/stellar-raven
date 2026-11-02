@@ -32,11 +32,33 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos"
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+        "observedAt": "2026-11-02",
+        "note": "Re-observed by the golden audit: \"most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account ... an internal customer database maps transactions to individual accounts, using either the \""
       },
       {
         "class": "D",
-        "ref": "https://stellar.org/blog/developers/fixing-memo-less-payments"
+        "ref": "https://stellar.org/blog/developers/fixing-memo-less-payments",
+        "observedAt": "2026-11-02",
+        "note": "Re-observed by the golden audit: \"they must include the memo ID or the exchange won't know to credit the account.\""
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0029.md",
+        "note": "Golden audit 2026-11-02: \"Custodial wallets often use a single Stellar account for all deposits/withdrawals, relying on the transaction `memo` to disambiguate incoming payments.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://support.kraken.com/articles/crypto-assets-deposit-recovery",
+        "note": "Golden audit 2026-11-02: \"Missing or Incorrect Tag/Memo : Certain cryptocurrencies require a tag or memo to identify your transaction. Omitting or entering an incorrect tag/memo can prevent your deposit from being credited\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.binance.com/en/support/faq/detail/40b87335db904481888ef406b105442b",
+        "note": "Golden audit 2026-11-02: \"Deposits without tag/memo are only eligible for Recovery if the network uses a single address format requiring a memo\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -60,21 +82,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
-        "https://stellar.org/blog/developers/fixing-memo-less-payments",
-        "Live re-check 2026-08-31: https://support.kraken.com/articles/360000184543-memo-for-stellar-lumens-xlm-deposits — the memo assigns the deposit to the customer account; class B SEP-0029 defines the receiver-side memo requirement.",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — one pooled account ID serves many users and memos tell them apart; class B SEP-0029 corroborates.",
-        "Sibling sweep 2026-08-31: grep exchange memo|pooled address|memo_required|memo-less → 4 other cases; read q-edge-exchange-memo-lost-funds, q-pc-memos-reference, q-raph-missing-exchange-memo; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "A https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — \"most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account ... an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0-1]: confirmed)",
+        "B https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0029.md — \"Custodial wallets often use a single Stellar account for all deposits/withdrawals, relying on the transaction `memo` to disambiguate incoming payments.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0-1]: confirmed)",
+        "A https://stellar.org/blog/developers/fixing-memo-less-payments — \"they must include the memo ID or the exchange won't know to credit the account.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0-1]: confirmed)",
+        "E stellarDocs.search_docs 'pooled account memo exchange' — \"top hit https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos (4 hits)\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0-1]: confirmed)",
+        "A https://stellar.org/blog/developers/fixing-memo-less-payments — \"they must include the memo ID or the exchange won't know to credit the account.\" (observedAt 2026-11-02; supports golden.avoid[0-1]: confirmed)",
+        "A https://support.kraken.com/articles/crypto-assets-deposit-recovery — \"Missing or Incorrect Tag/Memo : Certain cryptocurrencies require a tag or memo to identify your transaction. Omitting or entering an incorrect tag/memo can prevent your deposit from being credited\" (observedAt 2026-11-02; supports golden.avoid[0-1]: confirmed)",
+        "B https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0029.md — \"Memo type verification routines are intentionally omitted from this SEP\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
+        "A https://www.binance.com/en/support/faq/detail/40b87335db904481888ef406b105442b — \"Deposits without tag/memo are only eligible for Recovery if the network uses a single address format requiring a memo\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
+        "Sibling set checked by the proposer 2026-11-02: q-raph-missing-exchange-memo, q-jutsu-what-is-a-memo, q-raph-withdraw-exchange-self-custody, q-raph-buy-xlm-safely; no contradiction recorded."
       ]
     },
     "origin": "raph memo-types-exchange-deposit"

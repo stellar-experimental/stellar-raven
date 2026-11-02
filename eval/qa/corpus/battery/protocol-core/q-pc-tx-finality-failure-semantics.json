@@ -75,26 +75,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-30 primary 3277 and blind lock/report 3279; exact truth agreement on the status-surface correction.",
-        "Structural re-form (symmetric-caution): added a discoverability-specific grading caution for sd-003; the transaction status and finality facts are unchanged.",
-        "Improvements review 2026-08-27: improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md remains reported upstream; the disputed claim is which status values belong to getTransaction versus sendTransaction when the method pages are absent from search.",
-        "Sibling sweep 2026-08-27: grep sd-003|getTransaction PENDING|sendTransaction PENDING → q-pc-practical-fee-setting, q-infra-rpc-methods-list, q-ti-rpc-gettransactions-pagination-xdr; no contradiction",
-        "Structural re-form (negative-predicate): Split two long comparison facts into five atomic positive requirements; truth unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — the lifecycle treated pre-inclusion rejection and ledger application as different outcomes.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — fees were collected before application and included failure rolled back operation effects.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — immediate invalid rejection consumed no fee or sequence number.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/sendTransaction — sendTransaction used PENDING for an enqueued transaction and required later polling.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction — getTransaction allowed SUCCESS, FAILED, or NOT_FOUND and documented bounded history.",
-        "Sibling sweep 2026-08-27: grep getTransaction|sendTransaction|tx_failed|NOT_FOUND → q-crp-export-tx-history-taxes, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-classic-submission-errors, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill; no contradiction"
-      ],
-      "rootCause": [
-        "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md",
-        "Eval-side sendTransaction/getTransaction status conflation.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
+        "Live re-check 2026-11-02 (confirmed): getTransaction returns SUCCESS/FAILED/NOT_FOUND; PENDING is a sendTransaction status — A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction 'Allowed values: SUCCESSNOT_FOUNDFAILED'; A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/sendTransaction 'Allowed values: PENDINGDUPLICATETRY_AGAIN_LATERERROR'; B https://github.com/stellar/go-stellar-sdk/blob/main/protocols/rpc/get_transaction.go 'TransactionStatusNotFound indicates the transaction was not found in Stellar-RPC's transaction store.'; B https://github.com/stellar/go-stellar-sdk/blob/main/protocols/rpc/send_transaction.go 'Status can be one of: proto.TXStatusPending, proto.TXStatusDuplicate, proto.TXStatusTryAgainLater, or proto.TXStatusError.'",
+        "Live re-check 2026-11-02 (confirmed): Included txs (incl. failed) consume fee and sequence; pre-inclusion rejection consumes neither — A https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle 'If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed ... For each transaction, the account's sequence number i'; B https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp 'There are only a few possible reasons for why we would *not* update the sequence number: ... In any other scenario we should update the sequence number'",
+        "Live re-check 2026-11-02 (confirmed-as-of): NOT_FOUND ambiguous due to bounded retention; sd-003 method pages unindexed caution — A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction 'The stellar-rpc system maintains a bounded history of recently processed transactions ... stock default of 120960 ledgers (about 7 days'; E stellarDocs.get_doc_page_sections path=/docs/data/apis/rpc/api-reference/methods/getTransaction 'soft-empty: The page-section queries returned no matching records'",
+        "Sibling sweep 2026-11-02: q-protocol-accounts-signers-thresholds was corrected in this batch to the same rule (included failures consume the sequence); q-pc-sequence-numbers-ordering-replace checked; no contradiction."
       ]
     },
     "origin": "raven-next q-pc-tx-finality-failure-semantics"

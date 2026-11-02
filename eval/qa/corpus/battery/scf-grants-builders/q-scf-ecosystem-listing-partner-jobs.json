@@ -10,7 +10,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nThese are separate workflows as of **2026-07-10**. Submit an ecosystem project through the embedded **Submit Your Project** form on Stellar's ecosystem page; inquire about service-provider participation through the current service-provider page/form, without assuming acceptance. Hackathon sponsorship is event/organizer-specific unless a named official intake exists, so use the relevant event page or Stellar connect/community channel. SDF jobs are on the Foundation careers/Ashby pages; ecosystem-company jobs belong on each company's own careers page. The **Matching Fund** is a separate Enterprise Fund co-investment path for pre-seed through Series B companies: current terms require a lead investor and term sheet, a **$200K minimum check**, **1:1 matching**, up to **$500K**, meaningful Stellar integration, and diligence. It is not SCF Build, an automatic directory listing, or a sponsorship promise.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\nThese are separate workflows as of **2026-11-02**. Submit an ecosystem project through the embedded **Submit Your Project** form on Stellar's ecosystem page; inquire about service-provider participation through the current service-provider page/form, without assuming acceptance. Hackathon sponsorship is event/organizer-specific unless a named official intake exists, so use the relevant event page or Stellar connect/community channel. SDF jobs are on the Foundation careers/Ashby pages; ecosystem-company jobs belong on each company's own careers page. The **Matching Fund** is a separate Enterprise Fund co-investment path for pre-seed through Series B companies: current terms require a lead investor and term sheet, a **$200K minimum check**, **1:1 matching**, up to **$500K**, meaningful Stellar integration, and diligence. It is not SCF Build, an automatic directory listing, or a sponsorship promise.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -37,23 +37,26 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-14",
-    "reverifyBy": "2026-11-12",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-14",
     "sources": [
       {
         "class": "A",
         "ref": "https://stellar.org/ecosystem",
-        "note": "class inferred at migration"
+        "note": "Observed 2026-11-02: 'Submit your project Want to be included? ... Submit your project for review! Loading form...'",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://stellar.org/ecosystem/service-providers",
-        "note": "class inferred at migration"
+        "note": "Observed 2026-11-02: provider directory with 'Connect Want to know more? Loading form...'",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://stellar.org/foundation/careers",
-        "note": "class inferred at migration"
+        "note": "Observed 2026-11-02: 'Browse all open positions' links https://jobs.ashbyhq.com/stellar; https://stellar.org/jobs redirects there.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "D",
@@ -63,12 +66,31 @@
       {
         "class": "A",
         "ref": "https://stellar.org/grants-and-funding/matching-fund",
-        "note": "class inferred at migration"
+        "note": "Observed 2026-11-02: 'designed specifically for earlier stage companies (Pre-seed to Series B) ... secure a lead investor and submit your term sheet. If selected, funds will be matched 1:1 up to US $500,000, with a minimum check size of US $200,000.'",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://stellar.org/grants-and-funding/matching-fund-eligibility-guidelines",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/announcing-the-matching-fund",
+        "observedAt": "2026-11-02",
+        "note": "'Funds will be matched up to $500K (minimum check size: $200K).' 'Company’s proposal must use Stellar in a meaningful way' 'Submit business and legal diligence materials and pass a screening with SDF.'"
+      },
+      {
+        "class": "F",
+        "ref": "https://api.ashbyhq.com/posting-api/job-board/stellar",
+        "observedAt": "2026-11-02",
+        "note": "Public job-board API returned 24 SDF jobs on 2026-11-02 (e.g. 'Staff Software Engineer, C++/Rust')."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/events/community",
+        "observedAt": "2026-11-02",
+        "note": "Community events listings; no universal sponsor intake form seen."
       }
     ],
     "corroboration": [
@@ -89,32 +111,47 @@
             "note": "The page still states 1:1 matching, a $200K minimum check, a $500K maximum, a lead term sheet or SAFE, and pre-seed through Series B."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, the Matching Fund is for pre-seed to Series B companies with a lead investor and term sheet, matches 1:1 with a $200K minimum and up to $500K, and requires meaningful Stellar use and diligence.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/grants-and-funding/matching-fund",
+            "observedAt": "2026-11-02",
+            "note": "Observed 2026-11-02: 'designed specifically for earlier stage companies (Pre-seed to Series B) ... secure a lead investor and submit your term sheet. If selected, funds will be matched 1:1 up to US $500,000, with a minimum check size of US $200,000.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/announcing-the-matching-fund",
+            "observedAt": "2026-11-02",
+            "note": "'Funds will be matched up to $500K (minimum check size: $200K).' 'Company’s proposal must use Stellar in a meaningful way' 'Submit business and legal diligence materials and pass a screening with SDF.'"
+          },
+          {
+            "class": "D",
+            "ref": "https://grantedai.com/grants/matching-fund-stellar-development-foundation-dd9012ef",
+            "observedAt": "2026-11-02",
+            "note": "Mirror: 'funds will be matched 1:1 up to US $500,000, with a minimum check size of US $200,000'; no contradicting source in a Perplexity sweep."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-round-rfps)",
       "evidence": [
-        "https://stellar.org/ecosystem",
-        "https://stellar.org/grants-and-funding/matching-fund",
-        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
-        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
-        "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
-        "Sibling sweep: q-scf-vs-sdf-enterprise-fund remains claim-consistent; the consistency register does not require matched scheduling metadata.",
-        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Matching Fund|Submit Your Project|Ashby → q-scf-ecosystem-listing-partner-jobs, q-scf-vs-sdf-enterprise-fund; no contradiction",
-        "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory-claim trap to avoid, and split the distinct workflows; truth unchanged.",
-        "Live re-check 2026-08-27: https://stellar.org/ecosystem — showed the current project-directory review form for source-supported dating.",
-        "Live re-check 2026-08-27: https://stellar.org/ecosystem — showed a current result roster and project-review intake for visible as-of dating.",
-        "Live re-check 2026-08-27: https://stellar.org/ecosystem/service-providers — showed the provider directory and its separate contact form; https://stellar.org/events/community showed event-specific community paths.",
-        "Live re-check 2026-08-27: https://stellar.org/foundation/careers — linked SDF positions to Ashby; https://stellar.org/grants-and-funding/matching-fund showed the separate matching application path.",
-        "Sibling sweep 2026-08-27: grep Matching Fund|Submit Your Project|service provider|Ashby|ecosystem jobs → q-scf-ecosystem-listing-partner-jobs and q-scf-vs-sdf-enterprise-fund; no contradiction."
+        "A 2026-11-02: https://stellar.org/ecosystem — 'Submit your project ... Submit your project for review! Loading form...'.",
+        "A 2026-11-02: https://stellar.org/ecosystem/service-providers — 'Connect Want to know more? Loading form...'.",
+        "A 2026-11-02: https://stellar.org/foundation/careers links https://jobs.ashbyhq.com/stellar; F: https://api.ashbyhq.com/posting-api/job-board/stellar returned 24 jobs.",
+        "A 2026-11-02: https://stellar.org/events/community lists event-specific paths; no universal sponsor intake.",
+        "A 2026-11-02: https://stellar.org/grants-and-funding/matching-fund — 'matched 1:1 up to US $500,000, with a minimum check size of US $200,000'; https://stellar.org/blog/foundation-news/announcing-the-matching-fund agrees; D Perplexity sweep and grantedai.com mirror show no contradiction (D hits mirror SDF pages, so independence is weak for the numbers).",
+        "Change: only the as-of dates in golden.answer moved from 2026-07-10 to 2026-11-02; every claim was re-observed live.",
+        "Sibling sweep 2026-11-02: grep Matching Fund|Submit Your Project|Ashby → q-scf-vs-sdf-enterprise-fund; no contradiction.",
+        "reverifyBy 2027-05-14: not event-tied (freshness live, stable program terms); inside the batch window."
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-scf-ecosystem-listing-partner-jobs"

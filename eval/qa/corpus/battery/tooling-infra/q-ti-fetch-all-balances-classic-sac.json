@@ -35,8 +35,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2027-01-07",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-11",
     "sources": [
       {
         "class": "A",
@@ -103,20 +103,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-52 primary/blind matrices independently confirmed the storage split; blind required the no-double-count, discovery, decimals, and arbitrary-storage precision.",
-        "Sibling sweep checked q-asset-trustline-vs-sac, q-sor-contract-trustlines-c-address, q-soroban-sac-balance-storage, and q-ti-enumerate-holders-airdrop.",
-        "Structural re-form (long-fact): split discovery, validation, and storage boundaries into atomic facts; answer and avoid retain the provenance fields.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — the current Hubble guide exposes indexed historical contract events.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the current SEP-41 interface defines the balance getter used after discovery.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the interface standard defines calls and events, not a universal token storage layout.",
-        "Sibling sweep 2026-08-29: grep trustline vs SAC|C-address balances|enumerate holders → q-asset-trustline-vs-sac, q-sor-contract-trustlines-c-address, q-ti-enumerate-holders-airdrop; no contradiction."
-      ],
-      "rootCause": [
-        "Eval-side accounting/discovery incompleteness; unified portfolio-discovery guidance is recorded as a research candidate.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, B, D, F); the proposer proposed no change and the verifier listed the case as no-proposal.",
+        "Class A (golden.keyFacts[0], confirmed): https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — \"Transfers between accounts and contracts using SAC resolve to the same trustline\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[0], confirmed): https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — \"The balances section in the response will also list all the trustlines this account has established\" (observedAt 2026-11-02)",
+        "Class B (golden.answer, confirmed-as-of): https://github.com/stellar/stellar-rpc/tree/v30.0.0/cmd/stellar-rpc/internal/methods — \"methods: get_events, get_fee_stats, get_health, get_latest_ledger, get_ledger_entries, get_ledgers, get_network, get_transaction(s), get_version_info, send_transaction, simulate_transaction\" (observedAt 2026-11-02)",
+        "Class F (golden.answer, confirmed-as-of): https://horizon.stellar.org/accounts/C... — \"400 Account ID must start with G\" (observedAt 2026-11-02)",
+        "Class A (golden.answer, confirmed-as-of): https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — \"GET /accounts/{address} | getLedgerEntries | ... RPC will not provide trust line information associated with the account directly\" (observedAt 2026-11-02)",
+        "Class D (golden.answer, confirmed-as-of): https://developers.stellar.org/docs/data/indexers (via Perplexity) — \"Alchemy ... Stellar Data API serves indexed transfer history, account balances, and NFT holdings across Stellar assets and contract tokens\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-ti-enumerate-holders-airdrop, q-ti-historical-pointintime-balances checked; no conflicting fact."
       ]
     },
     "origin": "raven-next q-ti-fetch-all-balances-classic-sac"

@@ -34,8 +34,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2027-01-07",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-12",
     "sources": [
       {
         "class": "A",
@@ -126,26 +126,17 @@
       }
     ],
     "verified": {
-      "date": "2026-10-01",
-      "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
       "evidence": [
-        "Owner decision C, question 4 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): a trade-implied price with a named table and a stated pair, quote asset, and window is a documented method, not an invented price. Avoid item 3 keeps its target: a USD price with no named source or method. Only golden.notes changed.",
-        "Live check 2026-10-01 (class A): stellar-docs 109d95d18fe151ac40cc2fd5f5cc769660e51fcc Hubble data dictionary — bronze/history-trades.mdx (price_n, price_d), gold/trade-agg.mdx (avg_price_daily), silver/reflector-prices-data-{sdex,cex,fex}-snapshot.mdx (USD OHLC from Reflector).",
-        "Live check 2026-10-01 (class B): stellar/stellar-dbt-public@4b29c2ea8e67756fb49b5875da765945cede79d3 — models/intermediate/reflector_prices and models/intermediate/trades implement those tables.",
-        "Sibling sweep 2026-10-01: grep Hubble|historical USD|price source|Reflector → q-ti-compute-token-lp-market-data (accepts an explicitly named last/mid/VWAP/oracle/route price method), q-infra-hubble-bigquery, q-ti-fetch-all-balances-classic-sac, q-crp-export-tx-history-taxes; none forbids a named trade or oracle price source; no contradiction.",
-        "Solo scratchpad 575 GT-52 primary/blind matrices independently confirmed Hubble/latest-row/external-price separation; blind added exact reconstruction invariants.",
-        "Sibling sweep checked Hubble, Galexie/ETL, historical events, and indexer choice cases; no sibling treats a ledger header or batch partition as a snapshot.",
-        "Structural re-form (negative-predicate): split one long fact and tightened two others into five atomic positive facts; every reconstruction and provenance claim remains, so truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/history-vs-state-tables — deletion/recreation, network identity, and closed-ledger mapping remain reconstruction inputs",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-transactions — Hubble tables remain change logs with batch dates as load proxies, not exact state times",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/indexers/build-your-own/ingest-sdk/developer_guide/ledgerreaders — SAC/custom state requires complete replay from a checkpoint to the target",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — exact/reconstructed and nominal/spendable provenance remains distinct from external USD history",
-        "Sibling sweep 2026-08-27: grep Hubble|batch_run_date|point-in-time|historical USD → q-infra-hubble-bigquery, q-infra-which-indexer, q-ti-fetch-all-balances-classic-sac; no contradiction"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): eval-side avoid ambiguity; 'invent historical USD prices from ledger data' did not separate a fabricated price from a named, method-stated price source",
-        "Eval-side historical-reconstruction incompleteness; vetted exact-ledger balance SQL/provenance remains a research candidate.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, B, E); the proposer proposed no change and the verifier listed the case as no-proposal.",
+        "Class A (golden.answer, confirmed): https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries — \"For reading the current value of ledger entries directly. ... Params (2) ... keys string[] required\" (observedAt 2026-11-02)",
+        "Class B (golden.answer, confirmed): https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/methods/get_ledger_entries.go — \"request.Keys / request.Format only; getLedgerEntriesMaxKeys = 200\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[2], confirmed): https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/history-vs-state-tables — \"This is not a snapshot/SCD type 2 table. There is no valid to/from dates in these tables\" (observedAt 2026-11-02)",
+        "Class E (golden.keyFacts[2], confirmed): stellarDocs.search_docs \"hubble state tables change log batch_run_date closed_at\" — \"queries-for-horizon-like-data: batch_run_date between ... order by closed_at desc\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[3], confirmed): https://developers.stellar.org/docs/build/guides/events/replay-ledger-close-meta — \"History archives don't store the state at every ledger. They store it every 64 ledgers, at checkpoints\" (observedAt 2026-11-02)",
+        "Class E (golden.keyFacts[3], confirmed): https://developers.stellar.org/docs/data/indexers/build-your-own/ingest-sdk — \"A Checkpoint ledger occurs once every 64 ledgers\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-ti-fetch-all-balances-classic-sac checked; no conflicting fact."
       ]
     },
     "origin": "raven-next q-ti-historical-pointintime-balances"

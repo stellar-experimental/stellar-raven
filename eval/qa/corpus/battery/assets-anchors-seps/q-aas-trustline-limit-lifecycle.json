@@ -57,21 +57,55 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Split two compound facts into four short single-predicate facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust — the result-code page confirms that `op_invalid_limit` means the limit cannot hold the balance and buying liabilities.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust — the page confirms that a below-balance limit causes `op_invalid_limit`.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#change-trust — the operation table confirms that a nonzero balance prevents trustline removal.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/example-application-tutorial/manage-trust — the live example removes a trustline by submitting `changeTrust` with limit `0`.",
-        "Sibling sweep 2026-08-29: grep op_invalid_limit|CHANGE_TRUST_INVALID_LIMIT|trustline limit → q-aas-claim-received-claimable-balances, q-aas-trustline-limit-lifecycle; no contradiction"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations.md — 'CHANGE_TRUST_INVALID_LIMIT -3 The `limit` is not sufficient to hold the current balance of the trustline and still satisfy its buying liabilities. This error occurs when attempting to remove a trustline with a non-zero asset balance.' (claim: op_invalid_limit: limit below balance + buying liabilities; removal with nonzero balance.; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/ChangeTrustOpFrame.cpp#L192-L245 — 'if (mChangeTrust.limit < getMinimumLimit(...)) { // Can't drop the limit below the balance you are holding ... CHANGE_TRUST_INVALID_LIMIT; ... // new trust line if (mChangeTrust.limit == 0) CHANGE_TRUST_INVALID_LIMIT' (claim: op_invalid_limit: limit below balance + buying liabilities; removal with nonzero balance.; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/ChangeTrustOpFrame.cpp#L208-L212 — 'liquidityPoolUseCount != 0 -> CHANGE_TRUST_CANNOT_DELETE' (claim: Removal = ChangeTrust limit 0; reserve freed; LP references block deletion.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust.md — 'For every new trustline added to an account, the minimum reserve of XLM that account must hold increases.' (claim: Removal = ChangeTrust limit 0; reserve freed; LP references block deletion.; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-aas-claim-received-claimable-balances, q-asset-trustline-vs-sac checked; no contradiction."
       ]
     },
-    "origin": "raven-next q-aas-trustline-limit-lifecycle"
+    "origin": "raven-next q-aas-trustline-limit-lifecycle",
+    "corroboration": [
+      {
+        "claim": "CHANGE_TRUST_INVALID_LIMIT means the new limit cannot hold the current balance plus buying liabilities; removing a trustline with a nonzero balance is the common case.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'CHANGE_TRUST_INVALID_LIMIT -3 The `limit` is not sufficient to hold the current balance of the trustline and still satisfy its buying liabilities. This error oc...'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/ChangeTrustOpFrame.cpp#L192-L245",
+            "observedAt": "2026-11-02",
+            "note": "Exact excerpt: 'if (mChangeTrust.limit < getMinimumLimit(...)) { // Can't drop the limit below the balance you are holding ... CHANGE_TRUST_INVALID_LIMIT;'"
+          }
+        ]
+      },
+      {
+        "claim": "A trustline is removed with ChangeTrust limit 0; it cannot be deleted while liquidity pools reference it; each trustline raises the minimum reserve while present.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/ChangeTrustOpFrame.cpp#L208-L212",
+            "observedAt": "2026-11-02",
+            "note": "Exact excerpt: liquidityPoolUseCount != 0 -> CHANGE_TRUST_CANNOT_DELETE"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'For every new trustline added to an account, the minimum reserve of XLM that account must hold increases.'"
+          }
+        ]
+      }
+    ]
   }
 }

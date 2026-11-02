@@ -1,0 +1,1321 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "defi-ecosystem-04",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-defi-streaming-payments-prior-art",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SStream SCF #16 $36K Awarded; linked UI 404",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recnfJhEt3t2QogUI",
+       "observedAt": "2026-11-02",
+       "quote": "{\"id\":\"recnfJhEt3t2QogUI\",\"title\":\"SStream\",\"status\":\"Awarded\",...,\"roundName\":\"SCF #16\",\"budget\":36000"
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_scf_submissions {name:SStream}",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\": \"SStream\", \"round\": \"SCF #16\", \"budget\": \"36000\""
+      },
+      {
+       "class": "F",
+       "ref": "https://s-stream.vercel.app (homepage of github.com/rahimklaber/SStream)",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Tide Stream Payment / Zentra SCF #23 $18.2K Awarded; frontend responds",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recTmMM8Qbio6zNHx",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\":\"Tide Stream Payment\",\"status\":\"Awarded\",\"roundName\":\"SCF #23\",\"budget\":18200"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop get_scf_submissions {name:Zentra}",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\": \"Tide Stream Payment\", \"project\": \"Zentra\", \"round\": \"SCF #23\", \"budget\": \"18200\""
+      },
+      {
+       "class": "F",
+       "ref": "https://tide-soroban-contract-frontend.vercel.app",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Fluxity official SCF #21 $68K Awarded row; project aggregate internally inconsistent",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recDXtqYuR8g9FMXt",
+       "observedAt": "2026-11-02",
+       "quote": "\"totalAwarded\":82750,\"totalPaid\":82750 ... {\"title\":\"Fluxity\",\"status\":\"Awarded\",\"roundName\":\"SCF #21\",\"budget\":68000} ... {\"title\":\"Fluxity\",\"status\":\"Not Awar…"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop get_scf_submissions {name:Fluxity}",
+       "observedAt": "2026-11-02",
+       "quote": "\"round\": \"SCF #21\", \"budget\": \"68000\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Paystreme SCF #11 $50K Awarded",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recHSkknw3I5dlCDK",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\":\"Paystreme\",\"status\":\"Awarded\",\"roundName\":\"SCF #11\",\"budget\":50000"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop get_scf_submissions {name:Paystreme}",
+       "observedAt": "2026-11-02",
+       "quote": "\"round\": \"SCF #11\", \"budget\": \"50000\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "ApiCharge SCF #40 $79K Awarded",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recaRJgrsYwJUGSxZ",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\":\"ApiCharge - ML and AI \",\"status\":\"Awarded\",\"roundName\":\"SCF #40\",\"budget\":79000"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop get_scf_submissions {name:ApiCharge}",
+       "observedAt": "2026-11-02",
+       "quote": "\"round\": \"SCF #40\", \"budget\": \"79000\""
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/StreamCharge/ApiCharge",
+       "observedAt": "2026-11-02",
+       "quote": "archived=false pushed=2026-05-19"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "RouteDock/MPP session work is testnet/reference, not verified mainnet production",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/winsznx/routedock README",
+       "observedAt": "2026-11-02",
+       "quote": "The one-way-channel Soroban contract (`stellar-experimental/one-way-channel`) has **NOT been audited**. ... Production mainnet use should await a formal audit."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=apicharge (repo discovery)",
+       "observedAt": "2026-11-02",
+       "quote": "Scout repo rows still list winsznx/routedock"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "x402, MPP sessions/channels, and custom recurring-payment contracts are distinct",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-10-29",
+       "quote": "x402 is an open protocol ... On Stellar, x402 works with Soroban authorization"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-agentic-payment-standards-compare; q-stellar-recurring-payments"
+  },
+  {
+   "id": "q-defi-tooling-whitespace-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "An exact Tooling category row exists with raw size/funded counts, examples, generatedAt and scope",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+       "observedAt": "2026-11-02",
+       "quote": "\"key\":\"Tooling\",\"size\":160,\"scfFundedCount\":121,\"crowdedness\":10; sampleProjects AnChain.AI, Okashi, Scout, CTX, Stellar PHP SDK; meta.generatedAt \"2026-11-02T1…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+       "observedAt": "2026-11-02",
+       "quote": "SDK 145/105, Indexer 15/9, Explorer 6/3 (finer overlapping type clusters)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Index-relative whitespace does not mean no tooling projects exist",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+       "observedAt": "2026-11-02",
+       "quote": "Tooling size 160"
+      },
+      {
+       "class": "A",
+       "ref": "https://reflector.network/",
+       "observedAt": "2026-08-29",
+       "quote": "inherited 2026-08-29 operator page check"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-category-saturation-live; q-defi-asset-whitespace-live; q-defi-cluster-rollup-live"
+  },
+  {
+   "id": "q-defi-wisdomtree-crdt",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "2025-09-12 launch of CRDYX/CRDT on Ethereum and Stellar; Gapstow index; $25 min; T+0/T+2",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of",
+       "observedAt": "2026-11-02",
+       "quote": "September 12, 2025 ... (token ticker: CRDT; fund ticker: CRDYX) ... T+0 settlement for subscriptions, T+2 settlement for redemptions, and a minimum investment o…"
+      },
+      {
+       "class": "D",
+       "ref": "https://ethereuminstitutional.org/deployments/wisdomtree-crdt",
+       "observedAt": "2026-11-02",
+       "quote": "launched in September 2025 on Ethereum and Stellar with a $25 minimum"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "CRDT issuer GBWMQUGP...J2P45",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.wisdomtree.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "code=\"CRDT\" issuer=\"GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45\" name=\"WisdomTree Private Credit and Alternative Income Digital Fund\" status=\"live\""
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
+       "observedAt": "2026-11-02",
+       "quote": "asset_issuer GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "CRDT SAC CBQDK4Y3...UK3P",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "Horizon /assets (as above)",
+       "observedAt": "2026-11-02",
+       "quote": "contract_id CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P"
+      },
+      {
+       "class": "A",
+       "ref": "SAC id is derived from code+issuer in the issuer TOML",
+       "observedAt": "2026-11-02",
+       "quote": "issuer TOML code/issuer pair matches"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "authorization/revocation/clawback controls",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "Horizon /assets (as above)",
+       "observedAt": "2026-11-02",
+       "quote": "flags auth_required True, auth_revocable True, auth_clawback_enabled True"
+      },
+      {
+       "class": "A",
+       "ref": "SEC prospectus (inherited 2026-07-11)",
+       "observedAt": "2026-07-11",
+       "quote": "transfer-agent record determinative"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-rwa-overview; q-rwa-projects-tokenizing-stellar; q-hist-wisdomtree-rwa"
+  },
+  {
+   "id": "q-defi-x402-on-stellar-what",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Coinbase-hosted Stellar support is testnet-only; OZ documents testnet+mainnet",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-10-29",
+       "quote": "Coinbase's x402 facilitator supports Stellar on **Testnet** with sponsored fees ... This x402 facilitator service is available on Testnet and Mainnet."
+      },
+      {
+       "class": "F",
+       "ref": "https://www.x402.org/facilitator/supported",
+       "observedAt": "2026-11-02",
+       "quote": "{\"x402Version\": 2, \"scheme\": \"exact\", \"network\": \"stellar:testnet\", \"extra\": {\"areFeesSponsored\": True}} (no stellar:pubnet kind)"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.cdp.coinbase.com/x402/network-support",
+       "observedAt": "2026-04-14",
+       "quote": "CDP Facilitator Endpoints: Mainnet ... Supports: Base, Polygon, Solana"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "unauthenticated OpenZeppelin /supported returns 401",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://channels.openzeppelin.com/x402/supported",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 401"
+      },
+      {
+       "class": "F",
+       "ref": "https://channels.openzeppelin.com/testnet/x402/supported",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 401"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-10-29",
+       "quote": "An API Key (Relayer Service). Generate your mainnet API key here: https://channels.openzeppelin.com/gen"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SDF is a Premier member with a Governing Board seat (as of 2026-09-30)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/x402",
+       "observedAt": "2026-10-29",
+       "quote": "As a Premier member, SDF holds a seat on the Foundation's Governing Board, represented by Tomer Weller, SDF's Chief Product Officer"
+      },
+      {
+       "class": "A",
+       "ref": "https://x402.org/members",
+       "observedAt": "2026-10-17",
+       "quote": "Premier: Appointed seat on the Governing Board"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "any SEP-41 token; USDC default",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-10-29",
+       "quote": "x402 on Stellar supports any SEP-41 compliant token. The default is USDC."
+      },
+      {
+       "class": "F",
+       "ref": "x402.org/facilitator/supported",
+       "observedAt": "2026-11-02",
+       "quote": "exact v2 on stellar:testnet"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-agentic-payment-standards-compare; q-defi-x402-projects-discovery; q-soroban-x402-auth-entry-signing"
+  },
+  {
+   "id": "q-eco-defi-market-map",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.notes",
+     "claim": "Zenex runs a live Stellar mainnet perp DEX (as of 2026-10-15)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+       "observedAt": "2026-11-02",
+       "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet ... Market XLM-USD Status Active ... These values were checked on 6 October 2026."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Directory cluster counts are source-relative taxonomy counts",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+       "observedAt": "2026-11-02",
+       "quote": "RWA 96, DEX 44, Wallet 71, Lending 37, NFT 26; notes.crowdedness: 'Use to identify saturated vs underbuilt lanes; cross-reference .size and .scfFundedCount'"
+      },
+      {
+       "class": "D",
+       "ref": "https://defillama.com/chain/stellar",
+       "observedAt": "2026-10-31",
+       "quote": "42 protocols tracked; Phoenix DeFi Hub $47,194 vs Aquarius/Sushi multi-million TVL"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Litemint Stellar-native NFT marketplace exists",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://litemint.com/",
+       "observedAt": "2026-10-20",
+       "quote": "Litemint Market Buy, Sell, and Collect Digital Creations on Stellar"
+      },
+      {
+       "class": "F",
+       "ref": "https://market.litemint.com/",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-perps-whitespace; q-scf-funding-by-category; q-defi-reflector-oracle; q-eco-nft-marketplace-whitespace"
+  },
+  {
+   "id": "q-eco-defi-projects-discovery",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Templar is a lending/credit project in a Stellar DeFi directory",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.templarfi.org/guide/architecture.html",
+       "observedAt": "2026-11-02",
+       "quote": "Templar is an overcollateralized lending protocol whose markets run on NEAR. Collateral and borrow assets that live on other chains reach those markets through …"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.redstone.finance/research/next-phase-rwa-stellar-2026",
+       "observedAt": "2026-11-02",
+       "quote": "Templar is the only lender with live borrowing against Stellar RWAs. ... Its lending engine runs on NEAR, with Stellar collateral bridged through HOT Bridge."
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/templar-protocol-stellar",
+       "observedAt": "2026-10-09",
+       "quote": "Templar Protocol is a lending protocol whose markets run on NEAR but which lends Stellar USDC"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=templar",
+       "observedAt": "2026-11-02",
+       "quote": "Templar Protocol | Live | Protocol/Contract | ['Lending']"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Blend, Aquarius, Soroswap, Phoenix, Sushi, DeFindex, Reflector are live directory projects",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=<name>",
+       "observedAt": "2026-11-02",
+       "quote": "Blend Live Lending; Aquarius Live DEX; Soroswap Live DEX; Phoenix Live DEX; Sushi Live DEX; DeFindex Live Yield; Reflector Live Oracle"
+      },
+      {
+       "class": "D",
+       "ref": "https://defillama.com/chain/stellar",
+       "observedAt": "2026-10-31",
+       "quote": "Sushi Stellar $15.61m; DeFindex $18.72m; Soroswap $1.16m; Phoenix DeFi Hub $47,194"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.phoenix-hub.io/",
+       "observedAt": "2026-11-02",
+       "quote": "Phoenix ... DeFi Hub on Soroban ... Launch App"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Provide a **dated, illustrative directory** rather than a timeless list of the 'main' projects. State the selection rule and, for each row, give category, operator URL, and verified status. A 2026-07-10 starting set can include Blend (Soroban lending) and Templar (cross-chain lending whose markets run on NEAR); native Stellar liquidity, Aquarius, Soroswap, Phoenix, and Sushi (liquidity/DEX, with roles separated); DeFindex (vaults); Reflector (oracles); and selected RWA/DeFi products only with deployment-state caveats. YieldBlox and DeFindex should not be presented as independent base lenders w…",
+     "reason": "Templar's primary docs say its lending markets run on NEAR and reach Stellar through NEAR Intents and Stellar vaults; the answer listed it as a plain Stellar lender beside Blend while warning only about YieldBlox and DeFindex dependencies. Sibling q-defi-blend-alternatives already labels Templar cro…"
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the directory answer omitted Templar's NEAR-market dependency while it named the dependencies of YieldBlox and DeFindex."
+   ],
+   "siblings": "q-defi-blend-alternatives; q-eco-defi-market-map; q-eco-dex-saturation"
+  },
+  {
+   "id": "q-eco-defi-tvl-current",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.notes",
+     "claim": "Record = ~$242M on May 30 2026",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+       "observedAt": "2026-11-02",
+       "quote": "max daily point 2026-10-01 tvl 272841590; 2026-05-30 tvl 242671595; 2026-11-02 tvl 220967151"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockonomi.com/stellar-defi-hits-new-tvl-record-as-active-wallets-near-100000/",
+       "observedAt": "2026-10-03",
+       "quote": "The Stellar DeFi ecosystem reached a record total value locked of nearly $273 million on October 2, according to DeFiLlama."
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/stellar-defi-tvl-2026",
+       "observedAt": "2026-10-06",
+       "quote": "Stellar DeFi TVL stood at $271.6M on 6 October 2026, according to DefiLlama, after a record $272.8M on 1 October."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "the June 19 historical point exceeds May 30",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+       "observedAt": "2026-11-02",
+       "quote": "2026-05-30 242671595; 2026-06-19 238715806"
+      },
+      {
+       "class": "C",
+       "ref": "truth.corroboration (observed 2026-07-11)",
+       "observedAt": "2026-07-11",
+       "quote": "242,679,286 on 2026-05-30 and a later 244,008,293 on 2026-06-19"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "2026-06-29 DeFiLlama read ~$137.84M; range ~$140-200M since May",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+       "observedAt": "2026-11-02",
+       "quote": "2026-06-29 tvl 194179178; 2026-10-01 tvl 272841590"
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/stellar-defi-tvl-2026",
+       "observedAt": "2026-10-06",
+       "quote": "22 Aug 2026 $264.9M ... 1 Oct 2026 (record) $272.8M"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "2026-04-23 developer meeting reported $170M DeFi TVL (corpus observation)",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic (av collection, created_at 2026-04-23T18:01:10Z)",
+       "observedAt": "2026-11-02",
+       "quote": "DeFi TVL reached $170M (3x YoY)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/meetings/2026/04/23",
+       "observedAt": "2026-11-02",
+       "quote": "Meeting notes text names RWA $2B, $16M daily contract volume, stablecoins $300M; no $170M DeFi TVL figure in the written notes"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Provider definition/endpoint scope exists and separates chain vs protocol TVL",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.llama.fi/v2/chains",
+       "observedAt": "2026-11-02",
+       "quote": "{'name': 'Stellar', 'tvl': 226901222.70}"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockonomi.com/stellar-defi-hits-new-tvl-record-as-active-wallets-near-100000/",
+       "observedAt": "2026-10-03",
+       "quote": "DeFiLlama defines total value locked as assets held within protocol contracts."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "FRESHNESS item, RE-VERIFIED LIVE 2026-06-29 (perplexity/DeFiLlama): figure is HIGHLY volatile and the dossier's ~$227M is stale. DeFiLlama revises past daily values, so record labels and dates move: on 2026-11-02 its Stellar history showed a $272.8M daily-close high on 2026-10-01, above the $242.7M point on 2026-05-30, and a 2026-11-02 value near $221M. So the gate MUST be on 'cite a dated source + flag staleness + confirm live', NOT a fixed number. Two distinct figures (record vs live snapshot) must not be merged. Confidence: low (volatile).\nAlso good if the answer: Attributes the figure to a…",
+     "reason": "Three note sentences state a May-30 record, a June-19>May-30 ordering, and a falling 2026-06-29 range. Current DeFiLlama history and October news put the record at $272.8M on 2026-10-01 and reverse the June/May order. The replacement dates each figure and keeps the durable no-record-gate rule."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-edge-fresh-latest-blend-tvl; q-edge-noinfo-exact-tvl-figure; q-asset-rwa-tokenized-freshness; q-eco-defi-market-map"
+  },
+  {
+   "id": "q-eco-dex-saturation",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.notes",
+     "claim": "serious AMM/DEX players = Soroswap, Aquarius, Phoenix; small field converging on a few anchors",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://defillama.com/chain/stellar",
+       "observedAt": "2026-10-31",
+       "quote": "Sushi Stellar | Dexs | $15.61m ... Phoenix DeFi Hub | Dexs | $47,194 ... Soroswap | $1.16m"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=sushi",
+       "observedAt": "2026-11-02",
+       "quote": "Sushi | sushi | Live | Protocol/Contract | ['DEX']"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.phoenix-hub.io/",
+       "observedAt": "2026-11-02",
+       "quote": "Phoenix ... DeFi Hub on Soroban ... Launch App"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Soroswap on-chain aggregator routes only across its Soroban AMM adapters; API also quotes SDEX",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/soroswap-explained",
+       "observedAt": "2026-10-08",
+       "quote": "On 8 October 2026 the mainnet aggregator had three active adapters: Soroswap, Phoenix and Aquarius. Its API also quotes routes through the Stellar ..."
+      },
+      {
+       "class": "A",
+       "ref": "inherited 2026-10-01 live adapter check (truth.verified)",
+       "observedAt": "2026-10-01",
+       "quote": "the live adapter set has no Sushi or Comet adapter"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-10 a strict venue review must consider native liquidity, Aquarius, Sushi, Soroswap, Phoenix",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Stellar Light project search",
+       "observedAt": "2026-11-02",
+       "quote": "Aquarius, Soroswap, Phoenix, Sushi: Live DEX"
+      },
+      {
+       "class": "D",
+       "ref": "https://defillama.com/chain/stellar",
+       "observedAt": "2026-10-31",
+       "quote": "Stellar DEX $14.57m; Stellar AMM $8.43m; Sushi Stellar $15.61m"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "StellarX (Ultra Stellar) is a trading UI",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://lobstr.co/",
+       "observedAt": "2026-11-01",
+       "quote": "Products ... StellarTerm ... StellarX"
+      },
+      {
+       "class": "C",
+       "ref": "Stellar Light directory",
+       "observedAt": "2026-11-02",
+       "quote": "StellarX rows inherited"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Saturation → scout_clusters. Reinforces aggregator-capture + StellarX/Comet caveats. Inherited Scout grounding named Soroswap (aggregator), Aquarius (AQUA AMM), and Phoenix (AMM hub); that three-name list is not a gate, and Sushi is also a live Stellar AMM venue. Soroswap's on-chain aggregator routes across its Soroban AMM adapters only. Soroswap's API quotes can also include classic SDEX liquidity. Do not treat those two layers as one. StellarX (Ultra Stellar) = trading UI; Comet = Balancer-style reference impl; WOWMAX = an expanding multi-chain aggregator.\nAlso good if the answer: Notes Stel…",
+     "reason": "The inherited note pins a three-player roster and a 'converging' conclusion that avoid[0] and the GT-19 line forbid, and it omits Sushi, which the answer names. The replacement keeps the history but removes the gate."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: a pre-GT-19 grader note that pins three serious players survived the GT-19 correction and contradicts avoid[0]."
+   ],
+   "siblings": "q-defi-phoenix-what-is; q-defi-aquarius-what-is; q-defi-comet-what-is; q-eco-defi-projects-discovery; q-eco-defi-market-map"
+  },
+  {
+   "id": "q-eco-hana-wallet-scf",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SCF #22 $50K + SCF #25 $82K = $132K; SCF #21 not awarded",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recQxCaMDVhJL85AO",
+       "observedAt": "2026-11-02",
+       "quote": "\"totalAwarded\":132000,\"totalPaid\":132000 ... {\"id\":\"recryJTSYRWHf1GqJ\",\"status\":\"Awarded\",\"roundName\":\"SCF #25\",\"budget\":82000} ... {\"id\":\"recQxCaMDVhJL85AO\",\"s…"
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_project {slug:hana}",
+       "observedAt": "2026-11-02",
+       "quote": "\"scf\": {\"awarded_round\": [22, 25], \"awarded_total\": 132000}"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Hana is a non-custodial multichain wallet",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.hanawallet.io/",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Hana | Non-Custodial Multi-Chain Crypto Wallet ... Move seamlessly between 19 chains ... Stellar"
+      },
+      {
+       "class": "D",
+       "ref": "https://partners.circle.com/partner/hana-wallet",
+       "observedAt": "2026-05-21",
+       "quote": "Hana Wallet is a self-custodial multi-chain Web3 wallet"
+      },
+      {
+       "class": "D",
+       "ref": "https://developers.stellar.org/meetings/2026/06/11",
+       "observedAt": "2026-06-11",
+       "quote": "Hana Wallet (formerly the ICON wallet, now a self-custodial multi-network wallet on mobile and desktop)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "hana.money is the current operator surface",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "curl -sL https://www.hana.money/",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200, url_effective https://www.wendmoney.com.au/, <title>Wend | Send money to GCash or Maya in minutes"
+      },
+      {
+       "class": "D",
+       "ref": "https://hana.money/ (Parallel fetch, acquired 2026-11-01)",
+       "observedAt": "2026-11-01",
+       "quote": "Wend, sending money your way ... Registered with AUSTRAC ... © 2026 Wend Money."
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_project {slug:hana}",
+       "observedAt": "2026-11-02",
+       "quote": "\"links\": {\"website\": [\"hanawallet.io\"], \"blog\": [\"news.hana.money\", ...]}"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.hanawallet.io/",
+       "observedAt": "2026-11-02",
+       "quote": "Hana | Non-Custodial Multi-Chain Crypto Wallet; Add to Chrome; © 2026 Blockzen Digital Limited"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "**Hana** is a non-custodial multichain wallet with Stellar support. Yes: official SCF records show **$50,000 awarded in SCF #22 plus $82,000 in SCF #25, totaling $132,000**. Do not include the unsuccessful SCF #21 submission. Use the current **hanawallet.io** operator surface for present product/network claims (as of 2026-11-02, hana.money redirects to the Wend remittance site) and keep old application promises separate from verified current functionality.",
+     "reason": "hana.money now redirects to the Wend remittance site; the Hana wallet operator surface is hanawallet.io (operator page plus Lumenloop links)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "lumenloop_get_scf_submissions. VERIFIED on Scout: Hana is scfAwarded with scfTotalAwardedUSD = $132,000 (dossier attributes this to rounds 22 & 25); a non-custodial MULTI-chain wallet (browser ext + mobile) with Stellar support. Gate on 'is SCF-awarded + cite the record + multi-chain'; treat the $132K as tool-sourced.\nAlso good if the answer: Reports Hana's SCF funding (approximately $132,000 across SCF rounds 22 and 25) from the source data, or honestly states what is in the corpus.\nGolden cites: The SCF submission record for Hana (or an explicit note of what's in the corpus).\nGT-19 UPDATE 20…",
+     "reason": "Same domain drift in the GT-19 grader note; dated so the old domain is a historical fact."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-eco-stellar-wallets-list; q-edge-ambig-best-wallet; q-soroban-x402-auth-entry-signing; q-defi-phoenix-what-is"
+  },
+  {
+   "id": "q-eco-lobstr-wallet",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Ultra Stellar operates LOBSTR",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://play.google.com/store/apps/details?id=com.lobstr.client",
+       "observedAt": "2026-11-02",
+       "quote": "developer Ultra Stellar OU"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=lobstr",
+       "observedAt": "2026-11-02",
+       "quote": "Lobstr | Live | Wallet; Ultra Stellar | Live"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Stellar + XRPL support; 1M+ users and 10M+ monthly tx (operator claims); 1M+ Google Play downloads",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://lobstr.co/",
+       "observedAt": "2026-11-01",
+       "quote": "LOBSTR is the easiest way to get started with Stellar and XRP Ledger ... 1,000,000+ Total users ... 10,000,000+ Monthly transactions"
+      },
+      {
+       "class": "A",
+       "ref": "https://play.google.com/store/apps/details?id=com.lobstr.client",
+       "observedAt": "2026-11-02",
+       "quote": "1M+ Downloads"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "LOBSTR is non-custodial",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://lobstr.co/ (inherited 2026-09-17)",
+       "observedAt": "2026-09-17",
+       "quote": "You control your keys"
+      },
+      {
+       "class": "C",
+       "ref": "Stellar Light Lobstr shortDescription",
+       "observedAt": "2026-11-02",
+       "quote": "a widely used non-custodial Stellar wallet"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "SCF record reports totalAwarded and totalPaid separately",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/project/lobstr-gcn (inherited)",
+       "observedAt": "2026-09-17",
+       "quote": "separate project totalAwarded and totalPaid fields"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop get_scf_submissions {name:LOBSTR}",
+       "observedAt": "2026-11-02",
+       "quote": "3 submissions incl. recLPGmYh7sNVjRz7"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-eco-stellar-wallets-list; q-edge-ambig-best-wallet"
+  },
+  {
+   "id": "q-eco-most-active-defi-projects",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.notes",
+     "claim": "sort=activity = latest-commit recency (NOT commit volume)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "meta.metricDefinitions.activity: \"sort=activity orders by github.commits90d: default-branch commits over the trailing 90 days summed across the project's indexe…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (info.version 1.9.116)",
+       "observedAt": "2026-11-02",
+       "quote": "activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Soroswap, Aquarius, Blend, Reflector, Phoenix resolve as Live on Scout",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=<name>",
+       "observedAt": "2026-11-02",
+       "quote": "all five: status Live"
+      },
+      {
+       "class": "D",
+       "ref": "https://defillama.com/chain/stellar",
+       "observedAt": "2026-10-31",
+       "quote": "Soroswap, Phoenix DeFi Hub tracked with nonzero TVL"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Most-active/top projects → scout_leaderboard. FRESHNESS-flagged ranking (weekly). As of 2026-11-02, the served meta.metricDefinitions define leaderboard sort=activity as github.commits90d (90-day default-branch commit volume across Stellar-evidenced repos), with lastActivityAt recency as the tie-break, and issues (open backlog), stars, and tvl as separate sorts; repoScore is a different, repo-level scout.searchRepos ranking signal and is not the leaderboard's activity metric. Recent commit activity shows live DeFi repos (e.g. blend-sdk-js / blend-ui committed Jun 19 2026; reflector connectors …",
+     "reason": "The served metricDefinitions and the owner's OpenAPI now define activity as 90-day commit volume with recency tie-break; the note said the opposite and steers judges to mark a correct answer wrong."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-developer-leaderboard-live; q-tool-leaderboard-open-issues; q-gap-leaderboard-project-not-builder"
+  },
+  {
+   "id": "q-eco-nft-marketplace-whitespace",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Litemint is a live Stellar NFT marketplace",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://litemint.com/",
+       "observedAt": "2026-10-20",
+       "quote": "Litemint Market Buy, Sell, and Collect Digital Creations on Stellar, Cyberbrawl items included"
+      },
+      {
+       "class": "F",
+       "ref": "https://market.litemint.com/",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=litemint",
+       "observedAt": "2026-11-02",
+       "quote": "Litemint | Live | User-Facing App | ['NFT']"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Rarible has an SCF #30 award and no verified public production Stellar support",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recRfE25wZkOThcrq",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\":\"Rarible.com X Stellar NFT Experience\",\"status\":\"Awarded\",\"roundName\":\"SCF #30\",\"budget\":150000; project \"totalAwarded\":150000,\"totalPaid\":50000"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.rarible.org/docs/supported-chains",
+       "observedAt": "2026-11-02",
+       "quote": "Currently supported chains table: no Stellar row (0 occurrences of 'stellar' in the fetched page)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=rarible",
+       "observedAt": "2026-11-02",
+       "quote": "lifecycle.note: public Stellar marketplace support was not verifiable on Rarible's live API/UI as of 2026-07-11, so supportedNetworks lists verified deployments…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-eco-defi-market-map; q-defi-nft-standards-projects"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-eco-defi-projects-discovery",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Templar label 'cross-chain lending whose markets run on NEAR' is confirmed by the operator docs plus independent web classes; it keeps Templar in the lending row and adds a needed role distinction. Blend 'Soroban lending' is uncontroversial. No as-of dropped; the 2026-07-10 roster date stays.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.templarfi.org/guide/architecture.html",
+      "observedAt": "2026-11-02",
+      "quote": "Templar is an overcollateralized lending protocol whose markets run on NEAR. ... depositors on Stellar reach them through curated vaults."
+     },
+     {
+      "class": "A",
+      "ref": "https://www.templarfi.org/frequently-asked-questions",
+      "observedAt": "2026-11-02",
+      "quote": "Markets are isolated (e.g., BTC → USDC) but coordinate seamlessly via NEAR Chain Signatures"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.certora.com/reports/templar",
+      "observedAt": "2026-11-02",
+      "quote": "Templar Protocol is a chain-agnostic overcollateralized lending protocol deployed on the NEAR blockchain."
+     },
+     {
+      "class": "D",
+      "ref": "https://whalehub.io/blog/templar-protocol-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Templar's lending markets are smart contracts on NEAR, registered under v1.tmplr.near. Stellar users deposit and borrow from a Stellar wallet"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.search_directory {query:'templar'} -> slug templar-protocol, website templarfi.org",
+      "observedAt": "2026-11-02",
+      "quote": "Decentralized lending protocol allowing users to borrow dollars against Bitcoin collateral without centralized intermediaries."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-defi-tvl-current",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "FRESHNESS item, RE-VERIFIED LIVE 2026-06-29 (perplexity/DeFiLlama): figure is HIGHLY volatile and the dossier's ~$227M is stale. DeFiLlama's daily history changes between reads (revisions or method changes), so record labels and dates move: on 2026-11-02 its historicalChainTvl series showed a $272.8M daily-close high dated 2026-10-01 (some news dates it 2026-10-02), above the $242.7M point on 2026-05-30, and about $221M for 2026-11-02, while the /v2/chains live figure read about $227M the same day. So the gate MUST be on 'cite a dated source + flag staleness + confirm live', NOT a fixed number…",
+    "note": "All proposed figures re-derived exactly from the DeFiLlama API. The current read puts June 19 ($238.7M) below May 30 ($242.7M), so the earlier GT-19 order is reversed; this supports the 'never grade a record date' rule. Modified: (1) 'revises past daily values' is softened to 'changes between reads (revisions or method changes)' because I cannot prove the mechanism; (2) the ~$221M figure is tied t…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+      "observedAt": "2026-11-02",
+      "quote": "max ('2026-10-01', 272841590); 2026-05-30 242671595; 2026-06-19 238715806; 2026-06-29 194179178 (lowest point since 2026-06-29); 2026-11-02 220967151"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.llama.fi/v2/chains",
+      "observedAt": "2026-11-02",
+      "quote": "'tvl': 227292727.19807118, ... 'name': 'Stellar'"
+     },
+     {
+      "class": "A",
+      "ref": "https://defillama.com/chain/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Total Value Locked in DeFi as of Oct 31, 2026 $223.4m"
+     },
+     {
+      "class": "D",
+      "ref": "https://whalehub.io/blog/stellar-defi-tvl-2026",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar DeFi TVL stood at $271.6M on 6 October 2026, according to DefiLlama, after a record $272.8M on 1 October."
+     },
+     {
+      "class": "D",
+      "ref": "https://blockonomi.com/stellar-defi-hits-new-tvl-record-as-active-wallets-near-100000/",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar DeFi ecosystem reached a record total value locked of nearly $273 million on October 2, according to DeFiLlama."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-dex-saturation",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Saturation → scout_clusters. Reinforces aggregator-capture + StellarX/Comet caveats. Inherited Scout grounding named Soroswap (aggregator), Aquarius (AQUA AMM), and Phoenix (AMM hub); that three-name list is not a gate, and as of 2026-11-02 Sushi (SushiSwap V3, live on Stellar since 2026-02-10) is also a live Stellar AMM venue. Soroswap's on-chain aggregator routes across its Soroban AMM adapters only. Soroswap's API quotes can also include classic SDEX liquidity. Do not treat those two layers as one. StellarX (Ultra Stellar) = trading UI; Comet = Balancer-style reference impl; WOWMAX = an exp…",
+    "note": "Sushi as a live Stellar AMM venue is confirmed by the operator (A), DeFiLlama TVL ($15.61M), and an independent indexer. Modified only to date the volatile 'live' status (as of 2026-11-02, launch 2026-02-10) so the note does not carry an undated status claim. Removing the three-name list as a gate matches the existing GT-19 correction and the avoid item; it does not punish a true claim.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.sushi.com/sdk/reference/stellar/config",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar config module exports native address constants, SushiSwap V3 contract constants ... SUSHISWAP_V3_FACTORY_ADDRESS"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.sushi.com/blog/swap-anything (latest-articles list)",
+      "observedAt": "2026-11-02",
+      "quote": "Sushi is Live on the Stellar Network 10 Feb 2026"
+     },
+     {
+      "class": "C",
+      "ref": "https://defillama.com/protocol/sushi-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Sushi Stellar ... Total Value Locked $15.61m ... Category: Dexs Sub Category: AMM ... As of Oct 31, 2026"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellarindex.io/amm",
+      "observedAt": "2026-11-02",
+      "quote": "SushiSwap V3 Concentrated-liquidity Soroban pools priced by tick range, not reserves."
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.search_directory {query:'sushi'} -> slug sushi; https://lumenloop.com/projects/sushi",
+      "observedAt": "2026-11-02",
+      "quote": "Sushi is now live on Stellar, bringing battle-tested decentralized exchange infrastructure"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-hana-wallet-scf",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "hanawallet.io is the live Hana wallet site, and Lumenloop also records it. hana.money now serves the Wend remittance site, and news.hana.money forwards to news.hanawallet.io. The as-of date is in the answer text. The SCF numbers are unchanged. The avoid item about a legacy domain stays consistent.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -sIL https://hana.money and https://www.hana.money",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 307 location: https://www.wendmoney.com.au/"
+     },
+     {
+      "class": "F",
+      "ref": "curl -sIL https://news.hana.money",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 308 location: https://news.hanawallet.io/"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.hanawallet.io/",
+      "observedAt": "2026-11-02",
+      "quote": "<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title> ... 19 chains. One wallet on Chrome. ... Stellar"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.hana.money/",
+      "observedAt": "2026-11-02",
+      "quote": "Wend | Send money to GCash or Maya in minutes"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.search_directory {query:'hana wallet'} -> slug hana",
+      "observedAt": "2026-11-02",
+      "quote": "website: [\"hanawallet.io\"]"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-hana-wallet-scf",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The note keeps the dated history (hana.money as of 2026-07-10) and adds the dated 2026-11-02 state. No figure changes.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -sIL https://hana.money",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 307 location: https://www.wendmoney.com.au/"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.wendmoney.com.au/",
+      "observedAt": "2026-11-02",
+      "quote": "<title>Wend | Send money to GCash or Maya in minutes</title>"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'hana.money Wend remittance' -> https://www.hana.money/",
+      "observedAt": "2026-11-02",
+      "quote": "Wend gets you the real exchange rate, with fees shown upfront. Send to GCash or Maya in minutes"
+     },
+     {
+      "class": "A",
+      "ref": "https://support.hanawallet.io/en/articles/11045736-hana-wallet-stellar-integration-guide",
+      "observedAt": "2026-11-02",
+      "quote": "Back to hanawallet.io Download Hana Wallet"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-most-active-defi-projects",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The metric definition belongs to Scout, so the served schema and Scout's own API reference are the authoritative sources. The old 'latest-commit recency (NOT commit volume)' text is now wrong, which is freshness drift. The new text has an as-of date and matches the schema. The avoid item ('unless the returned schema establishes that') stays consistent. This is not score laundering: the change foll…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/leaderboard?sort=activity&limit=3 (meta.dataAsOf 2026-11-02T11:23:43.582Z)",
+      "observedAt": "2026-11-02",
+      "quote": "sort=activity orders by github.commits90d: default-branch commits over the trailing 90 days summed across the project's indexed repos ... recency (github.lastAc…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarlight.xyz/scout/api-reference",
+      "observedAt": "2026-11-02",
+      "quote": "activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not ac…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.getLeaderboard {sort:'activity'} (observedAt 2026-11-02T16:29:28Z)",
+      "observedAt": "2026-11-02",
+      "quote": "same metricDefinitions.activity text as the raw read"
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-eco-defi-projects-discovery; q-eco-defi-tvl-current; q-eco-dex-saturation; q-eco-hana-wallet-scf; q-eco-most-active-defi-projects",
+  "verifiedOnly": "q-defi-streaming-payments-prior-art; q-defi-tooling-whitespace-live; q-defi-wisdomtree-crdt; q-defi-x402-on-stellar-what; q-eco-defi-market-map; q-eco-lobstr-wallet; q-eco-nft-marketplace-whitespace",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-eco-hana-wallet-scf",
+    "issue": "Upstream Stellar Light defects, not yet filed under improvements/: project hana links.website is https://hana.money/ (now redirects to the Wend remittance site, not hanawallet.io), and its shortDescription still names the Freighter API after the Freighter-to-Varial rename; https://stellarlight.xyz/api/projects/search?q=hana"
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-defi-streaming-payments-prior-art",
+    "log": "no gospel change; truth.verified refreshed from multi-class matrix evidence"
+   },
+   {
+    "id": "q-defi-tooling-whitespace-live",
+    "log": "no gospel change; truth.verified refreshed from multi-class matrix evidence"
+   },
+   {
+    "id": "q-defi-wisdomtree-crdt",
+    "log": "no gospel change; truth.verified refreshed from multi-class matrix evidence; truth.asOf 2026-08-26 → 2026-11-02"
+   },
+   {
+    "id": "q-defi-x402-on-stellar-what",
+    "log": "no gospel change; truth.verified refreshed from multi-class matrix evidence"
+   },
+   {
+    "id": "q-eco-defi-market-map",
+    "log": "no gospel change; truth.verified refreshed from multi-class matrix evidence; truth.reverifyBy 2027-01-27 → 2027-02-12"
+   },
+   {
+    "id": "q-eco-defi-projects-discovery",
+    "log": "golden.answer replaced (accepted); added 5 sources and 1 corroboration row; truth.verified refreshed; truth.asOf (none) → 2026-11-02"
+   },
+   {
+    "id": "q-eco-defi-tvl-current",
+    "log": "golden.notes replaced with verifier newText; added 5 sources and 1 corroboration row; truth.verified refreshed; truth.asOf 2026-07-11 → 2026-11-02"
+   },
+   {
+    "id": "q-eco-dex-saturation",
+    "log": "golden.notes replaced with verifier newText; added 5 sources and 1 corroboration row; truth.verified refreshed"
+   },
+   {
+    "id": "q-eco-hana-wallet-scf",
+    "log": "golden.answer replaced (accepted); golden.notes replaced (accepted); added 9 sources and 1 corroboration row; truth.verified refreshed; truth.asOf (none) → 2026-11-02"
+   },
+   {
+    "id": "q-eco-lobstr-wallet",
+    "log": "no gospel change; truth.verified refreshed from multi-class matrix evidence"
+   },
+   {
+    "id": "q-eco-most-active-defi-projects",
+    "log": "golden.notes replaced (accepted); added 3 sources and 1 corroboration row; truth.verified refreshed; truth.asOf 2026-07-11 → 2026-11-02"
+   },
+   {
+    "id": "q-eco-nft-marketplace-whitespace",
+    "log": "no gospel change; truth.verified refreshed from multi-class matrix evidence; truth.asOf 2026-07-10 → 2026-11-02"
+   }
+  ]
+ }
+}

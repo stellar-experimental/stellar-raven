@@ -7,7 +7,7 @@
     "stellarDocs.search_rpc_horizon_data_docs"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-08-04, the verified sources supported this observed answer:\n\nYou need an **indexer** rather than RPC alone for historical cross-account filtering: RPC event history is bounded and Horizon does not provide arbitrary cross-account filtered indexes ([Indexers Overview](https://developers.stellar.org/docs/data/indexers)).\n\nEstablished Stellar choices include **SubQuery**, **OBSRVR**, **Goldsky Mirrors/Pipelines**, **OnFinality**, **Mercury**, and **The Graph via Substreams only** (not Stellar Subgraphs or Token API). For deep historical SQL, **Hubble/BigQuery** is another fit.\n\nThe official Stellar Indexers Overview and Alchemy's provider documentation both describe Alchemy's indexed Stellar Data API as live. Its address-centric APIs cover transfer history, account/token balances, and NFT holdings across native, Classic, and Soroban assets.\n\nSelection: use **OBSRVR** for a Stellar-native stream-to-warehouse workflow, **SubQuery** for its multi-chain indexing stack, **Goldsky** if it matches an existing EVM data platform, **Alchemy** if its address-centric indexed APIs cover the needed query, or **Hubble/BigQuery** for SQL-oriented deep history. Verify retention, data model, and current network coverage before committing.",
+    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\nYou need an **indexer** rather than RPC alone for historical cross-account filtering: RPC event history is bounded and Horizon does not provide arbitrary cross-account filtered indexes ([Indexers Overview](https://developers.stellar.org/docs/data/indexers)).\n\nEstablished Stellar choices include **SubQuery**, **OBSRVR**, **Goldsky Turbo pipelines** (Goldsky's docs list Stellar as Turbo-only, no longer Mirror), **OnFinality**, **Mercury**, and **The Graph via Substreams only** (not Stellar Subgraphs or Token API). For deep historical SQL, **Hubble/BigQuery** is another fit.\n\nThe official Stellar Indexers Overview and Alchemy's provider documentation both describe Alchemy's indexed Stellar Data API as live. Its address-centric APIs cover transfer history, account/token balances, and NFT holdings across native, Classic, and Soroban assets.\n\nSelection: use **OBSRVR** for a Stellar-native stream-to-warehouse workflow, **SubQuery** for its multi-chain indexing stack, **Goldsky** if it matches an existing EVM data platform, **Alchemy** if its address-centric indexed APIs cover the needed query, or **Hubble/BigQuery** for SQL-oriented deep history. Verify retention, data model, and current network coverage before committing.",
     "keyFacts": [
       "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -18,7 +18,7 @@
       "Do NOT claim The Graph offers full Subgraph/Token API support for Stellar, or recommend RPC alone for arbitrary historical cross-account filtering.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "CORRECTION 2026-08-04: the official Indexers Overview now says Alchemy is live, resolving the former roadmap disagreement. Preserve The Graph's Substreams-only boundary and require dated provider/network/retention checks."
+    "notes": "CORRECTION 2026-08-04: the official Indexers Overview now says Alchemy is live, resolving the former roadmap disagreement. Preserve The Graph's Substreams-only boundary and require dated provider/network/retention checks.\nRECHECK 2026-11-02: Goldsky's own docs say Stellar datasets are no longer available through Mirror and are served by Turbo pipelines, while the Stellar Indexers Overview still says Goldsky Mirrors support Stellar. Naming Goldsky Mirror for Stellar is a minor dated error, not a wrong core answer; naming Goldsky Turbo is correct."
   },
   "tags": {
     "category": "tooling-infra",
@@ -32,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "D",
@@ -53,6 +53,30 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-docs/pull/2573",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.goldsky.com/chains/supported-networks",
+        "note": "Goldsky: Stellar datasets are no longer available through Mirror; use Turbo pipelines",
+        "observedAt": "2026-10-28"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.goldsky.com/turbo-pipelines/migrate-from-mirror",
+        "note": "Goldsky: Stellar sources removed from Mirror, Turbo-only",
+        "observedAt": "2026-10-20"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.goldsky.com/chains/stellar",
+        "note": "Goldsky Stellar chain page lists Turbo mainnet and testnet support",
+        "observedAt": "2026-11-01"
+      },
+      {
+        "class": "E",
+        "ref": "Raven stellarDocs.search_docs 'Goldsky Mirror Stellar indexer' -> https://developers.stellar.org/docs/data/indexers#custom-transformations",
+        "note": "Stellar Docs index still says Goldsky Mirrors support Stellar",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -134,31 +158,56 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Goldsky serves Stellar through Turbo pipelines and no longer through Mirror; the Stellar Indexers Overview still says Goldsky Mirrors support Stellar",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.goldsky.com/chains/supported-networks — 'Stellar datasets are no longer available through Mirror. Use Turbo pipelines for Stellar data.'",
+            "observedAt": "2026-10-28"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.goldsky.com/turbo-pipelines/migrate-from-mirror — 'Solana, Bitcoin, Stellar, and NEAR sources were removed from Mirror; they're Turbo-only now.'",
+            "observedAt": "2026-10-20"
+          },
+          {
+            "class": "D",
+            "ref": "perplexity_search: https://goldsky.com/chains/stellar — 'Turbo Pipelines is the successor to Mirror.'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/indexers — 'Goldsky Mirrors already support Stellar; see their documentation.'",
+            "observedAt": "2026-10-22"
+          },
+          {
+            "class": "E",
+            "ref": "Raven stellarDocs.search_docs 'Goldsky Mirror Stellar indexer' -> https://developers.stellar.org/docs/data/indexers#custom-transformations — 'Goldsky Mirrors already support Stellar'",
+            "observedAt": "2026-11-02"
+          }
+        ],
+        "note": "Provider docs outweigh the stale Stellar Docs sentence for current product naming; one stale Goldsky overview card (docs.goldsky.com/turbo-pipelines/sources/overview.md) still mentions Mirror for Stellar. Golden.notes treats naming Mirror as a minor dated error."
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
       "evidence": [
-        "Independent re-derivation by Solo process 3158 recorded under scratchpad 569 Lane B (901): exact Alchemy announcement/docs excerpts, live Stellar docs excerpt, and read-only PR #2573 state/patch.",
-        "Sibling sweep 2026-07-09: q-infra-rpc-providers-list names Alchemy as hosted RPC only and remains compatible; routing cases carry no status fact; the vendored corpus repeats the stale roadmap wording and remains read-only.",
-        "Solo scratchpad 575 GT-50 primary process 3349 and blind process 3361 independently rechecked the live provider claim, stale Indexers page, and open PR #2573 on 2026-07-11.",
-        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened the sourcing fact and The Graph boundary; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/indexers — the official page supplies current provider names and dated status details.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/indexers — the official page contains changeable provider status and launch observations that require dates.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/indexers — the official page limits The Graph's Stellar support to Substreams and excludes Subgraphs and Token API.",
-        "Sibling sweep 2026-08-29: grep The Graph|Substreams|Subgraph|Token API|indexer → q-infra-hubble-bigquery, q-tool-indexer-repos-discovery, q-infra-horizon-vs-rpc, q-infra-which-indexer; no contradiction."
+        "Live A 2026-10-28: https://docs.goldsky.com/chains/supported-networks — 'Stellar datasets are no longer available through Mirror. Use Turbo pipelines for Stellar data.'",
+        "Live A 2026-10-20: https://docs.goldsky.com/turbo-pipelines/migrate-from-mirror — 'Solana, Bitcoin, Stellar, and NEAR sources were removed from Mirror; they're Turbo-only now.'",
+        "Live A 2026-11-01: https://docs.goldsky.com/chains/stellar — 'Turbo MAINNET SUPPORTED TESTNET SUPPORTED'.",
+        "Live D 2026-11-02: perplexity_search https://goldsky.com/chains/stellar — 'Turbo Pipelines is the successor to Mirror.' A stale Goldsky card (turbo-pipelines/sources/overview.md) still mentions Mirror; newer pages outweigh it.",
+        "Live A 2026-10-22 and E 2026-11-02: https://developers.stellar.org/docs/data/indexers still says 'Goldsky Mirrors already support Stellar', 'The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph or Token API support', and Alchemy is 'now live on Stellar'; SubQuery, OBSRVR, OnFinality, and Mercury remain listed.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — 'stock default of 120960 ledgers (about 7 days ...)' keeps the bounded-RPC rationale.",
+        "Sibling sweep 2026-11-02: q-ti-compute-token-lp-market-data and q-ti-enumerate-all-contracts name indexers without a Goldsky Mirror claim; no contradiction.",
+        "Upstream finding filed: improvements/stellar-docs/sd-073-indexers-goldsky-mirror-stellar.md (status verified). The Stellar Indexers Overview says Goldsky Mirrors support Stellar, but Goldsky says Stellar is Turbo-only."
       ],
       "rootCause": [
-        "Plain freshness drift plus single-surface authoring: the 2026-06-29 review copied a roadmap date from the official Indexers Overview and pinned it instead of gating on a dated provider-status check.",
-        "The former Docs/provider disagreement resolved when the official Indexers Overview was updated to describe Alchemy as live.",
-        "solo://proj/49/todo/golden-corpus-health--901",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift: Goldsky moved Stellar from Mirror to Turbo-only pipelines after the 2026-08-04 golden; the official Stellar Indexers Overview still carries the old Mirror wording, so the golden copied a now-stale provider name.",
+        "improvements/stellar-docs/sd-073-indexers-goldsky-mirror-stellar.md"
       ]
     },
     "origin": "raven-next q-infra-which-indexer"

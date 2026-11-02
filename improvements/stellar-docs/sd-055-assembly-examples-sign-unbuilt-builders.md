@@ -10,6 +10,9 @@ evidence:
   - 2026-10-09 repeated-example scan
   - 2026-10-09 multi-party reproduction
   - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2906
+recurrences:
+  - date: 2026-11-02
+    evidence: golden audit pass 2 live recheck 2026-11-02 - stellar/stellar-docs main 7cb5e8a4 docs/build/guides/archival/restore-data-js.mdx line 62 still assigns prepTx = assembleTransaction(tx, sim) and line 63 still calls prepTx.sign(signer). Issue #2906 is open; PR #2933 is open, unmerged, mergeable_state blocked. The golden audit batch soroban-02 reported this recurrence.
 ---
 
 ## Finding

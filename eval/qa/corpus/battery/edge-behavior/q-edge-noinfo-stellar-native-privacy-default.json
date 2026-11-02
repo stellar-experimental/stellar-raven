@@ -5,7 +5,7 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nStellar has no network-wide switch, CLI flag, or account setting that makes all payments shielded by default. Ordinary Stellar transactions and standard asset/token activity are public by default. Privacy requires an explicit application or token protocol: current official material describes privacy pools and a **Testnet Confidential Tokens developer preview**; Confidential Tokens hide balances and transfer amounts but leave sender/receiver addresses public, while Stellar Private Payments is an unaudited research prototype with different visibility boundaries. BLS12-381 (CAP-0059/P22) and BN254/Poseidon (CAP-0074/0075/P25) are cryptographic primitives, not a global privacy mode. State each product's network, audit, and field-visibility status; do not fabricate enablement steps.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\nStellar has no network-wide switch, CLI flag, or account setting that makes all payments shielded by default. Ordinary Stellar transactions and standard asset/token activity are public by default. Privacy requires an explicit application or token protocol: current official material describes Stellar Private Payments, an unaudited Testnet developer preview of a privacy pool, and Confidential Tokens, whose audited OpenZeppelin v0.8.0 contracts SDF called ready to deploy on Mainnet on 2026-10-22. By design, Confidential Tokens hide balances and transfer amounts but leave sender/receiver addresses public; the current verifier accepts only non-zero-knowledge proofs, so OpenZeppelin does not guarantee that privacy yet. Stellar Private Payments has different visibility boundaries. BLS12-381 (CAP-0059/P22) and BN254/Poseidon (CAP-0074/0075/P25) are cryptographic primitives, not a global privacy mode. State each product's network, audit, and field-visibility status; do not fabricate enablement steps.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -14,10 +14,10 @@
     ],
     "avoid": [
       "Do NOT invent an enablement command or claim Stellar is shielded by default.",
-      "Do NOT say all application-layer balances/amounts must remain visible or imply Testnet/research prototypes are audited Mainnet products.",
+      "Do NOT say all application-layer balances/amounts must remain visible or imply unaudited Testnet previews are audited Mainnet products.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "GT-25 CORRECTION 2026-07-10: no global privacy toggle exists, but current optional applications can hide defined fields. Grade ordinary/default transparency plus explicit product network, audit, and visibility status; BN254/Poseidon are live P25 primitives, not a turnkey mode.\nGT-25 independently confirmed by processes 3268/3273."
+    "notes": "GT-25 CORRECTION 2026-07-10: no global privacy toggle exists, but current optional applications can hide defined fields. Grade ordinary/default transparency plus explicit product network, audit, and visibility status; BN254/Poseidon are live P25 primitives, not a turnkey mode.\nGT-25 independently confirmed by processes 3268/3273.\nREFRESH 2026-11-02: Confidential Tokens v0.8.0 contracts are audited and called Mainnet-ready, but the verifier accepts only non-zero-knowledge proofs. An answer that reports this limit does not fire the visibility avoid. The designated auditor can decrypt amounts by design. Do not credit a claim that a public observer can recover every amount from proofs or chain data; the sources say only that further leakage is not ruled out."
   },
   "tags": {
     "category": "edge-behavior",
@@ -32,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -53,6 +53,78 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0",
+        "note": "v0.8.0 release notes; stellar-confidential crate",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://crates.io/api/v1/crates/stellar-confidential",
+        "note": "stellar-confidential 0.8.0 created 2026-10-20T17:02:39Z",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/audits/Stellar%20Contracts%20Library%20v0.8.0%20Audit.pdf",
+        "note": "v0.8.0 audit report dated 2026-10-20; covers confidential contracts and circuits",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.openzeppelin.com/news/openzeppelin-brings-confidential-balances-and-transfers-to-stellar",
+        "note": "OpenZeppelin announcement 2026-10-22: audited and ready to deploy on Mainnet",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/confidential/README.md#L3-L5",
+        "note": "Package README: confidentiality, not anonymity",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/confidential/README.md#L97-L109",
+        "note": "Package README: non-ZK verifier limit",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/NethermindEth/rs-soroban-ultrahonk/blob/9aae9581/crates/ultrahonk-soroban-verifier/README.md#L3-L9",
+        "note": "Nethermind verifier README: non-ZK, no witness-hiding guarantee",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/NethermindEth/rs-soroban-ultrahonk/pull/38",
+        "note": "ZK verification PR; open and unmerged",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://x.com/StellarOrg/status/2113316554569892096",
+        "note": "@BuildOnStellar Mainnet-ready post, reposted by @StellarOrg",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.tokenpost.com/news/technology/38863",
+        "note": "Independent press report of the verifier limit",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Raven execute 2026-11-02T15:51:58Z: lumenloop.search_content_semantic ids 12624 and 8877; stellarDocs.search_docs hit privacy#confidential-tokens",
+        "note": "Lumenloop and Stellar Docs corroboration via Raven",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts#audited-modules-available",
+        "note": "Stellar Docs index: 'Proofs are not yet zero-knowledge'",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -73,28 +145,131 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, Stellar Private Payments is an unaudited Testnet-only developer preview, and Confidential Tokens by design hide balances and amounts while addresses stay public.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+            "observedAt": "2026-11-02",
+            "note": "'Stellar Private Payments is a developer preview. The contracts, SDKs, and demo linked below are unaudited — testnet only'."
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts#audited-modules-available",
+            "observedAt": "2026-11-02",
+            "note": "Stellar Docs index hit via Raven: 'Proofs are not yet zero-knowledge.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/confidential/README.md#L3-L5",
+            "observedAt": "2026-11-02",
+            "note": "'confidentiality, not anonymity — sender and recipient addresses remain visible on-chain; amounts and balances do not.' Recipients and auditors recover plaintext via per-transfer ECDH."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar",
+            "observedAt": "2026-11-02",
+            "note": "'they hide balances and transfer amounts while keeping sender and recipient addresses visible' (Parallel acquired 2026-10-01)."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, OpenZeppelin stellar-confidential v0.8.0 (released 2026-10-20) has audited contracts and circuits, and OpenZeppelin and SDF's Build on Stellar account said on 2026-10-22 that the contracts are ready to deploy on Mainnet; no primary record of a specific Mainnet deployment was found.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0",
+            "observedAt": "2026-11-02",
+            "note": "published_at 2026-10-20T16:58:32Z; new crate stellar-confidential: SEP-41 tokens with private balances and transfers."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/audits/Stellar%20Contracts%20Library%20v0.8.0%20Audit.pdf",
+            "observedAt": "2026-11-02",
+            "note": "Stellar Contracts RC v0.8.0 Audit, October 20, 2026; scope includes the Confidential Token token, verifier, and auditor registry contracts."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.openzeppelin.com/news/openzeppelin-brings-confidential-balances-and-transfers-to-stellar",
+            "observedAt": "2026-11-02",
+            "note": "Published 2026-10-22: 'The contracts are audited by OpenZeppelin and ready to be deployed on Stellar mainnet.' SDK and client tooling are an unaudited demo."
+          },
+          {
+            "class": "D",
+            "ref": "https://x.com/StellarOrg/status/2113316554569892096",
+            "observedAt": "2026-11-02",
+            "note": "@BuildOnStellar 2026-10-22 (reposted by @StellarOrg): 'Confidential Tokens are ready to be deployed on Stellar mainnet'."
+          },
+          {
+            "class": "C",
+            "ref": "Raven execute 2026-11-02T15:51:58Z: lumenloop.search_content_semantic ids 12624 and 8877; stellarDocs.search_docs hit privacy#confidential-tokens",
+            "observedAt": "2026-11-02",
+            "note": "Lumenloop 12624 summary: 'Available in v0.8.0 with audited smart contracts ready for mainnet deployment.'"
+          }
+        ]
+      },
+      {
+        "claim": "The rs-soroban-ultrahonk verifier used by Confidential Tokens accepts only non-ZK UltraHonk proofs and gives no witness-hiding guarantee; the ZK flavor (Nethermind PR #38) is open and unmerged as of 2026-11-02.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/confidential/README.md#L97-L109",
+            "observedAt": "2026-11-02",
+            "note": "'The verifier implements only the non-zk UltraHonk flavour ... This removes the plookup channel only and does not make proofs private. Whether other parts of a non-zk proof ... leak private values has not been established'."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/NethermindEth/rs-soroban-ultrahonk/blob/9aae9581/crates/ultrahonk-soroban-verifier/README.md#L3-L9",
+            "observedAt": "2026-11-02",
+            "note": "'Supported flavor: UltraKeccakFlavor — non-ZK, non-recursive ... It provides no witness-hiding guarantee ... UltraZKFlavor is not implemented.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/NethermindEth/rs-soroban-ultrahonk/pull/38",
+            "observedAt": "2026-11-02",
+            "note": "GitHub API: state open, merged false, merged_at null; last updated 2026-07-11; re-checked by the applier on 2026-11-02."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+            "observedAt": "2026-11-02",
+            "note": "'The current verifier accepts only non-zero-knowledge UltraHonk proofs, so OpenZeppelin does not guarantee that proofs keep balances and amounts private. Zero-knowledge verification is in progress.' (Parallel acquired 2026-10-27; Algolia snippet same wording 2026-11-02)"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.tokenpost.com/news/technology/38863",
+            "observedAt": "2026-11-02",
+            "note": "Dated 2026-10-23: 'the implementation cannot guarantee that balances and transfer amounts stay private on Stellar'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch confidential-tokens)",
       "evidence": [
-        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; both independently confirmed product/network/audit/field-visibility boundaries.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): shortened the source rule and split the default-privacy boundary; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/privacy supplies current official privacy guidance and product states.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar makes the preview date and deployment state visible.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/privacy describes Stellar as public and privacy as optional application tooling rather than a global mode.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar states that standard activity is public by default while optional products hide selected fields.",
-        "Sibling sweep 2026-08-29: grep shielded-by-default|global privacy|ordinary.*public|Privacy on Stellar|Confidential Tokens → q-scf-confidential-tokens-preview, q-sor-confidential-tokens, and q-edge-noinfo-stellar-native-privacy-default; no contradiction."
+        "Live 2026-11-02: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — 'While they're not yet approved for mainnet, the Confidential Token contract is live on testnet. ... while the contract and verifier audits are underway.' (June 29 boundary unchanged)",
+        "Live 2026-11-02: https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0 — published_at 2026-10-20T16:58:32Z; new crate stellar-confidential; https://crates.io/api/v1/crates/stellar-confidential — 0.8.0 created_at 2026-10-20T17:02:39Z",
+        "Live 2026-11-02: https://github.com/OpenZeppelin/stellar-contracts/blob/main/audits/Stellar%20Contracts%20Library%20v0.8.0%20Audit.pdf — 'Stellar Contracts RC v0.8.0 Audit | October 20, 2026'; '...does not guarantee zero knowledge property. Full witness confidentiality requires a ZK proving configuration and compatible verifier.'",
+        "Live 2026-11-02: https://www.openzeppelin.com/news/openzeppelin-brings-confidential-balances-and-transfers-to-stellar — 'The contracts are audited by OpenZeppelin and ready to be deployed on Stellar mainnet.' (published 2026-10-22); https://x.com/StellarOrg/status/2113316554569892096 — @BuildOnStellar 2026-10-22 'ready to be deployed on Stellar mainnet'",
+        "Live 2026-11-02: https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/confidential/README.md#L97-L109 — 'The verifier implements only the non-zk UltraHonk flavour ... does not make proofs private.'",
+        "Live 2026-11-02: https://github.com/NethermindEth/rs-soroban-ultrahonk/blob/9aae9581/crates/ultrahonk-soroban-verifier/README.md#L3-L9 — 'non-ZK, non-recursive ... no witness-hiding guarantee'",
+        "Live 2026-11-02: https://api.github.com/repos/NethermindEth/rs-soroban-ultrahonk/pulls/38 — state open, merged false (re-checked by the applier 2026-11-02)",
+        "Live 2026-11-02: https://developers.stellar.org/docs/build/apps/privacy — 'The current verifier accepts only non-zero-knowledge UltraHonk proofs, so OpenZeppelin does not guarantee that proofs keep balances and amounts private.'",
+        "Live 2026-11-02: Raven execute 2026-11-02T15:51:58Z: lumenloop.search_content_semantic ids 12624 and 8877; stellarDocs.search_docs hit privacy#confidential-tokens — Lumenloop 12624 'audited smart contracts ready for mainnet deployment'",
+        "Live 2026-11-02: D sweep (Parallel web_search, parallel-cli, Perplexity) — every primary says 'ready to be deployed'; no primary record of a specific Mainnet confidential-token deployment; https://www.tokenpost.com/news/technology/38863 reports the verifier limit",
+        "Sibling sweep 2026-11-02: grep 'confidential token|stellar-confidential|ultrahonk|privacy|shielded' over eval/qa/corpus/battery → q-scf-confidential-tokens-preview, q-sor-confidential-tokens, q-edge-noinfo-stellar-native-privacy-default (this batch, made consistent); q-scout-hackathon-brief-first-hour (topic only in question), q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-protocol-bls12-381-cap59, q-zk-nullifier-storage — no contradiction.",
+        "Live 2026-11-02: https://developers.stellar.org/docs/build/apps/privacy — 'Stellar Private Payments is a developer preview. The contracts, SDKs, and demo linked below are unaudited — testnet only'",
+        "Live 2026-11-02: stellarDocs.search_docs → https://developers.stellar.org/docs/tools/openzeppelin-contracts#audited-modules-available — 'Proofs are not yet zero-knowledge. See Confidential Tokens for resources and current limitations'"
       ],
       "rootCause": [
-        "Eval-side freshness and layer-boundary drift; official docs are current and discoverable.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "eval-side authoring flaw: unconditional privacy claim (.agents/TODO.md — Qualify the Confidential Tokens privacy claim in three goldens)"
       ]
     },
     "origin": "raven-next q-edge-noinfo-stellar-native-privacy-default"

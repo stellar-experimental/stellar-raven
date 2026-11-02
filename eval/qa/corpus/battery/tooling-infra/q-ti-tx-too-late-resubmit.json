@@ -113,25 +113,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-04)",
       "evidence": [
-        "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently retained the duplicate/hash guard; blind helper 3388 supplied the exact fee/sequence/failure-stage scope before seal.",
-        "Sibling sweep checked classic submission errors, sequence ordering, finality, fee bump/channel accounts and Soroban simulation; no blanket no-fee/no-sequence rule is applied to fee-bump inner results or post-inclusion failures.",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep tx_too_late|txTOO_LATE|expired maxTime|fee bump → q-ti-tx-too-late-resubmit, q-pc-fee-bump-channel-accounts-feepool, q-ti-java-sdk-wallet-feebump; no contradiction",
-        "Structural re-form (compound-predicate): Recast five capped facts as single-predicate lists; truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions — txTOO_LATE/maxTime remained distinct from txBAD_SEQ.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — ordinary outer precondition rejection still consumed no sequence or on-chain fee; existing avoids retain concurrency, fee-bump, and post-inclusion scope.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — ambiguous submission still required old-hash and account-state polling without treating an early miss as final.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — an absent expired transaction still required current sequence/fee, future bounds, Soroban re-simulation/signing, and new-hash tracking.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — sequence, fee, bounds, and signatures remained signed transaction content requiring idempotent intent protection.",
-        "Sibling sweep 2026-08-27: grep txTOO_LATE|tx_too_late|maxTime|txBAD_SEQ → q-ti-tx-too-late-resubmit; no contradiction"
+        "Verification-only event 2026-11-02: no judge-facing field changed.",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp — 'if (tb->maxTime && (tb->maxTime < (closeTime.timePoint() + upperBoundCloseTimeOffset))) ... txResult.setInnermostError(txTOO_LATE);' (validity check before apply)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions — 'tx_too_late txTOO_LATE The ledger closeTime was after the maxTime.' and 'tx_bad_seq txBAD_SEQ sequence number does not match source account'",
+        "Scope 2026-11-02: the transaction lifecycle page was not re-fetched; the claims are protocol-stable and no drift was found.",
+        "Sibling sweep 2026-11-02: no battery sibling restates txTOO_LATE resubmission semantics against this case; no contradiction."
       ],
       "rootCause": [
-        "Eval-side lifecycle precision gap: transaction hash lookup, unchanged-envelope resubmission, precondition expiry, sequence/fee consumption and fee-bump/post-inclusion stages were treated as one failure state.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; Core source and the official result-code page were re-read."
       ]
     },
     "origin": "raven-next q-ti-tx-too-late-resubmit"

@@ -8,7 +8,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "For an ordinary P23 invocation, simulate the intended InvokeHostFunction transaction. RPC discovers archived Persistent/Instance read-write entries and populates `archivedSorobanEntries`; assemble, sign, and submit that same invoke, which restores and executes atomically. Simulation itself does not mutate state. `restorePreamble` is normally nil in this path; a separate RestoreFootprintOp plus retry is a rare/manual size or fee-management fallback. Temporary entries cannot be restored. Restoration sets `liveUntilLedger = currentLedger + minPersistentTTL - 1` (current initial 4096 means current + 4095). `extendTo` is a relative offset: `newLiveUntilLedger = currentLedger + extendTo`, and Core requires `extendTo <= maxEntryTTL - 1` (current initial max 1,054,080 means max offset 1,054,079). Read live network config rather than freezing these numeric settings. Event/history retention is unrelated.",
+    "answer": "For an ordinary P23 invocation, simulate the intended InvokeHostFunction transaction. RPC discovers archived Persistent/Instance read-write entries and populates `archivedSorobanEntries`; assemble, sign, and submit that same invoke, which restores and executes atomically. Simulation itself does not mutate state. `restorePreamble` is normally nil in this path; a separate RestoreFootprintOp plus retry is a rare/manual size or fee-management fallback. Temporary entries cannot be restored. Restoration sets `liveUntilLedger = currentLedger + minPersistentTTL - 1` (as of 2026-11-02, Mainnet minPersistentTTL 2,073,600 gives current + 2,073,599; Core's initial default 4096 gives current + 4095). `extendTo` is a relative offset: `newLiveUntilLedger = currentLedger + extendTo`, and Core requires `extendTo <= maxEntryTTL - 1` (as of 2026-11-02, Mainnet and Testnet maxEntryTTL 3,110,400 gives a max offset of 3,110,399; Core's initial default 1,054,080 gives 1,054,079). Read live network config rather than freezing these numeric settings. Event/history retention is unrelated.",
     "keyFacts": [
       "Uses archivedSorobanEntries and one submitted invoke for normal P23 restoration/execution.",
       "States exact restore and relative extendTo formulas with max-minus-one bound."
@@ -16,7 +16,7 @@
     "avoid": [
       "Do NOT call extendTo an absolute ledger, require restorePreamble/separate retry for normal P23, restore Temporary data, or mix event retention into state TTL."
     ],
-    "notes": "Phase 3 tightened auto-restore wording against current Stellar docs: archived entries are restored before host execution only when included in the transaction restore list, usually populated by RPC simulation.\nAlso good if the answer: Gives the three-step restore/extend flow: identify entries, build footprint operation, simulate/fill fees, submit and retry the original action. | Mentions SDK `extend_ttl(min_ttl, extend_to)` / persistent `extend_ttl(&key, min_ttl, extend_to)` for proactive extension.\nGolden cites: Official state archival docs for Protocol 23 auto-restore and restore/extend workflow. | Official Soroban storage docs or SDK docs for temporary vs persistent/instance TTL behavior.\nGT-42 blind corrected the primary addendum: current normal auto-restore uses archivedSorobanEntries with restorePreamble nil.\nAccurately quoting the official Stellar documentation on `restorePreamble` as the normal P23 path is not a wrong claim while a cached or older copy still shows that pre-2026-07-27 path; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "Phase 3 tightened auto-restore wording against current Stellar docs: archived entries are restored before host execution only when included in the transaction restore list, usually populated by RPC simulation.\nAlso good if the answer: Gives the three-step restore/extend flow: identify entries, build footprint operation, simulate/fill fees, submit and retry the original action. | Mentions SDK `extend_ttl(min_ttl, extend_to)` / persistent `extend_ttl(&key, min_ttl, extend_to)` for proactive extension.\nGolden cites: Official state archival docs for Protocol 23 auto-restore and restore/extend workflow. | Official Soroban storage docs or SDK docs for temporary vs persistent/instance TTL behavior.\nGT-42 blind corrected the primary addendum: current normal auto-restore uses archivedSorobanEntries with restorePreamble nil.\nNumeric TTL settings are dated examples; grade the restore and extendTo formulas, the max-minus-one bound, and the re-query behavior, not one figure.\nAccurately quoting the official Stellar documentation on `restorePreamble` as the normal P23 path is not a wrong claim while a cached or older copy still shows that pre-2026-07-27 path; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "soroban",
@@ -30,8 +30,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2027-02-18",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-16",
     "sources": [
       {
         "class": "B",
@@ -52,6 +52,24 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-rpc",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "POST https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org getLedgerEntries key AAAACAAAAAo= (CONFIG_SETTING_STATE_ARCHIVAL)",
+        "note": "Quote: Mainnet ledger 65270335: maxEntryTTL 3110400, minTemporaryTTL 17280, minPersistentTTL 2073600; Testnet ledger 5522764: maxEntryTTL 3110400, minTemporaryTTL 720, minPersistentTTL 120960",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+        "note": "Quote: Max entry TTL | 3,110,400 ledgers ≈ 180 d; Min TTL: persistent/instance create or restore | 2,073,600 ledgers ≈ 120 d",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/ExtendFootprintTTLOpFrame.cpp, RestoreFootprintOpFrame.cpp, src/ledger/NetworkConfig.h",
+        "note": "Quote: getLedgerSeq() + mOpFrame.mExtendFootprintTTLOp.extendTo; if (extendTo > maxEntryTTL - 1) ...; ledgerSeq + archivalSettings.minPersistentTTL - 1; MAXIMUM_ENTRY_LIFETIME = 1'054'080; MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4'096",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -78,20 +96,46 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Live state-archival settings as of 2026-11-02: Mainnet minPersistentTTL 2,073,600 and maxEntryTTL 3,110,400 (Testnet maxEntryTTL 3,110,400); Core initial defaults are 4096 and 1,054,080.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "POST https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org getLedgerEntries CONFIG_SETTING_STATE_ARCHIVAL (key AAAACAAAAAo=)",
+            "observedAt": "2026-11-02",
+            "note": "Mainnet ledger 65270335: maxEntryTTL 3110400, minPersistentTTL 2073600; Testnet ledger 5522764: maxEntryTTL 3110400, minPersistentTTL 120960."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+            "observedAt": "2026-11-02",
+            "note": "Max entry TTL 3,110,400 ledgers; Min TTL persistent/instance create or restore 2,073,600 ledgers."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/ledger/NetworkConfig.h",
+            "observedAt": "2026-11-02",
+            "note": "Initial defaults MAXIMUM_ENTRY_LIFETIME = 1'054'080; MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4'096; ExtendFootprintTTLOpFrame.cpp enforces extendTo <= maxEntryTTL - 1."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-42 processes 3308/3315.",
-        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
-        "Reviewed improvements/resolved.json entry sd-007 — fixed 2026-07-27; older documentation can present restorePreamble as the normal P23 path.",
-        "Sibling sweep 2026-08-27: grep archivedSorobanEntries|restorePreamble|auto-restore|RestoreFootprint|extendTo → q-infra-simulate-transaction-howto, q-protocol-operation-types-list, q-sor-classic-dex-from-contract, q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto, q-sor-ttl-defaults-extend, q-soroban-simulate-resource-fee, q-soroban-storage-types, q-soroban-vuln-classes; no contradiction"
+        "POST https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org getLedgerEntries key AAAACAAAAAo= (CONFIG_SETTING_STATE_ARCHIVAL) — \"Mainnet ledger 65270335: maxEntryTTL 3110400, minTemporaryTTL 17280, minPersistentTTL 2073600; Testnet ledger 5522764: maxEntryTTL 3110400, minTemporaryTTL 720, minPersistentTTL 120960\" (class F, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits — \"Max entry TTL | 3,110,400 ledgers ≈ 180 d; Min TTL: persistent/instance create or restore | 2,073,600 ledgers ≈ 120 d\" (class A, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/ExtendFootprintTTLOpFrame.cpp, RestoreFootprintOpFrame.cpp, src/ledger/NetworkConfig.h — \"getLedgerSeq() + mOpFrame.mExtendFootprintTTLOp.extendTo; if (extendTo > maxEntryTTL - 1) ...; ledgerSeq + archivalSettings.minPersistentTTL - 1; MAXIMUM_ENTRY_LIFETIME = 1'054'080; MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4'096\" (class B, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — \"In practice, this list is usually populated by the contract invocation simulation ... When the resulting InvokeHostFunction operation executes, those entries are restored first, and then the host function runs; ... The restored entry will have its live until ledger extended to ... current_ledger_number + 4095 for persistent entries.\" (class A, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-sor-ttl-defaults-extend (batch soroban-03) dates Mainnet 2,073,600/3,110,400 as of 2026-07-10, consistent with the new text; q-sor-force-fast-archival-localnet — no contradiction.",
+        "Independent verifier decisions: /private/tmp/claude-501/golden-audit/verify/soroban-02.json; proposer matrix: /private/tmp/claude-501/golden-audit/matrices/soroban-02.json."
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-007-state-archival-auto-restore-ambiguity.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        "Eval-side authoring flaw (eval-authoring): the golden labeled Core's initial-config TTL constants (4096, 1,054,080) as current values, mirroring the state-archival docs sentence 'current_ledger_number + 4095'; live Mainnet config is 2,073,600 / 3,110,400.",
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-sor-p23-auto-restore-extendto"

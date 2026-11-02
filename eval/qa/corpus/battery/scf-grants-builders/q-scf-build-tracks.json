@@ -6,7 +6,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nCurrent SCF Build has three tracks: **Open, Integration, and RFP**; Resubmission is a path, not a fourth track. **Open** is for experienced builders proposing novel Stellar protocols/apps and may include existing traction or deep demonstrated technical knowledge; its project award decision is the only one of the three that goes to community/NQG vote. **Integration** funds work on existing Stellar building blocks or teams with significant traction. Community input may help select Integration building blocks, but individual Integration awards are reviewer/panel decisions. **RFP** funds work against published ecosystem tooling/service needs and is also reviewer/panel selected. Current cap and typical duration are up to $150K in XLM value and roughly 3–6 months.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\nCurrent SCF Build has three tracks: **Open, Integration, and RFP**; Resubmission is a path, not a fourth track. **Open** is for experienced builders proposing novel Stellar protocols/apps and may include existing traction or deep demonstrated technical knowledge; its project award decision is the only one of the three that goes to community/NQG vote. **Integration** funds work on existing Stellar building blocks or teams with significant traction. Community input may help select Integration building blocks, but individual Integration awards are reviewer/panel decisions. **RFP** funds work against published ecosystem tooling/service needs and is also reviewer/panel selected. Current cap and typical duration are up to $150K in XLM value and roughly 3–6 months.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents the content as a current or dated source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -19,7 +19,7 @@
       "Do NOT claim every track's projects are community-voted or that Integration building-block input equals a project award vote.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "GT-36 CORRECTION 2026-07-10: Open is not brand-new-build-only. Grade the three track identities and distinguish Open project voting, Integration building-block input, and reviewer-selected Integration/RFP awards.\nGT-36 independently confirmed by processes 3290/3291."
+    "notes": "GT-36 CORRECTION 2026-07-10: Open is not brand-new-build-only. Grade the three track identities and distinguish Open project voting, Integration building-block input, and reviewer-selected Integration/RFP awards.\nGT-36 independently confirmed by processes 3290/3291.\nCLARIFICATION 2026-11-02: the Build Award overview page says the Open Track is for \"All-star teams with a plan to build something brand-new on Stellar\", while the Open Track page also admits \"Projects with existing traction\". Quoting \"brand-new\" with attribution does not fire the first avoid; only a claim that Open excludes existing-traction projects does."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -33,7 +33,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -54,6 +54,18 @@
         "class": "A",
         "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+        "note": "\"The Open Track is for: * All-star teams with a plan to build something brand-new on Stellar.\"; \"SCF Build consists of 3 distinct tracks: Open, Integration, and RFP.\" (last edits 0d5dbc1269 2026-08-14, 1e04b79973 2026-07-23)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/open-track.md",
+        "note": "\"Projects with existing traction or deep, proven Stellar / domain knowledge\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -75,33 +87,54 @@
           }
         ],
         "note": "Legacy verdict: confirmed-with-qualification."
+      },
+      {
+        "claim": "The Build overview calls Open for teams building something brand-new, while the Open Track page also admits projects with existing traction.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact: \"The Open Track is for: * All-star teams with a plan to build something brand-new on Stellar.\""
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/open-track.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact: \"Projects with existing traction or deep, proven Stellar / domain knowledge\""
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+            "observedAt": "2026-11-02",
+            "note": "Via Perplexity: \"The Open Track is open to all builders, with no requirement to integrate a pre-defined building block\""
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
       "evidence": [
-        "Solo scratchpad 575 GT-36 primary 3290 and blind 3291.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Open track|Integration track|RFP track → q-scf-build-tracks, q-scf-how-to-apply, q-scf-nqg-voting, q-scf-open-rfps; no contradiction",
-        "Structural re-form (long-fact): Shortened the source-presentation and voting distinctions; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current handbook supports a source-grounded observation of the Build tracks and process.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current handbook shows changeable track, process, award, and duration content that requires a visible observation date.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the handbook names Open, Integration, and RFP as the three Build tracks.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the handbook presents resubmission after non-selection rather than as a fourth track.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/quarterly-governance-process — the review table separates Open project voting from panel-only Integration and RFP awards; the process gives community delegates Integration-list input.",
-        "Sibling sweep 2026-08-29: grep Open Track|Integration Track|RFP Track|Resubmission → q-scf-how-to-apply, q-scf-nqg-voting, q-scf-open-rfps, q-scf-eligibility-criteria, and q-scf-build-tracks; no contradiction"
+        "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md (observedAt 2026-11-02): \"SCF Build consists of 3 distinct tracks: Open, Integration, and RFP.\"; \"The Open Track is for: * All-star teams with a plan to build something brand-new on Stellar.\"; \"Community Vote (for Open Track only)\"; \"Award size: up to $150,000 worth of XLM\"; \"Typically 3–6 months per project\"",
+        "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/open-track.md (observedAt 2026-11-02): \"Projects with existing traction or deep, proven Stellar / domain knowledge\"",
+        "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/README.md (observedAt 2026-11-02): latest commits 0d5dbc1269 2026-08-14, 1e04b79973 2026-07-23",
+        "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award (observedAt 2026-10-14): \"SCF Build consists of 3 distinct tracks: Open, Integration, and RFP.\"",
+        "https://communityfund.stellar.org/awards (observedAt 2026-10-22): \"$150K in XLM* Max. Award Amount\"",
+        "Independent verifier: accepted notes clarification and asOf.",
+        "Sibling sweep 2026-11-02: grep 'brand-new|Open track' -> q-scf-how-to-apply (\"novel or brand-new ... with existing traction\"; consistent), q-scf-build-award-cap, q-scf-v7-changes, q-scf-open-rfps, q-scf-rfp-tooling; no contradiction.",
+        "Pass 2 live B 2026-11-02: stellar/scf-handbook main (latest commit e07b4bfce1 2026-10-16) scf-awards/build-award/README.md -- 'SCF Build consists of 3 distinct tracks: Open, Integration, and RFP.'; 'Award size: up to $150,000 worth of XLM'; 'Typically 3–6 months per project'; 'Community Vote (for Open Track only)'; 'For RFP and Integration tracks, these minor changes may be requested by reviewers before making a final decision about funding.'",
+        "Pass 2 live B 2026-11-02: scf-handbook open-track.md -- 'Projects with existing traction or deep, proven Stellar / domain knowledge'; integration-track/README.md -- 'leveraging existing building blocks on Stellar' and 'Submissions are reviewed by 2 reviewers from that quarter's Category Delegate Panel.'; rfp-track.md -- 'Submissions are reviewed by 2 reviewers from that quarter's Category Delegate Panel.'; resubmission.md -- 'If your project wasn't selected for funding, you can submit it again'.",
+        "Pass 2 live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award (HTTP 200) -- 'SCF Build consists of 3 distinct tracks: Open, Integration, and RFP.'; 'Community Vote (for Open Track only)'; 'Typically 3–6 months per project'; .../integration-track -- 'Submissions are reviewed by 2 reviewers from that quarter's Category Delegate Panel.'",
+        "Pass 2 change: golden.answer snapshot date moved from 2026-07-10 to 2026-11-02 to match the content re-verified on 2026-11-02 and truth.asOf.",
+        "Pass 2 sibling sweep 2026-11-02: q-scf-v7-changes (its own 2026-07-10 snapshot; same three tracks), q-scf-how-to-apply, q-scf-build-award-cap ($150K); no contradiction.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.answer: Every answer claim re-derived on 2026-11-02 across A (rendered handbook, communityfund.stellar.org) and B (handbook source, last build-award commit e07b4bfce1 2026-10-16): three tracks; Resubmission is a path; Open admits existing traction and alone goes to Community Vote; Integration and RFP are Panel Review only; delegates vet Integration building blocks; up to $150,000 in XLM; typically 3–6 months. Only the snapshot date moves. Open item for the applier, not part of this change: the answer carries dated volatile values ($150K cap, 3–6 months) under tags.freshness 'live'. The task rule says such a case is tagged 'scheduled' with a truth.reverifyBy; that needs its own gospel step (reverifyBy not before 2026-11-10).",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+]: Accurate: truth.asOf is 2026-11-02 while the answer said 'As of 2026-07-10'."
       ],
       "rootCause": [
-        "Eval-side shorthand collapsed track eligibility and the object of community input.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side authoring flaw: avoid[0] did not account for the official Build overview page's own \"brand-new\" wording, so an attributed quote risked a false avoid hit.",
+        "Eval-side authoring flaw: pass-1 re-verification moved truth.asOf to 2026-11-02 but left the answer's 'As of 2026-07-10' snapshot date; the answer content was re-verified live on 2026-11-02."
       ]
     },
     "origin": "raven-next q-scf-build-tracks"

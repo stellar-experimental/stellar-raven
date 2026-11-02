@@ -33,8 +33,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
-    "reverifyBy": "2026-11-26",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-20",
     "sources": [
       {
         "class": "A",
@@ -60,6 +60,18 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-rpc",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/main/Config.cpp and src/ledger/NetworkConfig.h",
+        "note": "Quote: TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME < MinimumSorobanNetworkConfig::MINIMUM_PERSISTENT_ENTRY_LIFETIME (=10) throws; TESTING_STARTING_EVICTION_SCAN_LEVEL readInt(item, 1, ...); OVERRIDE_EVICTION_PARAMS_FOR_TESTING, TESTING_EVICTION_SCAN_SIZE, TESTING_MAX_ENTRIES_TO_ARCHIVE, ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING keys present",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go and internal/ledgerentries/ledgerentries.go",
+        "note": "Quote: require.Nil(t, response.RestorePreamble) // But the autorestore vector should not ... require.NotEmpty(t, transactionData.Ext.ResourceExt.ArchivedSorobanEntries); \"We use TTL placeholder of 0 for archived entries.\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -89,22 +101,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-42 primary 3308 and blind 3315, 2026-07-10/11.",
-        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
-        "Reviewed improvements/resolved.json entry sd-007 — fixed 2026-07-27; older documentation can require a separate restore-then-retry P23 flow.",
-        "Sibling sweep 2026-08-27: grep archivedSorobanEntries|restorePreamble|auto-restore|RestoreFootprint|extendTo → q-infra-simulate-transaction-howto, q-protocol-operation-types-list, q-sor-classic-dex-from-contract, q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto, q-sor-ttl-defaults-extend, q-soroban-simulate-resource-fee, q-soroban-storage-types, q-soroban-vuln-classes; no contradiction",
-        "Structural re-form (compound-predicate): split P23 automatic restoration from Temporary-data permanence; no claim changed.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — confirmed archivedSorobanEntries-driven same-transaction Protocol 23 restoration.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — confirmed Temporary data is deleted and unrestorable after expiry.",
-        "Sibling sweep 2026-08-27: grep archivedSorobanEntries|P23|Temporary|auto-restore → q-sor-p23-auto-restore-extendto, q-sor-ttl-defaults-extend, q-soroban-storage-types, q-infra-simulate-transaction-howto; no contradiction"
+        "https://raw.githubusercontent.com/stellar/stellar-core/master/src/main/Config.cpp and src/ledger/NetworkConfig.h — \"TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME < MinimumSorobanNetworkConfig::MINIMUM_PERSISTENT_ENTRY_LIFETIME (=10) throws; TESTING_STARTING_EVICTION_SCAN_LEVEL readInt(item, 1, ...); OVERRIDE_EVICTION_PARAMS_FOR_TESTING, TESTING_EVICTION_SCAN_SIZE, TESTING_MAX_ENTRIES_TO_ARCHIVE, ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING keys present\" (class B, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go and internal/ledgerentries/ledgerentries.go — \"require.Nil(t, response.RestorePreamble) // But the autorestore vector should not ... require.NotEmpty(t, transactionData.Ext.ResourceExt.ArchivedSorobanEntries); \"We use TTL placeholder of 0 for archived entries.\"\" (class B, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — \"In practice, this list is usually populated by the contract invocation simulation ... When the resulting InvokeHostFunction operation executes, those entries are restored first, and then the host function runs; ... The restored entry will have its live until ledger extended to ... current_ledger_number + 4095 for persistent entries.\" (class A, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-sor-p23-auto-restore-extendto and q-sor-ttl-defaults-extend — no contradiction; no gospel change.",
+        "Independent verifier decisions: /private/tmp/claude-501/golden-audit/verify/soroban-02.json; proposer matrix: /private/tmp/claude-501/golden-audit/matrices/soroban-02.json."
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-007-state-archival-auto-restore-ambiguity.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-sor-force-fast-archival-localnet"

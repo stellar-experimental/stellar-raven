@@ -41,22 +41,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-03)",
       "evidence": [
-        "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.",
-        "skills.lumenloop.stellar-ecosystem-scout exists and supports the behavioral golden.",
-        "Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.lumenloop.stellar-ecosystem-scout'). Same bytes, re-verified by digest; only the pointer notation changed.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened the ecosystem-workflow fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-ecosystem-scout/SKILL.md — the pinned source defines keyword seeding, semantic expansion, canonical project rows, vocabularies, and related content.",
-        "Sibling sweep 2026-08-29: grep stellar-ecosystem-scout|semantic expansion|canonical details|structured landscape → q-defi-skill-ecosystem-scout; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "2026-11-02 [B] https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-ecosystem-scout/SKILL.md — \"Pass 1 Frame get_categories/get_regions/get_project_tags_vocabulary; Pass 2 Seed short search_directory; Pass 3 Grow find_similar_projects_semantic; Pass 4 Narrate search_content_semantic; Pass 5 Detail get_project compact\" (proposer claim, confirmed: The served skill defines the workflow the golden names.)",
+        "2026-11-02 [C] Raven codemode.skill.read('skills.lumenloop.stellar-ecosystem-scout') observed 2026-11-02 — \"ok; ~10.3k chars; sections listed\" (proposer claim, confirmed: The served skill defines the workflow the golden names.)",
+        "No gospel change: proposer verdict 'unchanged'; every answer, keyFact, and avoid claim was re-checked against the sources above on 2026-11-02 (proposer only; the verifier reviewed proposed changes only).",
+        "No sibling sweep needed: corpus-grounded skill case; no gospel change."
       ]
     },
     "origin": "authored 2026-07 (coverage)"

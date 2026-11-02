@@ -7,11 +7,11 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- **`AUTH_REQUIRED`** — the issuer must **approve a trustline** before an account can hold/receive the\n  asset [1].\n- **`AUTH_REVOCABLE`** — the issuer can **revoke/freeze** an existing trustline's authorization (downgrade\n  to limited or remove it) [1].\n- **`AUTH_CLAWBACK_ENABLED`** — every subsequent trustline is clawback-enabled, letting the issuer **claw\n  back / burn** the asset from any holder; the docs state this flag **requires `AUTH_REVOCABLE` to also be\n  set** [1][2].\n- **`AUTH_IMMUTABLE`** — **locks** the authorization flags (and blocks account merge) once set; finalizes\n  the asset's governance posture [1].\n- Flags are managed via the **`set_options`** operation (account-level) and **`set_trust_line_flags`**\n  (per-trustline) [1].\n\nSources: [1] developers.stellar.org control-asset-access; [2] clawbacks guide.",
+    "answer": "- **`AUTH_REQUIRED`** — the issuer must **approve a trustline** before an account can hold/receive the\n  asset [1].\n- **`AUTH_REVOCABLE`** — the issuer can **revoke/freeze** an existing trustline's authorization (downgrade\n  to limited or remove it) [1].\n- **`AUTH_CLAWBACK_ENABLED`** — every subsequent trustline is clawback-enabled, letting the issuer **claw\n  back / burn** the asset from holders on those trustlines; the docs state this flag **requires `AUTH_REVOCABLE` to also be\n  set** [1][2].\n- **`AUTH_IMMUTABLE`** — **locks** the authorization flags (and blocks account merge) once set; finalizes\n  the asset's governance posture [1].\n- Flags are managed via the **`set_options`** operation (account-level) and **`set_trust_line_flags`**\n  (per-trustline) [1].\n\nSources: [1] developers.stellar.org control-asset-access; [2] clawbacks guide.",
     "keyFacts": [
       "AUTH_REQUIRED needs issuer approval before a holder's trustline receives or holds assets.",
       "Lists AUTH_REVOCABLE (issuer can revoke/freeze an existing trustline's authorization).",
-      "AUTH_CLAWBACK_ENABLED lets the issuer claw back or burn any holder's asset balance.",
+      "AUTH_CLAWBACK_ENABLED lets the issuer burn balances on trustlines created after it is set.",
       "Lists AUTH_IMMUTABLE (locks the authorization flags / prevents further changes once set)."
     ],
     "avoid": [
@@ -42,22 +42,100 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+        "note": "Golden audit 2026-11-02 verifier: \"With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any *subsequent* trustlines established with this account will have clawbacks enabled. ... Note that this flag requires that revocable is also set.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+        "note": "Golden audit 2026-11-02 verifier: \"This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You can only clear a flag, not set it. So clearing a clawback flag on a trustline is irreversible.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+        "note": "Golden audit 2026-11-02 verifier: \"In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline. ... `TRUSTLINE_CLAWBACK_ENABLED_FLAG`, that is set at the time the trustline is created if the issuer account of the asset of the trustline has its `AUTH_CLAWBACK_ENABLED_FLAG` flag set.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ClawbackOpFrame.cpp",
+        "note": "Golden audit 2026-11-02 verifier: \"if (!isClawbackEnabledOnTrustline(trust)) { innerResult(res).code(CLAWBACK_NOT_CLAWBACK_ENABLED); return false; }\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "Raven stellarDocs.search_docs 'AUTH_CLAWBACK_ENABLED subsequent trustlines clawback' -> https://developers.stellar.org/docs/tokens/control-asset-access#clawback-enabled-0x8",
+        "note": "Golden audit 2026-11-02 verifier: \"With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any subsequent trustlines established with this account will have clawbacks enabled.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Perplexity perplexity_ask (cites developers.stellar.org clawbacks, stellaratlas.net/protocol/cap-0035)",
+        "note": "Golden audit 2026-11-02 verifier: \"Setting `AUTH_CLAWBACK_ENABLED` does not make previously established trustlines clawback-enabled. The issuer can claw back from a trustline only if that trustline has `TRUSTLINE_CLAWBACK_ENABLED_FLAG`\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): shortened the AUTH_REQUIRED and AUTH_CLAWBACK_ENABLED descriptions; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx — the official source requires issuer approval before an account can hold the asset.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx — the official source lets the issuer claw back and burn asset amounts from recipient balances.",
-        "Sibling sweep 2026-08-29: grep AUTH_REQUIRED|AUTH_CLAWBACK_ENABLED → q-aas-issuer-fees-supply-cap-freeze, q-asset-issue-asset-howto, q-comp-anchor-compliance-stack, q-comp-auth-flags-overview, q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-comp-sep8-regulated-assets-approval-server, q-sep-8-regulated-assets, q-sep-clawback-prereq-flag; no contradiction."
+        "Verifier golden.keyFacts[2]: Live re-check 2026-11-02: https://developers.stellar.org/docs/tokens/control-asset-access — \"With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any *subsequent* trustlines established with this account will have clawbacks enabled. ... Note that this flag requires that revocable is also set.\" (class A)",
+        "Verifier golden.keyFacts[2]: Live re-check 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — \"This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You can only clear a flag, not set it. So clearing a clawback flag on a trustline is irreversible.\" (class A)",
+        "Verifier golden.keyFacts[2]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md — \"In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline. ... `TRUSTLINE_CLAWBACK_ENABLED_FLAG`, that is set at the time the trustline is created if the issuer account of the asset of the trustline has its `AUTH_CLAWBACK_ENABLED_FLAG` flag set.\" (class B)",
+        "Verifier golden.keyFacts[2]: Live re-check 2026-11-02: https://github.com/stellar/stellar-core/blob/master/src/transactions/ClawbackOpFrame.cpp — \"if (!isClawbackEnabledOnTrustline(trust)) { innerResult(res).code(CLAWBACK_NOT_CLAWBACK_ENABLED); return false; }\" (class B)",
+        "Verifier golden.keyFacts[2]: Live re-check 2026-11-02T16:19:58.705Z: Raven stellarDocs.search_docs 'AUTH_CLAWBACK_ENABLED subsequent trustlines clawback' -> https://developers.stellar.org/docs/tokens/control-asset-access#clawback-enabled-0x8 — \"With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any subsequent trustlines established with this account will have clawbacks enabled.\" (class E)",
+        "Verifier golden.keyFacts[2]: Live re-check 2026-11-02: Perplexity perplexity_ask (cites developers.stellar.org clawbacks, stellaratlas.net/protocol/cap-0035) — \"Setting `AUTH_CLAWBACK_ENABLED` does not make previously established trustlines clawback-enabled. The issuer can claw back from a trustline only if that trustline has `TRUSTLINE_CLAWBACK_ENABLED_FLAG`\" (class D)",
+        "Verifier golden.answer: Live re-check 2026-11-02: https://developers.stellar.org/docs/tokens/control-asset-access — \"With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any *subsequent* trustlines established with this account will have clawbacks enabled. ... Note that this flag requires that revocable is also set.\" (class A)",
+        "Verifier golden.answer: Live re-check 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — \"This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You can only clear a flag, not set it. So clearing a clawback flag on a trustline is irreversible.\" (class A)",
+        "Verifier golden.answer: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md — \"In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline. ... `TRUSTLINE_CLAWBACK_ENABLED_FLAG`, that is set at the time the trustline is created if the issuer account of the asset of the trustline has its `AUTH_CLAWBACK_ENABLED_FLAG` flag set.\" (class B)",
+        "Proposer golden.notes (flag values) [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x — \"AUTH_REQUIRED_FLAG = 0x1 ... AUTH_REVOCABLE_FLAG = 0x2 ... AUTH_IMMUTABLE_FLAG = 0x4 ... AUTH_CLAWBACK_ENABLED_FLAG = 0x8\" (class B)",
+        "Proposer golden.notes (flag values) [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx — \"#### Authorization Required (0x1) ... #### Clawback Enabled (0x8) ... #### Authorization Immutable (0x4)\" (class A)",
+        "Proposer golden.keyFacts[2] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx — \"With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any _subsequent_ trustlines established with this account will have clawbacks enabled.\" (class A)",
+        "Proposer golden.keyFacts[2] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline.\" (class B)",
+        "Proposer golden.keyFacts[2] [contradicted]: Live re-check 2026-11-02: https://stellar.org/blog/developers/protocol-17-improvements — \"Asset clawback also can't be retroactively applied, so it won't impact any assets that currently exist on the network.\" (class A)",
+        "Proposer golden.keyFacts[2] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx — \"The issuing account uses this operation to remove clawback capabilities on a specific trustline by removing the `TRUSTLINE_CLAWBACK_ENABLED_FLAG`\" (class A)",
+        "Proposer golden.avoid[1] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"Setting only `AUTH_CLAWBACK_ENABLED_FLAG` without `AUTH_REVOCABLE_FLAG` already set will result in `SET_OPTIONS_AUTH_REVOCABLE_REQUIRED`.\" (class B)",
+        "Proposer golden.avoid[1] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx — \"Note that this flag requires that revocable is also set.\" (class A)",
+        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx — \"With this setting, none of the other authorization flags (`AUTH_REQUIRED_FLAG`, `AUTH_REVOCABLE_FLAG`) can be set, and the issuing account can't be merged.\" (class A)",
+        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://www.liquidmercury.com/resources/stellar-rwa-tokenization — \"Locks the other flags and stops the issuing account being merged\" (class D)",
+        "Sibling sweep 2026-11-02: proposer checked q-sep-clawback-prereq-flag, q-aas-issuer-fees-supply-cap-freeze, q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-comp-sep8-regulated-assets-approval-server; verifier grep 'any holder' over eval/qa/corpus/battery/*/*.json -> only q-comp-auth-flags-overview and q-comp-clawback-cap0035 carried the overbroad phrasing; no contradiction remains."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side authoring flaw: keyFact and answer generalized clawback to 'any holder', dropping the subsequent-trustline scope stated in the same answer and in control-asset-access docs.",
+        ".agents/rounds/2026-11-02-golden-audit.md — golden audit batch compliance-rwa-payments-01"
       ]
     },
-    "origin": "raven-next q-comp-auth-flags-overview"
+    "origin": "raven-next q-comp-auth-flags-overview",
+    "corroboration": [
+      {
+        "claim": "AUTH_CLAWBACK_ENABLED lets the issuer burn balances on trustlines created after it is set.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any *subsequent* trustlines established with this account will have clawbacks enabled.\""
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline.\""
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ClawbackOpFrame.cpp",
+            "observedAt": "2026-11-02",
+            "note": "Exact source: \"if (!isClawbackEnabledOnTrustline(trust)) { innerResult(res).code(CLAWBACK_NOT_CLAWBACK_ENABLED); return false; }\""
+          }
+        ]
+      }
+    ]
   }
 }

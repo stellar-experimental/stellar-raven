@@ -74,18 +74,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-44 processes 3316/3324.",
-        "Structural re-form (long-fact): Split the contract checks from the host authorization duties; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account — the current example assigns signature authentication and authorization policy to __check_auth.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md — the current CAP assigns standard nonce consumption, signature expiration, and replay prevention to the host authorization framework.",
-        "Sibling sweep 2026-08-29: grep __check_auth|standard nonce|signature expiration|replay protection → q-soroban-require-auth, q-passkey-smart-account-architecture; no contradiction."
-      ],
-      "rootCause": [
-        "Eval-side custom-account replay model error.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md — \"fn __check_auth(signature_payload: BytesN<32>, signature: Val, auth_contexts: Vec<Context>) -> Result<(), Error>;\"; \"Nonce is an arbitrary int64 number used for replay prevention\" (observedAt 2026-11-02).",
+        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account — \"__check_auth is a reserved function and can only be called by the Soroban environment in response to a call to require_auth.\"; \"`__check_auth` function shouldn't call `require_auth` on the contract's own address in order to avoid infinite recursion.\" (observedAt 2026-11-02).",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"Replay protection is also implemented in the host, i.e., there is normally no need for a contract to manage its own nonces.\" (observedAt 2026-11-02).",
+        "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/auth.rs — the SDK trait spells the payload `Hash<32>` with an associated Signature type; the key facts do not bind the type (observedAt 2026-11-02).",
+        "No gospel change; no proposal (verifier noProposalCases).",
+        "Sibling sweep 2026-11-02: q-soroban-require-auth, q-passkey-smart-account-architecture, q-soroban-auth-recursion-dos-audit; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-check-auth-custom-account"

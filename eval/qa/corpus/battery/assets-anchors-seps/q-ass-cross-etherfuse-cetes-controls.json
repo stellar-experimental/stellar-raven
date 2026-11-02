@@ -1,1 +1,163 @@
-{"id":"q-ass-cross-etherfuse-cetes-controls","question":"A June 2026 article announces Anchorage custody for Etherfuse CETES on Stellar. What product does Scout identify, and which issuer controls do official Stellar docs provide for a regulated classic asset?","surface":["lumenloop.search_directory","lumenloop.find_content_about_project","scout.searchProjects","stellarDocs.search_asset_token_docs"],"golden":{"answer":"The 2026-06-15 articles indexed by Lumenloop describe Anchorage Digital adding institutional custody for Etherfuse's tokenized Mexican government debt (CETES) on Stellar. As observed on 2026-07-11, Scout identifies Etherfuse as a live issuer of Stablebonds: tokenized government treasury bonds including Mexican CETES and U.S. Treasuries; it separately operates an FX/ramp product. For a regulated classic Stellar asset, official docs expose issuer controls such as authorization-required (approve before a trustline can receive), authorization-revocable (freeze/deauthorize a trustline), and clawback-enabled (recover units when the flag was enabled). These are available design controls, not evidence that Etherfuse configured every flag on CETES.","keyFacts":["Names Anchorage Digital in the June 15 custody announcement.","Links it to Etherfuse's tokenized Mexican government debt (CETES) on Stellar.","Scout identifies live Etherfuse Stablebonds as tokenized government-treasury bonds.","Lists authorization-required and authorization-revocable/freeze controls.","Lists clawback-enabled as a regulated classic-asset control."],"avoid":["Do NOT call CETES a stablecoin or confuse Etherfuse Stablebonds with Etherfuse FX.","Do NOT claim the custody announcement proves Etherfuse enabled every authorization or clawback flag."],"notes":"A single-source product summary or a generic flag list alone is incomplete."},"tags":{"category":"assets-anchors-seps","service":"scout","freshness":"scheduled"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"mixed","status":"confirmed","asOf":"2026-07-11","reverifyBy":"2026-11-05","sources":[{"class":"C","ref":"http://localhost:8787/mcp — Lumenloop + Scout live probes, observed 2026-07-11"},{"class":"A","ref":"https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar"},{"class":"A","ref":"https://developers.stellar.org/docs/tokens/control-asset-access"},{"class":"A","ref":"https://etherfuse.com/"}],"corroboration":[{"claim":"Anchorage announced custody for Etherfuse CETES on Stellar, while Scout identifies Stablebonds as Etherfuse's tokenized government-bond product.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"lumenloop.find_content_about_project(slug=etherfuse) + scout.searchProjects(q=Etherfuse)","observedAt":"2026-07-11"},{"class":"A","ref":"https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar","observedAt":"2026-07-11"}]},{"claim":"Classic Stellar assets support required authorization, revocation/freezing, and opt-in clawback controls.","verdict":"confirmed","evidence":[{"class":"E","ref":"stellarDocs.search_asset_token_docs(query=regulated asset authorization required revocable clawback)","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/docs/tokens/control-asset-access","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-08-27","by":"golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)","evidence":["http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md","Sibling sweep: Etherfuse/CETES and regulated-asset flag cases reviewed; no specific Etherfuse flag configuration asserted","Structural re-form (compound-predicate): Split three compound key facts into five atomic facts; the existing avoid clause retains the Etherfuse-control caveat, and the truth is unchanged.","Live re-check 2026-08-27: https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar — named Anchorage Digital in the June 15 custody announcement.","Live re-check 2026-08-27: https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar — linked custody to Etherfuse's tokenized Mexican government debt on Stellar.","Live re-check 2026-08-27: https://etherfuse.com/ — showed current Etherfuse Stablebonds as tokenized sovereign-bond products; the dated Scout attribution is unchanged.","Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — documented authorization-required and authorization-revocable/freeze controls.","Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — documented the clawback-enabled control for classic assets.","Sibling sweep 2026-08-27: q-defi-etherfuse-stablebonds and q-ass-cross-bando-stablebonds-sac; no contradiction."],"rootCause":["eval-authoring",".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"]},"origin":"authored 2026-07 (cross-service)"}}
+{
+  "id": "q-ass-cross-etherfuse-cetes-controls",
+  "question": "A June 2026 article announces Anchorage custody for Etherfuse CETES on Stellar. What product does Scout identify, and which issuer controls do official Stellar docs provide for a regulated classic asset?",
+  "surface": [
+    "lumenloop.search_directory",
+    "lumenloop.find_content_about_project",
+    "scout.searchProjects",
+    "stellarDocs.search_asset_token_docs"
+  ],
+  "golden": {
+    "answer": "The 2026-06-15 articles indexed by Lumenloop describe Anchorage Digital adding institutional custody for Etherfuse's tokenized Mexican government debt (CETES) on Stellar. As observed on 2026-11-02, Scout identifies Etherfuse as a live issuer of Stablebonds: tokenized government treasury bonds including Mexican CETES and U.S. Treasuries; it separately operates an FX/ramp product. For a regulated classic Stellar asset, official docs expose issuer controls such as authorization-required (approve before a trustline can receive), authorization-revocable (freeze/deauthorize a trustline), and clawback-enabled (recover units when the flag was enabled). These are available design controls, not evidence that Etherfuse configured every flag on CETES.",
+    "keyFacts": [
+      "Names Anchorage Digital in the June 15 custody announcement.",
+      "Links it to Etherfuse's tokenized Mexican government debt (CETES) on Stellar.",
+      "Scout identifies live Etherfuse Stablebonds as tokenized government-treasury bonds.",
+      "Lists authorization-required and authorization-revocable/freeze controls.",
+      "Lists clawback-enabled as a regulated classic-asset control."
+    ],
+    "avoid": [
+      "Do NOT call CETES a stablecoin or confuse Etherfuse Stablebonds with Etherfuse FX.",
+      "Do NOT claim the custody announcement proves Etherfuse enabled every authorization or clawback flag."
+    ],
+    "notes": "A single-source product summary or a generic flag list alone is incomplete."
+  },
+  "tags": {
+    "category": "assets-anchors-seps",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-05",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp — Lumenloop + Scout live probes, observed 2026-07-11"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tokens/control-asset-access"
+      },
+      {
+        "class": "A",
+        "ref": "https://etherfuse.com/"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=5 (slug etherfuse)",
+        "note": "Golden audit 2026-11-02: \"\"Etherfuse is a multi-product company on Stellar: it issues Stablebonds — tokenized government treasury bonds (Mexican CETES, US Treasuries and others) ... and operates Etherfuse FX, a Mexico fiat on/off-ramp API\" ... \"status\": \"Live\", \"sta\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Raven execute lumenloop.search_content_semantic(Anchorage Digital custody Etherfuse CETES Stellar)",
+        "note": "Golden audit 2026-11-02: \"Anchorage Digital Supports Custody for Tokenized CETES ... date 2026-06-15; Tokenized by Etherfuse. Moved on Stellar. Held by Anchorage. ... date 2026-06-15\"",
+        "observedAt": "2026-11-02T16:22:39Z"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=5",
+        "note": "Golden audit 2026-11-02: \"\"status\": \"Live\"\"",
+        "observedAt": "2026-11-02"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Anchorage announced custody for Etherfuse CETES on Stellar, while Scout identifies Stablebonds as Etherfuse's tokenized government-bond product.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "lumenloop.find_content_about_project(slug=etherfuse) + scout.searchProjects(q=Etherfuse)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=5 (slug etherfuse)",
+            "observedAt": "2026-11-02",
+            "note": "Golden audit re-observation: \"\"Etherfuse is a multi-product company on Stellar: it issues Stablebonds — tokenized government treasury bonds (Mexican CETES, US Treasuries and others) ... and operates Etherfuse FX, a Mexico fiat on/off-ramp API\" ... \"status\": \"Live\", \"sta\""
+          },
+          {
+            "class": "A",
+            "ref": "https://etherfuse.com/",
+            "observedAt": "2026-11-02",
+            "note": "Golden audit re-observation: \"eYield Tokenised sovereign bonds for float, treasury allocation, and predictable returns. CETES, Tesouros, US Treasuries, Eurobonds, and GILTs. ... [Explore Stablebonds Now →] ... [FX]\""
+          },
+          {
+            "class": "A",
+            "ref": "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+            "observedAt": "2026-11-02",
+            "note": "Golden audit re-observation: \"Anchorage Digital ... today announced custody support for CETES, tokenized Mexican government debt issued by Etherfuse on the Stellar blockchain.\""
+          },
+          {
+            "class": "C",
+            "ref": "Raven execute lumenloop.search_content_semantic(Anchorage Digital custody Etherfuse CETES Stellar)",
+            "observedAt": "2026-11-02T16:22:39Z",
+            "note": "Golden audit re-observation: \"Anchorage Digital Supports Custody for Tokenized CETES ... date 2026-06-15; Tokenized by Etherfuse. Moved on Stellar. Held by Anchorage. ... date 2026-06-15\""
+          }
+        ]
+      },
+      {
+        "claim": "Classic Stellar assets support required authorization, revocation/freezing, and opt-in clawback controls.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_asset_token_docs(query=regulated asset authorization required revocable clawback)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+      "evidence": [
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=5 (slug etherfuse) — \"\"Etherfuse is a multi-product company on Stellar: it issues Stablebonds — tokenized government treasury bonds (Mexican CETES, US Treasuries and others) ... and operates Etherfuse FX, a Mexico fiat on/off-ramp API\" ... \"status\": \"Live\", \"statusAsOf\": \"2026-10-27T11:56:36.248Z\"\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://etherfuse.com/ — \"eYield Tokenised sovereign bonds for float, treasury allocation, and predictable returns. CETES, Tesouros, US Treasuries, Eurobonds, and GILTs. ... [Explore Stablebonds Now →] ... [FX]\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar — \"Anchorage Digital ... today announced custody support for CETES, tokenized Mexican government debt issued by Etherfuse on the Stellar blockchain.\" (claim: verifier accept golden.answer)",
+        "2026-11-02T16:22:39Z [C] Raven execute lumenloop.search_content_semantic(Anchorage Digital custody Etherfuse CETES Stellar) — \"Anchorage Digital Supports Custody for Tokenized CETES ... date 2026-06-15; Tokenized by Etherfuse. Moved on Stellar. Held by Anchorage. ... date 2026-06-15\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=5 — \"\"status\": \"Live\"\" (claim: verifier accept truth.asOf)",
+        "2026-11-02 [A] https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar — \"Anchorage Digital Author Jun 15, 2026 ... today announced custody support for CETES, tokenized Mexican government debt issued by Etherfuse on the Stellar blockchain.\" (claim: golden.keyFacts[0] confirmed: Anchorage Digital is named in the June 15 2026 custody announcement)",
+        "2026-11-02 [C] lumenloop.search_content_semantic('Anchorage Digital custody Etherfuse CETES Stellar') — \"two rows dated 2026-06-15: anchorage.com insight and https://etherfuse.com/articles/tokenized-by-etherfuse-moved-on-stellar-held-by-anchorage\" (claim: golden.keyFacts[0] confirmed: Anchorage Digital is named in the June 15 2026 custody announcement)",
+        "2026-11-02 [A] https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar — \"CETES are short-term Mexican Federal Treasury Certificates\" (claim: golden.keyFacts[1] confirmed: The announcement concerns Etherfuse's tokenized Mexican government debt (CETES) on Stellar)",
+        "2026-11-02 [A] https://etherfuse.com/articles/tokenized-by-etherfuse-moved-on-stellar-held-by-anchorage (via Lumenloop row) — \"Anchorage Digital, an OCC-chartered bank, now provides institutional custody for Etherfuse's tokenized Mexican government debt (CETES) on Stellar.\" (claim: golden.keyFacts[1] confirmed: The announcement concerns Etherfuse's tokenized Mexican government debt (CETES) on Stellar)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=3 (raw GET) — \"it issues Stablebonds — tokenized government treasury bonds (Mexican CETES, US Treasuries and others) ... and operates Etherfuse FX ... \"status\": \"Live\", \"statusAsOf\": \"2026-10-27T11:56:36.248Z\"\" (claim: golden.keyFacts[2] confirmed-as-of: Scout identifies live Etherfuse Stablebonds as tokenized government-treasury bonds)",
+        "2026-11-02 [D] https://etherfuse.com/ (Perplexity search) — \"Tokenised sovereign bonds for float, treasury allocation ... CETES, Tesouros, US Treasuries, Eurobonds, and GILTs.\" (claim: golden.keyFacts[2] confirmed-as-of: Scout identifies live Etherfuse Stablebonds as tokenized government-treasury bonds)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"When AUTH_REQUIRED_FLAG is enabled, an issuer must approve an account before that account can hold its asset ... When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline's authorization, thereby freezing the asset\" (claim: golden.keyFacts[3] confirmed: Classic issuer controls include authorization-required and authorization-revocable/freeze)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — \"AUTH_REVOCABLE_FLAG = 0x2 ... otherwise, authorization cannot be revoked\" (claim: golden.keyFacts[3] confirmed: Classic issuer controls include authorization-required and authorization-revocable/freeze)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any subsequent trustlines established with this account will have clawbacks enabled\" (claim: golden.keyFacts[4] confirmed: Clawback-enabled is a regulated classic-asset control)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — \"AUTH_CLAWBACK_ENABLED_FLAG = 0x8 ... Trustlines are created with clawback enabled set to \"true\"\" (claim: golden.keyFacts[4] confirmed: Clawback-enabled is a regulated classic-asset control)",
+        "2026-11-02 [F] https://horizon.stellar.org/accounts/GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC — \"flags: auth_required False, auth_revocable True, auth_immutable False, auth_clawback_enabled True; home_domain etherfuse.com\" (claim: golden.avoid[1] confirmed: The announcement does not prove Etherfuse enabled every authorization or clawback flag)",
+        "2026-11-02 [C] scout.getStablecoins({limit:100}) via Raven — \"41 rows; no CETES or Etherfuse row\" (claim: golden.avoid[0] confirmed: CETES is not a stablecoin; Stablebonds differ from Etherfuse FX)",
+        "2026-11-02 [A] https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar — \"CETES gives institutions tokenized exposure to a familiar sovereign debt instrument\" (claim: golden.avoid[0] confirmed: CETES is not a stablecoin; Stablebonds differ from Etherfuse FX)",
+        "Sibling sweep 2026-11-02: grep -i etherfuse over eval/qa/corpus/battery → q-defi-etherfuse-stablebonds, q-rwa-projects-tokenizing-stellar, q-crp-anchors-by-corridor, q-anchor-list-builders-discovery, q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, q-defi-reflector-oracle, q-soroban-oracle-defensive-consumption, q-ass-cross-bando-stablebonds-sac; all describe Etherfuse as a Stablebonds (CETES/USTRY) issuer; no contradiction."
+      ],
+      "rootCause": [
+        "freshness-drift"
+      ]
+    },
+    "origin": "authored 2026-07 (cross-service)"
+  }
+}

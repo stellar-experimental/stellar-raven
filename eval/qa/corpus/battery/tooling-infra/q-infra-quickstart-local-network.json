@@ -20,7 +20,7 @@
       "Do NOT recommend Quickstart as a production node or promise persistence without configuration.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Quickstart container + CLI integration; covers quickstart/localdev subtopic.\nAlso good if the answer: `stellar network container start testnet` (Stellar CLI) boots the Quickstart container with a testnet-friendly config. | Quickstart exposes Friendbot (e.g. at `http://localhost:8000/friendbot`) for funding.\nGolden cites: developers.stellar.org Quickstart docs or the stellar/quickstart image/repo.\nGT-50/GT-52 CORRECTION 2026-07-11: current command is `stellar container start`; exhaustive modes include Futurenet. Preserve the local-only hermetic/faucet boundary."
+    "notes": "Quickstart container + CLI integration; covers quickstart/localdev subtopic.\nAlso good if the answer: `stellar container start testnet` (Stellar CLI) boots the Quickstart container in testnet mode. | Quickstart exposes Friendbot (e.g. at `http://localhost:8000/friendbot`) for funding.\nGolden cites: developers.stellar.org Quickstart docs or the stellar/quickstart image/repo.\nGT-50/GT-52 CORRECTION 2026-07-11: current command is `stellar container start`; exhaustive modes include Futurenet. Preserve the local-only hermetic/faucet boundary."
   },
   "tags": {
     "category": "tooling-infra",
@@ -55,6 +55,18 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-cli",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "stellar CLI 28.1.0: stellar container start --help; stellar network container start --help",
+        "note": "container start accepts local, testnet, futurenet, pubnet; 'stellar network container' is an unrecognized subcommand.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/lab/quickstart-with-lab#start-quickstart",
+        "note": "'Start Quickstart with the Stellar CLI using the following command: stellar container start testnet'",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -102,26 +114,31 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-50 processes 3349/3361 independently confirmed the four modes and current command.",
-        "GT-52 processes 3356/3368 independently required the local-versus-public Friendbot clarification; this entry is the single sibling landing point.",
-        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/quickstart — the live source supports makes the as-of date visible for every changeable roster, status, version, or measurement.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/quickstart/faucet — the live source supports names all four modes: local, testnet, futurenet, and pubnet.",
-        "Live re-check 2026-08-30: https://github.com/stellar/quickstart — the live source supports states that only local mode is hermetic.",
-        "Live re-check 2026-08-30: https://github.com/stellar/stellar-cli — the live source supports public-network modes do not create independent public faucets.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/quickstart — the live source supports treats Quickstart as disposable development/CI infrastructure, not production.",
-        "Sibling sweep 2026-08-30: grep case topic and key values → q-infra-quickstart-local-network; no contradiction"
+        "Gospel change 2026-11-02: the 'Also good' note now names `stellar container start testnet` instead of the retired `stellar network container start testnet`, which CLI 28.1.0 rejects and avoid[0] forbids. Answer, keyFacts, and avoid are unchanged.",
+        "Verifier accept (replace-substring) class F: local stellar CLI 28.1.0 (c0f4d0da): stellar container start --help — \"By default, when starting a testnet container ... `docker run --rm -p 8000:8000 --name stellar stellar/quickstart:latest --testnet --enable rpc,horizon` ... [possible values: local, testnet, futurenet, pubnet]\" (observedAt 2026-11-02)",
+        "Verifier accept (replace-substring) class F: local stellar CLI 28.1.0: stellar network container start --help — \"error: unrecognized subcommand 'container'\" (observedAt 2026-11-02)",
+        "Verifier accept (replace-substring) class B: gh api repos/stellar/stellar-cli/releases/latest — \"v28.1.0 2026-09-26T16:33:53Z (matches the local binary tested)\" (observedAt 2026-11-02)",
+        "Verifier accept (replace-substring) class E: stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/lab/quickstart-with-lab#start-quickstart — \"Start Quickstart with the Stellar CLI using the following command: stellar container start testnet\" (observedAt 2026-11-02)",
+        "Verifier accept (replace-substring) class E: stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-container-start — \"docker run --rm -p 8000:8000 --name stellar stellar/quickstart:latest --testnet --enable rpc,horizon  Usage: stellar container start\" (observedAt 2026-11-02)",
+        "Class B (golden.answer, confirmed): stellar-docs@de38543 docs/tools/quickstart/getting-started/index.mdx:20 — \"stellar container start local\" (observedAt 2026-11-02)",
+        "Class B (golden.answer, confirmed): https://raw.githubusercontent.com/stellar/quickstart/main/README.md:29 — \"> docker run -i -p 8000:8000 stellar/quickstart --local\" (observedAt 2026-11-02)",
+        "Class F (golden.answer, confirmed): stellar 28.1.0 (latest release v28.1.0, 2026-09-26): stellar container start --help — \"Usage: stellar container start [OPTIONS] [NETWORK] ... Default is `local` [possible values: local, testnet, futurenet, pubnet]\" (observedAt 2026-11-02)",
+        "Class B (golden.answer, confirmed): stellar/quickstart README.md:50,58,59,173 — \"stellar-lab - Web UI; RPC: `http://localhost:8000/rpc`; Lab: `http://localhost:8000/lab`; --enable core,horizon,rpc,lab\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[1], confirmed): curl https://developers.stellar.org/docs/tools/quickstart/network-modes — \"The four available network modes are `local`, `testnet`, `futurenet` and `pubnet` (mainnet).\" (observedAt 2026-11-02)",
+        "Class F (golden.keyFacts[1], confirmed): stellar container start --help — \"[possible values: local, testnet, futurenet, pubnet]\" (observedAt 2026-11-02)",
+        "Class B (golden.keyFacts[2] / keyFacts[3], confirmed): stellar-docs@de38543 docs/tools/quickstart/faucet.mdx — \"In local network mode, a local Friendbot is running. In testnet and futurenet network modes, requests to the local `:8000/friendbot` endpoint will be proxied to the Friendbot deployments for the respective network.\" (observedAt 2026-11-02)",
+        "Class B (golden.keyFacts[4], confirmed): stellar-docs@de38543 docs/tools/quickstart/index.mdx:14 and advanced-usage/container.mdx:6 — \"Quickstart is intended for use in development, not in production ... default, non-validating, ephemeral configuration ... host-based volume ... persistence of data.\" (observedAt 2026-11-02)",
+        "Class F (golden.avoid[0], contradicted): stellar 28.1.0: stellar network container start --help — \"error: unrecognized subcommand 'container'\" (observedAt 2026-11-02)",
+        "Class A (golden.avoid[0], contradicted): https://developers.stellar.org/docs/tools/quickstart/getting-started — \"stellar container start local\" (observedAt 2026-11-02)",
+        "Class F (golden.notes, contradicted): stellar 28.1.0: stellar network container start --help — \"error: unrecognized subcommand 'container'\" (observedAt 2026-11-02)",
+        "Class F (golden.notes, contradicted): stellar 28.1.0: stellar container start --help — \"By default, when starting a testnet container ... docker run --rm -p 8000:8000 --name stellar stellar/quickstart:latest --testnet --enable rpc,horizon\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep 'network container start' over eval/qa/corpus/battery finds only this case (the fixed note and its own avoid item). No sibling rewards the retired shape."
       ],
       "rootCause": [
-        "Eval-side CLI/docs-release drift: the archived answer copied a retired command shape and an incomplete mode enumeration.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Eval-side authoring flaw: the 2026-07-11 GT-50 correction moved the answer and avoid to `stellar container start` but left the archived 'also good' note on the retired `stellar network container start` shape."
       ]
     },
     "origin": "raven-next q-infra-quickstart-local-network"

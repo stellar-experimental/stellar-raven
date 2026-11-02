@@ -103,15 +103,13 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Reconciliation of the PR #310 independent review (Claude Fable 5.1 high; .agents/rounds/2026-11-02-golden-reverify.md, review section); author Claude Opus 5.5",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
       "evidence": [
-        "Review reconciliation 2026-11-02 (PR #310 review finding 2): the notes gain the symmetric origin/RP-ID caution from q-passkey-smart-account-architecture. The key facts stay; they are true for the Relying Party as a whole.",
-        "Live A 2026-11-02: https://www.w3.org/TR/webauthn-3/#sctn-verifying-assertion assigns the origin and rpIdHash checks to the Relying Party.",
-        "Live B 2026-11-02: https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs lines 7-15 say origin and RP ID hash validation are 'intentionally omitted'; https://github.com/kalepail/passkey-kit/blob/309537474f689a7948c729a7bab0d1388f509422/contracts/smart-wallet/src/verify.rs says 'rpIdHash and origin are deliberately not pinned on-chain'.",
-        "Sibling sweep 2026-11-02: q-passkey-smart-account-architecture, q-infra-secp256r1-passkeys, and q-passkey-platform-constraints now carry the same caution."
-      ],
-      "rootCause": [
-        "Eval-side authoring flaw: the key fact names origin/RP-ID checks without saying that production Stellar wallet contracts deliberately leave them to the client and platform, so a true answer could lose the fact (found by the PR #310 review)."
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md — 'Status: Final ... Protocol version: 21'; public key 'must have a length of 65-bytes, being the ECDSA secp256r1 public key SEC-1 encoded'; signature 'must have a length of 64-bytes'.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — 'Stellar added native verification for this curve in Protocol 21' and '`secp256r1` (prime256v1) is the curve most WebAuthn authenticators use.'",
+        "Live B 2026-11-02: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/crypto/mod.rs — rejects high-s: \"ECDSA signature 's' part is not normalized to low form\".",
+        "Live B 2026-11-02: https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/verifiers/webauthn.rs — 'intentionally omitted: * Origin validation ... * RP ID hash validation ... * Signature counter'; A: https://www.w3.org/TR/webauthn-3/ assigns origin checks to the client and RP.",
+        "Sibling sweep 2026-11-02: q-passkey-platform-constraints carries the same origin/RP-ID caution; no contradiction. No gospel change."
       ]
     },
     "origin": "raven-next q-infra-secp256r1-passkeys"

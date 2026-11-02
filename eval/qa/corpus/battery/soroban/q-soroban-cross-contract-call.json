@@ -74,20 +74,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-45 independent blind 3328; primary 3325 retained the overbroad sentence and was overturned on this atom.",
-        "Structural re-form (compound-predicate): Split two compound facts into four atomic facts; the two call mechanisms and both authorization rules are unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/conventions/cross-contract — the generated typed client wraps Env::invoke_contract.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/conventions/cross-contract — Env::invoke_contract remains the direct call mechanism.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — external-address authorization covers the requested invocation tree.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — direct contract calls remain implicitly authorized by the invoker.",
-        "Sibling sweep 2026-08-27: grep invoke_contract|direct-contract-invoker|invocation-tree → q-sor-decode-hosterror-codes, q-sor-require-auth-propagation, q-soroban-cross-contract-call; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side authorization model was compressed into an absolute that omitted the direct-invoker exception.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "https://developers.stellar.org/docs/build/guides/conventions/cross-contract — \"A common way to do this is to load the Wasm of a contract using contractimport! ... Behind the scenes, this way of doing it is simply a convenient wrapper around env.invoke_contract.\" (observedAt 2026-11-02).",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"Hence all the require_auth calls made on behalf of the direct invoker contract Address are considered to be authorized (but not any calls on behalf of the contract deeper down the stack).\" (observedAt 2026-11-02).",
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md — \"Whenever a contract calls require_auth for an account, host iterates over every non-exhausted SorobanAuthorizationEntry where credentials match\" (observedAt 2026-11-02).",
+        "No gospel change; no proposal (verifier noProposalCases).",
+        "Sibling sweep 2026-11-02: q-sor-require-auth-propagation, q-sor-decode-hosterror-codes, q-soroban-check-auth-custom-account; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-cross-contract-call"

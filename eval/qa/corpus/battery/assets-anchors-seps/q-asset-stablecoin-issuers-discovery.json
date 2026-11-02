@@ -69,30 +69,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
       "evidence": [
-        "Class C 2026-08-19: https://stellarlight.xyz/api/stablecoins?limit=100 returned meta.dataAsOf 2026-08-19T18:57:38.745Z, coverage.basis curated-registry, and separate live rows for Circle USDC, Circle EURC, and MyKobo EURC. The filtered USD read returned counts.total 6 and counts.returned 6 while counts.tracked stayed 20.",
-        "Class A 2026-08-19: https://developers.circle.com/stablecoins/usdc-contract-addresses lists Stellar Mainnet USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
-        "Class F 2026-08-19: https://horizon.stellar.org/assets?asset_code=USDC&asset_issuer=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=1 returned the exact asset with a positive authorized balance.",
-        "Sibling sweep 2026-08-19: q-asset-stablecoin-issuers-discovery and q-eco-stablecoins-on-stellar now use the same curated-registry semantics. The existing Circle issuer, product-class, and dated-roster rules remain consistent with sibling cases and clusters 015 and 028.",
-        "solo://proj/49/scratchpad/truth-maintenance-an--835",
-        "Structural re-form (symmetric-caution): added a cached-source grading caution for sls-066; the verified issuer and registry facts are unchanged.",
-        "Improvements review 2026-08-27: improvements/resolved.json entry sls-066 records the 2026-08-19 fix; the disputed claim is Circle USDC roster coverage in an older Scout registry copy.",
-        "Sibling sweep 2026-08-27: grep sls-066|curated-registry → q-eco-stablecoins-on-stellar; no contradiction",
-        "Structural re-form (presentation-avoid): rewrote two presentational avoid items as the same concrete false-content claims; both trap targets are unchanged.",
-        "No live re-check was required because the avoid rewrites do not change the forbidden claims.",
-        "Sibling sweep 2026-08-27: grep curated-registry|stablecoin issuers|Circle USDC → q-eco-stablecoins-on-stellar, q-asset-usdc-eurc-issuer; no contradiction",
-        "Structural re-form (long-fact): shortened the source-supported observation rule; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/products-and-tools/circle-usdc-eurc — the current official page confirms Circle's USDC and EURC examples on Stellar.",
-        "Sibling sweep 2026-08-29: grep Circle.*USDC|stablecoin issuers → q-asset-stablecoin-issuers-discovery only in this battery directory; no sibling contradiction."
-      ],
-      "rootCause": [
-        "improvements/resolved.json entry sls-066",
-        "solo://proj/49/scratchpad/truth-maintenance-an--835",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "2026-11-02 [C] https://stellarlight.xyz/api/stablecoins (raw GET + scout.getStablecoins) — \"dataAsOf 2026-11-02T06:26:31Z; counts.tracked 41; Circle USDC marketCapUSD 301,240,866 (largest fiat stablecoin; top row is Ondo USDY 537,627,447, a yield-bearing token); Circle EURC 4,674,278\" (claim: golden.keyFacts[2] confirmed-as-of: Circle (USDC and EURC) is the dominant stablecoin issuer on Stellar)",
+        "2026-11-02 [A] https://app.rwa.xyz/networks/stellar (via Parallel search) — \"Stablecoin Market Cap $373.09M ... Circle | 2 | $308.9M\" (claim: golden.keyFacts[2] confirmed-as-of: Circle (USDC and EURC) is the dominant stablecoin issuer on Stellar)",
+        "2026-11-02 [C] prior verification 2026-07-11 (dated illustrative example) — \"\" (claim: golden.answer confirmed-as-of: As of 2026-07-11 a search returned 38 matches with Circle, Glo Dollar, Coins.ph first)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/stablecoins — \"counts: tracked 41, total 41, returned 10 ... coverage.basis curated-registry ... null on any metric = not measured, never 'zero'\" (claim: golden.notes confirmed: Registry semantics (counts.total/tracked/returned, dataAsOf vs generatedAt, null = unmeasured, curated registry))",
+        "2026-11-02 [B] https://stellarlight.xyz/api/openapi.json — \"/api/stablecoins GET documented\" (claim: golden.notes confirmed: Registry semantics (counts.total/tracked/returned, dataAsOf vs generatedAt, null = unmeasured, curated registry))",
+        "Sibling sweep 2026-11-02: proposer checked q-eco-stablecoins-on-stellar, q-eco-stellar-rwa-stablecoin-volume, q-defi-ondo-usdy; no gospel change in this case, so no sibling contradiction can arise from this event."
       ]
     },
     "origin": "raven-next q-asset-stablecoin-issuers-discovery",

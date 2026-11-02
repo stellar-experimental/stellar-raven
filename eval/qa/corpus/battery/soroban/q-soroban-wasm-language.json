@@ -14,7 +14,7 @@
       "Do NOT say Solidity/EVM bytecode is the Soroban runtime.",
       "Do NOT claim allocation is impossible or freeze 64 KiB as the current contract-code cap."
     ],
-    "notes": "Defining execution-model fact; Solidity/EVM is the canonical trap. Verified against the Hello World getting-started page and the contracts data-structures page.\nAlso good if the answer: Contracts are `#![no_std]` Rust library crates (no standard library / no allocator). | Floating-point types are not supported; integer types like i128/u128/i64/u64/i32/u32 are.\nGolden cites: At least one primary developers.stellar.org docs page (contract fundamentals / getting-started).\nGT-48 BLIND CORRECTION 2026-07-11: no_std does not prohibit alloc; current code cap is 128 KiB and must be re-read."
+    "notes": "Defining execution-model fact; Solidity/EVM is the canonical trap. Verified against the Hello World getting-started page and the contracts data-structures page.\nAlso good if the answer: Contracts are `#![no_std]` Rust library crates (no standard library; no allocator unless the optional SDK `alloc` feature or a custom allocator is enabled). | Floating-point types are not supported; integer types like i128/u128/i64/u64/i32/u32 are.\nGolden cites: At least one primary developers.stellar.org docs page (contract fundamentals / getting-started).\nGT-48 BLIND CORRECTION 2026-07-11: no_std does not prohibit alloc; current code cap is 128 KiB and must be re-read."
   },
   "tags": {
     "category": "soroban",
@@ -29,7 +29,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-28",
-    "reverifyBy": "2027-04-15",
+    "reverifyBy": "2027-03-31",
     "sources": [
       {
         "class": "A",
@@ -45,6 +45,12 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs",
+        "note": "The `alloc` feature is **disabled by default**. ... # Using a Custom Allocator",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -74,21 +80,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task soroban-api)",
       "evidence": [
-        "Production stellar-raven: stellarDocs.search_soroban_contract_docs({query:'Rust dialect wasm32v1 none no_std allocation floating point',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/learn/fundamentals/contract-development/rust-dialect',includeContent:true}) — Rust/no_std/wasm32v1-none and allocation wording returned.",
-        "Canonical SDK source: https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/alloc/mod.rs — alloc feature disabled by default; custom allocator supported.",
-        "Empirical free reads: stellar 27.0.0 network settings --no-cache -n mainnet|testnet --output json-formatted both returned contract_max_size_bytes=131072 and contract_data_entry_size_bytes=65536.",
-        "Sibling sweep: q-sor-build-target-wasm32v1, q-soroban-deploy-cli, and q-tool-rust-soroban-sdk use wasm32v1-none and do not contradict this result.",
-        "Structural re-form (negative-predicate): replaced one negative taxonomy fact with an atomic positive taxonomy fact; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect — current documentation still specifies Rust, no_std, wasm32v1-none, and optional allocation",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — stellar 27.1.0 --no-cache reads still returned code cap 131072 bytes and data-entry cap 65536 bytes on Mainnet and Testnet",
-        "Sibling sweep 2026-08-27: grep wasm32v1-none|no_std|alloc feature|contract_max_size_bytes → q-sor-build-target-wasm32v1, q-soroban-no-std-constraints, q-tool-rust-soroban-sdk; no contradiction"
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect (observedAt 2026-10-20): \"New Soroban contracts should be built with Rust v1.84.0 or later, and use the wasm32v1-none target\"; \"Floating-point arithmetic in the guest is completely prohibited\".",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs (observedAt 2026-11-02): \"Allocator used by contracts built with the `alloc` feature. The `alloc` feature is **disabled by default**.\"",
+        "stellar network settings --no-cache -n mainnet and -n testnet --output json (observedAt 2026-11-02): contract_max_size_bytes 131072, tx_memory_limit 41943040 on both; https://horizon.stellar.org/ current_protocol_version 29.",
+        "Verification only: the golden's dated values remain accurate on protocol 29; no gospel change. Sibling sweep 2026-11-02: q-soroban-wasm-size-limit, q-sor-build-target-wasm32v1, q-tool-rust-soroban-sdk; no contradiction.",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs — \"The `alloc` feature is **disabled by default**. ... # Using a Custom Allocator\" (class B, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02 (pass 2): q-soroban-no-std-constraints says guest allocation is off by default but the SDK alloc feature or a custom allocator can enable it (consistent).",
+        "Pass-2 proposer matrix, proposals, and independent verifier decisions: .agents/rounds/2026-11-02-golden-audit.md, task soroban-api."
       ],
       "rootCause": [
-        "freshness-recheck",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Eval-side authoring flaw: the Also-good line still said 'no allocator', contradicting the golden answer and the GT-48 correction (the SDK alloc feature is off by default but can be enabled, or a custom allocator used)."
       ]
     },
     "origin": "raven-next q-soroban-wasm-language"

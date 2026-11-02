@@ -111,10 +111,10 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-17",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-17",
-          "reason": "September 17 routing audit: Re-read both members after the LOBSTR correction. q-eco-lobstr-wallet now dates Stellar/XRPL/platform support to 2026-09-17, keeps attributed scale claims, and makes SCF amounts optional with a named awarded-or-paid basis; q-eco-stellar-wallets-list keeps its dated 2026-08-30 illustrative roster with Lobstr on the first page and pins no LOBSTR scale, network, or SCF figure. The shared rule (wallet rosters and wallet facts are dated and source-attributed) still holds for both. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-eco-stellar-wallets-list now dates its illustrative roster to 2026-11-02 (keyword total 191; 72 records with Wallet in `types`, 32 sole-type); Lobstr is still first on the first page, and it pins no LOBSTR scale, network, or SCF figure. q-eco-lobstr-wallet changed only metadata. The shared rule (dated, source-attributed wallet rosters and facts) holds. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "note": "grader-caution candidate",
@@ -194,10 +194,10 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-infra-secp256r1-passkeys gained only a grader caution; CAP-0051 status and protocol are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
+          "reason": "Golden audit pass 2 (2026-11-02): q-sor-contract-trustlines-c-address now labels CAP-0073 Final (stellar-protocol core/cap-0073.md: 'Status: Final', 'Protocol version: 26', read 2026-11-02); the note now says CAP-73 Final/P26. The other changed members keep their CAP-status and protocol mappings. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Implemented/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
+        "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Final/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "6a1d82fe5ddbceb81f694a0509ba351e14f7e90333d0e9c228b825c42a251fdd",
           "q-comp-clawback-holder-risk": "26e14436b95f7669729cc3abb4fbdcb0fd26b2d3674ad0524cded4e6741a4b86",
@@ -309,7 +309,7 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-open-rfps and q-scf-rfp-tooling now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
+          "reason": "Golden audit pass 2 (2026-11-02): q-scf-open-rfps and q-scf-rfp-tooling now report that the official RFP Track page lists no open brief ('October 2026: New Q4 RFPs are coming soon.', read live 2026-11-02) and flag the Scout lag (sls-096). They give the #46 deadline 2026-11-09 and a do-not-penalize caution for a dated, attributed November 8 citation; the Scout-attribution partial cap and the roster conflict are gone. The other changed members keep the award-program, Build-cap, and SDF-versus-SCF distinctions in this note. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
@@ -351,13 +351,13 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-30",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-30",
-          "reason": "Review reconciliation (2026-09-30): q-defi-x402-on-stellar-what changed again only in judge-blind truth metadata (two evidence classes corrected: tftc.io to D, the SDF post to A; verified evidence lines). No answer, key fact, avoid, note, or SCF figure moved. The cluster note stands unchanged.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-defi-etherfuse-stablebonds (not a member) dropped its OrbitCDP $280K note; OrbitCDP's SCF total is source-conflicted (Scout scfTotalAwardedUSD 280000 and Lumenloop awarded_total 330000, both read 2026-11-02), and no member pins an OrbitCDP amount. Soroswap's $346,750 still matches across q-defi-soroswap-what-is and q-scf-history-soroswap; Phoenix $394.5K and Hana $132,000 each appear in one member. The note drops the OrbitCDP figure. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, OrbitCDP $280K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster.",
+        "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster. Updated 2026-11-02: OrbitCDP's SCF total is source-conflicted (Scout scfTotalAwardedUSD 280000; Lumenloop awarded_total 330000), so no member pins it; Scout labels OrbitCDP Inactive, and members keep its lifecycle label source-relative.",
         "memberContentSha256": {
           "q-defi-aquarius-what-is": "d78fb98ad5d3d3fe98b3048bd96a53c2174d3aa889a2e1e2d26e1ad05ea3fa3f",
           "q-defi-blend-alternatives": "fa5c7874546202997dca523b5713e53973e00e618fe5e12d73df29e8b59d1e03",
@@ -385,13 +385,13 @@
           "q-soroban-oracle-defensive-consumption"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-06",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-10-06",
-          "reason": "Near-due re-verification 2026-10-06: q-comp-yieldblox-oracle-incident changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. Horizon effects still show 61249278.3064502 XLM and 1000196.7040837 USDC; Blockaid still reports 48,069,094 XLM quarantined; no repayment, recovery, or Script3 $10.5M primary source found. The cluster note stands unchanged.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-comp-yieldblox-oracle-incident and q-hist-yieldblox-v2-2026-exploit were aligned together on Script3's 2026-03-04 post-mortem (https://x.com/script3official/status/2029289721114051073: '[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY'; 'This represents a net loss of ~$10.5M.') and Horizon tx 01c2ba75… (effects re-read 2026-11-02: 14000.0000000 USDC at 2026-02-22T00:20:50Z). Both now treat the 14,000 USDC as a separate borrow and accept the attributed Script3 ~$10M (2026-02-22) and ~$10.5M (2026-03-04) figures. Script3's notices report supplier remediation (2026-02-27) and backstop remediation (2026-03-20), and no attacker repayment or recovery. q-comp-security-disclosure-programs, q-defi-etherfuse-stablebonds, q-defi-reflector-oracle, and q-soroban-oracle-defensive-consumption keep the ~$10M, app-level, and fresh-poisoned-value framing with no conflicting figure. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "The cases consistently separate the 61,249,278.31-XLM and 1,000,196.70-USDC exploit transfers from source-specific combined USD valuations around $10M-$10.86M and from Blockaid's separately attributed 48,069,094-XLM quarantine. The decoded pre-state's roughly 14,000-USDC liability is not a second exploit transfer, quarantine is not recovery, and the prior Script3 ~$10.5M net-loss attribution remains unverified. Date, USTRY/Reflector vector, and app-level-not-protocol-level framing remain compatible. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes no longer assert Script3 depositor compensation as settled; remediation-vs-recovery discipline is now uniform with the answer and siblings. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append. Added 2026-07-28 (todo 1253 Lane B, G8): q-hist-yieldblox-v2-2026-exploit joins as the primary bearer of this cluster's claims. Without it, an edit to the corpus's main incident case reopened cluster-126 and the YieldBlox numericInvariant but never this cluster, leaving the date, USTRY/Reflector vector, and app-level-not-protocol-level framing claims with no reopen path. Verified 2026-07-28: its transfer figures, quarantine-is-not-recovery discipline, combined-USD-valuation framing, pre-existing ~14,000-USDC liability, and unverifiable Script3 ~$10.5M attribution match this cluster's note exactly. cluster-126 is now a strict membership subset: kept deliberately — 126 states the quantity invariant, this cluster states the incident framing.",
+        "note": "The cases consistently separate the 61,249,278.31-XLM and 1,000,196.70-USDC exploit transfers from source-specific combined USD valuations around $10M-$10.86M and from Blockaid's separately attributed 48,069,094-XLM quarantine. Corrected 2026-11-02: the roughly 14,000-USDC liability in the PoC's decoded pre-state came from a separate earlier attacker borrow (tx 01c2ba75…, 00:20:50 UTC, per Script3's 2026-03-04 post-mortem and Horizon), so about 1.01M USDC was borrowed across two transactions, never one 1,014,196.70-USDC transaction. Script3's dated figures (about $10M on 2026-02-22; about $10.5M net loss on 2026-03-04) are confirmed when attributed; rekt.news's $10.97M is not a Script3 figure. Quarantine is not recovery. Date, USTRY/Reflector vector, and app-level-not-protocol-level framing remain compatible. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes no longer assert Script3 depositor compensation as settled; remediation-vs-recovery discipline is now uniform with the answer and siblings. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append. Added 2026-07-28 (todo 1253 Lane B, G8): q-hist-yieldblox-v2-2026-exploit joins as the primary bearer of this cluster's claims. Without it, an edit to the corpus's main incident case reopened cluster-126 and the YieldBlox numericInvariant but never this cluster, leaving the date, USTRY/Reflector vector, and app-level-not-protocol-level framing claims with no reopen path. Verified 2026-07-28: its transfer figures, quarantine-is-not-recovery discipline, and combined-USD-valuation framing matched this cluster's note; its 14,000-USDC and Script3 framing was corrected on 2026-11-02 (see above). cluster-126 is now a strict membership subset: kept deliberately — 126 states the quantity invariant, this cluster states the incident framing.",
         "memberContentSha256": {
           "q-comp-security-disclosure-programs": "5da3cc3df7c94de4eff4ad56030e98a4aaedf15319082369a8d0dc3ce6bfb743",
           "q-comp-yieldblox-oracle-incident": "904dbc2489cf35240f8e3b7ac52f0d37ce6c8faf35ad4d9ab522858489854115",
@@ -473,8 +473,8 @@
           "q-pay-moneygram-ramps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
-        "note": "SEP-24 + Stellar USDC rails remain consistent across all four members. Both official layers were observed live on 2026-08-14: the Version 1.2 operator guide states a 15 USDC minimum, while the SEP-24 /info endpoint states a 1 USDC minimum. The minimum remains disputed, and both layers support a 2,500 USDC cash-out maximum. Country counts remain source- and direction-specific.",
+        "lastChecked": "2026-11-02",
+        "note": "MoneyGram Ramps settles in Stellar USDC across all four members. As of 2026-11-02, MoneyGram's developer portal labels the SEP-10/SEP-24 anchor path legacy for existing allowlisted partners and directs new Stellar wallets to its Ramps widget SDK with API keys and server-side sessions; members accept either path when it is dated and attributed. The minimum differs by host on 2026-11-02: the Version 1.2 operator guide and its named production anchor (mgxanchor.moneygram.com) /info state 15 USDC, and the older stellar.moneygram.com /info states 1 USDC. The minimum stays disputed. Every observed surface states a 950 USDC cash-in maximum and a 2,500 USDC cash-out maximum. Country counts remain source- and direction-specific.",
         "memberContentSha256": {
           "q-anchor-moneygram-ramps": "4150a583efac4553512a169ec46b8093763b84f5927d88845c48d0356c8047d9",
           "q-crp-anchors-by-corridor": "b7f9777315356c542658f344079117939844d14935189a3f2d9487a98122699a",
@@ -482,8 +482,8 @@
           "q-pay-moneygram-ramps": "56ecf2171e8f985013892d37820b1b2535d667df39bac798569d5093006e5b98"
         },
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-anchor-moneygram-ramps, q-pay-moneygram-ramps, and q-crp-anchors-by-corridor now name both the widget/API-key path and the legacy SEP-10/SEP-24 path, and give the per-host minimum. Re-read live 2026-11-02: mgxanchor.moneygram.com/stellarsepservice/sep24/info gives min_amount 15 and max_amount 950/2500; stellar.moneygram.com/stellaradapterservice/sep24/info gives min_amount 1 and the same maximums. The note replaces the SEP-24-only, guide-15-versus-/info-1 wording. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -554,10 +554,10 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-infra-rpc-provider-archive-tier now gives the dated 2026-11-02 nine-row official roster (node101 added 2026-09-08) and scopes the getLedgers-only claim to the official RPC Archive tier. q-infra-rpc-methods-list and the other members make no conflicting claim. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "Golden audit pass 2 (2026-11-02): q-infra-horizon-vs-rpc added the dated sd-072 Lab API Explorer caution (live 2026-11-02: 'Horizon is considered deprecated.'; the APIs overview still says 'Horizon is nearing end-of-life and will eventually be deprecated'). q-infra-rpc-methods-list and q-soroban-publish-events state the configurable 120960-ledger window; q-ti-self-host-retention-backfill dropped its expired sd-023 cached-copy caution and re-verified stellar-rpc and stellar-horizon v30.0.0 defaults. The other changed members keep the endpoint, retention, archive-tier, and indexer boundaries. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "Current review 2026-09-09: the rendered Horizon pages and their positive indexed records agree on nearing-end-of-life wording. The source/index conflict is fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose still conflicts with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. The official RPC Archive tier extends getLedgers only; SDF's archive-node beta and provider betas that serve wider full history are dated nuances, not the official tier. Older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
+        "note": "Current review 2026-11-02: official Horizon lifecycle wording is split again. The APIs overview and the Lab Horizon Endpoints page say nearing end-of-life, while the Lab API Explorer page says 'Horizon is considered deprecated.' since the 2026-10-22 Mintlify migration (improvements/stellar-docs/sd-072). q-infra-horizon-vs-rpc dates the nearing-end-of-life label and carries an ADR-0008 Horizon-lifecycle caution for an attributed quote of that page. getEvents: the method page and stellar-rpc v30.0.0 use one configurable history-retention-window with a stock default of 120960 ledgers (about 7 days); the 24-hour-default/seven-day-maximum method prose is fixed (sd-023, improvements/resolved.json), and the remaining '7 days at most' wording is on the events ingest guide (sd-068), which q-soroban-publish-events names. Review 2026-09-09: the rendered Horizon pages and their positive indexed records agreed on nearing-end-of-life wording, and the sd-042 source/index conflict was fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose then conflicted with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. The official RPC Archive tier extends getLedgers only; SDF's archive-node beta and provider betas that serve wider full history are dated nuances, not the official tier. Older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "ada85e3d559d5cfe3a85e90540ad398b40fb2a7b9e639f2bcc79812433978360",
           "q-infra-hubble-bigquery": "ed5379bf50ec0faa9426e65fad29bf7dd41f53fb4d711d492f08c8ca06ac6153",
@@ -634,13 +634,13 @@
           "q-edge-noinfo-exact-tvl-figure"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-17",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-17",
-          "reason": "September 17 routing audit: Re-read all 5 members. q-defi-aquarius-what-is removed its frozen DeFiLlama '~$48M' and '~20%' grader text; its answer still treats TVL and market rank as live, dated metrics and pins no figure. The other members still gate on provider, endpoint, definition, and as-of discipline (DeFindex dated multi-source values, chain TVL, Blend quarter trend, exact-figure no-info). No member now contradicts the no-frozen-number rule. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-eco-defi-tvl-current now dates both DeFiLlama history reads and grades no record date; q-edge-fresh-latest-blend-tvl dates its same-provider Blend points to 2026-11-02. The note replaces the June-19-above-May-30 wording, which the 2026-11-02 read reverses. No member pins a frozen gate number. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "All gate on provider/endpoint/definition/as-of discipline rather than frozen numbers. Blend additionally requires a same-provider declared-quarter start/end trend; current, quarter peak, record, borrowed, pool/backstop, fees, and volume are distinct. DeFiLlama's Stellar history reports a June 19 point above May 30, so May 30 is not an all-time-high gate. Chain, protocol, RWA, asset, and CEX measures must not be summed.",
+        "note": "All gate on provider/endpoint/definition/as-of discipline rather than frozen numbers. Blend additionally requires a same-provider declared-quarter start/end trend; current, quarter peak, record, borrowed, pool/backstop, fees, and volume are distinct. DeFiLlama's Stellar daily history is revised between reads (2026-07-11: June 19 above May 30; 2026-11-02: a $272.8M daily-close high dated 2026-10-01 above $242.7M on 2026-05-30), so no record date is a gate. Chain, protocol, RWA, asset, and CEX measures must not be summed.",
         "memberContentSha256": {
           "q-defi-aquarius-what-is": "d78fb98ad5d3d3fe98b3048bd96a53c2174d3aa889a2e1e2d26e1ad05ea3fa3f",
           "q-defi-defindex-honest": "4bd9d33d8edf75271d7fccd18912c01e78a986de9f9d5105fa77808d132fccf6",
@@ -690,10 +690,10 @@
           "q-tool-cli-testnet-identity-howto"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-30",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-30",
-          "reason": "Attribution-only follow-up (2026-09-30): q-ti-stellar-lab-usage-and-new-ui changed only in truth.verified wording, which now states that the reviewer checks were independent live source checks, not blind re-derivation. No question, answer, keyFact, avoid, note, or corroboration evidence moved. The author and four reviewers each checked live Docs for Lab Friendbot funding on Testnet and Futurenet and the Quickstart non-production warning. The cluster note stands unchanged.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-ti-stellar-lab-usage-and-new-ui moved its Saved Keypairs storage as-of to 2026-11-02 and re-verified capability, signer, Quickstart, and SAC claims on 2026-11-02. q-infra-testnet-vs-futurenet, q-ti-custodial-account-generation-c-address, and q-ti-testnet-usdc-faucet keep Friendbot as non-production Testnet/Futurenet funding. The Friendbot, local-identity, and public-address rules hold in every member. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -717,13 +717,13 @@
           "q-tool-rust-soroban-sdk"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-version-history-list changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-pc-protocol-upgrade-timing removed its sd-008 caution because the live Software Versions page no longer carries the old wording. The members agree on P28 (2026-09-16), P29 (2026-10-01), and the scheduled Bell/P30 votes (2026-11-03 Testnet, 2026-11-23 Mainnet). q-tool-rust-soroban-sdk makes no network-activation claim that conflicts. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "grader caution + improvements/resolved.json entry sd-008 Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+        "note": "Of the members, only q-protocol-27-cap-0071 still carries the older-copy Software Versions caution tied to improvements/resolved.json entry sd-008 (fixed 2026-08-18); q-pc-protocol-upgrade-timing removed its copy on 2026-11-02 because the trigger expired. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-pc-protocol-upgrade-timing": "3ae362ff93313ca63e3b6aeb3563662fdfcdfd2036e2892607ff5b6c3d15b996",
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
@@ -832,10 +832,10 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this cluster: unverifiable clauses stay out and supported dated cores remain; the new count is dated and source-attributed; every member re-read, consistent. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-eco-stellar-wallets-list changed its dated illustrative count to 2026-11-02 (keyword total 191; 72 records with Wallet in `types`, 32 sole-type). The count stays dated and source-attributed. The cluster rule (unverifiable clauses stay out; supported dated cores remain) holds. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "note": "resolved by removing the unverifiable clauses and retaining the supported core",
@@ -858,7 +858,7 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-open-rfps and q-scf-rfp-tooling now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. The corpus-relative encoding of the roster is unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
+          "reason": "Golden audit pass 2 (2026-11-02): q-scf-open-rfps replaced the attributed-November-8 partial cap with a do-not-penalize caution for a dated, attributed November 8 citation, and reports the official no-brief roster with the Scout lag flagged. The corpus-relative encoding (source, as-of date, basis, external verification) is unchanged in every member. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
@@ -952,10 +952,10 @@
           "q-soroban-deploy-cli"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this cluster: dated source snapshots, legal entities, directory reconstructions, and current CLI/API semantics stay separated; the new sentence is a dated directory snapshot that separates keyword total from type membership; every member re-read, consistent. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-eco-stellar-wallets-list changed its dated illustrative count to 2026-11-02 (keyword total 191; 72 records with Wallet in `types`, 32 sole-type) and keeps keyword total and type membership separate. The other changed members keep dated source snapshots, legal entities, directory reconstructions, and CLI/API semantics separate. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "note": "Dated/provenance-bearing overrides now distinguish source snapshots, legal entities, directory reconstructions, and current CLI/API semantics without unsupported comparisons. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -1052,10 +1052,10 @@
           "q-edge-fresh-most-recent-news"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-17",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-17",
-          "reason": "September 17 routing audit: Re-read all 3 members. The corrections changed no date-field, chronology, or recent-window claim: q-defi-soroswap-what-is keeps its dated 2026-07-10 adapter example, q-defi-blend-what-is is unchanged, and q-edge-fresh-most-recent-news keeps window/asOf, date-field validation, and chronological post-sort requirements. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-defi-soroswap-what-is now leads with the dated 2026-11-02 Aggregator v3 contract and venue list and keeps the 2026-07-10 adapter result only as a dated snapshot; it adds no undated chronology claim. q-defi-blend-what-is and q-edge-fresh-most-recent-news changed only metadata. The recent-window and date-field rules hold. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "note": "Semantic relevance rank is not chronology. Recent-window answers declare window/asOf, validate and label publication versus event date, exclude undated rows, post-sort chronologically, explain editorial significance, and remain non-exhaustive. Ingestion/scrape timestamps do not silently become publication dates.",
@@ -1191,13 +1191,13 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-protocol-23-whisk-caps (now scheduled) and q-protocol-parallel-execution record the SLP-0007 raise from 2 to 3 at ledger 65080525 (limits/slp-0007.md, Status Final: 'dependent transaction clusters (2 to 3)', read 2026-11-02). q-protocol-version-history-list keeps the initial-one nuance, and q-edge-noinfo-sep-9999 makes no cluster claim. The note replaces the 'current Mainnet value two' wording. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "No official sharding CAP was found in the dated registry/history sweep. P23 introduced CAP-0063 scheduling support with ledgerMaxDependentTxClusters initially one (no multi-cluster parallel execution); later settings activation led to the current Mainnet value two. Parallel scheduling is not sharding, and the setting-change date is not invented.",
+        "note": "No official sharding CAP was found in the dated registry/history sweep. P23 introduced CAP-0063 scheduling support with ledgerMaxDependentTxClusters initially one (no multi-cluster parallel execution); later network-settings votes raised it to two at ledger 60993066 on 2026-01-29 (SLP-0004) and to three at ledger 65080525 on 2026-10-22 (SLP-0007); three is the dated Mainnet value as of 2026-11-02. Parallel scheduling is not sharding, and no setting-change date is invented.",
         "memberContentSha256": {
           "q-edge-noinfo-sep-9999": "8ccff4aa275a4d27f41c28ca3ae4ddf03414fcb074aa68bd3bd7b27d2ae8b4ac",
           "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
@@ -1264,13 +1264,13 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-02",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-02",
-          "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date and judge-blind truth metadata. The preview status, the visibility boundary, and the primitives-are-not-a-product boundary are unchanged, and were re-derived from https://developers.stellar.org/docs/build/apps/privacy on 2026-09-02. Sibling q-edge-noinfo-stellar-native-privacy-default carries an older asOf of 2026-07-10, but the fact it dates did not move. No contradiction.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-sor-confidential-tokens and q-edge-noinfo-stellar-native-privacy-default now date the audited v0.8.0, Mainnet-ready status (OpenZeppelin release published 2026-10-20T16:58:32Z, re-read 2026-11-02; OpenZeppelin 2026-10-22: 'ready to be deployed on Stellar mainnet') and the non-zero-knowledge verifier limit. No member claims a specific Mainnet deployment or a global privacy toggle. q-protocol-bn254-poseidon-xray changed only metadata. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "Ordinary Stellar activity is public by default and there is no global privacy toggle. Optional applications have explicit visibility/network/audit boundaries; Confidential Tokens is a 2026-06-29 Testnet developer preview, while P22/P25 ZK host functions are primitives rather than turnkey privacy.",
+        "note": "Ordinary Stellar activity is public by default and there is no global privacy toggle. Optional applications have explicit visibility/network/audit boundaries; Confidential Tokens began as a 2026-06-29 Testnet developer preview; as of 2026-11-02, the audited stellar-confidential v0.8.0 contracts (released 2026-10-20) were called ready to deploy on Mainnet on 2026-10-22, and the UltraHonk verifier accepts only non-zero-knowledge proofs. P22/P25 ZK host functions are primitives rather than turnkey privacy.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-protocol-bn254-poseidon-xray": "93e1da9288a97dd9226e856c437f83026b5943322e8551813ef0d7b74eecad29",
@@ -1287,8 +1287,8 @@
           "q-protocol-scp-consensus-algorithm"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
-        "note": "Stellar uses SCP/FBA and validators receive no monetary rewards. Issuer interest, lending, AMM/LP, vault, token-lock, RWA, and external-chain wrapper yield are not native staking. The no-live-native-XLM-LST result is dated and source-bounded to the 2026-07-10 sweep.",
+        "lastChecked": "2026-11-02",
+        "note": "Stellar uses SCP/FBA and validators receive no monetary rewards. Issuer interest, lending, AMM/LP, vault, token-lock, RWA, and external-chain wrapper yield are not native staking. The no-live-native-XLM-LST result is dated and source-bounded to the 2026-07-10 sweep and a 2026-11-02 re-sweep. As of 2026-11-02, two members carry dated do-not-penalize cautions: StelloFi's self-described 'Native XLM Liquid Staking' sXLM is a vault share token, not validator staking, and SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for locked XLM, not proof-of-stake staking or an adopted protocol reward.",
         "memberContentSha256": {
           "q-defi-build-staking-for-own-token": "fa425aae14267b4ec0eabcfe986440a6b6359ad2096fcc5856d74c8b5d8a5cc5",
           "q-defi-liquid-staking-whitespace": "9b7bd4f7a1c4bf5df8f7c106544c69e715d13be74c25515b41e7c816bbe051f4",
@@ -1296,8 +1296,8 @@
           "q-protocol-scp-consensus-algorithm": "2f28f094b930ccde9cfbfbd98a8b51aa24fb2826a9406077ba8feb7c519a65a5"
         },
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-defi-liquid-staking-whitespace and q-edge-noinfo-stellar-pos-staking-rewards re-swept the native-LST negative on 2026-11-02 and added the StelloFi sXLM and SDF fee-pool paper cautions. q-defi-build-staking-for-own-token and q-protocol-scp-consensus-algorithm changed only metadata and make no conflicting claim. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -1507,15 +1507,15 @@
           "q-pc-memos-reference"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
-        "note": "Classic transactions have at most one transaction-level memo; fee-bump has no second outer memo. Current InvokeHostFunction transactions require MEMO_NONE. Custodial matching remains application-defined and exact-value sensitive.",
+        "lastChecked": "2026-11-02",
+        "note": "Classic transactions have at most one transaction-level memo; fee-bump has no second outer memo. InvokeHostFunction transactions require MEMO_NONE (stellar-core validateSorobanMemo; the rule still holds in the Protocol 30 release, checked 2026-11-02). Custodial matching remains application-defined and exact-value sensitive.",
         "memberContentSha256": {
           "q-edge-exchange-memo-lost-funds": "53ae4cb2495eb69d08bd713c7de8ab067508ed8f8ea2882e956f26b7dd0882bf",
           "q-pc-memos-reference": "18838694ae52165d458ba9e6d7f57bebb079ec8aed489a82bba8c8de62832e39"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-pc-memos-reference changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-pc-memos-reference now states the MEMO_NONE rule as release-bounded (stellar-core validateSorobanMemo, still in the Protocol 30 release). The note uses the same bound. q-edge-exchange-memo-lost-funds changed only metadata. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -1569,13 +1569,13 @@
           "q-pc-practical-fee-setting"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-09",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-09",
-          "reason": "Docs ingestion review (2026-09-09): both members now state the verified September 9 Horizon source/index agreement. Neither claims complete Horizon/RPC parity. The expired index caution is removed; endpoint and fee facts remain unchanged.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-infra-horizon-vs-rpc added the dated sd-072 Lab API Explorer caution, confirmed live on 2026-11-02. q-pc-practical-fee-setting changed only metadata. The note now records the split official wording. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "As of 2026-09-09, the rendered Horizon pages and indexed EVM record agree on nearing-end-of-life wording. The sd-042 occurrence is fixed. Both cases retain the endpoint-specific Horizon/RPC boundary rather than claiming complete replacement.",
+        "note": "As of 2026-09-09, the rendered Horizon pages and indexed EVM record agreed on nearing-end-of-life wording, and the sd-042 occurrence was fixed. As of 2026-11-02, the Lab API Explorer page says 'Horizon is considered deprecated.' (sd-072) while the APIs overview still says nearing end-of-life; q-infra-horizon-vs-rpc carries a dated caution for that page, and q-pc-practical-fee-setting keeps its dated 2026-09-08 nearing-end-of-life label. Both cases retain the endpoint-specific Horizon/RPC boundary rather than claiming complete replacement.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "ada85e3d559d5cfe3a85e90540ad398b40fb2a7b9e639f2bcc79812433978360",
           "q-pc-practical-fee-setting": "e531e81c3cb45e7f21adad637c51977cb9a210b2aea599e4e105110cbabe7d55"
@@ -1609,13 +1609,13 @@
           "q-pc-practical-fee-setting"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-09",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-09",
-          "reason": "Docs ingestion review (2026-09-09): both members retain the dated 100-stroop floor, RPC getFeeStats priority, Horizon fee_stats availability, and Hubble historical role. Only Horizon lifecycle sourcing and the expired index qualifier change.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-infra-horizon-vs-rpc added the dated sd-072 caution; the 100-stroop floor, getFeeStats priority, Horizon fee_stats availability, and Hubble historical role are unchanged in both members. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. As of 2026-09-09, the rendered Horizon pages and indexed EVM record agree on nearing-end-of-life wording.",
+        "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. As of 2026-09-09, the rendered Horizon pages and indexed EVM record agreed on nearing-end-of-life wording; as of 2026-11-02, the Lab API Explorer page instead says 'Horizon is considered deprecated.' (sd-072), and q-infra-horizon-vs-rpc carries a dated caution for it.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "ada85e3d559d5cfe3a85e90540ad398b40fb2a7b9e639f2bcc79812433978360",
           "q-pc-practical-fee-setting": "e531e81c3cb45e7f21adad637c51977cb9a210b2aea599e4e105110cbabe7d55"
@@ -1630,16 +1630,16 @@
           "q-protocol-ledger-header-fields"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
-        "note": "P27 source-derived exhaustive entry/header lists distinguish direct versus scpValue-nested fields and state versus transaction commitments.",
+        "lastChecked": "2026-11-02",
+        "note": "Source-derived exhaustive entry/header lists from stellar-xdr v27.0, v28.0, and v30.0 (Protocols 27 through 30) distinguish direct versus scpValue-nested fields and state versus transaction commitments. The direct LedgerHeader fields and the ten LedgerEntryType variants are the same in those releases. Protocol 30 (CAP-0088) adds a millisecond closeTimeMs inside the StellarValue extension; q-protocol-ledger-header-fields does not penalize an answer that says P30 changes the header format, unless it lists closeTimeMs as a direct LedgerHeader field. q-pc-bucketlist-vs-merkle-inclusion-proof adds the dated CAP-0083 (P28) empty-transaction-set edge case. Updated 2026-11-02; the earlier note described only the P27 lists.",
         "memberContentSha256": {
           "q-pc-bucketlist-vs-merkle-inclusion-proof": "ddba8d5300a7f6602b15cb678f1eda7df64acfcfffc0ceabf50c7b6b0b1d7249",
           "q-protocol-ledger-entry-types": "38cb18dc4cf126970b567dad4b707abe53993eb3f47ad190ef7babb55cffe877",
           "q-protocol-ledger-header-fields": "9c3fffa3450d62cd09b90ec08f3c226db5603fe88983e82c740813ac14fb5591"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-pc-bucketlist-vs-merkle-inclusion-proof changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-protocol-ledger-header-fields and q-protocol-ledger-entry-types now cover stellar-xdr v27.0, v28.0, and v30.0, and the header case adds the CAP-0088 header-format caution that matches the Bell guide wording quoted in q-pc-protocol-upgrade-timing. q-pc-bucketlist-vs-merkle-inclusion-proof adds the CAP-0083 empty-set edge case. The direct-versus-nested and state-versus-transaction separations hold in all three. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -1651,15 +1651,15 @@
           "q-protocol-max-tx-set-size"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-01",
-        "note": "Observed Pubnet cadence is about 5–7 seconds from a multi-ledger sample. Current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
+        "lastChecked": "2026-11-02",
+        "note": "As of 2026-11-02, Mainnet closes a ledger about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16); official Docs still say every 5–7 seconds, which matched samples before Protocol 28. As observed 2026-08-21, current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
           "q-protocol-ledger-close-time": "d99a833983de8f67b97f7dfa1fa8ec401130cc42f01d209a3fbd448f0a1cff1d",
           "q-protocol-max-tx-set-size": "ba2858f1caed9e74cd40db66851ee3cd3dc4cf744b7a1f12c77fb25ac2e561ed"
         },
         "reSwept": {
-          "date": "2026-10-01",
-          "reason": "Owner decision C (2026-10-01): the cadence member now states about 5 seconds as of 2026-10-01 (5.0-second mean since Protocol 28; target 5000 ms) and records that Docs still say every 5-7 seconds. This supersedes the 5–7-second sample in the cluster note. q-protocol-max-tx-set-size asserts separate dated limits and no cadence. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md. Re-stamped after the ledger moved into the round folder; no member content changed beyond that provenance path.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-protocol-ledger-close-time dates the about-5-second cadence to 2026-11-02 and accepts the dated Docs 5–7-second wording; the note now states the same. q-protocol-max-tx-set-size keeps its dated 2026-08-21 limits; SLP-0007 (2026-10-22) changed read/write entries, write bytes, transaction size, and dependent clusters, not ledgerMaxTxCount. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -2004,14 +2004,14 @@
         ],
         "verdict": "consistent",
         "lastChecked": "2026-11-02",
-        "note": "As of 2026-09-03, the official Q3 page and live feed support two open briefs. The live response has syntheticRounds=1, #46 is in Submission, and #45 is in Panel Review. As of 2026-11-02, both cases give the #46 deadline 2026-11-09. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates.",
+        "note": "As of 2026-11-02, the official SCF RFP Track page lists no open brief ('October 2026: New Q4 RFPs are coming soon.'); a 2026-10-16 handbook commit (e07b4bfc) removed the two Q3 briefs, LayerZero DVN and x402 Facilitator with Bazaar. Scout /api/rfps?status=open still marks those two briefs open and returns one synthetic scf-round-46 row (sls-096). Both cases report the official roster, flag the Scout lag, and give the #46 deadline 2026-11-09. Earlier dated state: on 2026-09-03 the official Q3 page and live feed supported two open briefs, with #46 in Submission and #45 in Panel Review.",
         "memberContentSha256": {
           "q-scf-open-rfps": "73030f2e87a723e7f5cd830cdf4e751e59254a89c104a027d940b83b4458f013",
           "q-scf-rfp-tooling": "0408da2ba3516388f1f3777f74f16b8375fefbeaa34ccbdd679ce5652a2aee91"
         },
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-open-rfps and q-scf-rfp-tooling now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
+          "reason": "Golden audit pass 2 (2026-11-02): the roster conflict is resolved. Both members now report the official no-brief roster and flag the Scout lag, and the attributed-November-8 partial cap became a do-not-penalize caution. The RFP Track page and the awards deadline (November 9, 2026) were read live on 2026-11-02. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -2092,14 +2092,14 @@
         ],
         "verdict": "consistent",
         "lastChecked": "2026-11-02",
-        "note": "The Q1-2026 Hummingbot/Kelp-replacement brief is closed and absent from the two current Q3 briefs. No unverified later #41 submission, official merge, or fulfillment claim was added.",
+        "note": "The Q1-2026 Hummingbot/Kelp-replacement brief is closed (Scout /api/rfps on 2026-11-02: status closed, quarter q1-2026). As of 2026-11-02, the official RFP Track page lists no open brief, and the two Q3 briefs that Scout still marks open do not include it. No unverified later #41 submission, official merge, or fulfillment claim was added.",
         "memberContentSha256": {
           "q-scf-hummingbot-kelp-closed-rfp": "28ede0071c36f61f28f122e07a80256b0f4256170e7aca21154ddf3d514cc7d7",
           "q-scf-open-rfps": "73030f2e87a723e7f5cd830cdf4e751e59254a89c104a027d940b83b4458f013"
         },
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-open-rfps changed only the #46 deadline; the closed Hummingbot brief claims are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
+          "reason": "Golden audit pass 2 (2026-11-02): q-scf-open-rfps now reports the official no-brief roster and the Scout lag, not only the #46 deadline. q-scf-hummingbot-kelp-closed-rfp keeps its dated 2026-06-25 closed-brief record and no longer names a current quarter. Both treat the Hummingbot brief as closed. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -2185,7 +2185,7 @@
         },
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-rfp-tooling changed only the #46 deadline; the interest-to-invitation flow is unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
+          "reason": "Golden audit pass 2 (2026-11-02): q-scf-rfp-tooling keyFacts[1] now grades whether the official RFP Track page lists a matching open brief (none on 2026-11-02), and its notes give plain correct/wrong rules for the Scout lag. The rolling interest-form-to-invitation flow and panel-led Integration/RFP review are unchanged in every member. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -2243,15 +2243,15 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-02",
-        "note": "corrected with dated preview status and conditional evidence.",
+        "lastChecked": "2026-11-02",
+        "note": "corrected with dated network and audit status (Testnet preview on 2026-06-29; audited v0.8.0 called Mainnet-ready on 2026-10-22) and conditional evidence.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-sor-confidential-tokens": "331b5f59ba544456055463a829e7553e9c8d60d54d5927ba7050a9ed103905f9"
         },
         "reSwept": {
-          "date": "2026-09-02",
-          "reason": "Stale-gospel refresh (2026-09-02): the only member change is the q-sor-confidential-tokens in-answer as-of date plus judge-blind truth metadata. The dated preview status and the conditional-evidence framing that this cluster records are both unchanged. No contradiction.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): both members now date the audited v0.8.0, Mainnet-ready status and the non-zero-knowledge verifier limit; the conditional audit-evidence framing is unchanged. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -2796,16 +2796,16 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
-        "note": "P23 initialized one cluster; a separate settings upgrade activated two on 2026-01-29. Current value two is dated/configuration-sensitive and canonical SLP path is limits/slp-0004.md.",
+        "lastChecked": "2026-11-02",
+        "note": "P23 initialized one cluster. Separate settings upgrades raised it to two at ledger 60993066 on 2026-01-29 (limits/slp-0004.md) and to three at ledger 65080525 on 2026-10-22 (limits/slp-0007.md). The current value (three as of 2026-11-02) is dated and configuration-sensitive. Canonical SLP paths are under limits/, not core/.",
         "memberContentSha256": {
           "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-parallel-execution": "684e9304c747f268fad7c3692a469df78a881b6efffa2dd11e7d9c75d19ebdf4",
           "q-protocol-version-history-list": "e8198ba6d0d069b40027a659d7c001d9c212e59ae4069f98a7e2714b42c42450"
         },
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-protocol-23-whisk-caps and q-protocol-parallel-execution now give the SLP-0007 value three (ledger 65080525, 2026-10-22; limits/slp-0007.md read 2026-11-02) and accept either SLP path under limits/. q-protocol-version-history-list keeps the initial-one nuance. The note replaces the 'current value two' and single-path wording. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -2843,13 +2843,13 @@
           "q-soroban-auth-delegation-p27"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): the members now date P27 as history and name P29 as current (Horizon, re-read 2026-11-02: first P28 ledger 64458446, first P29 ledger 64717645, current_protocol_version 29). q-pc-protocol-27-zipper keeps its dated 2026-08-30 P27 check. The note replaces the P27-current and P28-future wording. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "P27 is current on Mainnet from ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features. P28/AddressV2 remains a future recheck, not current activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+        "note": "P27 activated on Mainnet at ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features and remain in effect. As of 2026-11-02, Mainnet runs Protocol 29: P28 (Adapter) activated at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01, and neither changed CAP-0071 credentials. Bell/P30 has a Mainnet vote scheduled for 2026-11-23; a scheduled vote is not activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "d210bd6db64d122a31a61bbafd2e137a05d7333acb1343ee681cba0a5180ec94",
           "q-pc-protocol-27-zipper": "c1b72127121c9e9d7d77e35443851f213f875b79f5643bfa0c13091ee0df3c67",
@@ -2971,13 +2971,13 @@
           "q-x402-payment-verification"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-06",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-10-06",
-          "reason": "Near-due re-verification 2026-10-06: q-hist-x402-stellar-announcement changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. The SDF announcement is still dated 2026-03-10 and stellar-protocol still has no x402 SEP. The cluster note stands unchanged.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-soroban-x402-auth-entry-signing now gives the 2026-10-29 Varial roster, flags the Albedo conflict in keyFacts[3], and cites sd-060; the official x402 page re-read on 2026-11-02 lists Varial Mobile, Scopuly, and Albedo. q-x402-payment-verification dates its facilitator list to 2026-11-02, and q-hist-x402-stellar-announcement keeps the 2026-03-10 date and the no-SEP rule. The note replaces the Freighter-roster wording. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "The 2026-03-10 announcement is historical; current facilitator, wallet, sponsorship, and verification capabilities are separately dated and do not make x402 a SEP. The official roster lists Freighter Browser, Albedo, Hana, HOT, Klever, and OneKey and excludes Freighter Mobile, while Freighter owner docs expose extension signAuthEntry and mobile stellar_signAuthEntry and Stellar Wallets Kit explicitly throws for Albedo. Raw auth-entry capability is not tested end-to-end x402 compatibility. Wallet-owner proof of current end-to-end x402 compatibility remains unverified for Hana, HOT, Klever, and OneKey; Hana owner docs recommend Wallets Kit but do not establish that stronger claim.",
+        "note": "The 2026-03-10 announcement is historical; current facilitator, wallet, sponsorship, and verification capabilities are separately dated and do not make x402 a SEP. As of 2026-11-02 (page changed 2026-10-29), the official roster lists the Varial (formerly Freighter) Browser Extension, Varial Mobile through WalletConnect, Albedo, Hana, HOT, Klever, OneKey, and Scopuly. Varial owner docs expose extension signAuthEntry and mobile stellar_signAuthEntry, which matches the page, while Stellar Wallets Kit explicitly throws for Albedo (sd-060). Raw auth-entry capability is not tested end-to-end x402 compatibility. Wallet-owner proof of current end-to-end x402 compatibility remains unverified for Hana, HOT, Klever, OneKey, and Scopuly; Hana owner docs recommend Wallets Kit but do not establish that stronger claim. An answer that reports the earlier 'Freighter Mobile unsupported' page state as dated history is not wrong.",
         "memberContentSha256": {
           "q-defi-x402-on-stellar-what": "0516eedef2611b2a8e696633499722857d31d5dd4fe7507eaf48d54af90336a5",
           "q-hist-x402-stellar-announcement": "1a701a6b4fa2f4210e897097d47253a8e308715c36e3ddf97b173dcaebf345a7",
@@ -2994,13 +2994,13 @@
           "q-soroban-oracle-defensive-consumption"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-06",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-10-06",
-          "reason": "Near-due re-verification 2026-10-06: q-comp-yieldblox-oracle-incident changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. Remediation dates 2026-02-27 and 2026-03-20 re-confirmed from Script3 posts and repository commits. The cluster note stands unchanged.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): both incident members now record the 14,000 USDC as a separate attacker borrow (Script3 2026-03-04 post-mortem; Horizon tx 01c2ba75… re-read 2026-11-02) and accept the attributed Script3 ~$10M and ~$10.5M figures. The 61,249,278.31-XLM and 1,000,196.70-USDC transfers, the 48,069,094-XLM quarantine, and the quarantine-is-not-recovery rule are unchanged. q-soroban-oracle-defensive-consumption pins no exact figure. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "The incident cases consistently identify 61,249,278.31 XLM plus 1,000,196.70 USDC as the exploit transfers, treat the roughly 14,000-USDC pre-state liability as pre-existing, label roughly $10M-$10.86M figures as source-specific combined USD valuations, and keep Blockaid's 48,069,094-XLM quarantine distinct from recovery or reimbursement. The Script3 ~$10.5M net-loss attribution remains unverified; remediation-status claims require dated evidence. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes drop the settled-compensation claim; transfer/valuation/quarantine/recovery separations unchanged. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
+        "note": "The incident cases consistently identify 61,249,278.31 XLM plus 1,000,196.70 USDC as the exploit transfers, record the roughly 14,000-USDC liability in the decoded pre-state as a separate earlier attacker borrow (tx 01c2ba75…; about 1.01M USDC across two transactions, never one 1,014,196.70-USDC transaction; corrected 2026-11-02), label roughly $10M-$10.86M figures as source-specific combined USD valuations, and keep Blockaid's 48,069,094-XLM quarantine distinct from recovery or reimbursement. Script3's ~$10M (2026-02-22) and ~$10.5M net-loss (2026-03-04 post-mortem) figures are confirmed when attributed with their dates (corrected 2026-11-02); remediation-status claims require dated evidence. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes drop the settled-compensation claim; transfer/valuation/quarantine/recovery separations unchanged. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
           "q-comp-yieldblox-oracle-incident": "904dbc2489cf35240f8e3b7ac52f0d37ce6c8faf35ad4d9ab522858489854115",
           "q-hist-yieldblox-v2-2026-exploit": "f4350fb5fdff1c5d7b2c3e00ea6e2cf641427ca457815262edb186487fca76ce",
@@ -3016,13 +3016,13 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-02",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-02",
-          "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date and judge-blind truth metadata. All members still describe a Testnet developer preview and not a Mainnet launch. Re-derived 2026-09-02 from https://developers.stellar.org/docs/build/apps/privacy and the SDF developer-preview post, which says the contract is live on testnet and not yet approved for mainnet. Sibling q-scf-confidential-tokens-preview keeps reverifyBy 2026-11-19 and is unchanged. No contradiction.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-scf-confidential-tokens-preview keeps the June 29 boundary and adds the dated later status (reverifyBy 2027-04-08); q-sor-confidential-tokens (reverifyBy 2027-04-22) and q-edge-noinfo-stellar-native-privacy-default give the same status. The note replaces the preview-only wording. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "note": "All cases describe the 2026-06-29 release as a Testnet developer preview, not a Mainnet launch or a network-wide privacy mode. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+        "note": "All cases describe the 2026-06-29 release as a Testnet developer preview, not a Mainnet launch or a network-wide privacy mode. As of 2026-11-02, all three also date the later status: audited stellar-confidential v0.8.0 (2026-10-20), called ready to deploy on Mainnet on 2026-10-22, with a verifier that accepts only non-zero-knowledge proofs; no primary record of a specific Mainnet deployment was found. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-scf-confidential-tokens-preview": "73fa12b03eb8e0c2fd469e9e456620b855593b9be0f1f4d4fd7221e264b815e6",
@@ -3252,10 +3252,10 @@
           "q-ti-stellar-lab-usage-and-new-ui"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-30",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-30",
-          "reason": "Attribution-only follow-up (2026-09-30): only the truth.verified wording of q-ti-stellar-lab-usage-and-new-ui changed. The author, rev-astra, rev-sol, and rev-grok each checked the saved-keypairs Docs page, stellar/laboratory main (helpers unchanged since 624d40ff29ca), and the live page-dbc03db5d85268bb.js bundle from live sources after reading the author's notes. The cluster note stands unchanged.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): the live Lab page no longer loads page-dbc03db5d85268bb.js; q-ti-stellar-lab-usage-and-new-ui now cites the served 2hm6rn-eyf-za.js bundle (localStorage writes) in truth.sources and dates Saved Keypairs storage to 2026-11-02. q-ti-secret-key-vs-mnemonic-derivation keeps its dated 2026-09-09 storage statement. The note (XOR/base64 obfuscation, readable legacy plaintext, Docs/source/UI agreement) holds. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "note": "Saved Keypairs is unprotected Testnet/Futurenet browser storage. Current writes use reversible XOR/base64 obfuscation and legacy plaintext rows remain readable. Docs, source, and UI warnings agree. The former conflict used Laboratory's obsolete master branch.",
@@ -3366,15 +3366,18 @@
         }
       },
       {
-        "label": "Protocol 27 Mainnet version",
-        "authoritativeValue": "Protocol 27 (Zipper)",
-        "rule": "Mainnet activated Protocol 27 at ledger 63386819 on 2026-07-08T17:00:10Z; release support and CAP status alone do not prove activation.",
+        "label": "Mainnet protocol activation history",
+        "authoritativeValue": "Protocol 27 (Zipper) from ledger 63386819 (2026-07-08); Protocol 28 (Adapter) from ledger 64458446 (2026-09-16); Protocol 29 from ledger 64717645 (2026-10-01)",
+        "rule": "Each listed activation is fixed history: P27 at ledger 63386819 on 2026-07-08T17:00:10Z, P28 at ledger 64458446 on 2026-09-16T17:00:06Z, and P29 at ledger 64717645 on 2026-10-01T17:00:07Z. The current Mainnet version is volatile: on 2026-11-02 Horizon reported current_protocol_version 29 and core_supported_protocol_version 30. The Bell/Protocol 30 Mainnet vote is scheduled for 2026-11-23 17:00 UTC. A scheduled vote, release support, or CAP status alone does not prove activation; a dated later answer that reports P30 as current is correct. Retargeted 2026-11-02 from the former 'Protocol 27 Mainnet version' invariant.",
         "acceptedSpellings": [
           "Protocol 27",
           "P27",
           "Zipper",
-          "protocol_version 27",
-          "63386819"
+          "63386819",
+          "Protocol 28",
+          "64458446",
+          "Protocol 29",
+          "64717645"
         ],
         "evidence": [
           {
@@ -3390,12 +3393,40 @@
             "observedAt": "2026-08-05",
             "httpStatus": 200,
             "note": "Live Horizon ledger reports protocol_version 27 at the activation boundary."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/64458446",
+            "observedAt": "2026-11-02",
+            "httpStatus": 200,
+            "note": "protocol_version 28, closed_at 2026-09-16T17:00:06Z; ledger 64458445 reports 27."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/64717645",
+            "observedAt": "2026-11-02",
+            "httpStatus": 200,
+            "note": "protocol_version 29, closed_at 2026-10-01T17:00:07Z; ledger 64717644 reports 28."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-02",
+            "httpStatus": 200,
+            "note": "current_protocol_version 29; core_supported_protocol_version 30; core_version stellar-core 30.0.0."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+            "observedAt": "2026-11-02",
+            "httpStatus": 200,
+            "note": "'November 3, 2026, 1700 UTC —Testnet upgrade vote.' 'November 23, 2026, 1700 UTC —Mainnet upgrade vote.'"
           }
         ],
         "datePolicy": {
           "mode": "as-of",
-          "asOf": "2026-08-05",
-          "recheckOn": "next Mainnet protocol activation"
+          "asOf": "2026-11-02",
+          "recheckOn": "Protocol 30 (Bell) Mainnet vote on 2026-11-23 or any later Mainnet protocol activation"
         },
         "affectedCaseIds": [
           "q-edge-fresh-latest-protocol-version",
@@ -3413,11 +3444,11 @@
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): the former 'Protocol 27 Mainnet version' recheck fired twice (P28 on 2026-09-16, P29 on 2026-10-01). The invariant now records the fixed P27, P28, and P29 activation ledgers and dates the current version (Horizon, re-read 2026-11-02: current_protocol_version 29). Every affected case still has a claim-covering corroboration row; q-edge-fresh-latest-protocol-version names Protocol 29 and ledger 64717645, and the other members keep the P27 activation ledger or name. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-31"
+        "lastChecked": "2026-11-02"
       },
       {
         "label": "SCF #43 official total",
@@ -3517,8 +3548,8 @@
       },
       {
         "label": "YieldBlox borrowed XLM USDC totals",
-        "authoritativeValue": "61,249,278.3064502 XLM and 1,000,196.7040837 USDC transferred by the exploit transactions",
-        "rule": "Report the two exploit transfers as 61,249,278.3064502 XLM and 1,000,196.7040837 USDC. The roughly 14,000 USDC visible in the decoded pre-transaction state was a PRE-EXISTING liability, not a separate earlier borrow, so 1,014,196.7040837 must not be presented as one ledger-confirmed exploit borrow. 48,069,094 XLM quarantined is a subset of the XLM leg (~78.5%), not an additional loss and not automatically recovered. Any USD headline must state its basis; the PoC's $10,857,337.06 is those two transfers at incident-time price (XLM $0.1609348). Corrected 2026-07-28.",
+        "authoritativeValue": "61,249,278.3064502 XLM and 1,000,196.7040837 USDC transferred by the two large exploit transactions, plus a separate earlier 14,000 USDC attacker borrow",
+        "rule": "Report the two large exploit transfers as 61,249,278.3064502 XLM and 1,000,196.7040837 USDC. Script3's 2026-03-04 post-mortem and Horizon tx 01c2ba75… show a separate earlier attacker borrow of 14,000 USDC at 00:20:50 UTC; it is the roughly 14,000-USDC liability in the PoC's decoded pre-state. Total USDC borrowed is about 1.01M across two transactions; never present 1,014,196.7040837 USDC as one transaction. 48,069,094 XLM quarantined is a subset of the XLM leg (~78.5%), not an additional loss and not recovery. Any USD figure must state its source and basis: the PoC's $10,857,337.06 values the two large transfers at incident-time price (XLM $0.1609348); Script3 gave about $10M (2026-02-22) and about $10.5M net loss (2026-03-04); $10.97M is rekt.news's own figure. Corrected 2026-11-02.",
         "acceptedSpellings": [
           "61,249,278.31 XLM",
           "61,249,278.3064502 XLM",
@@ -3539,11 +3570,24 @@
             "observedAt": "2026-07-11",
             "httpStatus": 200,
             "note": "Independent incident analysis corroborates the exploit path and headline quantities."
+          },
+          {
+            "class": "A",
+            "ref": "https://x.com/script3official/status/2029289721114051073",
+            "observedAt": "2026-11-02",
+            "note": "Script3 post-mortem (2026-03-04): '[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY'; 'This represents a net loss of ~$10.5M.'"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+            "observedAt": "2026-11-02",
+            "httpStatus": 200,
+            "note": "contract_debited and account_credited 14000.0000000 USDC at 2026-02-22T00:20:50Z for the attacker account GBO7VUL2…."
           }
         ],
         "datePolicy": {
           "mode": "stable",
-          "asOf": "2026-07-28",
+          "asOf": "2026-11-02",
           "recheckOn": "published post-mortem correction"
         },
         "affectedCaseIds": [
@@ -3555,10 +3599,10 @@
           "q-hist-yieldblox-v2-2026-exploit": "f4350fb5fdff1c5d7b2c3e00ea6e2cf641427ca457815262edb186487fca76ce"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-10-06",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-10-06",
-          "reason": "Near-due re-verification 2026-10-06: q-comp-yieldblox-oracle-incident changed only in judge-blind truth metadata. Horizon effects for transactions ae721cac… and 3e81a3f7… still transfer 1000196.7040837 USDC and 61249278.3064502 XLM; the PoC still lists the roughly 14,000 USDC liability as pre-existing; Blockaid still reports 48,069,094 XLM quarantined. The authoritative value and rule are unchanged.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): both members now record the 14,000 USDC as a separate attacker borrow (Script3 2026-03-04 post-mortem; Horizon tx 01c2ba75… effects re-read 2026-11-02: 14000.0000000 USDC) and accept the attributed Script3 ~$10M and ~$10.5M figures. The rule replaces the pre-existing-liability framing. The two large transfers, the 48,069,094-XLM quarantine subset, and the PoC valuation basis are unchanged. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
@@ -3597,8 +3641,8 @@
         ],
         "datePolicy": {
           "mode": "as-of",
-          "asOf": "2026-10-01",
-          "recheckOn": "next SCF round or phase change"
+          "asOf": "2026-11-02",
+          "recheckOn": "SCF #46 deadline 2026-11-09, Prescreen & Panel Review 2026-11-11, or any later round or phase change"
         },
         "affectedCaseIds": [
           "q-edge-fresh-latest-scf-round",
@@ -3611,7 +3655,7 @@
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "All SCF members now give the 2026-11-09 deadline. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
+          "reason": "Golden audit pass 2 (2026-11-02): the awards page still reads 'Deadline to submit: November 9, 2026' (read live 2026-11-02), and both members give the 2026-11-09 deadline. datePolicy.asOf now matches the rule's 2026-11-02 observation, and recheckOn names the next phase dates. The RFP roster conflict is resolved and no longer applies here. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "lastChecked": "2026-11-02"
@@ -3667,9 +3711,9 @@
     "$comment": "Known time-bombs paired with case truth.reverifyBy schedules or explicit event-triggered rechecks.",
     "entries": [
       {
-        "triggerDateEvent": "Mainnet activation of Protocol 28 or any AddressV2 successor change",
-        "requiredRecheck": "Re-probe Mainnet protocol_version and re-verify every case that calls P27 current or AddressV2 future; update the current-version invariant and hashes.",
-        "disposition": "open — P27 is current as of 2026-08-30 (Horizon current_protocol_version 27, core_supported_protocol_version 28, Protocol 28 Testnet TBD on the software-versions page); P28/AddressV2 must not be presented as active before the trigger.",
+        "triggerDateEvent": "Protocol 30 (Bell) Mainnet vote on 2026-11-23, any later Mainnet protocol activation, or any AddressV2 successor change",
+        "requiredRecheck": "Re-probe Mainnet current_protocol_version on Horizon or RPC and re-verify every case that names the current or next protocol, or AddressV2 status; update the 'Mainnet protocol activation history' invariant and hashes.",
+        "disposition": "reviewed — the prior trigger (Mainnet activation of Protocol 28) fired on 2026-09-16: Horizon ledger 64458446 (2026-09-16T17:00:06Z) is the first protocol_version 28 ledger, and ledger 64717645 (2026-10-01T17:00:07Z) is the first protocol_version 29 ledger. On 2026-11-02 Horizon reported current_protocol_version 29 and core_supported_protocol_version 30. No member calls P27 current without a date; q-pc-protocol-27-zipper keeps its dated 2026-08-30 check. P28 and P29 did not change CAP-0071 credentials, including SOROBAN_CREDENTIALS_ADDRESS_V2. The trap now watches the Bell/P30 Mainnet vote scheduled for 2026-11-23 17:00 UTC: q-protocol-version-history-list reverifyBy 2026-11-24, q-pc-protocol-upgrade-timing reverifyBy 2026-11-24, and q-edge-fresh-latest-protocol-version reverifyBy 2026-12-15.",
         "caseIds": [
           "q-edge-fresh-latest-protocol-version",
           "q-pc-protocol-27-zipper",
@@ -3684,16 +3728,16 @@
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): re-dispositioned after the P28 trigger fired. Horizon reads on 2026-11-02 confirm the P28 and P29 boundary ledgers and current version 29. q-edge-fresh-latest-protocol-version, q-protocol-27-cap-0071, and q-protocol-version-history-list now name P29 as current with dated sources and the Bell/P30 votes as scheduled, not live. The trigger text moved to the next known event. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-09-03"
+        "lastChecked": "2026-11-02"
       },
       {
         "triggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",
         "requiredRecheck": "Re-fetch Circle Stellar support, fee/finality, release-note, and forwarder pages; reconcile technical-support dates separately from the May 19 public announcement.",
-        "disposition": "open — mutable route/fee claims remain as-of; q-tool-cctp-stellar-integration reverifyBy 2026-11-26 (re-verified 2026-08-11) and q-cctp-v2-usdc-stellar reverifyBy 2027-02-05 (re-verified 2026-10-27: live Circle fee endpoint and references unchanged).",
+        "disposition": "open — mutable route/fee claims remain as-of; q-tool-cctp-stellar-integration reverifyBy 2027-03-04 (re-verified 2026-11-02: Circle Stellar contract addresses unchanged; the live Iris fee endpoint for domain 27 returned minimumFee 0 for finality thresholds 1000 and 2000) and q-cctp-v2-usdc-stellar reverifyBy 2027-02-05 (re-verified 2026-10-27: live Circle fee endpoint and references unchanged).",
         "caseIds": [
           "q-cctp-v2-usdc-stellar",
           "q-tool-cctp-stellar-integration",
@@ -3707,16 +3751,16 @@
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-10-27",
-          "reason": "Scheduled re-verification 2026-10-27: q-cctp-v2-usdc-stellar changed only in judge-blind truth metadata (staggered truth.reverifyBy and refreshed truth.verified with live evidence observed today). Question, answer, keyFacts, avoid, notes, tags, and truth.asOf are unchanged. The disposition now names its new reverifyBy (2027-02-05); the trap stays open for mutable route and fee claims. The cluster claim stands.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): q-tool-cctp-stellar-integration re-dated its address as-of to 2026-11-02 (addresses unchanged) and moved reverifyBy to 2027-03-04; the disposition now quotes that date. The two-milestone history and the open status for mutable route and fee claims are unchanged. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-10-27"
+        "lastChecked": "2026-11-02"
       },
       {
         "triggerDateEvent": "Publication or state change for SCF #46/#45/#44 after the fixed SCF #43 recap",
         "requiredRecheck": "Keep SCF #43's fixed result separate. Refresh current-round and open-RFP cases after each official phase change.",
-        "disposition": "reviewed — As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded. #43 remains fixed historical truth. q-scf-open-rfps and q-scf-rfp-tooling now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates.agents/TODO.md before their 2026-11-12/13 due dates.",
+        "disposition": "reviewed — As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded. #43 remains fixed historical truth. The RFP roster conflict is resolved: q-scf-open-rfps and q-scf-rfp-tooling report that the official RFP Track page lists no open brief ('October 2026: New Q4 RFPs are coming soon.') and flag the Scout lag (sls-096). Both give the 2026-11-09 deadline with an as-of date and a do-not-penalize caution for a dated, attributed November 8 citation. q-scf-open-rfps reverifyBy 2026-11-10 and q-scf-rfp-tooling reverifyBy 2026-11-11.",
         "caseIds": [
           "q-edge-fresh-latest-scf-round",
           "q-scf-round-43-results",
@@ -3736,7 +3780,7 @@
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Re-reviewed after the deadline fix in the two RFP cases. The next known triggers are the #46 deadline on 2026-11-09 and Panel Review on 2026-11-11. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
+          "reason": "Golden audit pass 2 (2026-11-02): the roster-conflict item is resolved in both RFP cases, and the disposition drops the queued-TODO wording and its duplicated fragment. The awards page still reads 'Deadline to submit: November 9, 2026' (read live 2026-11-02). The next known triggers are the #46 deadline on 2026-11-09 and Prescreen & Panel Review on 2026-11-11. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         },
         "lastChecked": "2026-11-02"
@@ -3744,7 +3788,7 @@
       {
         "triggerDateEvent": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",
         "requiredRecheck": "Re-verify remediation, recovery, reimbursement, quarantine, oracle, and governance status without changing the stable on-chain borrow quantities unless primary evidence corrects them.",
-        "disposition": "open — q-comp-yieldblox-oracle-incident reverifyBy 2027-03-02 (re-verified 2026-10-06: no repayment, recovery, or final post-mortem found); do not equate quarantined with recovered.",
+        "disposition": "open — q-comp-yieldblox-oracle-incident reverifyBy 2027-03-02 (re-verified 2026-11-02). The post-mortem clause is met: Script3's 2026-03-04 post-mortem was found and read on 2026-11-02, and both incident cases now encode it. It and Script3's 2026-02-27 and 2026-03-20 remediation notices report no attacker repayment, recovery, or reimbursement decision for the quarantined funds. SLP-0006 froze the three exploit accounts at ledger 63073409 on 2026-06-17. The trap stays open for the 2027-03-02 recheck and any later reimbursement decision; do not equate quarantined or frozen with recovered.",
         "caseIds": [
           "q-comp-yieldblox-oracle-incident",
           "q-hist-yieldblox-v2-2026-exploit",
@@ -3756,17 +3800,17 @@
           "q-soroban-oracle-defensive-consumption": "4c86f2ce5f62c0fb227d494d3cbf2c45587c3a0ae84b25a4b259579bc5a13239"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-10-06",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-10-06",
-          "reason": "Near-due re-verification 2026-10-06: the trigger date passed review before it fired. Script3 remediation posts (2026-02-27, 2026-03-20), repository commits, Blockaid quarantine, BlockSec, rekt.news, and Horizon effects were re-read live; no reimbursement decision, attacker repayment, or final post-mortem changes the members. Only q-comp-yieldblox-oracle-incident changed, in judge-blind truth metadata. The trigger moves to that case's new reverifyBy.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): Script3's 2026-03-04 post-mortem is now cited by q-comp-yieldblox-oracle-incident and q-hist-yieldblox-v2-2026-exploit, so the 'no final post-mortem found' clause was false and is replaced. No repayment or recovery evidence was found, so the trap stays open. q-soroban-oracle-defensive-consumption makes no remediation claim. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },
       {
-        "triggerDateEvent": "2026-11-19/2026-12-15 review or any Confidential Tokens Mainnet approval/launch",
-        "requiredRecheck": "Re-fetch the SDF preview, audits, verifier repository, and network availability; remove the not-Mainnet trap only after authoritative activation evidence.",
-        "disposition": "open — Testnet developer preview, unaudited, re-verified 2026-09-02; q-sor-confidential-tokens reverifyBy 2026-12-15 and q-scf-confidential-tokens-preview reverifyBy 2026-11-19.",
+        "triggerDateEvent": "2027-04-08/2027-04-22 review, a verified Confidential Tokens Mainnet deployment, or a zero-knowledge verifier release",
+        "requiredRecheck": "Re-fetch the OpenZeppelin release and audit, the SDF privacy docs, and Mainnet deployment evidence; keep the June 29 Testnet-preview boundary dated, and re-verify the non-zero-knowledge verifier limit.",
+        "disposition": "reviewed — the Mainnet-approval clause of the prior trigger fired on 2026-10-22. OpenZeppelin released stellar-confidential v0.8.0 on 2026-10-20 (GitHub release published_at 2026-10-20T16:58:32Z, re-read 2026-11-02) with audited contracts and circuits. OpenZeppelin ('ready to be deployed on Stellar mainnet') and @BuildOnStellar said on 2026-10-22 that the contracts are ready to deploy on Mainnet. No primary record of a specific Mainnet deployment was found on 2026-11-02. The UltraHonk verifier accepts only non-zero-knowledge proofs. The June 29 not-Mainnet trap stays valid as a dated boundary. q-sor-confidential-tokens reverifyBy 2027-04-22 and q-scf-confidential-tokens-preview reverifyBy 2027-04-08.",
         "caseIds": [
           "q-edge-noinfo-stellar-native-privacy-default",
           "q-scf-confidential-tokens-preview",
@@ -3778,10 +3822,10 @@
           "q-sor-confidential-tokens": "331b5f59ba544456055463a829e7553e9c8d60d54d5927ba7050a9ed103905f9"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-09-02",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-02",
-          "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date (2026-07-10 to 2026-09-02) and judge-blind truth metadata; the preview status it dates is unchanged. Re-derived from https://developers.stellar.org/docs/build/apps/privacy ('developer preview ... unaudited — not yet intended for production use or real assets') and https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar. No Mainnet approval evidence exists as of 2026-09-02, so the trap stays open with refreshed reverifyBy references.",
+          "date": "2026-11-02",
+          "reason": "Golden audit pass 2 (2026-11-02): re-dispositioned after the Mainnet-readiness statements of 2026-10-22. All three members now date the audited v0.8.0, Mainnet-ready status and the verifier limit, and keep the 2026-06-29 Testnet-preview boundary. The quoted reverifyBy dates now match the cases, and the trigger text moved to the next review dates. Ledger: .agents/rounds/2026-11-02-golden-audit.md.",
           "verdict": "consistent"
         }
       },

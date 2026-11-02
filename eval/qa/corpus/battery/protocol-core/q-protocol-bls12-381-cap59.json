@@ -40,21 +40,35 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0059.md",
+        "note": "Status Final; Protocol version 22.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/protocol-upgrades",
+        "note": "'Protocol 22 12/5/2024 ... CAP-0059 (BLS12-381 host functions).'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions#core",
+        "note": "stellarDocs.search_docs hit: 'Soroban host functions for BLS12-381'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — CAP-0059 confirms that the host functions expose BLS12-381 operations inside the Soroban host for smart contracts.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — CAP-0059 defines curve, field, and multi-pairing operations.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — CAP-0059 links pairing comparison to BLS-signature and zk-SNARK verification uses.",
-        "Sibling sweep 2026-08-29: grep BLS12-381|CAP-0059|Groth16 → q-edge-noinfo-stellar-native-privacy-default, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-cross-warmancer-zk-stack, q-zk-circuit-setup, q-zk-host-functions-status, q-zk-proof-systems-stellar; no contradiction."
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0059.md — 'Title: Host functions for BLS12-381 ... Status: Final ... Protocol version: 22'; '11 new host functions are proposed for performing field and curve operations on BLS12-381 ... such as BLS signature verification, or verification of zk-SNARKs'.",
+        "Class A 2026-11-02: https://stellar.org/blog/developers/protocol-22-upgrade-guide — 'December 5: Mainnet upgrade vote. Complete!'; https://stellar.org/protocol-upgrades — 'Protocol 22 12/5/2024 ... CAP-0059 (BLS12-381 host functions)'.",
+        "Class E 2026-11-02: stellarDocs.search_docs → https://developers.stellar.org/docs/networks/software-versions#core — 'Soroban host functions for BLS12-381'.",
+        "Avoid traps re-checked 2026-11-02 (class B): https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md — CAP-0074/CAP-0075 are Protocol 25 (BN254, Poseidon); CAP-0051 is P21, CAP-0063 is P23.",
+        "No gospel change. Sibling sweep 2026-11-02: q-zk-host-functions-status, q-protocol-version-history-list, q-protocol-bn254-poseidon-xray, q-sor-cross-warmancer-zk-stack — consistent (P22 / CAP-0059)."
       ]
     },
     "origin": "raven-next q-protocol-bls12-381-cap59"

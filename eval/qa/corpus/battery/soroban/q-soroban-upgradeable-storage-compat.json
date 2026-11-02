@@ -5,23 +5,23 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A Soroban upgrade **replaces the Wasm but keeps all existing storage** (and the same contract address).\nSo the new code must remain compatible with the data already on the ledger: [sdf]\n\n- **Keep the same storage keys and value types/layout** for existing entries. The host deserializes\n  stored values using the **new** code's type definitions, so renaming a key or changing a value's type\n  without migration leaves old data **stranded or mis-decoded (a trap)**. [oz]\n- **Migrate explicitly** when the schema changes. OZ documents three patterns: eager `migrate()` for\n  bounded instance data (guarded by a stored **schema-version** flag), **lazy/versioned** conversion on\n  read for unbounded persistent data, and a **plan-ahead enum wrapper**. Run migration atomically with\n  the upgrade via an **`Upgrader`** contract (the new impl only takes effect after the current call).\n  [oz]\n- The **contract address is preserved**, so external callers/integrations keep working. [sdf]\n\nTraps: claiming the upgrade wipes storage / starts state fresh; or importing the EVM proxy\n**storage-slot-collision** model — Soroban addresses storage by **named keys**, not slot indices.",
+    "answer": "A Soroban upgrade **replaces the Wasm but keeps all existing storage** (and the same contract address).\nSo the new code must remain compatible with the data already on the ledger: [sdf]\n\n- **Keep the same storage keys and value types/layout** for existing entries. The host deserializes\n  stored values using the **new** code's type definitions, so renaming a key or changing a value's type\n  without migration leaves old data **stranded or mis-decoded (a trap)**. [oz]\n- As of 2026-11-02, contracts built with soroban-sdk v28+ (Protocol 28, CAP-86) unpack named-field\n  `#[contracttype]` structs sparsely: an added `Option` field reads as `None` and a removed field is\n  ignored (and dropped on rewrite). Other key or type changes still need migration. [sdk]\n- **Migrate explicitly** when the schema changes. OZ documents three patterns: eager `migrate()` for\n  bounded instance data (guarded by a stored **schema-version** flag), **lazy/versioned** conversion on\n  read for unbounded persistent data, and a **plan-ahead enum wrapper**. Run migration atomically with\n  the upgrade via an **`Upgrader`** contract (the new impl only takes effect after the current call).\n  [oz]\n- The **contract address is preserved**, so external callers/integrations keep working. [sdf]\n- Install the uploaded Wasm with `env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))`\n  (SDK v28+, CAP-85); `update_current_contract_wasm` is deprecated but still works. [sdf]\n\nTraps: claiming the upgrade wipes storage / starts state fresh; or importing the EVM proxy\n**storage-slot-collision** model — Soroban addresses storage by **named keys**, not slot indices.",
     "keyFacts": [
       "New code needs compatible storage keys and value layouts or explicit migration.",
       "Unmigrated key or type changes can strand or mis-decode stored data.",
-      "`env.deployer().update_current_contract_wasm(new_wasm_hash)` installs uploaded Wasm.",
+      "Upgrade installs uploaded Wasm via update_current_contract (or deprecated _wasm variant).",
       "The replacement keeps the contract address and storage."
     ],
     "avoid": [
       "Do NOT claim upgrading wipes storage / starts state fresh.",
       "Do NOT describe EVM proxy storage-slot collision (delegatecall slot layout) as the Soroban concern (Soroban uses named keys, not slots)."
     ],
-    "notes": "Storage survives the Wasm replacement; keys/types must stay compatible or be migrated. Soroban uses named keys (not EVM slots). Verified against the SDF upgrade guide + OZ migration patterns.\nAlso good if the answer: Use a migration function (run atomically with the upgrade, e.g., an Upgrader/migrate hook) to transform state to the new layout. | The contract address is preserved across the upgrade, so external callers/integrations keep working.\nGolden cites: A developers.stellar.org or OpenZeppelin Stellar upgrade/migration guide."
+    "notes": "Storage survives the Wasm replacement; keys/types must stay compatible or be migrated. Soroban uses named keys (not EVM slots). Verified against the SDF upgrade guide + OZ migration patterns.\nAlso good if the answer: Use a migration function (run atomically with the upgrade, e.g., an Upgrader/migrate hook) to transform state to the new layout. | The contract address is preserved across the upgrade, so external callers/integrations keep working.\nGolden cites: A developers.stellar.org or OpenZeppelin Stellar upgrade/migration guide.\nAs of 2026-11-02 (soroban-sdk v28+, Protocol 28): `update_current_contract(ContractExecutable::Wasm(..))` and the deprecated `update_current_contract_wasm` are both correct upgrade calls. CAP-86 sparse unpacking needs an SDK v28+ rebuild; recommending versioned or enum migration for struct changes remains correct. The official migrate-contract-storage guide still says a DataV1 read as a DataV2 with an added Option field traps with Error(Object, UnexpectedSize), with no SDK-version scope (observed 2026-11-02; improvements/stellar-docs/sd-070-migrate-contract-storage-cap-86-scope.md). A changed-struct trap claim is correct for pre-v28 builds, and a v28+ read still errors on a missing non-Option field. It is wrong only when the answer says that, on a v28+ build, an added Option field or a removed field of a named-field struct traps."
   },
   "tags": {
     "category": "soroban",
     "service": "stellarDocs",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -30,6 +30,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-15",
     "sources": [
       {
         "class": "A",
@@ -40,56 +42,202 @@
         "class": "D",
         "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+        "note": "\"the key function used is env.deployer().update_current_contract, which takes a ContractExecutable wrapping the Wasm hash\"; \"No change in contract address\".",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+        "note": "\"#[deprecated(note = \\\"use update_current_contract\\\")] pub fn update_current_contract_wasm ... pub fn update_current_contract(&self, executable: ContractExecutable)\" (same in v28.0.0; not deprecated in v27.0.6).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+        "note": "\"update_current_contract replaces update_current_contract_wasm; the old ones still work but are deprecated. Wrap the Wasm hash in ContractExecutable::Wasm(...) to migrate.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0085.md",
+        "note": "\"Status: Final ... Protocol version: 28\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "stellarDocs.search_docs 'update_current_contract ContractExecutable Wasm upgrade'",
+        "note": "upgrading-contracts#how-it-works: env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/_migrating/v28_contracttype_unpacking.rs",
+        "note": "\"Fields absent from the map unpack as void. Void unpacks into an Option field as None ... A field of any other type errors ... Tuple structs and enums are represented as vecs, not maps, and are ...\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+        "note": "\"Status: Final ... Protocol version: 28\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+        "note": "\"a field added to a struct as an Option reads back as None from data stored before the field existed\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating",
+        "note": "\"A key in the map that is not a field of the struct is ignored and discarded, and is lost if the value is packed and written back.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/networks/software-versions",
+        "note": "\"Host Functions for Sparse Symbol-Keyed Map Creation and Unpacking: CAP-86 (Protocol 28 Mainnet, September 16, 2026)\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/ and https://mainnet.sorobanrpc.com getNetwork",
+        "note": "current_protocol_version 29; protocolVersion 29 (Protocol 28 behavior is live).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+        "note": "This traps with Error(Object, UnexpectedSize). The Soroban host validates the field count of the XDR-encoded value against the type definition before returning anything to the contract.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0",
+        "note": "A field missing from the map reads as `None` if it is an `Option`, and errors otherwise, and a map key that is not a field of the struct is ignored and dropped, where both used to panic. An `Option` f",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "Raven stellarDocs.search_docs \"migrate contract storage UnexpectedSize Option field\"",
+        "note": "migrate-contract-storage#approach-1-read-old-entries-directly-with-the-new-type: \"This traps with Error(Object, UnexpectedSize).\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task soroban-api)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-soroban-upgrade-wasm",
-        "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
-        "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/deploy.rs",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0049.md",
-        "https://github.com/stellar/soroban-examples/tree/main/upgradeable_contract",
-        "Solo scratchpad 575 GT-48 primary 3333 and blind 3342; blind verified the two compiled sources returned 404 and current replacements were reachable.",
-        "Structural re-form (long-fact): Shortened the storage compatibility and decoding facts, then split the update call from retained state; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage — the current guide says old ledger data remains after code changes and requires compatible decoding or migration.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage — the current guide says naive decoding after structural changes traps and documents version-aware migration.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts — the current guide requires uploaded Wasm and uses the exact update call with new_wasm_hash.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts — the current guide confirms that an upgrade preserves the contract address, while the migration guide confirms retained storage.",
-        "Sibling sweep 2026-08-29: grep update_current_contract_wasm|storage survives|stranded|mis-decoded → q-soroban-storage-migration, q-soroban-oz-upgradeable-macro; no contradiction."
+        "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts (observedAt 2026-11-02): \"the key function used is env.deployer().update_current_contract, which takes a ContractExecutable wrapping the Wasm hash of the new contract as a parameter\"; \"No change in contract address\".",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs (observedAt 2026-11-02): \"#[deprecated(note = \\\"use update_current_contract\\\")] pub fn update_current_contract_wasm\"; https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0: \"update_current_contract replaces update_current_contract_wasm; the old ones still work but are deprecated.\"",
+        "stellarDocs.search_docs 'update_current_contract ContractExecutable Wasm upgrade' (observedAt 2026-11-02): upgrading-contracts#how-it-works shows env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash)); CAP-85 Status: Final, Protocol version: 28.",
+        "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0 (observedAt 2026-11-02): \"A contracttype struct can be read from stored data with extra or missing fields (CAP-86). A field missing from the map reads as None if it is an Option, and errors otherwise, and a map key that is not a field of the struct is ignored and dropped, where both used to panic. ... Writing is unchanged and still writes every field.\"",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md (observedAt 2026-11-02): \"Status: Final ... Protocol version: 28\"; https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v28.0.0/soroban-sdk-macros/src/derive_struct.rs uses env.sparse_map_unpack_to_slice (v27.0.6 used env.map_unpack_to_slice).",
+        "https://stellar.org/blog/developers/soroban-rust-sdk-v28 (observedAt 2026-11-02): \"v28 of the SDK uses them for contracttype unpacking. A field absent from the map unpacks as void. Void unpacks into an Option as None\"; https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating: \"A key in the map that is not a field of the struct is ignored and discarded, and is lost if the value is packed and written back.\"",
+        "stellarDocs.search_docs -> https://developers.stellar.org/docs/networks/software-versions (observedAt 2026-11-02): \"Host Functions for Sparse Symbol-Keyed Map Creation and Unpacking: CAP-86 (Protocol 28 Mainnet, September 16, 2026)\"; Horizon and mainnet RPC getNetwork report protocol 29 (observedAt 2026-11-02).",
+        "Conflict recorded: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage (observedAt 2026-11-02) still says \"This traps with Error(Object, UnexpectedSize)\" with no SDK-version scope; true for pre-v28 builds only, so golden.notes carries a symmetric caution. Filed as improvements/stellar-docs/sd-070-migrate-contract-storage-cap-86-scope.md.",
+        "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable (observedAt 2026-11-01): \"Pattern 1: Eager Migration (Bounded Data) ... Pattern 2: Lazy Migration (Unbounded Data) ... Pattern 3: Enum Wrapper (Plan-Ahead) ... Upgrader\"; OZ patterns unchanged.",
+        "Independent verifier accepted the keyFact, both answer bullets, freshness, asOf, reverifyBy, and corroboration changes and modified golden.notes to add the symmetric pre-v28 trap clause.",
+        "Sibling sweep 2026-11-02: grep update_current_contract_wasm across eval/qa/corpus/battery → q-soroban-oz-upgradeable-macro and q-soroban-contract-id-derivation (outside the batch) still name only the deprecated call; escalated so they accept update_current_contract. q-soroban-storage-migration updated in this batch with the same CAP-86 nuance.",
+        "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage — \"This traps with Error(Object, UnexpectedSize). The Soroban host validates the field count of the XDR-encoded value against the type definition before returning anything to the contract.\" (class A, observedAt 2026-11-02)",
+        "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0 — \"A field missing from the map reads as `None` if it is an `Option`, and errors otherwise, and a map key that is not a field of the struct is ignored and dropped, where both used to panic. An `Option` field can now be added or removed without migrating everything already stored.\" (class B, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs — \"#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>( ... #[deprecated(note = \"use update_current_contract\")] pub fn update_current_contract_wasm\" (class B, observedAt 2026-11-02)",
+        "Raven stellarDocs.search_docs \"migrate contract storage UnexpectedSize Option field\" — \"migrate-contract-storage#approach-1-read-old-entries-directly-with-the-new-type: \"This traps with Error(Object, UnexpectedSize).\"\" (class E, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02 (pass 2): q-soroban-storage-migration carries the same verifier-modified trap rule (consistent); only these two battery cases mention UnexpectedSize.",
+        "Pass-2 proposer matrix, proposals, and independent verifier decisions: .agents/rounds/2026-11-02-golden-audit.md, task soroban-api."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "improvements/stellar-docs/sd-070-migrate-contract-storage-cap-86-scope.md"
       ]
     },
     "origin": "raven-next q-soroban-upgradeable-storage-compat",
     "corroboration": [
       {
-        "claim": "Soroban supports in-place Wasm replacement: upload the new Wasm, then have the contract call `env.deployer().update_current_contract_wasm(new_wasm_hash)` to swap its code while keeping the same address and storage.",
+        "claim": "Soroban supports in-place Wasm replacement: upload the new Wasm, then have the contract call `env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))` (SDK v28+; deprecated `update_current_contract_wasm` still works) to swap its code while keeping the same address and storage.",
         "verdict": "confirmed",
         "evidence": [
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-11-02",
+            "note": "\"the key function used is env.deployer().update_current_contract, which takes a ContractExecutable wrapping the Wasm hash\"; \"No change in contract address\"."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/deploy.rs",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+            "observedAt": "2026-11-02",
+            "note": "\"#[deprecated(note = \\\"use update_current_contract\\\")] pub fn update_current_contract_wasm ... pub fn update_current_contract(&self, executable: ContractExecutable)\" (same in v28.0.0; not deprecated in v27.0.6)."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0049.md",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+            "observedAt": "2026-11-02",
+            "note": "\"update_current_contract replaces update_current_contract_wasm; the old ones still work but are deprecated. Wrap the Wasm hash in ContractExecutable::Wasm(...) to migrate.\""
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/soroban-examples/tree/main/upgradeable_contract",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0085.md",
+            "observedAt": "2026-11-02",
+            "note": "\"Status: Final ... Protocol version: 28\""
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_docs 'update_current_contract ContractExecutable Wasm upgrade'",
+            "observedAt": "2026-11-02",
+            "note": "upgrading-contracts#how-it-works: env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))"
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, contracts built with soroban-sdk v28+ (Protocol 28, CAP-86) unpack named-field #[contracttype] structs sparsely: an added Option field reads as None and a removed field is ignored and dropped on rewrite; other key or type changes still need migration.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+            "observedAt": "2026-11-02",
+            "note": "\"A contracttype struct can be read from stored data with extra or missing fields (CAP-86). A field missing from the map reads as None if it is an Option, and errors otherwise, and a map key that is not a field of the struct is ignored and dropped ... Writing is unchanged and still writes every field.\""
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/_migrating/v28_contracttype_unpacking.rs",
+            "observedAt": "2026-11-02",
+            "note": "\"Fields absent from the map unpack as void. Void unpacks into an Option field as None ... A field of any other type errors ... Tuple structs and enums are represented as vecs, not maps, and are unaffected\""
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+            "observedAt": "2026-11-02",
+            "note": "\"Status: Final ... Protocol version: 28\""
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+            "observedAt": "2026-11-02",
+            "note": "\"a field added to a struct as an Option reads back as None from data stored before the field existed\""
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating",
+            "observedAt": "2026-11-02",
+            "note": "\"A key in the map that is not a field of the struct is ignored and discarded, and is lost if the value is packed and written back.\""
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-02",
+            "note": "\"Host Functions for Sparse Symbol-Keyed Map Creation and Unpacking: CAP-86 (Protocol 28 Mainnet, September 16, 2026)\""
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ and https://mainnet.sorobanrpc.com getNetwork",
+            "observedAt": "2026-11-02",
+            "note": "current_protocol_version 29; protocolVersion 29 (Protocol 28 behavior is live)."
           }
         ]
       }

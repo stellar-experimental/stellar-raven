@@ -5,18 +5,21 @@
     "scout.getRfps"
   ],
   "golden": {
-    "answer": "Fetch the full current open set with scout.getRfps({status:\"open\"}), then locally filter titles, descriptions, and technical requirements for related passkey and smart-account concepts. A q-filtered call may supplement but not replace the exhaustive open-set scan. Cite deliverables and dated round metadata. Do not infer that a matching open brief proves an SCF full-proposal window is open.",
+    "answer": "Fetch the full current open set with scout.getRfps({status:\"open\"}), then locally filter titles, descriptions, and technical requirements for related passkey and smart-account concepts. A q-filtered call may supplement but not replace the exhaustive open-set scan. Cite deliverables and dated round metadata. Cross-check brief status against the official SCF RFP Track page and flag a returned brief it no longer lists. Do not infer that a matching open brief proves an SCF full-proposal window is open.",
     "keyFacts": [
       "Fetches the full open RFP set first for local passkey/smart-account filtering.",
-      "Compares stated deliverables and cites each returned brief.",
+      "Compares stated deliverables and cites each reported brief.",
       "Includes round as-of/verifyAt and scopes an empty result to the source.",
-      "Separates brief status from the SCF round submission phase."
+      "Separates brief status from the SCF round submission phase.",
+      "Cross-checks brief status against the official RFP Track page or flags it unverified."
     ],
     "avoid": [
       "Claims a remembered passkey brief is still open without current status evidence.",
       "A narrow zero/one-hit query is not an exhaustive opportunity scan.",
-      "Claims that an open brief proves the current SCF round accepts a new full proposal."
-    ]
+      "Claims that an open brief proves the current SCF round accepts a new full proposal.",
+      "Do NOT call a Scout-listed brief open now unless the answer attributes and dates that status."
+    ],
+    "notes": "Freshness item: grade the exhaustive-scan and source-conflict behavior, not a pinned roster. As of 2026-11-02, Scout's open set held two Q3 briefs, Stellar-compatible LayerZero DVN and x402 Facilitator with Bazaar Discovery, plus one synthetic SCF #46 `scf-round` row. Both briefs reference custom `__check_auth` accounts; neither is a passkey brief. The official RFP Track page listed no open brief and said \"October 2026: New Q4 RFPs are coming soon.\" Correct on 2026-11-02: no officially open passkey or smart-account brief, or both sources with the conflict flagged. Wrong: the two Q3 briefs stated as open now without Scout attribution. An answer that compares the Scout rows with attribution, a date, and a staleness flag, or that reports no officially open brief to compare, meets the comparison fact."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -30,11 +33,13 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-18",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "C",
-        "ref": "https://stellarlight.xyz/api/rfps?status=open"
+        "ref": "https://stellarlight.xyz/api/rfps?status=open",
+        "note": "Aggregator under check: counts open 2, syntheticRounds 1, activeQuarter q3-2026; layerzero-dvn and x402-facilitator-bazaar still open; synthetic scf-round-46 row; scfRound #46 Submission, closes 2026-11-09.",
+        "observedAt": "2026-11-02T16:34:39.283Z"
       },
       {
         "class": "A",
@@ -43,6 +48,18 @@
       {
         "class": "B",
         "ref": "catalog/manifest.json#scout.getRfps"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+        "note": "'Current Open RFPs / October 2026: New Q4 RFPs are coming soon.'; both slots 'Coming Soon'; no open brief listed.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+        "note": "GITBOOK-246, 2026-10-16T18:20:46Z: removed 'July 23, 2026: New Q3 RFPs are open for submissions for SCF #45' and both Q3 brief summaries (LayerZero DVN; X402 Facilitator with Bazaar).",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -80,24 +97,76 @@
             "observedAt": "2026-08-18T15:24:51Z"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, Scout's open-RFP view still marks the two Q3 briefs open (activeQuarter q3-2026) while the official RFP Track page lists no open brief after a 2026-10-16 edit removed both.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-11-02T16:34:39.283Z",
+            "note": "Aggregator under check; it cannot corroborate itself. Shows the lag, not real-world openness."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+            "observedAt": "2026-11-02",
+            "note": "'October 2026: New Q4 RFPs are coming soon.' No open brief."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+            "observedAt": "2026-11-02",
+            "note": "2026-10-16 handbook commit removed both Q3 briefs."
+          },
+          {
+            "class": "D",
+            "ref": "https://x.com/lumenloop/status/2112203379225321685 (via Perplexity search)",
+            "observedAt": "2026-11-02",
+            "note": "Lumen Loop 2026-10-19: 'New RFPs come after Meridian, with a later deadline'."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, neither Scout-returned Q3 brief is a passkey brief; both reference custom __check_auth accounts.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+            "observedAt": "2026-11-02",
+            "note": "Removed brief text: DVN 'should use the Abstract Account pattern (custom __check_auth)'; x402 'Support classic keypairs and custom `__check_auth` accounts ... compose with Stellar smart account spending policies'."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-11-02T16:34:39.283Z",
+            "note": "Same technicalRequirements text in the served rows."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task scf-rfp)",
       "evidence": [
-        "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
-        "https://communityfund.stellar.org/awards",
-        "https://stellarlight.xyz/api/rfps?status=open",
-        "catalog/manifest.json#scout.getRfps",
-        "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; exhaustive-set behavior and round-state caution remain consistent.",
-        "Structural re-form (long-fact): Shortened one long retrieval fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the source contract exposes independent status and keyword filters, supporting a full status-open retrieval before local topic filtering.",
-        "Sibling sweep 2026-08-29: grep passkey.*RFP|smart-account.*RFP|full open RFP set|locally filters → q-scf-passkey-rfps-live only; no contradiction."
+        "Verifier C 2026-11-02T16:34:39.283Z: https://stellarlight.xyz/api/rfps?status=open — '\"activeQuarter\":\"q3-2026\" ... counts {\"open\":2,\"syntheticRounds\":1}; rows scf-round-46 (rowType scf-round, synthetic true), layerzero-dvn (status open), x402-facilitator-bazaar (status open); scfRound {currentRound 46, currentPhase Submission, submissionWindow.closes 2026-11-09}'",
+        "Verifier A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track (and .md) — 'Current Open RFPs / October 2026: New Q4 RFPs are coming soon. ... Coming Soon / Coming Soon ... Last updated 16 days ago'",
+        "Verifier B 2026-11-02: https://github.com/stellar/scf-handbook/commit/e07b4bfce1 (GITBOOK-246, 2026-10-16T18:20:46Z, scf-awards/build-award/rfp-track.md) — '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** +_**October 2026: New Q4 RFPs are coming soon.**_ ; -<summary>Stellar-compatible LayerZero DVN</summary> ; -<summary>X402 Facilitator with Bazaar (discovery) support</summary>'",
+        "Verifier C 2026-11-02T16:39:02.025Z: Raven MCP execute scout.getRfps({status:\"open\"}) + getHackathons active/upcoming + resolveProject({q:\"passport\"}) — 'rows [[\"scf-round-46\",\"open\",\"scf-round\"],[\"layerzero-dvn\",\"open\",\"rfp\"],[\"x402-facilitator-bazaar\",\"open\",\"rfp\"]]; getHackathons active/upcoming ok caveat no-rows, fallbackChannels present'",
+        "Verifier B 2026-11-02: https://github.com/stellar/scf-handbook/commit/e07b4bfce1 removed brief text; Scout rows technicalRequirements — 'DVN should use the Abstract Account pattern (custom \\_\\_check\\_auth) ... ; x402: Support classic keypairs and custom `__check_auth` accounts ... compose with Stellar smart account spending policies'",
+        "Sibling sweep 2026-11-02: q-scf-open-rfps and q-scf-rfp-tooling (edited in batch scf-round-rfps) already report the official no-open-brief state, the Scout lag, and the #46 deadline 2026-11-09; q-scf-open-rfps-live, q-scf-passkey-rfps-live, and q-scf-rfps-hackathons-live now carry the same dated conflict caution; q-scf-current-round and q-edge-fresh-latest-scf-round carry no RFP roster. Other LayerZero/x402 mentions (q-defi-allbridge-what-is, q-defi-x402-on-stellar-what, q-x402-payment-verification, q-soroban-x402-auth-entry-signing) are protocol topics with no RFP-status claim. No contradiction.",
+        "Verifier modified the proposed avoid into the same answer-visible sourcing guard used in q-scf-open-rfps-live; keyFacts now 5 (cap).",
+        "Pass 2 2026-11-02T17:34Z (scf-rfp proposer): rfp-track.md still reads '***October 2026: New Q4 RFPs are coming soon.***' with two empty 'Coming Soon' sections; gh api shows e07b4bfce1 (2026-10-16) is still the latest commit on the path and in the repo. Scout /api/rfps?status=open generatedAt 2026-11-02T17:29:38.076Z: activeQuarter q3-2026, open 2, syntheticRounds 1 (layerzero-dvn, x402-facilitator-bazaar). https://communityfund.stellar.org/awards: 'Deadline to submit:November 9, 2026', awardSubmission close 2026-11-09; Wayback 20261018175817 of the same page shows close 2026-11-08. Parallel web_search and Perplexity (recency month) found no published Q4 2026 brief. Scout lag filed as improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md.",
+        "Pass 2 grading: removed the Scout-attribution partial cap (ADR-0008 keeps partial caps to the three canonical-page cases). Plain rule: an unattributed claim that the withdrawn Q3 briefs are open now is wrong; an attributed, dated report of the Scout rows that flags the official state is correct. keyFacts[1] no longer requires citing the lagging Scout rows.",
+        "Pass 2 independent verifier (task scf-rfp) re-derived every quoted value above from its own reads and accepted every proposed change.",
+        "Pass 2 sibling sweep 2026-11-02 (.agents/rounds/2026-11-02-golden-audit.md, task scf-rfp): checked q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-how-to-apply, q-scf-submission-lifecycle-deadlines, q-scf-hackathons-active, q-defi-market-making-kelp, q-scf-vs-sdf-enterprise-fund, and the other seven scf-rfp cases. No contradiction: all give the #46 deadline 2026-11-09, and the RFP cases now share the Scout-lag plain rules and the November 8 caution."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/TODO.md — Resolve the SCF RFP roster conflict in two goldens before 2026-11-12 (eval-side authoring flaw: live golden trusted the Scout open-RFP view as the brief-status authority with no official cross-check)",
+        "improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md"
       ]
     },
     "origin": "boxy sl-funding-smart-account-passkey-rfps"

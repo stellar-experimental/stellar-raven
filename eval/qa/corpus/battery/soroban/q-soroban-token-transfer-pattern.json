@@ -33,7 +33,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-06-29",
-    "reverifyBy": "2026-12-24",
+    "reverifyBy": "2027-03-23",
     "sources": [
       {
         "class": "B",
@@ -78,21 +78,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
       "evidence": [
-        "Solo scratchpad 575 GT-42/43 blind reviews.",
-        "Structural re-form (negative-predicate): split two long facts into five atomic positive facts; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the current direct transfer destination remains MuxedAddress",
-        "Live re-check 2026-08-27: https://github.com/stellar/soroban-examples/blob/main/token/src/contract.rs — the current token example still calls from.require_auth for direct transfer",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — the immediate contract invoker remains automatically authorized for a direct call",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — transfer_from still uses spender authorization and consumes a prior bounded allowance",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — explicit current-contract authorization still applies beyond the direct invoker call",
-        "Sibling sweep 2026-08-27: grep MuxedAddress|transfer_from|authorize_as_current_contract|direct invoker → q-sep-41-token-interface, q-sor-sep41-transfer-vs-transferfrom, q-sor-require-auth-propagation; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side Draft signature drift.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md (observedAt 2026-11-02): \"fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); ... fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: i128);\"; header \"Status: Draft; Updated: 2026-08-24; Version 0.5.2\".",
+        "https://developers.stellar.org/docs/tokens/stellar-asset-contract (observedAt 2026-10-24): \"the to argument of the SAC's transfer function is a MuxedAddress\"; \"The exceptions are xfer_from and burn_from operations where the Address that require authorization from the 'spender'\".",
+        "https://raw.githubusercontent.com/stellar/soroban-examples/main/token/src/contract.rs (observedAt 2026-11-02): \"fn transfer(e: Env, from: Address, to_muxed: MuxedAddress, amount: i128) { from.require_auth();\"; https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization (observedAt 2026-10-27) confirms direct-invoker auth.",
+        "Verification only: no gospel change. Sibling sweep 2026-11-02: q-sor-sep41-transfer-vs-transferfrom, q-sep-41-token-interface, q-tool-sep41-status-live; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-token-transfer-pattern"

@@ -62,27 +62,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-05)",
       "evidence": [
-        "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.",
-        "skills.lumenloop.scf-submission-radar exists and supports the behavioral golden.",
-        "Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.lumenloop.scf-submission-radar'). Same bytes, re-verified by digest; only the pointer notation changed.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Split the prior-submission fact and shortened the positioning inputs; truth unchanged.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md — the pinned recipe starts with a natural-language query for prior submissions.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md — the pinned recipe separates funded rows from proposed-but-not-awarded rows.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md — the pinned workflow combines SCF history, project profiles, competitors, category fit, and a positioning brief.",
-        "Sibling sweep 2026-08-29: grep scf-submission-radar|Submission Radar|award_type → q-defi-rwa-scf-similar, q-scf-history-soroswap, q-scf-skill-submission-radar; no contradiction",
-        "Corroboration audit 2026-08-29: added 1 row(s) for Submission Radar side-effect boundary; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Golden audit 2026-11-02 re-verification, no gospel change.",
+        "B 2026-11-02: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md (pin unchanged in ecosystem-skills/MANIFEST.json) — 'Lead with the idea as a natural-language `query` ... Scan `award_type` and `description` to separate **funded** prior art ... from **proposed-but-not-awarded**'; 'This is research and positioning only — it does not submit anything to SCF.'",
+        "C 2026-11-02: Raven production execute codemode.skill.read('skills.lumenloop.scf-submission-radar') — 'it does not submit anything to SCF. It runs entirely on LumenLoop's free, read-only Stellar ecosystem MCP'.",
+        "Sibling sweep 2026-11-02: q-defi-rwa-scf-similar and q-scf-history-soroswap; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (coverage)"

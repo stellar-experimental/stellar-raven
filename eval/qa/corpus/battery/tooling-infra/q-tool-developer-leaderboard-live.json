@@ -27,7 +27,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "C",
@@ -68,21 +68,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
       "evidence": [
-        "solo://proj/49/process/3414",
-        "solo://proj/49/process/3420",
-        "catalog/manifest.json#scout.getLeaderboard",
-        "Structural re-form (compound-predicate): Recast row evidence and ranking scope as single-predicate lists; truth is unchanged.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3 — the endpoint still accepted explicit activity, 30d, and limit parameters and returned current rows.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3 — current project rows retained response metadata and returned-only GitHub fields.",
-        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — scout.getLeaderboard still described ranked projects, not people, with sort/range scope.",
-        "Sibling sweep 2026-08-27: grep scout.getLeaderboard|meta.source|meta.docs|developer-activity leaderboard → q-eco-most-active-defi-projects, q-gap-leaderboard-project-not-builder, q-tool-developer-leaderboard-live, q-tool-leaderboard-open-issues; no contradiction"
-      ],
-      "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "C: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3 — \"meta.source https://stellarlight.xyz/leaderboard; generatedAt 2026-11-02T16:18:22.201Z; docs https://stellarlight.xyz/scout/api-reference; row keys rank,id,name,slug,category,types,...,github{totalStars,openIssuesTotal,lastActivityAt,commits90d,repoCount,repos}; no url field\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
+        "B: catalog/manifest.json#scout.getLeaderboard — \"Ranks PROJECTS, not people → use getBuilders.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
+        "C: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3 — \"meta.source https://stellarlight.xyz/leaderboard; generatedAt 2026-11-02T16:18:22.201Z; docs https://stellarlight.xyz/scout/api-reference; row keys rank,id,name,slug,category,types,...,github{totalStars,openIssuesTotal,lastActivityAt,commits90d,repoCount,repos}; no url field\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1]",
+        "B: catalog/manifest.json#scout.getLeaderboard — \"Ranks PROJECTS, not people → use getBuilders.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1]",
+        "B: catalog/manifest.json#scout.getLeaderboard — \"Ranks PROJECTS, not people → use getBuilders.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2]",
+        "C: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3 — \"meta.source https://stellarlight.xyz/leaderboard; generatedAt 2026-11-02T16:18:22.201Z; docs https://stellarlight.xyz/scout/api-reference; row keys rank,id,name,slug,category,types,...,github{totalStars,openIssuesTotal,lastActivityAt,commits90d,repoCount,repos}; no url field\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2]",
+        "C: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3 — \"metricDefinitions.activity: orders by github.commits90d ... `range` filters MEMBERSHIP by last-commit recency\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
+        "B: catalog/manifest.json#scout.getLeaderboard — \"Ranks PROJECTS, not people → use getBuilders.\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
+        "Sibling sweep 2026-11-02: q-gap-leaderboard-project-not-builder, q-eco-most-active-defi-projects, q-tool-leaderboard-open-issues; no contradiction found by the proposer matrix."
       ]
     },
     "origin": "core-35 developer-activity-leaderboard"

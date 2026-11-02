@@ -28,7 +28,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
@@ -39,25 +39,78 @@
         "class": "C",
         "ref": "http://localhost:8787/mcp",
         "note": "Live localhost search→execute probe."
+      },
+      {
+        "class": "C",
+        "ref": "Stellar Raven MCP execute (production connector): scout.getPartner({slug:'zzz-not-a-real-partner-1102'})",
+        "note": "{\"kind\":\"soft-empty\",\"message\":\"Partner 'zzz-not-a-real-partner-1102' not found\",\"status\":404,\"hint\":\"See /api/partners for the published directory. ...\"}",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/partners/zzz-not-a-real-partner-1102 (direct GET)",
+        "note": "HTTP 404 {\"error\": \"Partner 'zzz-not-a-real-partner-1102' not found\", \"hint\": \"See /api/partners for the published directory.\"}",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) /api/partners/{slug} GET 404; ARCHITECTURE.md:181-182",
+        "note": "\"description\": \"Partner not found or not published\"; \"A soft-empty result means the service returned no usable evidence.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Stellar Raven MCP execute (production connector): codemode.search('partner directory', service scout)",
+        "note": "hits: scout.getPartners, scout.matchPartners, scout.getPartner",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json entry scout.getPartners",
+        "note": "transport GET https://stellarlight.xyz /api/partners",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Stellar Raven MCP execute (production connector) getPartner probe",
+        "note": "kind soft-empty, status 404 (not kind error)",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + applier, verified unchanged; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-03)",
       "evidence": [
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; getPartner on an unpublished slug returned envelope ok=false, kind soft-empty, status 404, with a directory hint.",
-        "catalog/manifest.json exists and supports the behavioral golden.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (negative-predicate): recast the three-way soft-empty taxonomy as one positive atomic fact; all three outcomes are unchanged.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/openapi.json — current catalog provenance still defines getPartner as 404 for unknown or unpublished slugs.",
-        "Sibling sweep 2026-08-27: grep getPartner|unknown slug|partner discovery|soft-empty → q-crp-partner-detail-after-discovery, q-gap-match-partners-degrade, and q-scf-ecosystem-listing-partner-jobs; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-11-02; no judge-facing field changed.",
+        "Live C 2026-11-02: Stellar Raven MCP execute (production connector): scout.getPartner({slug:'zzz-not-a-real-partner-1102'}) — \"{\"kind\":\"soft-empty\",\"message\":\"Partner 'zzz-not-a-real-partner-1102' not found\",\"status\":404,\"hint\":\"See /api/partners for the published directory. ...\"}\" (claim: Unknown/unpublished partner slug yields a soft-empty not-found envelope with a 404-style status and hint, distinct from )",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/partners/zzz-not-a-real-partner-1102 (direct GET) — \"HTTP 404 {\"error\": \"Partner 'zzz-not-a-real-partner-1102' not found\", \"hint\": \"See /api/partners for the published directory.\"}\" (claim: Unknown/unpublished partner slug yields a soft-empty not-found envelope with a 404-style status and hint, distinct from )",
+        "Live B 2026-11-02: https://stellarlight.xyz/api/openapi.json (v1.9.116) /api/partners/{slug} GET 404; ARCHITECTURE.md:181-182 — \"\"description\": \"Partner not found or not published\"; \"A soft-empty result means the service returned no usable evidence.\"\" (claim: Unknown/unpublished partner slug yields a soft-empty not-found envelope with a 404-style status and hint, distinct from )",
+        "Live C 2026-11-02: Stellar Raven MCP execute (production connector): codemode.search('partner directory', service scout) — \"hits: scout.getPartners, scout.matchPartners, scout.getPartner\" (claim: Partner discovery (directory) is the recovery path for a valid published slug.)",
+        "Live B 2026-11-02: catalog/manifest.json entry scout.getPartners — \"transport GET https://stellarlight.xyz /api/partners\" (claim: Partner discovery (directory) is the recovery path for a valid published slug.)",
+        "Live C 2026-11-02: Stellar Raven MCP execute (production connector) getPartner probe — \"kind soft-empty, status 404 (not kind error)\" (claim: Fabricating a profile or calling the expected not-found an outage is false behavior.)",
+        "Sibling sweep 2026-11-02: q-crp-partner-detail-after-discovery; no contradiction found."
       ]
     },
-    "origin": "authored 2026-07 (coverage)"
+    "origin": "authored 2026-07 (coverage)",
+    "corroboration": [
+      {
+        "claim": "An unknown or unpublished partner slug returns a soft-empty not-found envelope (status 404 with a directory hint), not partner data and not a service error.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "Stellar Raven MCP execute (production connector): scout.getPartner({slug:'zzz-not-a-real-partner-1102'})",
+            "observedAt": "2026-11-02",
+            "note": "kind soft-empty, message Partner 'zzz-not-a-real-partner-1102' not found, status 404, hint See /api/partners for the published directory."
+          },
+          {
+            "class": "B",
+            "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) /api/partners/{slug} GET 404",
+            "observedAt": "2026-11-02",
+            "note": "\"description\": \"Partner not found or not published\""
+          }
+        ]
+      }
+    ]
   }
 }

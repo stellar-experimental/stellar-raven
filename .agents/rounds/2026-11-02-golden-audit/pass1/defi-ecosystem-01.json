@@ -1,0 +1,1552 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "defi-ecosystem-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-defi-agent-identity-stellar-experimental",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "ERC-8004 Trustless Agents is an Ethereum Draft for identity, reputation, validation; payments out of scope, composes with x402",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://eips.ethereum.org/EIPS/eip-8004",
+       "observedAt": "2026-10-18",
+       "quote": "Payments are orthogonal to this protocol and not covered here. However, examples are provided showing how x402 payments can enrich feedback signals."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: Draft ... created: 2025-08-13"
+      },
+      {
+       "class": "D",
+       "ref": "https://theagenteconomy.si/tools/protocol-compatibility",
+       "observedAt": "2026-11-02",
+       "quote": "payments are outside the ERC. ERC-8004 Trustless Agents As of 2026-10-21"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "No ratified agent-identity SEP in the official Stellar SEP registry (as of date)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Registry lists SEP-0001..SEP-0061; none is an agent identity/reputation SEP (latest: SEP-0061 Trustline Onboarder, Draft)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/pull/1926",
+       "observedAt": "2026-11-02",
+       "quote": "Only open agent PR: \"Hierarchical Mandate Tokens for Autonomous Agent Authority (SEP Draft)\" (not ratified, not identity registry)"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity/parallel sweep",
+       "observedAt": "2026-11-02",
+       "quote": "No web source reports a ratified Stellar SEP for ERC-8004-style identity"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "trionlabs/stellar-8004 has three registries, SDK/explorer and pubnet deployments; progax01/stellar8004 deploys an agent registry",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/trionlabs/stellar-8004",
+       "observedAt": "2026-11-02",
+       "quote": "three smart contracts for identity, reputation, and validation, a TypeScript SDK, a live explorer at stellar8004.com ... Deployed on testnet and mainnet. (mainn…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/progax01/stellar8004",
+       "observedAt": "2026-11-02",
+       "quote": "All contracts are deployed and verified on Stellar Mainnet ... Agent Registry — On-chain identity (SRC-8004)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=8004",
+       "observedAt": "2026-11-02",
+       "quote": "trionlabs/stellar-8004 repoScore 54 judgeScore 0.8; progax01/stellar8004 repoScore 53 judgeScore 0.6"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Scout shows trionlabs/stellar-8004 repoScore 69",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=8004",
+       "observedAt": "2026-11-02",
+       "quote": "\"fullName\": \"trionlabs/stellar-8004\", \"repoScore\": 54"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "All five avoid items punish false claims today (ratified standard; no implementation; inferring audit from deployment; gating on deploy date; timeless claims)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: Draft"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nFRESHNESS NOTE 2026-11-02: Scout repoScore values drift (trionlabs/stellar-8004 showed 54 on 2026-11-02, not 69). The repoScore and judgeScore figures above are dated history; do not grade an answer on them.",
+     "reason": "Scout repoScore drifted 69->54; notes cite the old figure without a grading boundary."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-agent-identity-erc8004-stellar; q-mpp-discovery-and-modes"
+  },
+  {
+   "id": "q-defi-agentic-payment-standards-compare",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "x402 created at Coinbase, now governed via x402 Foundation / Linux Foundation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.cdp.coinbase.com/x402/support/faq",
+       "observedAt": "2026-11-02",
+       "quote": "x402 was incubated at Coinbase and contributed to the x402 Foundation, which launched under the Linux Foundation"
+      },
+      {
+       "class": "D",
+       "ref": "https://theagenteconomy.si/tools/protocol-compatibility",
+       "observedAt": "2026-11-02",
+       "quote": "Linux Foundation announcement of the x402 Foundation, 14 July 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Stellar x402 uses Soroban auth entries + facilitator; Stellar MPP supports charge and session",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments",
+       "observedAt": "2026-10-09",
+       "quote": "x402 on Stellar — An open protocol from the Coinbase Developer Platform for per-request payments using Soroban authorization"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+       "observedAt": "2026-10-22",
+       "quote": "The @stellar/mpp SDK supports two payment intents: Charge ... Session"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/tempoxyz/mpp-specs/tree/main/specs/methods/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "specs/methods/stellar/draft-stellar-charge-00.md"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "General MPP supports charge, session, subscription; IETF Internet-Draft",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/intents/",
+       "observedAt": "2026-04-06",
+       "quote": "The charge intent requests an immediate one-time payment ... For metered billing ... use the session intent"
+      },
+      {
+       "class": "D",
+       "ref": "https://zeroclick.ai/resources/mpp-for-api-sellers",
+       "observedAt": "2026-11-02",
+       "quote": "The current intent reference lists Tempo support for all three [charge, session, subscription]"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.quicknode.com/docs/build-with-ai/agentic-payments",
+       "observedAt": "2026-11-02",
+       "quote": "MPP (Machine Payments Protocol) is an IETF Internet-Draft by Tempo Labs and Stripe"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "AP2 is moving through FIDO standardization; x402 optional",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://fidoalliance.org/fido-alliance-agentic-ai",
+       "observedAt": "2026-11-02",
+       "quote": "These specifications will draw from initial contributions from Google (AP2) and Mastercard (Verifiable Intent)"
+      },
+      {
+       "class": "D",
+       "ref": "https://fidoalliance.org/pymnts-google-and-mastercard-contribute-agentic-commerce-standards-to-fido-alliance",
+       "observedAt": "2026-11-02",
+       "quote": "Google ... donated AP2 to the FIDO Alliance"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "ACP is a beta checkout/commerce protocol delegating payment to handlers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/agentic-commerce-protocol/agentic-commerce-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "The specification is maintained by OpenAI and Stripe and is currently in beta"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.stripe.com/agentic-commerce/protocols/acp",
+       "observedAt": "2026-11-02",
+       "quote": "Delegate payment: Securely pass payment tokens between buyers, agents, and businesses using payment handlers."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..4]",
+     "claim": "keyFacts and avoid items match current sources",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+       "observedAt": "2026-11-02",
+       "quote": "Session ... unidirectional payment channels"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-mpp-discovery-and-modes"
+  },
+  {
+   "id": "q-defi-allbridge-what-is",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Allbridge Core is a cross-chain stablecoin bridge with Stellar/Soroban support",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+       "observedAt": "2026-10-14",
+       "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/llms-full.txt",
+       "observedAt": "2026-10-06",
+       "quote": "Allbridge Core liquidity pools are deprecated. After the security incident in July 2026, pool-based transfers were discontinued and all transfers now run throug…"
+      },
+      {
+       "class": "D",
+       "ref": "https://cointelegraph.com/news/allbridge-core-pauses-cross-chain-bridge-after-165m-exploit",
+       "observedAt": "2026-07-20",
+       "quote": "Allbridge ... has paused the protocol as a precaution after a \"security incident\" that reportedly saw $1.65 million drained"
+      },
+      {
+       "class": "D",
+       "ref": "https://solanacompass.com/projects/allbridge",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar support is listed as temporarily unavailable."
+      },
+      {
+       "class": "F",
+       "ref": "dig core.api.allbridgecoreapi.net @1.1.1.1",
+       "observedAt": "2026-11-02",
+       "quote": "status: NXDOMAIN (the golden-cited Core token-info API host no longer resolves)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "At 2026-07-10 Core API exposed native Stellar USDC with 16 counterpart networks",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+       "observedAt": "2026-10-14",
+       "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+      },
+      {
+       "class": "F",
+       "ref": "curl https://core.api.allbridgecoreapi.net/token-info?filter=all",
+       "observedAt": "2026-11-02",
+       "quote": "Could not resolve host: core.api.allbridgecoreapi.net"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new)",
+     "claim": "Allbridge Next lists Stellar among 8 chains",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://allbridge.io/next/",
+       "observedAt": "2026-11-02",
+       "quote": "One bridge, 8 chains: Ethereum, Arbitrum, Base, BNB Chain, Polygon, Solana, Stellar, Tron"
+      },
+      {
+       "class": "C",
+       "ref": "https://next.allbridge.io/explorer/1c0e32430774200fa36732204ca52bab8900fb4c385dc25fbb9e1054fe966b65",
+       "observedAt": "2026-09-30",
+       "quote": "From Stellar ... To Tron ... success ... 30.09.26 08:14"
+      },
+      {
+       "class": "D",
+       "ref": "https://solanacompass.com/projects/allbridge",
+       "observedAt": "2026-11-02",
+       "quote": "Examples in the team's posts include ... XLM on Stellar to USDC on Arbitrum"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "2023 Stellar launch named Ethereum, Solana, Polygon, and Celo",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/allbridge-launch-connects-stellar-network-to-ethereum-solana-and-polygon",
+       "observedAt": "2026-10-01",
+       "quote": "SAN FRANCISCO, CA, July 11, 2023 ... seamless digital asset transfer between Stellar and other prominent chains such as Ethereum, Solana, Celo, and Polygon."
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_project (slug allbridge)",
+       "observedAt": "2026-11-02",
+       "quote": "Allbridge enables users to seamlessly access the Stellar ecosystem through crossbridge swaps."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "XRPL is Classic history; Classic deprecated",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.allbridge.io/allbridge-overview/bridge-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "Allbridge Classic is deprecated and will be stopped in November 2026. ... XRPL | r4w1LrneWZqX5RrgFPx2gto66dwo2Zymqy"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/Allbridge_io/status/2079172437103526146",
+       "observedAt": "2026-07-20",
+       "quote": "In 3 months, Allbridge Core and Allbridge Classic will stop operating in their current form."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Allbridge Core is a Stellar-enabled cross-chain stablecoin bridge.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+       "observedAt": "2026-10-14",
+       "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "avoid items (launch list as permanent; invent route facts; DEX/lender/oracle/Starbridge) punish false claims",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=allbridge",
+       "observedAt": "2026-11-02",
+       "quote": "Allbridge | allbridge | Live | Protocol/Contract | [Bridge]"
+      }
+     ]
+    },
+    {
+     "field": "tags.freshness",
+     "claim": "stable",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+       "observedAt": "2026-10-14",
+       "quote": "Stellar support is temporarily unavailable ... pending audit."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "**Allbridge** is a cross-chain bridge provider with three products: Allbridge Core (stablecoins), Allbridge Next (stablecoins, gas tokens, and swaps), and the deprecated Allbridge Classic. Its July 2023 Stellar launch announcement named Ethereum, Solana, Celo, and Polygon; that is historical launch context, not a permanent route list.\n\nAfter a July 2026 exploit of Core's Solana pools, Allbridge discontinued Core's pool-based transfers. Core now routes USDC through Circle CCTP or xReserve and USDT/USDe through LayerZero OFT. As of **2026-11-02**, the Core docs say Stellar support is temporarily…",
+     "reason": "Core Stellar support suspended and pool model discontinued after the July 2026 exploit; dated snapshot superseded."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "Allbridge is a cross-chain bridge provider; Core, Next, and Classic differ on Stellar.",
+     "reason": "keyFact asserted current Stellar support for Core; a true current answer would fail it."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nFRESHNESS UPDATE 2026-11-02: Allbridge Core discontinued pool-based transfers after the July 2026 Solana exploit, and its docs list Stellar support as temporarily unavailable pending a Stellar CCTP audit; Allbridge Next lists Stellar. Accept a dated, attributed statement of either product's Stellar status. Do not require the superseded 16-network snapshot, and do not penalize an answer that names Allbridge Next as the current Stellar route when it dates the claim.",
+     "reason": "Grader note so a dated Allbridge Next or Core-unavailable statement is not penalized."
+    },
+    {
+     "field": "tags.freshness",
+     "op": "replace",
+     "new": "scheduled",
+     "reason": "Volatile product/route status needs scheduled freshness and a reverify date."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-bridge-evm-to-stellar-axelar"
+  },
+  {
+   "id": "q-defi-arbitrage-pathpayment-bots",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "PathPaymentStrictSend/StrictReceive with destination_min / send_max; UNDER_DESTMIN, OVER_SENDMAX, TOO_FEW_OFFERS codes",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/path-payment-strict-send",
+       "observedAt": "2026-11-02",
+       "quote": "PATH_PAYMENT_STRICT_SEND_UNDER_DESTMIN"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs(\"PATH_PAYMENT_STRICT_RECEIVE_OVER_SENDMAX TOO_FEW_OFFERS\")",
+       "observedAt": "2026-11-02",
+       "quote": "PATH_PAYMENT_STRICT_RECEIVE_TOO_FEW_OFFERS There is no path of offers"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/querying-data#findstrictsendpaths",
+       "observedAt": "2026-11-02",
+       "quote": "findStrictSendPaths({ sourceAsset, sourceAmount, destination..."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Protocol AMM fee is 0.3% to LPs; CAP-38 discusses profit-driven liquidity",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "const LIQUIDITY_POOL_FEE_V18 = 30;"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "liquidity pool fee 0.3% (docs page in truth.sources)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "trying to deploy their capital in the most profitable way"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts/avoid",
+     "claim": "No-guarantee profitability framing; avoid items punish promises of profit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "path payment guide (stable protocol mechanics)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-defi-asset-whitespace-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Asset is an exact getClusters category row; RWA is a separate overlapping types cluster; analyzeEcosystem is a separate aggregate",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+       "observedAt": "2026-11-02",
+       "quote": "Asset 35 projects, scfFundedCount 2, crowdedness 7; generatedAt 2026-11-02T15:49:23.912Z; population statusScope Development/Live/Pre-Release, 906"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+       "observedAt": "2026-11-02",
+       "quote": "RWA size 96, scfFundedCount 57, crowdedness 10"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+       "observedAt": "2026-11-02",
+       "quote": "{\"category\":\"Asset\",\"projectCount\":35,\"scfFundedCount\":2,\"scfTotalUSD\":109000}"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getClusters",
+       "observedAt": "2026-11-02",
+       "quote": "GET /api/clusters"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "No Asset/RWA projects exist because one category is small",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+       "observedAt": "2026-11-02",
+       "quote": "RWA size 96"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-category-funding-ratio-live; q-defi-category-saturation-live"
+  },
+  {
+   "id": "q-defi-benji-franklin-templeton",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "BENJI represents FOBXX; first US-registered mutual fund to use public blockchain as official system of record; launched on Stellar 2021",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u-s-registered-tokenized-money-market-fund",
+       "observedAt": "2026-10-14",
+       "quote": "mark five years of the Franklin OnChain U.S. Government Money Fund (FOBXX), the first U.S.-registered mutual fund to use a public blockchain as its official sys…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.franklintempleton.com/press-releases/news-room/2026/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u.s.-registered-tokenized-money-market-fund",
+       "observedAt": "2026-11-02",
+       "quote": "SAN FRANCISCO – April 30, 2026 ... Represented by the BENJI token, the Fund launched in 2021 on the Stellar network"
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/search_directory (benji)",
+       "observedAt": "2026-11-02",
+       "quote": "Benji Investments is a platform developed by Franklin Templeton ... Franklin OnChain U.S. Government Money Fund (FO..."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "At least 99.5% in US government securities; inception 2021",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.franklintempleton.com/investments/options/money-market-funds/products/29386/SINGLCLASS/franklin-on-chain-u-s-government-money-fund/FOBXX",
+       "observedAt": "2026-10-26",
+       "quote": "The fund invests at least 99.5% of its total assets in U.S. government securities ... Fund Inception Date 04/06/2021"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search: Franklin Templeton BENJI five years",
+       "observedAt": "2026-11-02",
+       "quote": "the Fund launched in 2021 on the Stellar network"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Intraday yield, P2P transfer; 5-year milestone Apr 30 2026; Luxembourg UCITS 2024; Singapore retail 2025",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u-s-registered-tokenized-money-market-fund",
+       "observedAt": "2026-11-02",
+       "quote": "In 2024 the firm leveraged the Benji Technology Platform to launch the first fully tokenized UCITS fund in Luxembourg on Stellar, and launched the first retail …"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.franklintempleton.com/press-releases/news-room/2026/...",
+       "observedAt": "2026-11-02",
+       "quote": "Publishing date April 30, 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "Not an algorithmic stablecoin/yieldcoin; not WisdomTree/Ondo",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=benji",
+       "observedAt": "2026-11-02",
+       "quote": "Benji | benji | Live | Asset | [RWA]"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-rwa-projects-tokenizing-stellar; q-crp-tokenize-personal-rwa; q-defi-rwa-scf-similar"
+  },
+  {
+   "id": "q-defi-blend-alternatives",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Scout marks Slender Inactive and Laina/K2 Live",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=laina",
+       "observedAt": "2026-11-02",
+       "quote": "laina Pre-Release statusAsOf 2026-08-27 human-verified https://github.com/laina-defi/laina/blob/main/src/lib/horizon.ts"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=k2",
+       "observedAt": "2026-11-02",
+       "quote": "k2-lend Live statusAsOf 2026-08-17 site-liveness https://k2lend.com/"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=slender",
+       "observedAt": "2026-11-02",
+       "quote": "slender Inactive statusAsOf 2026-07-09 human-verified https://defillama.com/protocol/slender"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Operator surfaces describe K2 as coming soon",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.k2lend.com/",
+       "observedAt": "2026-11-02",
+       "quote": "K2 is a decentralized borrowing and lending protocol deployed on Stellar's Soroban ... Liquidation Permissionless (the live liquidation whitelist is currently e…"
+      },
+      {
+       "class": "A",
+       "ref": "https://app.k2lend.com/",
+       "observedAt": "2026-10-28",
+       "quote": "Live K2 market data. Fetched Oct 28, 2026 ... Total Value Locked $1.8K"
+      },
+      {
+       "class": "C",
+       "ref": "https://lumenloop.com/projects/k2-lend",
+       "observedAt": "2026-11-02",
+       "quote": "2026-07-24 — News: K2 Brings Institution-Ready Lending Infrastructure to Stellar (x.com)"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/Kinetic_Markets",
+       "observedAt": "2026-11-02",
+       "quote": "Jul 24 ... today @K2_Lend is live on Stellar mainnet."
+      },
+      {
+       "class": "D",
+       "ref": "https://defillama.com/protocol/k2-lend",
+       "observedAt": "2026-11-02",
+       "quote": "Daily values are UTC snapshots from Jul 23, 2026 to Oct 28, 2026 ... TVL by Chain Stellar $1,651"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Operator surfaces describe Laina as early/testnet",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://laina-de.fi",
+       "observedAt": "2026-10-05",
+       "quote": "Laina is currently in the early development stage and is only operating on the Stellar Testnet."
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/search_directory (laina)",
+       "observedAt": "2026-11-02",
+       "quote": "Low-fee, trustless lending protocol on Soroban with looping functionality"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Operator surfaces describe Slender as still accessible",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "dig slender.fi @1.1.1.1 / @8.8.8.8",
+       "observedAt": "2026-11-02",
+       "quote": "status: NXDOMAIN (also app.slender.fi)"
+      },
+      {
+       "class": "D",
+       "ref": "https://defillama.com/protocol/slender",
+       "observedAt": "2026-11-02",
+       "quote": "As of Oct 30, 2026, Slender has $87.71 in total value locked."
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/best-lending-protocols-stellar",
+       "observedAt": "2026-10-06",
+       "quote": "Slender is tracked by DefiLlama at zero."
+      },
+      {
+       "class": "D",
+       "ref": "https://slender.fi (Parallel cache)",
+       "observedAt": "2026-08-08",
+       "quote": "Enter App ... #1 lending protocol on"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Peridot is a direct-lending candidate; YieldBlox Blend pool; DeFindex router; OrbitCDP/EquitX/Templar adjacent; OrbitCDP Scout vs operator conflict",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=orbit",
+       "observedAt": "2026-11-02",
+       "quote": "orbitcdp Inactive statusAsOf 2026-09-05 human-verified https://orbitcdp.finance/"
+      },
+      {
+       "class": "A",
+       "ref": "https://orbitcdp.finance",
+       "observedAt": "2026-10-25",
+       "quote": "OrbitCDP Live on Stellar ... deposit XLM as collateral into Blend lending pools to borrow stablecoins"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=peridot",
+       "observedAt": "2026-11-02",
+       "quote": "peridot-finance Live onchain-activity, deployment mainnet"
+      },
+      {
+       "class": "D",
+       "ref": "https://investors.defillama.com/active-loans/chain/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Blend $44.15m; Templar Protocol $11.45m; XOXNO Lending; K2 Lend; Slender; Peridot"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "avoid items (unqualified Live/Inactive under conflict; YieldBlox/DeFindex as base lenders; timeless dominance)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://orbitcdp.finance",
+       "observedAt": "2026-11-02",
+       "quote": "Live on Stellar"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As of **2026-07-10**, Blend is a major Stellar lending primitive, but there is no source basis for grading it as the timeless \"dominant\" or \"near-single\" lender. Compare alternatives by category and label status by source:\n- **Direct lending designs:** Slender, Laina, K2 Lend, and Peridot are relevant candidates, but their deployment labels are not uniform. As of 2026-11-02, Scout marks Slender Inactive, Laina Pre-Release, and K2 Lend and Peridot Live. Laina's own site says it operates only on Stellar Testnet. K2 announced its Stellar mainnet launch on 2026-07-24. The slender.fi domain did not…",
+     "reason": "Scout Laina label and K2 operator status drifted; Slender operator-site claim no longer supported."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md"
+   ],
+   "siblings": "q-defi-flash-loans; q-defi-named-newer-protocols; q-defi-rwa-scf-similar; q-defi-etherfuse-stablebonds"
+  },
+  {
+   "id": "q-defi-blend-what-is",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Blend: Soroban lending with permissionless isolated pools and over-collateralized loans",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/users/general-faq",
+       "observedAt": "2026-10-10",
+       "quote": "All Blend lending pools are isolated from one another ... anyone can deploy a new lending pool as long as they can attract backstop module depositors"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/entities/script3",
+       "observedAt": "2026-11-02",
+       "quote": "borrowers take over-collateralized loans"
+      },
+      {
+       "class": "D",
+       "ref": "https://iq.wiki/wiki/blend",
+       "observedAt": "2026-11-02",
+       "quote": "non-custodial lending and borrowing protocol built on the Stellar network's Soroban"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Script3 developed Blend; blend-capital is the code org; not SDF",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_project (blend)",
+       "observedAt": "2026-11-02",
+       "quote": "\"parent\": \"Script3\" ... \"github\": [\"github.com/blend-capital\"]"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/blend-capital/blend-contracts-v2",
+       "observedAt": "2026-11-02",
+       "quote": "Soroban implementation of the Blend Protocol v2 (pushed 2026-10-26)"
+      },
+      {
+       "class": "D",
+       "ref": "https://thedefiant.io/education/defi/stellar-network-real-world-rails-bring-defi-to-new-audiences",
+       "observedAt": "2026-11-02",
+       "quote": "Blend is a universal liquidity protocol created by Script3."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "No DAO / no central operator at protocol level; pools can be owned or governed",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/pool-creators/general",
+       "observedAt": "2026-11-02",
+       "quote": "New markets and assets do not require the approval of a DAO (Blend has no DAO) ... By setting a Governance smart contract as a pool owner, someone could easily …"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/users/general-faq",
+       "observedAt": "2026-11-02",
+       "quote": "No central organization controls Blend"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "avoid items punish false claims (blend.com, SDF builder, no pool admin, required dominance)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=blend",
+       "observedAt": "2026-11-02",
+       "quote": "Blend | blend | Live | Protocol/Contract | [Lending]"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-cross-blend-rivool-sac; q-comp-yieldblox-oracle-incident; q-hist-yieldblox-v2-2026-exploit"
+  },
+  {
+   "id": "q-defi-bridge-evm-to-stellar-axelar",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Allbridge Core adds liquidity-pool and messaging dependencies (present tense)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/llms-full.txt",
+       "observedAt": "2026-10-06",
+       "quote": "Allbridge Messaging and Wormhole messaging are deprecated. They were the messaging options for pool-based transfers, which were discontinued after the July 2026…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+       "observedAt": "2026-10-14",
+       "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+      },
+      {
+       "class": "D",
+       "ref": "https://news.chainspot.io/2026/07/24/allbridge-core-security-breach/",
+       "observedAt": "2026-11-02",
+       "quote": "On July 20, 2026, Allbridge Core ... suspended its operations following a security breach that resulted in a $1.65 million loss on Solana."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "2026-07-10 dated route observations (Allbridge Next CCTP, Squid RFQ, USDC.axl)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://allbridge.io/next/",
+       "observedAt": "2026-11-02",
+       "quote": "every transfer is routed automatically over OFT, CCTP, or intents ... Stellar"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar",
+       "observedAt": "2026-10-31",
+       "quote": "Always use CctpForwarder when routing CCTP USDC to a Stellar address."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "MetaMask documents swaps from another chain into Stellar (2026-10-01)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://support.metamask.io/configure/networks/stellar/",
+       "observedAt": "2026-10-16",
+       "quote": "You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity/parallel sweep",
+       "observedAt": "2026-11-02",
+       "quote": "no contradicting report"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Compares CCTP, Axelar, Allbridge Core, and intent/RFQ trust assumptions.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+       "observedAt": "2026-10-14",
+       "quote": "Stellar support is temporarily unavailable ... pending audit."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "avoid items punish false claims (Axelar = native USDC; MetaMask route safety; permanent quotes)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "CCTP on Stellar ... CctpForwarder"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no provider-independent 'safest bridge.' For Ethereum **Circle USDC → canonical Stellar USDC**, first verify a current native-burn/mint or native-liquidity route rather than assuming an Axelar label gives the same asset. On **2026-07-10**, tested routes differed:\n- Allbridge Next used **Circle CCTP** and delive…",
+     "reason": "Allbridge Core pool model discontinued; sentence states it in the present tense."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Compares CCTP, Axelar, Allbridge, and intent/RFQ trust assumptions.",
+     "reason": "keyFact named Allbridge Core, which no longer serves Stellar."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nFRESHNESS UPDATE 2026-11-02: Allbridge Core's pool route is discontinued and its Stellar support is listed as temporarily unavailable. Accept a dated comparison that uses Allbridge Next or the current Core CCTP route instead; do not require a current Allbridge Core pool comparison.",
+     "reason": "Grader note for the dated Allbridge change."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-allbridge-what-is"
+  },
+  {
+   "id": "q-defi-build-staking-for-own-token",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "XLM has no native staking; SCP/FBA, validators receive no monetary rewards",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "There are no monetary rewards for being a validator on the Stellar network"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs(\"validators do not receive monetary rewards SCP\")",
+       "observedAt": "2026-11-02",
+       "quote": "There are no monetary rewards for being a validator on the Stellar"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Building blocks: SEP-41, SAC, AMM, vaults, Blend; risks; audits",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-41 Soroban Token Interface"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=blend",
+       "observedAt": "2026-11-02",
+       "quote": "Blend | Live | Lending"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-defi-category-funding-ratio-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "getClusters category rows carry scfFundedCount and size, generatedAt, scope; analyzeEcosystem is a separate population",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+       "observedAt": "2026-11-02",
+       "quote": "Tooling 160/121 (0.756) highest; Protocol/Contract 147/104; User-Facing App 366/257; Partner Integration 1/0; generatedAt 2026-11-02T15:49:23.912Z"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+       "observedAt": "2026-11-02",
+       "quote": "distribution ... projectCount / scfFundedCount per category; scope Active projects only"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getClusters",
+       "observedAt": "2026-11-02",
+       "quote": "GET /api/clusters"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-asset-whitespace-live; q-defi-category-saturation-live"
+  },
+  {
+   "id": "q-defi-category-saturation-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Live category clusters return crowdedness score, raw sizes, funded counts, formula, generatedAt",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+       "observedAt": "2026-11-02",
+       "quote": "notes.crowdedness: Score 1-10, log-scaled: round(log2(size+1) + log2(scfFunded+1) + 0.5*log2(winners+1)), clipped to [1,10]; four categories tie at 10; Partner …"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getClusters",
+       "observedAt": "2026-11-02",
+       "quote": "GET /api/clusters"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-asset-whitespace-live; q-defi-category-funding-ratio-live"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier lane (Claude Opus 5.5), did not read the proposer matrix",
+  "decisions": [
+   {
+    "id": "q-defi-allbridge-what-is",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Every new claim re-derived from A plus an independent class. The new text also fixes a latent attribution error: the July 2023 announcement was the Classic-era validator bridge (Ultra Stellar co-signer, LOBSTR guide); Core reached Stellar via Soroban on 2024-05-23 (allbridge.medium.com). Making 'Allbridge' the subject of the 2023 sentence is correct. Live Core token-info API was unreachable from t…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Allbridge Core liquidity pools were discontinued in July 2026."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/product/how-does-allbridge-core-work/liquidity-provision",
+      "observedAt": "2026-11-02",
+      "quote": "After the security incident in July 2026, pool-based transfers were discontinued and all transfers now run through CCTP, xReserve and OFT."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/",
+      "observedAt": "2026-11-02",
+      "quote": "USDC transfers use Circle's Cross-Chain Transfer Protocol (CCTP and CCTP V2) or xReserve ... USDT and USDe transfers use LayerZero's Omnichain Fungible Token (O…"
+     },
+     {
+      "class": "A",
+      "ref": "https://allbridge.io/next/",
+      "observedAt": "2026-11-02",
+      "quote": "One bridge, 8 chains Ethereum ... Arbitrum ... Base ... BNB Chain ... Polygon ... Solana ... Stellar ... Tron"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.allbridge.io/master.md",
+      "observedAt": "2026-11-02",
+      "quote": "Allbridge Classic is deprecated and will be stopped in November 2026."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/press/allbridge-launch-connects-stellar-network-to-ethereum-solana-and-polygon",
+      "observedAt": "2026-11-02",
+      "quote": "SAN FRANCISCO, CA, July 11, 2023 — ... seamless digital asset transfer between Stellar and other prominent chains such as Ethereum, Solana, Celo, and Polygon."
+     },
+     {
+      "class": "D",
+      "ref": "https://www.theblock.co/news/defi/2026-07-19-allbridge-core-exploit-408855",
+      "observedAt": "2026-11-02",
+      "quote": "the exploiter used a $1.12 million flash loan from Solana-based liquidity protocol Kamino to manipulate the stablecoin liquidity pool ratios"
+     },
+     {
+      "class": "D",
+      "ref": "https://cointelegraph.com/news/allbridge-core-pauses-cross-chain-bridge-after-165m-exploit",
+      "observedAt": "2026-11-02",
+      "quote": "The incident affected Allbridge Core's Solana deployment"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=allbridge",
+      "observedAt": "2026-11-02",
+      "quote": "slug allbridge, status Live, statusAsOf 2026-09-05, types [Bridge]"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.get_project(allbridge)",
+      "observedAt": "2026-11-02",
+      "quote": "Allbridge enables users to seamlessly access the Stellar ecosystem through crossbridge swaps."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-allbridge-what-is",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "86 characters (under 90). Old keyFact ('Allbridge Core is a Stellar-enabled ... bridge') is now untrue as a present-tense gate because Core lists Stellar as temporarily unavailable. New keyFact is true and does not punish a possibly-true claim.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "A",
+      "ref": "https://allbridge.io/next/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar — bridge on Allbridge Next"
+     },
+     {
+      "class": "D",
+      "ref": "https://solanacompass.com/projects/allbridge",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is listed as temporarily unavailable. ... The Classic docs now say: \"Allbridge Classic is deprecated and will be stopped in November 2026.\""
+     }
+    ]
+   },
+   {
+    "id": "q-defi-allbridge-what-is",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Lenient-both-sides wording (accept a dated, attributed status for either product; do not require the superseded snapshot). No new avoid item; no judge-blind content.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "A",
+      "ref": "https://allbridge.io/next/",
+      "observedAt": "2026-11-02",
+      "quote": "Move stablecoins and native gas tokens across 8 chains"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-allbridge-what-is",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "The golden now pins dated product/route status that is pending an audit outcome, so 'stable' is wrong. Condition: 'scheduled' requires truth.asOf (2026-11-02) and truth.reverifyBy (batch window 2027-04); the proposal does not show these truth fields, so the applier must add them or compile/lint fails. Classic's November 2026 stop month is date-contingent and should be re-checked at the reverify da…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "D",
+      "ref": "https://x.com/Allbridge_io/status/2079252677418979641",
+      "observedAt": "2026-11-02",
+      "quote": "Allbridge Core is back up, running on CCTP and LayerZero for transfers, with no liquidity pools."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "The edit keeps the 2026-07-10 observation dated and adds a dated present-status sentence. Sibling-consistent with the allbridge-what-is change. Remaining 2026-07-10 claims (Allbridge Next via CCTP, Squid RFQ, USDC.axl) were not proposed for change and were not re-verified here.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Allbridge Core liquidity pools were discontinued in July 2026."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "D",
+      "ref": "https://www.theblock.co/news/defi/2026-07-19-allbridge-core-exploit-408855",
+      "observedAt": "2026-11-02",
+      "quote": "A rebuilt Core will drop liquidity pools entirely, routing transfers through CCTP and LayerZero instead"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "67 characters. Requiring a comparison with 'Allbridge Core' specifically would force a product whose Stellar route is unavailable; 'Allbridge' is the durable formulation.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "A",
+      "ref": "https://allbridge.io/next/",
+      "observedAt": "2026-11-02",
+      "quote": "every transfer is routed automatically over OFT, CCTP, or intents"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "\nFRESHNESS UPDATE 2026-11-02: Allbridge Core's pool route is discontinued, and its docs list Stellar support as temporarily unavailable pending a Stellar CCTP audit. Accept a dated comparison that uses Allbridge Next, or an Allbridge Core CCTP route only when the answer cites dated provider evidence that Core lists Stellar again. Do not require a current Allbridge Core pool comparison.",
+    "note": "Proposed text told graders to accept 'the current Core CCTP route' for Stellar, but as of 2026-11-02 no Core CCTP route to Stellar exists per Core's own docs. That would invite the judge to accept a false availability claim. The modified text keeps lenience but conditions a Core CCTP Stellar route on dated provider evidence.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "EVM chains (Ethereum, Polygon, Avalanche, Arbitrum, Base, Optimism, Unichain) * Tron * Solana * Sui * Stacks"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-blend-alternatives",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "All four Scout labels match my raw Stellar Light read; each operator-side claim confirmed by a different class. Old text ('Scout marks ... Laina/K2 Live', 'K2 as coming soon') is now contradicted. The avoid[0] clause is conditional on a directory/operator conflict, so it stays honest. Out of scope but noted: the unchanged sentence 'OrbitCDP's Scout and operator lifecycle labels also conflict' now …",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=slender",
+      "observedAt": "2026-11-02",
+      "quote": "slender | Slender | status Inactive | statusAsOf 2026-07-09 | basis human-verified | src https://defillama.com/protocol/slender"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=laina",
+      "observedAt": "2026-11-02",
+      "quote": "laina | Laina | status Pre-Release | statusAsOf 2026-08-27 | basis human-verified"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=k2",
+      "observedAt": "2026-11-02",
+      "quote": "k2-lend | K2 Lend | status Live | statusAsOf 2026-08-17 | basis site-liveness"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=peridot",
+      "observedAt": "2026-11-02",
+      "quote": "peridot-finance | Peridot Finance | status Live | statusAsOf 2026-10-27 | basis onchain-activity"
+     },
+     {
+      "class": "A",
+      "ref": "https://laina-de.fi/",
+      "observedAt": "2026-11-02",
+      "quote": "Laina is currently in the early development stage and is only operating on the Stellar Testnet."
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/Kinetic_Markets (K2_Lend post quoted)",
+      "observedAt": "2026-11-02",
+      "quote": "Jul 24 ... today @K2_Lend is live on Stellar mainnet."
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-jul-24-2026",
+      "observedAt": "2026-11-02",
+      "quote": "K2 Lend launched this week with pooled, isolated, and gated lending markets built for regulated assets and institutions"
+     },
+     {
+      "class": "F",
+      "ref": "host slender.fi; curl https://slender.fi",
+      "observedAt": "2026-11-02",
+      "quote": "Host slender.fi not found: 3(NXDOMAIN); curl HTTP 000"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.llama.fi/protocol/slender",
+      "observedAt": "2026-11-02",
+      "quote": "chains ['Stellar']; latest tvl totalLiquidityUSD 87; currentChainTvls Stellar 87.98"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-agent-identity-stellar-experimental",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Claim is source-relative to Scout's own scoring, so Scout is the owning source and a single class suffices for 'Scout shows 54 now'. The note de-gates a drifting figure and punishes nothing, which is the durable-fact rule. judgeScore 0.8 is unchanged; the note's 'dated history' framing is still correct. Sibling q-agent-identity-erc8004-stellar cites the repo without a repoScore, so no conflict.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=stellar-8004&limit=10",
+      "observedAt": "2026-11-02",
+      "quote": "trionlabs/stellar-8004 | repoScore 54 | judge 0.8 | label medium | home https://stellar8004.com; progax01/stellar8004 | repoScore 53 | judge 0.6"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://docs-core.allbridge.io/what-is-allbridge-core.md (curl, live)",
+   "https://docs-core.allbridge.io/llms.txt (curl, live)",
+   "https://docs-core.allbridge.io/ (Parallel web_fetch)",
+   "https://docs-core.allbridge.io/product/how-does-allbridge-core-work/allbridge-core-contracts.md (Parallel search excerpt)",
+   "https://docs-core.allbridge.io/product/how-does-allbridge-core-work/liquidity-provision (Parallel search excerpt)",
+   "https://docs-core.allbridge.io/product/how-does-allbridge-core-work/messaging-protocols (Perplexity excerpt)",
+   "https://docs.allbridge.io/master.md (curl, live)",
+   "https://allbridge.io/ (Parallel web_fetch)",
+   "https://allbridge.io/next/ (curl, live)",
+   "https://next.allbridge.io/ (Parallel web_fetch)",
+   "https://core.api.allbridgecoreapi.net/token-info (curl: no connection, HTTP 000)",
+   "https://cointelegraph.com/news/allbridge-core-pauses-cross-chain-bridge-after-165m-exploit",
+   "https://www.theblock.co/news/defi/2026-07-19-allbridge-core-exploit-408855",
+   "https://x.com/Allbridge_io/status/2079252677418979641",
+   "https://hoge.gg/crypto-bridge-hacks-2026-exploit-wave/",
+   "https://solanacompass.com/projects/allbridge",
+   "https://stellar.org/press/allbridge-launch-connects-stellar-network-to-ethereum-solana-and-polygon",
+   "https://allbridge.medium.com/allbridge-core-launches-a-bridge-to-stellar-14156f59e925",
+   "https://medium.com/ultra-stellar/allbridge-launch-connects-stellar-network-to-solana-ethereum-polygon-and-celo-e2862bcc2d4a",
+   "https://defillama.com/protocol/allbridge-core",
+   "Raven execute: lumenloop.search_directory/get_project(allbridge), lumenloop.search_content_semantic, stellarDocs.search_docs (observedAt 2026-11-02T16:25:49Z)",
+   "https://stellarlight.xyz/api/openapi.json",
+   "https://stellarlight.xyz/api/projects/search?q=slender|laina|k2|peridot|orbit|allbridge&limit=6 (generatedAt 2026-11-02T16:25Z)",
+   "https://stellarlight.xyz/api/repos/search?q=stellar-8004&limit=10 (generatedAt 2026-11-02T16:25:05Z)",
+   "https://laina-de.fi/ (curl 200; Parallel web_fetch)",
+   "https://k2lend.com/ (curl 200; Parallel web_fetch)",
+   "https://peridot.finance/ (curl 200)",
+   "https://slender.fi, https://www.slender.fi, https://app.slender.fi (curl: no connection; host: NXDOMAIN)",
+   "https://api.llama.fi/protocol/slender",
+   "https://orbitcdp.finance/ (curl 200)",
+   "https://lumenloop.com/projects/k2-lend (Perplexity excerpt)",
+   "https://lumenloop.com/research/stellar-weekly-roundup-week-jul-24-2026 (Perplexity excerpt)",
+   "https://x.com/Kinetic_Markets (Perplexity excerpt)",
+   "https://x.com/StellarOrg/status/2082511611936350656 (Perplexity excerpt)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-defi-agent-identity-stellar-experimental; q-defi-allbridge-what-is; q-defi-bridge-evm-to-stellar-axelar; q-defi-blend-alternatives",
+  "verifiedOnly": "q-defi-agentic-payment-standards-compare; q-defi-arbitrage-pathpayment-bots; q-defi-asset-whitespace-live; q-defi-benji-franklin-templeton; q-defi-blend-what-is; q-defi-build-staking-for-own-token; q-defi-category-funding-ratio-live; q-defi-category-saturation-live",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-defi-flash-loans",
+    "issue": "Sibling outside this batch: its answer still cites Slender \"operator marketing\" undated, but slender.fi and app.slender.fi are NXDOMAIN on 2026-11-02 (proposer and verifier dig/curl). Re-date that sentence in its own batch."
+   },
+   {
+    "id": "q-defi-allbridge-what-is",
+    "issue": "Upstream defect for improvements/ (not filed by this lane): the Stellar Light allbridge row is Live/mainnet with no Core/Next product split, while Core docs list Stellar as temporarily unavailable (https://docs-core.allbridge.io/what-is-allbridge-core.md, 2026-11-02)."
+   },
+   {
+    "id": "q-defi-blend-alternatives",
+    "issue": "Upstream defect for improvements/ (not filed): the Lumenloop slender record says lend and borrow without collateral, but Slender is an overcollateralized lender (https://defillama.com/protocol/slender). Also: the new sls-024 rootCause raises a symmetric-caution lint WARN; no caution text was added because that would be an unverified judge-facing edit. The verifier did not verify the OrbitCDP operator label (kept unchanged)."
+   },
+   {
+    "id": "all-batch-ids",
+    "issue": "lifecycle-registry caseContentSha256 is stale errors for all 12 ids remain. They clear only when the orchestrator runs npm run eval:qa:register, which this lane must not run."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-defi-agentic-payment-standards-compare",
+    "log": "No gospel change; truth.verified refreshed (proposer multi-class evidence); old rootCause dropped (no gospel change this event); asOf 2026-07-10 -> 2026-11-02."
+   },
+   {
+    "id": "q-defi-arbitrage-pathpayment-bots",
+    "log": "No gospel change; truth.verified refreshed (proposer multi-class evidence); old rootCause dropped (no gospel change this event); asOf 2026-07-11 -> 2026-11-02."
+   },
+   {
+    "id": "q-defi-asset-whitespace-live",
+    "log": "No gospel change; truth.verified refreshed (proposer multi-class evidence); old rootCause dropped (no gospel change this event); asOf 2026-07-11 -> 2026-11-02."
+   },
+   {
+    "id": "q-defi-benji-franklin-templeton",
+    "log": "No gospel change; truth.verified refreshed (proposer multi-class evidence); old rootCause dropped (no gospel change this event)."
+   },
+   {
+    "id": "q-defi-blend-what-is",
+    "log": "No gospel change; truth.verified refreshed (proposer multi-class evidence); old rootCause dropped (no gospel change this event)."
+   },
+   {
+    "id": "q-defi-build-staking-for-own-token",
+    "log": "No gospel change; truth.verified refreshed (proposer multi-class evidence); old rootCause dropped (no gospel change this event)."
+   },
+   {
+    "id": "q-defi-category-funding-ratio-live",
+    "log": "No gospel change; truth.verified refreshed (proposer multi-class evidence); old rootCause dropped (no gospel change this event); asOf 2026-08-29 -> 2026-11-02."
+   },
+   {
+    "id": "q-defi-category-saturation-live",
+    "log": "No gospel change; truth.verified refreshed (proposer multi-class evidence); old rootCause dropped (no gospel change this event); asOf 2026-07-11 -> 2026-11-02."
+   },
+   {
+    "id": "q-defi-agent-identity-stellar-experimental",
+    "log": "golden.notes append (FRESHNESS NOTE de-gating repoScore 69 -> 54; verifier accept); Scout + ERC sources added; new confirmed-as-of corroboration row; asOf 2026-07-10 -> 2026-11-02; truth.verified with rootCause freshness-drift."
+   },
+   {
+    "id": "q-defi-allbridge-what-is",
+    "log": "answer replaced (Core/Next/Classic split, dated 2026-11-02 Core Stellar pause; verifier accept); keyFacts[0] -> \"Allbridge is a cross-chain bridge provider; Core, Next, and Classic differ on Stellar.\"; notes stale Celo/XRPL clause corrected and FRESHNESS UPDATE appended; tags.freshness stable -> scheduled; asOf 2026-11-02; reverifyBy 2027-04-15; corroboration[0] re-dated confirmed-as-of; 4 new corroboration rows; 7 sources; truth.verified rootCause freshness-drift."
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar",
+    "log": "answer: Allbridge Core pool dependency dated 2026-07-10 plus 2026-11-02 Core status sentence (accept); keyFacts[2] -> \"Compares CCTP, Axelar, Allbridge, and intent/RFQ trust assumptions.\" (accept); notes FRESHNESS UPDATE with verifier modify newText; corroboration[0] re-dated confirmed-as-of; new Core-status corroboration row; 3 sources; asOf kept 2026-07-10; truth.verified rootCause freshness-drift."
+   },
+   {
+    "id": "q-defi-blend-alternatives",
+    "log": "answer direct-lending bullet re-dated to 2026-11-02 Scout labels and operator evidence (verifier accept); 6 sources; 4 new confirmed-as-of corroboration rows; asOf 2026-11-02 added; truth.verified rootCause freshness-drift + sls-024."
+   }
+  ]
+ }
+}

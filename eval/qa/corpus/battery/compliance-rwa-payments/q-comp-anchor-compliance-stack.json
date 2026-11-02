@@ -162,29 +162,19 @@
       }
     ],
     "verified": {
-      "date": "2026-10-01",
-      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
       "evidence": [
-        "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3, sibling found by the sweep): two also-good lines contradicted this case's own avoid items and CORRECTION line. 'AUTH_REQUIRED / AUTH_CLAWBACK_ENABLED' is now 'AUTH_REQUIRED / AUTH_REVOCABLE' (avoid item 3). 'The anchor (a regulated financial institution) ... licensing burden is the anchor's' now names the regulated operator and states no categorical allocation (avoid item 4, key fact 5). Answer, keyFacts, and avoid are unchanged.",
-        "Live re-check 2026-10-01 (class B): https://github.com/stellar/stellar-protocol/blob/af35d0ccb5b492ddd2ebf09162ceab2600503130/ecosystem/sep-0008.md — 'Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account.'",
-        "Live re-check 2026-10-01 (class A): https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf — the guidance applies to the described business model, not to a product label.",
-        "Sibling sweep 2026-10-01: q-pay-anchor-msb-licensing, q-pay-travel-rule-aid-flows, q-comp-finclusive-caas (cleaned in this change), q-crp-become-an-anchor-licensing, and q-crp-custodial-vs-noncustodial-wallets all scope duties by entity and activity; no contradiction.",
-        "Solo scratchpad 575 GT-07 primary and GT-08 blind reviews",
-        "Structural re-form (negative-predicate): split the authentication and SEP-role fact, then shortened all facts with positive predicates; truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/anchors — the anchor flow remains capability-driven across several SEP services.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md — SEP-45 still supports C accounts while SEP-10 supports G and M accounts.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md — SEP-12 still defines authenticated customer-information upload through PUT /customer.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — SEP-24 still defines hosted interactive deposit and withdrawal flows.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — SEP-8 still defines the regulated-asset approval flow and Required + Revocable flags.",
-        "Live re-check 2026-08-27: https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — Travel Rule duties still depend on an institution's role in a transfer.",
-        "Sibling sweep 2026-08-27: grep SEP-45|SEP-12|SEP-8|Required + Revocable → q-sep-45-contract-auth, q-sep-12-kyc, q-sep-8-regulated-assets, q-comp-sep6-vs-sep12-roles, q-anchor-platform-what; no contradiction"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
-        "Separate SEP descriptions were compressed into a false mandatory sequence.",
-        "Optional clawback was substituted for SEP-8's normative Revocable flag.",
-        "Technical platform roles were generalized into categorical legal advice.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0010.md — \"A Stellar account (`G...`) or a muxed account (`M...`).\" (class B)",
+        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md — \"Title: Stellar Web Authentication for Contract Accounts ... Status: Draft ... Version: 0.1.1\" (class B)",
+        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://developers.stellar.org/docs/platforms/anchor-platform — \"SEP-10 — Web authentication using challenge/response transactions\" (class A)",
+        "Proposer golden.answer (SEP-6/12/24 auth) [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md — \"Anchors and clients must support at least one of SEP-10 or SEP-45 web authentication and use it for all SEP-12 endpoints.\" (class B)",
+        "Proposer golden.answer (SEP-6/12/24 auth) [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md — \"Anchors may support SEP-10 and/or SEP-45 web authentications to enable authenticated deposits, withdrawals, or transaction\" (class B)",
+        "Proposer golden.answer (SEP-6/12/24 auth) [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md — \"`PUT /customer`: Idempotent upload of customer info\" (class B)",
+        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md — \"Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account.\" (class B)",
+        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md — \"Why doesn't the approval service submit transactions to the network?\" (class B)",
+        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://developers.stellar.org/docs/tools/developer-tools/anchor-tools#demo-wallet — \"demo wallet to test Regulated Assets (SEP-8)\" (class A)",
+        "Sibling sweep 2026-11-02: proposer checked q-comp-sep8-regulated-assets-approval-server, q-sep-45-contract-auth, q-sep-12-kyc, q-comp-sep6-vs-sep12-roles, q-pay-anchor-msb-licensing; no judge-facing field changed in this case, and no sibling contradicts the confirmed claims."
       ]
     },
     "origin": "raven-next q-comp-anchor-compliance-stack"

@@ -64,20 +64,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-01)",
       "evidence": [
-        "Read-only hackathonBrief probe returned an empty registry result and null mapped domain on 2026-08-19.",
-        "catalog/manifest.json#scout.hackathonBrief defines the durable absence, mapping, and caution semantics.",
-        "Sibling sweep: q-gap-contracts-domain-empty owns the standalone registry boundary; this case tests that boundary inside the hackathon composite. The vet, pitch, prior-art, and event cases retain their distinct intents.",
-        "solo://proj/49/scratchpad/repository-issue-and--837#golden-verdict",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep hackathonBrief|whatNotToClaim|liveContracts.contracts → q-gap-contracts-domain-empty, q-scout-hackathon-brief-first-hour; no contradiction"
-      ],
-      "rootCause": [
-        "solo://proj/49/todo/add-broad-scout-hack--1797",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        "C 2026-11-02: https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll → liveContracts {domain: null, basis: 'no code domain in the contracts registry fits the Payments vertical as a whole', contracts: []}; whatNotToClaim[2] 'No verified contract in the registry for this domain is NOT 'nothing exists on mainnet'; the registry is evidence-gated.'; meta.generatedAt 2026-11-02T16:11:00.768Z.",
+        "C 2026-11-02 control: q='lending protocol for usdc' maps domain defi-lending with one verified Blend contract, so a null domain is the unmapped case.",
+        "B 2026-11-02: catalog/manifest.json#scout.hackathonBrief 'liveContracts (... empty = no verified contract on record, never nothing on mainnet)' and 'whatNotToClaim (cautions derived from this brief's own facts). No verdicts'.",
+        "No judge-facing field changed.",
+        "Sibling sweep 2026-11-02: q-gap-contracts-domain-empty, q-scout-hackathon-brief-first-hour; no contradiction."
       ]
     },
     "origin": "authored 2026-08 (coverage)"

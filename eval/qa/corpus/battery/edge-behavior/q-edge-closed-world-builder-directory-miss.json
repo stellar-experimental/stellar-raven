@@ -31,8 +31,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-10-06",
-    "reverifyBy": "2027-01-12",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-22",
     "sources": [
       {
         "class": "C",
@@ -43,6 +43,12 @@
         "class": "B",
         "ref": "catalog/manifest.json#scout.getBuilders",
         "note": "Current exposed operation contract identifies this as the Scout builder-directory surface."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+        "note": "generatedAt 2026-11-02T15:57:55Z; counts returned=0 total=0; partial=false; advisory: 'The directory has 399 builder profiles, but none match ... This is a filter miss'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -61,18 +67,24 @@
             "ref": "catalog/manifest.json#scout.getBuilders",
             "observedAt": "2026-10-06",
             "note": "The exposed operation contract still defines the Scout builder-directory surface."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+            "observedAt": "2026-11-02",
+            "note": "generatedAt 2026-11-02T15:57:55Z; returned=0, total=0; partial=false; advisory calls it a filter miss over 399 builder profiles, not absence."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-10-06",
-      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
       "evidence": [
-        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md. The dated 2026-07-13 miss is still a miss on 2026-10-06.",
-        "Live C 2026-10-06: https://stellarlight.xyz/api/builders?q=Strupey — returned=0, total=0, partial=false, generatedAt 2026-10-06T14:52:43Z.",
-        "Live B 2026-10-06: catalog/manifest.json at 528fa335 still exposes scout.getBuilders as the builder-directory operation.",
-        "Sibling sweep 2026-10-06: grep Strupey → q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-lumenloop-person-entity-empty, q-builder-justin-rice-history, q-scf-resolve-passport-superseded-slug; no contradiction."
+        "https://stellarlight.xyz/api/builders?q=Strupey (observedAt 2026-11-02, generatedAt 2026-11-02T15:57:55Z): counts returned=0 total=0; partial=false; advisory 'The directory has 399 builder profiles, but none match ... This is a filter miss'; the upstream advisory also says 'An empty result is NOT evidence the person doesn't exist'.",
+        "catalog/manifest.json#scout.getBuilders (worktree, 2026-11-02): still the exposed Scout builder-directory surface.",
+        "No gospel change: the dated, Scout-scoped negative in the golden still holds.",
+        "Sibling sweep 2026-11-02: q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-lumenloop-person-entity-empty; no contradiction."
       ]
     },
     "origin": "authored 2026-07-13 as the closed-world over-recovery control"

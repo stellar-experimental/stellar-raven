@@ -31,7 +31,7 @@
     "domain": "mixed",
     "status": "confirmed",
     "asOf": "2026-11-02",
-    "reverifyBy": "2027-02-08",
+    "reverifyBy": "2027-06-23",
     "sources": [
       {
         "class": "A",
@@ -183,18 +183,14 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "Gospel change 2026-11-02: avoid[0] and the notes called the 10,000 figure dated product positioning and 'not a source-code-enforced ceiling'. That is false. The SDP backend enforces a 10,000-instruction cap per disbursement. avoid[0] now traps the remaining false claim (a protocol or network limit, or a total-payout limit), and the notes allow an answer that states the SDP cap.",
-        "Live B 2026-11-02: stellar-disbursement-platform-backend@59538fe211cfbf77d319457ce9c87dde0f1d6b06 internal/data/disbursement_instructions.go:49 'const MaxInstructionsPerDisbursement = 10000'; internal/serve/httphandler/disbursement_handler.go:865-866 returns 'number of instructions exceeds maximum of %d'. The orchestrator re-confirmed line 865 independently.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-disbursement-platform-backend/pull/1229 (shipped in release 7.1.0, 2026-10-26) checks the cap before CSV parsing; git log -S dates the constant to d3251bd (2023-08-14, first tag 1.0.0-rc1).",
-        "Live A 2026-11-02: https://stellar.org/products-and-tools/disbursement-platform still says 'Send up to 10,000 payments of any amount in a single batch'.",
-        "Live A/B 2026-11-02: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform, .../admin-guide/design-and-architecture, .../admin-guide/embedded-wallets, and the backend README confirm the bulk-payment role, the Dashboard/Core/TSS split, native SEP-10/24, its own stellar.toml, no required external Anchor Platform, and G-account, SEP-24 wallet, and embedded-wallet receivers. answer, keyFacts, and avoid[1-2] are unchanged.",
-        "The docs URL admin-guide/anchor-platform-integration-points returns 404 after the 2026-10-22 Mintlify migration; no source in this case uses it.",
-        "Sibling sweep 2026-11-02: grep 'Disbursement Platform|SDP|10,000' in the battery. q-anchor-sdp-vs-anchor-platform carried the same false 'not a hard implementation ceiling' text and is corrected in the same change. q-pay-sdp-disbursement, q-crp-sdp-operation, and q-anchor-platform-what agree and do not mention 10,000. Other SDP mentions carry no 10,000 or architecture claim. Register cluster-135's note repeats the old wording and needs a re-sweep."
-      ],
-      "rootCause": [
-        "Eval-side authoring flaw: the 2026-08-05 rescope read only the stellar.org product page and the Docs. It did not read the SDP backend source constant, so avoid[0] and the notes called a source-enforced per-disbursement cap mere product positioning."
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform.md — 'The Stellar Disbursement Platform (SDP) is a tool built for organizations to make bulk payments to a group of recipients over the Stellar network.' (claim: SDP bulk-payment stack; native SEP-10/24; optional downstream rails; 10,000-instruction cap is SDP-level.; verdict confirmed-as-of)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md — 'The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24 ... without requiring external Anchor Platform integration.' (claim: SDP bulk-payment stack; native SEP-10/24; optional downstream rails; 10,000-instruction cap is SDP-level.; verdict confirmed-as-of)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/internal/data/disbursement_instructions.go#L49 — 'const MaxInstructionsPerDisbursement = 10000' (claim: SDP bulk-payment stack; native SEP-10/24; optional downstream rails; 10,000-instruction cap is SDP-level.; verdict confirmed-as-of)",
+        "Prior verification event 2026-11-02 (PR #310, commit 86cc5f53) corrected the SDP 10,000-instruction cap; this event re-confirms it.",
+        "Sibling sweep 2026-11-02: q-anchor-sdp-vs-anchor-platform, q-pay-sdp-disbursement, q-crp-sdp-operation checked; no contradiction."
       ]
     },
     "origin": "raven-next q-anchor-sdp-what"

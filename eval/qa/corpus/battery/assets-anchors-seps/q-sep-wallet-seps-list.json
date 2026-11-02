@@ -55,26 +55,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Shortened the SEP-10 fact and split the SEP-24 and SEP-6 fact; the and/or combination remains in the answer; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0010.md — the current SEP defines challenge-response web sessions for account holders.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current SEP defines the interactive hosted deposit and withdrawal flow.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP defines the programmatic deposit and withdrawal API.",
-        "Sibling sweep 2026-08-29: grep SEP-10|SEP-24|SEP-6|challenge-response → q-edge-inject-ignore-instructions, q-production-anchor-architecture, q-sep-interactive-deposit-withdraw; no contradiction.",
-        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/build/apps/wallet/intro lists all current anchor-class SEPs as SEP-1/6/10/12/24/38 and omits SEP-31.",
-        "Conflict resolution 2026-08-29: https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts exposes no SEP-31 client.",
-        "Sibling sweep 2026-08-29: grep Wallet SDK|SEP-31 → q-anchor-sdp-vs-anchor-platform, q-asset-wallet-sdk-seps, q-sep-wallet-seps-list, q-anchor-platform-what, and related SEP cases; this case retains SEP-31 only as a general remittance-wallet option."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        "eval-authoring transcription",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md / sep-0010.md / sep-0024.md / sep-0006.md — \"Stellar Info File / Stellar Web Authentication / Hosted Deposit and Withdrawal / Deposit and Withdrawal API\" (observedAt 2026-11-02; supports golden.keyFacts[0-3]: confirmed)",
+        "[A] https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — \"SEP-24 is the alternative to SEP-6 which supports hosted deposits and withdrawals. ... SEP-6 is the alternative to SEP-24 that supports an API-style solution for the same use case.\" (observedAt 2026-11-02; supports golden.keyFacts[0-3]: confirmed)",
+        "[B] https://github.com/stellar/typescript-wallet-sdk/tree/main/@stellar/typescript-wallet-sdk/src/walletSdk (git tree, main pushed 2026-10-19; latest release v5.1.0 2026-10-19) — \"Anchor/: Sep24.ts, Sep38.ts, Sep6.ts; Types/: sep12, sep24, sep38, sep43, sep6, sep7; no sep31 path in the recursive tree\" (observedAt 2026-11-02; supports golden.avoid[2]: contradicted)",
+        "[E] stellarDocs.search_docs 'wallet SDK supported SEPs' -> https://developers.stellar.org/docs/build/apps/wallet/intro#anchor-basics — \"SEP-38: explored on Quote section. Besides the SEPs supported by the anchor class the wallet SDK ...\" (observedAt 2026-11-02; supports golden.avoid[2]: contradicted)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: checked q-asset-wallet-sdk-seps, q-anchor-sdp-vs-anchor-platform, q-sep-catalog-list; no contradiction with this case's facts."
       ]
     },
     "origin": "raven-next q-sep-wallet-seps-list",

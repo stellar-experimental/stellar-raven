@@ -24,7 +24,7 @@
       "Do NOT say simply that Strupey does not exist; keep the result source-scoped and dated.",
       "Do NOT stop at one narrow directory if the user asked an open-world history question."
     ],
-    "notes": "Negative/ambiguous control paired with the Justin Rice positive. The safe outcome after one broad pass is scoped non-verification plus clarification, not a semantic-neighbor answer or an absolute negative.\nAccurately quoting the canonical LumenLoop source on Strupey semantic neighbors without exact-token provenance is not a wrong claim while ll-017 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Negative/ambiguous control paired with the Justin Rice positive. The safe outcome after one broad pass is scoped non-verification plus clarification, not a semantic-neighbor answer or an absolute negative.\nAccurately quoting the canonical LumenLoop source on Strupey semantic neighbors without exact-token provenance is not a wrong claim while ll-017 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\nOffering Stroopy (a historical Stellar mascot name) or Stroopy.AI (the project row that Stellar Light's projects search returns for 'strupey' under matchMode 'corrected', as of 2026-11-02) only as a candidate spelling for the user to confirm is acceptable clarification. Asserting either as Strupey's identity or history is the semantic-neighbor promotion this case punishes."
   },
   "tags": {
     "category": "edge-behavior",
@@ -39,8 +39,8 @@
     },
     "domain": "mixed",
     "status": "unverifiable",
-    "asOf": "2026-10-06",
-    "reverifyBy": "2027-01-20",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-06-20",
     "sources": [
       {
         "class": "C",
@@ -71,6 +71,120 @@
         "class": "D",
         "ref": "https://www.joestrupek.com/about",
         "note": "Undated linked biography observed 2026-07-13; identifies Joe Strupek and links the Strupey handle, but shows no Stellar affiliation."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=strupey&limit=5",
+        "note": "matchMode: corrected; matchModeLabel: matched via a known spelling correction: the query token does not occur in these rows; verify the identity before relying on it; row name: Stroopy.AI, slug: stroopyai",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/people?q=strupey ; /api/builders?q=strupey ; /api/repos/search?q=strupey",
+        "note": "people counts.returned 0; builders counts.returned 0; repos matchMode corrected (rows freighter, confidential-agent-commerce, ...; none contain the token)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'strupey'}",
+        "note": "Lumenloop does not spell-correct to Stroopy; only Stellar Light does.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "Stellar Raven execute stellarDocs.search_docs('Strupey') and ('stroop Stroopy mascot stroopwafels')",
+        "note": "Strupey: 5 hits, none contain the token. Stroopy query: only CLI 'stroops' fee hits; no current page carries the mascot line.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/StellarCN/stellar-docs/master/guides/concepts/assets.md",
+        "note": "Mirror of legacy stellar.org developer docs; historical.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar-deprecated/solar-stellarorg/master/README.md",
+        "note": "small sprites used globally throughout the Stellarorg brand, such as the Stellar rocket or [stroopy and friends]",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Perplexity perplexity_search 'Stroopy Stellar mascot character' -> https://www.reddit.com/r/Stellar/comments/7t7w67/ ; https://www.linkedin.com/pulse/cryptocurrency-base-units-tara-annison",
+        "note": "the name \"stroop\" is inspired by Stroopy, the mascot of Stellar, which itself takes its name from a popular Dutch treat called stroopwafels.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://stroopy.ai/ (via Parallel web_search 'Stroopy.AI Stellar')",
+        "note": "Stroopy is a community-built project and is not an official Stellar Development Foundation product.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Stellar Raven MCP execute (production connector): scout.searchResearch, scout.searchProjects, scout.getBuilders, lumenloop.search_content_semantic, lumenloop.find_av_passages, stellarDocs.search_docs, stellarDocs.search_meeting_notes (q=Strupey)",
+        "note": "token occurs only in meta.query/meta.filters; searchProjects matchMode 'corrected' -> Stroopy.AI; getBuilders counts.total=0; semantic/AV caveat unverified-match",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/people?q=strupey; /api/builders?q=strupey; /api/projects/search?q=strupey; /api/repos/search?q=strupey (direct GET)",
+        "note": "people counts.total 0; builders counts.total 0; projects and repos matchMode 'corrected': 'the query token does not occur in these rows'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://api.lumenloop.com/v1/tools/search_content_semantic and /search_directory (direct POST, query Strupey)",
+        "note": "semantic: 0 token occurrences, '_weak_match': true, '_top_similarity': 0.259; directory: 'No exact substring match for \"Strupey\"'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/search/users?q=strupey%20in%3Alogin ; https://api.github.com/search/repositories?q=strupey",
+        "note": "total_count 0 ; total_count 0",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Parallel web_search + Perplexity perplexity_search ('Strupey Stellar')",
+        "note": "only non-Stellar uses: X handle @Strupey (Joe Strupek), Flickr photo credit, Valorant forum user; no Stellar identity",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.prnewsonline.com/how-state-farm-uses-social-listening-to-humanize-their-brand/ (Perplexity)",
+        "note": "\"Joe Strupek, assistant vice president of public affairs at State Farm Insurance ... Connect with Joe: @Strupey\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/community/socialclub",
+        "note": "\"(Stroopy does give Groot a run for his money.)\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar-deprecated/solar-stellarorg README",
+        "note": "\"small sprites used globally throughout the Stellarorg brand, such as the Stellar rocket or stroopy and friends\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/changelog (2026-08-27 entry, sls-076)",
+        "note": "\"strupey is a real misspelling of the former mascot with 17 asks in 30 days, and routing it to the right row is the point\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/lumenloop/lumenloop-backend/issues/36",
+        "note": "state open; title 'll-017: Add explicit exact-match provenance to named-person semantic and AV search'; updated 2026-07-13",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Lumenloop search_content_semantic direct POST",
+        "note": "returns '_weak_match' and '_hint' but no per-row exact-match relation",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -113,23 +227,94 @@
             "ref": "Claude Code WebSearch query '\"Strupey\" Stellar'",
             "observedAt": "2026-10-06",
             "note": "General-web sweep returned only Otto Struve astronomy and stroop results; no Stellar identity for Strupey."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/people?q=strupey ; /api/builders?q=strupey ; /api/repos/search?q=strupey",
+            "observedAt": "2026-11-02",
+            "note": "people counts.returned 0; builders 0; repos matchMode corrected, no row contains the token."
+          },
+          {
+            "class": "C",
+            "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'strupey'}",
+            "observedAt": "2026-11-02",
+            "note": "match_mode semantic; No exact substring match for \"strupey\"."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/search/users?q=strupey%20in%3Alogin ; https://api.github.com/search/repositories?q=strupey",
+            "observedAt": "2026-11-02",
+            "note": "total_count 0 ; total_count 0."
+          },
+          {
+            "class": "D",
+            "ref": "Parallel web_search + Perplexity perplexity_search ('Strupey Stellar')",
+            "observedAt": "2026-11-02",
+            "note": "only non-Stellar uses (Joe Strupek X handle, Flickr credit, Valorant forum user); no Stellar identity."
+          }
+        ]
+      },
+      {
+        "claim": "Stroopy is a historical Stellar mascot name, and Stellar Light's projects search spell-corrects 'strupey' to the Stroopy.AI row with a verify-identity label (grader caution in golden.notes).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/StellarCN/stellar-docs/master/guides/concepts/assets.md",
+            "observedAt": "2026-11-02",
+            "note": "Fun fact: this term is derived from Stroopy, the name of the Stellar mascot whose name is derived from stroopwafels. (legacy docs mirror)"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar-deprecated/solar-stellarorg/master/README.md",
+            "observedAt": "2026-11-02",
+            "note": "small sprites used globally throughout the Stellarorg brand, such as the Stellar rocket or [stroopy and friends]"
+          },
+          {
+            "class": "D",
+            "ref": "Perplexity perplexity_search 'Stroopy Stellar mascot character'",
+            "observedAt": "2026-11-02",
+            "note": "the name \"stroop\" is inspired by Stroopy, the mascot of Stellar"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=strupey&limit=5",
+            "observedAt": "2026-11-02",
+            "note": "matchMode corrected; the query token does not occur in these rows; verify the identity before relying on it; row Stroopy.AI (stroopyai)."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-10-06",
-      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-03)",
       "evidence": [
-        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md. The dated non-verification still holds.",
-        "Live C 2026-10-06: Stellar Raven connector probe across Stellar Docs, LumenLoop semantic, Scout research, and Scout projects returned no exact-token Strupey row; Scout projects spell-corrected to Stroopy.AI.",
-        "Live C 2026-10-06: https://stellarlight.xyz/api/people?q=strupey, /api/builders?q=Strupey return 0; /api/repos/search?q=strupey labels 'strict' but no returned row contains the token.",
-        "Live B 2026-10-06: GitHub user-login and repository searches for strupey return total_count=0.",
-        "Live D 2026-10-06: general-web sweep for \"Strupey\" Stellar found no Stellar identity.",
-        "Improvement status 2026-10-06: improvements/lumenloop/ll-017-semantic-person-match-provenance.md is still reported-upstream, so the grader caution stays.",
-        "Sibling sweep 2026-10-06: grep Strupey → q-edge-closed-world-builder-directory-miss, q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-lumenloop-person-entity-empty, q-builder-justin-rice-history, q-scf-resolve-passport-superseded-slug; no contradiction."
+        "Gospel change 2026-11-02: golden.notes adds a symmetric caution that offering Stroopy or Stroopy.AI only as a candidate spelling is acceptable clarification; asserting either as Strupey's identity stays punished. Verifier decision: modify. The dated non-verification still holds.",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/projects/search?q=strupey&limit=5 — \"matchMode: corrected; matchModeLabel: matched via a known spelling correction: the query token does not occur in these rows; verify the identity before relying on it; row name: Stroopy.AI, slug: stroopyai\"",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/people?q=strupey ; /api/builders?q=strupey ; /api/repos/search?q=strupey — \"people counts.returned 0; builders counts.returned 0; repos matchMode corrected (rows freighter, confidential-agent-commerce, ...; none contain the token)\"",
+        "Live C 2026-11-02: POST https://api.lumenloop.com/v1/tools/search_directory {query:'strupey'} — \"match_mode: semantic; No exact substring match for \"strupey\" — substring matching only, so showing the closest projects by meaning. (rows: plutope, verso, soropg, depay, steepx)\"",
+        "Live E 2026-11-02: Stellar Raven execute stellarDocs.search_docs('Strupey') and ('stroop Stroopy mascot stroopwafels') — \"Strupey: 5 hits, none contain the token. Stroopy query: only CLI 'stroops' fee hits; no current page carries the mascot line.\"",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/StellarCN/stellar-docs/master/guides/concepts/assets.md — \"Fun fact: this term is derived from Stroopy, the name of the Stellar mascot whose name is derived from stroopwafels.\"",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar-deprecated/solar-stellarorg/master/README.md — \"small sprites used globally throughout the Stellarorg brand, such as the Stellar rocket or [stroopy and friends]\"",
+        "Live D 2026-11-02: Perplexity perplexity_search 'Stroopy Stellar mascot character' -> https://www.reddit.com/r/Stellar/comments/7t7w67/ ; https://www.linkedin.com/pulse/cryptocurrency-base-units-tara-annison — \"the name \"stroop\" is inspired by Stroopy, the mascot of Stellar, which itself takes its name from a popular Dutch treat called stroopwafels.\"",
+        "Live D 2026-11-02: https://stroopy.ai/ (via Parallel web_search 'Stroopy.AI Stellar') — \"Stroopy is a community-built project and is not an official Stellar Development Foundation product.\"",
+        "Live C 2026-11-02 (proposer): Stellar Raven MCP execute (production connector): scout.searchResearch, scout.searchProjects, scout.getBuilders, lumenloop.search_content_semantic, lumenloop.find_av_passages, stellarDocs.search_docs, stellarDocs.search_meeting_notes (q=Strupey) — \"token occurs only in meta.query/meta.filters; searchProjects matchMode 'corrected' -> Stroopy.AI; getBuilders counts.total=0; semantic/AV caveat unverified-match\"",
+        "Live C 2026-11-02 (proposer): https://stellarlight.xyz/api/people?q=strupey; /api/builders?q=strupey; /api/projects/search?q=strupey; /api/repos/search?q=strupey (direct GET) — \"people counts.total 0; builders counts.total 0; projects and repos matchMode 'corrected': 'the query token does not occur in these rows'\"",
+        "Live C 2026-11-02 (proposer): https://api.lumenloop.com/v1/tools/search_content_semantic and /search_directory (direct POST, query Strupey) — \"semantic: 0 token occurrences, '_weak_match': true, '_top_similarity': 0.259; directory: 'No exact substring match for \"Strupey\"'\"",
+        "Live B 2026-11-02 (proposer): https://api.github.com/search/users?q=strupey%20in%3Alogin ; https://api.github.com/search/repositories?q=strupey — \"total_count 0 ; total_count 0\"",
+        "Live D 2026-11-02 (proposer): Parallel web_search + Perplexity perplexity_search ('Strupey Stellar') — \"only non-Stellar uses: X handle @Strupey (Joe Strupek), Flickr photo credit, Valorant forum user; no Stellar identity\"",
+        "Live D 2026-11-02 (proposer): https://x.com/Strupey — \"\"Joe Strupek @Strupey Historian, writer, reader, fisherman, husband, father, grandfather. Retired PR pro. ... Bloomington, IL\"\"",
+        "Live D 2026-11-02 (proposer): https://www.prnewsonline.com/how-state-farm-uses-social-listening-to-humanize-their-brand/ (Perplexity) — \"\"Joe Strupek, assistant vice president of public affairs at State Farm Insurance ... Connect with Joe: @Strupey\"\"",
+        "Live A 2026-11-02 (proposer): https://stellar.org/community/socialclub — \"\"(Stroopy does give Groot a run for his money.)\"\"",
+        "Live B 2026-11-02 (proposer): https://github.com/stellar-deprecated/solar-stellarorg README — \"\"small sprites used globally throughout the Stellarorg brand, such as the Stellar rocket or stroopy and friends\"\"",
+        "Live C 2026-11-02 (proposer): https://stellarlight.xyz/api/changelog (2026-08-27 entry, sls-076) — \"\"strupey is a real misspelling of the former mascot with 17 asks in 30 days, and routing it to the right row is the point\"\"",
+        "Live B 2026-11-02 (proposer): https://github.com/lumenloop/lumenloop-backend/issues/36 — \"state open; title 'll-017: Add explicit exact-match provenance to named-person semantic and AV search'; updated 2026-07-13\"",
+        "Live C 2026-11-02 (proposer): Lumenloop search_content_semantic direct POST — \"returns '_weak_match' and '_hint' but no per-row exact-match relation\"",
+        "Improvement status 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/36 (ll-017) still open, so the LumenLoop grader caution stays.",
+        "Sibling sweep 2026-11-02: grep Stroopy/Strupey -> only this case names Stroopy; q-edge-closed-world-builder-directory-miss, q-edge-open-world-recovery-after-narrow-miss, q-edge-lumenloop-person-entity-empty, q-gap-semantic-directory-fallback, q-scf-resolve-passport-superseded-slug checked; no contradiction."
       ],
       "rootCause": [
+        "eval-authoring: the golden named only unrelated neighbors (Joe Strupek, Justin Rice) and did not anticipate the real Stroopy spelling neighbor that Stellar Light deliberately routes 'strupey' to (stellarlight.xyz/api/changelog sls-076, 2026-08-27); recorded in .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-03.",
         "improvements/lumenloop/ll-017-semantic-person-match-provenance.md"
       ]
     },

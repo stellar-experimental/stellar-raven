@@ -1,0 +1,1567 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "protocol-core-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-pc-memos-reference",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Memo is transaction-level; one per classic transaction; MEMO_TEXT 28 bytes, MEMO_ID uint64, MEMO_HASH/MEMO_RETURN 32 bytes",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs('memo types MEMO_TEXT 28 bytes MEMO_ID MEMO_HASH MEMO_RETURN') -> https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#memo",
+       "observedAt": "2026-11-02",
+       "quote": "Memos are an optional unstructured data field that can be used to embed any additional identifying information about the transaction"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md",
+       "observedAt": "2026-08-29",
+       "quote": "prior 2026-08-29 re-check retained: fee-bump structure places the memo only in the inner transaction"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "On current Protocol 27, InvokeHostFunction must use MEMO_NONE",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65269898 closed 2026-11-02T16:01:14Z"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. .…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp (master as of commit dbe95a705e, 2026-10-14)",
+       "observedAt": "2026-11-02",
+       "quote": "if (protocolVersionStartsFrom(ledgerVersion, ProtocolVersion::V_25)) { if (!validateSorobanMemo()) { ... \"Soroban transactions are not allowed to use memo or mu…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "States the current InvokeHostFunction MEMO_NONE restriction",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp (master as of commit dbe95a705e, 2026-10-14)",
+       "observedAt": "2026-11-02",
+       "quote": "if (protocolVersionStartsFrom(ledgerVersion, ProtocolVersion::V_25)) { if (!validateSorobanMemo()) { ... \"Soroban transactions are not allowed to use memo or mu…"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65269898 closed 2026-11-02T16:01:14Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Multiple memos / memo as account or op field / Soroban InvokeHostFunction accepts memo are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp (master as of commit dbe95a705e, 2026-10-14)",
+       "observedAt": "2026-11-02",
+       "quote": "if (protocolVersionStartsFrom(ledgerVersion, ProtocolVersion::V_25)) { if (!validateSorobanMemo()) { ... \"Soroban transactions are not allowed to use memo or mu…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A Stellar memo is optional **transaction-level** metadata; a classic transaction carries at most one. Types are `MEMO_TEXT` (UTF-8, up to 28 bytes), `MEMO_ID` (uint64), `MEMO_HASH` (32 bytes), and `MEMO_RETURN` (32-byte refund-reference hash). Exchanges/anchors/custodians use it to map deposits to customers sharing one pooled G-account; copy the service's value exactly because matching/case policy is application-defined. Ordinary classic transactions may carry the memo. A fee-bump outer envelope has no second memo—the memo, if any, is inside the inner transaction. As of 2026-11-02 (Mainnet Pro…",
+     "reason": "The answer names Protocol 27 as current; Mainnet runs Protocol 29 since 2026-10-01. The MEMO_NONE rule is unchanged in Core master, so only the protocol label is re-dated."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-pc-muxed-accounts; q-edge-fresh-latest-protocol-version"
+  },
+  {
+   "id": "q-pc-multisig-setup-lifecycle",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SetOptions manages signers/master weight/thresholds under high threshold; master weight 0 lockout risk; 2-of-3 needs three effective authorities",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs('multisig set options master weight thresholds lock account') -> https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig#thresholds",
+       "observedAt": "2026-11-02",
+       "quote": "Each operation falls under a specific threshold category: low, medium, or high with a number level between 0-255 ... Accounts can set their own signature weight…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#set-options",
+       "observedAt": "2026-08-27",
+       "quote": "prior 2026-08-27 live re-check retained: SetOptions manages signer addition, removal, weights, and thresholds"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-accounts-signers-thresholds"
+  },
+  {
+   "id": "q-pc-muxed-accounts",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Supported M positions: tx/op source, fee-bump fee source, Payment/path-payment destinations, AccountMerge destination, Clawback from",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos#supported-operations",
+       "observedAt": "2026-11-02",
+       "quote": "The source account of any operation or transaction; The fee source of a fee-bump transaction; The destination of all three types of payments ... The destination…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0027.md",
+       "observedAt": "2026-08-27",
+       "quote": "prior 2026-08-27 re-check retained"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Current InvokeHostFunction transactions reject muxed tx/op sources",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp (master as of commit dbe95a705e, 2026-10-14)",
+       "observedAt": "2026-11-02",
+       "quote": "if (protocolVersionStartsFrom(ledgerVersion, ProtocolVersion::V_25)) { if (!validateSorobanMemo()) { ... \"Soroban transactions are not allowed to use memo or mu…"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65269898 closed 2026-11-02T16:01:14Z"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-pc-memos-reference"
+  },
+  {
+   "id": "q-pc-practical-fee-setting",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "100 stroops per-op floor; fee is a max bid; surge pricing",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-11-02",
+       "quote": "This cannot be lower than 100 stroops per operation (the network minimum) ... When network traffic exceeds the ledger limit, the network enters into surge prici…"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/fee_stats and RPC getFeeStats on https://mainnet.sorobanrpc.com",
+       "observedAt": "2026-11-02",
+       "quote": "last_ledger_base_fee 100 (ledger 65269952); getFeeStats inclusionFee min 100 p50 100"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "RPC getFeeStats, CLI stellar fees stats, and Horizon /fee_stats are live estimators",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar fees --help (stellar 28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "Commands: stats  Fetch the feestats from the network"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/fee_stats",
+       "observedAt": "2026-11-02",
+       "quote": "returns fee_charged/max_fee percentiles"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-09-08 live Docs describe Horizon as nearing end-of-life",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment",
+       "observedAt": "2026-11-02",
+       "quote": "networking layer API for Stellar RPC methods as well as the Horizon API (nearing end-of-life)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-pc-sequence-numbers-ordering-replace"
+  },
+  {
+   "id": "q-pc-protocol-26-yardstick",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Protocol 26 Yardstick went live on Mainnet on May 6, 2026",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
+       "observedAt": "2026-11-02",
+       "quote": "Yardstick went live on mainnet on May 6, 2026 following the validator vote. (CAPs described: 0077, 0082, 0078, 0080, 0073, 0079 only)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions (source docs/networks/software-versions.mdx @700ed32d0b)",
+       "observedAt": "2026-11-02",
+       "quote": "New features in Yardstick, Protocol 26: ... CAP-77 ... CAP-73 ... CAP-78 ... CAP-79 ... CAP-80 ... CAP-82 (no CAP-81 in any revision since 2026-05-01)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "P26 comprises CAP-0073, 0077, 0078, 0079, 0080, 0081, 0082",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
+       "observedAt": "2026-11-02",
+       "quote": "Yardstick went live on mainnet on May 6, 2026 following the validator vote. (CAPs described: 0077, 0082, 0078, 0080, 0073, 0079 only)"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "May 6, 2026, 1700 UTC: Mainnet upgrade vote. (What's New lists CAP-0077, 0082, 0078, 0080, 0073, 0079 only)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions (source docs/networks/software-versions.mdx @700ed32d0b)",
+       "observedAt": "2026-11-02",
+       "quote": "New features in Yardstick, Protocol 26: ... CAP-77 ... CAP-73 ... CAP-78 ... CAP-79 ... CAP-80 ... CAP-82 (no CAP-81 in any revision since 2026-05-01)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0081.md + core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-0081 preamble: Status: Accepted / Protocol version: TBD (changed from 26 by commit 65e2b6262c 'Flip CAP-81 protocol version to TBD (#2009)', 2026-08-31). RE…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/releases/tag/v26.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "Release notes name 'Fix core for CAP-0073' and 'Implement CAP-77'; no CAP-81 or eviction-ordering entry"
+      },
+      {
+       "class": "D",
+       "ref": "https://nansen.ai/post/stellar-q2-2026-report (2026-10-28)",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 26 'Yardstick' ... introduced six core enhancements ... CAP-77 ... CAP-82 ... CAP-78 ... CAP-80 ... CAP-73 ... CAP-79"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "CAP-0080 extends BN254 in P26; BN254/Poseidon primitives in P25",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| CAP-0074 | 25 | Host functions for BN254 | ... | CAP-0075 | 25 | Cryptographic Primitives for Poseidon/Poseidon2 ... | CAP-0080 | 26 | Host functions for effi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
+       "observedAt": "2026-11-02",
+       "quote": "Yardstick went live on mainnet on May 6, 2026 following the validator vote. (CAPs described: 0077, 0082, 0078, 0080, 0073, 0079 only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "CAP registry labels are not substitutes for dated network-activation source",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0081.md + core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-0081 preamble: Status: Accepted / Protocol version: TBD (changed from 26 by commit 65e2b6262c 'Flip CAP-81 protocol version to TBD (#2009)', 2026-08-31). RE…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Protocol 26, Yardstick, went live on Stellar Mainnet on May 6, 2026 after the validator vote. Its included changes were CAP-0073 (SAC management of G-account balances), CAP-0077 (validator-governed freezing of ledger entries through network configuration), CAP-0078 (bounded TTL-extension host functions), CAP-0079 (muxed-address StrKey conversions), CAP-0080 (additional efficient BN254/ZK host functions), and CAP-0082 (checked 256-bit integer arithmetic). CAP-0081 (TTL-ordered eviction) did not ship in Yardstick; as of 2026-11-02 its CAP preamble lists the protocol version as TBD. Do not collap…",
+     "reason": "CAP-0081 is not a Protocol 26 change per three official SDF/Docs pages, Core v26.0.0 notes, and the CAP registry."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Names CAP-0073, 0077, 0078, 0079, 0080, and 0082 with materially correct roles.",
+     "reason": "Same contradiction; the keyFact gated a false seven-CAP list."
+    },
+    {
+     "field": "golden.avoid[+]",
+     "op": "append",
+     "new": "Do NOT list CAP-0081 TTL-ordered eviction as a Protocol 26 change.",
+     "reason": "Documents the corrected trap; punishes a claim that is false per A+B+D."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "CORRECTION 2026-11-02: Yardstick shipped six CAPs. The SDF Yardstick post and upgrade guide, the Software Versions page, and the CAP registry omit CAP-0081 from Protocol 26; stellar-protocol PR #2009 (2026-08-31) set its protocol version to TBD.",
+     "reason": "Grader context for the correction."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: the CAP inventory used a CAP preamble's target protocol (CAP-0081 'Protocol version: 26', flipped to TBD 2026-08-31) instead of the SDF release list"
+   ],
+   "siblings": "q-zk-host-functions-status; q-protocol-version-history-list; q-sor-contract-trustlines-c-address; q-sor-cross-warmancer-zk-stack"
+  },
+  {
+   "id": "q-pc-protocol-27-zipper",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "P27 Mainnet vote and official Mainnet date July 8, 2026",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. .…"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/ledgers/63386819",
+       "observedAt": "2026-08-30",
+       "quote": "prior 2026-08-30 observation retained: closed 2026-07-08T17:00:10Z protocol_version 27"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Horizon showed 27 on 2026-08-30 with core supporting 28; P28 not live at that check",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/ledgers/64458446 (and 64458445)",
+       "observedAt": "2026-11-02",
+       "quote": "64458445 protocol_version 27 closed 2026-09-16T17:00:01Z; 64458446 protocol_version 28 closed 2026-09-16T17:00:06Z"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65269898 closed 2026-11-02T16:01:14Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "CAP-0071-01 delegation; CAP-0071-02 SOROBAN_CREDENTIALS_ADDRESS_V2; old type deprecation 'Protocol 28 or later'",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md",
+       "observedAt": "2026-11-02",
+       "quote": "in the future protocol (28 or later) we may want to consider deprecating the old credential type"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "The original SOROBAN_CREDENTIALS_ADDRESS still works and has no deprecation date, but a future protocol may retire it."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[2]",
+     "claim": "CAP-0072 is not a P27 change",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [CAP-0072](cap-0072.md) | Contract signers for Stellar accounts | Dmytro Kozhevin | Draft |"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-27-cap-0071; q-soroban-auth-delegation-p27; q-protocol-version-history-list; q-edge-fresh-latest-protocol-version"
+  },
+  {
+   "id": "q-pc-protocol-upgrade-timing",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "P27 activated 2026-07-08 at ledger 63386819",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. .…"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/ledgers/63386819",
+       "observedAt": "2026-07-08",
+       "quote": "prior observation retained: P26 at 63386818 17:00:05Z then P27 at 17:00:10Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer(new)",
+     "claim": "P28 Adapter activated 2026-09-16 at ledger 64458446; P29 activated 2026-10-01 at ledger 64717645 with no new CAPs",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. .…"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/ledgers/64458446 (and 64458445)",
+       "observedAt": "2026-11-02",
+       "quote": "64458445 protocol_version 27 closed 2026-09-16T17:00:01Z; 64458446 protocol_version 28 closed 2026-09-16T17:00:06Z"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/ledgers/64717645 (and 64717644)",
+       "observedAt": "2026-11-02",
+       "quote": "64717644 protocol_version 28 closed 2026-10-01T17:00:02Z; 64717645 protocol_version 29 closed 2026-10-01T17:00:07Z"
+      },
+      {
+       "class": "A",
+       "ref": "https://status.stellar.org/incidents/b0j6rd8gtsvb",
+       "observedAt": "2026-11-02",
+       "quote": "Mainnet Adapter, Protocol 28 Upgrade Vote ... The scheduled maintenance has been completed. Posted Sep 16, 2026 - 17:05 UTC"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65269898 closed 2026-11-02T16:01:14Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer(new)",
+     "claim": "Next upgrade P30 Bell: Testnet vote 2026-11-03 17:00 UTC, Mainnet vote 2026-11-23 17:00 UTC; SDK upgrade before each; not optional",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote. ... For your Testnet integration, upgrade before November 3, …"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026. ... Dates are subject to change"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| CAP-0084 | 30 | ... | Implemented | CAP-0087 | 30 | ... | Implemented | CAP-0088 | 30 | ... | Implemented"
+      },
+      {
+       "class": "D",
+       "ref": "https://coinburn.com/news/stellar-protocol-30-ledger-decoder-upgrade (2026-10-20); https://www.coingabbar.com/en/stellar-news-today-protocol-30-sdk-upgrade-deadline-xlm (2026-10-24)",
+       "observedAt": "2026-11-02",
+       "quote": "The foundation has scheduled a testnet upgrade vote for November 3 at 17:00 UTC and a mainnet vote for November 23 at 17:00 UTC. Those dates describe planned vo…"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65269898 closed 2026-11-02T16:01:14Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Activation depends on validator network-upgrade voting",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs('network upgrades validators vote') -> https://developers.stellar.org/docs/validators/admin-guide/network-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "This is performed by validators voting for and agreeing to new values the same way that consensus is reached for transaction sets"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "The upgrade takes effect if they approve."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Completed P27 vote is not the next upgrade",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65269898 closed 2026-11-02T16:01:14Z"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. .…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\nProtocol-upgrade timing must come from a dated primary source. Earlier schedules are now historical: **Protocol 27 (Zipper)** activated at ledger **63386819** on 2026-07-08, **Protocol 28 (Adapter)** at ledger **64458446** on 2026-09-16, and **Protocol 29** (a security release with no new CAPs) at ledger **64717645** on 2026-1…",
+     "reason": "The observed example presented the P27 vote as the latest dated schedule; P28 and P29 have since activated and P30 Bell votes and SDK deadlines are published."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT present a completed vote (Protocol 27 on 2026-07-08, 28 on 2026-09-16, 29 on 2026-10-01) as the next upgrade.",
+     "reason": "Extends the completed-vote trap to P28 and P29; every listed vote is a verified past activation."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "UPDATE 2026-11-02 (freshness-drift): Mainnet Horizon reports current_protocol_version 29 with Core supporting 30. The Bell (P30) guide schedules Testnet and Mainnet votes for 2026-11-03 and 2026-11-23. After those dates, accept a dated live-network report of P30 activation or a sourced reschedule.",
+     "reason": "Grader context for the new dated example and the date-contingent schedule."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-edge-fresh-latest-protocol-version; q-protocol-version-history-list; q-pc-protocol-27-zipper; q-protocol-ledger-close-time"
+  },
+  {
+   "id": "q-pc-quantum-preparedness-dormant",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "QPP: Ed25519 breakable by sufficiently powerful QC; two threats; Stage 1 2026 Soroban PQ verification; Stage 2 2027 classic signers; Stage 3 threat-dependent",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+       "observedAt": "2026-11-02",
+       "quote": "Stage 1—Building blocks and contract accounts (2026). Add post-quantum signature verification to Soroban as native host functions, supporting ML-DSA-44 and ML-D…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tradingview.com/news/u_today:15563fb54094b:0-stellar-advances-quantum-plans-with-bell-upgrade-potential-scenarios-for-xlm-price/ (2026-10-21)",
+       "observedAt": "2026-11-02",
+       "quote": "By the end of 2027, every Stellar account is expected to be able to add a quantum-safe signer through a native protocol upgrade"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer(new)",
+     "claim": "CAP-0087 ML-DSA host functions Implemented for P30 Bell; Mainnet vote 2026-11-23; network signatures remain Ed25519",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Implemented ... Protocol version: 30 ... three host functions for verifying ML-DSA signatures ... ML-DSA-44, ML-DSA-65 and ML-DSA-87"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "This is the first onchain piece of Stellar's Quantum Preparedness Plan ... Does Bell make Stellar post-quantum? No. ... Network transaction signatures remain Ed…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.binance.com/en/square/post/380427248199204 (2026-10-23)",
+       "observedAt": "2026-11-02",
+       "quote": "The upgrade does NOT immediately make all Stellar transactions quantum resistant"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "No QPP or CAP source defines a final mechanical dormant-account eligibility rule (negative)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar has a large population of dormant accounts whose holders are unreachable. Any forced cutoff requires freezing these accounts and must choose between pro…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/tree/master/core (cap-0084..cap-0090 read; code search 'dormant')",
+       "observedAt": "2026-11-02",
+       "quote": "Only core/cap-0065.md and core/cap-0046-05.md contain 'dormant' (ledger-entry sense); CAP-0089/0090 (Draft, Protocol 31) are auth host functions; no Stage 2 cla…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 'Stellar dormant accounts quantum community discussion criteria freeze recovery 2026' (month filter)",
+       "observedAt": "2026-11-02",
+       "quote": "All results (TradingView/U.Today, KuCoin, Coin-Turk, Bitkub, 2026-10-21) repeat the QPP's qualitative dormant description; none publishes an eligibility rule"
+      },
+      {
+       "class": "B",
+       "ref": "GitHub GraphQL discussion search 'repo:stellar/stellar-protocol dormant' and 'org:stellar quantum dormant'",
+       "observedAt": "2026-11-02",
+       "quote": "zero discussions returned"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Stellar is not fully quantum-resistant today",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Does Bell make Stellar post-quantum? No."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\nNo, a normal Stellar account should not be described as \"quantum-resistant today\" without caveat. SDF's Quantum Preparedness Plan says sufficiently powerful quantum computers would break elliptic-curve cryptography, including Stellar's Ed25519, and identifies two threat classes: validator/SCP signature integrity and account ta…",
+     "reason": "Re-dates the volatile observation and the negative dormant-account claim to the 2026-11-02 re-check, and adds the dated CAP-0087/Bell status for the Stage 1 plan."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "UPDATE 2026-11-02: the dormant-account negative claim was re-checked against the QPP page, CAPs through cap-0090, and a dated web sweep; no eligibility rule exists. CAP-0087 is scheduled with Bell; accept a dated report that it activated after 2026-11-23.",
+     "reason": "Grader context for the date-contingent Bell activation."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-hist-quantum-preparedness-plan; q-zk-host-functions-status"
+  },
+  {
+   "id": "q-pc-sequence-numbers-ordering-replace",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Fee-bump replacement in the queue requires at least 10x fee bid",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-11-02",
+       "quote": "the second transaction will be included in the transaction queue, replacing the first transaction if and only if the fee bid of the second transaction is at lea…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md",
+       "observedAt": "2026-08-27",
+       "quote": "prior 2026-08-27 re-check retained: same-source/sequence fee-bump replacement in the queue"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "CAP-0021 minSeqNum permits minSeqNum <= current < tx.seqNum",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md",
+       "observedAt": "2026-08-27",
+       "quote": "prior 2026-08-27 re-check retained"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+       "observedAt": "2026-08-27",
+       "quote": "prior 2026-08-27 re-check retained"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-accounts-signers-thresholds; q-ti-channel-accounts-throughput"
+  },
+  {
+   "id": "q-pc-slp-0004-0006-status",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "As of July 11, 2026: SLP-0004 Final, SLP-0006 Draft (document status)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/commits/master/limits/slp-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "86d54d5af5 2026-05-07 'SLP-0006: Freeze YieldBlox Exploit Stellar Accounts (#1929)' then 1ae3923305 2026-10-22 'Update CAP and SLP statuses (#2046)' with -Statu…"
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md via perplexity_search",
+       "observedAt": "2026-11-02",
+       "quote": "stale index copy still shows Status: Draft"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "SLP-0004: instructions 100M->400M, write entries 50->200, footprint 100->200, ~4x non-refundable fee cut",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md",
+       "observedAt": "2026-11-02",
+       "quote": "| Write Entries | 50 | 200 | ... | Instructions/threads | 100'000'000 | 400'000'000 | ... footprint size increase from 100 to 200 entries is proposed ... lower …"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "SLP-0006 uses CAP-0077 network config to freeze 3 already overlay-blocked accounts",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "This proposal freezes three account entries using the frozen ledger key mechanism defined in CAP-0077. These accounts are currently blocked by validators at the…"
+      },
+      {
+       "class": "C",
+       "ref": "RPC getLedgerEntries key AAAACAAAABE= (CONFIG_SETTING frozen_ledger_keys) on https://mainnet.sorobanrpc.com",
+       "observedAt": "2026-11-02",
+       "quote": "frozen_ledger_keys.keys: [..26382ffe..(GATD), ..5dfad17a..(GBO7), ..92e7ca0d..(GCJO)], lastModifiedLedgerSeq 63073409, latestLedger 65269922"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1] / golden.answer last sentence",
+     "claim": "SLP-0006's freeze was not approved or applied as of July 11, 2026 (implied)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://aws-public-blockchain.s3.us-east-2.amazonaws.com/v1.1/stellar/ledgers/pubnet/FC3E15FF--63040000-63103999/FC3D937E--63073409.xdr.zst decoded with stellar xdr decode --type LedgerCloseMetaBatch",
+       "observedAt": "2026-11-02",
+       "quote": "upgrades_processing: config upgrade (content_hash b86b5428...) changes frozen_ledger_keys from state {keys: []} (last_modified 62447231) to updated {keys: [3 SL…"
+      },
+      {
+       "class": "C",
+       "ref": "RPC getLedgerEntries key AAAACAAAABE= (CONFIG_SETTING frozen_ledger_keys) on https://mainnet.sorobanrpc.com",
+       "observedAt": "2026-11-02",
+       "quote": "frozen_ledger_keys.keys: [..26382ffe..(GATD), ..5dfad17a..(GBO7), ..92e7ca0d..(GCJO)], lastModifiedLedgerSeq 63073409, latestLedger 65269922"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/ledgers/63073409",
+       "observedAt": "2026-11-02",
+       "quote": "closed_at 2026-06-17T17:00:08Z, protocol_version 26"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask 'when were the three YieldBlox exploit accounts frozen through a CAP-0077 network configuration upgrade' (high context)",
+       "observedAt": "2026-11-02",
+       "quote": "The available dated source does not establish that the accounts were actually frozen on a particular date (web is silent; no contradiction)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As of July 11, 2026, SLP-0004 was Final. It raised Soroban limits including per-transaction instructions from 100 million to 400 million, write entries from 50 to 200, and footprint size from 100 to 200 entries; it also proposed roughly fourfold reductions for most non-refundable resource fees. SLP-0006 was still Draft. It proposes moving the existing overlay-layer block on three accounts associated with the February 22 YieldBlox V2 exploit into network configuration using CAP-0077. SLPs are Stellar Limits Proposals, not CAPs or SEPs. The Draft label described the document, not the network: Ma…",
+     "reason": "Ledger meta shows the SLP-0006 freeze applied on 2026-06-17, before the question date; the golden implied it was not."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "replace",
+     "new": "Do NOT say SLP-0006 was Final on July 11, 2026, or infer from its Draft label that the freeze was not applied.",
+     "reason": "The old trap punished the true claim that the freeze was applied by July 11, 2026."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "CORRECTION 2026-11-02: SLP-0006 stayed Draft until 2026-10-22, but Mainnet applied its frozen_ledger_keys upgrade at ledger 63073409 on 2026-06-17. Grade document status and network application separately; accept the current Final status if the answer keeps the July 11 Draft status.",
+     "reason": "Grader context separating document status from network state."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: network application state was inferred from the SLP document's Draft label instead of the live frozen_ledger_keys config setting"
+   ],
+   "siblings": "q-hist-yieldblox-v2-2026-exploit; q-comp-yieldblox-oracle-incident"
+  }
+ ],
+ "verifier": {
+  "by": "independent re-derivation 2026-11-02; proposer matrix not read",
+  "decisions": [
+   {
+    "id": "q-pc-memos-reference",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "'On current Protocol 27' is stale; Mainnet is P29. Core master (v30) still enforces MEMO_NONE for InvokeHostFunction and Bell CAP-84 does not relax it, so the dated phrasing stays true through P30.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "TransactionFrame::validateSorobanMemo ... if (op.body.type() != INVOKE_HOST_FUNCTION) return true; if (getMemo().type() != MemoType::MEMO_NONE || ...) return fa…"
+     },
+     {
+      "class": "E",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction#xdr-usage",
+      "observedAt": "2026-11-02",
+      "quote": "The transaction cannot include a memo — the memo must be set to MEMO_NONE."
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0084 Muxed Contract Addresses, Protocol version: 30; no change to the InvokeHostFunction memo rule (memo-derived to_muxed_id rules do not apply to muxed con…"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "CAP-0081 never shipped in P26: classes A (blog, guide, Software Versions), B (CAP preamble TBD, PR #2009, registry) and D agree. New keyFact is 78 chars. The avoid targets a false claim and is judge-visible. Follow-up: the truth evidence line 'seven CAP roles' (2026-08-31) is wrong and should be corrected in the same diff.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
+      "observedAt": "2026-11-02",
+      "quote": "Yardstick went live on mainnet on May 6, 2026 ... CAP mentions in page HTML: 73, 77, 78, 79, 80, 82; no CAP-0081 and no 'eviction' text"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "CAP mentions in page HTML: 73, 77, 78, 79, 80, 82; no CAP-0081 and no 'eviction' text"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/software-versions.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 26 (Mainnet, May 6, 2026) ... New features in Yardstick, Protocol 26: CAP-77, CAP-73, ... (no CAP-81 in the whole page)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP: 0081 Title: TTL-Ordered Eviction ... Status: Accepted ... Protocol version: TBD"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/pull/2009",
+      "observedAt": "2026-11-02",
+      "quote": "Flip CAP-81 protocol version to TBD (merged 2026-08-31T23:57:01Z); patch: -Protocol version: 26 +Protocol version: TBD"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| [CAP-0081](cap-0081.md) | TBD | TTL-Ordered Eviction | Garand Tyson | Accepted |"
+     },
+     {
+      "class": "D",
+      "ref": "https://nansen.ai/post/stellar-q2-2026-report",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 26 \"Yardstick,\" which went live on mainnet on May 6 ... introduced six core enhancements"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "See golden.answer decision.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
+      "observedAt": "2026-11-02",
+      "quote": "Yardstick went live on mainnet on May 6, 2026 ... CAP mentions in page HTML: 73, 77, 78, 79, 80, 82; no CAP-0081 and no 'eviction' text"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "CAP mentions in page HTML: 73, 77, 78, 79, 80, 82; no CAP-0081 and no 'eviction' text"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/software-versions.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 26 (Mainnet, May 6, 2026) ... New features in Yardstick, Protocol 26: CAP-77, CAP-73, ... (no CAP-81 in the whole page)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP: 0081 Title: TTL-Ordered Eviction ... Status: Accepted ... Protocol version: TBD"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/pull/2009",
+      "observedAt": "2026-11-02",
+      "quote": "Flip CAP-81 protocol version to TBD (merged 2026-08-31T23:57:01Z); patch: -Protocol version: 26 +Protocol version: TBD"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| [CAP-0081](cap-0081.md) | TBD | TTL-Ordered Eviction | Garand Tyson | Accepted |"
+     },
+     {
+      "class": "D",
+      "ref": "https://nansen.ai/post/stellar-q2-2026-report",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 26 \"Yardstick,\" which went live on mainnet on May 6 ... introduced six core enhancements"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "golden.avoid[+]",
+    "decision": "accept",
+    "note": "See golden.answer decision.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
+      "observedAt": "2026-11-02",
+      "quote": "Yardstick went live on mainnet on May 6, 2026 ... CAP mentions in page HTML: 73, 77, 78, 79, 80, 82; no CAP-0081 and no 'eviction' text"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "CAP mentions in page HTML: 73, 77, 78, 79, 80, 82; no CAP-0081 and no 'eviction' text"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/software-versions.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 26 (Mainnet, May 6, 2026) ... New features in Yardstick, Protocol 26: CAP-77, CAP-73, ... (no CAP-81 in the whole page)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP: 0081 Title: TTL-Ordered Eviction ... Status: Accepted ... Protocol version: TBD"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/pull/2009",
+      "observedAt": "2026-11-02",
+      "quote": "Flip CAP-81 protocol version to TBD (merged 2026-08-31T23:57:01Z); patch: -Protocol version: 26 +Protocol version: TBD"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| [CAP-0081](cap-0081.md) | TBD | TTL-Ordered Eviction | Garand Tyson | Accepted |"
+     },
+     {
+      "class": "D",
+      "ref": "https://nansen.ai/post/stellar-q2-2026-report",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 26 \"Yardstick,\" which went live on mainnet on May 6 ... introduced six core enhancements"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "See golden.answer decision.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
+      "observedAt": "2026-11-02",
+      "quote": "Yardstick went live on mainnet on May 6, 2026 ... CAP mentions in page HTML: 73, 77, 78, 79, 80, 82; no CAP-0081 and no 'eviction' text"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "CAP mentions in page HTML: 73, 77, 78, 79, 80, 82; no CAP-0081 and no 'eviction' text"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/software-versions.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 26 (Mainnet, May 6, 2026) ... New features in Yardstick, Protocol 26: CAP-77, CAP-73, ... (no CAP-81 in the whole page)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP: 0081 Title: TTL-Ordered Eviction ... Status: Accepted ... Protocol version: TBD"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/pull/2009",
+      "observedAt": "2026-11-02",
+      "quote": "Flip CAP-81 protocol version to TBD (merged 2026-08-31T23:57:01Z); patch: -Protocol version: 26 +Protocol version: TBD"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| [CAP-0081](cap-0081.md) | TBD | TTL-Ordered Eviction | Garand Tyson | Accepted |"
+     },
+     {
+      "class": "D",
+      "ref": "https://nansen.ai/post/stellar-q2-2026-report",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 26 \"Yardstick,\" which went live on mainnet on May 6 ... introduced six core enhancements"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-upgrade-timing",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "All ledgers, dates, names, and SDK deadlines match A+F; the 'not optional' wording is in the upgrade guide. Keeps 'a scheduled vote is not proof of activation'. Recommend truth.reverifyBy 2026-11-24 because the Mainnet vote date passes soon.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458446",
+      "observedAt": "2026-11-02",
+      "quote": "64458445 2026-09-16T17:00:01Z protocol 27; 64458446 2026-09-16T17:00:06Z protocol 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717645",
+      "observedAt": "2026-11-02",
+      "quote": "64717644 2026-10-01T17:00:02Z protocol 28; 64717645 2026-10-01T17:00:07Z protocol 29"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/63386819",
+      "observedAt": "2026-11-02",
+      "quote": "63386818 2026-07-08T17:00:05Z protocol 26; 63386819 2026-07-08T17:00:10Z protocol 27"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/software-versions.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. #…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "For your Mainnet integration, upgrade before November 23, 2026. The SDK upgrade is not optional this cycle. Protocol 30 changes the ledger header format (CAP-88…"
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "Bell, Protocol 30 Testnet Upgrade Nov 3, 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00 - 17:05 UTC"
+     },
+     {
+      "class": "D",
+      "ref": "https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30",
+      "observedAt": "2026-11-02",
+      "quote": "The testnet upgrade vote is on November 3, 2026 at 17:00 UTC. The mainnet upgrade vote follows on November 23, 2026 at 17:00 UTC."
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-upgrade-timing",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "See golden.answer decision.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458446",
+      "observedAt": "2026-11-02",
+      "quote": "64458445 2026-09-16T17:00:01Z protocol 27; 64458446 2026-09-16T17:00:06Z protocol 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717645",
+      "observedAt": "2026-11-02",
+      "quote": "64717644 2026-10-01T17:00:02Z protocol 28; 64717645 2026-10-01T17:00:07Z protocol 29"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/63386819",
+      "observedAt": "2026-11-02",
+      "quote": "63386818 2026-07-08T17:00:05Z protocol 26; 63386819 2026-07-08T17:00:10Z protocol 27"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/software-versions.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. #…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "For your Mainnet integration, upgrade before November 23, 2026. The SDK upgrade is not optional this cycle. Protocol 30 changes the ledger header format (CAP-88…"
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "Bell, Protocol 30 Testnet Upgrade Nov 3, 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00 - 17:05 UTC"
+     },
+     {
+      "class": "D",
+      "ref": "https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30",
+      "observedAt": "2026-11-02",
+      "quote": "The testnet upgrade vote is on November 3, 2026 at 17:00 UTC. The mainnet upgrade vote follows on November 23, 2026 at 17:00 UTC."
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-upgrade-timing",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "See golden.answer decision.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458446",
+      "observedAt": "2026-11-02",
+      "quote": "64458445 2026-09-16T17:00:01Z protocol 27; 64458446 2026-09-16T17:00:06Z protocol 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717645",
+      "observedAt": "2026-11-02",
+      "quote": "64717644 2026-10-01T17:00:02Z protocol 28; 64717645 2026-10-01T17:00:07Z protocol 29"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/63386819",
+      "observedAt": "2026-11-02",
+      "quote": "63386818 2026-07-08T17:00:05Z protocol 26; 63386819 2026-07-08T17:00:10Z protocol 27"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/software-versions.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. #…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "For your Mainnet integration, upgrade before November 23, 2026. The SDK upgrade is not optional this cycle. Protocol 30 changes the ledger header format (CAP-88…"
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "Bell, Protocol 30 Testnet Upgrade Nov 3, 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00 - 17:05 UTC"
+     },
+     {
+      "class": "D",
+      "ref": "https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30",
+      "observedAt": "2026-11-02",
+      "quote": "The testnet upgrade vote is on November 3, 2026 at 17:00 UTC. The mainnet upgrade vote follows on November 23, 2026 at 17:00 UTC."
+     }
+    ]
+   },
+   {
+    "id": "q-pc-quantum-preparedness-dormant",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "CAP-0087 status, P30 target, and Bell quotes confirmed A+B+D. Dormant-account negative claim re-checked at the negative-claim bar (primary absence + dated sweep) and stays dated and source-relative.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP: 0087 Title: Host functions for ML-DSA signature verification ... Status: Implemented ... Protocol version: 30 ... ML-DSA-44, ML-DSA-65 and ML-DSA-87"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "This is the first onchain piece of Stellar's Quantum Preparedness Plan. ... Does Bell make Stellar post-quantum? No. ... Network transaction signatures remain E…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar has a large population of dormant accounts whose holders are unreachable. Any forced cutoff requires freezing these accounts and must choose between pro…"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/core",
+      "observedAt": "2026-11-02",
+      "quote": "CAP tree ends at cap-0090 (CAP-0089, CAP-0090 Draft, Protocol 31); code search 'dormant' hits only cap-0065 and cap-0046-05, both about dormant ledger entries/s…"
+     },
+     {
+      "class": "B",
+      "ref": "GitHub GraphQL discussion search 'dormant org:stellar' and 'dormant accounts quantum repo:stellar/stellar-protocol'",
+      "observedAt": "2026-11-02",
+      "quote": "0 results"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: Stellar quantum preparedness plan dormant accounts eligibility criteria CAP 2026 (recency month)",
+      "observedAt": "2026-11-02",
+      "quote": "8 results (coin-turk, crypto-economy, coinotag, blockonomi, coinranking ...) describe dormant accounts as exposed; none gives an eligibility rule"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-quantum-preparedness-dormant",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "See golden.answer decision.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP: 0087 Title: Host functions for ML-DSA signature verification ... Status: Implemented ... Protocol version: 30 ... ML-DSA-44, ML-DSA-65 and ML-DSA-87"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "This is the first onchain piece of Stellar's Quantum Preparedness Plan. ... Does Bell make Stellar post-quantum? No. ... Network transaction signatures remain E…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar has a large population of dormant accounts whose holders are unreachable. Any forced cutoff requires freezing these accounts and must choose between pro…"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/core",
+      "observedAt": "2026-11-02",
+      "quote": "CAP tree ends at cap-0090 (CAP-0089, CAP-0090 Draft, Protocol 31); code search 'dormant' hits only cap-0065 and cap-0046-05, both about dormant ledger entries/s…"
+     },
+     {
+      "class": "B",
+      "ref": "GitHub GraphQL discussion search 'dormant org:stellar' and 'dormant accounts quantum repo:stellar/stellar-protocol'",
+      "observedAt": "2026-11-02",
+      "quote": "0 results"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: Stellar quantum preparedness plan dormant accounts eligibility criteria CAP 2026 (recency month)",
+      "observedAt": "2026-11-02",
+      "quote": "8 results (coin-turk, crypto-economy, coinotag, blockonomi, coinranking ...) describe dormant accounts as exposed; none gives an eligibility rule"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-slp-0004-0006-status",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "As of July 11, 2026, SLP-0004 was Final. It raised Soroban limits including per-transaction instructions from 100 million to 400 million, write entries from 50 to 200, and footprint size from 100 to 200 entries; it also proposed roughly fourfold reductions for most non-refundable resource fees. SLP-0006 was still Draft. It proposes moving the existing overlay-layer block on three accounts associated with the February 22 YieldBlox V2 exploit into network configuration using CAP-0077. SLPs are Stellar Limits Proposals, not CAPs or SEPs. The Draft label described the document, not the network: fr…",
+    "note": "Substance confirmed: the on-chain setting was last modified at ledger 63073409, that ledger carries a config upgrade, and the keys match SLP-0006 exactly. The old avoid punished a true claim. The application date is only class F (no A or D source dates it). I reworded it to the exact on-chain observation ('from ledger X onward ... has held') and dropped the claim that this ledger was the first and…",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_FROZEN_LEDGER_KEYS (key AAAACAAAABE=)",
+      "observedAt": "2026-11-02",
+      "quote": "lastModifiedLedgerSeq 63073409; keys decode to GATDQL767ZM2JQTBEG4BQ5WKOQNGAGWZDUN4GYT2UINPEU3RT2UAMVZH, GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WX…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/63073409",
+      "observedAt": "2026-11-02",
+      "quote": "closed_at 2026-06-17T17:00:08Z, protocol 26; header scp_value.upgrades has one type-6 (LEDGER_UPGRADE_CONFIG) upgrade"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... keysToFreeze ... GBO7VUL2..., GATDQL76..., GCJOPSQN... The keysToUnfreeze value is empty."
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/stellar-protocol/commits?path=limits/slp-0006.md",
+      "observedAt": "2026-11-02",
+      "quote": "2026-10-22T23:13:02Z 1ae39233 Update CAP and SLP statuses (#2046); 2026-05-07 86d54d5a SLP-0006 created"
+     },
+     {
+      "class": "D",
+      "ref": "https://status.stellar.org/history.rss + Parallel/Perplexity sweeps",
+      "observedAt": "2026-11-02",
+      "quote": "No public announcement dates the freeze; status history lists no June 2026 settings vote"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-slp-0004-0006-status",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Removes an avoid that punished a true claim; the replacement targets two false claims that a judge can see.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_FROZEN_LEDGER_KEYS (key AAAACAAAABE=)",
+      "observedAt": "2026-11-02",
+      "quote": "lastModifiedLedgerSeq 63073409; keys decode to GATDQL767ZM2JQTBEG4BQ5WKOQNGAGWZDUN4GYT2UINPEU3RT2UAMVZH, GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WX…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/63073409",
+      "observedAt": "2026-11-02",
+      "quote": "closed_at 2026-06-17T17:00:08Z, protocol 26; header scp_value.upgrades has one type-6 (LEDGER_UPGRADE_CONFIG) upgrade"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... keysToFreeze ... GBO7VUL2..., GATDQL76..., GCJOPSQN... The keysToUnfreeze value is empty."
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/stellar-protocol/commits?path=limits/slp-0006.md",
+      "observedAt": "2026-11-02",
+      "quote": "2026-10-22T23:13:02Z 1ae39233 Update CAP and SLP statuses (#2046); 2026-05-07 86d54d5a SLP-0006 created"
+     },
+     {
+      "class": "D",
+      "ref": "https://status.stellar.org/history.rss + Parallel/Perplexity sweeps",
+      "observedAt": "2026-11-02",
+      "quote": "No public announcement dates the freeze; status history lists no June 2026 settings vote"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-slp-0004-0006-status",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "CORRECTION 2026-11-02: SLP-0006 stayed Draft until 2026-10-22, but Mainnet frozen_ledger_keys has held its three keys since ledger 63073409 (2026-06-17). Grade document status and network application separately; accept the current Final status if the answer keeps the July 11 Draft status.",
+    "note": "Same wording fix as the answer: state the observed on-chain fact.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_FROZEN_LEDGER_KEYS (key AAAACAAAABE=)",
+      "observedAt": "2026-11-02",
+      "quote": "lastModifiedLedgerSeq 63073409; keys decode to GATDQL767ZM2JQTBEG4BQ5WKOQNGAGWZDUN4GYT2UINPEU3RT2UAMVZH, GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WX…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/63073409",
+      "observedAt": "2026-11-02",
+      "quote": "closed_at 2026-06-17T17:00:08Z, protocol 26; header scp_value.upgrades has one type-6 (LEDGER_UPGRADE_CONFIG) upgrade"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... keysToFreeze ... GBO7VUL2..., GATDQL76..., GCJOPSQN... The keysToUnfreeze value is empty."
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/stellar-protocol/commits?path=limits/slp-0006.md",
+      "observedAt": "2026-11-02",
+      "quote": "2026-10-22T23:13:02Z 1ae39233 Update CAP and SLP statuses (#2046); 2026-05-07 86d54d5a SLP-0006 created"
+     },
+     {
+      "class": "D",
+      "ref": "https://status.stellar.org/history.rss + Parallel/Perplexity sweeps",
+      "observedAt": "2026-11-02",
+      "quote": "No public announcement dates the freeze; status history lists no June 2026 settings vote"
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-pc-memos-reference; q-pc-protocol-26-yardstick; q-pc-protocol-upgrade-timing; q-pc-quantum-preparedness-dormant; q-pc-slp-0004-0006-status",
+  "verifiedOnly": "q-pc-muxed-accounts; q-pc-practical-fee-setting; q-pc-protocol-27-zipper",
+  "untouched": "q-pc-multisig-setup-lifecycle; q-pc-sequence-numbers-ordering-replace",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-pc-memos-reference",
+    "log": "golden.answer: 'On current Protocol 27' -> 'As of 2026-11-02 (Mainnet Protocol 29)'; added B/E/F sources and a confirmed-as-of corroboration row; truth.verified refreshed (rootCause freshness-drift)."
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "log": "Removed CAP-0081 from answer and keyFacts[1]; appended CAP-0081 avoid and CORRECTION note; replaced the seven-CAP corroboration row with a six-CAP row plus a contradicted CAP-0081 row; added A/B/D sources; truth.verified refreshed."
+   },
+   {
+    "id": "q-pc-protocol-upgrade-timing",
+    "log": "Answer re-dated to 2026-11-02 (P27/P28/P29 history, P30 Bell votes 2026-11-03/2026-11-23, SDK deadlines); avoid[0] widened; UPDATE note; asOf 2026-11-02; reverifyBy 2026-11-24 (event-tied); two new corroboration rows; truth.verified refreshed. Applier changed avoid[0] verb 'present ... as' to 'claim ... is' to clear a new presentation-avoid lint warning; meaning unchanged."
+   },
+   {
+    "id": "q-pc-quantum-preparedness-dormant",
+    "log": "Answer re-dated to 2026-11-02 with a CAP-0087 Implemented-for-P30 paragraph; UPDATE note; asOf 2026-11-02; new CAP-0087 corroboration row and refreshed dormant negative-claim evidence; truth.verified refreshed."
+   },
+   {
+    "id": "q-pc-slp-0004-0006-status",
+    "log": "Answer (verifier wording) separates document status from on-chain application at ledger 63073409; avoid[1] replaced; CORRECTION note (verifier wording); asOf 2026-11-02; reverifyBy 2027-01-07 -> 2027-06-15; two new corroboration rows; truth.verified refreshed."
+   },
+   {
+    "id": "q-pc-muxed-accounts",
+    "log": "Verification only: truth.verified refreshed with E/B/C(F) evidence; two sources added; no gospel change."
+   },
+   {
+    "id": "q-pc-practical-fee-setting",
+    "log": "Verification only: truth.verified refreshed with A/F/C evidence; sources added; no gospel change."
+   },
+   {
+    "id": "q-pc-protocol-27-zipper",
+    "log": "Verification only: truth.verified refreshed with A/B/C evidence; sources added; no gospel change."
+   },
+   {
+    "id": "q-pc-multisig-setup-lifecycle",
+    "log": "Untouched: only one fresh class (E, 2026-11-02); the A evidence was a retained 2026-08-27 re-check, so no verification refresh."
+   },
+   {
+    "id": "q-pc-sequence-numbers-ordering-replace",
+    "log": "Untouched: only one fresh class (A, 2026-11-02 for the 10x rule); B and the minSeqNum evidence were retained 2026-08-27 re-checks."
+   }
+  ]
+ }
+}

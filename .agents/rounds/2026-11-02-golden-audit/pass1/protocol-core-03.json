@@ -1,0 +1,1305 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "protocol-core-03",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-pc-sponsored-reserves",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Sponsorship sandwich BeginSponsoringFutureReserves ... EndSponsoringFutureReserves; sponsor begins, sponsored ends",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
+       "observedAt": "2026-11-02",
+       "quote": "To create a sponsored reserve, you have to use a sandwich transaction that includes three operations."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md",
+       "observedAt": "2026-11-02",
+       "quote": "This relation is initiated by `BeginSponsoringFutureReservesOp`, where the sponsoring account is the source account, and is terminated by `EndSponsoringFutureRe…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2] / avoid[2]",
+     "claim": "min balance = (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve; available = balance - min - liabilities.selling",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+       "observedAt": "2026-11-02",
+       "quote": "the minimum balance calculation is: (2 + `numSubEntries` + `numSponsoring` - `numSponsored`) * `baseReserve`. Selling liabilities are not part of the minimum ba…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionUtils.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "int64_t effEntries = 2LL; effEntries += numSubentries; effEntries += numSponsoring; effEntries -= numSponsored; ... return effEntries * int64_t(lh.baseReserve);"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[0..1]",
+     "claim": "0-XLM sponsored account still needs fees paid by some source/fee-bump and trustline authorization",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "a sponsored account can even be created with a starting balance of `0`, with the sponsor carrying its reserves."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Executing this transaction will be fully covered by the `sponsorKeyPair` and `sponsoredKeyPair` and may not even have any XLM funds on its account."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-base-reserve-min-balance"
+  },
+  {
+   "id": "q-pc-surge-griefing-threat-model",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0] / avoid[1]",
+     "claim": "Surge pricing prioritizes higher fee bids when capacity is exceeded; fees are not fixed regardless of load",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-11-02",
+       "quote": "During this time, the network uses market dynamics to decide which transactions to include in the ledger. Transactions that offer a higher maximum base fee bid …"
+      },
+      {
+       "class": "D",
+       "ref": "https://chainscorelabs.com/protocol/stellar/governance-and-parameter-changes/soroban-resource-pricing-and-limits",
+       "observedAt": "2026-11-02",
+       "quote": "general-web context: resource pricing and limits depend on validator-accepted parameters (Parallel search 2026-11-02)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Wallet docs: simple submit path doesn't handle fee surge gracefully; rebuild/re-sign with increased fee",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/stellar#submit-transaction",
+       "observedAt": "2026-11-02",
+       "quote": "the method above doesn't handle fee surge pricing in the network gracefully. ... Every 30 seconds this function will re-construct this transaction with a new fe…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "fee-bump replacement, tx_insufficient_fee, time/ledger bounds as defenses",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-11-02",
+       "quote": "replacing the first transaction if and only if the fee bid of the second transaction is at least 10x ... found in the `fee_charged` field of the transaction res…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-pc-tx-finality-failure-semantics",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[3..4] / avoid[1]",
+     "claim": "getTransaction returns SUCCESS/FAILED/NOT_FOUND; PENDING is a sendTransaction status",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+       "observedAt": "2026-11-02",
+       "quote": "Allowed values: SUCCESSNOT_FOUNDFAILED"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/sendTransaction",
+       "observedAt": "2026-11-02",
+       "quote": "Allowed values: PENDINGDUPLICATETRY_AGAIN_LATERERROR"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/go-stellar-sdk/blob/main/protocols/rpc/get_transaction.go",
+       "observedAt": "2026-11-02",
+       "quote": "TransactionStatusNotFound indicates the transaction was not found in Stellar-RPC's transaction store."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/go-stellar-sdk/blob/main/protocols/rpc/send_transaction.go",
+       "observedAt": "2026-11-02",
+       "quote": "Status can be one of: proto.TXStatusPending, proto.TXStatusDuplicate, proto.TXStatusTryAgainLater, or proto.TXStatusError."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1..2] / avoid[0]",
+     "claim": "Included txs (incl. failed) consume fee and sequence; pre-inclusion rejection consumes neither",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+       "observedAt": "2026-11-02",
+       "quote": "If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consum…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "There are only a few possible reasons for why we would *not* update the sequence number: ... In any other scenario we should update the sequence number"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4] / golden.notes",
+     "claim": "NOT_FOUND ambiguous due to bounded retention; sd-003 method pages unindexed caution",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+       "observedAt": "2026-11-02",
+       "quote": "The stellar-rpc system maintains a bounded history of recently processed transactions ... stock default of 120960 ledgers (about 7 days"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.get_doc_page_sections path=/docs/data/apis/rpc/api-reference/methods/getTransaction",
+       "observedAt": "2026-11-02",
+       "quote": "soft-empty: The page-section queries returned no matching records"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-pc-sequence-numbers-ordering-replace; q-protocol-accounts-signers-thresholds"
+  },
+  {
+   "id": "q-protocol-19-preconditions-cap-0021",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[0..1]",
+     "claim": "Protocol 19 activated 2022-06-08 with CAP-0021 (and CAP-0040)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 19 6-8-2022 - CAP-0021 (Generalized transaction conditions and timelocks.), CAP-0040 (Shared transaction signing for contracts.)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final ... Protocol version: 19"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/blog/developers/protocol-19-upgrade-complete (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Today, June 8, 2022 at 15:00 UTC, the Stellar public network successfully upgraded to Protocol 19!"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2]",
+     "claim": "CAP-0021 adds time/ledger bounds, minSeqNum/age/gap, extra signers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md",
+       "observedAt": "2026-11-02",
+       "quote": "sequence number n satisfies minSeqNum <= n < tx.seqNum ... `extraSigners`"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Minimum sequence number ... Minimum sequence age ... Minimum sequence ledger gap ... Ledger bounds"
+      }
+     ]
+    },
+    {
+     "field": "avoid[1]",
+     "claim": "Soroban is Protocol 20, not 19",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [CAP-0046](cap-0046.md) | 20 |Soroban smart contract system overview |"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-accounts-signers-thresholds"
+  },
+  {
+   "id": "q-protocol-23-whisk-caps",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "keyFacts[2] / avoid[0]",
+     "claim": "P23 = eight Final CAPs 0062,0063,0065,0066,0067,0068,0069,0070; CAP-0064 rejected",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/0da06899c02f818be0132f42cea1f45d6396e20a/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "rows CAP-0062..CAP-0070 (excluding 0064) each list protocol 23, status Final"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 23 9/3/25 - CAP-0062 ..., CAP-0063 ..., CAP-0065 ..."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "P23 Mainnet activation 2025-09-03",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Whisk, Protocol 23 (Mainnet, September 3, 2025)"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem",
+       "observedAt": "2026-11-02",
+       "quote": "2025-09-03 : P23 voted on public network."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3] / avoid[1]",
+     "claim": "CAP-0063 initialized ledgerMaxDependentTxClusters to 1",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md",
+       "observedAt": "2026-11-02",
+       "quote": "will be created with `ledgerMaxDependentTxClusters` set to the initial value of 1 during the protocol transition."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3] / avoid[1] / notes",
+     "claim": "Current Mainnet ledgerMaxDependentTxClusters is 2 (set at ledger 60993066, 2026-01-29)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "POST getLedgerEntries key AAAACAAAAA4= on https://mainnet.sorobanrpc.com, https://soroban-rpc.mainnet.stellar.gateway.fm, https://rpc.lightsail.network",
+       "observedAt": "2026-11-02",
+       "quote": "all three: latestLedger 65269920, lastModifiedLedgerSeq 65080525, decoded (LedgerEntryType 8, ConfigSettingID 14, ledgerMaxDependentTxClusters 3)"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/65080525",
+       "observedAt": "2026-11-02",
+       "quote": "closed_at 2026-10-22T17:00:08Z, protocol_version 29"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0007.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final ... dependent transaction clusters (2 to 3)"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.expert/explorer/public/protocol-history",
+       "observedAt": "2026-11-02",
+       "quote": "Ledger 65080525 2026-10-22 17:00:08 UTC ... contractParallelCompute. ledgerMaxDependentTxClusters = 3 //before: 2"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4] / avoid[2]",
+     "claim": "SLP-0004 lives at limits/slp-0004.md; core/slp-0004.md does not exist",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/slp-0004.md",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [SLP-0004](slp-0004.md) | Increase Ledger Wide Limits for Soroban | Dmytro Kozhevin | Final |  ... | [SLP-0007](slp-0007.md) | Increase Soroban Ledger-Wide Li…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md",
+       "observedAt": "2026-11-02",
+       "quote": "Instructions/threads ... 600'000'000 / 1 thread | 580'000'000 / 2 threads"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\n**Protocol 23 (Whisk)** activated on Mainnet on **2025-09-03 at 17:00 UTC** and contains exactly eight Final CAPs: **CAP-0062** Soroban Live State Prioritization, **CAP-0063** parallelism-friendly transaction scheduling, **CAP-0065** reusable module cache, **CAP-0066** Soroban in-memory read resource, **CAP-0067** unified asset events, **CAP-0068** the ho…",
+     "reason": "SLP-0007 raised clusters 2->3 at ledger 65080525 (2026-10-22); three RPCs decode 3 on 2026-11-02."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "replace",
+     "new": "Treats CAP-0063 value one as initial and later Mainnet values (2, then 3) as volatile.",
+     "reason": "Value two is no longer current; keep initial-vs-volatile distinction."
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "op": "replace",
+     "new": "Cites the settings SLP under limits/ (slp-0004.md or slp-0007.md), not core/.",
+     "reason": "Current setting is set by SLP-0007; a true answer citing it must not miss the keyFact."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "replace",
+     "new": "Do NOT say P23 immediately enabled multiple dependent clusters or present any Mainnet cluster value as a permanent protocol constant.",
+     "reason": "'current value two' is false today; trap must punish permanence, not a true current value."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Whisk = Protocol 23. DATE VERIFIED 2025-09-03 (stellar.org 'Introducing Whisk' + Protocol 23 Upgrade Guide: Mainnet vote 2025-09-03 17:00 UTC). A reviewer's '2025-06-10' was the blog publish date, not activation — do NOT use it. Headline = parallel exec (CAP-0063) + live/archival separation (CAP-0062). Trap is wrong CAP numbers or attributing parallelism to the wrong protocol.\nAlso good if the answer: Mentions additional Whisk CAPs such as unified Classic+Soroban events (CAP-0067) and/or caching parsed WASM modules permanently (CAP-0065). | Notes Whisk activated on Mainnet around 2025-09-03.\nG…",
+     "reason": "Add dated SLP-0007 re-check and symmetric dated-value caution."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-parallel-execution; q-protocol-version-history-list; q-pc-slp-0004-0006-status"
+  },
+  {
+   "id": "q-protocol-24-whisk-incident",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "P24 activated on Mainnet 2025-10-22",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 24 (Mainnet, October 22, 2025)"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/StellarOrg/status/1981048696826413193 (via Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "Validators just voted to upgrade Stellar Mainnet to Protocol 24, which fixes a bug in the state archival feature."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[0] / avoid[1]",
+     "claim": "Eviction loaded latest TTL but not latest entry version",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem",
+       "observedAt": "2026-11-02",
+       "quote": "While the code correctly checked for expiration by loading the latest Time-To-Live (TTL) value, it failed to load the latest version of the entry itself if ther…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/commit/790602666cb26f84fa2e6f510a754152f1a84332",
+       "observedAt": "2026-11-02",
+       "quote": "fix: every eviction candidate loads the latest version of the entry (cited by the post-mortem)"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1..2] / avoid[0]",
+     "claim": "478 affected; 84 restored, 77 modified; CAP-0076 amended 394 never-restored",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md",
+       "observedAt": "2026-11-02",
+       "quote": "478 ledger entries have been archived with an incorrect state ... 394 entries out of these have never been restored"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/addressing-state-archival-inconsistencies-protocol-upgrade-vote-next-week",
+       "observedAt": "2026-11-02",
+       "quote": "84 corrupted entries were restored and incorporated into the live ledger state and 77 of those entries were actually modified; the remaining 394 were not restor…"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3] / avoid[2]",
+     "claim": "31,879,035 stroops added to fee pool for two burns (1,000,000 + 30,879,035)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md",
+       "observedAt": "2026-11-02",
+       "quote": "Thus `1000000 + 30879035 = 31879035` stroops have been burned, which is reflected via `feePool`."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem",
+       "observedAt": "2026-11-02",
+       "quote": "After fixes, only 84 remained corrupted and mitigations had to be taken by protocols and issuers."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-version-history-list"
+  },
+  {
+   "id": "q-protocol-27-cap-0071",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / avoid[0]",
+     "claim": "P27 activated at ledger 63386819, 2026-07-08 17:00:10 UTC; not queued",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/63386819",
+       "observedAt": "2026-11-02",
+       "quote": "closed_at 2026-07-08T17:00:10Z protocol_version 27; ledger 63386818 protocol_version 26"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 27 (Mainnet, July 8, 2026) ... Authentication Delegation and Address-Bound Soroban Credentials: CAP-71"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer ('has been live')",
+     "claim": "P27 is the live/current Mainnet protocol (date-contingent trap trigger: P28 Mainnet activation)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/64458446 and /64717645",
+       "observedAt": "2026-11-02",
+       "quote": "first P28 ledger 64458446 closed 2026-09-16T17:00:06Z; first P29 ledger 64717645 closed 2026-10-01T17:00:07Z; latest ledger 65269905 protocol_version 29"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release ... It introduces no new CAPs. ... Protocol 28 (Mainnet, September 16, 2026…"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2] / avoid[1]",
+     "claim": "CAP-0071: SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES, SorobanDelegateSignature chains, SOROBAN_CREDENTIALS_ADDRESS_V2",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "SOROBAN_CREDENTIALS_ADDRESS_V2 = 2, SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 3 ... struct SorobanDelegateSignature ... SorobanDelegateSignature nestedDelega…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Authentication delegation and address-bound Soroban credentials ... Status: Final ... Protocol version: 27"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'Protocol 27 CAP-71 authentication delegation'",
+       "observedAt": "2026-11-02",
+       "quote": "software-versions#release-notes-4: Authentication Delegation and Address-Bound Soroban Credentials: CAP-71"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3]",
+     "claim": "CAP registry labels CAP-0071 Final (observed 2026-08-04)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/0da06899c02f818be0132f42cea1f45d6396e20a/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [CAP-0071](cap-0071.md) | 27 | Authentication delegation and address-bound Soroban credentials | Dmytro Kozhevin | Final |"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/commit/ae300437",
+       "observedAt": "2026-11-02",
+       "quote": "Move CAP 83, 85 and 86 to Implemented and 71 to Final (#1992) — 2026-07-31"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "No later protocol changed CAP-0071 credentials (AddressV2 successor)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "P28 rows: CAP-0083 (drop tx set), CAP-0085 (externally managed executables), CAP-0086 (sparse map host fns); CAP-0089/CAP-0090 auth proposals are Draft"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 ... introduces no new CAPs."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any status claim. Protocol 27 (Zipper) activated on Stellar Mainnet at ledger 63386819, closed 2026-07-08 at 17:00:10 UTC. It is no longer the newest protocol: Mainnet moved to Protocol 28 on 2026-09-16 and to Protocol 29 on 2026-10-01 (observed 2026-11-02), and CAP-0071 behavior remains in effect. **CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegat…",
+     "reason": "P28 (2026-09-16) and P29 (2026-10-01) activated; 'has been live' reads as P27-current; date-contingent trap fired."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "CORRECTION 2026-08-04: P27 is historical and live from ledger 63386819; CAP-0071 is now Final. Preserve CAP-status versus network-activation separation.\n2026-11-02 RE-CHECK: Protocol 28 (2026-09-16, CAP-0083/0085/0086) and Protocol 29 (2026-10-01, no new CAPs) followed on Mainnet; neither changed CAP-0071 credentials. Calling P27 the current Mainnet protocol is stale unless dated before 2026-09-16.\nAccurately quoting a cached or older copy of the official Software Versions page that still shows Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current (fixed 2026-08-18 in sd-008) is not a…",
+     "reason": "Record the post-trigger re-check and the stale-current boundary for graders."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-pc-protocol-27-zipper; q-edge-fresh-latest-protocol-version; q-protocol-version-history-list"
+  },
+  {
+   "id": "q-protocol-accounts-signers-thresholds",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "keyFacts[1..2] / avoid[0]",
+     "claim": "Classic SignerKey has four arms; secp256r1 is not one",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/4f524bba/Stellar-types.x",
+       "observedAt": "2026-11-02",
+       "quote": "enum SignerKeyType { SIGNER_KEY_TYPE_ED25519, SIGNER_KEY_TYPE_PRE_AUTH_TX, SIGNER_KEY_TYPE_HASH_X, SIGNER_KEY_TYPE_ED25519_SIGNED_PAYLOAD };"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-0040 | 19 | Ed25519 Signed Payload Signer ... | Final; CAP-0051 | 21 | Smart Contract Host Functionality: Secp256r1 Verification | Final; CAP-0043 ECDSA Sig…"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3] / avoid[2]",
+     "claim": "Default seq = current+1; CAP-0021 minSeqNum allows minSeqNum <= S < tx.seqNum",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "it's valid when S satisfies `minSeqNum <= S < tx.seqNum`. If this precondition is omitted, the default behavior applies: the transaction's sequence number must …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md",
+       "observedAt": "2026-11-02",
+       "quote": "sequence number n satisfies minSeqNum <= n < tx.seqNum."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (last sentence)",
+     "claim": "Failed or unapplied transactions do not automatically consume the sequence",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+       "observedAt": "2026-11-02",
+       "quote": "For each transaction, the account's sequence number is consumed (increased by 1), the transaction's validity is rechecked ... Operations may fail at this stage"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "There are only a few possible reasons for why we would *not* update the sequence number: - There is no source account ... - The sequence number is bad ... In an…"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'sequence number consumed failed transaction'",
+       "observedAt": "2026-11-02",
+       "quote": "transaction-lifecycle#10-application-validator ranked first"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A classic Stellar account has a master key and optional additional **signers**, each with a weight. Operations are assigned **low, medium, or high** thresholds, and the valid signatures' combined weight must meet the transaction's required threshold; this is Stellar's native multisig model. Classic `SignerKey` has exactly four forms: **ed25519**, **pre-authorized transaction hash**, **hashX**, and **ed25519 signed payload** (the last added by CAP-0040 in Protocol 19). **secp256r1 is not a classic SignerKey**: CAP-0051/P21 exposed secp256r1 verification for Soroban custom-account/passkey author…",
+     "reason": "Included failed transactions consume the sequence per docs and Core."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: GT-31 rewrite used 'failed' for pre-inclusion rejection, contradicting included-failure sequence consumption (sibling q-pc-tx-finality-failure-semantics)."
+   ],
+   "siblings": "q-pc-tx-finality-failure-semantics; q-pc-sequence-numbers-ordering-replace; q-protocol-19-preconditions-cap-0021"
+  },
+  {
+   "id": "q-protocol-amm-cap-0038",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[0] / avoid[0]",
+     "claim": "Native AMMs launched via CAP-0038 in Protocol 18, 2021-11-03",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 18 11-3-2021 - CAP-0038 (Automated market marker liquidity.)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [CAP-0038](cap-0038.md) | 18 | Automated Market Makers | Jonathan Jove | Final |"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar (via Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "November 3, 2021 — Today at 15:00 UTC, Stellar validators voted to upgrade the network to Protocol 18, which adds Automated Market Maker (AMM) functionality"
+      }
+     ]
+    },
+    {
+     "field": "avoid[1] / answer",
+     "claim": "Native AMM is protocol-level, not a smart contract; constant product; pool ledger entry",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Liquidity pools can be created on Stellar without requiring smart contracts"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "int64 reserveA; // amount of A in the pool ... pool share trust line"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-sdex-vs-amm; q-asset-amm-fee-reserve; q-edge-factcheck-soroswap-first-amm"
+  },
+  {
+   "id": "q-protocol-base-reserve-min-balance",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[3] / avoid[2]",
+     "claim": "Base reserve 5,000,000 stroops (0.5 XLM), dated configuration",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269905 closed 2026-11-02T16:01:49Z protocol 29 base_reserve_in_stroops 5000000"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "One base reserve is currently 0.5 XLM."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[0..1] / avoid[0]",
+     "claim": "Sponsorship-aware min balance formula; selling liabilities separate",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionUtils.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "effEntries = 2 + numSubentries + numSponsoring - numSponsored; return effEntries * baseReserve"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "`available balance` = `balance` - `minimum balance` - `liabilities.selling`."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3] / avoid[1]",
+     "claim": "Pool-share trustline counts as two subentries",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "The pool share trust line `tl` has ... The pool share trust line should count as two subentries"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-pc-sponsored-reserves"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-protocol-23-whisk-caps",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Re-derived: SLP-0007 (Final) raised Dependent Tx Clusters 2->3; three Mainnet RPCs show value 3 with lastModifiedLedgerSeq 65080525; Horizon dates that ledger 2026-10-22T17:00:08Z; StellarExpert shows the same diff. 60993066 = 2026-01-29 confirmed. As-of date kept and moved to 2026-11-02. Truth block (asOf, corroboration) must be updated in the same diff for the gospel-change lint.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://mainnet.sorobanrpc.com getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://soroban-rpc.mainnet.stellar.gateway.fm getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://rpc.lightsail.network getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+      "observedAt": "2026-11-02",
+      "quote": "| Dependent Tx Clusters |       2 |        3 | ... Status: Final"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/limits",
+      "observedAt": "2026-11-02",
+      "quote": "README.md slp-0001.md ... slp-0004.md slp-0005.md slp-0006.md slp-0007.md (no cluster change in slp-0005/0006)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/65080525 and https://horizon.stellar.org/ledgers/60993066",
+      "observedAt": "2026-11-02",
+      "quote": "65080525 closed_at 2026-10-22T17:00:08Z protocol 29; 60993066 closed_at 2026-01-29T17:00:09Z"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.expert/explorer/public/protocol-history (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Ledger 65080525 2026-10-22 17:00:08 UTC ... contractParallelCompute. ledgerMaxDependentTxClusters = 3 //before: 2"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-23-whisk-caps",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "True and dated by the answer; 86 chars. Does not punish a later dated value, since it only requires treating post-P23 values as volatile.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://mainnet.sorobanrpc.com getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://soroban-rpc.mainnet.stellar.gateway.fm getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://rpc.lightsail.network getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+      "observedAt": "2026-11-02",
+      "quote": "| Dependent Tx Clusters |       2 |        3 | ... Status: Final"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/limits",
+      "observedAt": "2026-11-02",
+      "quote": "README.md slp-0001.md ... slp-0004.md slp-0005.md slp-0006.md slp-0007.md (no cluster change in slp-0005/0006)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/65080525 and https://horizon.stellar.org/ledgers/60993066",
+      "observedAt": "2026-11-02",
+      "quote": "65080525 closed_at 2026-10-22T17:00:08Z protocol 29; 60993066 closed_at 2026-01-29T17:00:09Z"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.expert/explorer/public/protocol-history (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Ledger 65080525 2026-10-22 17:00:08 UTC ... contractParallelCompute. ledgerMaxDependentTxClusters = 3 //before: 2"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-23-whisk-caps",
+    "field": "golden.keyFacts[4]",
+    "decision": "accept",
+    "note": "limits/ directory confirmed to hold slp-0004 and slp-0007; core/ holds no SLP. 77 chars. Widens rather than narrows credit; not laundering because the old single-path requirement became incomplete after SLP-0007.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://mainnet.sorobanrpc.com getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://soroban-rpc.mainnet.stellar.gateway.fm getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://rpc.lightsail.network getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+      "observedAt": "2026-11-02",
+      "quote": "| Dependent Tx Clusters |       2 |        3 | ... Status: Final"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/limits",
+      "observedAt": "2026-11-02",
+      "quote": "README.md slp-0001.md ... slp-0004.md slp-0005.md slp-0006.md slp-0007.md (no cluster change in slp-0005/0006)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/65080525 and https://horizon.stellar.org/ledgers/60993066",
+      "observedAt": "2026-11-02",
+      "quote": "65080525 closed_at 2026-10-22T17:00:08Z protocol 29; 60993066 closed_at 2026-01-29T17:00:09Z"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.expert/explorer/public/protocol-history (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Ledger 65080525 2026-10-22 17:00:08 UTC ... contractParallelCompute. ledgerMaxDependentTxClusters = 3 //before: 2"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-23-whisk-caps",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Generalizes 'value two' to any value; the live value is now 3, so the old clause was stale. Judge-visible and scoped to permanence claims only.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://mainnet.sorobanrpc.com getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://soroban-rpc.mainnet.stellar.gateway.fm getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://rpc.lightsail.network getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+      "observedAt": "2026-11-02",
+      "quote": "| Dependent Tx Clusters |       2 |        3 | ... Status: Final"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/limits",
+      "observedAt": "2026-11-02",
+      "quote": "README.md slp-0001.md ... slp-0004.md slp-0005.md slp-0006.md slp-0007.md (no cluster change in slp-0005/0006)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/65080525 and https://horizon.stellar.org/ledgers/60993066",
+      "observedAt": "2026-11-02",
+      "quote": "65080525 closed_at 2026-10-22T17:00:08Z protocol 29; 60993066 closed_at 2026-01-29T17:00:09Z"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.expert/explorer/public/protocol-history (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Ledger 65080525 2026-10-22 17:00:08 UTC ... contractParallelCompute. ledgerMaxDependentTxClusters = 3 //before: 2"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-23-whisk-caps",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Dates and ledgers re-verified; the window language protects dated value-two answers from being punished.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://mainnet.sorobanrpc.com getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://soroban-rpc.mainnet.stellar.gateway.fm getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "C",
+      "ref": "https://rpc.lightsail.network getLedgerEntries key AAAACAAAAA4= (CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0)",
+      "observedAt": "2026-11-02",
+      "quote": "\"xdr\":\"AAAACAAAAA4AAAAD\",\"lastModifiedLedgerSeq\":65080525 (decodes ledgerMaxDependentTxClusters=3)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+      "observedAt": "2026-11-02",
+      "quote": "| Dependent Tx Clusters |       2 |        3 | ... Status: Final"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/limits",
+      "observedAt": "2026-11-02",
+      "quote": "README.md slp-0001.md ... slp-0004.md slp-0005.md slp-0006.md slp-0007.md (no cluster change in slp-0005/0006)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/65080525 and https://horizon.stellar.org/ledgers/60993066",
+      "observedAt": "2026-11-02",
+      "quote": "65080525 closed_at 2026-10-22T17:00:08Z protocol 29; 60993066 closed_at 2026-01-29T17:00:09Z"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.expert/explorer/public/protocol-history (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Ledger 65080525 2026-10-22 17:00:08 UTC ... contractParallelCompute. ledgerMaxDependentTxClusters = 3 //before: 2"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "P27 activation ledger/time, P28 2026-09-16 and P29 2026-10-01 boundaries re-derived from Horizon; RPC reports protocolVersion 29 today; software-versions page and registry confirm P29 has no CAPs and P28 = CAP-0083/0085/0086. Dated observation kept. Note: P30 (Bell) Mainnet vote is scheduled 2026-11-23, before the 2027-02 window; the dated wording stays true after it.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/{n} binary search",
+      "observedAt": "2026-11-02",
+      "quote": "P28 first ledger 64458446 at 2026-09-16T17:00:06Z (prev 27); P29 first ledger 64717645 at 2026-10-01T17:00:07Z (prev 28)"
+     },
+     {
+      "class": "C",
+      "ref": "https://mainnet.sorobanrpc.com getVersionInfo",
+      "observedAt": "2026-11-02",
+      "quote": "\"protocolVersion\":29"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs."
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.get_doc_page_sections /docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Software Versions > Protocol 29 (Mainnet, October 1, 2026) > Release notes: It introduces no new CAPs."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0083 | 28 ... Final; CAP-0085 | 28 ... Final; CAP-0086 | 28 ... Final; CAP-0071 | 27 | Authentication delegation and address-bound Soroban credentials | Fin…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "This release bumps the protocol to version 28, which includes CAP-0083, CAP-0085, and CAP-0086."
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research (Perplexity search result: Stellar Weekly Roundup, Week of Sep 25, 2026)",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 went live on Mainnet on October 1 at 1700 UTC, following a Testnet vote on September 29."
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "CORRECTION 2026-08-04: P27 is historical and live from ledger 63386819; CAP-0071 is now Final. Preserve CAP-status versus network-activation separation.\n2026-11-02 RE-CHECK: Protocol 28 (2026-09-16, CAP-0083/0085/0086) and Protocol 29 (2026-10-01, no new CAPs) followed on Mainnet; neither changed CAP-0071 credentials. Calling P27 the current Mainnet protocol is stale unless dated before 2026-09-16. Protocol 30 (Bell: CAP-0084/0087/0088) had a Mainnet vote scheduled for 2026-11-23; a later dated answer that reports P30 (or newer) as current is correct, not stale.\nAccurately quoting a cached or …",
+    "note": "Proposed facts verified, but the notes would leave a judge in the 2027-02 window without guidance once Bell activates; added the scheduled P30 vote (stellar.org Bell post + status.stellar.org) so a true later-dated P30 claim is not punished. 'Neither changed CAP-0071 credentials' is consistent with the CAP titles (consensus tx-set drop, external executables, sparse maps) and P29 having no CAPs.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/{n} binary search",
+      "observedAt": "2026-11-02",
+      "quote": "P28 first ledger 64458446 at 2026-09-16T17:00:06Z (prev 27); P29 first ledger 64717645 at 2026-10-01T17:00:07Z (prev 28)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0083 | 28 ... Final; CAP-0085 | 28 ... Final; CAP-0086 | 28 ... Final; CAP-0071 | 27 | Authentication delegation and address-bound Soroban credentials | Fin…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "This release bumps the protocol to version 28, which includes CAP-0083, CAP-0085, and CAP-0086."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026. ... carrying CAP-84 ... CAP-87 ... CAP-88"
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00 - 17:05 UTC. Validators will vote on whether to upgrade Mainnet to to Bell, Protocol 30."
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-accounts-signers-thresholds",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Old sentence 'Failed or unapplied transactions do not automatically consume the sequence' is false for included-but-failed transactions. Docs (A, E) say invalid submissions do not increment sequence or charge fee, and applied transactions consume the sequence even when operations fail; a live Horizon read (F) shows a failed included tx left the account sequence at that tx's seqNum. New text is pre…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+      "observedAt": "2026-11-02",
+      "quote": "If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consum…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'sequence number will not be incremented no fee consumed'",
+      "observedAt": "2026-11-02",
+      "quote": "rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-ledgers",
+      "observedAt": "2026-11-02",
+      "quote": "failed_transaction_count | The number of failed transactions submitted to the network in this ledger. The transaction was still paid for"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GDJO6CLNYWMBY7SKUN5ETMTNGZBOYDC4KNXISMFNVFQ7WSTSN5P3CBR3 and /transactions?include_failed=true",
+      "observedAt": "2026-11-02",
+      "quote": "failed tx 5e0f70fc... (successful=false, ledger 65270250, seq 241038254755846192, fee_charged 200); account sequence now 241038254755846192, sequence_ledger 652…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+      "observedAt": "2026-11-02",
+      "quote": "valid when S satisfies minSeqNum <= S < tx.seqNum ... after a transaction is executed, the account will always set its sequence number to the transaction's sequ…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0005.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/README.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+   "gh api repos/stellar/stellar-protocol/contents/limits",
+   "https://mainnet.sorobanrpc.com",
+   "https://soroban-rpc.mainnet.stellar.gateway.fm",
+   "https://rpc.lightsail.network",
+   "https://horizon.stellar.org/ledgers/65080525",
+   "https://horizon.stellar.org/ledgers/60993066",
+   "https://horizon.stellar.org/ledgers/{binary search 63386819..65270000}",
+   "https://horizon.stellar.org/transactions?include_failed=true&order=desc&limit=50",
+   "https://horizon.stellar.org/accounts/GDJO6CLNYWMBY7SKUN5ETMTNGZBOYDC4KNXISMFNVFQ7WSTSN5P3CBR3",
+   "https://horizon.stellar.org/accounts/GDJO6CLNYWMBY7SKUN5ETMTNGZBOYDC4KNXISMFNVFQ7WSTSN5P3CBR3/transactions",
+   "https://developers.stellar.org/docs/networks/software-versions",
+   "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+   "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+   "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-ledgers",
+   "https://stellar.expert/explorer/public/protocol-history",
+   "https://github.com/stellar/stellar-core/releases/tag/v28.0.0",
+   "https://github.com/stellar/stellar-rpc/releases",
+   "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+   "https://status.stellar.org/",
+   "https://lumenloop.com/research",
+   "Raven stellarDocs.search_docs / get_doc_page_sections, lumenloop.search_content_semantic (observedAt 2026-11-02T16:30:55Z)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-protocol-23-whisk-caps; q-protocol-27-cap-0071; q-protocol-accounts-signers-thresholds",
+  "verifiedOnly": "q-pc-sponsored-reserves; q-pc-surge-griefing-threat-model; q-pc-tx-finality-failure-semantics; q-protocol-19-preconditions-cap-0021; q-protocol-24-whisk-incident; q-protocol-amm-cap-0038; q-protocol-base-reserve-min-balance",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-protocol-27-cap-0071",
+    "issue": "consistency-register dateContingentTraps entry 'Mainnet activation of Protocol 28 or any AddressV2 successor change' fired 2026-09-16 (P28 ledger 64458446); its disposition still says P27 is current and the numericInvariant for the P27 Mainnet version (recheckOn next activation) needs refresh. Shared register file, not edited by this applier; siblings q-edge-fresh-latest-protocol-version, q-pc-protocol-27-zipper, q-protocol-version-history-list need the same re-check."
+   },
+   {
+    "id": "q-protocol-23-whisk-caps",
+    "issue": "Sibling q-protocol-parallel-execution (outside batch) still states the live dependent-cluster value two; SLP-0007 raised it to three at ledger 65080525 on 2026-10-22. Register clusters cluster-044/cluster-118 notes also say 'current Mainnet value two' and need a re-sweep via eval:qa:register."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-pc-sponsored-reserves",
+    "log": "Verified only: refreshed truth.verified (date, by, multi-class evidence, sibling sweep); no gospel change."
+   },
+   {
+    "id": "q-pc-surge-griefing-threat-model",
+    "log": "Verified only: refreshed truth.verified (date, by, multi-class evidence, sibling sweep); no gospel change."
+   },
+   {
+    "id": "q-pc-tx-finality-failure-semantics",
+    "log": "Verified only: refreshed truth.verified (date, by, multi-class evidence, sibling sweep); no gospel change."
+   },
+   {
+    "id": "q-protocol-19-preconditions-cap-0021",
+    "log": "Verified only: refreshed truth.verified (date, by, multi-class evidence, sibling sweep); no gospel change."
+   },
+   {
+    "id": "q-protocol-23-whisk-caps",
+    "log": "Gospel: golden.answer (accept), golden.keyFacts[3] (accept), golden.keyFacts[4] (accept), golden.avoid[1] (accept), golden.notes (accept); dependent-cluster value 2 -> 3 (SLP-0007, ledger 65080525, 2026-10-22); asOf 2026-11-02; +6 sources, +2 corroboration rows; rootCause freshness-drift."
+   },
+   {
+    "id": "q-protocol-24-whisk-incident",
+    "log": "Verified only: refreshed truth.verified (date, by, multi-class evidence, sibling sweep); no gospel change."
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "log": "Gospel: golden.answer (accept), golden.notes (modify); P27 no longer called current (P28 2026-09-16, P29 2026-10-01), P30 vote 2026-11-23 grader guidance; asOf 2026-11-02; +6 sources, +2 corroboration rows; rootCause freshness-drift."
+   },
+   {
+    "id": "q-protocol-accounts-signers-thresholds",
+    "log": "Gospel: golden.answer (accept); replaced the false 'failed transactions do not consume the sequence' sentence with the pre-inclusion vs included distinction; +3 sources, +1 corroboration row; rootCause authoring flaw."
+   },
+   {
+    "id": "q-protocol-amm-cap-0038",
+    "log": "Verified only: refreshed truth.verified (date, by, multi-class evidence, sibling sweep); no gospel change."
+   },
+   {
+    "id": "q-protocol-base-reserve-min-balance",
+    "log": "Verified only: appended audit re-check lines to the same-day verified event; reverifyBy 2027-02-15 kept (already in window)."
+   }
+  ]
+ }
+}

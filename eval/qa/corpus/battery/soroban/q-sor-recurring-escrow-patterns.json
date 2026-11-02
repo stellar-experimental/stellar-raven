@@ -43,6 +43,24 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/smart-contracts/development.md",
+        "note": "Quote: when contract A directly calls B, B may `require_auth` A's address — the direct call is the authorization. ... If B will make a *deeper* call requiring A's auth, A must pre-authorize it: env.authorize_as_current_contract(...)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#when-to-require_auth",
+        "note": "Quote: If a contract calls another contract that will call ...",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "stellar-dev-skill smart-contracts/development.md",
+        "note": "Quote: `transfer_from`/`burn_from` auth the `spender` (the allowance pre-authorized the `from` side)",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -72,13 +90,15 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The core pattern was correct but needed payer-intent binding, idempotency, direct-invoker auth, and separate allowance/business/storage expiry domains.",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-42 processes 3308/3315."
-      ],
-      "rootCause": [
-        "Eval-side security completeness."
+        "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/smart-contracts/development.md — \"when contract A directly calls B, B may `require_auth` A's address — the direct call is the authorization. ... If B will make a *deeper* call requiring A's auth, A must pre-authorize it: env.authorize_as_current_contract(...)\" (class B, observedAt 2026-11-02)",
+        "Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#when-to-require_auth — \"If a contract calls another contract that will call ...\" (class E, observedAt 2026-11-02)",
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — \"`live_until_ledger` - The ledger number where this allowance expires. ... If this function is called again it overwrites the existing allowance\" (class B, observedAt 2026-11-02)",
+        "stellar-dev-skill smart-contracts/development.md — \"`transfer_from`/`burn_from` auth the `spender` (the allowance pre-authorized the `from` side)\" (class B, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: proposer found no topical sibling conflict; no gospel change.",
+        "Proposer re-verification only; no change proposed and no gospel change: /private/tmp/claude-501/golden-audit/matrices/soroban-02.json."
       ]
     },
     "origin": "raven-next q-sor-recurring-escrow-patterns"

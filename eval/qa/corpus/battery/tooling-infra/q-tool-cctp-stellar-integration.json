@@ -6,7 +6,7 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "SDF and Circle publicly announced CCTP V2 live for **native Circle USDC** on Stellar on 2026-05-19; treat earlier deployment/technical milestones separately rather than calling every date the launch. Stellar uses Circle **domain 27** on Mainnet and Testnet; that is a CCTP domain, not a Stellar network ID. Select deployments by network/passphrase and recheck Circle's current reference. As of **2026-08-11**, Mainnet used TokenMessengerMinter `CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL`, MessageTransmitter `CACMENFFJPJMSDAJQLX4R7K3SFZIW2LJSE3R2UMLGSWHFHS353FVXAZV`, CctpForwarder `CBZL2IH7F6BIDAA3WBNXYKIXSATJGMSW7K5P5MJ6STX5RXN47TZJDF5T` and USDC SAC `CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75`; Testnet used `CDNG7HXAPBWICI2E3AUBP3YZWZELJLYSB6F5CC7WLDTLTHVM74SLRTHP`, `CBJ6MTCKKZG73PMDZCJMSFRD7DQEMI4FKDH7CGDSV4W6FHCRBCQAVVJY`, `CA66Q2WFBND6V4UEB7RD4SAXSVIWMD6RA4X3U32ELVFGXV5PJK4T4VSZ` and `CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA`. These addresses are dated, not permanent gates.\n\n**Outbound from Stellar:** approve the correct network's USDC **SAC** and call TokenMessengerMinter `deposit_for_burn` or `deposit_for_burn_with_hook` with the destination domain and local seven-decimal `i128` `amount`/`max_fee`. Poll Iris `/v2/messages/27` by the burn transaction hash, then submit the message/attestation on the destination. Classic Circle USDC and its deterministic SAC are the same underlying asset exposed through trustline versus contract storage—not wrapped variants. Stellar calls use 7 decimal places while CCTP messages use 6: outbound normalization truncates the seventh-decimal dust and leaves it with the sender; inbound canonical units multiply by 10. Use integer/BigInt arithmetic, never float or the term stroops for token units.\n\n**Inbound to Stellar:** burn on the source chain to destination domain 27. Set **both** `mintRecipient` and `destinationCaller` to the correct Stellar **CctpForwarder** raw contract payload, and encode the actual recipient's full G/M/C StrKey in the versioned hook. Hook v0 uses 24 zero/reserved bytes, a 4-byte big-endian version, a 4-byte big-endian recipient length, UTF-8 StrKey, then optional bytes. Poll Iris with the actual **source** domain, then call `mint_and_forward`; the mint and forward are atomic. Wrong recipient/caller/hook values can strand funds. Circle's managed **Forwarding Service** is a different product from the on-chain CctpForwarder.\n\nTwo current Circle conflicts must be disclosed. The Stellar→Arc quickstart passes threshold **1000** and labels it Fast, while Circle's supported-chain/finality/fee matrices mark Stellar-as-source Fast **N/A** or omit it. Do not pin support either way; use Standard threshold **2000** for Stellar-originated transfers until Circle reconciles the docs. Finalized/unfinalized receive handlers allow Stellar to receive eligible messages from Fast-capable sources, but do not prove Stellar-source Fast support. Circle's rendered Stellar contracts reference spells `handle_receive_finalized_message`/`handle_receive_unfinalized_message`, while official source and deployed interfaces use `handle_recv_finalized_message`/`handle_recv_unfinalized_message`; call the deployed `handle_recv_*` interface.",
+    "answer": "SDF and Circle publicly announced CCTP V2 live for **native Circle USDC** on Stellar on 2026-05-19; treat earlier deployment/technical milestones separately rather than calling every date the launch. Stellar uses Circle **domain 27** on Mainnet and Testnet; that is a CCTP domain, not a Stellar network ID. Select deployments by network/passphrase and recheck Circle's current reference. As of **2026-11-02**, Mainnet used TokenMessengerMinter `CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL`, MessageTransmitter `CACMENFFJPJMSDAJQLX4R7K3SFZIW2LJSE3R2UMLGSWHFHS353FVXAZV`, CctpForwarder `CBZL2IH7F6BIDAA3WBNXYKIXSATJGMSW7K5P5MJ6STX5RXN47TZJDF5T` and USDC SAC `CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75`; Testnet used `CDNG7HXAPBWICI2E3AUBP3YZWZELJLYSB6F5CC7WLDTLTHVM74SLRTHP`, `CBJ6MTCKKZG73PMDZCJMSFRD7DQEMI4FKDH7CGDSV4W6FHCRBCQAVVJY`, `CA66Q2WFBND6V4UEB7RD4SAXSVIWMD6RA4X3U32ELVFGXV5PJK4T4VSZ` and `CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA`. These addresses are dated, not permanent gates.\n\n**Outbound from Stellar:** approve the correct network's USDC **SAC** and call TokenMessengerMinter `deposit_for_burn` or `deposit_for_burn_with_hook` with the destination domain and local seven-decimal `i128` `amount`/`max_fee`. Poll Iris `/v2/messages/27` by the burn transaction hash, then submit the message/attestation on the destination. Classic Circle USDC and its deterministic SAC are the same underlying asset exposed through trustline versus contract storage—not wrapped variants. Stellar calls use 7 decimal places while CCTP messages use 6: outbound normalization truncates the seventh-decimal dust and leaves it with the sender; inbound canonical units multiply by 10. Use integer/BigInt arithmetic, never float or the term stroops for token units.\n\n**Inbound to Stellar:** burn on the source chain to destination domain 27. Set **both** `mintRecipient` and `destinationCaller` to the correct Stellar **CctpForwarder** raw contract payload, and encode the actual recipient's full G/M/C StrKey in the versioned hook. Hook v0 uses 24 zero/reserved bytes, a 4-byte big-endian version, a 4-byte big-endian recipient length, UTF-8 StrKey, then optional bytes. Poll Iris with the actual **source** domain, then call `mint_and_forward`; the mint and forward are atomic. Wrong recipient/caller/hook values can strand funds. Circle's managed **Forwarding Service** is a different product from the on-chain CctpForwarder.\n\nTwo current Circle conflicts must be disclosed. The Stellar→Arc quickstart passes threshold **1000** and labels it Fast, while Circle's supported-chain/finality/fee matrices mark Stellar-as-source Fast **N/A** or omit it. Do not pin support either way; use Standard threshold **2000** for Stellar-originated transfers until Circle reconciles the docs. Finalized/unfinalized receive handlers allow Stellar to receive eligible messages from Fast-capable sources, but do not prove Stellar-source Fast support. Circle's rendered Stellar contracts reference spells `handle_receive_finalized_message`/`handle_receive_unfinalized_message`, while official source and deployed interfaces use `handle_recv_finalized_message`/`handle_recv_unfinalized_message`; call the deployed `handle_recv_*` interface.",
     "keyFacts": [
       "States CCTP V2/native USDC, Circle domain 27 and network-specific dated deployments.",
       "Uses classic USDC's deterministic SAC for contract burn/approval as the same asset.",
@@ -25,7 +25,7 @@
       "Do NOT pin Fast support/fees, copy threshold 1000 without the conflict, or infer Stellar-source Fast from receive handlers.",
       "Do NOT call docs handle_receive_* against the deployed interface or freeze addresses/fees/finality without an as-of date."
     ],
-    "notes": "GT-54 CORRECTION 2026-07-11: remove the stale 23-chain gate. Require V2/domain 27, dated deployment/SAC identity, source-domain Iris flow, forwarding-hook safety, 7↔6 decimal handling, explicit Stellar-source Fast dispute, and docs handle_receive_* versus deployed handle_recv_* conflict.\nRe-verified 2026-08-11: the two Circle conflicts persist. The 2026-05-19 date is specifically the public-live announcement; do not collapse it with earlier deployment/technical milestones."
+    "notes": "GT-54 CORRECTION 2026-07-11: remove the stale 23-chain gate. Require V2/domain 27, dated deployment/SAC identity, source-domain Iris flow, forwarding-hook safety, 7↔6 decimal handling, explicit Stellar-source Fast dispute, and docs handle_receive_* versus deployed handle_recv_* conflict.\nRe-verified 2026-08-11: the two Circle conflicts persist. The 2026-05-19 date is specifically the public-live announcement; do not collapse it with earlier deployment/technical milestones.\nRe-verified 2026-11-02: addresses, domain 27, decimal handling, hook format, and both Circle conflicts persist. Iris /v2/burn/USDC/fees/27/0 lists finalityThreshold 1000 and 2000 rows, but Iris also lists a 1000 row for Fast-N/A sources such as Avalanche (1) and Sui (8), so that row does not settle Stellar-source Fast support."
   },
   "tags": {
     "category": "tooling-infra",
@@ -39,8 +39,8 @@
     },
     "domain": "mixed",
     "status": "disputed",
-    "asOf": "2026-08-11",
-    "reverifyBy": "2026-11-26",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-04",
     "sources": [
       {
         "class": "A",
@@ -105,6 +105,18 @@
       {
         "class": "B",
         "ref": "https://github.com/circlefin/stellar-cctp/blob/45746f2c803198bc6cd586475eb3c925f12bb488/contracts/cctp-forwarder/src/contract.rs"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.circle.com/cctp/references/stellar-contracts.md",
+        "note": "2026-11-02: Mainnet and Testnet TokenMessengerMinter, MessageTransmitter and CctpForwarder addresses match the golden; page still names handle_receive_*.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+        "note": "2026-11-02T16:42:24Z: [{finalityThreshold:1000,minimumFee:0},{finalityThreshold:2000,minimumFee:0}]; same table for Fast-N/A sources 1 and 8.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -205,43 +217,86 @@
             "note": "The deployed interface uses handle_recv_*."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02 the golden's eight Mainnet/Testnet CCTP and USDC SAC addresses match Circle's live reference and CLI derivation, and the deployed TokenMessengerMinter exposes handle_recv_*.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/cctp/references/stellar-contracts.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'Mainnet: TokenMessengerMinter | 27 | CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL; MessageTransmitter | 27 | CACMENFFJPJMSDAJQLX4R7K3SFZIW2LJSE3R2UMLGSWHFHS353FVXAZV; CctpForwarder | 27 | CBZL2IH7F6BIDAA3WBNXYKIXSATJGMSW7K5P5MJ6STX5RXN47TZJDF5T'; Testnet CDNG7HXA..., CBJ6MTCK..., CA66Q2WF..."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'Stellar | USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; Stellar Testnet | USDC-GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5'"
+          },
+          {
+            "class": "F",
+            "ref": "stellar CLI 28.1.0 contract id asset --network mainnet / --network testnet",
+            "observedAt": "2026-11-02",
+            "note": "Derived CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75 / CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA."
+          },
+          {
+            "class": "F",
+            "ref": "stellar contract info interface --contract-id CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL --network mainnet",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'fn deposit_for_burn( ... fn deposit_for_burn_with_hook( ... fn handle_recv_finalized_message( ... fn handle_recv_unfinalized_message('"
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02 Stellar-source Fast support remains inconsistent across Circle surfaces; the Iris fee table's 1000 row does not settle it because Iris lists the same row for Fast-N/A sources.",
+        "verdict": "disputed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'nativeToScVal(1000, { type: \"u32\" }), // Fast Transfer finality threshold'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/cctp/concepts/supported-chains-and-domains",
+            "observedAt": "2026-11-02",
+            "note": "Exact: '| Stellar | ✅ | N/A | ❌ | ❌ | ... | Avalanche | ✅ | N/A | ...'"
+          },
+          {
+            "class": "C",
+            "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+            "observedAt": "2026-11-02",
+            "note": "2026-11-02T16:42:24Z. Exact: '[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]'"
+          },
+          {
+            "class": "C",
+            "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/1/0 and https://iris-api.circle.com/v2/burn/USDC/fees/8/0",
+            "observedAt": "2026-11-02",
+            "note": "Exact (both): '[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]' for sources Circle marks Fast N/A."
+          }
+        ],
+        "note": "No pinned value; the golden keeps the explicit dispute and the grader caution in golden.notes."
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-04)",
       "evidence": [
-        "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
-        "https://developers.circle.com/cctp/references/stellar",
-        "https://developers.circle.com/cctp/references/stellar-contracts",
-        "https://developers.circle.com/cctp/concepts/supported-chains-and-domains",
-        "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
-        "https://github.com/circlefin/stellar-cctp/blob/master/contracts/cctp-forwarder/src/contract.rs",
-        "https://github.com/circlefin/stellar-cctp/blob/master/contracts/token-messenger-minter-v2/src/contract.rs",
-        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
-        "Structural re-form (negative-predicate): tightened six facts in place while keeping the seven-item migration exception; every SAC, flow, forwarding, Fast-dispute, and handler-name claim remains, so truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/references/stellar — classic USDC's deterministic SAC remains the same asset used for contract burn/approval",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/references/stellar and https://developers.circle.com/cctp/references/technical-guide — outbound burn→Iris source-domain-27→attest/mint and integer 7→6 normalization/dust remain required",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/references/stellar — both CctpForwarder fields, the exact StrKey hook version, and actual-source Iris lookup remain required",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/references/stellar — atomic on-chain CctpForwarder mint_and_forward remains distinct from managed Forwarding Service",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc and https://developers.circle.com/cctp/concepts/supported-chains-and-domains — the Stellar-source 1000/Fast versus N/A/omitted dispute still supports Standard 2000 until resolution",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/references/stellar-contracts and https://github.com/circlefin/stellar-cctp/blob/45746f2c803198bc6cd586475eb3c925f12bb488/contracts/token-messenger-minter-v2/src/contract.rs — docs handle_receive_* still conflicts with source/deployed handle_recv_*",
-        "Sibling sweep 2026-08-27: grep CctpForwarder|mint_and_forward|handle_recv|Stellar-source Fast → q-cctp-v2-usdc-stellar; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 3 review (gt2-grok-rev)): restored the recipient/caller field names; truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — classic USDC's deterministic SAC remains the same asset used for contract burn/approval",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — outbound burn→Iris source-domain-27→attest/mint and integer 7→6 normalization/dust remain required",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — both CctpForwarder fields, the exact StrKey hook version, and actual-source Iris lookup remain required",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — atomic on-chain CctpForwarder mint_and_forward remains distinct from managed Forwarding Service",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc — the Stellar-source 1000/Fast versus N/A/omitted dispute still supports Standard 2000 until resolution",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar-contracts — docs handle_receive_* still conflicts with source/deployed handle_recv_*",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar-contracts — the live source supports uses source/deployed handle_recv_* amid the docs' handle_receive_* contradiction.",
-        "Sibling sweep 2026-08-30: grep CctpForwarder|mint_and_forward|handle_recv|Stellar-source Fast → q-cctp-v2-usdc-stellar; no contradiction"
+        "Gospel change 2026-11-02: re-dated the address as-of to 2026-11-02 (addresses unchanged); notes append a dated re-verification with the Iris 1000-row caution (verifier modify); truth.status stays disputed; reverifyBy 2027-03-04.",
+        "Live A 2026-11-02: https://developers.circle.com/cctp/references/stellar-contracts.md — 'TokenMessengerMinter | 27 | CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL; MessageTransmitter | 27 | CACMENFFJPJMSDAJQLX4R7K3SFZIW2LJSE3R2UMLGSWHFHS353FVXAZV; CctpForwarder | 27 | CBZL2IH7F6BIDAA3WBNXYKIXSATJGMSW7K5P5MJ6STX5RXN47TZJDF5T'; '| `handle_receive_finalized_message` | Mints USDC upon receiving a fully finalized message.'",
+        "Live F 2026-11-02: stellar CLI 28.1.0 contract id asset (mainnet/testnet) — 'CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75 / CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA'; contract info interface on CAE2G5Z7... — 'fn handle_recv_finalized_message( ... fn handle_recv_unfinalized_message('",
+        "Live B 2026-11-02: https://github.com/circlefin/stellar-cctp/blob/main/contracts/token-messenger-minter-v2/src/contract.rs (HEAD 45746f2c8031) — '375: fn handle_recv_finalized_message( / 428: fn handle_recv_unfinalized_message('",
+        "Live A 2026-11-02: https://developers.circle.com/cctp/concepts/supported-chains-and-domains — '| Stellar | ✅ | N/A | ❌ | ❌ |'; https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc — 'nativeToScVal(1000, { type: \"u32\" }), // Fast Transfer finality threshold'",
+        "Live C 2026-11-02T16:42:24Z: https://iris-api.circle.com/v2/burn/USDC/fees/27/0 — '[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]'; /fees/1/0 and /fees/8/0 return the same table",
+        "Live A 2026-11-02: https://developers.circle.com/cctp/references/stellar — 'bytes 24–27: hook data version (u32 BE, currently 0) / bytes 28–31: forward_recipient byte length (u32 BE) ... a seven-decimal USDC precision'",
+        "Live D 2026-11-02: Parallel web_search -> developers.circle.com/cctp/concepts/supported-chains-and-domains — '27 | Stellar'",
+        "Sibling sweep 2026-11-02: q-cctp-v2-usdc-stellar, q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar, q-raph-usdc-onto-stellar, q-defi-bridge-evm-to-stellar-axelar checked; domain 27, the 2026-05-19 announcement and the addresses agree; no contradiction."
       ],
       "rootCause": [
         "freshness-drift",
-        "Official Circle source disagreement on Stellar-source Fast eligibility and handler naming persists; preserve the dispute rather than pinning either source.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Official Circle source disagreement on Stellar-source Fast eligibility and handler naming persists; the dated address stamp needed a refresh and the new Iris fee-table observation needed a grader caution so it is not read as resolving the dispute."
       ]
     },
     "origin": "raven-next q-tool-cctp-stellar-integration"

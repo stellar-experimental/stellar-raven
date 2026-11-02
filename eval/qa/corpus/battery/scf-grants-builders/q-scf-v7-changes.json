@@ -17,7 +17,7 @@
       "Do NOT merge distinct post-launch/supporting programs into one Growth track or freeze launch shorthand as current terms.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Dossier §8/§9. Version-transition fact set; trap is attributing v6 features to v7.\nAlso good if the answer: Supporting programs were consolidated into a unified Growth track; a Referral Program was added. | UX audits / user testing were added to the Build evaluation.\nGolden cites: The 'Introducing SCF v7' blog post / SCF handbook history page.\nGT-36/39/40 independently reconciled 2026-07-10. Accept 'four tranches' only when the candidate accurately distinguishes the acceptance payment from three deliverables."
+    "notes": "Dossier §8/§9. Version-transition fact set; trap is attributing v6 features to v7.\nAlso good if the answer: A Referral Program was added. | At launch, v7 tied the final 40% tranche to mainnet launch plus UX readiness; awarded Build teams may receive a UX audit and user testing.\nGolden cites: The 'Introducing SCF v7' blog post / SCF handbook history page.\nGT-36/39/40 independently reconciled 2026-07-10. Accept 'four tranches' only when the candidate accurately distinguishes the acceptance payment from three deliverables."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,7 +31,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -42,6 +42,18 @@
         "class": "A",
         "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/budget-and-deliverable-guidelines",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md",
+        "note": "HEAD e07b4bfc (2026-10-16): 'Implementation of a robust referral program ...'; 'awarded Build teams may receive a UX audit and rigorous user testing as part of the award process.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track",
+        "note": "'For Integration Track awards, the final tranche (#3, 40% of the award) releases when your project reaches its committed, panel-ratified onchain metric — not on mainnet launch alone.'",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -75,31 +87,38 @@
           }
         ],
         "note": "Legacy verdict: confirmed-with-terminology-tension."
+      },
+      {
+        "claim": "Distinct post-launch/supporting programs were not merged into one unified Growth track (avoid[2]).",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+            "observedAt": "2026-11-02",
+            "note": "v7 describes '40% at verified mainnet launch + UX readiness' and plural post-launch growth pathways, not a single Growth track (proposer and verifier)."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md",
+            "observedAt": "2026-11-02",
+            "note": "Handbook HEAD e07b4bfc lists a referral program and UX audit/user testing; no unified Growth track."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-36/39/40, 2026-07-10.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (negative-predicate): Shortened one source rule and moved the unified Growth trap to avoid; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — showed source-dated v7 content.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — described plural post-launch growth pathways, not one unified Growth track.",
-        "Sibling sweep 2026-08-27: SCF v7|Growth track|four payments|three deliverable → q-scf-v7-changes, q-edge-scf-v7-centralization-myths, q-scf-ambassador-program, q-scf-instawards, q-scf-eligibility-criteria, q-scf-sdf-marketing-grant; no contradiction.",
-        "Live re-check 2026-08-30: https://stellar.org/blog/ecosystem/introducing-scf-v7 — the launch article still tied v7 to the February 1, 2026 SCF #41 deadline.",
-        "Live re-check 2026-08-30: https://stellar.org/blog/ecosystem/introducing-scf-v7 — the dated launch page identified the v7 change set.",
-        "Live re-check 2026-08-30: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/budget-and-deliverable-guidelines.md — the source stated four payments and three tranches.",
-        "Sibling sweep 2026-08-30: grep SCF v7|SCF 7.0|four payments → q-edge-scf-v7-centralization-myths, q-scf-ambassador-program, q-scf-instawards, q-scf-v7-changes; no contradiction"
+        "B 2026-11-02: https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md (HEAD e07b4bfc, 2026-10-16) — 'Implementation of a robust referral program to sharpen selection processes ... awarded Build teams may receive a UX audit and rigorous user testing as part of the award process.'",
+        "A 2026-11-02: https://stellar.org/blog/ecosystem/introducing-scf-v7 — '40% at verified mainnet launch + UX readiness ... To receive the final tranche, projects must demonstrate UX readiness'.",
+        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track — 'For Integration Track awards, the final tranche (#3, 40% of the award) releases when your project reaches its committed, panel-ratified onchain metric — not on mainnet launch alone.' The verifier modified the proposed note to frame the UX gate as a launch-time term, as avoid[2] requires.",
+        "The removed nice-to-have ('unified Growth track') contradicted the case's own avoid[2].",
+        "Sibling sweep 2026-11-02: grep -i 'growth track' over eval/qa/corpus/battery -> only this case; q-edge-scf-v7-centralization-myths, q-scf-instawards, and q-scf-build-award-cap do not assert a unified Growth track."
       ],
       "rootCause": [
-        "Eval-side historical shorthand promoted into current mechanics.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Eval-side authoring flaw: a legacy nice-to-have note kept the unified Growth track claim that the golden's own avoid item punishes."
       ]
     },
     "origin": "raven-next q-scf-v7-changes"

@@ -8,7 +8,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, the live partner directory returned 27 anchor profiles; the first page included Etherfuse, Transparent Network, and APS Money.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-11-02, the live partner directory filtered to anchors returned 21 anchor profiles (24 with thin profiles included); the first page included Etherfuse, Transparent Network, and APS Money, and the list also included MoneyGram, Bitso, and Yellow Card.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time, and should keep anchor operators distinct from anchor tooling such as SDF's Anchor Platform.",
     "keyFacts": [
       "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -18,7 +18,7 @@
       "Do NOT fabricate anchor names that are not in the corpus/directory.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "Discovery → scout_projects. Freshness-sensitive (anchor roster shifts). The 'answer' is correct routing + a directory-grounded list, not a fixed roster. Source list anchors the routing/grounding requirement; named operators must come from the live directory, not be invented. Verified 2026-06-29: stellar.org/use-cases/ramps and developers.stellar.org/docs/learn/fundamentals/anchors both resolve and describe Ramps/MoneyGram + Anchor Platform tooling.\nAlso good if the answer: Includes recognizable anchor implementations (e.g. MoneyGram Ramps and/or other directory-listed anchors). | Distinguishes anchor operators from anchor tooling (e.g. SDF's Anchor Platform).\nGolden cites: The Stellar Light / Scout project directory."
+    "notes": "Discovery → scout_projects. Freshness-sensitive (anchor roster shifts). The 'answer' is correct routing + a directory-grounded list, not a fixed roster. Source list anchors the routing/grounding requirement; named operators must come from the live directory, not be invented. Re-checked 2026-11-02: stellar.org/use-cases/ramps now redirects to stellar.org/solutions/cross-border-payments; developers.stellar.org/docs/learn/fundamentals/anchors still links the Anchor Directory and names MoneyGram Ramps and the Anchor Platform. Project search (category Anchor) is a different source basis with a different count; do not penalize a dated count from either basis.\nAlso good if the answer: Includes recognizable anchor implementations (e.g. MoneyGram Ramps and/or other directory-listed anchors). | Distinguishes anchor operators from anchor tooling (e.g. SDF's Anchor Platform).\nGolden cites: The Stellar Light / Scout project directory."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -32,42 +32,107 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
         "ref": "https://stellar.org/use-cases/ramps",
-        "note": "class inferred at migration"
+        "note": "As of 2026-11-02 this URL redirects to https://stellar.org/solutions/cross-border-payments.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100",
+        "note": "Live Stellar Light partner directory filtered to anchors: 21 profiles (3 thin profiles filtered out).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100&all=1",
+        "note": "Same directory with thin profiles included: 24 profiles.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/solutions/cross-border-payments",
+        "note": "Redirect target of stellar.org/use-cases/ramps; names MoneyGram Ramps.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://docs.etherfuse.com/guides/chains/stellar",
+        "note": "Real-world footprint for directory-listed anchor Etherfuse (SEP-24 anchor mode).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://aps.money/",
+        "note": "Real-world footprint for directory-listed anchor APS Money.",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live partner directory returned 27 anchor profiles; the first page included Etherfuse, Transparent Network, and APS Money.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep anchor roster|anchor profiles|complete or permanent roster → q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery, q-crp-regional-offramp-mobilemoney; no contradiction",
-        "Structural re-form (long-fact): Shortened the source-and-date and named-project authoring facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the live Stellar page links the Anchor Directory as the source for existing anchors.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the page defines anchors as on/off ramps and names MoneyGram Ramps and Anchor Platform.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — for unchanged keyFacts[1], the live page presents existing anchors through a current directory, supporting dated roster treatment.",
-        "Sibling sweep 2026-08-29: grep 27 anchor profiles|Etherfuse, Transparent Network, and APS Money → q-anchor-list-builders-discovery; no contradiction"
+        "Gospel change 2026-11-02: golden.answer re-dated to the 2026-11-02 directory observation (21 anchor profiles, 24 with thin profiles) and the dangling 'stable distinctions above' reference replaced with the operator-vs-tooling distinction; golden.notes record the ramps-page redirect and a do-not-penalize caution for a dated count from either source basis.",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/partners?type=anchor&limit=100 — 'meta.counts {returned:21,total:21,filteredOut:3}; generatedAt 2026-11-02T16:27:34Z; names: Etherfuse, Transparent Network, APS Money, ... Yellow Card, Bitso, Moneygram'",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/partners?type=anchor&limit=100&all=1 — 'meta.counts {returned:24,total:24,filteredOut:0}'",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/projects/search?type=Anchor&limit=100 — 'meta.counts {returned:44,total:44} (different source basis)'",
+        "Live F 2026-11-02: curl -L https://stellar.org/use-cases/ramps — '200 final=https://stellar.org/solutions/cross-border-payments redirects=1'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/anchors — 'View the Anchor Directory (https://anchors.stellar.org) for more information on existing Stellar anchors. ... If you're looking for MoneyGram Ramps, see the ...'",
+        "Live D 2026-11-02: perplexity_search 'Yellow Card Etherfuse APS Money Stellar anchor on-ramp' -> https://www.stellarlight.xyz/partners — 'AnchorAvailable Etherfuse ... AnchorAvailable APS Money ... AnchorAging Yellow Card'",
+        "Real-world sample check 2026-11-02: Etherfuse (docs.etherfuse.com), APS Money (aps.money), MoneyGram (stellar.toml), Bitso, and Yellow Card have external footprints; the roster is labeled corpus-only because counts are Stellar Light directory-relative.",
+        "Sibling sweep 2026-11-02: q-crp-anchors-by-corridor, q-crp-partner-detail-after-discovery, q-jutsu-cash-crypto-ramps, q-asset-stablecoin-issuers-discovery, q-crp-regional-offramp-mobilemoney checked; each dates its own roster and none pins the 27 or 21 count; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "Eval-side authoring flaw: the answer referred to 'the stable distinctions above' after a re-form removed that text."
       ]
     },
-    "origin": "raven-next q-anchor-list-builders-discovery"
+    "origin": "raven-next q-anchor-list-builders-discovery",
+    "corroboration": [
+      {
+        "claim": "As of 2026-11-02, the live partner directory filtered to anchors returned 21 anchor profiles (24 with thin profiles included); the first page included Etherfuse, Transparent Network, and APS Money, and the list also included MoneyGram, Bitso, and Yellow Card.",
+        "verdict": "corpus-only",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100",
+            "observedAt": "2026-11-02",
+            "note": "meta.counts {returned:21,total:21,filteredOut:3}; generatedAt 2026-11-02T16:27:34Z; names: Etherfuse, Transparent Network, APS Money, ... Yellow Card, Bitso, Moneygram"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100&all=1",
+            "observedAt": "2026-11-02",
+            "note": "meta.counts {returned:24,total:24,filteredOut:0}; adds nTokens, Elroy App, Wallet Guru"
+          },
+          {
+            "class": "D",
+            "ref": "https://docs.etherfuse.com/guides/chains/stellar",
+            "observedAt": "2026-11-02",
+            "note": "Real-world sample check. Exact quote: 'Anchor mode (SEP-24) — For Stellar offramps you can use anchor mode (useAnchor: true)'"
+          },
+          {
+            "class": "D",
+            "ref": "https://aps.money/",
+            "observedAt": "2026-11-02",
+            "note": "Real-world sample check. Exact quote: 'Payments for Stellar Ecosystem — Implementing SEP protocols allows APS to bridge traditional finance with Stellar-based DeFi'"
+          },
+          {
+            "class": "F",
+            "ref": "https://mgxanchor.moneygram.com/.well-known/stellar.toml",
+            "observedAt": "2026-11-02",
+            "note": "Real-world sample check. Exact quote: '# MoneyGram Stellar service powered by the Anchor Platform.' with TRANSFER_SERVER_SEP0024 advertised."
+          }
+        ]
+      }
+    ]
   }
 }

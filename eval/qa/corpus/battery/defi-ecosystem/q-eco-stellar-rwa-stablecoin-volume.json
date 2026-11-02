@@ -7,7 +7,7 @@
     "lumenloop.search_content_semantic"
   ],
   "golden": {
-    "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\nUse a dated metric matrix and keep stocks and flows separate:\n\n- **SDF Q1 report (published 2026-05-07):** on-chain RWAs crossed **$2B shortly after Q1**, up from **$785M at YE2025**; Q1 stablecoin **payment volume** was **$5.5B**, +72% YoY.\n- **SDF-hosted Allium report (March 2026):** **$246M stablecoin supply**; last-12-month average monthly stablecoin transfer volume **$2.3B raw / $352M adjusted**, with the adjustment methodology stated; **67 RWA products totaling $1.4B**.\n- **rwa.xyz snapshot as of 2026-07-10:** **$3.02B distributed RWA value**, **$78.68M represented value**, **$844.13M 30-day RWA transfer volume**, **$340.86M stablecoin market cap**, and **$5.57B 30-day stablecoin transfer volume** under rwa.xyz definitions.\n\nThese numbers describe different dates, populations, stocks, and flows. Do not merge them, present them as permanent, or use them to claim an undefined 'strongest adoption story.' For a current answer, re-query and cite the source's metric definition, date, period, inclusion/exclusion scope, and raw/adjusted methodology.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-11-02, the verified sources supported this observed answer:\n\nUse a dated metric matrix and keep stocks and flows separate:\n\n- **SDF Q3 2026 report (October 2026):** RWAs **$4.1B at quarter end** (+36% QoQ); Q3 stablecoin **transfer volume $25.1B**; stablecoin **market cap $496M**. SDF's quarterly-reports page summary shows $4.3B RWAs.\n- **SDF Q2 2026 report:** RWAs crossed **$3B in June**; Q2 stablecoin **transfer volume $11.4B**.\n- **SDF Q1 report (published 2026-05-07):** on-chain RWAs crossed **$2B shortly after Q1**, up from **$785M at YE2025**; Q1 stablecoin **payment volume** was **$5.5B**, +72% YoY.\n- **SDF-hosted Allium report (March 2026):** **$246M stablecoin supply**; last-12-month average monthly stablecoin transfer volume **$2.3B raw / $352M adjusted**, with the adjustment methodology stated; **67 RWA products totaling $1.4B**.\n- **rwa.xyz snapshot as of 2026-07-10:** **$3.02B distributed RWA value**, **$78.68M represented value**, **$844.13M 30-day RWA transfer volume**, **$340.86M stablecoin market cap**, and **$5.57B 30-day stablecoin transfer volume** under rwa.xyz definitions.\n\nThese numbers describe different dates, populations, stocks, and flows. Do not merge them, present them as permanent, or use them to claim an undefined 'strongest adoption story.' For a current answer, re-query and cite the source's metric definition, date, period, inclusion/exclusion scope, and raw/adjusted methodology.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Uses current or dated source observations for specific claims.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -20,7 +20,7 @@
       "Do NOT claim a historical scalar is current or assert an undefined adoption superlative.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "FRESHNESS item (quarterly). Two dated sources, slightly different cuts: SDF Q1 2026 'Execution at network scale' cites $2B+ on-chain RWAs, $5.5B stablecoin payment volume, ~86% dev growth; Messari 'State of Stellar Q1 2026' (per Lumenloop roundup, week of May 29 2026) puts the tokenized-RWA stack at ~$2.8B (4th among ecosystems) with ~1,700 monthly active devs. Don't gate on one exact number — gate on 'cite a dated Q1-2026 report + flag it's a snapshot.' 2026-06-29 reviewed: directly verified both anchors — SDF blog 'Q1 2026: Execution at network scale' confirms RWAs crossed $2B (from $785M YE2025), stablecoin payment volume $5.5B (+72% YoY); SDF President interview (2026-06-04) states RWA stack now ~$2.8B, '3rd or 4th' among chains. LinkedIn/Messari cross-check shows Stellar #4 RWA (~$1.7B registered-fund scope) — note the $1.2-2B vs $2.8B gap is a scope difference (registered funds vs broad RWA incl. stablecoins); file already gates on caveat. Confidence kept medium (figures move quarterly).\nAlso good if the answer: Attributes the numbers to a specific dated report (SDF Q1 2026 update or Messari State of Stellar Q1 2026) rather than asserting bare figures.\nGolden cites: A dated report (SDF Q1 2026 update or Messari State of Stellar Q1 2026) for the figures.\nGT-20 CORRECTION 2026-07-10 supersedes inherited scope/superlative prose. Grade explicit date, metric definition, stock-versus-flow separation, period, and methodology. Historical $1.52B/$2B/~$2.8B points remain valid only with their dated sources; do not require them in a current snapshot.\nAccurately quoting the canonical LumenLoop source on the $2.8B RWA and 1,700 monthly active developers attribution to the written Messari report is not a wrong claim while ll-009 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "FRESHNESS item (quarterly). Two dated sources, slightly different cuts: SDF Q1 2026 'Execution at network scale' cites $2B+ on-chain RWAs, $5.5B stablecoin payment volume, ~86% dev growth; Messari 'State of Stellar Q1 2026' (per Lumenloop roundup, week of May 29 2026) puts the tokenized-RWA stack at ~$2.8B (4th among ecosystems) with ~1,700 monthly active devs. Don't gate on one exact number — gate on 'cite a dated SDF quarterly report + flag it's a snapshot.' 2026-06-29 reviewed: directly verified both anchors — SDF blog 'Q1 2026: Execution at network scale' confirms RWAs crossed $2B (from $785M YE2025), stablecoin payment volume $5.5B (+72% YoY); SDF President interview (2026-06-04) states RWA stack now ~$2.8B, '3rd or 4th' among chains. LinkedIn/Messari cross-check shows Stellar #4 RWA (~$1.7B registered-fund scope) — note the $1.2-2B vs $2.8B gap is a scope difference (registered funds vs broad RWA incl. stablecoins); file already gates on caveat. Confidence kept medium (figures move quarterly).\nAlso good if the answer: Attributes the numbers to a specific dated report (an SDF quarterly report, latest Q3 2026 as of 2026-11-02, or Messari State of Stellar Q1 2026) rather than asserting bare figures.\nGolden cites: A dated SDF quarterly report (Q3 2026 is the latest as of 2026-11-02; Q1 and Q2 2026 stay valid as dated history) for the figures.\nSDF SURFACES DIFFER (2026-11-02): the Q3 2026 report PDF states $4.1B RWAs at quarter end; stellar.org/quarterly-reports shows $4.3B. Do not penalize either figure when attributed and dated.\nGT-20 CORRECTION 2026-07-10 supersedes inherited scope/superlative prose. Grade explicit date, metric definition, stock-versus-flow separation, period, and methodology. Historical $1.52B/$2B/~$2.8B points remain valid only with their dated sources; do not require them in a current snapshot.\nAccurately quoting the canonical LumenLoop source on the $2.8B RWA and 1,700 monthly active developers attribution to the written Messari report is not a wrong claim while ll-009 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -34,7 +34,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -60,6 +60,42 @@
         "class": "D",
         "ref": "https://docs.rwa.xyz/methodology/metrics",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+        "note": "SDF Q3 2026 Quarter in Review (October 2026): \"Real-world assets on Stellar reached $4.1 billion at quarter end, up 36% from Q2\"; Stablecoin Transfer Volume $25.1B; Stablecoin Market Cap $496M.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/quarterly-reports",
+        "note": "\"Summary of Q3 2026 Network stats ... $4.3B RWAs\"; lists Q3, Q2, and Q1 2026 reports.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/0da602cf8d9aacb3ecb1444978460a2dfce8772f.pdf",
+        "note": "SDF Q2 2026 Quarter in Review: \"Stellar crossed $1 billion in onchain RWAs in January, $2 billion in April, and $3 billion in June 2026\"; \"$11.4 billion in stablecoin transfer volume\".",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/q2-2026-what-stellar-was-built-for-has-arrived",
+        "note": "\"Stablecoin transfer volume reached $11.4 billion in Q2, an all-time high, up 72% quarter over quarter\".",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://cryptobriefing.com/stellar-ranks-second-active-developers/",
+        "note": "SDF published its Q3 2026 report on October 19, 2026; stablecoin transfer volume $25.1B; stablecoin market cap $496M; RWAs $4.1B, up 36% QoQ.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026",
+        "note": "\"Stellar's Q3 report recorded $25.1 billion in stablecoin volume, up 314% year over year, $4.1 billion in RWAs\".",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -140,45 +176,89 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "SDF Q3 2026 report (October 2026): RWAs $4.1B at quarter end (+36% QoQ), Q3 stablecoin transfer volume $25.1B, stablecoin market cap $496M.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+            "observedAt": "2026-11-02",
+            "note": "\"Real-world assets on Stellar reached $4.1 billion at quarter end, up 36% from Q2 and 548% year over year. ... Stablecoin Transfer Volume $25.1B +121% +314% ... Stablecoin Market Cap ... $496M\""
+          },
+          {
+            "class": "D",
+            "ref": "https://cryptobriefing.com/stellar-ranks-second-active-developers/ (Perplexity search)",
+            "observedAt": "2026-11-02",
+            "note": "\"Stablecoin transfer volume hit $25.1 billion ... stablecoin market cap was $496 million ... Stellar's RWA total reached $4.1 billion, up 36% quarter-over-quarter\""
+          },
+          {
+            "class": "C",
+            "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 (Perplexity search)",
+            "observedAt": "2026-11-02",
+            "note": "\"Stellar's Q3 report recorded $25.1 billion in stablecoin volume, up 314% year over year, $4.1 billion in RWAs\""
+          }
+        ]
+      },
+      {
+        "claim": "SDF Q3 2026 RWA value differs across SDF surfaces: $4.1B at quarter end (report PDF) versus $4.3B (stellar.org/quarterly-reports summary); no golden pins either figure.",
+        "verdict": "disputed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+            "observedAt": "2026-11-02",
+            "note": "\"Real-world assets on Stellar reached $4.1 billion at quarter end\""
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/quarterly-reports",
+            "observedAt": "2026-11-02",
+            "note": "\"Summary of Q3 2026 Network stats ... 23.5B Total operations $4.3B RWAs\"; no date basis stated for the summary figure."
+          }
+        ]
+      },
+      {
+        "claim": "SDF Q2 2026 report: RWAs crossed $3B in June 2026; Q2 stablecoin transfer volume $11.4B.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/0da602cf8d9aacb3ecb1444978460a2dfce8772f.pdf",
+            "observedAt": "2026-11-02",
+            "note": "\"Stellar crossed $1 billion in onchain RWAs in January, $2 billion in April, and $3 billion in June 2026. ... $11.4 billion in stablecoin transfer volume\""
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/q2-2026-what-stellar-was-built-for-has-arrived",
+            "observedAt": "2026-11-02",
+            "note": "\"Stablecoin transfer volume reached $11.4 billion in Q2, an all-time high, up 72% quarter over quarter\""
+          },
+          {
+            "class": "D",
+            "ref": "https://cryptobriefing.com/stellar-protocol-26-rwa-growth",
+            "observedAt": "2026-11-02",
+            "note": "\"The Stellar Development Foundation's Q2 2026 network report, released on August 3 ... stablecoin transfer volumes hit an all-time high of $11.4 billion\""
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-05)",
       "evidence": [
-        "eval/qa/consistency-register.json sweep 2026-07-03; deep-verification quotes/URLs in Solo scratchpad 521",
-        "Solo scratchpad 575 GT-20 primary 3256 and blind 3257; current SDF/Allium/rwa.xyz metric matrix asOf 2026-07-10.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-009; the corrected RWA and developer-stat attributions are unchanged.",
-        "Improvements review 2026-08-27: improvements/lumenloop/ll-009-messari-report-misattribution.md remains reported upstream; the disputed claim is LumenLoop's attribution of the $2.8B RWA value and 1,700 monthly active developers to the written Messari report.",
-        "Sibling sweep 2026-08-27: grep ll-009|1,700 monthly|$2.8B|Messari report → q-asset-rwa-tokenized-freshness; no contradiction",
-        "Structural re-form (presentation-avoid): Reworded the historical-scalar presentation clause as a concrete false claim and preserved the adoption-superlative trap; truth is unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; both trap targets are unchanged.",
-        "Sibling sweep 2026-08-27: grep $2.8B|1,700 monthly|payment volume|transfer volume → q-asset-rwa-tokenized-freshness, q-eco-stellar-rwa-stablecoin-volume; no contradiction",
-        "Structural re-form (negative-predicate): shortened the sourcing requirement and split the metric taxonomy into stock and flow facts; all claims are unchanged.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — the current source remains a dated report for specific RWA and stablecoin observations.",
-        "Live re-check 2026-08-27: https://docs.rwa.xyz/methodology/metrics — current methodology still defines supply, value, and market-cap measures as point-in-time stocks.",
-        "Live re-check 2026-08-27: https://stellar.org/resources/institutional-infrastructure-report and https://docs.rwa.xyz/methodology/metrics — current sources still define payment and transfer volumes over periods.",
-        "Sibling sweep 2026-08-27: grep supply|market cap|payment volume|transfer volume|stock|flow → q-asset-rwa-tokenized-freshness; no contradiction",
-        "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — remains a dated Q1 2026 source for RWA and stablecoin observations.",
-        "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — shows Q1 2026 and publication date 2026-05-07.",
-        "Live re-check 2026-08-30: https://docs.rwa.xyz/methodology/metrics.md — defines supply and value as point-in-time snapshots.",
-        "Live re-check 2026-08-30: https://docs.rwa.xyz/methodology/metrics.md — defines transfer volume during a period and accumulates transfers over that period.",
-        "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — the dated quarterly scope requires a staleness warning for current use.",
-        "Sibling sweep 2026-08-30: grep stablecoin payment volume|transfer volume|distributed RWA|represented value|market cap → q-asset-rwa-tokenized-freshness, q-asset-stablecoin-issuers-discovery, q-eco-stablecoins-on-stellar, q-eco-stellar-rwa-stablecoin-volume; no contradiction"
+        "SDF Q3 2026 report 2026-11-02: https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf — \"Real-world assets on Stellar reached $4.1 billion at quarter end, up 36% from Q2\"; \"Stablecoin Transfer Volume $25.1B\"; \"Stablecoin Market Cap ... $496M\".",
+        "SDF quarterly-reports page 2026-11-02: https://stellar.org/quarterly-reports — \"Summary of Q3 2026 Network stats ... $4.3B RWAs\" (differs from the PDF; encoded as a disputed corroboration row with a grader caution).",
+        "SDF Q2 2026 report 2026-11-02: https://cdn.sanity.io/files/e2r40yh6/production-i18n/0da602cf8d9aacb3ecb1444978460a2dfce8772f.pdf — \"$3 billion in June 2026\"; \"$11.4 billion in stablecoin transfer volume\".",
+        "Press 2026-11-02: https://cryptobriefing.com/stellar-ranks-second-active-developers/ — SDF published the Q3 2026 report on October 19, 2026, with the same $25.1B, $496M, and $4.1B figures.",
+        "Lumenloop 2026-11-02: https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 — \"$25.1 billion in stablecoin volume ... $4.1 billion in RWAs\".",
+        "Arithmetic check: Q3 $25.1B at +121% QoQ implies Q2 about $11.36B, consistent with $11.4B.",
+        "Independent verifier accepted all five changes (answer as-of date, Q3/Q2 bullets, three notes edits): /private/tmp/claude-501/golden-audit/verify/defi-ecosystem-05.json.",
+        "Sibling sweep 2026-11-02: grep RWA|Q3 2026|$4.1B|$4.3B|$25.1B → q-asset-rwa-tokenized-freshness (dated early/mid-2026 low-single-digit $B gate; Q3 $4.1B is a later point on the same trajectory); no contradiction."
       ],
       "rootCause": [
-        "improvements/lumenloop/ll-009 — the upstream misattribution this golden inherited",
-        "eval-side authoring: the 2026-06-29 review inferred a scope difference without checking rwa.xyz's metric definition (aggregator-adjacent single-class verification)",
-        "solo://proj/49/todo/corpus-health-instru--829",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-eco-stellar-rwa-stablecoin-volume"

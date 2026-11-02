@@ -89,26 +89,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (presentation-avoid): Reworded the clawback framing trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep clawback|AUTH_CLAWBACK_ENABLED|hack/exploit → q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-sep-clawback-prereq-flag; no contradiction",
-        "Structural re-form (long-fact): split the clawback framing, regulatory purpose, holder risk, and issuer-burn claims; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — CAP-0035 defines intentional issuer-only operations for clawback-enabled assets.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — the official guide presents clawback as a regulatory feature, not a protocol defect.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — CAP-0035 makes the holder risk visible through explicit flags and issuer control.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — the official guide confirms that the issuer burns assets from a recipient's balance.",
-        "Sibling sweep 2026-08-29: grep issuer-side counterparty risk|protocol vulnerability → q-comp-clawback-holder-risk, q-scf-sdf-bug-bounty; no contradiction.",
-        "Corroboration audit 2026-08-29: added 2 row(s) for clawback scope and issuer-only authority; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Proposer golden.keyFacts[0..1] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx — \"They were designed to allow asset issuers to meet securities regulations\" (class A)",
+        "Proposer golden.keyFacts[0..1] [confirmed]: Live re-check 2026-11-02: https://stellar.org/blog/developers/protocol-17-improvements — \"Asset clawback is designed for businesses issuing regulated financial instruments\" (class A)",
+        "Proposer golden.keyFacts[0..1] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"This proposal provides the Issuer with a means to clawback (and reissue if desired)\" (class B)",
+        "Proposer golden.avoid[1] [contradicted]: Live re-check 2026-11-02: https://stellar.org/blog/developers/protocol-17-improvements — \"clawback can't be enabled on XLM – Stellar's native network token — because XLM doesn't have an issuing account or require a trustline.\" (class A)",
+        "Proposer golden.avoid[1] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"When the flag is set, trustlines created to the account inherit the flag\" (class B)",
+        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline.\" (class B)",
+        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx — \"effectively destroying it and removing it from a recipient's balance.\" (class A)",
+        "Sibling sweep 2026-11-02: proposer checked q-comp-clawback-cap0035, q-sep-clawback-prereq-flag, q-scf-sdf-bug-bounty; no judge-facing field changed in this case, and no sibling contradicts the confirmed claims."
       ]
     },
     "origin": "raven-next q-comp-clawback-holder-risk"

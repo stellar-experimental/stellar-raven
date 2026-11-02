@@ -48,6 +48,30 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/validators/admin-guide/publishing-history-archives",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+        "note": "\"Safety - no two nodes ever agree on different values ... SCP prioritizes fault tolerance and safety over liveness.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "github.com/stellar/stellar-core src/rust/src/quorum_checker.rs, src/herder/RustQuorumCheckerAdaptor.cpp",
+        "note": "code search hits for potential_split",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/docs/software/commands.md",
+        "note": "\"command verify-checkpoints\"; \"self-check: Perform history-related sanity checks\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+        "note": "\"allow an asset issuer to burn a specific amount of a clawback-enabled asset from a trustline or claimable balance\"; \"The issuer sets up their account to enable clawbacks using the AUTH_CLAWBACK_ENABLED flag\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -77,18 +101,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + applier, verified unchanged; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; consensus/clawback sibling sweep.",
-        "Structural re-form (negative-predicate): split the compound finality fact into its quorum assumption and control taxonomy; native XLM, issuer controls, and custodian controls are unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol and https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — current docs still ground finality in SCP consensus assumptions.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/clawbacks and https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — current docs still treat issuer clawback and custodian accounting as mechanisms apart from native-XLM finality.",
-        "Sibling sweep 2026-08-27: grep native XLM|clawback|custodian controls|network reversal → q-comp-clawback-holder-risk and q-raph-missing-exchange-memo; no contradiction"
-      ],
-      "rootCause": [
-        "No core truth error; generic archive citations displaced actionable validator-monitoring evidence.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-11-02; no judge-facing field changed.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — \"\"Safety - no two nodes ever agree on different values ... SCP prioritizes fault tolerance and safety over liveness.\"\" (claim: Finality is relative to SCP safety/quorum intersection; SCP prioritizes safety.)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/admin-guide/monitoring — \"\"intersection: ... This is of utmost importance in preventing network splits. ... If it is ever false ... the network is at risk of splitting.\"\" (claim: Finality is relative to SCP safety/quorum intersection; SCP prioritizes safety.)",
+        "Live B 2026-11-02: github.com/stellar/stellar-core src/rust/src/quorum_checker.rs, src/herder/RustQuorumCheckerAdaptor.cpp — \"code search hits for potential_split\" (claim: Finality is relative to SCP safety/quorum intersection; SCP prioritizes safety.)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/admin-guide/monitoring — \"\"potential_split: this will contain a pair of lists of validator IDs, which is a potential pair of disjoint quorums\"; info fields 'disagree', 'transitive.intersection'\" (claim: Detect via cross-source ledger hash comparison, Core /info and quorum diagnostics (disagree, transitive intersection, po)",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-core/master/docs/software/commands.md — \"\"command verify-checkpoints\"; \"self-check: Perform history-related sanity checks\"\" (claim: Detect via cross-source ledger hash comparison, Core /info and quorum diagnostics (disagree, transitive intersection, po)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — \"\"allow an asset issuer to burn a specific amount of a clawback-enabled asset from a trustline or claimable balance\"; \"The issuer sets up their account to enable clawbacks using the AUTH_CLAWBACK_ENABLED flag\"\" (claim: Issuer clawback applies only to clawback-enabled issued assets, not native XLM.)",
+        "Sibling sweep 2026-11-02: q-protocol-validator-upgrade-vote; no contradiction found."
       ]
     },
     "origin": "raven-next q-edge-validators-reverse-tx-fork-detection"

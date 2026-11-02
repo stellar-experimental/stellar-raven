@@ -28,7 +28,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -56,20 +56,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-30",
-      "by": "drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh; wording-only correction",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-01)",
       "evidence": [
-        "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
-        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
-        "catalog/manifest.json#scout.getSkill",
-        "inventory/stellar-light.json",
-        "Todo 1253 Lane B review (2026-07-28, F2): the Scout adapter source (src/adapters) maps a 404 unknown detail slug to kind 'soft-empty' (verified by reading the adapter's 404 branch), and the 2026-07-28-verified sibling q-tool-skill-detail-install records getSkill({name:'soroban'}) as a soft-empty; this case's 'operation error' classification was corrected to the served soft-empty contract."
-      ],
-      "rootCause": [
-        "solo://project/49/scratchpad/p4/n1-gapops",
-        "Eval-authoring flaw: graded the served soft-empty contract as an operation error, contradicting the adapter and the sibling case.",
-        "eval-authoring",
-        "The golden used stale bundled-playbook wording although current playbooks are pinned and hash-verified upstream."
+        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, B, C); the proposer proposed no change and the verifier listed the case as no-proposal.",
+        "Class C (golden.answer, confirmed-as-of): GET https://stellarlight.xyz/api/skills/agentic-payments (raw) — \"200; slug agentic-payments, source sdf, content length 6717; meta.source https://skills.stellar.org/skills/agentic-payments/SKILL.md\" (observedAt 2026-11-02)",
+        "Class C (golden.answer, confirmed-as-of): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) scout.getSkill({name:'agentic-payments'}) — \"slug agentic-payments, name 'Agent Payments (x402 + MPP)', source sdf, kind skill-md, contentLen 6717\" (observedAt 2026-11-02)",
+        "Class C (golden.answer, confirmed-as-of): GET https://stellarlight.xyz/api/skills/zz-no-such-skill-9271 (raw) — \"404 {\"error\":\"unknown skill: zz-no-such-skill-9271\",\"hint\":\"Try /api/skills to list all available slugs.\"}\" (observedAt 2026-11-02)",
+        "Class B (golden.answer, confirmed-as-of): src/adapters/scout.ts:17,138 — \"404 unknown slug → kind \"soft-empty\"; kind: res.status === 404 ? \"soft-empty\" : \"error\"\" (observedAt 2026-11-02)",
+        "Class C (golden.answer, confirmed-as-of): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) scout.getSkill({name:'zz-no-such-skill-9271'}) — \"kind soft-empty, status 404, message 'unknown skill: zz-no-such-skill-9271'\" (observedAt 2026-11-02)",
+        "Class C (golden.keyFacts[1], confirmed): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) scout.listSkills({q:'agentic payments'}) — \"agentic-payments (sdf), lumenloop-ecosystem-scout (lumenloop), nirium-agentic-payments (community)\" (observedAt 2026-11-02)",
+        "Class C (golden.answer, confirmed): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) codemode.skill.read('skills.stellar-dev.agentic-payments') — \"url https://raw.githubusercontent.com/stellar/stellar-dev-skill/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/SKILL.md; sections quick-decision, ...\" (observedAt 2026-11-02)",
+        "Class B (golden.answer, confirmed): ecosystem-skills/README.md — \"This directory stores no skill body. It stores addresses: a commit SHA for each source, and a path and a git blob hash for each file.\" (observedAt 2026-11-02)",
+        "Class A (golden.avoid[0], contradicted): catalog/manifest.json#scout.listSkills — \"most entries are not mirrored skills.\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-tool-skill-detail-install checked; no conflicting fact."
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

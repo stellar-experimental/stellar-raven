@@ -31,7 +31,7 @@
     "domain": "mixed",
     "status": "confirmed",
     "asOf": "2026-07-13",
-    "reverifyBy": "2027-01-19",
+    "reverifyBy": "2027-04-07",
     "sources": [
       {
         "class": "A",
@@ -39,9 +39,10 @@
         "note": "First-party team page observed 2026-07-13: embedded page data described Mazières as Founder and Chief Scientist, while the rendered Leadership card showed only his name."
       },
       {
-        "class": "D",
-        "ref": "https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf",
-        "note": "Single-author SCP paper naming David Mazières and his Stellar Development Foundation affiliation; accessed 2026-07-13."
+        "class": "A",
+        "ref": "https://www.stellar.org/papers/stellar-consensus-protocol.pdf",
+        "note": "Single-author SCP paper naming David Mazières and his Stellar Development Foundation affiliation; stellar.org-hosted copy (the 'Draft of February 25, 2016' revision of the 2015 paper), linked from Mazières' Stanford papers index; accessed 2026-11-02. Replaces the Stanford SOSP15 PDF URL, which returned HTTP 404 on 2026-11-02.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "D",
@@ -69,34 +70,38 @@
           {
             "class": "D",
             "ref": "https://fdc.stanford.edu/people/david-mazieres",
-            "observedAt": "2026-07-13",
-            "note": "Independent institutional profile identifies his Stanford role and SDF co-founder status."
+            "observedAt": "2026-11-02",
+            "note": "\"He is also a co-founder of Intrinsic, Inc and Stellar Development Foundation.\" Independent institutional profile; re-observed 2026-11-02."
           },
           {
-            "class": "D",
-            "ref": "https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf",
-            "observedAt": "2026-07-13",
-            "note": "The paper is single-authored by David Mazières and states his SDF affiliation."
+            "class": "A",
+            "ref": "https://www.stellar.org/papers/stellar-consensus-protocol.pdf",
+            "observedAt": "2026-11-02",
+            "note": "\"The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus / DAVID MAZIÈRES, Stellar Development Foundation\"; single-authored."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-02)",
       "evidence": [
-        "https://stellar.org/foundation/team page source and rendered Leadership card observed 2026-07-13.",
-        "https://fdc.stanford.edu/people/david-mazieres and https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf.",
-        "solo://proj/49/scratchpad/sdf-organizational-s--630",
-        "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
-        "Reviewed improvements/lumenloop/ll-005-person-entity-empty-lane.md — disputed claim: an empty person-entity lane proves David Mazières has no corpus history.",
-        "Sibling sweep 2026-08-27: grep David Mazières|Mazières|Chief Scientist|SCP paper → q-edge-validators-reverse-tx-fork-detection, q-hist-scp-rewrite-2015, q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm; no contradiction",
-        "Structural re-form (compound-predicate): Split founder status from the dated title qualification; the timeless-title trap remains in avoid, so the truth is unchanged.",
-        "Live re-check 2026-08-27: https://fdc.stanford.edu/people/david-mazieres — Stanford still identifies Mazières as an SDF co-founder.",
-        "Live re-check 2026-08-27: https://stellar.org/foundation/team — the rendered Leadership section still shows Mazières without a visible title, preserving the dated source-qualified title rule.",
-        "Sibling sweep 2026-08-27: grep David Mazières|Chief Scientist|SCP paper → q-hist-scp-rewrite-2015, q-protocol-scp-consensus-algorithm; no contradiction"
+        "[A] golden.answer (confirmed-as-of): https://stellar.org/foundation/team :: \"page data: \"description\":\"Founder and Chief Scientist\" in the card object whose \"title\":\"David Mazières\"; rendered Leadership list: 'Candace Kelly', 'David Mazières', 'Denelle Dixon' with no visible title\" (observedAt 2026-11-02)",
+        "[C] golden.answer (confirmed-as-of): https://stellarlight.xyz/api/people?q=Mazi&limit=10 :: \"{'name': 'David Mazières', 'role': 'Founder and Chief Scientist', 'section': 'Leadership', 'sourceUrl': 'https://stellar.org/foundation/team', 'observedAt': '2026-07-19'}\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[0] (confirmed): https://fdc.stanford.edu/people/david-mazieres :: \"He is also a co-founder of Intrinsic, Inc and Stellar Development Foundation.\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[0] (confirmed): https://stellar.org/foundation/team :: \"\"description\":\"Founder and Chief Scientist\"\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[2] (confirmed): https://cdn.sanity.io/files/e2r40yh6/production-i18n/39856a57fa0c6e7d646b7db88f48f17688693fe4.pdf (linked from https://www.stellar.org/papers/stellar-consensus-protocol) :: \"The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus DAVID MAZIÈRES, Stellar Development Foundation\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[2] (confirmed): https://fdc.stanford.edu/people/david-mazieres :: \"David Mazières Professor of Computer Science\" (observedAt 2026-11-02)",
+        "[F] truth.sources[1].ref (contradicted): https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf :: \"404 Not Found (OpenBSD httpd)\" (observedAt 2026-11-02)",
+        "[B] truth.sources[1].ref (contradicted): https://www.scs.stanford.edu/~dm/ :: \"homepage now links href=\"https://www.stellar.org/papers/stellar-consensus-protocol.pdf\"\" (observedAt 2026-11-02)",
+        "[F] truth.sources[1].ref: https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf :: curl -L HTTP 404 (observedAt 2026-11-02)",
+        "[D] truth.sources[1].ref: https://www.scs.stanford.edu/~dm/home/papers/ :: index links href=\"https://www.stellar.org/papers/stellar-consensus-protocol.pdf\" (observedAt 2026-11-02)",
+        "Verifier modify: the proposed URL without '.pdf' redirects to stellar.org/learn/stellar-consensus-protocol, which does not name the author; the '.pdf' URL was used instead. Source class D -> A (stellar.org-hosted first-party copy).",
+        "Sibling sweep 2026-11-02: grep 'stellar-consensus-sosp15' across eval/qa/corpus -> only this case; q-hist-scp-rewrite-2015, q-protocol-scp-consensus-algorithm, q-org-sdf-board-directors checked; no contradiction.",
+        "No judge-facing change; prior verification event 2026-08-27 is in git history."
       ],
       "rootCause": [
+        "freshness-drift",
         "The golden treated embedded team-page title data as visibly displayed current wording and marked the mixed claim stable.",
         "improvements/lumenloop/ll-005-person-entity-empty-lane.md",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",

@@ -69,13 +69,12 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited roles were broadly correct but said contracttype directly performs SCVal/XDR encoding and made an overbroad one-contract assertion. Contract-side generated conversions are to/from Val plus spec entries.",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
       "evidence": [
-        "Solo scratchpad 575 GT-47 blind 3334 narrowed primary 3327's retain decision."
-      ],
-      "rootCause": [
-        "Eval-side macro explanation collapsed the Val abstraction into direct XDR encoding."
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/lib.rs (observedAt 2026-11-02): \"Marks a type as being the type that contract functions are attached for. ... Exports the publicly accessible functions to the Soroban environment. ... Generates conversions from the struct/enum from/into a `Val`\".",
+        "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage (observedAt 2026-10-01): example uses #[contracttype] pub enum DataKey and #[contractimpl] impl LoyaltyPointsContract.",
+        "Verification only: SDK v28 changed contracttype struct unpacking tolerance (CAP-86) but not macro roles; no gospel change. Sibling sweep 2026-11-02: q-tool-rust-soroban-sdk; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-sdk-macros"

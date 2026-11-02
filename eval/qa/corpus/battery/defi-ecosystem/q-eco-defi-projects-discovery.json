@@ -8,7 +8,7 @@
     "scout.searchProjects"
   ],
   "golden": {
-    "answer": "Provide a **dated, illustrative directory** rather than a timeless list of the 'main' projects. State the selection rule and, for each row, give category, operator URL, and verified status. A 2026-07-10 starting set can include Blend and Templar (lending/credit); native Stellar liquidity, Aquarius, Soroswap, Phoenix, and Sushi (liquidity/DEX, with roles separated); DeFindex (vaults); Reflector (oracles); and selected RWA/DeFi products only with deployment-state caveats. YieldBlox and DeFindex should not be presented as independent base lenders when they build on other liquidity/protocol layers.",
+    "answer": "Provide a **dated, illustrative directory** rather than a timeless list of the 'main' projects. State the selection rule and, for each row, give category, operator URL, and verified status. A 2026-07-10 starting set can include Blend (Soroban lending) and Templar (cross-chain lending whose markets run on NEAR); native Stellar liquidity, Aquarius, Soroswap, Phoenix, and Sushi (liquidity/DEX, with roles separated); DeFindex (vaults); Reflector (oracles); and selected RWA/DeFi products only with deployment-state caveats. YieldBlox and DeFindex should not be presented as independent base lenders when they build on other liquidity/protocol layers.",
     "keyFacts": [
       "Labels the roster as an illustrative, dated selection.",
       "States the selection rule and each project's category, operator source, and status.",
@@ -42,6 +42,36 @@
         "class": "D",
         "ref": "https://defillama.com/chain/stellar",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.templarfi.org/guide/architecture.html",
+        "note": "Golden audit 2026-11-02: \"Templar is an overcollateralized lending protocol whose markets run on NEAR. ... depositors on Stellar reach them through curated vaults.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.templarfi.org/frequently-asked-questions",
+        "note": "Golden audit 2026-11-02: \"Markets are isolated (e.g., BTC → USDC) but coordinate seamlessly via NEAR Chain Signatures\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.certora.com/reports/templar",
+        "note": "Golden audit 2026-11-02: \"Templar Protocol is a chain-agnostic overcollateralized lending protocol deployed on the NEAR blockchain.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://whalehub.io/blog/templar-protocol-stellar",
+        "note": "Golden audit 2026-11-02: \"Templar's lending markets are smart contracts on NEAR, registered under v1.tmplr.near. Stellar users deposit and borrow from a Stellar wallet\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Raven lumenloop.search_directory {query:'templar'} -> slug templar-protocol, website templarfi.org",
+        "note": "Golden audit 2026-11-02: \"Decentralized lending protocol allowing users to borrow dollars against Bitcoin collateral without centralized intermediaries.\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -62,24 +92,60 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Templar is a cross-chain lending protocol whose markets run on NEAR; Stellar users reach them through curated vaults (as of 2026-11-02).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.templarfi.org/guide/architecture.html",
+            "observedAt": "2026-11-02",
+            "note": "Templar is an overcollateralized lending protocol whose markets run on NEAR. ... depositors on Stellar reach them through curated vaults."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.templarfi.org/frequently-asked-questions",
+            "observedAt": "2026-11-02",
+            "note": "Markets are isolated (e.g., BTC → USDC) but coordinate seamlessly via NEAR Chain Signatures"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.certora.com/reports/templar",
+            "observedAt": "2026-11-02",
+            "note": "Templar Protocol is a chain-agnostic overcollateralized lending protocol deployed on the NEAR blockchain."
+          },
+          {
+            "class": "D",
+            "ref": "https://whalehub.io/blog/templar-protocol-stellar",
+            "observedAt": "2026-11-02",
+            "note": "Templar's lending markets are smart contracts on NEAR, registered under v1.tmplr.near. Stellar users deposit and borrow from a Stellar wallet"
+          },
+          {
+            "class": "C",
+            "ref": "Raven lumenloop.search_directory {query:'templar'} -> slug templar-protocol, website templarfi.org",
+            "observedAt": "2026-11-02",
+            "note": "Decentralized lending protocol allowing users to borrow dollars against Bitcoin collateral without centralized intermediaries."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258.",
-        "Structural re-form (long-fact): split the directory contract into three short facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=DeFi&limit=100 — the executed live query returns generated-at metadata and explicit filters for a dated illustrative selection.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=DeFi&limit=100 — the executed response exposes its selection filter and per-project category, operator links, and dated status.",
-        "Live re-check 2026-08-29: https://github.com/blend-capital/blend-contracts-v2 and https://github.com/defindex-io/stellar-contracts — the operator repositories distinguish Blend's lending primitive from DeFindex vaults and Blend-based strategies.",
-        "Sibling sweep 2026-08-29: grep illustrative directory|selection rule|dependency/role|main DeFi projects → q-eco-defi-projects-discovery only; no contradiction."
+        "A: https://docs.templarfi.org/guide/architecture.html — \"Templar is an overcollateralized lending protocol whose markets run on NEAR. ... depositors on Stellar reach them through curated vaults.\" (observedAt 2026-11-02)",
+        "A: https://www.templarfi.org/frequently-asked-questions — \"Markets are isolated (e.g., BTC → USDC) but coordinate seamlessly via NEAR Chain Signatures\" (observedAt 2026-11-02)",
+        "D: https://www.certora.com/reports/templar — \"Templar Protocol is a chain-agnostic overcollateralized lending protocol deployed on the NEAR blockchain.\" (observedAt 2026-11-02)",
+        "D: https://whalehub.io/blog/templar-protocol-stellar — \"Templar's lending markets are smart contracts on NEAR, registered under v1.tmplr.near. Stellar users deposit and borrow from a Stellar wallet\" (observedAt 2026-11-02)",
+        "C: Raven lumenloop.search_directory {query:'templar'} -> slug templar-protocol, website templarfi.org — \"Decentralized lending protocol allowing users to borrow dollars against Bitcoin collateral without centralized intermediaries.\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep -i templar over the battery → q-defi-blend-alternatives (Templar as cross-chain/cypher-lending, not a like-for-like Soroban money market; consistent); proposer siblings q-eco-defi-market-map, q-eco-dex-saturation; no contradiction."
       ],
       "rootCause": [
-        "An illustrative directory was authored as a timeless canonical roster.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side authoring flaw (recorded in .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04): the directory answer omitted Templar's NEAR-market dependency while it named the dependencies of YieldBlox and DeFindex."
       ]
     },
-    "origin": "raven-next q-eco-defi-projects-discovery"
+    "origin": "raven-next q-eco-defi-projects-discovery",
+    "asOf": "2026-11-02"
   }
 }

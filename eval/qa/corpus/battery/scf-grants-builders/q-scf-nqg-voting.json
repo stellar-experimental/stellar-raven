@@ -77,27 +77,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-39 processes 3300/3303 and GT-40 process 3304, 2026-07-10.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep NQG|Pathfinder|Navigator|Open Track vote → q-scf-build-tracks, q-scf-verified-members; no contradiction",
-        "Structural re-form (long-fact): Shortened two long facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/governance/neural-quorum-governance — the current official handbook supplies source-supported NQG and voting observations.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/quarterly-governance-process — the current review table assigns community voting only to Open projects and panel-only review to Integration/RFP awards.",
-        "Sibling sweep 2026-08-29: grep NQG|Neural Quorum|Build Open|Public Goods|Integration/RFP → q-scf-ambassador-program, q-scf-build-tracks, q-scf-how-to-apply, q-scf-instawards, q-scf-nqg-voting, q-scf-open-rfps, q-scf-submission-lifecycle-deadlines, q-scf-verified-members; no contradiction."
-      ],
-      "rootCause": [
-        "Eval-side governance-role and vote-object collapse; the prior golden implied Public Goods electorate details not established by the cited Build Open sources.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer re-derived the claims from two or more source classes (no change proposed, so no verifier pass).",
+        "Live A 2026-10-29: https://stellar.gitbook.io/scf-handbook/governance/neural-quorum-governance — 'Neural Quorum Governance (NQG) is a novel voting-power attribution and delegation mechanism ... Neural Governance ... and Quorum Delegation' (claim: NQG = Neural Governance + Quorum Delegation, reputation/delegation mechanism, not token voting; verdict confirmed)",
+        "Live A 2026-11-02: https://medium.com/stellar-community/2-years-of-neural-quorum-governance-7bddd31 — 'Community Vote now applied to Open Track only, with Integration- and RFP tracks evaluated by the delegate panel directly.' (claim: NQG = Neural Governance + Quorum Delegation, reputation/delegation mechanism, not token voting; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/governance/verified-members.md — 'Delegate votes ... Pathfinder ✅ Navigator ✅ Pilot ✅; Vote actively for projects ... Navigator ✅ Pilot ✅; Become a quarterly delegate ... propose, contribute, and vote for governance proposals ... Pilot ✅' (claim: Verified view-only; Pathfinder delegates; Navigator+Pilot vote actively; Pilot delegate + governance proposals; verdict confirmed)",
+        "Live C 2026-11-02: Raven MCP scout.searchResearch(NQG Pathfinder Navigator Pilot) — 'returned How to Become Verified, How to vote, Neural Quorum Governance handbook pages' (claim: Verified view-only; Pathfinder delegates; Navigator+Pilot vote actively; Pilot delegate + governance proposals; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/quarterly-governance-process.md — 'Open ... Panel Review & Community Vote; RFP ... Panel Review only' (claim: Community vote only on Build Open; Integration/RFP panel-only; Public Goods separate; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/supporting-programs/public-goods-award.md — 'Managed through Soroban Governor with voting power weighted by Neural Quorum Governance (NQG)' (claim: Community vote only on Build Open; Integration/RFP panel-only; Public Goods separate; verdict confirmed)",
+        "Live A 2026-11-02: https://medium.com/feed/stellar-community (SCF #43 recap) — 'the Integration Track ... (reviewed by the delegate panel only), and the RFP Track ... (reviewed by the delegate panel only)' (claim: Community vote only on Build Open; Integration/RFP panel-only; Public Goods separate; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-scf-verified-members, q-scf-build-tracks checked by the proposer; no contradiction (no gospel change)."
       ]
     },
     "origin": "raven-next q-scf-nqg-voting"

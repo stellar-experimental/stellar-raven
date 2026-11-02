@@ -37,6 +37,18 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/encyclopedia/contract-development/contract-interactions/stellar-ecosystem-proposals",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/README.md",
+        "note": "'CAPs deal with changes to the core protocol ... SEPs deal with changes to the standards, protocols, and methods used in the ecosystem'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/",
+        "note": "current_protocol_version 29, core_supported_protocol_version 30.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -60,17 +72,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-32 primary 3281 and blind 3284.",
-        "Structural re-form (negative-predicate): Recast the CAP-versus-SEP comparison as a positive taxonomy requirement; truth unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — the current page described SEPs as ecosystem interoperability standards and contrasted them with CAPs.",
-        "Sibling sweep 2026-08-27: grep CAPs|SEPs|CAP proposal → q-protocol-cap-process, q-protocol-cap-vs-sep, q-protocol-23-whisk-caps, and related CAP cases; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side proposal/implementation/activation compression.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/README.md — 'CAPs deal with changes to the core protocol of the Stellar network. ... SEPs deal with changes to the standards, protocols, and methods used in the ecosystem built on top of the Stellar network.'",
+        "Class B 2026-11-02: gh api repos/stellar/stellar-protocol/contents/ — core/ and ecosystem/ directories, cap-template.md and sep-template.md.",
+        "Class A 2026-11-02: https://stellar.org/blog/developers/protocol-22-upgrade-guide — validators arm 'upgrades?mode=set&upgradetime=2024-12-05T17:00:00Z&protocolversion=22'.",
+        "Class C 2026-11-02: https://horizon.stellar.org/ — current_protocol_version 29, core_supported_protocol_version 30 (P30 CAPs such as CAP-0087 are Implemented but not active).",
+        "No gospel change. Sibling sweep: q-protocol-cap-process — consistent."
       ]
     },
     "origin": "raven-next q-protocol-cap-vs-sep"

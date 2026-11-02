@@ -1,0 +1,1119 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "retail-consumer-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-aas-list-token-on-exchanges-aggregators",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SEP-1 says clients and exchanges can use stellar.toml information to decide whether a token should be listed",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "Clients and exchanges can use this information to decide whether a token should be listed."
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/tokens/publishing-asset-info#how-to-publish-your-stellar-info-file",
+       "observedAt": "2026-11-02",
+       "quote": "post it at the following location: https://YOUR_DOMAIN/.well-known/stellar.toml"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Issuance, trustlines, home domain, SEP-1 metadata, logo/issuer details are prerequisites",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "Clients and exchanges can use this information to decide whether a token should be listed."
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/tokens/publishing-asset-info#how-to-publish-your-stellar-info-file",
+       "observedAt": "2026-11-02",
+       "quote": "post it at the following location: https://YOUR_DOMAIN/.well-known/stellar.toml"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Tradability needs SDEX offers, AMM pools, or listings",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools.md",
+       "observedAt": "2026-11-02",
+       "quote": "Users can trade and convert assets on the Stellar network with the use of path payments through Stellar's decentralized exchange and liquidity pools."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "Clients and exchanges can use this information to decide whether a token should be listed."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Venues set their own listing, verification, liquidity policies",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+       "observedAt": "2026-11-02",
+       "quote": "Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar-asset-lists/index/main/index.json",
+       "observedAt": "2026-11-02",
+       "quote": "Providers: Lobstr Curated List (UltraStellar), Soroswap List, StellarExpert Top 50 ('Assets included in this list were not verified by StellarExpert team')"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SEP-42 Stellar Asset Lists catalog warns inclusion is not endorsement",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+       "observedAt": "2026-11-02",
+       "quote": "Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar-asset-lists/index/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Inclusion of any particular asset in a list should not be considered as endorsement or recommendation. ... The easiest way to utilize asset lists in your web ap…"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.expert/asset-lists (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Community-managed catalogue of Stellar asset lists ... Inclusion of any particular asset in a list should not be considered as endorsement or recommendation."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "No official universal Stellar whitelist governs every exchange/aggregator (negative)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+       "observedAt": "2026-11-02",
+       "quote": "Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar-asset-lists/index/main/index.json",
+       "observedAt": "2026-11-02",
+       "quote": "Providers: Lobstr Curated List (UltraStellar), Soroswap List, StellarExpert Top 50 ('Assets included in this list were not verified by StellarExpert team')"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.expert/asset-lists (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Community-managed catalogue of Stellar asset lists ... Inclusion of any particular asset in a list should not be considered as endorsement or recommendation."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-aas-trusted-asset-list-whitelist; q-asset-usdc-eurc-path-fx; q-defi-sdex-offer-lifecycle"
+  },
+  {
+   "id": "q-aas-trusted-asset-list-whitelist",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "No protocol-level whitelist makes an asset trusted across all wallets",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+       "observedAt": "2026-11-02",
+       "quote": "Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar-asset-lists/index/main/index.json",
+       "observedAt": "2026-11-02",
+       "quote": "Providers: Lobstr Curated List (UltraStellar), Soroswap List, StellarExpert Top 50 ('Assets included in this list were not verified by StellarExpert team')"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.expert/asset-lists (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Community-managed catalogue of Stellar asset lists ... Inclusion of any particular asset in a list should not be considered as endorsement or recommendation."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SEP-42 SAL, stellar-asset-lists/index catalog, StellarExpert asset-list page, @stellar-asset-lists/sdk package exist",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+       "observedAt": "2026-11-02",
+       "quote": "Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar-asset-lists/index/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Inclusion of any particular asset in a list should not be considered as endorsement or recommendation. ... The easiest way to utilize asset lists in your web ap…"
+      },
+      {
+       "class": "F",
+       "ref": "https://registry.npmjs.org/@stellar-asset-lists/sdk",
+       "observedAt": "2026-11-02",
+       "quote": "dist-tags latest 1.0.1"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.expert/asset-lists (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Community-managed catalogue of Stellar asset lists ... Inclusion of any particular asset in a list should not be considered as endorsement or recommendation."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Catalog says inclusion is not endorsement or recommendation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar-asset-lists/index/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Inclusion of any particular asset in a list should not be considered as endorsement or recommendation. ... The easiest way to utilize asset lists in your web ap…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+       "observedAt": "2026-11-02",
+       "quote": "Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..4]",
+     "claim": "Wallets should evaluate issuer/home domain/SEP-1, known sources, risk signals, liquidity; protocol validity differs from display policy",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "Clients and exchanges can use this information to decide whether a token should be listed."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+       "observedAt": "2026-11-02",
+       "quote": "Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "Red flags for assets include: domains that redirect to stellar.org; domains that don't have a web page setup; assets with very few funded trustlines"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Stellar/SDF maintains a universal official trusted-token whitelist (false)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar-asset-lists/index/main/index.json",
+       "observedAt": "2026-11-02",
+       "quote": "Providers: Lobstr Curated List (UltraStellar), Soroswap List, StellarExpert Top 50 ('Assets included in this list were not verified by StellarExpert team')"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.expert/asset-lists (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Community-managed catalogue of Stellar asset lists ... Inclusion of any particular asset in a list should not be considered as endorsement or recommendation."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-aas-list-token-on-exchanges-aggregators; q-raph-lobstr-legitimacy"
+  },
+  {
+   "id": "q-asset-usdc-eurc-issuer",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Circle is the product issuer of USDC and EURC on Stellar",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.circle.com/eurc",
+       "observedAt": "2026-11-02",
+       "quote": "EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France, and qualifies as an e-money token unde…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/eurc-launches-on-the-stellar-network",
+       "observedAt": "2026-11-02",
+       "quote": "MADRID, SPAIN – September 26, 2023 – Circle and the Stellar Development Foundation (SDF) today announced that EURC is now live on the Stellar network."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 and /accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+       "observedAt": "2026-11-02",
+       "quote": "home_domain circle.com for both issuer accounts"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins (via Raven scout.getStablecoins, dataAsOf 2026-11-02T06:26:31Z)",
+       "observedAt": "2026-11-02",
+       "quote": "EURC is issued on Stellar by 2 distinct companies: attribute by issuer account, never by ticker alone. (Circle GDHU6WRG...NPP2; MyKobo GAQRF3UG...Z7NM)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "EURC launched on Stellar on September 26, 2023",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/eurc-launches-on-the-stellar-network",
+       "observedAt": "2026-11-02",
+       "quote": "MADRID, SPAIN – September 26, 2023 – Circle and the Stellar Development Foundation (SDF) today announced that EURC is now live on the Stellar network."
+      },
+      {
+       "class": "C",
+       "ref": "Lumenloop POST /v1/tools/search_content_semantic (articles) -> https://www.theblock.co/post/253051/circle-launches-eurc-stablecoin-on-stellar-network",
+       "observedAt": "2026-11-02",
+       "quote": "Circle launches EURC stablecoin on Stellar network | 2023-09-26 19:33:00+00"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity ask -> https://micatracker.digital-euro-association.de/emt-tracker; https://www.amf-france.org/sites/institutionnel/files/pdf/78665/en/CIRCLE_INTERNET_FINANCIAL_EUROPE_SAS.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "The licensed MiCA issuer is Circle Internet Financial Europe SAS ... EURC launched on the Stellar network on September 26, 2023"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "EURC current EU legal issuer is Circle Internet Financial Europe SAS",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.circle.com/eurc",
+       "observedAt": "2026-11-02",
+       "quote": "EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France, and qualifies as an e-money token unde…"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity ask -> https://micatracker.digital-euro-association.de/emt-tracker; https://www.amf-france.org/sites/institutionnel/files/pdf/78665/en/CIRCLE_INTERNET_FINANCIAL_EUROPE_SAS.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "The licensed MiCA issuer is Circle Internet Financial Europe SAS ... EURC launched on the Stellar network on September 26, 2023"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Both are classic Stellar assets with reserved SAC representations",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "Mainnet USDC Issuer GA5ZSEJY...KZVN SEP-41 Contract CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 and /accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+       "observedAt": "2026-11-02",
+       "quote": "home_domain circle.com for both issuer accounts"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (scope)",
+     "claim": "'Circle issues both USDC and EURC on Stellar' read as exclusive for code EURC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins (via Raven scout.getStablecoins, dataAsOf 2026-11-02T06:26:31Z)",
+       "observedAt": "2026-11-02",
+       "quote": "EURC is issued on Stellar by 2 distinct companies: attribute by issuer account, never by ticker alone. (Circle GDHU6WRG...NPP2; MyKobo GAQRF3UG...Z7NM)"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM + https://mykobo.co/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "home_domain mykobo.co; toml: code=\"EURC\" issuer=\"GAQRF3UG...\" status=\"live\" name=\"EURo Coin\""
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Circle Mint Europe is not the current legal issuer; Tether/Paxos/SDF do not issue USDC/EURC",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.circle.com/eurc",
+       "observedAt": "2026-11-02",
+       "quote": "EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France, and qualifies as an e-money token unde…"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity ask -> https://micatracker.digital-euro-association.de/emt-tracker; https://www.amf-france.org/sites/institutionnel/files/pdf/78665/en/CIRCLE_INTERNET_FINANCIAL_EUROPE_SAS.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "The licensed MiCA issuer is Circle Internet Financial Europe SAS ... EURC launched on the Stellar network on September 26, 2023"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Dossier §4. Verified: Circle issues both USDC and EURC on Stellar; EURC launched on Stellar 2023-09-26, fiat-backed redeemable 1:1 for euro (stellar.org press release).\nAlso good if the answer: USDC is USD-backed and EURC is euro-backed, each redeemable 1:1. | Both are issued as classic Stellar assets (and thus get a reserved SAC).\nGolden cites: A stellar.org Circle USDC/EURC page or the EURC launch press release.\nLEGAL-ENTITY CORRECTION 2026-07-09 (todo 901): replace inherited 'Circle Mint Europe' wording with Circle Internet Financial Europe SAS, per Circle's current EURC disclosure.\nSAME-TI…",
+     "reason": "Real-world same-code asset (Scout registry + Horizon + issuer toml) means a true answer could be misgraded; aligns with sibling q-asset-stablecoin-issuers-discovery avoid[1]."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: golden scoped 'EURC' by ticker without the code+issuer identity boundary that its sibling q-asset-stablecoin-issuers-discovery carries."
+   ],
+   "siblings": "q-asset-stablecoin-issuers-discovery; q-eco-stablecoins-on-stellar; q-token-circle-usdc-on-stellar; q-asset-usdc-eurc-path-fx"
+  },
+  {
+   "id": "q-asset-usdc-eurc-path-fx",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Use PathPaymentStrictReceive or StrictSend from USDC to EURC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "path payments cross through the SDEX and/or liquidity pools before arriving at the destination account ... Balances are settled at the very end of the operation…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "Path | list of assets | The assets (other than send asset and destination asset) involved in the offers the path takes. For example, if you can only find a path…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "The network finds a path through SDEX offers, AMM pools, or both",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "// build the full path from the destination, ending with sendAsset ... fullPath.insert(fullPath.end(), mPathPayment.path.rbegin(), mPathPayment.path.rend());"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/aggregations/paths.md",
+       "observedAt": "2026-11-02",
+       "quote": "Paths provide information about potential path payments. A path can be used to populate the necessary fields for a path payment operation."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "Path | list of assets | The assets (other than send asset and destination asset) involved in the offers the path takes. For example, if you can only find a path…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.0.1/src/horizon/server.ts",
+       "observedAt": "2026-11-02",
+       "quote": "As part of the search, horizon will load a list of assets available to the source address and will find any payment paths from those source assets to the desire…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "EURC delivered atomically in one transaction; wallet never holds intermediate asset",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "path payments cross through the SDEX and/or liquidity pools before arriving at the destination account ... Balances are settled at the very end of the operation…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "path payment operations exchange through the order book and liquidity pools"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer bullet 3",
+     "claim": "Recipient must hold EURC trustline",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "Path | list of assets | The assets (other than send asset and destination asset) involved in the offers the path takes. For example, if you can only find a path…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "path payments cross through the SDEX and/or liquidity pools before arriving at the destination account ... Balances are settled at the very end of the operation…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer bullet 4",
+     "claim": "Strict-receive 'bounds' the EURC delivered",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "Destination amount | integer | The amount of destination asset the destination account receives. ... Send max | integer | The maximum amount of send asset to de…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "path payments cross through the SDEX and/or liquidity pools before arriving at the destination account ... Balances are settled at the very end of the operation…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Off-chain FX bridge / external DEX manual swap is not the canonical mechanism",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "path payments cross through the SDEX and/or liquidity pools before arriving at the destination account ... Balances are settled at the very end of the operation…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools.md",
+       "observedAt": "2026-11-02",
+       "quote": "Users can trade and convert assets on the Stellar network with the use of path payments through Stellar's decentralized exchange and liquidity pools."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "- Use a **path payment** — `PathPaymentStrictReceiveOp` (or `PathPaymentStrictSendOp`) — with **source asset USDC** and **destination asset EURC** [1].\n- The wallet gets a candidate route (e.g. from Horizon `/paths/strict-receive` or `/paths/strict-send`) and lists the intermediate assets in the operation's `path`; the network then converts through SDEX offers and/or AMM pools along that path (e.g. USDC→XLM→EURC) and delivers EURC **atomically in one transaction**; the wallet never has to hold XLM or the intermediate hop asset [1].\n- The **recipient must hold a trustline to the asset they rece…",
+     "reason": "Golden says the network finds the path; core walks the client-supplied path, and Horizon discovers paths. Also strict-receive fixes (not bounds) the destination amount."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Converts through SDEX offers, AMM pools, or both along the operation's path.",
+     "reason": "Keep the verified conversion-venue fact without the false 'network finds a path' predicate (76 chars)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Applied how-to combining path payments + stablecoins. Dossier §3.5, §4.5.\nAlso good if the answer: The sender/recipient must each hold a trustline to the asset they receive (recipient needs EURC trustline). | Settles in seconds at low fee; the wallet never has to hold XLM or the intermediate hop asset.\nGolden cites: A path-payments / SDEX page on developers.stellar.org.\nPATHFINDING BOUNDARY (verified 2026-11-02): path discovery is off-chain. Horizon /paths/strict-receive and /paths/strict-send return candidate paths; the operation carries the intermediate assets in `path`, and stellar-core con…",
+     "reason": "Symmetric grader caution so neither the accurate off-chain pathfinding wording nor the colloquial routing wording is penalized."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: golden conflated off-chain path discovery (Horizon /paths) with on-chain path execution, and used 'bounds' for strict-receive's exact destination amount."
+   ],
+   "siblings": "q-asset-path-payment-ops; q-defi-arbitrage-pathpayment-bots; q-defi-sdex-offer-lifecycle; q-asset-usdc-eurc-issuer"
+  },
+  {
+   "id": "q-jutsu-cash-crypto-ramps",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Any network-wide ramp count is a dated snapshot",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/use-cases/payments",
+       "observedAt": "2026-10-22",
+       "quote": "170+ Countries with USDC cash-out ... 475K+ MoneyGram locations ... Regulated anchors bridge fiat rails to onchain balances across 180+ countries."
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/tools/ramps",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar has anchor services operating worldwide. View the Anchor Directory for information on Stellar anchors."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Availability is corridor- and provider-specific",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/use-cases/ramps",
+       "observedAt": "2026-10-07",
+       "quote": "Supported fiat payment methods will differ depending on the on and off-ramp institution."
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/tools/ramps",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar has anchor services operating worldwide. View the Anchor Directory for information on Stellar anchors."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Inventing a network-wide count / promising country support without source",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/use-cases/payments",
+       "observedAt": "2026-10-22",
+       "quote": "170+ Countries with USDC cash-out ... 475K+ MoneyGram locations ... Regulated anchors bridge fiat rails to onchain balances across 180+ countries."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/use-cases/ramps",
+       "observedAt": "2026-10-07",
+       "quote": "Supported fiat payment methods will differ depending on the on and off-ramp institution."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-crp-anchors-by-corridor; q-anchor-moneygram-ramps; q-raph-offramp-xlm-usdc; q-pay-anchor-msb-licensing"
+  },
+  {
+   "id": "q-jutsu-check-account-history",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Lookup uses public address/tx hash, never secret key",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account",
+       "observedAt": "2026-11-02",
+       "quote": "GET /accounts/:account_id ... The balances section in the response will also list all the trustlines this account has established"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN/transactions?limit=1&order=desc",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200 with no credentials"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Network selection matters; on-chain history is public",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/transactions?limit=1&order=desc",
+       "observedAt": "2026-11-02",
+       "quote": "public tx fdb41ef885c9... created_at 2026-11-02T16:08:14Z returned unauthenticated"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "new Horizon.Server(\"https://horizon-testnet.stellar.org\") ... Networks.TESTNET"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-block-explorer-basics; q-crp-export-tx-history-taxes; q-ti-historical-pointintime-balances"
+  },
+  {
+   "id": "q-jutsu-what-is-a-memo",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Memo is optional tx metadata with text/ID/hash/return types",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "MEMO_NONE = 0, MEMO_TEXT = 1, MEMO_ID = 2, MEMO_HASH = 3, MEMO_RETURN = 4 ... string text<28>"
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#memo",
+       "observedAt": "2026-11-02",
+       "quote": "MEMO_ID: A 64-bit unsigned integer. MEMO_HASH: A 32-byte hash. MEMO_RETURN: A 32"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/transactions?limit=1&order=desc",
+       "observedAt": "2026-11-02",
+       "quote": "memo_type none on latest tx (memo optional)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Pooled services use memos to credit deposits; use exact supplied value",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-11-02",
+       "quote": "Transaction memos were traditionally used for this purpose, and many services still rely on them."
+      },
+      {
+       "class": "D",
+       "ref": "https://usethebitcoin.com/guides/crypto-basics/cheapest-crypto-to-transfer/ (Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "XRP, XLM, and HBAR require a memo or tag if you plan to withdraw your assets from the exchange. If you don't fill it out, you are at risk of losing your crypto."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-pc-memos-reference; q-raph-exchange-memo; q-raph-missing-exchange-memo"
+  },
+  {
+   "id": "q-raph-buy-xlm-safely",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Cheapest provider depends on time and situation",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://bykaranteli.com/withdrawals/xlm (Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-27 04:20 OKX XLM-STELLAR LUMENS fee changed 0.00001 -> 0.000011 XLM ... 2026-10-26 fee changed 0.000061 -> 0.000056"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.binance.us/buy/stellar-lumens (Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "Debit or credit card 3.99% ... A spread applies to Buy, Sell & Convert orders."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "All-in cost plus network/memo checks are comparison criteria",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-11-02",
+       "quote": "many services still rely on them [memos]"
+      },
+      {
+       "class": "D",
+       "ref": "https://jicalabs.com/crypto/exchanges/stellar (Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "The price does not include each exchange's trading fee or deposit and withdrawal costs, which can change the final result."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Social-media offers are not trusted on-ramps",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "malicious actors impersonate an SDF team member on social media ... attempt to induce the recipient to send crypto in exchange for a larger value in another tok…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-n3-xlm-personal-investment-advice"
+  },
+  {
+   "id": "q-raph-claimable-balance-safety",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Claimable balance is a conditional ledger entry claimed in a separate operation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "This operation will load the ClaimableBalanceEntry that corresponds to the Balance ID ... If a match on the claimant is found, and the ClaimPredicate evaluates …"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Non-XLM claim requires matching trustline else op_no_trust",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an op_no_trust error…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4"
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "the claim will result in an op_no_trust error"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Verify issuer; do not pay or follow links to unlock",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "sometimes people blast out claimable balances to phish for buyers in the hopes of them clicking a link tied to the asset ... You can ignore claimable balances y…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+       "observedAt": "2026-10-09",
+       "quote": "don't click on any link or call any number in the message"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Every claimable balance is a scam (false)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "They can be used when you send a non-native asset to an account that has not yet established a trustline, which can be useful for anchors onboarding new users."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-claimable-balance; q-aas-claim-received-claimable-balances; q-aas-claimable-predicates-expiry-reserves; q-raph-phishing-pending-claim; q-raph-unsolicited-airdrop"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier lane (Claude Opus 5.5), did not read the proposer matrix",
+  "decisions": [
+   {
+    "id": "q-asset-usdc-eurc-issuer",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Dossier §4. Verified: Circle issues both USDC and EURC on Stellar; EURC launched on Stellar 2023-09-26, fiat-backed redeemable 1:1 for euro (stellar.org press release).\nAlso good if the answer: USDC is USD-backed and EURC is euro-backed, each redeemable 1:1. | Both are issued as classic Stellar assets (and thus get a reserved SAC).\nGolden cites: A stellar.org Circle USDC/EURC page or the EURC launch press release.\nLEGAL-ENTITY CORRECTION 2026-07-09 (todo 901): replace inherited 'Circle Mint Europe' wording with Circle Internet Financial Europe SAS, per Circle's current EURC disclosure.\nSAME-TI…",
+    "note": "The proposed fact is true across A (issuer toml), F (Horizon), and D (MyKobo AMA, third-party tracker). Modified to (1) anchor Circle's own issuer address so a grader can tell the two assets apart, (2) date the volatile 'live' status and trustline count, and (3) add MyKobo's 2024-07-04 transition announcement and a third-party 'winding down' label, so the note does not imply a long-term parallel i…",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM",
+      "observedAt": "2026-11-02",
+      "quote": "home_domain: mykobo.co (last_modified_time 2026-10-25T04:31:33Z)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/assets?asset_code=EURC&limit=50",
+      "observedAt": "2026-11-02",
+      "quote": "GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM accounts.authorized=12804 balances.authorized=122219.6810237 toml=https://mykobo.co/.well-known/stellar…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/assets?asset_code=EURC&asset_issuer=GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2",
+      "observedAt": "2026-11-02",
+      "quote": "accounts.authorized=50781; issuer account home_domain=circle.com"
+     },
+     {
+      "class": "A",
+      "ref": "https://mykobo.co/.well-known/stellar.toml",
+      "observedAt": "2026-11-02",
+      "quote": "code=\"EURC\" issuer=\"GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM\" is_asset_anchored=true anchor_asset_type=\"fiat\" status=\"live\" anchor_asset=\"EUR\" .…"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.circle.com/.well-known/stellar.toml",
+      "observedAt": "2026-11-02",
+      "quote": "code=\"EURC\" issuer=\"GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2\" ... desc=\"EURC is a fully collateralized euro stablecoin.\""
+     },
+     {
+      "class": "D",
+      "ref": "https://medium.com/%40myk0b0/ama-march-recap-with-ceo-co-founder-seyi-akin-olugbemi-52cf62200157",
+      "observedAt": "2026-11-02",
+      "quote": "The EURo Coin (EURC) is an asset-backed stablecoin pegged 1:1, issued by MYKOBO UAB and built on Stellar."
+     },
+     {
+      "class": "D",
+      "ref": "https://www.eurostablecoins.xyz/issuers/mykobo",
+      "observedAt": "2026-11-02",
+      "quote": "It issues EURC, tracked on this site. ... EURC Winding down €131K 2026-10-26"
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/news/mykobo-eurc-transitioning-circle-eurc (original https://medium.com/@myk0b0/mykobo-eurc-transitioning-to-circle-eurc-dd170af34bd2)",
+      "observedAt": "2026-11-02",
+      "quote": "MYKOBO announced on July 4, 2024, that its EURC stablecoin issued on the Stellar blockchain will transition to Circle's EURC on the same network."
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.search_directory({query:'mykobo'})",
+      "observedAt": "2026-11-02T16:30:32Z",
+      "quote": "MYKOBO is a financial platform that facilitates seamless Euro transactions through EURC, a Euro-backed stablecoin issued by Circle"
+     }
+    ]
+   },
+   {
+    "id": "q-asset-usdc-eurc-path-fx",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Both edits are true and better grounded: the path is carried in the operation and supplied by the client (Horizon pathfinding is off-chain); stellar-core only walks the op's path. 'Strict-receive fixes the exact EURC delivered' matches the docs wording better than the old 'bounds'. The live probe shows today's best USDC->EURC route is direct (empty path); the answer keeps USDC->XLM->EURC as an 'e.…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/transactions/list-of-operations.mdx (renders https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations)",
+      "observedAt": "2026-11-02",
+      "quote": "Path | list of assets | The assets (other than `send asset` and `destination asset`) involved in the offers the path takes. For example, if you can only find a …"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/path-payments.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "Path Payment Strict Receive: Allows a user to specify the amount of the asset received. The amount sent will vary based on the offers in the order books/liquidi…"
+     },
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/openapi/horizon/components/endpoints/paths.yml",
+      "observedAt": "2026-11-02",
+      "quote": "The strict receive payment path endpoint lists the paths a payment can take based on the amount of an asset you want the recipient to receive. The destination a…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "std::vector<Asset> fullPath; fullPath.insert(fullPath.end(), mPathPayment.path.rbegin(), mPathPayment.path.rend());"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/paths/strict-send?source_asset_type=credit_alphanum4&source_asset_code=USDC&source_asset_issuer=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&source_amount=100&destination_assets=EURC:GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2",
+      "observedAt": "2026-11-02",
+      "quote": "destination_amount 90.6539113, path []"
+     },
+     {
+      "class": "D",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/aggregations/paths (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Paths provide information about potential path payments. A path can be used to populate the necessary fields for a path payment operation."
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs('find payment paths strict receive horizon path field') -> https://developers.stellar.org/docs/build/apps/example-application-tutorial/payment#the-dashboardsend-page",
+      "observedAt": "2026-11-02T16:30:32Z",
+      "quote": "The user can select to send/receive different assets and paths are queried from Horizon"
+     }
+    ]
+   },
+   {
+    "id": "q-asset-usdc-eurc-path-fx",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "New keyFact is 76 characters (under 90). It removes the false-precision claim that the network searches for a path, and an answer saying 'the network routes through SDEX/AMM' still satisfies it; the companion note protects either phrasing.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/path-payments.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "path payments cross through the SDEX and/or liquidity pools before arriving at the destination account."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "for (auto const& asset : mPathPayment.path)"
+     }
+    ]
+   },
+   {
+    "id": "q-asset-usdc-eurc-path-fx",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The boundary is symmetric (it protects both 'wallet/Horizon finds the path' and 'the network routes through SDEX/AMM'), adds no avoid item, and is not score laundering. The author must update truth.verified (evidence + rootCause) in the same diff for the gospel-change lint.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/openapi/horizon/components/endpoints/paths.yml",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon loads a list of assets that the recipient can receive ... and displays the possible paths from the different source assets to the destination asset."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "PathPaymentStrictReceiveOpFrame::getPath() const { return mPathPayment.path; }"
+     },
+     {
+      "class": "D",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/aggregations/paths/object (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "source_amount: An estimated cost for making a payment of destination_amount on this path. Suitable for use in the `sendMax` field of a path payment operation."
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://horizon.stellar.org/accounts/GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM",
+   "https://horizon.stellar.org/accounts/GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2",
+   "https://horizon.stellar.org/assets?asset_code=EURC&limit=50",
+   "https://horizon.stellar.org/assets?asset_code=EURC&asset_issuer=GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2",
+   "https://horizon.stellar.org/paths/strict-send?...USDC->EURC",
+   "https://mykobo.co/.well-known/stellar.toml",
+   "https://www.circle.com/.well-known/stellar.toml",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/path-payments.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/transactions/list-of-operations.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/openapi/horizon/components/endpoints/paths.yml",
+   "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+   "https://lumenloop.com/news/mykobo-eurc-transitioning-circle-eurc",
+   "Parallel web_search (MyKobo EURC): medium.com/@myk0b0 AMA, beansapp.com, eurostablecoins.xyz/issuers/mykobo, mykobo.co, circle.com/legal/eurc-terms, circle.com/legal/mica-eurc-whitepaper, circle.com/pressroom/eurc-launches-on-the-stellar-network, lumenloop.com/projects/mykobo",
+   "Perplexity search (Horizon pathfinding): developers.stellar.org paths, paths/object, example-application-tutorial path-payment and payment",
+   "Raven execute: stellarDocs.search_docs, lumenloop.search_directory"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-asset-usdc-eurc-issuer; q-asset-usdc-eurc-path-fx",
+  "verifiedOnly": "q-aas-list-token-on-exchanges-aggregators; q-aas-trusted-asset-list-whitelist; q-jutsu-cash-crypto-ramps; q-jutsu-check-account-history; q-jutsu-what-is-a-memo; q-raph-buy-xlm-safely; q-raph-claimable-balance-safety",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-asset-usdc-eurc-issuer",
+    "issue": "Not a golden change: verifier observed the Lumenloop MYKOBO directory description conflates MyKobo's own EURC (issuer GAQRF3UG...Z7NM) with Circle's EURC; candidate improvements/ finding for the improvements-pipeline lane."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-aas-list-token-on-exchanges-aggregators",
+    "log": "verified refreshed (no gospel change); asOf 2026-11-02; reverifyBy 2027-05-12."
+   },
+   {
+    "id": "q-aas-trusted-asset-list-whitelist",
+    "log": "verified refreshed (no gospel change); asOf 2026-11-02; reverifyBy 2027-05-26."
+   },
+   {
+    "id": "q-asset-usdc-eurc-issuer",
+    "log": "golden.notes: added SAME-TICKER BOUNDARY (Circle vs MyKobo EURC issuers, dated status, 2024-07-04 transition) per verifier modify; asOf 2026-11-02; new corroboration row; legal-entity row gains D-class evidence; verified refreshed."
+   },
+   {
+    "id": "q-asset-usdc-eurc-path-fx",
+    "log": "golden.answer bullet 2/4, keyFacts[1], golden.notes PATHFINDING BOUNDARY applied per verifier accept; two corroboration rows (A+B+F, A+D); sources added; verified refreshed."
+   },
+   {
+    "id": "q-jutsu-cash-crypto-ramps",
+    "log": "verified refreshed (no gospel change); asOf 2026-11-02."
+   },
+   {
+    "id": "q-jutsu-check-account-history",
+    "log": "verified refreshed (no gospel change)."
+   },
+   {
+    "id": "q-jutsu-what-is-a-memo",
+    "log": "verified refreshed (no gospel change)."
+   },
+   {
+    "id": "q-raph-buy-xlm-safely",
+    "log": "verified refreshed (no gospel change); asOf 2026-11-02."
+   },
+   {
+    "id": "q-raph-claimable-balance-safety",
+    "log": "verified refreshed (no gospel change)."
+   }
+  ]
+ }
+}

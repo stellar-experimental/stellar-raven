@@ -1,0 +1,1403 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "tooling-infra-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-infra-secp256r1-passkeys",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "CAP-0051 adds Protocol-21 secp256r1 verification; 65-byte SEC1 key, 32-byte digest, 64-byte r||s signature",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final ... Protocol version: 21 ... must have a length of 65-bytes, being the ECDSA secp256r1 public key SEC-1 encoded ... must have a length of 64-bytes…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar added native verification for this curve in Protocol 21, so contracts can validate WebAuthn signatures on chain."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Host requires low-s signatures",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/crypto/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "if sig.s().is_high().into() { ... \"ECDSA signature 's' part is not normalized to low form\""
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2..3], avoid[0..2], notes",
+     "claim": "Host primitive does not do WebAuthn validation; OZ verifier checks challenge/UP/UV/BE-BS and intentionally omits origin, RP-ID hash, counter",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/verifiers/webauthn.rs",
+       "observedAt": "2026-11-02",
+       "quote": "intentionally omitted: * Origin validation ... * RP ID hash validation ... * Signature counter"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.w3.org/TR/webauthn-3/",
+       "observedAt": "2026-11-02",
+       "quote": "The client MUST verify that the Relying Party's origin matches the scope of this RP ID."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1], avoid[1]",
+     "claim": "P-256/ES256 is common, not universal, for WebAuthn",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "`secp256r1` (prime256v1) is the curve most WebAuthn authenticators use."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-passkey-platform-constraints"
+  },
+  {
+   "id": "q-infra-simulate-transaction-howto",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0..2]",
+     "claim": "RPC simulateTransaction dry-runs without submitting and returns transactionData (footprint/resources), auth, minResourceFee, restorePreamble",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+       "observedAt": "2026-11-02",
+       "quote": "This endpoint calculates the effective transaction data, required authorizations, and minimal resource fee. ... without actually submitting it to the network."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/js-stellar-sdk/blob/master/src/rpc/server.ts",
+       "observedAt": "2026-11-02",
+       "quote": "public async simulateTransaction( ... public async prepareTransaction(tx: Transaction | FeeBumpTransaction) { const simResponse = await this.simulateTransaction…"
+      }
+     ]
+    },
+    {
+     "field": "avoid[0]",
+     "claim": "No Horizon simulate endpoint",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts",
+       "observedAt": "2026-11-02",
+       "quote": "Since the Horizon API **does not** provide an endpoint to simulate a transaction execution"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-infra-testnet-vs-futurenet",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "keyFacts[2..4], golden.answer",
+     "claim": "Testnet is stable integration net; Futurenet is bleeding-edge preview; distinct passphrases; fake XLM; Testnet regular resets, Futurenet as needed",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks (raw: stellar/stellar-docs@de38543086 docs/networks/index.mdx)",
+       "observedAt": "2026-11-02",
+       "quote": "Testnet ... resets on a regular cadence, making it the best place for developers to test applications in a stable environment ... Futurenet is a dev network for…"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org and https://rpc-futurenet.stellar.org getNetwork",
+       "observedAt": "2026-11-02",
+       "quote": "Testnet passphrase \"Test SDF Network ; September 2015\"; Futurenet passphrase \"Test SDF Future Network ; October 2022\""
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs 'Futurenet Testnet difference Friendbot contract address'",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/networks#friendbot: Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Friendbot funds G and C addresses on both test networks",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks (raw: stellar/stellar-docs@de38543086 docs/networks/index.mdx)",
+       "observedAt": "2026-11-02",
+       "quote": "Can fund both account addresses (G...) and contract addresses (C...)"
+      }
+     ]
+    },
+    {
+     "field": "(new context) live protocol versions",
+     "claim": "As of 2026-11-02 Testnet, Futurenet and Mainnet all run protocol 29; P30 votes Testnet 2026-11-03, Mainnet 2026-11-23",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "POST https://rpc-futurenet.stellar.org getNetwork; GET https://horizon-futurenet.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "{\"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":29}; current_protocol_version 29, core_supported_protocol_version 30"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org getNetwork; GET https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "Testnet protocolVersion 29; Mainnet current_protocol_version 29"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries. RECHECK 2026-11-02: live RPC getNetwork reported protocol 29 on both Testnet and Futurenet (Mainnet Horizon also 29); the Protocol 30 votes are scheduled for Testnet on 2026-11-03 and Mainnet on 2026-11-23. A dated answer that reports Futurenet is not currently ahead of Testnet is correct and does not contradict Futurenet's documented preview role.",
+     "reason": "Freshness: add a dated live-protocol snapshot so a true answer that Futurenet is not currently ahead is not penalized under the role keyFact."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-network-passphrases-list; q-infra-quickstart-local-network; q-ti-friendbot-ratelimit-alternatives"
+  },
+  {
+   "id": "q-infra-which-indexer",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "keyFacts[2], avoid[1]",
+     "claim": "The Graph supports Stellar via Substreams only, not Subgraphs or Token API",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers (raw: stellar/stellar-docs@de38543086 docs/data/indexers/index.mdx)",
+       "observedAt": "2026-11-02",
+       "quote": "The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph or Token API support to Stellar."
+      },
+      {
+       "class": "A",
+       "ref": "https://thegraph.com/docs/en/supported-networks/stellar/ (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar is supported by The Graph with Substreams"
+      },
+      {
+       "class": "D",
+       "ref": "https://thegraph.com/docs/en/supported-networks/ (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "|Stellarstellar| |NON-EVM| (no Subgraphs column entry)"
+      }
+     ]
+    },
+    {
+     "field": "avoid[0], golden.answer",
+     "claim": "Alchemy Stellar Data API is live (transfer history, balances, NFT holdings)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers (raw: stellar/stellar-docs@de38543086 docs/data/indexers/index.mdx)",
+       "observedAt": "2026-11-02",
+       "quote": "[Alchemy]: a widely-used data provider (popular on Ethereum), now live on Stellar."
+      },
+      {
+       "class": "A",
+       "ref": "https://www.alchemy.com/docs/reference/stellar-data-api-overview",
+       "observedAt": "2026-11-02",
+       "quote": "With the Stellar Data API, you can query indexed Stellar data across native, classic, and Soroban assets — including transfer history, account balances, and NFT…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Goldsky supports Stellar via Mirrors/Pipelines",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.goldsky.com/turbo-pipelines/migrate-from-mirror.md",
+       "observedAt": "2026-11-02",
+       "quote": "Solana, Bitcoin, Stellar, and NEAR sources were removed from Mirror; they're Turbo-only now."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.goldsky.com/chains/supported-networks.md",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar datasets are no longer available through Mirror. Use Turbo pipelines for Stellar data."
+      },
+      {
+       "class": "D",
+       "ref": "https://goldsky.com/chains/stellar (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Turbo Pipelines is the successor to Mirror. ... Products [Turbo] ... Supported Networks Mainnet, Testnet"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs 'Goldsky Stellar indexer Mirror'",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/data/indexers#custom-transformations: Goldsky Mirrors already support Stellar"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer roster",
+     "claim": "SubQuery, OBSRVR, OnFinality, Mercury remain active Stellar options",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers (raw: stellar/stellar-docs@de38543086 docs/data/indexers/index.mdx)",
+       "observedAt": "2026-11-02",
+       "quote": "[Mercury]: a home-grown Stellar-native team ... [SubQuery] ... [OnFinality] ... [OBSRVR]"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.withobsrvr.com/",
+       "observedAt": "2026-11-02",
+       "quote": "Obsrvr Lake delivers structured Stellar data as SQL-queryable tables and APIs."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.mercurydata.app/",
+       "observedAt": "2026-11-02",
+       "quote": "For custom indexers defined in no time inside your smart contracts head to Retroshades"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity perplexity_ask (cites subquery.network Stellar quickstart, onfinality.io/en/networks/stellar)",
+       "observedAt": "2026-11-02",
+       "quote": "all four still show signs of active Stellar support ... does not establish shutdowns or dated deprecations"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "RPC event history is bounded; indexer needed for historical cross-account filtering",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+       "observedAt": "2026-11-02",
+       "quote": "stock default of 120960 ledgers (about 7 days, depending on ledger cadence)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\nYou need an **indexer** rather than RPC alone for historical cross-account filtering: RPC event history is bounded and Horizon does not provide arbitrary cross-account filtered indexes ([Indexers Overview](https://developers.stellar.org/docs/data/indexers)).\n\nEstablished Stellar choices include **SubQuery**, **OBSRVR**, **Goldsky Turbo pipelines** (Goldsk…",
+     "reason": "Contradicted: Goldsky moved Stellar datasets from Mirror to Turbo; refresh the observation date of the dated roster."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "CORRECTION 2026-08-04: the official Indexers Overview now says Alchemy is live, resolving the former roadmap disagreement. Preserve The Graph's Substreams-only boundary and require dated provider/network/retention checks.\nRECHECK 2026-11-02: Goldsky's own docs say Stellar datasets are no longer available through Mirror and are served by Turbo pipelines, while the Stellar Indexers Overview still says Goldsky Mirrors support Stellar. Naming Goldsky Mirror for Stellar is a minor dated error, not a wrong core answer; naming Goldsky Turbo is correct.",
+     "reason": "Symmetric note: Stellar Docs still says Mirror; do not treat that dated name as a wrong core answer."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-ti-historical-pointintime-balances; q-ti-enumerate-holders-airdrop; q-ti-compute-token-lp-market-data; q-ti-enumerate-all-contracts"
+  },
+  {
+   "id": "q-passkey-platform-constraints",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "keyFacts[0]",
+     "claim": "WebAuthn web API requires a secure context; native apps use platform APIs",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.w3.org/TR/webauthn-3/",
+       "observedAt": "2026-11-02",
+       "quote": "WebAuthn Clients only expose the WebAuthn API in secure contexts"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.google.com/identity/passkeys/supported-environments",
+       "observedAt": "2026-11-02",
+       "quote": "Android apps support passkeys through the Credential Manager library"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1], avoid[0]",
+     "claim": "Credentials scoped to RP ID; related-origin requests opt-in",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.w3.org/TR/webauthn-3/",
+       "observedAt": "2026-11-02",
+       "quote": "The RP ID of a public key credential determines its scope ... WebAuthn Relying Parties can opt in to allowing WebAuthn Clients to enable a credential to be crea…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.firefox.com/en-US/firefox/152.0/releasenotes",
+       "observedAt": "2026-11-02",
+       "quote": "Firefox now supports the WebAuthn Related Origin Request feature"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2], avoid[1]",
+     "claim": "Apple and Google sync passkeys; behavior is provider-specific",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.google.com/identity/passkeys/supported-environments",
+       "observedAt": "2026-11-02",
+       "quote": "When a user creates a passkey with Google Password Manager, it's synchronized and end-to-end encrypted."
+      },
+      {
+       "class": "A",
+       "ref": "https://support.apple.com/guide/iphone/use-passkeys-to-sign-in-to-websites-and-apps-iphf538ea8d0/ios",
+       "observedAt": "2026-11-02",
+       "quote": "passkeys are encrypted and stored in your iCloud Keychain ... they work on all your devices where you're signed in to the same Apple Account."
+      },
+      {
+       "class": "D",
+       "ref": "https://passkeys.dev/device-support (Parallel search; Last Updated Sep 21, 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "Synced Passkeys ... Windows: Planned ¹ ... ¹ Device-bound passkeys supported"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3]",
+     "claim": "Mozilla Sync data-type list does not list passkeys; Firefox may delegate to OS/provider",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://support.mozilla.org/en-US/kb/sync (Last updated 2/8/26)",
+       "observedAt": "2026-11-02",
+       "quote": "Open tabs * Browsing history * Bookmarks * Logins and passwords * Addresses * Payment methods * Add-ons * Browser settings"
+      },
+      {
+       "class": "A",
+       "ref": "https://support.mozilla.org/en-US/kb/how-do-i-choose-what-information-sync-firefox",
+       "observedAt": "2026-11-02",
+       "quote": "Bookmarks ... History ... Open tabs ... Passwords ... Addresses ... Payment methods ... Add-ons/extensions (no passkeys entry)"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.firefox.com/en-US/firefox/122.0/releasenotes",
+       "observedAt": "2026-11-02",
+       "quote": "Firefox now supports creating and using passkeys stored in the iCloud Keychain on macOS."
+      },
+      {
+       "class": "D",
+       "ref": "https://mojoauth.com/blog/passkey-support-matrix-browser-os-feature-support (Parallel search; fact-checked 2026-07-16)",
+       "observedAt": "2026-11-02",
+       "quote": "Firefox has no native passkey store and relies on the OS or a third-party provider."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Status-sensitive details as of 2026-07-11",
+     "verdict": "confirmed-as-of",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence. Origin and RP-ID checks: W3C WebAuthn requires them of the Relying Party, while the OpenZeppelin and Passkey Kit verifiers deliberately omit them on-chain. Do not penalize an answer that requires them in the overall flow, or one that says production Stellar wallet contracts leave them to the client and platform.",
+     "reason": "Freshness: all status-sensitive details re-verified 2026-11-02; refresh the as-of date."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-infra-secp256r1-passkeys; q-eco-xbull-wallet; q-eco-freighter-wallet"
+  },
+  {
+   "id": "q-quickstart-manual-ledger-close",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "keyFacts[0..1,3..4], avoid[0..3]",
+     "claim": "Prior 2026-11-02 verification of flag, MANUAL_CLOSE, one ledger per call, issue #4040, RUN_STANDALONE scoping",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/main/ApplicationImpl.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "if (mConfig.RUN_STANDALONE) { setManualCloseVirtualTime(manualCloseTime); ... } else { // These may only be specified if RUN_STANDALONE is configured. releaseAs…"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2], golden.answer",
+     "claim": "Repeated closes advance sequence and close time",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0088.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Implemented ... Protocol version: 30 ... the minimum increment between consecutive close times was one second; under this CAP it is one millisecond. As …"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "Contracts that read the ledger timestamp should review the CAP-88 note: consecutive ledgers may now report the same whole-second timestamp. ... “one ledger late…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf526/images.json",
+       "observedAt": "2026-11-02",
+       "quote": "\"tag\": \"latest\", \"config\": { \"protocol_version_default\": 30 ... core ref v30.0.0"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/herder/HerderImpl.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "auto nextCloseTime = ConsensusTime::fromSystemTime(mApp.getClock().system_now(), lcl.header.ledgerVersion); if (nextCloseTime <= lclCloseTime) { nextCloseTime =…"
+      },
+      {
+       "class": "D",
+       "ref": "https://coinburn.com/news/stellar-protocol-30-ledger-decoder-upgrade (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "two consecutive ledgers could share the same whole-second timestamp"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "For current Quickstart local mode, ordinary --local auto-closes roughly every second through testing acceleration. To control closes, start with --enable-core-manual-close (default false), which sets Core MANUAL_CLOSE, then call manualclose; each current call advances one ledger. A requested count parameter remains open in stellar-core issue #4040. Repeated closes advance sequence and close time but do not set an arbitrary timestamp. Under Protocol 30 (CAP-88; the current Quickstart image default as of 2026-11-02), close time has millisecond resolution, so rapid closes can share one whole-seco…",
+     "reason": "Drift: current Quickstart image defaults to Protocol 30, where CAP-88 lets consecutive ledgers share a whole-second timestamp; this is material for time-dependent contract tests."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence. Do not penalize an answer that sets ENABLE_CORE_MANUAL_CLOSE=true as a container environment variable: the current start script still reads it as the default for --enable-core-manual-close, although the docs show only the flag. Standalone Core with RUN_STANDALONE=true accepts ledgerSeq and closeTime parameters on manualclose (closeTime must still be later than the last close). Quickstart does not set RUN_STANDALONE, so an answer that scopes those parameters to standal…",
+     "reason": "Grading guidance for the P30 timestamp boundary, scoped so a Protocol 29 claim is not penalized."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-ledger-close-time; q-infra-quickstart-local-network; q-sor-force-fast-archival-localnet"
+  },
+  {
+   "id": "q-ti-channel-accounts-throughput",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[0], avoid[0]",
+     "claim": "Channel accounts as tx source; base account as operation source; both sign",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/channel-accounts",
+       "observedAt": "2026-11-02",
+       "quote": "the sequence number and fees will be consumed by the channel account. ... You will, of course, have to sign the transaction with both the base account key and t…"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1..2], avoid[1..2]",
+     "claim": "tx_bad_seq from concurrent/outdated views; blind rebuild duplicates payments; TRY_AGAIN_LATER means wait",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling",
+       "observedAt": "2026-11-02",
+       "quote": "if you resubmit blindly with an updated sequence number ... resulting in more than one payment being made ... TRY_AGAIN_LATER: ... Clients should wait for somet…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/sendTransaction",
+       "observedAt": "2026-11-02",
+       "quote": "Available options: `PENDING`, `DUPLICATE`, `TRY_AGAIN_LATER`, `ERROR`"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4], avoid[3]",
+     "claim": "Sequence numbers are 64-bit, so invalid u32 is a client typing issue",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "typedef int64 SequenceNumber;"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3], notes",
+     "claim": "Same signed envelope to multiple providers is hash-idempotent",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling",
+       "observedAt": "2026-11-02",
+       "quote": "resubmitting a transaction is only safe when it is unchanged - same operations, signatures, sequence number"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-classic-submission-errors"
+  },
+  {
+   "id": "q-ti-classic-submission-errors",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[2]",
+     "claim": "Payment codes PAYMENT_NO_DESTINATION and PAYMENT_SRC_NO_TRUST (Horizon op_no_destination/op_src_no_trust)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/payment",
+       "observedAt": "2026-11-02",
+       "quote": "<ResponseField name=\"OpSrcNoTrust\" type=\"PAYMENT_SRC_NO_TRUST\"> ... <ResponseField name=\"OpNoDestination\" type=\"PAYMENT_NO_DESTINATION\">"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-horizon/blob/main/internal/codes/main.go",
+       "observedAt": "2026-11-02",
+       "quote": "case xdr.PaymentResultCodePaymentSrcNoTrust: return \"op_src_no_trust\" ... case xdr.PaymentResultCodePaymentNoDestination: return \"op_no_destination\""
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3]",
+     "claim": "op_bad_signer is SetOptions SET_OPTIONS_BAD_SIGNER; generic is op_bad_auth",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/set-options",
+       "observedAt": "2026-11-02",
+       "quote": "<ResponseField name=\"op_bad_signer\" type=\"SET_OPTIONS_BAD_SIGNER\">"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-horizon/blob/main/internal/codes/main.go",
+       "observedAt": "2026-11-02",
+       "quote": "case xdr.SetOptionsResultCodeSetOptionsBadSigner: return \"op_bad_signer\" ... case xdr.OperationResultCodeOpBadAuth: return \"op_bad_auth\""
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[0]",
+     "claim": "tx_bad_seq / tx_failed transaction-level codes",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions",
+       "observedAt": "2026-11-02",
+       "quote": "<ResponseField name=\"tx_failed\" type=\"txFAILED\"> ... <ResponseField name=\"tx_bad_seq\" type=\"txBAD_SEQ\">"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-channel-accounts-throughput"
+  },
+  {
+   "id": "q-ti-cli-rust-windows-troubleshooting",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "keyFacts[0], avoid[0]",
+     "claim": "Rust 1.84.0+ and wasm32v1-none target; reinstall after toolchain update",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar smart contracts require **Rust toolchain `v1.84.0` or higher**, as the `wasm32v1-none` target is only available in recent versions. ... If you update yo…"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2]",
+     "claim": "Windows: rustup-init, WSL, winget CLI install",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup",
+       "observedAt": "2026-11-02",
+       "quote": "On Windows, download and run rustup-init.exe ... If you're already using WSL ... winget install --id Stellar.StellarCLI"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[5], golden.answer",
+     "claim": "No CLI balance shortcut; route balances via tx/payment/contract, Horizon/RPC, Lab; 'obsolete stellar account'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/blob/v28.0.0/FULL_HELP_DOCS.md (also v28.1.0; absent in v27.0.0)",
+       "observedAt": "2026-11-02",
+       "quote": "## `stellar token balance` Read the token balance of an account or contract **Usage:** `stellar token balance [OPTIONS] --id <ID> --account <ACCOUNT>` ... `--id…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
+       "observedAt": "2026-11-02",
+       "quote": "Read balances and token metadata with `stellar token balance`, `name`, `symbol`, and `decimals`, no key required."
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0: stellar token balance --id native --account GAIH3ULLFQ4DGSECF2AR555KZ4KNDGEKN4AFI4SU2M7B43MGK3QJZNSR --network testnet --output json; stellar account --help",
+       "observedAt": "2026-11-02",
+       "quote": "{\"balance\":\"55221680675298256\"} ; error: unrecognized subcommand 'account'"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs 'stellar token balance CLI'",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-token-balance"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-cli/releases/tags/v28.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "published_at 2026-08-26T18:52:07Z"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4], avoid[1]",
+     "claim": "Friendbot only on testnet/futurenet/local; mainnet needs real funds and a chosen RPC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks (raw: stellar/stellar-docs@de38543086 docs/networks/index.mdx)",
+       "observedAt": "2026-11-02",
+       "quote": "Friendbot Available | No | Yes (10,000 XLM) | Yes (10,000 XLM)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab",
+       "observedAt": "2026-11-02",
+       "quote": "Lab supports the ability to use custom RPC providers"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3], avoid[3]",
+     "claim": "alias already exists: inspect/reuse/remove identity or network alias",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/blob/main/FULL_HELP_DOCS.md",
+       "observedAt": "2026-11-02",
+       "quote": "`--overwrite` — Overwrite existing identity if it already exists"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Triage the toolchain first. Current Stellar smart-contract setup requires Rust 1.84.0 or higher because the supported target is `wasm32v1-none`; the setup guide says to install that target and reinstall it after Rust toolchain updates (https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup). If the build says the wasm file does not exist, confirm that `stellar contract build` succeeded, that you are in the correct workspace/package, and that your deploy/bindings command points at the actual generated `target/.../*.wasm` path.\n\nOn Windows, `rustup` not recognized means …",
+     "reason": "Drift: Stellar CLI v28.0.0 added `stellar token balance`; drop the unsupported 'deprecated stellar account' wording and date the CLI fact."
+    },
+    {
+     "field": "golden.keyFacts[5]",
+     "op": "replace",
+     "new": "Routes balances to stellar token balance (CLI v28+), Horizon/RPC, or Lab.",
+     "reason": "keyFact said 'obsolete stellar account' and omitted the current CLI balance command; a true current answer would miss it."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Official docs verify Rust/target and Lab/CLI direction. Several quoted error strings are environment-specific and should be empirically reproduced by Phase 3 on Windows/WSL if exact remediation commands are required.\nAlso good if the answer: Cites official setup, CLI, Lab, and RPC/provider docs; uses dated source for current versions where possible.\nGolden cites: Official Stellar setup docs for Rust/target requirements. | Official Stellar CLI/Lab docs for current command and network/provider behavior.\nGT-51 PRECISION CORRECTION 2026-07-11: prefer prebuilt/Winget, require wasm32v1-none and expl…",
+     "reason": "Leniency for answers targeting an older pinned CLI."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: keyFact and answer called `stellar account` obsolete/deprecated without evidence that the subcommand ever existed."
+   ],
+   "siblings": "q-ti-fetch-all-balances-classic-sac; q-infra-quickstart-local-network; q-ti-friendbot-ratelimit-alternatives"
+  },
+  {
+   "id": "q-ti-compute-token-lp-market-data",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[4], notes",
+     "claim": "Horizon nearing end-of-life, eventually deprecated, still maintained for protocol compatibility",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis (raw docs/data/apis/index.mdx)",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs. While it will continue to receive updates to mainta…"
+      },
+      {
+       "class": "F",
+       "ref": "GET https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "horizon_version 30.0.0-b3ff4119... (Horizon still shipped for Protocol 30)"
+      }
+     ]
+    },
+    {
+     "field": "avoid[1], golden.answer",
+     "claim": "RPC is not an unbounded history index; Hubble/indexers for history",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar-RPC retains a bounded, ledger-denominated history ... stock default of 120960 ledgers (about 7 days"
+      }
+     ]
+    },
+    {
+     "field": "avoid[0], notes",
+     "claim": "No canonical StellarX/Scopuly methodology to match",
+     "verdict": "unverifiable",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-infra-which-indexer"
+  },
+  {
+   "id": "q-ti-custodial-account-generation-c-address",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[2..3], golden.answer",
+     "claim": "G↔C via SAC transfer; memo deposits via M address or G+u64 muxed",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts (Perplexity search, page dated 2026-10-22)",
+       "observedAt": "2026-11-02",
+       "quote": "it should create a muxed address that includes the receiving account (GBLVHX…) and provided memo id in the muxed id field ... If the receiving party already pro…"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4], avoid[2]",
+     "claim": "Exchange C-address withdrawal support is provider-specific and must be dated",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "Exchanges and custodians: ... add support for withdrawing to muxed contract addresses (the W address type)."
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity search 'Binance withdraw XLM to Stellar contract address C-address' 2026-11-02",
+       "observedAt": "2026-11-02",
+       "quote": "no primary Binance source found for C-address withdrawals"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-fetch-all-balances-classic-sac"
+  },
+  {
+   "id": "q-ti-enumerate-all-contracts",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[0], avoid[0]",
+     "claim": "RPC cannot enumerate all contracts: getLedgerEntries needs explicit keys; getEvents bounded",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+       "observedAt": "2026-11-02",
+       "quote": "Array containing the keys of the ledger entries you wish to retrieve. ... The maximum number of ledger keys accepted is 200."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+       "observedAt": "2026-11-02",
+       "quote": "stock default of 120960 ledgers (about 7 days"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2], avoid[1]",
+     "claim": "Stellar Lab consumes a paginated StellarExpert contract-list endpoint",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/laboratory/blob/main/src/query/external/useSEContractsList.ts (main a9bd4ee49c, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "StellarExpert API to get smart contracts list ... params.append(\"limit\", \"20\") ... fetch(`${STELLAR_EXPERT_API}/${network}/contract?${params.toString()}`"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3]",
+     "claim": "Hubble contract_data state tables support controlled coverage",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/contract-data",
+       "observedAt": "2026-11-02",
+       "quote": "| contract_id | Soroban contract id | ... | deleted | Indicates whether the ledger entry ... has been deleted"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-enumerate-holders-airdrop; q-infra-which-indexer"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-infra-which-indexer",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Goldsky's own supported-networks and migration pages say Stellar is Turbo-only; one stale Goldsky overview card still says Mirror, but newer pages and the Turbo successor statement outweigh it. The rest of the roster (Alchemy live, The Graph Substreams-only, SubQuery, OBSRVR, OnFinality, Mercury) is re-confirmed on the Indexers Overview cached 2026-10-22, so the as-of bump to 2026-11-02 is support…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/indexers",
+      "observedAt": "2026-10-22",
+      "quote": "Goldsky Mirrors already support Stellar; see their documentation. ... The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph …"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.goldsky.com/chains/supported-networks",
+      "observedAt": "2026-10-28",
+      "quote": "Stellar datasets are no longer available through Mirror. Use Turbo pipelines for Stellar data."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.goldsky.com/turbo-pipelines/migrate-from-mirror",
+      "observedAt": "2026-10-20",
+      "quote": "Solana, Bitcoin, Stellar, and NEAR sources were removed from Mirror; they're Turbo-only now."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.goldsky.com/chains/stellar",
+      "observedAt": "2026-11-01",
+      "quote": "Turbo MAINNET SUPPORTED TESTNET SUPPORTED ... Turbo pipelines provide high-performance streaming data pipelines"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: https://goldsky.com/chains/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Turbo Pipelines is the successor to Mirror. (Data as of Nov 2, 2026.)"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: https://docs.goldsky.com/turbo-pipelines/sources/overview.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar data is also available on Mirror, but the \"wide-row\" format is best managed via Turbo. (stale card; contradicts newer supported-networks and migration p…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'Goldsky Mirror Stellar indexer' -> https://developers.stellar.org/docs/data/indexers#custom-transformations",
+      "observedAt": "2026-11-02",
+      "quote": "Goldsky Mirrors already support Stellar; see their documentation."
+     }
+    ]
+   },
+   {
+    "id": "q-infra-which-indexer",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Accurate canonical-page conflict: Stellar Indexers Overview still says Goldsky Mirrors support Stellar while Goldsky says Mirror no longer serves Stellar. Leniency for naming Mirror is appropriate because the official Stellar page says so. Consider filing an improvements/ finding against the Indexers Overview.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/indexers",
+      "observedAt": "2026-10-22",
+      "quote": "Goldsky Mirrors already support Stellar; see their documentation. ... The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph …"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.goldsky.com/chains/supported-networks",
+      "observedAt": "2026-10-28",
+      "quote": "Stellar datasets are no longer available through Mirror. Use Turbo pipelines for Stellar data."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.goldsky.com/turbo-pipelines/migrate-from-mirror",
+      "observedAt": "2026-10-20",
+      "quote": "Solana, Bitcoin, Stellar, and NEAR sources were removed from Mirror; they're Turbo-only now."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.goldsky.com/chains/stellar",
+      "observedAt": "2026-11-01",
+      "quote": "Turbo MAINNET SUPPORTED TESTNET SUPPORTED ... Turbo pipelines provide high-performance streaming data pipelines"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: https://goldsky.com/chains/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Turbo Pipelines is the successor to Mirror. (Data as of Nov 2, 2026.)"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: https://docs.goldsky.com/turbo-pipelines/sources/overview.md",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar data is also available on Mirror, but the \"wide-row\" format is best managed via Turbo. (stale card; contradicts newer supported-networks and migration p…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'Goldsky Mirror Stellar indexer' -> https://developers.stellar.org/docs/data/indexers#custom-transformations",
+      "observedAt": "2026-11-02",
+      "quote": "Goldsky Mirrors already support Stellar; see their documentation."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-platform-constraints",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Re-derived: Firefox Sync still has no passkey data type; Google and Apple still sync passkeys; OZ verifier still omits origin and rpIdHash checks. Date bump is supported. truth.asOf and corroboration observedAt must be bumped in the same diff (lint).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://support.mozilla.org/kb/how-do-i-set-sync-my-computer",
+      "observedAt": "2026-11-02",
+      "quote": "Select or deselect the types of data to sync, such as: Bookmarks, Passwords, Open tabs, History, Payment methods, Add-ons, Settings (no passkey type)"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: https://securityboulevard.com/2026/07/passkey-support-matrix-browser-os-and-feature-support/",
+      "observedAt": "2026-07-16",
+      "quote": "Firefox has no native passkey store and relies on the OS or a third-party provider."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.google.com/identity/passkeys/supported-environments",
+      "observedAt": "2026-10-25",
+      "quote": "Google Password Manager stores, serves and synchronizes passkeys on Android and Chrome."
+     },
+     {
+      "class": "A",
+      "ref": "https://developer.apple.com/passkeys/",
+      "observedAt": "2026-11-02",
+      "quote": "Because passkeys are synced with iCloud Keychain, they're available across Apple devices."
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/verifiers/webauthn.rs",
+      "observedAt": "2026-11-02",
+      "quote": "/// * Origin validation: Origin verification in `clientDataJSON` is omitted as ... /// * RP ID hash validation: Verification of `rpIdHash` in authenticatorData"
+     }
+    ]
+   },
+   {
+    "id": "q-quickstart-manual-ledger-close",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "CAP-88 (Implemented, Protocol 30) keeps Soroban ledger timestamps at whole seconds and lets consecutive ledgers share one whole-second closeTime. Core v30 picks close time as max(now, last.next(version)). Quickstart latest image defaults to protocol 30 (images.json, image pushed 2026-10-28). The 'can share' wording is hedged and dated.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0088.md",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol version: 30 ... Status: Implemented ... consecutive ledgers may share the same whole-second `closeTime` value, differing only in `closeTimeMs`. ... (tr…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/herder/HerderImpl.cpp#L1694-L1726",
+      "observedAt": "2026-11-02",
+      "quote": "We pick as next close time the current time unless it's before the last close time ... nextCloseTime = lclCloseTime.next(lcl.header.ledgerVersion);"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/quickstart/blob/main/images.json",
+      "observedAt": "2026-11-02",
+      "quote": "tag latest: protocol_version_default 30, core ref v30.0.0 (commit 8d5252be8f 2026-10-27 'Update protocol_version_default')"
+     },
+     {
+      "class": "F",
+      "ref": "https://hub.docker.com/v2/repositories/stellar/quickstart/tags/latest",
+      "observedAt": "2026-11-02",
+      "quote": "latest last_updated 2026-10-28T00:00:43Z"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30",
+      "observedAt": "2026-10-30",
+      "quote": "CAP-88 gives the ledger a millisecond clock, removing the technical barrier to faster ledger close times."
+     }
+    ]
+   },
+   {
+    "id": "q-quickstart-manual-ledger-close",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The caution targets an invariant ('every manualclose advances timestamp by at least one second') that CAP-88 removes; an answer scoped to Protocol 29 or earlier stays correct. Not a punishment of a possibly-true claim.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0088.md",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol version: 30 ... Status: Implemented ... consecutive ledgers may share the same whole-second `closeTime` value, differing only in `closeTimeMs`. ... (tr…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/herder/HerderImpl.cpp#L1694-L1726",
+      "observedAt": "2026-11-02",
+      "quote": "We pick as next close time the current time unless it's before the last close time ... nextCloseTime = lclCloseTime.next(lcl.header.ledgerVersion);"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/quickstart/blob/main/images.json",
+      "observedAt": "2026-11-02",
+      "quote": "tag latest: protocol_version_default 30, core ref v30.0.0 (commit 8d5252be8f 2026-10-27 'Update protocol_version_default')"
+     },
+     {
+      "class": "F",
+      "ref": "https://hub.docker.com/v2/repositories/stellar/quickstart/tags/latest",
+      "observedAt": "2026-11-02",
+      "quote": "latest last_updated 2026-10-28T00:00:43Z"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30",
+      "observedAt": "2026-10-30",
+      "quote": "CAP-88 gives the ledger a millisecond clock, removing the technical barrier to faster ledger close times."
+     }
+    ]
+   },
+   {
+    "id": "q-ti-cli-rust-windows-troubleshooting",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "Triage the toolchain first. Current Stellar smart-contract setup requires Rust 1.84.0 or higher because the supported target is `wasm32v1-none`; the setup guide says to install that target and reinstall it after Rust toolchain updates (https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup). If the build says the wasm file does not exist, confirm that `stellar contract build` succeeded, that you are in the correct workspace/package, and that your deploy/bindings command points at the actual generated `target/.../*.wasm` path.\n\nOn Windows, `rustup` not recognized means …",
+    "note": "Command, flags, and v28.0.0 date verified (B release, F run, A docs, E index). Modified only to date-scope the negative claim about `stellar account` to the verified CLI version (F: v28.1.0 'unrecognized subcommand').",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "stellar token balance — new command to check token balances (#2651); release published 2026-08-26T18:52:07Z"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da): stellar token balance --help; stellar account",
+      "observedAt": "2026-11-02",
+      "quote": "Usage: stellar token balance [OPTIONS] --id <ID> --account <ACCOUNT>; --id: a contract id or alias, `native`, or a classic asset as `CODE:ISSUER`; --account: Ac…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
+      "observedAt": "2026-11-01",
+      "quote": "stellar token balance --id <TOKEN> --account <ACCOUNT> --network <NETWORK> ... `--account` accepts a G… address, a C… contract address, or a saved alias"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets",
+      "observedAt": "2026-10-01",
+      "quote": "Check account balance: stellar contract invoke --id <ASSET_CONTRACT_ID> -- balance --id bob"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'stellar token balance command'",
+      "observedAt": "2026-11-02",
+      "quote": "stellar token balance --id native --account <ADDRESS> --output json answers"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-cli-rust-windows-troubleshooting",
+    "field": "golden.keyFacts[5]",
+    "decision": "modify",
+    "newText": "Routes balances to stellar token balance (CLI v28+), SAC invoke, Horizon/RPC, or Lab.",
+    "note": "Proposed keyFact drops the SAC `contract invoke ... -- balance` route, which the official payments-and-assets cookbook still documents and the proposed notes call correct; adding it keeps the keyFact from punishing a true answer. 85 characters.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "stellar token balance — new command to check token balances (#2651); release published 2026-08-26T18:52:07Z"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da): stellar token balance --help; stellar account",
+      "observedAt": "2026-11-02",
+      "quote": "Usage: stellar token balance [OPTIONS] --id <ID> --account <ACCOUNT>; --id: a contract id or alias, `native`, or a classic asset as `CODE:ISSUER`; --account: Ac…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
+      "observedAt": "2026-11-01",
+      "quote": "stellar token balance --id <TOKEN> --account <ACCOUNT> --network <NETWORK> ... `--account` accepts a G… address, a C… contract address, or a saved alias"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets",
+      "observedAt": "2026-10-01",
+      "quote": "Check account balance: stellar contract invoke --id <ASSET_CONTRACT_ID> -- balance --id bob"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'stellar token balance command'",
+      "observedAt": "2026-11-02",
+      "quote": "stellar token balance --id native --account <ADDRESS> --output json answers"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-cli-rust-windows-troubleshooting",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "v28.0.0 published 2026-08-26 with `stellar token balance` (#2651); leniency for older-CLI routes is correct.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "stellar token balance — new command to check token balances (#2651); release published 2026-08-26T18:52:07Z"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da): stellar token balance --help; stellar account",
+      "observedAt": "2026-11-02",
+      "quote": "Usage: stellar token balance [OPTIONS] --id <ID> --account <ACCOUNT>; --id: a contract id or alias, `native`, or a classic asset as `CODE:ISSUER`; --account: Ac…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
+      "observedAt": "2026-11-01",
+      "quote": "stellar token balance --id <TOKEN> --account <ACCOUNT> --network <NETWORK> ... `--account` accepts a G… address, a C… contract address, or a saved alias"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets",
+      "observedAt": "2026-10-01",
+      "quote": "Check account balance: stellar contract invoke --id <ASSET_CONTRACT_ID> -- balance --id bob"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'stellar token balance command'",
+      "observedAt": "2026-11-02",
+      "quote": "stellar token balance --id native --account <ADDRESS> --output json answers"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-testnet-vs-futurenet",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries. RECHECK 2026-11-02: live RPC getNetwork reported protocol 29 on both Testnet and Futurenet (Mainnet Horizon also 29); status.stellar.org schedules the Protocol 30 Testnet upgrade for 2026-11-03 and the Mainnet vote for 2026-11-23. Futurenet's documented preview role does not guarantee a higher live protocol at every moment: a dated answer whose live probe shows Futurenet equal to or b…",
+    "note": "Facts verified live (all three networks at protocol 29 on 2026-11-02; P30 Testnet upgrade 2026-11-03 and Mainnet vote 2026-11-23 on status.stellar.org). Modified the grading clause: after tomorrow's Testnet upgrade Futurenet may be behind Testnet, so the rule now covers 'equal to or behind' as shown by a dated live probe, not only 'not ahead'. Also states the source of the schedule.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "POST https://soroban-testnet.stellar.org getNetwork / getVersionInfo",
+      "observedAt": "2026-11-02T16:38Z",
+      "quote": "\"passphrase\":\"Test SDF Network ; September 2015\",\"protocolVersion\":29; rpc 30.0.0, captive core 30.0.0"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://rpc-futurenet.stellar.org getNetwork",
+      "observedAt": "2026-11-02T16:38Z",
+      "quote": "\"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":29"
+     },
+     {
+      "class": "F",
+      "ref": "GET https://horizon.stellar.org/",
+      "observedAt": "2026-11-02T16:38Z",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30"
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/",
+      "observedAt": "2026-10-21",
+      "quote": "Bell, Protocol 30 Testnet Upgrade Nov 3, 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00 - 17:05 UTC"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Futurenet is a dev network for testing bleeding-edge features ... where new features are introduced before stable releases."
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: https://finance.biggo.com/news/6afe4d10-1cd5-4c21-94a6-6cd782a6ae12",
+      "observedAt": "2026-10-21",
+      "quote": "testnet vote on Nov. 3 and a mainnet validator vote on Nov. 23 for its Protocol 30 release"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://soroban-testnet.stellar.org",
+   "https://rpc-futurenet.stellar.org",
+   "https://horizon.stellar.org/",
+   "https://horizon-testnet.stellar.org/",
+   "https://horizon-futurenet.stellar.org/",
+   "https://docs.goldsky.com/chains/stellar",
+   "https://docs.goldsky.com/turbo-pipelines/sources/stellar",
+   "https://docs.goldsky.com/turbo-pipelines/migrate-from-mirror",
+   "https://docs.goldsky.com/chains/supported-networks",
+   "https://developers.stellar.org/docs/data/indexers",
+   "https://developers.stellar.org/docs/networks",
+   "https://status.stellar.org/",
+   "https://support.mozilla.org/kb/how-do-i-set-sync-my-computer",
+   "https://developers.google.com/identity/passkeys/supported-environments",
+   "https://developer.apple.com/passkeys/",
+   "https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets",
+   "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
+   "gh api repos/stellar/stellar-cli/releases",
+   "gh api repos/stellar/stellar-protocol/contents/core/cap-0088.md",
+   "gh api repos/stellar/stellar-core/contents/src/herder/HerderImpl.cpp?ref=v30.0.0",
+   "gh api repos/stellar/quickstart/contents/images.json",
+   "https://hub.docker.com/v2/repositories/stellar/quickstart/tags/latest",
+   "https://raw.githubusercontent.com/stellar/quickstart/main/start",
+   "gh api repos/OpenZeppelin/stellar-contracts/contents/packages/accounts/src/verifiers/webauthn.rs",
+   "Parallel web_search (Protocol 30 votes)",
+   "Perplexity search (Goldsky Mirror; Firefox passkey sync)",
+   "Raven stellarDocs.search_docs x5"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-infra-which-indexer; q-passkey-platform-constraints; q-quickstart-manual-ledger-close; q-ti-cli-rust-windows-troubleshooting; q-infra-testnet-vs-futurenet",
+  "verifiedOnly": "q-infra-secp256r1-passkeys; q-infra-simulate-transaction-howto; q-ti-channel-accounts-throughput; q-ti-classic-submission-errors; q-ti-compute-token-lp-market-data; q-ti-custodial-account-generation-c-address; q-ti-enumerate-all-contracts",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-infra-which-indexer",
+    "issue": "Upstream docs defect, not filed: https://developers.stellar.org/docs/data/indexers says 'Goldsky Mirrors already support Stellar', but Goldsky docs (chains/supported-networks, turbo-pipelines/migrate-from-mirror) say Stellar is Turbo-only. An improvements/ finding is outside this applier's edit scope."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-infra-which-indexer",
+    "log": "answer+notes (accept): Goldsky Mirrors/Pipelines -> Goldsky Turbo pipelines, as-of 2026-11-02, notes add RECHECK leniency for naming Mirror; asOf 2026-11-02; +4 sources; +1 corroboration row (Goldsky Turbo vs stale Stellar Docs); new verified with freshness-drift rootCause"
+   },
+   {
+    "id": "q-passkey-platform-constraints",
+    "log": "notes (accept): as-of date 2026-07-11 -> 2026-11-02; asOf 2026-11-02; reverifyBy 2026-11-15 -> 2027-06-03; +2 sources; 2026-11-02 evidence added to Apple/Google and Mozilla Sync rows; new verified"
+   },
+   {
+    "id": "q-quickstart-manual-ledger-close",
+    "log": "answer+notes (accept): add CAP-88 Protocol 30 whole-second timestamp sharing and grader caution; +4 sources; +1 corroboration row; reverifyBy 2027-02-17 -> 2027-06-07; new verified"
+   },
+   {
+    "id": "q-ti-cli-rust-windows-troubleshooting",
+    "log": "answer (modify, verifier text: date-scoped 'no stellar account' to CLI v28.1.0, adds stellar token balance), keyFacts[5] (modify: 'Routes balances to stellar token balance (CLI v28+), SAC invoke, Horizon/RPC, or Lab.'), notes (accept); asOf 2026-11-02; reverifyBy 2026-12-31 -> 2027-06-15; +4 sources; +1 corroboration row covering v28; new verified"
+   },
+   {
+    "id": "q-infra-testnet-vs-futurenet",
+    "log": "notes (modify, verifier text: Futurenet equal to or behind Testnet clause, P30 schedule source); asOf 2026-11-02; +3 sources; +1 corroboration row (protocol 29 snapshot, P30 dates); new verified"
+   },
+   {
+    "id": "q-infra-secp256r1-passkeys",
+    "log": "verified-only refresh (B CAP-0051/rs-soroban-env/OZ + A docs/W3C); no gospel change"
+   },
+   {
+    "id": "q-infra-simulate-transaction-howto",
+    "log": "verified-only refresh (A RPC docs + B js-stellar-sdk); no gospel change"
+   },
+   {
+    "id": "q-ti-channel-accounts-throughput",
+    "log": "verified-only refresh (A docs + B XDR); reverifyBy 2026-12-31 -> 2027-06-11"
+   },
+   {
+    "id": "q-ti-classic-submission-errors",
+    "log": "verified-only refresh (A result-code docs + B Horizon codes); no gospel change"
+   },
+   {
+    "id": "q-ti-compute-token-lp-market-data",
+    "log": "verified-only refresh (A docs + F Horizon root); reverifyBy 2027-04-08 -> 2027-06-19"
+   },
+   {
+    "id": "q-ti-custodial-account-generation-c-address",
+    "log": "verified-only refresh (A docs/blog + D Perplexity); reverifyBy 2027-03-11 -> 2027-06-23"
+   },
+   {
+    "id": "q-ti-enumerate-all-contracts",
+    "log": "verified-only refresh (A RPC/Hubble docs + B Lab source); reverifyBy 2027-01-07 -> 2027-06-28"
+   }
+  ]
+ }
+}

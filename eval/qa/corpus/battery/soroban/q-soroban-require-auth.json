@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Call `address.require_auth()` or `address.require_auth_for_args(args)` for the Address whose authority is required. `require_auth_for_args` binds the authorization entry to the explicit deterministic argument vector you provide; it is not limited to a predefined subset of function arguments. For classic-account credentials the host validates the credential/signature path. For a contract/custom-account address, the host invokes that account contract's `__check_auth`. Soroban address authorization entries use their own nonce and ledger expiration; do not conflate that with the transaction source account's sequence number. A directly invoking contract address is implicitly authorized for its direct call. Tests may mock auth, but production checks must not.",
+    "answer": "Call `address.require_auth()` or `address.require_auth_for_args(args)` for the Address whose authority is required. `require_auth_for_args` binds the authorization entry to the explicit deterministic argument vector you provide; it is not limited to a predefined subset of function arguments. For classic-account credentials the host validates the credential/signature path. For a contract/custom-account address, the host invokes that account contract's `__check_auth`. Soroban address authorization entries use their own nonce and ledger expiration; do not conflate that with the transaction source account's sequence number. A directly invoking contract address is implicitly authorized for its direct call. Tests may mock auth, but production checks must not. Keep the layers distinct: credentials authenticate the signer, `require_auth` checks that the Address authorized this invocation, and the contract's own business rules (roles, limits, ownership) still need explicit checks.",
     "keyFacts": [
       "`require_auth_for_args` binds explicit deterministic arguments.",
       "Names classic host checks and custom-account `__check_auth` as credential paths.",
@@ -18,7 +18,7 @@
       "Do NOT use msg.sender/tx.origin or reduce auth to the transaction source account.",
       "Do NOT call require_auth_for_args a fixed subset mechanism or say all addresses use identical signature verification."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. This file owns the require_auth API how-to lane; the EVM msg.sender comparison/why and 'not an allowlist' nuance belong to q-sor-msg-sender-equivalent. Verified: address.require_auth()/require_auth_for_args; host verifies SorobanCredentials; replay via host-managed nonce + ledger expiration.\nAlso good if the answer: `require_auth_for_args` lets you bind the authorization to a specific subset of arguments. | Replay is prevented via a host-managed nonce + ledger expiration in the auth payload.\nGolden cites: The developers.stellar.org authorization documentation.\nGT-46 CORRECTION 2026-07-11: distinguish explicit args, credential paths, replay counters, and direct-invoker auth."
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. This file owns the require_auth API how-to lane; the EVM msg.sender comparison/why and 'not an allowlist' nuance belong to q-sor-msg-sender-equivalent. Verified: address.require_auth()/require_auth_for_args; host verifies SorobanCredentials; replay via host-managed nonce + ledger expiration.\nAlso good if the answer: `require_auth_for_args` lets you bind the authorization to an explicit argument vector you choose (for example, a subset of the call's arguments). | Replay is prevented via a host-managed nonce + ledger expiration in the auth payload.\nGolden cites: The developers.stellar.org authorization documentation.\nGT-46 CORRECTION 2026-07-11: distinguish explicit args, credential paths, replay counters, and direct-invoker auth."
   },
   "tags": {
     "category": "soroban",
@@ -47,6 +47,12 @@
         "class": "B",
         "ref": "https://github.com/stellar/rs-soroban-env/blob/v27.0.0/soroban-env-host/src/auth.rs",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/address.rs",
+        "note": "SDK v29.0.1 address.rs require_auth / require_auth_for_args docs",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -87,30 +93,34 @@
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md",
             "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'Authorization differs from *authentication*, which is the narrower problem of judging whether a person \"is who they say they are\"'; 'Account abstraction is a way to decouple the authentication logic from the contract-specific authorization rules.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/address.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'Ensures that this Address has authorized invocation of the current contract with the provided arguments. During the on-chain execution the Soroban host will perform the needed authentication (verify the signatures) and ensure the replay prevention.'"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329 agreed on the classic/custom distinction; blind supplied exact args, nonce, and direct-invoker precision.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-soroban-auth-vs-authn",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md",
-        "Solo scratchpad 575 GT-44 processes 3316/3324.",
-        "Structural re-form (negative-predicate): split three long facts into five atomic positive facts; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — require_auth_for_args still binds explicit deterministic arguments",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — classic host checks and custom-account __check_auth remain credential paths",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — Soroban authorization still uses a nonce and ledger expiration",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — source-account sequencing and direct-invoker authorization remain different mechanisms",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — authentication, authorization, and business policy remain distinct layers",
-        "Sibling sweep 2026-08-27: grep require_auth_for_args|__check_auth|nonce|direct invoker → q-sor-require-auth-propagation, q-soroban-check-auth-custom-account, q-soroban-auth-delegation-p27; no contradiction"
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"Authorization differs from *authentication*\" ... \"The only difference between the functions is the ability to customize the invocation arguments.\" (observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/address.rs — \"The arguments don't have to match the arguments of the contract invocation. However, it's considered the best practice to have a well-defined, deterministic and ledger-state-independent mapping\" (observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"Verify signature expiration. ... Verify and consume nonce. ... Call `__check_auth` of the account contract\" (observedAt 2026-11-02)",
+        "Independent verifier (verify/soroban-05.json): accept on golden.answer and golden.notes.",
+        "Sibling sweep 2026-11-02: grep 'subset of arguments' → only this case; q-sor-msg-sender-equivalent, q-soroban-auth-vs-authn: no contradiction."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Eval-side authoring flaw: keyFacts[4] (authentication, authorization, and business-policy layers) was added without a supporting sentence in golden.answer, and an also-good line ('specific subset of arguments') conflicted with avoid[1]."
       ]
     },
     "origin": "raven-next q-soroban-require-auth"

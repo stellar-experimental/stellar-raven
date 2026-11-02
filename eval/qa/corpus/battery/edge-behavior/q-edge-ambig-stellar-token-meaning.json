@@ -76,19 +76,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-21 blind 3261; sibling sweep of trustline/SAC/custom-token cases",
-        "Structural re-form (negative-predicate): split the three-concept taxonomy into three atomic facts; the existing avoid item already preserves the SAC/custom-token synonym trap, so no claim was dropped.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset and https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — current docs still define Classic assets by code, issuer, and trustlines.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — current docs still define SAC as the built-in contract API for the same Classic or native asset.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset and https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — current docs still describe a custom Soroban token as contract-implemented.",
-        "Sibling sweep 2026-08-27: grep Classic issued asset|Stellar Asset Contract|SAC|custom Soroban|token on Stellar → q-asset-trustline-vs-sac, q-asset-issue-asset-howto, and q-sep-41-token-interface; no contradiction"
-      ],
-      "rootCause": [
-        "Binary shorthand collapsed the classic-asset bridge into the custom-contract branch.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset (observedAt 2026-11-02): 'Assets are uniquely identified by the combination of their asset code and issuer.'",
+        "https://developers.stellar.org/docs/tokens/stellar-asset-contract (observedAt 2026-11-02): 'The SAC implements the SEP-41 Token Interface ... a Stellar asset is simply an API for interacting with the asset.'",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md (observedAt 2026-11-02): HTTP 200; SEP-41 token interface spec present.",
+        "No gospel change. Sibling sweep 2026-11-02: q-asset-trustline-vs-sac, q-asset-issue-asset-howto, q-sep-41-token-interface, q-asset-deploy-sac-cli; no contradiction."
       ]
     },
     "origin": "raven-next q-edge-ambig-stellar-token-meaning"

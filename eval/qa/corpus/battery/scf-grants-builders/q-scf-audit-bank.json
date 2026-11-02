@@ -64,22 +64,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-36 primary 3290 and blind 3291; corrupted effective avoid verified against vendored source.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened one long fact into one one-predicate fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/grants-and-funding/soroban-audit-bank — the current official Audit Bank page provides the program's current purpose, eligibility, and terms.",
-        "Sibling sweep 2026-08-29: grep Audit Bank|audit cost|security audit → q-comp-security-disclosure-programs, q-scf-audit-bank, q-scf-sdf-bug-bounty; no contradiction."
-      ],
-      "rootCause": [
-        "Eval-side stale scope compression plus mechanically truncated avoid text.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://github.com/stellar/scf-handbook/blob/11f0d4d8aa/supporting-programs/audit-bank/official-rules.md (last commit 2026-08-07T21:23:56Z; observedAt 2026-11-02): \"Managed by the Stellar Development Foundation (“SDF”), the Program schedules audits for projects and covers up to 100% of the audit cost\"; copay table \"Initial Audit | ... | 5% with potential refund* ... Growth Audit | >$10,000,000 TVL or equivalent | 0% ... Scale Audit | >$100,000,000 TVL | 0%\"; no per-audit dollar cap",
+        "https://stellar.org/grants-and-funding/soroban-audit-bank (observedAt 2026-10-22): \"a co-payment will be required (20% of total audit cost for 2nd audit, 50% of total audit cost for 3rd audit)\"",
+        "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules (observedAt 2026-11-01): Priority Categories: Financial Protocols, Widely Used Applications, Infrastructure Contracts, Yield-Bearing Token Protocols",
+        "Raven scout.searchResearch(q=\"Soroban Security Audit Bank co-payment\") (observedAt 2026-11-02T16:12:41Z): Official Rules row \"covers up to 1[00% of the audit cost]\"",
+        "Proposer verdict: all claims confirmed; no gospel change. Independent verifier: unchanged."
       ]
     },
     "origin": "raven-next q-scf-audit-bank"

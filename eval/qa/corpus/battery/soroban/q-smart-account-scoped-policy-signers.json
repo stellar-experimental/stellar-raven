@@ -123,19 +123,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
-        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts",
-        "Structural re-form (long-fact): Shortened three scoped contract-account authorization facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the current guide defines call, spend, time, signer-policy, and session-key limits.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the current guide limits session keys by function, amount, expiry, and allowed scope.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the current guide supports policy signers and external policy contracts for restricted approvals.",
-        "Sibling sweep 2026-08-29: grep session credentials|policy signer|full-control key|__check_auth → q-passkey-wallet-recovery, q-smart-account-limits-recovery, q-smart-account-what; no contradiction."
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case).",
+        "golden.keyFacts[0]: A https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — 'Put the logic in `__check_auth` ... Spend limits ... Allow lists ... Time rules' | B https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/policies/spending_limit.rs — 'enforces spending limits over a configurable rolling time window' (observedAt 2026-11-02).",
+        "golden.keyFacts[1]: A advanced-patterns — 'Generate a short-lived session key ... limit it to one function plus a maximum amount ... Reject if the session key is unknown, expired, out of allowance, or used outside its allowed scope.' (observedAt 2026-11-02).",
+        "golden.keyFacts[2]: A advanced-patterns — 'For high-risk contract calls ... require the end user plus a policy signer' | B OpenZeppelin smart_account/mod.rs at ddc327eb — 'Policies - External contracts attached to context rules that enforce business logic' (observedAt 2026-11-02).",
+        "golden.avoid[0..1] contradicted: A advanced-patterns — 'Layer spend limits, allow lists, time rules, and other guardrails onto contract accounts.' and 'a p256 key created client-side and kept in secure browser storage' (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-passkey-wallet-recovery, q-smart-account-limits-recovery, q-smart-account-what checked; no contradiction."
       ]
     },
     "origin": "kaan policy-signers-scoped-auth"

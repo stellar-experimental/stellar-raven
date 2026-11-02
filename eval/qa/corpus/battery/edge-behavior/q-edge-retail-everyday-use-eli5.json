@@ -49,21 +49,65 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "D",
+        "ref": "Parallel web_search 'Strupey Stellar' sweep result https://scopuly.com/ (third-party wallet)",
+        "note": "\"Built on Stellar. For everyday use. Trade, pool, and pay on Stellar ... a wallet that never custodies your keys.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/lumens.mdx",
+        "note": "\"Lumens (XLM) are the native currency of the Stellar network. ... They are used to pay all transaction fees, fund rent, and to cover minimum balance requirements on the network.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://scopuly.com/",
+        "note": "\"Each Stellar account keeps a base reserve in XLM.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "stellar-docs lumens.mdx",
+        "note": "\"Stellar requires a small fee for all transactions\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + applier, verified unchanged; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-03)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Live re-check (class A, 2026-08-29): https://stellar.org/use-cases/payments covers low-cost transfers, remittances, wallets, stable assets, and cash-to-crypto ramps.",
-        "Live re-check (class A, 2026-08-29): https://developers.stellar.org/docs/learn/fundamentals/lumens defines XLM as the native asset used for fees and minimum balances.",
-        "Sibling sweep (2026-08-29): everyday-use, low-cost-transfer, minimum-balance, and wallet-holding cases showed no contradiction."
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verified unchanged 2026-11-02; no judge-facing field changed.",
+        "Live A 2026-11-02: https://stellar.org/use-cases/payments — \"\"Remittances Settlement infrastructure for remittance providers\"; \"Less than one cent per payment <$0.01\"; \"170+ Countries with cash-out\"; \"Links Stellar settlement to bank, wallet, and cash payouts.\"\" (claim: Everyday uses: low-cost transfers, stablecoin payments, remittances, cash in/out ramps, wallet holding; availability is )",
+        "Live D 2026-11-02: Parallel web_search 'Strupey Stellar' sweep result https://scopuly.com/ (third-party wallet) — \"\"Built on Stellar. For everyday use. Trade, pool, and pay on Stellar ... a wallet that never custodies your keys.\"\" (claim: Everyday uses: low-cost transfers, stablecoin payments, remittances, cash in/out ramps, wallet holding; availability is )",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/lumens.mdx — \"\"Lumens (XLM) are the native currency of the Stellar network. ... They are used to pay all transaction fees, fund rent, and to cover minimum balance requirements on the network.\"\" (claim: XLM is the native asset used for fees and minimum balances.)",
+        "Live D 2026-11-02: https://scopuly.com/ — \"\"Each Stellar account keeps a base reserve in XLM.\"\" (claim: XLM is the native asset used for fees and minimum balances.)",
+        "Live B 2026-11-02: stellar-docs lumens.mdx — \"\"Stellar requires a small fee for all transactions\"\" (claim: Guaranteed profit, universal merchant acceptance, fee-free everywhere are false.)",
+        "Sibling sweep 2026-11-02: q-raph-xlm-simple, q-raph-buy-xlm-safely; no contradiction found."
       ]
     },
-    "origin": "raven-next q-edge-retail-everyday-use-eli5"
+    "origin": "raven-next q-edge-retail-everyday-use-eli5",
+    "corroboration": [
+      {
+        "claim": "Stellar is not fee-free: every transaction pays a small XLM fee, and accounts keep an XLM minimum balance.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/lumens.mdx",
+            "observedAt": "2026-11-02",
+            "note": "They are used to pay all transaction fees, fund rent, and to cover minimum balance requirements on the network."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/use-cases/payments",
+            "observedAt": "2026-11-02",
+            "note": "Less than one cent per payment <$0.01"
+          }
+        ]
+      }
+    ]
   }
 }

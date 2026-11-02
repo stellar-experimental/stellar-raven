@@ -33,7 +33,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2024-12-05",
-    "reverifyBy": "2027-02-25",
+    "reverifyBy": "2027-06-03",
     "sources": [
       {
         "class": "B",
@@ -47,21 +47,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
       "evidence": [
-        "https://stellar.org/blog/developers/announcing-protocol-22",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Split the constructor definition from its exactly-once lifecycle; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md — the Final CAP defines Soroban constructors through the __constructor export.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md — the Final CAP makes the host call __constructor during contract creation and never on code update.",
-        "Sibling sweep 2026-08-29: grep __constructor|CAP-0058|Protocol 22 → q-soroban-factory-pattern; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md — \"Title: Constructors for Soroban contracts Status: Final ... Protocol version: 22\"; \"When the contract has its code updated it is not considered created and thus constructor won't be called.\"; \"`__constructor` must return `Val::VOID`\" (observedAt 2026-11-02).",
+        "https://stellar.org/blog/developers/protocol-22-upgrade-guide — \"December 5: Mainnet upgrade vote ... upgradetime=2024-12-05T17:00:00Z&protocolversion=22\" (observedAt 2026-11-02).",
+        "https://x.com/StellarOrg/status/1856427537536262237 — \"Today, the Testnet upgraded to Protocol 22! Next up, validators vote on the Mainnet Upgrade on December 5th.\" (observedAt 2026-11-02).",
+        "Local stellar 28.1.0 `stellar contract deploy --help` — \"Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]\" (observedAt 2026-11-02).",
+        "No gospel change; no proposal (verifier noProposalCases). reverifyBy moved into the 2027-06 audit window.",
+        "Sibling sweep 2026-11-02: q-soroban-factory-pattern, q-soroban-deploy-cli; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-constructor-lifecycle",

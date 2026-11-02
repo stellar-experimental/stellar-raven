@@ -1,0 +1,1446 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "compliance-rwa-payments-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-comp-sac-inherits-flags",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..2]",
+     "claim": "SAC keeps classic auth/clawback model; G accounts use trustlines; C addresses use ContractData with authorized/clawback state",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-10-24",
+       "quote": "Classic trustline semantics will be followed. ... Using Address::Contract: The balance and authorization state will be stored in contract storage, as opposed to…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/balance.rs",
+       "observedAt": "2026-11-02",
+       "quote": "authorized: true, clawback: is_asset_clawback_enabled(e)?"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "Issuer is initial/default admin; native XLM has no admin; admin can be set to G or C via set_admin",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin",
+       "observedAt": "2026-10-11",
+       "quote": "A SAC Admin address can be either a regular Stellar account (G...), or it can be a smart contract (C...) address."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-10-24",
+       "quote": "Because the Native Stellar token doesn't have an issuer, it will not have an administrator either."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/admin.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub(crate) fn write_administrator(e: &Host, id: Address)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..3]",
+     "claim": "Avoid items punish SAC-strips-controls, every-balance-is-trustline, issuer/admin conflation, native-XLM admin",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-10-24",
+       "quote": "The admin can only revoke authorization from an Address, if the issuer of the asset has AUTH_REVOCABLE_FLAG set ... true for both the trustline balances of Addr…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-contract-trustlines-c-address; q-asset-trustline-vs-sac; q-asset-deploy-sac-cli"
+  },
+  {
+   "id": "q-comp-security-disclosure-programs",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "One consolidated SDF HackerOne program effective 2026-05-07; general Stellar Immunefi deprecated",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://hackerone.com/stellar?view_policy=true",
+       "observedAt": "2026-11-02",
+       "quote": "Last updated on October 23, 2026. ... Effective 7 MAY 2026, SDF has consolidated its bug bounty programs into this single HackerOne program. The Stellar ImmuneF…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/bug-bounty",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has partnered with HackerOne ... Identify vulnerabilities in the Stellar protocol and core, SDF-maintained repositories and s…"
+      },
+      {
+       "class": "F",
+       "ref": "https://immunefi.com/bug-bounty/stellar/information/",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404 on live GET"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (landing page clause)",
+     "claim": "The older SDF bug-bounty landing page still shows stale multi-program wording",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/bug-bounty",
+       "observedAt": "2026-11-02",
+       "quote": "Programs / File a bug report / The Stellar Development Foundation has partnered with HackerOne ... Explore Bounty (no Immunefi or second program on the page; li…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellar.org/grants-and-funding/bug-bounty (Parallel fetch cache)",
+       "observedAt": "2026-11-01",
+       "quote": "Please refer to the HackerOne program policy for the reward scale and severity classification."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Separate OpenZeppelin-on-Stellar Immunefi bounty active; 'live/updated in April 2026'",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://immunefi.com/bug-bounty/openzeppelin-stellar/information/",
+       "observedAt": "2026-11-02",
+       "quote": "Live Since 08 May 2025 ... Last Updated 29 October 2026 ... \"pausedAt\":null ... Maximum Bounty $25,000"
+      },
+      {
+       "class": "A",
+       "ref": "https://hackerone.com/stellar?view_policy=true",
+       "observedAt": "2026-11-02",
+       "quote": "This policy does not modify, supersede, or administer any separate OpenZeppelin Stellar Contracts bounty unless SDF expressly states otherwise in writing."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Soroban Security Audit Bank funds audits for eligible SCF projects",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/soroban-audit-bank",
+       "observedAt": "2026-10-22",
+       "quote": "The Soroban Security Audit Bank provides comprehensive, structured security audits for eligible projects funded through the Stellar Community Fund (SCF)"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellarcommunityfund.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+       "observedAt": "2026-10-22",
+       "quote": "linked as the governing rules from the SDF page"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / avoid[3]",
+     "claim": "Official release notes record historical exploited core bugs; do not infer clean incident history",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/docs/software/security-protocol-release-notes.md",
+       "observedAt": "2026-11-02",
+       "quote": "Overlay - security - remote crash via resource exhaustion (DoS) * exploited: yes ... v25.1.1 (2026-02-03) Herder - external - Implement ban accounts logic to fr…"
+      },
+      {
+       "class": "D",
+       "ref": "https://messari.io/report/messari-research-stellar-suffered-and-quietly-patched-a-2-2-billion-xlm-inflation-bug-in-2017",
+       "observedAt": "2026-07-11",
+       "quote": "title: Stellar suffered and quietly patched a 2.2 billion XLM inflation bug in 2017"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (first line)",
+     "claim": "Three SDF programs: HackerOne vulnerability disclosure, Stellar Bug Bounty, Soroban Security Audit Bank",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://hackerone.com/stellar?view_policy=true",
+       "observedAt": "2026-11-02",
+       "quote": "SDF has consolidated its bug bounty programs into this single HackerOne program."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Avoid items punish double-counting, unverified acceptance claims, and merging OpenZeppelin scope",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://hackerone.com/stellar?view_policy=true",
+       "observedAt": "2026-11-02",
+       "quote": "SDF may modify, suspend, or terminate this program ... at any time."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of **2026-11-02**, the current program map is:",
+     "reason": "Re-verified as of today; volatile map needs a current as-of."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "It remains distinct from SDF's general HackerOne program; its Immunefi page showed it live since 2025-05-08, unpaused, and last updated 2026-10-29.",
+     "reason": "Immunefi page now shows Last Updated 29 October 2026, pausedAt null."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "The SDF bug-bounty landing page now routes reports only to HackerOne, and the HackerOne policy controls program scope and rewards.",
+     "reason": "Live landing page lists only HackerOne; HackerOne policy states it controls scope, severity, and rewards on conflict."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Three-part map: one consolidated SDF HackerOne bounty/disclosure program, the separate OpenZeppelin-on-Stellar Immunefi bounty, and the Soroban Security Audit Bank (audit support for eligible SCF-funded projects).",
+     "reason": "Notes line contradicts the consolidated policy and avoid[0]."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Grader-note first line kept the pre-2026-05-07 three-SDF-program map after the answer was corrected (eval-side authoring flaw)."
+   ],
+   "siblings": "q-scf-sdf-bug-bounty; q-scf-audit-bank"
+  },
+  {
+   "id": "q-comp-sep6-vs-sep12-roles",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "SEP-12 is the KYC API; SEP-6 is the programmatic deposit/withdrawal API that uses SEP-12 for KYC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: KYC API / Status: Active / Version 1.15.0"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Deposit and Withdrawal API ... Handle anchor KYC needs, including transmitting KYC information about the user to the anchor via SEP-12"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_anchor_sep_docs (Raven)",
+       "observedAt": "2026-11-02",
+       "quote": "operation describes SEP-12 as 'KYC customer info' and SEP-6 as 'programmatic deposits and withdrawals'"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..4]",
+     "claim": "SEP-6 auth conditional; SEP-12 and protected SEP-24 endpoints use SEP-10 (G/M) or SEP-45 (C)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors may support SEP-10 and/or SEP-45 web authentication ... anchors must set the authentication_required field"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors and clients must support at least one of SEP-10 or SEP-45 web authentication and use it for all SEP-12 endpoints."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+       "observedAt": "2026-11-02",
+       "quote": "This SEP only supports C (contract) accounts. SEP-10 only supports G and M"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Avoid items punish SEP-6-defines-KYC and universal SEP-10-first claims",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors and clients may support SEP-10 web authentication"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sep-12-kyc; q-sep-6-24-deprecation; q-comp-anchor-compliance-stack"
+  },
+  {
+   "id": "q-comp-sep8-number-lookup-no-deepresearch",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "SEP-8 is Regulated Assets with an issuer approval-server flow",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+       "observedAt": "2026-11-02",
+       "quote": "SEP: 0008 / Title: Regulated Assets / Status: Active / Version 1.7.4"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs search_asset_token_docs / developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-8 regulated assets referenced in official asset-control docs"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0] / tags.trap",
+     "claim": "Paid-bait proportionality; wrong SEP number punished",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Regulated Assets"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sep-8-regulated-assets; q-comp-sep8-regulated-assets-approval-server"
+  },
+  {
+   "id": "q-comp-sep8-regulated-assets-approval-server",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Issuer sets Authorization Required + Revocable; stellar.toml regulated, approval_server, approval_criteria; clawback optional",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+       "observedAt": "2026-11-02",
+       "quote": "Regulated asset issuers must have both Authorization Required and Authorization Revocable flags set on their account. ... regulated ... approval_server ... appr…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-08-27",
+       "quote": "(truth source) flag semantics page; not re-fetched this pass"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "Wallet POSTs signed tx; five statuses success/revised/pending/action_required/rejected; wallet re-signs revised tx and submits",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+       "observedAt": "2026-11-02",
+       "quote": "Approval server is a single endpoint that receives a signed transaction, checks for compliance, and signs it on success. ... Why doesn't the approval service su…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/go/tree/master/services/regulated-assets-approval-server",
+       "observedAt": "2026-11-02",
+       "quote": "Reference implementation linked from SEP-8 v1.7.4 changelog"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..3]",
+     "claim": "Avoid items punish SEP-8-as-KYC, clawback substitution, server-submits, Soroban-required",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+       "observedAt": "2026-11-02",
+       "quote": "Separation of concerns between signing transactions and submitting them."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sep-8-regulated-assets; q-comp-auth-flags-overview; q-rwa-stellar-vs-erc20-regulated"
+  },
+  {
+   "id": "q-comp-yieldblox-oracle-incident",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Drain dated 2026-02-22 via USTRY SDEX manipulation feeding Reflector 5-minute VWAP; two consecutive poisoned rounds",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2029289721114051073",
+       "observedAt": "2026-10-24",
+       "quote": "The Stellar DEX Reflector oracle system uses a five minute VWAP ... a single manipulated trade was posted in two consecutive rounds by the Reflector oracle."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "On February 22, 2026, an attacker manipulated the USTRY price feed used by the Stellar DEX Reflector oracle."
+      },
+      {
+       "class": "D",
+       "ref": "https://defillama.com/protocol/blend-pools-v2",
+       "observedAt": "2026-11-02",
+       "quote": "On February 22, 2026, an attacker pumped Stellar's thin USTRY market from ~$1.06 to ~$106.74"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Exploit transfers 61,249,278.3064502 XLM and 1,000,196.7040837 USDC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+       "observedAt": "2026-11-02",
+       "quote": "TX1 ae721cac... Borrow USDC 1,000,196.70 USDC; TX2 3e81a3f7... Borrow XLM 61,249,278.31 XLM"
+      },
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2029289721114051073",
+       "observedAt": "2026-10-24",
+       "quote": "Attacker borrows an additional 1,000,196 USDC ... Attacker borrows 61,249,278 XLM"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2] / avoid[1]",
+     "claim": "The ~14,000 USDC liability was pre-existing and not established as a separate exploit borrow; do not call 1,014,196.7040837 USDC an exploit borrow",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2029289721114051073",
+       "observedAt": "2026-10-24",
+       "quote": "[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY ... [00:22:09 UTC] Attacker borrows an additional 1,000,196 USDC ... borrowed 61.3M XLM and 1.01…"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b",
+       "observedAt": "2026-11-02",
+       "quote": "created_at 2026-02-22T00:20:50Z; source_account GBO7VUL2...2WXC; successful true; asset_balance_changes USDC 14000.0000000 from CCCCIQSD...OGYFS (YieldBlox pool…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "the attacker borrowed about 61.3M XLM and 1.01M USDC against inflated USTRY collateral"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[2]",
+     "claim": "Script3 ~$10.5M net-loss estimate could not be confirmed from accessible primary material",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2029289721114051073",
+       "observedAt": "2026-10-24",
+       "quote": "In total, they supplied 153k USTRY, and borrowed 61.3M XLM and 1.01M USDC. This represents a net loss of ~$10.5M."
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/reflector-oracle-explained",
+       "observedAt": "2026-10-09",
+       "quote": "Script3 put the net loss at about $10.5M; other sources give $10.2M to $11M."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3]",
+     "claim": "About 48M XLM quarantined by validators (Blockaid 48,069,094); quarantine is not recovery",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2029289721114051073",
+       "observedAt": "2026-10-24",
+       "quote": "02-22 21:05 UTC - Stellar Tier 1 Validators quarantine the attackers accounts at the relayer layer, locking 48M XLM"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING frozen_ledger_keys",
+       "observedAt": "2026-11-02",
+       "quote": "3 account keys incl. 5dfad17a...(GBO7); lastModifiedLedgerSeq 63073409; Horizon ledger 63073409 closed_at 2026-06-17T17:00:08Z"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC",
+       "observedAt": "2026-11-02",
+       "quote": "XLM 45068299.8771009; GATD... XLM 2500813.4261406; GCJO... XLM 500006.5000039 (sum ~48.07M)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final ... This proposal moves the block to a network configuration."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3]",
+     "claim": "Supplier remediation 2026-02-27, backstop remediation 2026-03-20, small-value and liquidated-user exclusions",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2027462360294953200",
+       "observedAt": "2026-07-10",
+       "quote": "Remediation for depositors in the pool has been fully distributed ... as of 19:12 UTC ... If a remediation payment amount was under 0.01 XLM, 0.01 EURC, or 0.01…"
+      },
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2035066332887023761",
+       "observedAt": "2026-07-10",
+       "quote": "Remediation for depositors in the YieldBlox backstop has been fully distributed ... there will be no remediation for those liquidated during the manipulation."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/script3/yieldblox-incident-remediation",
+       "observedAt": "2026-07-28",
+       "quote": "This repository holds relevant data and transaction logs for the YieldBlox V2's pool remediation efforts."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[5..6]",
+     "claim": "Fresh poisoned values passed pool checks; no Reflector/Blend core/Etherfuse/protocol compromise; staleness not causal",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2029289721114051073",
+       "observedAt": "2026-10-24",
+       "quote": "For the YieldBlox pool to quote a price, two consecutive price updates within a deviation threshold ... There are no vulnerabilities in the Blend smart contract…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/docs/software/security-protocol-release-notes.md",
+       "observedAt": "2026-11-02",
+       "quote": "marked as external because it was a mitigation for an ecosystem exploit and not a vulnerability in stellar-core"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0,3,4]",
+     "claim": "Avoid items on averaging figures, recovered-funds claims, May/attempted framing",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC",
+       "observedAt": "2026-11-02",
+       "quote": "XLM balance 45068299.8771009 still held in frozen account"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Script3's 2026-03-04 post-mortem and Horizon also show an earlier attacker borrow of 14,000 USDC at 00:20:50 UTC (tx 01c2ba75…), so total USDC borrowed was about 1.01M across two transactions; do not present **1,014,196.7040837 USDC** as one transaction.",
+     "reason": "Primary post-mortem and on-chain tx show the 14,000 USDC was a separate attacker borrow."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Script3's 2026-03-04 post-mortem separately states that the borrows represent a net loss of about **$10.5M**; keep that figure attributed to Script3.",
+     "reason": "Script3 post-mortem is accessible and states ~$10.5M net loss."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "About **48M XLM** was quarantined through coordinated validator transaction filtering; Blockaid attributes 48,069,094 XLM. On 2026-06-17 (ledger 63073409) the three exploit accounts were frozen in network configuration under CAP-0077 (SLP-0006); as of 2026-11-02 they still held about 48.07M XLM.",
+     "reason": "Live mainnet config and Horizon balances; dated volatile fact."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Treats the earlier 14,000 USDC borrow as separate and all valuations as source-specific.",
+     "reason": "Pre-existing-liability framing contradicted by primary and on-chain evidence."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "replace",
+     "new": "Do NOT present 1,014,196.7040837 USDC as one borrow; it is a 14,000 USDC borrow plus a 1,000,196.7040837 USDC borrow.",
+     "reason": "Keep the single-transaction trap; drop the false not-an-exploit-borrow premise."
+    },
+    {
+     "field": "golden.avoid[2]",
+     "op": "replace",
+     "new": "Do NOT present Script3's ~$10.5M net-loss estimate, or any other single dollar figure, as the settled loss.",
+     "reason": "Old trap punishes a now-confirmed attributed claim."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Script3 reports supplier remediation (2026-02-27) and backstop remediation (2026-03-20), with no remediation for liquidated users; recovery of attacker-held funds remains unverified.",
+     "reason": "Grader note contradicts the answer and the dated Script3 notices."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nCORRECTION 2026-11-02: Script3's 2026-03-04 post-mortem lists a separate 14,000 USDC attacker borrow (tx 01c2ba75…, 00:20:50 UTC; Horizon confirms) and a ~$10.5M net-loss estimate. SLP-0006 froze the three exploit accounts in network configuration at ledger 63073409 (2026-06-17). Accept 1.01M USDC as total borrowed; still reject it as one transaction.",
+     "reason": "Grader caution for the corrected facts."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Prior verification read the PoC pre-transaction state relative to TX1 and missed the Script3 post-mortem X article, so a separate attacker borrow and an attributed figure were encoded as unverified (eval-side authoring flaw)."
+   ],
+   "siblings": "q-hist-yieldblox-v2-2026-exploit; q-pc-slp-0004-0006-status; q-soroban-oracle-defensive-consumption; q-defi-reflector-oracle"
+  },
+  {
+   "id": "q-crp-anchors-by-corridor",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer (dated roster)",
+     "claim": "As of 2026-07-11 a live partner query (both ramps) returned six matches incl. Etherfuse, CLPX, FinClusive, sourced from 'the current LumenLoop corpus'",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp",
+       "observedAt": "2026-11-02",
+       "quote": "meta.generatedAt 2026-11-02T15:52:23.776Z; counts {returned: 8, total: 8}; Etherfuse, CLPX, FinClusive, Zeam Money, Anclap, Honey Coin, Bitso, Moneygram"
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.getPartners {ramps:'on-ramp,off-ramp'}",
+       "observedAt": "2026-11-02",
+       "quote": "source https://stellarlight.xyz/partners; all 8 rows freshness.status 'aging'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (structure)",
+     "claim": "Answer refers to 'the stable distinctions above' but states none; keyFacts[2..4] (existing-anchor integration, licensing/compliance, banking/payout, liquidity/float, SEP/API) are absent from the answe…",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+       "observedAt": "2026-11-02",
+       "quote": "Cross-Border Payments API v3.1.0: receiving anchors set fees, quotes via SEP-38, bilateral agreements"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+       "observedAt": "2026-08-27",
+       "quote": "(truth source) anchors connect Stellar to banking rails; Anchor Platform integration paths"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "MoneyGram Stellar off-ramp 170-180 band (174 dev docs 2026-07; 170+ marketing); 200+ is corporate all-rails",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-10-21",
+       "quote": "Coverage: 480,000+ MoneyGram locations · 170+ countries for off-ramps ... Off-ramp (cash-out) 15 USDC 2,500 USDC"
+      },
+      {
+       "class": "F",
+       "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+       "observedAt": "2026-11-02",
+       "quote": "withdraw.USDC min_amount 1, max_amount 2500; deposit.USDC min_amount 1, max_amount 950"
+      },
+      {
+       "class": "A",
+       "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+       "observedAt": "2026-11-02",
+       "quote": "page updatedAt 2026-08-11; live HTML no longer contains a '174 countries' string"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0,2..5]",
+     "claim": "Dated-pairing, SEP-not-liquidity, scope, dated-measurement, memory-account guards",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp",
+       "observedAt": "2026-11-02",
+       "quote": "per-partner freshness and generatedAt make the dated-citation guard satisfiable"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer derives named corridor examples from a current, dated directory source and dates the roster so it is not presented as permanent. As of 2026-11-02, the Stellar Light partner directory filtered to both on- and off-ramp capability returned eight partners, including Etherfuse, CLPX, FinClusive, Bitso, and MoneyGram. Confirm each country or currency pairing against the anchor's own dated documentation or its SEP-24/SEP-38 info and quote endpoints.\n\nAnchor-to-anchor cost depends on each anchor's fees and FX quotes, payout rails and partners, liquidity, and the bilateral terms betwe…",
+     "reason": "Fix dangling 'above' reference, restate keyFact content, correct source attribution, refresh dated roster."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nRe-observed 2026-11-02: Stellar Light partners with ramps=on-ramp,off-ramp returned 8 rows (all freshness 'aging'). MoneyGram's operator guide says 170+ off-ramp countries with 15/2,500 USDC cash-out limits; the SEP-24 /info endpoint still states min 1 and max 2500 USDC.",
+     "reason": "Dated provenance for volatile corridor and MoneyGram figures."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Structural re-form left the answer with only the dated example and a dangling 'stable distinctions above' reference; roster attributed to LumenLoop instead of the Stellar Light partner directory (eval-side authoring flaw)."
+   ],
+   "siblings": "q-pay-moneygram-ramps; q-anchor-moneygram-ramps; q-hist-remittance-corridors; q-gap-match-partners-degrade; q-comp-anchor-compliance-stack"
+  },
+  {
+   "id": "q-crp-become-an-anchor-licensing",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer (technical)",
+     "claim": "SEP-1 discovery; SEP-6/24 ramps; SEP-10 G/M and SEP-45 C; SEP-12 customer data; SEP-31 receiving; SEP-38 quotes; Anchor Platform is plumbing not a license",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Cross-Border Payments API / Status: Active / Version 3.1.0"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_anchor_sep_docs (Raven catalog description)",
+       "observedAt": "2026-11-02",
+       "quote": "Anchor Platform admin guide and SEP guides ... SEP-24, SEP-6, SEP-31, SEP-10, SEP-12, SEP-38, SEP-1"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (legal/operational)",
+     "claim": "Jurisdiction- and activity-specific licensing analysis; settlement capacity without universal prefunding",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1010/section-1010.100",
+       "observedAt": "2026-07-10",
+       "quote": "(truth source) MSB definitions"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..5]",
+     "claim": "Avoid items punish license-by-platform, universal stack, legal advice, universal prefunding, timeless claims, single-license",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+       "observedAt": "2026-07-10",
+       "quote": "(truth source) Anchor Platform is software"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-pay-anchor-msb-licensing; q-anchor-platform-what; q-comp-anchor-compliance-stack"
+  },
+  {
+   "id": "q-crp-cme-xlm-futures-dates",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Announced 2026-01-15; trading began 2026-02-09",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.cmegroup.com/media-room/press-releases/2026/1/15/cme_group_to_expandcryptoderivativessuitewithlaunchofcardanochai.html",
+       "observedAt": "2026-11-02",
+       "quote": "CHICAGO, Jan. 15, 2026 ... announced plans ... launch of Cardano (ADA), Chainlink (LINK) and Stellar (Lumens) futures on February 9, pending regulatory review."
+      },
+      {
+       "class": "A",
+       "ref": "https://investor.cmegroup.com/news-releases/news-release-details/cme-group-announces-first-trades-new-cardano-chainlink-and",
+       "observedAt": "2026-11-02",
+       "quote": "Feb. 11, 2026 ... Stellar (Lumens) futures began trading Monday, February 9"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic (Raven)",
+       "observedAt": "2026-11-02",
+       "quote": "thedefiant.io 2026-02-09: 'CME Group announced plans to launch regulated futures ... on February 9, pending regulatory approval'"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Standard 250,000 XLM; Micro 12,500 XLM",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "http://www.cmegroup.com/rulebook/CME/IV/400/430.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "Chapter 430 Micro Lumens Futures ... Each contract shall be valued at 12,500 Lumens."
+      },
+      {
+       "class": "A",
+       "ref": "https://www.cmegroup.com/articles/faqs/frequently-asked-questions-cryptocurrency-futures.html",
+       "observedAt": "2026-10-19",
+       "quote": "Stellar | Lumens futures | XLM | 250,000 Lumens ... Micro Lumens futures | MXL | 12,500 Lumens"
+      },
+      {
+       "class": "D",
+       "ref": "https://coinedition.com/cme-group-to-launch-cardano-chainlink-and-stellar-crypto-futures/",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar futures cover 250,000 Lumens with Micro Lumens contracts sized at 12,500 tokens."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Punish Jan-15 launch and Coinbase-size substitution",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://investor.cmegroup.com/news-releases/news-release-details/cme-group-announces-first-trades-new-cardano-chainlink-and",
+       "observedAt": "2026-11-02",
+       "quote": "began trading Monday, February 9"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-perps-whitespace; q-defi-named-newer-protocols"
+  },
+  {
+   "id": "q-crp-custodial-vs-noncustodial-wallets",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer (definitions, MoneyGram guide)",
+     "claim": "Custody defined by key/signing/ledger control; MoneyGram Access guide documents custodial vs non-custodial SEP-10/SEP-24 auth patterns",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+       "observedAt": "2025-04-26",
+       "quote": "Some applications, such as centralized exchanges, are custodial, meaning the application has access to the private keys ... non-custodial applications are ident…"
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-10-21",
+       "quote": "extraFields: { // Required for custodial wallets; optional for non-custodial amount: '50.00' }"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Decaf example)",
+     "claim": "Scout lists Decaf as a non-custodial wallet for cross-border money movement on Stellar/Solana with MoneyGram/partner ramps",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects {q:'decaf'} (https://stellarlight.xyz/directory)",
+       "observedAt": "2026-11-02",
+       "quote": "Decaf is a non-custodial wallet on the Solana and Stellar networks for cross-border money movement across nearly 200 countries. Users on/off-ramp between fiat a…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.decaf.so/terms",
+       "observedAt": "2026-11-02",
+       "quote": "Decaf provides: A non-custodial digital asset wallet ... Decaf does not: Hold or control your private keys (for non-custodial Wallet Services)"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html",
+       "observedAt": "2026-10-14",
+       "quote": "Decaf is a global payments platform ... It combines non-custodial wallets and stablecoin settlement with bank, card and cash payment partners."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (compliance by activity/jurisdiction)",
+     "claim": "Non-custodial design does not by itself determine a regulated remittance business's duties",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering",
+       "observedAt": "2026-07-10",
+       "quote": "(sibling truth source) FinCEN facts-and-circumstances guidance"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Punish unevidenced custody labels, non-custodial-eliminates-KYC, permanent roster",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.decaf.so/terms",
+       "observedAt": "2026-11-02",
+       "quote": "Participation may require additional verification and compliance checks."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-hist-remittance-corridors; q-scf-cross-decaf-sep24; q-anchor-moneygram-ramps; q-comp-cross-moneygram-partnership-sep24"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5); did not open the proposer matrix",
+  "decisions": [
+   {
+    "id": "q-comp-security-disclosure-programs",
+    "field": "golden.answer (as-of 2026-08-29 -> 2026-11-02)",
+    "decision": "accept",
+    "note": "All three map items re-verified on or near 2026-11-02, so the date bump is earned. A direct curl to hackerone.com hit a Cloudflare challenge; the HackerOne text comes from Parallel (2026-10-15) and Perplexity (2026-10-23) captures. Neither capture shows an intake pause.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://hackerone.com/stellar (Parallel web_fetch, acquired 2026-10-15)",
+      "observedAt": "2026-11-02",
+      "quote": "Effective 7 MAY 2026, SDF has consolidated its bug bounty programs into this single HackerOne program. The Stellar ImmuneFi program at immunefi.com/bug-bounty/s…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search result for https://hackerone.com/stellar (dated 2026-10-23)",
+      "observedAt": "2026-11-02",
+      "quote": "All new reports should be submitted through HackerOne. This policy does not modify, supersede, or administer any separate OpenZeppelin Stellar Contracts bounty"
+     },
+     {
+      "class": "A",
+      "ref": "https://immunefi.com/bug-bounty/openzeppelin-stellar/information/ (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "\"launchDate\":\"2025-05-08T02:51:06.000Z\",\"endDate\":null,\"updatedDate\":\"2026-10-29T18:46:30.359Z\",\"pausedAt\":null"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/soroban-audit-bank (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "The Soroban Security Audit Bank provides comprehensive, structured security audits for eligible projects funded through the Stellar Community Fund (SCF)"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-security-disclosure-programs",
+    "field": "golden.answer (OpenZeppelin Immunefi live/updated sentence)",
+    "decision": "accept",
+    "note": "The old text, 'live/updated in April 2026', was stale. The live page shows an update on 2026-10-29 and pausedAt null. The D aggregator's 10/9 date comes before its last check on 10/19, so it does not conflict with the live 10/29 update. The date is volatile, but the answer is dated.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://immunefi.com/bug-bounty/openzeppelin-stellar/information/ (live curl, rendered HTML)",
+      "observedAt": "2026-11-02",
+      "quote": "Live Since 08 May 2025 ... Last Updated 29 October 2026"
+     },
+     {
+      "class": "D",
+      "ref": "https://bountyhunte.rs/programs/openzeppelin-stellar (Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Launched 5/8/2025 ... Last updated 10/9/2026 Last checked 10/19/2026"
+     },
+     {
+      "class": "D",
+      "ref": "https://x.com/immunefi/status/1927211863944683993",
+      "observedAt": "2026-11-02",
+      "quote": "New bug bounty from @OpenZeppelin. Find bugs, get up to $25k!"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-security-disclosure-programs",
+    "field": "golden.answer (SDF landing-page sentence)",
+    "decision": "accept",
+    "note": "The old 'stale multi-program wording' claim is no longer true. The landing page now routes only to HackerOne.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/bug-bounty (live curl; no 'Immunefi' string anywhere in page text)",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Development Foundation has partnered with HackerOne ... Please refer to the HackerOne program policy for the reward scale and severity classificatio…"
+     },
+     {
+      "class": "A",
+      "ref": "https://hackerone.com/stellar (Parallel web_fetch)",
+      "observedAt": "2026-11-02",
+      "quote": "If there is a conflict, this policy controls with respect to program scope, vulnerability severity classification, report submission requirements, disclosure re…"
+     },
+     {
+      "class": "D",
+      "ref": "https://hackerone.com/stellar?view_policy=true (Parallel web_search excerpt)",
+      "observedAt": "2026-11-02",
+      "quote": "All new reports should be submitted through HackerOne."
+     }
+    ]
+   },
+   {
+    "id": "q-comp-security-disclosure-programs",
+    "field": "golden.notes (first sentence)",
+    "decision": "accept",
+    "note": "The old note listed separate 'HackerOne vulnerability disclosure' and 'Stellar Bug Bounty' programs. That contradicts the golden's own avoid[0] against double-counting. The new note matches the answer.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://hackerone.com/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "SDF has consolidated its bug bounty programs into this single HackerOne program."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/soroban-audit-bank",
+      "observedAt": "2026-11-02",
+      "quote": "structured security audits for eligible projects funded through the Stellar Community Fund (SCF)"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.answer (14,000 USDC sentence)",
+    "decision": "accept",
+    "note": "The old golden called the 14k a pre-existing liability that the sources did not establish as an exploit borrow. The ledger shows otherwise: the exploited pool contract paid it to the attacker at 00:20:50, 23 seconds after the second poisoned price round. The PoC's 'pre-existing liability' wording is consistent with this, because the liability existed before tx ae721cac. A Perplexity answer said th…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (Script3 article 'YieldBlox USTRY Oracle Manipulation - Post Mortem', created 2026-03-04, modified 2026-03-20; read via api.fxtwitter.com)",
+      "observedAt": "2026-11-02",
+      "quote": "[00:20:27 UTC] Reflector oracle creates the second price update, causing the deviation safety check to get bypassed | [00:20:50 UTC] Attacker borrows 14,000 USD…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "created_at 2026-02-22T00:20:50Z; contract_debited contract CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFS amount 14000.0000000 USDC; account_credited …"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited GBO7VUL2 1000196.7040837 USDC (00:22:09Z)"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+      "observedAt": "2026-11-02",
+      "quote": "According to the Script3 incident report, the attacker borrowed about 61.3M XLM and 1.01M USDC against inflated USTRY collateral."
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.answer (Script3 $10.5M net-loss sentence)",
+    "decision": "accept",
+    "note": "The claim is attribution only ('Script3 states'), so the primary text is the controlling source. SLP-0006 confirms that this post is Script3's incident report. Perplexity wrongly said Script3 put the loss at $10.97M. That error shows why the attribution must be exact.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (via api.fxtwitter.com)",
+      "observedAt": "2026-11-02",
+      "quote": "In total, they supplied 153k USTRY, and borrowed 61.3M XLM and 1.01M USDC. This represents a net loss of ~$10.5M."
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+      "observedAt": "2026-11-02",
+      "quote": "According to the [Script3 incident report](https://x.com/script3official/status/2029289721114051073)"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.answer (48M quarantine + SLP-0006 freeze)",
+    "decision": "accept",
+    "note": "The ledger and the date are confirmed exactly. The XDR key bytes match the SLP-0006 ConfigSettingEntry. The 48.07M XLM balance is dated in the text, as a volatile figure requires.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "Stellar RPC getLedgerEntries key AAAACAAAABE= (CONFIG_SETTING_FROZEN_LEDGER_KEYS) at https://mainnet.sorobanrpc.com and https://soroban-rpc.mainnet.stellar.gateway.fm",
+      "observedAt": "2026-11-02",
+      "quote": "3 account keys (26382ffe.., 5dfad17a.., 92e7ca0d.. = GATD, GBO7, GCJO), \"lastModifiedLedgerSeq\":63073409"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/63073409",
+      "observedAt": "2026-11-02",
+      "quote": "closed_at 2026-06-17T17:00:08Z, protocol_version 26"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/{GBO7VUL2...,GATDQL76...,GCJOPSQN...}",
+      "observedAt": "2026-11-02",
+      "quote": "native 45068299.8771009 + 2500813.4261406 + 500006.5000039 = 48,069,119.80 XLM"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md (Status: Final; status commit 1ae39233, 2026-10-22)",
+      "observedAt": "2026-11-02",
+      "quote": "This proposal freezes three account entries using the frozen ledger key mechanism defined in CAP-0077. These accounts are currently blocked by validators at the…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "The text is 88 characters, which is under the 90-character limit.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited ... 14000.0000000 USDC"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073",
+      "observedAt": "2026-11-02",
+      "quote": "[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "The avoid fires only on a ledger-false claim (one borrow of 1,014,196.70). A Script3-style '1.01M USDC borrowed' total does not fire it.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "Horizon txs 01c2ba75... (14000.0000000 USDC, 00:20:50Z) and ae721cac... (1000196.7040837 USDC, 00:22:09Z)",
+      "observedAt": "2026-11-02",
+      "quote": "two separate successful transactions"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073",
+      "observedAt": "2026-11-02",
+      "quote": "Attacker borrows 14,000 USDC ... Attacker borrows an additional 1,000,196 USDC"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.avoid[2]",
+    "decision": "modify",
+    "newText": "Do NOT attribute a net-loss figure other than ~$10.5M to Script3, or call any dollar loss ledger-confirmed.",
+    "note": "The old avoid punished a now-confirmed Script3 attribution, so it must change. The proposed text fired on 'any other single dollar figure ... as the settled loss'. That wording could punish a possibly-true, widely reported estimate (~$10.2M, ~$10.97M) stated without hedging. keyFacts[2] already covers that case as a missing key fact, which yields partial. The replacement targets concrete false cla…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073",
+      "observedAt": "2026-11-02",
+      "quote": "This represents a net loss of ~$10.5M."
+     },
+     {
+      "class": "D",
+      "ref": "https://olympixai.medium.com/yieldblox-exploit-post-mortem-how-a-single-trade-drained-10m-274e88721008 ; https://newsletter.rekt.news/p/yieldblox-rekt ; https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02",
+      "quote": "Loss: ~$10.2M ... ; $10.97 million gone ... ; Published estimates range $10,200,000 to $10,970,000"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_ask (2026-11-02)",
+      "observedAt": "2026-11-02",
+      "quote": "Script3's March 2026 post-mortem put the loss at about $10.97 million."
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.notes (remediation sentence)",
+    "decision": "accept",
+    "note": "The 'remains unverified' wording for attacker-held funds is honest. Script3's post-mortem says negotiations were 'in progress'. Blockaid mentions a further ~$1.7M recovery effort. No source shows a return, and the frozen balance is still in place.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2027462360294953200 (2026-02-27, via api.fxtwitter.com)",
+      "observedAt": "2026-11-02",
+      "quote": "Remediation for depositors in the pool has been fully distributed directly into affected accounts (wallets) via payment as of 19:12 UTC"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2035066332887023761 (2026-03-20)",
+      "observedAt": "2026-11-02",
+      "quote": "Remediation for depositors in the YieldBlox backstop has been fully distributed ... As a reminder, there will be no remediation for those liquidated during the …"
+     },
+     {
+      "class": "D",
+      "ref": "https://x.com/script3official/status/2035066332887023761 (Parallel web_search excerpt)",
+      "observedAt": "2026-11-02",
+      "quote": "This distribution concludes Script3's remediation effort"
+     },
+     {
+      "class": "F",
+      "ref": "Horizon account balances of the three frozen accounts (48,069,119.80 XLM still held)",
+      "observedAt": "2026-11-02",
+      "quote": "frozen XLM not returned"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.notes (append CORRECTION 2026-11-02)",
+    "decision": "accept",
+    "note": "The appended note matches the verified facts.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073",
+      "observedAt": "2026-11-02",
+      "quote": "Attacker borrows 14,000 USDC ... net loss of ~$10.5M"
+     },
+     {
+      "class": "F",
+      "ref": "RPC CONFIG_SETTING_FROZEN_LEDGER_KEYS lastModifiedLedgerSeq 63073409; Horizon ledger 63073409 closed 2026-06-17T17:00:08Z",
+      "observedAt": "2026-11-02",
+      "quote": ""
+     }
+    ]
+   },
+   {
+    "id": "q-crp-anchors-by-corridor",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "The roster count and names are exact at C, and named members have real-world footprints at A and D. The old answer referred to 'the stable distinctions above', but no such text existed. The new paragraph restores the cost, interface-not-guarantee, and build-vs-integrate content that keyFacts[2..4] and avoid[2] grade. The new source naming is right, because the old 2026-07-11 observation was the St…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp&limit=50",
+      "observedAt": "2026-11-02",
+      "quote": "meta.generatedAt 2026-11-02T16:25:23.749Z; counts {returned: 8, total: 8}; Etherfuse, CLPX, FinClusive, Zeam Money, Anclap, Honey Coin, Bitso, Moneygram; each r…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md",
+      "observedAt": "2026-11-02",
+      "quote": "facilitated by two business entities, the Sending and Receiving Anchors, who have the necessary licenses in their respective jurisdictions. ... The Sending and …"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/platforms/anchor-platform#supported-seps",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-38 — Price quotes and exchange rate services"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search -> https://developers.stellar.org/ ; https://stellar.org/solutions/cross-border-payments",
+      "observedAt": "2026-11-02",
+      "quote": "Etherfuse: Tokenized sovereign bonds and USD to MXN; MoneyGram: Cash to USDC and back at retail locations; Bitso: Local payments and LatAm stablecoins"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+      "observedAt": "2026-11-02",
+      "quote": "\"withdraw\":{\"USDC\":{\"enabled\":true,\"fee_fixed\":0,\"fee_percent\":0,\"min_amount\":1,\"max_amount\":2500}}"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-anchors-by-corridor",
+    "field": "golden.notes (append re-observed 2026-11-02)",
+    "decision": "accept",
+    "note": "Every number in the note matches a live source today. The minimum-amount split (15 vs 1) remains a documented layer difference, and this case does not grade it.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/dev/stellar (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Coverage: 480,000+ MoneyGram locations · 170+ countries for off-ramps ... Off-ramp (cash-out) 15 USDC 2,500 USDC"
+     },
+     {
+      "class": "F",
+      "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+      "observedAt": "2026-11-02",
+      "quote": "\"min_amount\":1,\"max_amount\":2500"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp",
+      "observedAt": "2026-11-02",
+      "quote": "8 rows, freshness.status 'aging' on all"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://immunefi.com/bug-bounty/openzeppelin-stellar/information/",
+   "https://stellar.org/grants-and-funding/bug-bounty",
+   "https://stellar.org/grants-and-funding/soroban-audit-bank",
+   "https://hackerone.com/stellar (Parallel fetch; curl blocked by Cloudflare)",
+   "https://hackerone.com/graphql (blocked)",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md",
+   "gh api repos/stellar/stellar-protocol/commits?path=limits/slp-0006.md ; commits/1ae39233",
+   "https://api.fxtwitter.com/script3official/status/2029289721114051073",
+   "https://api.fxtwitter.com/script3official/status/2027462360294953200",
+   "https://api.fxtwitter.com/script3official/status/2035066332887023761",
+   "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC/transactions",
+   "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+   "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/operations",
+   "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+   "https://horizon.stellar.org/ledgers/63073409",
+   "https://horizon.stellar.org/accounts/{GBO7VUL2..., GATDQL76..., GCJOPSQN...}",
+   "https://mainnet.sorobanrpc.com getLedgerEntries",
+   "https://soroban-rpc.mainnet.stellar.gateway.fm getLedgerEntries",
+   "https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp&limit=50",
+   "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+   "https://xramps.moneygram.com/ops/dev/stellar",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md",
+   "Raven stellarDocs.search_docs x3",
+   "Parallel web_search x3; Perplexity perplexity_search x2; perplexity_ask x1"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-comp-security-disclosure-programs; q-comp-yieldblox-oracle-incident; q-crp-anchors-by-corridor",
+  "verifiedOnly": "q-comp-sac-inherits-flags; q-comp-sep8-number-lookup-no-deepresearch; q-crp-cme-xlm-futures-dates; q-crp-custodial-vs-noncustodial-wallets",
+  "untouched": "q-comp-sep6-vs-sep12-roles; q-comp-sep8-regulated-assets-approval-server; q-crp-become-an-anchor-licensing",
+  "escalations": [
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "issue": "Sibling (other batch) still encodes the pre-existing-14,000-USDC liability and the unverified Script3 $10.5M attribution in answer, keyFacts, and avoid[1..2]; this contradicts the corrected q-comp-yieldblox-oracle-incident (Script3 2026-03-04 post-mortem + Horizon tx 01c2ba75)."
+   },
+   {
+    "id": "q-pc-slp-0004-0006-status",
+    "issue": "Sibling (other batch) avoid[1] punishes saying the SLP-0006 freeze was applied, but mainnet CONFIG_SETTING_FROZEN_LEDGER_KEYS holds the three accounts since ledger 63073409 (2026-06-17); SLP-0006 is Status Final (commit 1ae39233)."
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "issue": "eval/qa/consistency-register.json (not edited; shared): the cluster notes for the YieldBlox clusters, cluster-126, and the numericInvariant still say the 14,000 USDC was pre-existing and the Script3 $10.5M attribution is unverified; the dateContingentTraps disposition pins reverifyBy 2027-03-02, so truth.reverifyBy stays 2027-03-02 (not moved to the June window) to keep the date-trap lint consistent. Orchestrator should rewrite those notes on eval:qa:register and may move both dates together."
+   },
+   {
+    "id": "q-crp-anchors-by-corridor",
+    "issue": "The answer now cites the Stellar Light partner directory, but tags.service stays 'lumenloop' and surface was not changed (not proposed); review service/surface routing separately."
+   },
+   {
+    "id": "q-comp-sep6-vs-sep12-roles",
+    "issue": "Left untouched: the only fresh evidence is class B (stellar-protocol repo); the E row was a Raven catalog description, not Stellar Docs index content, so the multi-class bar for a verification refresh was not met."
+   },
+   {
+    "id": "q-crp-become-an-anchor-licensing",
+    "issue": "Left untouched: technical claims re-read only in class B plus a Raven catalog description; legal/operational claims remain unverifiable (status already 'unverifiable'); no drift."
+   },
+   {
+    "id": "q-comp-sep8-regulated-assets-approval-server",
+    "issue": "Left untouched: only class B was re-read on 2026-11-02; the A source was not re-fetched this pass."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-comp-security-disclosure-programs",
+    "log": "Answer as-of 2026-11-02; OZ Immunefi live since 2025-05-08, updated 2026-10-29; landing page routes only to HackerOne; notes first line fixed to the consolidated map; truth.asOf 2026-11-02, reverifyBy 2027-06-08, verified/rootCause, 2 sources, 1 new + 1 refreshed corroboration row."
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "log": "14,000 USDC recast as a separate attacker borrow; Script3 ~$10.5M attributed; SLP-0006 freeze at ledger 63073409 added; keyFacts[2], avoid[1] updated, avoid[2] per verifier modify; notes remediation + CORRECTION; truth.asOf 2026-11-02, reverifyBy kept 2027-03-02 (register date-trap), verified/rootCause, 4 sources, corroboration rows rewritten/added."
+   },
+   {
+    "id": "q-crp-anchors-by-corridor",
+    "log": "Answer roster re-sourced to Stellar Light partner directory (8 partners as of 2026-11-02) and restored cost/interface/build-vs-integrate paragraph; notes re-observation appended; truth.asOf 2026-11-02, verified/rootCause, 2 sources, 1 corroboration row."
+   },
+   {
+    "id": "q-comp-sac-inherits-flags",
+    "log": "truth.verified refreshed (A + B evidence); no gospel change."
+   },
+   {
+    "id": "q-comp-sep8-number-lookup-no-deepresearch",
+    "log": "truth.verified refreshed (B + E evidence); no gospel change."
+   },
+   {
+    "id": "q-crp-cme-xlm-futures-dates",
+    "log": "truth.verified refreshed (A + C + D evidence); no gospel change."
+   },
+   {
+    "id": "q-crp-custodial-vs-noncustodial-wallets",
+    "log": "truth.verified refreshed (A + C + D evidence); no gospel change; asOf kept 2026-07-11 to match the answer text."
+   },
+   {
+    "id": "q-comp-sep6-vs-sep12-roles",
+    "log": "untouched."
+   },
+   {
+    "id": "q-comp-sep8-regulated-assets-approval-server",
+    "log": "untouched."
+   },
+   {
+    "id": "q-crp-become-an-anchor-licensing",
+    "log": "untouched."
+   }
+  ]
+ }
+}

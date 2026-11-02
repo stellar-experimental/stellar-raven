@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "As of **2026-07-28**, Mainnet and Testnet report `contract_max_size_bytes=131072`—**128 KiB**—for uploaded contract Wasm. The separate `contract_data_entry_size_bytes=65536` value is not the code cap. These are network settings, so inspect the target network with Stellar Lab or `stellar network settings` instead of treating either number as permanent. Current Stellar CLI builds optimize by default; `--optimize` is accepted but redundant, `--optimize=false` disables it, and the standalone `stellar contract optimize` command is deprecated. Reduce dependencies/features and split logic across contracts when needed.",
+    "answer": "As of **2026-07-28**, Mainnet and Testnet report `contract_max_size_bytes=131072`\u2014**128 KiB**\u2014for uploaded contract Wasm. The separate `contract_data_entry_size_bytes=65536` value is not the code cap. These are network settings, so inspect the target network with Stellar Lab or `stellar network settings` instead of treating either number as permanent. Current Stellar CLI builds optimize by default; `--optimize` is accepted but redundant, `--optimize=false` disables it, and the standalone `stellar contract optimize` command is deprecated. Reduce dependencies/features and split logic across contracts when needed.",
     "keyFacts": [
       "Reports the dated 128 KiB contract-code cap.",
       "Treats the 64 KiB contract-data cap as a different network setting.",
@@ -16,7 +16,7 @@
       "Do NOT call 64 KiB the current contract-code limit or a universal ledger-entry limit.",
       "Do NOT teach standalone contract optimize as the preferred current workflow."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. The 24KB EVM limit (EIP-170) is the cross-chain confusion trap. VERIFIED 2026-07-28: the contract-code cap and the contract-data-entry cap are DISTINCT network settings — contract_max_size_bytes=131072 (128 KiB) caps uploaded contract code, and contract_data_entry_size_bytes=65536 (64 KiB) caps a contract-data entry; both are validator-tunable, so the rubric gates on the distinction and the live-read requirement rather than any byte constant; kept medium because the exact byte values can drift.\nAlso good if the answer: Building with optimization (`stellar contract build --optimize`, wasm-opt) reduces binary size. | Spec/dead-code shaking and `#![no_std]` keep the binary small.\nGolden cites: A developers.stellar.org page on contract limits / build optimization.\nGT-48 CORRECTION 2026-07-11: live network setting controls; code and data-entry caps are distinct."
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. The 24KB EVM limit (EIP-170) is the cross-chain confusion trap. VERIFIED 2026-07-28: the contract-code cap and the contract-data-entry cap are DISTINCT network settings \u2014 contract_max_size_bytes=131072 (128 KiB) caps uploaded contract code, and contract_data_entry_size_bytes=65536 (64 KiB) caps a contract-data entry; both are validator-tunable, so the rubric gates on the distinction and the live-read requirement rather than any byte constant; kept medium because the exact byte values can drift.\nAlso good if the answer: Building with optimization (`stellar contract build --optimize`, wasm-opt) reduces binary size. | Spec/dead-code shaking and `#![no_std]` keep the binary small.\nGolden cites: A developers.stellar.org page on contract limits / build optimization.\nGT-48 CORRECTION 2026-07-11: live network setting controls; code and data-entry caps are distinct."
   },
   "tags": {
     "category": "soroban",
@@ -31,7 +31,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-28",
-    "reverifyBy": "2027-02-05",
+    "reverifyBy": "2027-04-13",
     "sources": [
       {
         "class": "A",
@@ -81,13 +81,14 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus author re-check, Claude Opus 5.5)",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-07)",
       "evidence": [
-        "Re-verified unchanged 2026-11-02. The dated 2026-07-28 values still hold under Protocol 29.",
-        "Live F 2026-11-02: RPC getLedgerEntries CONFIG_SETTING on https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org decodes to contract_max_size_bytes 131072 and contract_data_entry_size_bytes 65536; `stellar network settings` (stellar 28.1.0) agrees on both networks.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits lists 'Max contract Wasm size | 131,072 B (128 KiB)' and 'Max contract-data entry size | 65,536 B (64 KiB)'.",
-        "Live B/F 2026-11-02: stellar-cli v28.1.0 build.rs and `stellar contract build --help` say optimization is 'Enabled by default; pass --optimize=false to disable'; `stellar contract optimize --help` says 'Deprecated, use build --optimize'.",
-        "Sibling sweep 2026-11-02: q-soroban-wasm-language and q-sor-persistent-unbounded-collection-cap state the same caps; no contradiction."
+        "Re-verified unchanged 2026-11-02 (no gospel change; verifier received no proposal for this case).",
+        "golden.answer / keyFacts[0] confirmed-as-of: F stellar 28.1.0 `stellar network settings --network mainnet|testnet --output json-formatted` \u2014 '\"contract_max_size_bytes\": 131072 (both networks)' (observedAt 2026-11-02) | A https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits \u2014 'Max contract Wasm size | 131,072 B (128 KiB)' (observedAt 2026-11-02)",
+        "golden.keyFacts[1] confirmed-as-of: F stellar network settings mainnet|testnet \u2014 '\"contract_data_entry_size_bytes\": 65536 (both networks)' (observedAt 2026-11-02) | A https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits \u2014 'Max contract-data entry size | 65,536 B (64 KiB)' (observedAt 2026-11-02)",
+        "golden.keyFacts[2] confirmed: B https://github.com/stellar/stellar-cli/blob/v28.1.0/cmd/soroban-cli/src/commands/contract/build.rs \u2014 'Optimize the generated wasm. Enabled by default; pass `--optimize=false` to disable. Requires the `additional-libs` feature.' (observedAt 2026-11-02) | B https://github.com/stellar/stellar-cli/blob/v28.1.0/cmd/soroban-cli/src/commands/contract/mod.rs \u2014 '/// \u26a0\ufe0f Deprecated, use `build --optimize`. Optimize a WASM file' (observedAt 2026-11-02)",
+        "golden.avoid[0..1] contradicted: F stellar network settings mainnet \u2014 'contract_max_size_bytes 131072' (observedAt 2026-11-02) | B stellar-cli v28.1.0 mod.rs \u2014 'Deprecated, use `build --optimize`' (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-soroban-wasm-language, q-sor-persistent-unbounded-collection-cap checked; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-wasm-size-limit"

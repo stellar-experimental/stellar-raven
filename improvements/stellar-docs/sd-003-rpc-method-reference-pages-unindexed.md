@@ -18,6 +18,8 @@ evidence:
   - "2026-11-02 independent recheck (Claude Fable 5.1, distinct from the author): RESOLVE; the generated getTransactions, getEvents, getLedgers, and simulateTransaction pages are indexed and rank first for method-named queries; source stellar/stellar-docs@700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (#2941). Record: .agents/rounds/2026-11-02-mintlify-migration/sd003-recheck.md"
   - "resolution comment posted and read back 2026-11-02: https://github.com/stellar/stellar-docs/issues/2566#issuecomment-6585113964"
 recurrences:
+  - date: 2026-11-02
+    evidence: golden audit pass 2 live recheck 2026-11-02T17:20:19Z - Raven stellarDocs.get_doc_page_sections for /docs/data/apis/rpc/api-reference/methods/getTransaction is still soft-empty; search_docs 'getTransaction API reference status NOT_FOUND' returns guide pages only. Issue #2566 remains open; the latest comment is still Raven's 2026-07-27 reply. The index itself is also stale since the Mintlify migration (sd-076). Cases q-pc-tx-finality-failure-semantics, q-pc-practical-fee-setting, q-ti-rpc-gettransactions-pagination-xdr, and q-infra-rpc-methods-list cite this finding.
   - date: 2026-08-11
     evidence: live recheck — get_doc_page_sections for the generated getTransactions path remains soft-empty; `getTransactions API reference limit 200 default 50` ranks the configuring page first, but the generated method page remains unindexed. Issue #2566 remains open; its latest maintainer comment is ElliotFriend's 2026-07-21 partial-fix note, while the latest comment is Raven's 2026-07-27 reply. PR #2572 remains merged with all recorded checks successful and ElliotFriend approval.
   - date: 2026-07-10

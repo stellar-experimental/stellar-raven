@@ -29,7 +29,7 @@
     "domain": "mixed",
     "status": "confirmed",
     "asOf": "2026-11-02",
-    "reverifyBy": "2027-02-22",
+    "reverifyBy": "2027-05-15",
     "sources": [
       {
         "class": "B",
@@ -158,15 +158,27 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
       "evidence": [
-        "Re-verified unchanged 2026-11-02. The answer, the three keyFacts, and the avoid item still hold; the golden does not deny a Beam deployment.",
-        "Live C 2026-11-02: https://orchestrator.reflector.network/config still lists the three Pulse oracle IDs and CBQSUF...XQLSE as type 'dao'. It now also lists a Mainnet Beam oracle CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7 (type 'oracle_beam') and a subscriptions contract, which reinforces the do-not-freeze-IDs guidance.",
-        "The Beam corroboration row moves from unverifiable to confirmed-as-of: the registry entry, https://reflector.network/docs ('Stellar Pubnet Beam Oracle ... Status: live'), and the live Mainnet ABI with lastprice(caller, asset) agree.",
-        "Live F 2026-11-02: stellar contract info interface --network mainnet (stellar 28.1.0) on all registry IDs. The Pulse specs have one-argument lastprice, the Beam spec has lastprice(caller, asset), and no oracle spec has an x_* export.",
-        "Repo refs moved from blob/main (HTTP 404) to blob/master; gh api repos/reflector-network/reflector-contract reports default_branch 'master' (head b006d297). https://github.com/reflector-network/reflector-contract/blob/master/pulse-contract/src/lib.rs and https://github.com/reflector-network/reflector-contract/blob/master/beam-contract/src/lib.rs return HTTP 200.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/oracles/oracle-providers still lists only the three Pulse IDs; the missing Beam entry is a possible upstream docs gap, not a golden error.",
-        "Sibling sweep 2026-11-02: grep reflector over the battery finds 25 cases; grep CCRVIC2R|oracle_beam|x_last_price|Beam among them finds only q-defi-reflector-oracle (sweep text only). q-defi-reflector-oracle, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40, and q-tool-oracle-repo-live assert no IDs, no x_last_price, and no absence of Beam; no contradiction."
+        "Proposer C 2026-11-02: https://orchestrator.reflector.network/config — \"CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN dataSource 'exchanges' type 'oracle'; CALI2BYU... dataSource 'pubnet'; CBKGPWGK... dataSource 'forex'; CBQSUF57...XQLSE type 'dao'; CCRVIC2R...EE2F7 type 'oracle_beam'\"",
+        "Proposer D 2026-11-02: https://docs.leontief.tech/integrations/reflector — \"Stellar DEX | mainnet | CALI2BYU2JE6WVRUFYTS6MSBNEHGJ35P4AVCZYF3B6QOE3QKOB2PLE6M ... External CEX/DEX | mainnet | CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN ... Fiat / FX | mainnet | CBKGPWGK...\"",
+        "Proposer F 2026-11-02: stellar contract info interface --contract-id CAFJZQW...N34DLN (stellar 28.1.0, mainnet RPC) — \"fn lastprice(env: soroban_sdk::Env, asset: Asset) -> Option<PriceData>;\"",
+        "Proposer claim verdict confirmed-as-of (golden.answer): Mainnet registry IDs CAFJZQW...N34DLN (exchanges), CALI2BY...B2PLE6M (pubnet), CBKGPWG...DXMCJZC (forex) are current; CBQSUF...XQLSE is a DAO Note: Golden dates the IDs 2026-09-02; still valid 2026-11-02. Today's earlier PR #310 re-verification already recorded these.",
+        "Proposer B 2026-11-02: https://github.com/reflector-network/reflector-contract/blob/master/pulse-contract/src/lib.rs (head b006d297, 2026-10-14) — \"pub fn lastprice(e: &Env, asset: Asset) -> Option<PriceData> {\"",
+        "Proposer B 2026-11-02: https://github.com/reflector-network/reflector-contract/blob/master/beam-contract/src/lib.rs — \"pub fn lastprice(e: &Env, caller: Address, asset: Asset) -> Option<PriceData> {\"",
+        "Proposer B 2026-11-02: https://github.com/reflector-network/reflector-contract/blob/master/oracle/src/types.rs — \"Stellar(Address), // Stellar asset contract address / Other(Symbol), ... pub price: i128, ... pub timestamp: u64,\"",
+        "Proposer F 2026-11-02: stellar contract info interface --contract-id CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7 — \"fn lastprice(env, caller: soroban_sdk::Address, asset: Asset) -> Option<PriceData>; no x_* export in either live spec\"",
+        "Proposer A 2026-11-02: https://reflector.network/docs/interface — \"fn lastprice (asset: Asset) -> Option <PriceData>;\"",
+        "Proposer claim verdict confirmed (golden.answer): Pulse lastprice(asset); Beam lastprice(caller, asset); Asset = Stellar(Address)|Other(Symbol); returns Option<PriceData{price:i128,timestamp:u64}>",
+        "Proposer B 2026-11-02: https://github.com/code-423n4/2025-10-reflector/blob/21676f3d353ed72e53d53ee9a3538542221a1cb2/oracle/src/price_oracle.rs — \"pub fn x_last_price(e: &Env, base_asset: Asset, quote_asset: Asset) -> Option<PriceData>\"",
+        "Proposer D 2026-11-02: https://dev.to/icolomina/how-equillar-uses-on-chain-collateral-to-protect-investors-pg6 — \"let price_data = oracle .x_last_price ( & Asset :: Stellar (...)\"",
+        "Proposer F 2026-11-02: stellar contract info interface (mainnet, all registry oracle IDs) — \"grep -c x_ on both live interfaces = 0\"",
+        "Proposer claim verdict confirmed (golden.answer): x_last_price is stale; survives in the October 2025 snapshot and third-party copies",
+        "Proposer B 2026-11-02: https://github.com/reflector-network/reflector-contract/blob/master/README.md — \"// Authorization is required to burn the XRF tokens that pay for the access ... e.authorize_as_current_contract(Vec::from_array(e, [invocation]));\"",
+        "Proposer claim verdict confirmed (golden.answer): Beam deeper XRF call may require authorize_as_current_contract Note: README Beam example still uses the Pulse ID CAFJ... (also-good note holds).",
+        "Proposer C 2026-11-02: https://orchestrator.reflector.network/config — \"CBQSUF57...XQLSE type 'dao'\"",
+        "Proposer claim verdict confirmed (golden.avoid[0]): Calling CBQ a price oracle, grading x_last_price current, freezing IDs, or asserting one trap cause are false today",
+        "Sibling sweep 2026-11-02: checked q-defi-reflector-oracle, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40, q-tool-oracle-repo-live; no contradiction found."
       ]
     },
     "origin": "raven-next q-sor-reflector-integration-code"

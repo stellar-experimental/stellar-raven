@@ -29,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "C",
@@ -42,6 +42,12 @@
       {
         "class": "B",
         "ref": "https://github.com/kalepail/soroban-passkey"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/kalepail/passkey-kit and stellar/passkey-kit",
+        "note": "kalepail/passkey-kit archived true; stellar/passkey-kit archived false, pushed 2026-10-27",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -90,31 +96,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
       "evidence": [
-        "solo://proj/49/process/3414",
-        "solo://proj/49/process/3420",
-        "catalog/manifest.json#scout.searchRepos",
-        "https://github.com/kalepail/soroban-passkey",
-        "Todo 1256 corpus lane (2026-07-28, F5): the golden told the grader to compare repoScore and pick the “strongest” passkey/smart-wallet repositories without saying what that ordering is evidence of, while cluster-131's members forbid inferring correctness, security, audit scope, maintenance, or production readiness from repoScore. The wording now states that the repoScore ordering is the index's answer-time navigation/ranking signal and scopes the superlative to it. Internal-consistency repair — no new external source consulted; the case now joins cluster-131.",
-        "Upstream schema evidence (inventory/stellar-light.json, searchRepos repoScore description; ADV-1 reconciliation 2026-07-28): repoScore is Scout's own composite 'Quality grade (0-100) = freshness + traction + hackathon/SCF/builder authority — Lead with high-score repos'. Its formula contains no correctness, security-audit, maintenance, or production-readiness input, so the golden's boundary — order candidates by it, never infer those attributes from it — restates the served contract's scope rather than contradicting the schema's quality-grade label.",
-        "24h four-reviewer audit (2026-07-28, G-GT-1): the corroboration claim wording was aligned with the repoScore boundary shipped the same day — ranking/scan signals rather than the blanket word quality; the claim meaning and its evidence are unchanged.",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep passkey|repoScore|strongest reference → q-tool-smart-wallet-repos-discovery, q-tool-passkeykit-smart-wallet; no contradiction",
-        "Structural re-form (long-fact): Shortened one live-row fact and split one long ranking-boundary fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live searchRepos contract exposes current query results and explicit repoScore fields.",
-        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live contract presents repoScore as a ranking field for repository discovery.",
-        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live contract states that ranking and directory signals do not prove security, audit, maintenance, or production status.",
-        "Sibling sweep 2026-08-29: grep soroban-passkey|codeVerified|passkey repo|repoScore → q-tool-passkey-repo-live, q-tool-passkeykit-smart-wallet, q-tool-smart-wallet-repos-discovery, q-tool-indexer-repos-discovery, q-tool-oracle-repo-live, q-tool-zk-repo-live; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        "The golden's repoScore comparison instruction did not say what the ordering does and does not establish, leaving open a reading where 'strongest = highest repoScore' counts as proof of correctness, security, or production readiness — attributes outside the score's freshness/traction/authority formula.",
-        "Tracked at solo://proj/49/todo/corpus-follow-ups-fr--1256 (todo 1256, F5) with the adversarial-review reconciliation in the same todo's comments.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "C: https://stellarlight.xyz/api/repos/search?q=passkey — \"counts {returned:20,total:168}; stellar/passkey-kit 92 high, justmert/soropass 48, jes-labs/stellar-passkeyui 44 ... kalepail/soroban-passkey 22 (versionStatus deprecated, dormant)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
+        "B: catalog/manifest.json#scout.searchRepos — \"Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
+        "B: catalog/manifest.json#scout.searchRepos — \"Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2..3] / golden.avoid[1]",
+        "C: https://stellarlight.xyz/api/repos/search?q=passkey — \"counts {returned:20,total:168}; stellar/passkey-kit 92 high, justmert/soropass 48, jes-labs/stellar-passkeyui 44 ... kalepail/soroban-passkey 22 (versionStatus deprecated, dormant)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2..3] / golden.avoid[1]",
+        "C: https://stellarlight.xyz/api/repos/search?q=passkey — \"counts {returned:20,total:168}; stellar/passkey-kit 92 high, justmert/soropass 48, jes-labs/stellar-passkeyui 44 ... kalepail/soroban-passkey 22 (versionStatus deprecated, dormant)\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
+        "B: https://api.github.com/repos/kalepail/passkey-kit and stellar/passkey-kit — \"kalepail/passkey-kit archived true; stellar/passkey-kit archived false, pushed 2026-10-27\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
+        "Sibling sweep 2026-11-02: q-tool-smart-wallet-repos-discovery, q-tool-passkeykit-smart-wallet, q-tool-oracle-repo-live; no contradiction found by the proposer matrix."
       ]
     },
     "origin": "boxy sl-code-passkey-wallet-top-repo"

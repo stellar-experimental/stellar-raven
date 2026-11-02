@@ -32,7 +32,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2027-02-25",
+    "reverifyBy": "2027-03-05",
     "sources": [
       {
         "class": "A",
@@ -77,33 +77,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
       "evidence": [
-        "Solo scratchpad 575 GT-47 primary 3327 and valid blind 3334; blind independently rejected the execution-only/every-resource-ledger-cap absolutes.",
-        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-024; the Soroban resource-limit facts are unchanged.",
-        "No live recheck was required for this pure symmetric-caution re-form.",
-        "Improvements review 2026-08-27: improvements/resolved.json entry sd-024 records the 2026-07-31 Docs fix; the disputed claims are retired resource-XDR fields and execution-only failure wording in older copies.",
-        "Sibling sweep 2026-08-27: grep sd-024|diskReadBytes|refundableFee|Soroban resource → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction",
-        "Structural re-form (negative-predicate): split two long compound facts into four atomic positive facts; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still lists event, return, entry, footprint, I/O, CPU, and memory limits",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — transaction/envelope size remains a Soroban resource dimension",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still describes validation and apply-time enforcement as different phases",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md — CAP-0046-07 still defines ledger aggregates for many resources and only a transaction memory cap",
-        "Sibling sweep 2026-08-27: grep resource limits|ledger aggregate|memory cap|simulateTransaction → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 2 review (gt2-grok-rev)): removed the added \"memory as an exception\" claim (no notes receipt); truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still lists event, return, entry, footprint, I/O, CPU, and memory limits",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — transaction/envelope size remains a Soroban resource dimension",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still describes validation and apply-time enforcement as different phases",
-        "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md — CAP-0046-07 still defines ledger aggregates for many resources and only a transaction memory cap",
-        "Sibling sweep 2026-08-30: grep sd-024|diskReadBytes|refundableFee|Soroban resource → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side resource taxonomy flattened validation, pre-execution, and apply-time enforcement into one phase.",
-        "improvements/stellar-docs/sd-024-transaction-resource-xdr-drift.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering (observedAt 2026-10-28): \"All resources mentioned in the prior section are subject to a per-transaction limit. A transaction's memory (RAM) is also capped, though not subject to any charge.\"",
+        "stellar network settings --no-cache -n mainnet --output json, stellar CLI 28.1.0 on protocol 29 (observedAt 2026-11-02): contract_max_size_bytes 131072; tx_max_instructions 400000000; tx_memory_limit 41943040; contract_data_entry_size_bytes 65536; tx_max_footprint_entries 400; tx_max_contract_events_size_bytes 16384; tx_max_size_bytes 132096.",
+        "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-contract-config-setting.x (observedAt 2026-11-02): \"Memory limit per transaction. Unlike instructions, there is no fee for memory, just the limit. uint32 txMemoryLimit;\"; https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0066.md: \"txMaxFootprintEntries sets the limit on the total number of entries in the transaction footprint\".",
+        "Verification only: proposer confirmed every keyFact, answer claim, note, and avoid item; no gospel change. Sibling sweep 2026-11-02: q-zk-verification-resource-budget, q-infra-simulate-transaction-howto, q-soroban-simulate-resource-fee; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-resource-limits"

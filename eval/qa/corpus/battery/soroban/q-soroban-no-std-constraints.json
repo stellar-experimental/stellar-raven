@@ -18,7 +18,7 @@
       "Do NOT claim `std` or floating point is supported.",
       "Do NOT claim heap allocation, time, or RNG access is categorically impossible, or treat Env PRNG as secure secret randomness."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Determinism + no_std are the real reasons; the trap is 'std/floats are fine'. Verified: contracts are #![no_std], no allocator, SDK host types replace std collections, no floating point for determinism.\nAlso good if the answer: Floating point is disallowed because execution must be deterministic across validators. | Determinism is required for consensus; non-deterministic ops would break agreement.\nGolden cites: A developers.stellar.org contract-development page covering types/no_std constraints.\nGT-46 CORRECTION 2026-07-11: no_std is not a no-allocation/no-time/no-PRNG absolute."
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Determinism + no_std are the real reasons; the trap is 'std/floats are fine'. Verified: contracts are #![no_std], guest allocation is off by default (the SDK `alloc` feature is optional), SDK host types replace std collections, no floating point for determinism.\nAlso good if the answer: Floating point is disallowed because execution must be deterministic across validators. | Determinism is required for consensus; non-deterministic ops would break agreement.\nGolden cites: A developers.stellar.org contract-development page covering types/no_std constraints.\nGT-46 CORRECTION 2026-07-11: no_std is not a no-allocation/no-time/no-PRNG absolute."
   },
   "tags": {
     "category": "soroban",
@@ -47,6 +47,18 @@
         "class": "B",
         "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v27.0.0/soroban-sdk/src/env.rs",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs",
+        "note": "SDK v29.0.1 alloc module: feature disabled by default",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/Cargo.toml",
+        "note": "SDK v29.0.1 Cargo.toml: alloc not a default feature",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -71,24 +83,35 @@
             "ref": "F: GT-46 alloc/no-default-feature compile probes",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'The `alloc` feature is **disabled by default**.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'Dynamic memory allocation within the guest is **strongly** discouraged, but not completely prohibited.'"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and independent blind 3329; both confirmed alloc support and blind preserved the time/PRNG nuance.",
-        "Structural re-form (long-fact): Split allocation, ledger time, and PRNG constraints; truth unchanged.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.0/soroban-sdk/src/alloc/mod.rs — the SDK source says the `alloc` feature is optional and disabled by default.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.0/soroban-sdk/src/ledger.rs — the SDK source exposes the consensus ledger close timestamp through `env.ledger().timestamp()`.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.0/soroban-sdk/src/env.rs — the SDK source exposes `Env::prng` and warns against security-sensitive use.",
-        "Sibling sweep 2026-08-29: grep no_std|Env::prng|ledger time|dynamic memory allocation → q-soroban-wasm-language, q-soroban-wasm-size-limit, q-sor-doc-timestamping-manage-data, q-sor-recurring-escrow-patterns, and q-soroban-no-std-constraints; no contradiction"
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs — \"The `alloc` feature is **disabled by default**.\" (observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/Cargo.toml — \"[features] alloc = []\" (not in default) (observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect — \"Dynamic memory allocation within the guest is **strongly** discouraged, but not completely prohibited.\"; \"Floating-point arithmetic in the guest is completely prohibited.\" (observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — \"there is no allocator and no heap memory in Soroban contracts by default (the SDK does provide an opt-in allocator through its alloc feature\" (observedAt 2026-11-02)",
+        "Independent verifier (verify/soroban-05.json): accept on golden.notes.",
+        "Sibling sweep 2026-11-02: grep 'no allocator' → q-soroban-wasm-language also-good line still says '(no standard library / no allocator)' (escalated, outside batch); q-soroban-wasm-size-limit, q-sor-recurring-escrow-patterns: no contradiction."
       ],
       "rootCause": [
-        "Stale documentation absolute ('no allocator') and deterministic-execution shorthand were copied into the golden as impossibility claims.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side note residue: a pre-correction 'no allocator' note line survived the 2026-07-11 correction and contradicted the golden answer and avoid[1]."
       ]
     },
     "origin": "raven-next q-soroban-no-std-constraints"

@@ -34,8 +34,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-10-06",
-    "reverifyBy": "2026-12-22",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-10",
     "sources": [
       {
         "class": "A",
@@ -185,16 +185,21 @@
       }
     ],
     "verified": {
-      "date": "2026-10-06",
-      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
       "evidence": [
-        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
-        "Live B 2026-10-06: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — 'Session handling mechanisms' out of scope; extensions and Discovery API present.",
-        "Live B 2026-10-06: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — Charge settles each SEP-41 transfer on-chain; Channel signs cumulative off-chain commitments.",
-        "Live A 2026-10-06: https://mpp.dev/ — sessions update dated 2026-06-17.",
-        "Live B 2026-10-06: https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md — mandates authorize agents.",
-        "Live B 2026-10-06: https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md — ACP 'currently in beta'; latest spec 2026-04-17.",
-        "Sibling sweep 2026-10-06: grep AP2|ACP|MPP Session|MPP Charge → q-defi-agentic-payment-standards-compare, q-mpp-discovery-and-modes, q-defi-x402-on-stellar-what, q-defi-streaming-payments-prior-art; no contradiction."
+        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — \"**Out of Scope**: This specification does not include: ... Session handling mechanisms\" (class B)",
+        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — \"## 8. Discovery API ... Extensions enable modular optional functionality beyond core payment mechanics.\" (class B)",
+        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://developers.stellar.org/docs/build/agentic-payments/x402 — \"The catalog can also be queried by AI agents through an MCP discovery server\" (class A)",
+        "Proposer golden.keyFacts[2] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — \"Each payment is a Soroban SEP-41 `transfer` settled on-chain individually.\" (class B)",
+        "Proposer golden.keyFacts[2] [confirmed]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — \"makes many off-chain payments by signing cumulative commitments — no per-payment on-chain transactions.\" (class B)",
+        "Proposer golden.keyFacts[2] [confirmed]: Live re-check 2026-11-02: https://mpp.dev/ — \"Session intent for metered payments ... Channel: Accept high-frequency Stellar payments with one-way payment channels\" (class A)",
+        "Proposer golden.keyFacts[3] [confirmed-as-of]: Live re-check 2026-11-02: https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md — \"The specification is maintained by **OpenAI** and **Stripe** and is currently in `beta`.\" (class B)",
+        "Proposer golden.keyFacts[3] [confirmed-as-of]: Live re-check 2026-11-02: https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md — \"A linked Payment Mandate and Receipt for the payment of the ...\" (class B)",
+        "Proposer golden.keyFacts[3] [confirmed-as-of]: Live re-check 2026-11-02: https://github.com/google-agentic-commerce/AP2 (repo README) — \"Agent Payments Protocol mandates\" (class D)",
+        "Proposer golden.avoid[1] [contradicted]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — \"no per-payment on-chain transactions\" (class B)",
+        "Proposer golden.avoid[1] [contradicted]: Live re-check 2026-11-02: https://mpp.dev/ — \"Accept high-frequency off-chain payments ... Payment Channel\" (class A)",
+        "Sibling sweep 2026-11-02: proposer checked q-defi-agentic-payment-standards-compare, q-mpp-discovery-and-modes, q-defi-x402-on-stellar-what; no judge-facing field changed in this case, and no sibling contradicts the confirmed claims."
       ]
     },
     "origin": "kaan agentic-payment-standard-choice"

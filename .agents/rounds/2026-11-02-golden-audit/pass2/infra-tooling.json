@@ -1,0 +1,1308 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "infra-tooling",
+ "kind": "pass2",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-ti-custodial-account-generation-c-address",
+   "claims": [
+    {
+     "claim": "The sd-013 pre-fix account-creation wording (no sponsored zero starting balance) is fixed upstream and absent from the live page.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/create-account",
+       "observedAt": "2026-11-02",
+       "quote": "Alternatively, an account can be created with a startingBalance of 0 when another account sponsors its reserves ( CAP-33 sponsored reserves): the sponsor carrie…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/7cb5e8a492706d2ae95bbb14be737fbf96100058/docs/build/guides/transactions/create-account.mdx#L21",
+       "observedAt": "2026-11-02",
+       "quote": "Alternatively, an account can be created with a `startingBalance` of `0` when another account sponsors its reserves"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json sd-013",
+       "observedAt": "2026-11-02",
+       "quote": "resolved 2026-07-27; resolvingRefs stellar/stellar-docs#2590, PR #2657"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "remove-sentence",
+     "reason": "Caution trigger expired: sd-013 fixed upstream 2026-07-27 and the live page carries the fixed wording (grading constraint: remove expired cautions). It was also a canonical-page partial cap outside the ADR-0008 accepted set."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "op": "set",
+     "reason": "Pass 1 cleared rootCause with \"No gospel change\"; removing the caution is a judge-facing change, so the lint needs a non-empty rootCause. freshness-drift mirrors the pass-1 sibling q-pc-account-merge-reclaim-reserve."
+    },
+    {
+     "field": "truth.verified.evidence",
+     "op": "append",
+     "reason": "Live provenance for the removal and sibling sweep."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/resolved.json entry sd-013 (fixed upstream 2026-07-27; the live create-account guide carries the fixed sponsored startingBalance 0 wording, so the cached-copy caution expired)"
+   ],
+   "siblings": {
+    "checked": [
+     "q-pc-account-merge-reclaim-reserve",
+     "q-pc-account-activation-not-found"
+    ],
+    "verdict": "no contradiction; merge sibling already had the same caution removed in pass 1"
+   }
+  },
+  {
+   "id": "q-infra-rpc-methods-list",
+   "claims": [
+    {
+     "claim": "As of 2026-11-02 the stock stellar-rpc release line (latest v30.0.0) exposes exactly 12 application methods.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/jsonrpc.go",
+       "observedAt": "2026-11-02",
+       "quote": "methodName: protocol.GetHealthMethodName ... protocol.GetFeeStatsMethodName (12 entries)"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-rpc/releases",
+       "observedAt": "2026-11-02",
+       "quote": "v30.0.0 2026-10-21T06:07:32Z pre=false"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/tree/7cb5e8a492706d2ae95bbb14be737fbf96100058/openrpc/src/stellar-rpc/methods",
+       "observedAt": "2026-11-02",
+       "quote": "getEvents.json getFeeStats.json getHealth.json getLatestLedger.json getLedgerEntries.json getLedgers.json getNetwork.json getTransaction.json getTransactions.js…"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org getVersionInfo / queryEvents",
+       "observedAt": "2026-11-02",
+       "quote": "\"version\":\"30.0.0-13e53516633c3ce1281c7edbacb607107d3a4e55\" ; {\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}"
+      }
+     ]
+    },
+    {
+     "claim": "The archive-node handler set (rpcv2) adds queryEvents and is unreleased on stellar-rpc main.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/rpcv2/jsonrpc.go",
+       "observedAt": "2026-11-02",
+       "quote": "protocol.QueryEventsMethodName ... QueryEventsHandler (13 MethodName entries; rpcv1 has 12)"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org queryEvents",
+       "observedAt": "2026-11-02",
+       "quote": "method not found"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02, the stock Stellar RPC release line (v30.0.0) exposes 12 application methods:",
+     "reason": "L1: the volatile count needs an as-of date and a stock-release scope."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "set",
+     "reason": "L1: scope the count to the stock release; no date in the keyFact (snapshot-date lint), one predicate (Names), 58 chars."
+    },
+    {
+     "field": "truth.verified.rootCause[+]",
+     "op": "append",
+     "reason": "Authoring flaw behind this change; pass-1 items kept because the diff vs origin/main includes them."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/resolved.json entry sd-023 (stellar-docs PR #2656 replaced the 24h/7-day event retention prose; the notes still cited the pre-fix wording)",
+    "Upstream stellar-rpc tag archive-node-beta (2026-09-30) added beta-only queryEvents and full-history reads after the last verification.",
+    "Eval-side authoring flaw: golden.answer and keyFacts[0] stated the 12-method count as 'current' with no as-of date or release scope, while the archive-node rpcv2 handler set (13 methods with queryEvents) exists on the archive-node-beta tag and stellar-rpc main."
+   ],
+   "siblings": {
+    "checked": [
+     "q-infra-simulate-transaction-howto",
+     "q-infra-rpc-provider-archive-tier",
+     "q-ti-self-host-retention-backfill"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-tw-escrow-api-auth-custody",
+   "claims": [
+    {
+     "claim": "State-changing calls return unsigned XDR, the wallet signs locally, the client submits via the version-specific send-transaction helper (V1 /helper/send-transaction; V2/Core /stellar/send-transaction)…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+       "observedAt": "2026-11-02",
+       "quote": "The API never signs anything. Every endpoint that changes on-chain state returns an unsigned transaction. Your wallet signs it. You submit it. ... 3. SUBMIT POS…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md",
+       "observedAt": "2026-11-02",
+       "quote": "3. **Submit** — `POST /stellar/send-transaction` with the signed XDR. > The submit route differs from V1, which documents `/helper/send-transaction`."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/core-concepts.md",
+       "observedAt": "2026-11-02",
+       "quote": "3. **Submit transaction** → POST to `/helper/send-transaction` with signed XDR"
+      }
+     ]
+    },
+    {
+     "claim": "Pinned skill requires x-api-key on every request; Core API also documents Authorization: Bearer <jwt>.",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/constitution.md",
+       "observedAt": "2026-11-02",
+       "quote": "**[ENFORCED]** `x-api-key` header on **every** request — including read-only indexer queries. ... Never `Authorization: Bearer` for the API-key requirement."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+       "observedAt": "2026-11-02",
+       "quote": "x-api-key: <id>.<secret> ... Authorization: Bearer <jwt>"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "set",
+     "reason": "Lint: 101 > 90 chars. New text 87 chars, same meaning, zero predicates flagged by the multi-predicate lint."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02,",
+     "reason": "Same F16 defect class as build-tracks/testnet: answer date older than truth.asOf although every answer claim was re-verified on 2026-11-02 (A docs + B pinned skill)."
+    },
+    {
+     "field": "truth.verified.rootCause[+]",
+     "op": "append",
+     "reason": "Explain the two authoring fixes; existing items kept."
+    }
+   ],
+   "rootCause": [
+    "eval-authoring",
+    "improvements/skills/sk-025-trustless-work-beta-auth-scope.md",
+    "Eval-side authoring flaw: keyFacts[3] was 101 characters, over the 90-character key-fact limit; the shortened text keeps the same single predicate.",
+    "Eval-side authoring flaw: pass-1 re-verification moved truth.asOf to 2026-11-02 but left the answer's 'As of 2026-09-16' snapshot date; every answer claim was re-verified live on 2026-11-02."
+   ],
+   "siblings": {
+    "checked": [
+     "q-soroban-greenfield-escrow-prior-art-preflight",
+     "q-crp-partner-detail-after-discovery"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-tool-zk-repo-live",
+   "claims": [
+    {
+     "claim": "A repository's answer-time repoScore rank is permanent or network-wide.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=zero-knowledge&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "counts returned 10, total 184 (pass-1 observation 2026-11-02)"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "repoScore = freshness + traction + hackathon/SCF/builder authority (pass-1 record)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.avoid[0]",
+     "op": "set",
+     "reason": "L4: lint NON_CONTENT_AVOID_RE matches a leading \"Presents\". \"Claims ...\" states the false content; lint check passes (verified with the lint regex)."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: avoid text inherited from Boxy origin sl-code-zk-xray-games-top labelled X-Ray Games an archived result without a source; GitHub and Scout show it not archived.",
+    "Eval-side authoring flaw: avoid[0] was written as a presentation rule ('Presents ...'), which the avoid-binding lint flags as not a concrete false-content avoid."
+   ],
+   "siblings": {
+    "checked": [
+     "q-tool-oracle-repo-live",
+     "q-tool-smart-wallet-repos-discovery",
+     "q-tool-indexer-repos-discovery"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-ti-self-host-retention-backfill",
+   "claims": [
+    {
+     "claim": "sd-023 (24h/7-day getEvents wording), sd-028 (518400 as Horizon default), sd-029 (BACKFILL flag omission) are fixed and the live pages no longer carry the old wording.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+       "observedAt": "2026-11-02",
+       "quote": "configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence); requests are served …"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+       "observedAt": "2026-11-02",
+       "quote": "Note that you must set this explicitly: Horizon's default is HISTORY_RETENTION_COUNT=0 , which retains all history and never purges ingested data."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring",
+       "observedAt": "2026-11-02",
+       "quote": "BACKFILL also requires datastore serving. Set SERVE_LEDGERS_FROM_DATASTORE = true . If you enable BACKFILL alone, RPC fails to start"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/7cb5e8a492706d2ae95bbb14be737fbf96100058/docs/data/apis/rpc/admin-guide/configuring.mdx#L293",
+       "observedAt": "2026-11-02",
+       "quote": "`BACKFILL` also requires datastore serving. Set `SERVE_LEDGERS_FROM_DATASTORE = true`."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/7cb5e8a492706d2ae95bbb14be737fbf96100058/openrpc/src/stellar-rpc/methods/getEvents.json",
+       "observedAt": "2026-11-02",
+       "quote": "single history-retention-window setting with a stock default of 120960 ledgers (0 matches for 24 hour/24-hour)"
+      }
+     ]
+    },
+    {
+     "claim": "Horizon v30.0.0 defaults HISTORY_RETENTION_COUNT to 0; 518400 is only the recommended one-month window.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+       "observedAt": "2026-11-02",
+       "quote": "we recommend limiting historical retention of ingested data to a sliding window of 1 month ( HISTORY_RETENTION_COUNT=518400 ). ... Horizon's default is HISTORY_…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go",
+       "observedAt": "2026-11-02",
+       "quote": "history-retention-count FlagDefault uint(0), '0 = retain an unlimited number of ledgers' (pass-1 read)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "remove-sentence",
+     "reason": "Expired caution (grading constraint): all three findings fixed upstream and live pages carry the fixed wording. It was also a canonical-page partial cap outside the ADR-0008 accepted set."
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "op": "set",
+     "reason": "L4: multi-predicate lint (semicolon + \"is\"). New text 88 chars, one predicate, same meaning."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Upstream docs fix sd-028 (improvements/resolved.json, fixed 2026-07-27) removed the Horizon 518400 default wording, so the golden's official-prose-conflict sentence and keyFacts[4] went stale; RPC and Horizon v30.0.0 superseded the v27 version pins with unchanged defaults.",
+    "Expired caution: sd-023, sd-028, and sd-029 (improvements/resolved.json) are fixed upstream and the live pages carry the fixed wording, so the cached-copy grading caution no longer applies.",
+    "Eval-side authoring flaw: keyFacts[4] joined two predicates with a semicolon, which the multi-predicate key-fact lint flags."
+   ],
+   "siblings": {
+    "checked": [
+     "q-infra-rpc-methods-list",
+     "q-ti-custodial-account-generation-c-address",
+     "q-infra-rpc-provider-archive-tier"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-scf-build-tracks",
+   "claims": [
+    {
+     "claim": "Build has three tracks (Open, Integration, RFP); only Open goes to Community Vote; Integration/RFP awards are reviewer decisions; up to $150K in XLM; typically 3–6 months; Resubmission is a path.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "SCF Build consists of 3 distinct tracks: Open, Integration, and RFP. ... Award size: up to $150,000 worth of XLM* ... Typically 3–6 months per project ... For R…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/integration-track/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "The Integration Track supports applications leveraging existing building blocks on Stellar ... Submissions are reviewed by 2 reviewers from that quarter's Categ…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/resubmission.md",
+       "observedAt": "2026-11-02",
+       "quote": "If your project wasn't selected for funding, you can submit it again, but only after you've made meaningful improvements."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-11-02",
+       "quote": "SCF Build consists of 3 distinct tracks: Open, Integration, and RFP. ... Community Vote (for Open Track only) ... Typically 3–6 months per project"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02,",
+     "reason": "F16: the answer date disagreed with truth.asOf; all answer content re-verified on 2026-11-02."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: avoid[0] did not account for the official Build overview page's own \"brand-new\" wording, so an attributed quote risked a false avoid hit.",
+    "Eval-side authoring flaw: pass-1 re-verification moved truth.asOf to 2026-11-02 but left the answer's 'As of 2026-07-10' snapshot date; the answer content was re-verified live on 2026-11-02."
+   ],
+   "siblings": {
+    "checked": [
+     "q-scf-v7-changes",
+     "q-scf-how-to-apply",
+     "q-scf-build-award-cap"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-infra-testnet-vs-futurenet",
+   "claims": [
+    {
+     "claim": "Testnet is the stable integration network with regular resets; Futurenet tests bleeding-edge features and resets as needed; both use fake XLM; Friendbot funds G and C addresses; passphrases differ.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "It resets on a regular cadence, making it the best place for developers to test applications in a stable environment that mirrors Mainnet functionality. Futuren…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/7cb5e8a492706d2ae95bbb14be737fbf96100058/docs/networks/index.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "| **Network Resets** | Never | Regular cadence | As needed (unpredictable) | ... - Can fund both account addresses (G...) and contract addresses (C...)"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org / https://rpc-futurenet.stellar.org getNetwork",
+       "observedAt": "2026-11-02",
+       "quote": "\"passphrase\":\"Test SDF Network ; September 2015\",\"protocolVersion\":29 / \"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":29"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02,",
+     "reason": "F16: answer date disagreed with truth.asOf; all answer content re-verified on 2026-11-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift: Futurenet and Testnet both run protocol 29 while Protocol 30 rolls out, so a true dated answer that Futurenet is not ahead needed an explicit grading clause.",
+    "Eval-side authoring flaw: pass-1 re-verification moved truth.asOf to 2026-11-02 but left the answer's 'As of 2026-08-04' snapshot date; the answer content was re-verified live on 2026-11-02."
+   ],
+   "siblings": {
+    "checked": [
+     "q-protocol-network-passphrases-list",
+     "q-protocol-futurenet-vs-testnet",
+     "q-ti-friendbot-ratelimit-alternatives"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-infra-horizon-vs-rpc",
+   "claims": [
+    {
+     "claim": "The official Lab API Explorer page says 'Horizon is considered deprecated.' while the APIs overview says nearing end-of-life.",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon Endpoints Horizon is considered deprecated."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/7cb5e8a492706d2ae95bbb14be737fbf96100058/docs/tools/lab/api-explorer/index.mdx#L13",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon is considered deprecated."
+      },
+      {
+       "class": "B",
+       "ref": "improvements/stellar-docs/sd-072-lab-api-explorer-horizon-deprecated-label.md",
+       "observedAt": "2026-11-02",
+       "quote": "the same docs commit uses \"nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs\" in docs/data/apis/index.mdx line 30…"
+      }
+     ]
+    },
+    {
+     "claim": "q-infra-horizon-vs-rpc is the ADR-0008 accepted Horizon-lifecycle case.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "research/decisions/0008-human-review-eval-and-playground-policy.md",
+       "observedAt": "2026-11-02",
+       "quote": "The accepted set is exactly base reserve, Horizon lifecycle, and RPC pagination."
+      },
+      {
+       "class": "B",
+       "ref": ".agents/rounds/2026-08-29-golden-truth-session-3.md lines 526-531",
+       "observedAt": "2026-11-02",
+       "quote": "q-infra-horizon-vs-rpc: ... (EVM migration guide says \"deprecated\"; four canonical pages say \"nearing end-of-life ...\") ... The partial-cap caution in its notes…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring x2",
+     "reason": "Skill: every caution names its finding and expiry; add sd-072 to the caution and tie the expiry to sd-072."
+    },
+    {
+     "field": "truth.verified.rootCause[1]",
+     "op": "set",
+     "reason": "Replace \"No improvements/ finding is filed yet\" with the filed sd-072 path (brief + M3)."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-docs/sd-072-lab-api-explorer-horizon-deprecated-label.md: the stellar-docs Mintlify migration commit 700ed32d (#2941, 2026-10-22) put 'Horizon is considered deprecated.' on the Lab API Explorer card, which conflicts with the APIs overview label 'nearing end-of-life and will eventually be deprecated'."
+   ],
+   "siblings": {
+    "checked": [
+     "q-pc-practical-fee-setting",
+     "q-ti-compute-token-lp-market-data",
+     "q-infra-which-indexer",
+     "q-infra-hubble-bigquery"
+    ],
+    "verdict": "grep \"considered deprecated\" finds only this case; siblings keep the nearing-end-of-life label; no contradiction"
+   }
+  },
+  {
+   "id": "q-protocol-network-passphrases-list",
+   "claims": [
+    {
+     "claim": "q-protocol-network-passphrases is a documented migration drop, so the answer cross-reference pointed at a retired case.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "eval/qa/corpus/migration-ledger.json line 2257",
+       "observedAt": "2026-11-02",
+       "quote": "\"sourceId\": \"q-protocol-network-passphrases\" ... \"reason\": \"Documented drop under ABSORB-TRIAGE: absorb: q-protocol-network-passphrases-list must gain ...\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.verified.rootCause[0]",
+     "op": "set",
+     "reason": "Brief: replace the \".agents/TODO.md:\" pointer with a concrete description that the round ledger records; the orchestrator adds the ledger line. Lint score-only patterns do not match."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw (recorded in the round ledger .agents/rounds/2026-11-02-golden-audit.md): golden.answer kept a judge-facing cross-reference to q-protocol-network-passphrases after the corpus migration dropped that case (eval/qa/corpus/migration-ledger.json, ABSORB-TRIAGE)."
+   ],
+   "siblings": {
+    "checked": [
+     "q-infra-testnet-vs-futurenet",
+     "q-protocol-futurenet-vs-testnet",
+     "q-ti-testnet-mainnet-migration"
+    ],
+    "verdict": "no contradiction"
+   }
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-ti-custodial-account-generation-c-address",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "The sd-013 caution's trigger has expired. sd-013 is resolved upstream (2026-07-27). The live create-account guide and the Docs index record both carry the fixed sponsored startingBalance 0 wording. The caution was a cached-copy partial cap, so removal follows ADR-0008 and the skill's expiry rule. The remaining notes and the dated exchange-support rule are unchanged.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/create-account",
+      "observedAt": "2026-11-02",
+      "quote": "Alternatively, an account can be created with a startingBalance of 0 when another account sponsors its reserves ( CAP-33 sponsored reserves): the sponsor carrie…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs('create account startingBalance 0 sponsor reserves') -> https://developers.stellar.org/docs/build/guides/transactions/create-account#create-an-account-1",
+      "observedAt": "2026-11-02",
+      "quote": "be created with a startingBalance of 0 when another account sponsors its reserves (CAP-33 sponsored reserves): the sponsor"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json entry sd-013",
+      "observedAt": "2026-11-02",
+      "quote": "\"resolved\": \"2026-07-27\", \"resolvingRefs\": [\"https://github.com/stellar/stellar-docs/issues/2590\", \"https://github.com/stellar/stellar-docs/pull/2657\"]"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-custodial-account-generation-c-address",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only; no judge-facing effect.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-custodial-account-generation-c-address",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "newText": null,
+    "note": "freshness-drift plus the resolved sd-013 pointer is a valid, non-score rootCause. A resolved.json pointer does not trigger the symmetric-caution lint, so removing the caution leaves no lint warning.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json entry sd-013",
+      "observedAt": "2026-11-02",
+      "quote": "\"resolved\": \"2026-07-27\", \"resolvingRefs\": [\"https://github.com/stellar/stellar-docs/issues/2590\", \"https://github.com/stellar/stellar-docs/pull/2657\"]"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-rpc-methods-list",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Confirmed across B and F. The stock release v30.0.0 registers exactly 12 methods. Live Testnet RPC 30.0.0 and Mainnet provider 29.0.1 both reject queryEvents. The rpcv2 handler set on main adds queryEvents (13), so the release scope and as-of date are a needed precision, not a loosening. The 12-method gate and simulateTransaction are unchanged. Wording 'release line (v30.0.0)' reads correctly with…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-rpc/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v30.0.0 2026-10-21T06:07:32Z prerelease=false (latest); v29.0.1 2026-10-12T20:14:27Z"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/jsonrpc.go",
+      "observedAt": "2026-11-02",
+      "quote": "protocol.GetEventsMethodName, GetFeeStatsMethodName, GetHealthMethodName, GetLatestLedgerMethodName, GetLedgerEntriesMethodName, GetLedgersMethodName, GetNetwor…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/rpcv2/jsonrpc.go",
+      "observedAt": "2026-11-02",
+      "quote": "line 112 'MethodName: protocol.QueryEventsMethodName,'; lines 170-183 list GetHealth, GetEvents, QueryEvents, GetNetwork, GetVersionInfo, GetLatestLedger, GetLe…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-rpc/git/trees/archive-node-beta?recursive=1 (tag object e45ee57a)",
+      "observedAt": "2026-11-02",
+      "quote": "cmd/stellar-rpc/internal/rpcv2/eventsapi/query_events.go present on the archive-node-beta tag and on main"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://soroban-testnet.stellar.org getVersionInfo / queryEvents",
+      "observedAt": "2026-11-02",
+      "quote": "\"version\":\"30.0.0-13e53516...\" ; {\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://mainnet.sorobanrpc.com getVersionInfo / queryEvents",
+      "observedAt": "2026-11-02",
+      "quote": "\"version\":\"29.0.1-055dc9c7...\" ; {\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-rpc-methods-list",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "newText": null,
+    "note": "58 characters, one predicate, no snapshot date inside the fact. Same gate (all 12), scoped to the stock release so an answer that also names beta-only queryEvents is not misread.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/jsonrpc.go",
+      "observedAt": "2026-11-02",
+      "quote": "protocol.GetEventsMethodName, GetFeeStatsMethodName, GetHealthMethodName, GetLatestLedgerMethodName, GetLedgerEntriesMethodName, GetLedgersMethodName, GetNetwor…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/rpcv2/jsonrpc.go",
+      "observedAt": "2026-11-02",
+      "quote": "line 112 'MethodName: protocol.QueryEventsMethodName,'; lines 170-183 list GetHealth, GetEvents, QueryEvents, GetNetwork, GetVersionInfo, GetLatestLedger, GetLe…"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-rpc-methods-list",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-infra-rpc-methods-list",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: the rpcv2 handler set with queryEvents (13) is on stellar-rpc main and the archive-node-beta tag tree contains rpcv2/eventsapi/query_events.go. The entry is an eval-side authoring flaw, not a score rationale.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/rpcv2/jsonrpc.go",
+      "observedAt": "2026-11-02",
+      "quote": "line 112 'MethodName: protocol.QueryEventsMethodName,'; lines 170-183 list GetHealth, GetEvents, QueryEvents, GetNetwork, GetVersionInfo, GetLatestLedger, GetLe…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-rpc/git/trees/archive-node-beta?recursive=1 (tag object e45ee57a)",
+      "observedAt": "2026-11-02",
+      "quote": "cmd/stellar-rpc/internal/rpcv2/eventsapi/query_events.go present on the archive-node-beta tag and on main"
+     }
+    ]
+   },
+   {
+    "id": "q-tw-escrow-api-auth-custody",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Every answer claim re-derived live on 2026-11-02 across A and B: pinned skill x-api-key on every request; Core API docs and SDK allow Bearer; unsigned XDR; wallet signs; V1 /helper and V2 /stellar submit paths; the API never signs. Only the snapshot date moves; the disputed-auth encoding stays.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/constitution.md",
+      "observedAt": "2026-11-02",
+      "quote": "**[ENFORCED]** `x-api-key` header on **every** request — including read-only indexer queries. ... Never `Authorization: Bearer` for the API-key requirement."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md",
+      "observedAt": "2026-11-02",
+      "quote": "3. **Submit** — `POST /stellar/send-transaction` with the signed XDR. ... The submit route differs from V1, which documents `/helper/send-transaction`."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/core-concepts.md",
+      "observedAt": "2026-11-02",
+      "quote": "3. **Submit transaction** → POST to `/helper/send-transaction` with signed XDR"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+      "observedAt": "2026-11-02",
+      "quote": "x-api-key: <id>.<secret> Copy Authorization: Bearer <jwt> ... The API never signs anything. Every endpoint that changes on-chain state returns an unsigned trans…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction",
+      "observedAt": "2026-11-02",
+      "quote": "Call an endpoint that returns unsignedTransaction . Sign that XDR with the user wallet. Submit the signed XDR here. ... post https://beta.api.trustlesswork.com …"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/main/src/transport/http-transport.ts (HEAD f95b5b1a, 2026-09-28)",
+      "observedAt": "2026-11-02",
+      "quote": "headers[\"x-api-key\"] = this.apiKey; ... headers.Authorization = `Bearer ${token}`;"
+     },
+     {
+      "class": "B",
+      "ref": "ecosystem-skills/MANIFEST.json (trustlesswork-skill entry)",
+      "observedAt": "2026-11-02",
+      "quote": "\"commit\": \"80e2467f34041b9f70e66d6c2f567fc76ba9b1bb\", \"commit_date\": \"2026-09-27T01:44:59Z\""
+     }
+    ]
+   },
+   {
+    "id": "q-tw-escrow-api-auth-custody",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "newText": null,
+    "note": "87 characters (was 101). Same single predicate; dropping 'documented' does not loosen it because the notes still require the path to match the applicable API version.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md",
+      "observedAt": "2026-11-02",
+      "quote": "3. **Submit** — `POST /stellar/send-transaction` with the signed XDR. ... The submit route differs from V1, which documents `/helper/send-transaction`."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/core-concepts.md",
+      "observedAt": "2026-11-02",
+      "quote": "3. **Submit transaction** → POST to `/helper/send-transaction` with signed XDR"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction",
+      "observedAt": "2026-11-02",
+      "quote": "Call an endpoint that returns unsignedTransaction . Sign that XDR with the user wallet. Submit the signed XDR here. ... post https://beta.api.trustlesswork.com …"
+     }
+    ]
+   },
+   {
+    "id": "q-tw-escrow-api-auth-custody",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-tw-escrow-api-auth-custody",
+    "field": "truth.verified.rootCause[+] (keyFacts[3] length entry)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Length fact verified: old keyFacts[3] is 101 characters, over the 90-character limit.",
+    "sources": []
+   },
+   {
+    "id": "q-tw-escrow-api-auth-custody",
+    "field": "truth.verified.rootCause[+] (answer snapshot-date entry)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate: truth.asOf is 2026-11-02 while the answer said 'As of 2026-09-16'; the content holds on 2026-11-02 per the sources above. Side note for the applier: the existing rootCause names improvements/skills/sk-025, and the notes carry no canonical-page partial cap. That is correct under ADR-0008 (aggregator/third-party skill dispute); do not add one to quiet the symmetric-caution warning.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/constitution.md",
+      "observedAt": "2026-11-02",
+      "quote": "**[ENFORCED]** `x-api-key` header on **every** request — including read-only indexer queries. ... Never `Authorization: Bearer` for the API-key requirement."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+      "observedAt": "2026-11-02",
+      "quote": "x-api-key: <id>.<secret> Copy Authorization: Bearer <jwt> ... The API never signs anything. Every endpoint that changes on-chain state returns an unsigned trans…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-zk-repo-live",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Wording-only fix for the avoid-binding lint. 'Claims ... is permanent or network-wide' is a concrete false-content avoid and matches the rubric's explicit-permanence override. It does not punish a possibly-true claim: a dated, page-scoped rank stays exempt under the freeze-clause rule. Live Stellar Light rows confirm repoScore is an answer-time field over a 184-row result set.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=zero-knowledge&limit=5",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T17:48:59.176Z; counts {returned 5, total 184}; first rows repoScore 51, 54, 50, 47, 43 (page order is not repoScore order)"
+     },
+     {
+      "class": "B",
+      "ref": "eval/qa/lint-corpus.mjs NON_CONTENT_AVOID_RE",
+      "observedAt": "2026-11-02",
+      "quote": "/^(?:omits?|skips?|frames?|phrases?|words?|portrays?|characterizes?|presents?)\\b/"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-zk-repo-live",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-zk-repo-live",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate eval-side authoring flaw; the old text starts with 'Presents', which NON_CONTENT_AVOID_RE flags.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "eval/qa/lint-corpus.mjs NON_CONTENT_AVOID_RE",
+      "observedAt": "2026-11-02",
+      "quote": "/^(?:omits?|skips?|frames?|phrases?|words?|portrays?|characterizes?|presents?)\\b/"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is the official one-month recommendation, not the executable default (official pages called it the default until sd-028 was fixed on 2026-07-27). RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider …",
+    "note": "Accept the removal of the cached-copy caution: all three findings are resolved upstream and the live pages and Docs index carry the fixed wording. Modification: the retained GT-54 sentence still said '518400 is conflicting official recommendation/default prose', which the live Horizon pages no longer support and which contradicts the notes' last line; the newText makes it historical and dated. Res…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence); requests are served …"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+      "observedAt": "2026-11-02",
+      "quote": "configured by a single history-retention-window setting expressed in ledgers, with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "we recommend a sliding window of the last 30 days (518400 ledgers). By default ( HISTORY_RETENTION_COUNT=0 ), Horizon retains all ingested history and never pur…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+      "observedAt": "2026-11-02",
+      "quote": "Note that you must set this explicitly: Horizon's default is HISTORY_RETENTION_COUNT=0 , which retains all history and never purges ingested data."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "Set BACKFILL = true to populate the database with a trailing window of history synchronously on startup, before live ingestion begins. This option was added in …"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs('HISTORY_RETENTION_COUNT default 518400') and ('BACKFILL SERVE_LEDGERS_FROM_DATASTORE')",
+      "observedAt": "2026-11-02",
+      "quote": "configuring#history_retention_count: 'defaulted to 0, which means it will not purge any history'; configuring#backfilling-history-on-startup: 'backfill requires…"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json entries sd-023, sd-028, sd-029",
+      "observedAt": "2026-11-02",
+      "quote": "sd-023 resolved 2026-07-27 (stellar-docs PR #2656); sd-028 resolved 2026-07-27 (PR #2619); sd-029 resolved 2026-09-21 (PR #2789)"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "golden.keyFacts[4]",
+    "decision": "accept",
+    "newText": null,
+    "note": "88 characters, one predicate under the lint split (no and/but/while/semicolon), same content: Horizon 0/unlimited default, 518400 only the recommended window. Confirmed by A configuring and ingestion pages and the E index.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "we recommend a sliding window of the last 30 days (518400 ledgers). By default ( HISTORY_RETENTION_COUNT=0 ), Horizon retains all ingested history and never pur…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+      "observedAt": "2026-11-02",
+      "quote": "Note that you must set this explicitly: Horizon's default is HISTORY_RETENTION_COUNT=0 , which retains all history and never purges ingested data."
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs('HISTORY_RETENTION_COUNT default 518400') and ('BACKFILL SERVE_LEDGERS_FROM_DATASTORE')",
+      "observedAt": "2026-11-02",
+      "quote": "configuring#history_retention_count: 'defaulted to 0, which means it will not purge any history'; configuring#backfilling-history-on-startup: 'backfill requires…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "truth.verified.rootCause[+] (expired-caution entry)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified expiry: all three findings resolved upstream and the live pages carry the fixed wording (quotes above).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence); requests are served …"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+      "observedAt": "2026-11-02",
+      "quote": "configured by a single history-retention-window setting expressed in ledgers, with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "we recommend a sliding window of the last 30 days (518400 ledgers). By default ( HISTORY_RETENTION_COUNT=0 ), Horizon retains all ingested history and never pur…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+      "observedAt": "2026-11-02",
+      "quote": "Note that you must set this explicitly: Horizon's default is HISTORY_RETENTION_COUNT=0 , which retains all history and never purges ingested data."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring",
+      "observedAt": "2026-11-02",
+      "quote": "Set BACKFILL = true to populate the database with a trailing window of history synchronously on startup, before live ingestion begins. This option was added in …"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs('HISTORY_RETENTION_COUNT default 518400') and ('BACKFILL SERVE_LEDGERS_FROM_DATASTORE')",
+      "observedAt": "2026-11-02",
+      "quote": "configuring#history_retention_count: 'defaulted to 0, which means it will not purge any history'; configuring#backfilling-history-on-startup: 'backfill requires…"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json entries sd-023, sd-028, sd-029",
+      "observedAt": "2026-11-02",
+      "quote": "sd-023 resolved 2026-07-27 (stellar-docs PR #2656); sd-028 resolved 2026-07-27 (PR #2619); sd-029 resolved 2026-09-21 (PR #2789)"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-self-host-retention-backfill",
+    "field": "truth.verified.rootCause[+] (keyFacts[4] multi-predicate entry)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate: the old keyFacts[4] joined two predicates with a semicolon.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-build-tracks",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Every answer claim re-derived on 2026-11-02 across A (rendered handbook, communityfund.stellar.org) and B (handbook source, last build-award commit e07b4bfce1 2026-10-16): three tracks; Resubmission is a path; Open admits existing traction and alone goes to Community Vote; Integration and RFP are Panel Review only; delegates vet Integration building blocks; up to $150,000 in XLM; typically 3–6 mon…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+      "observedAt": "2026-11-02",
+      "quote": "SCF Build consists of 3 distinct tracks: Open, Integration, and RFP. ... Award size: up to $150,000 worth of XLM* ... Timeline: Typically 3–6 months per project…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "**SCF Build consists of 3 distinct tracks: Open, Integration, and RFP.** ... * **Award size:** up to $150,000 worth of XLM\\* ... * **Timeline:** Typically 3–6 m…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/open-track.md",
+      "observedAt": "2026-11-02",
+      "quote": "* Projects with existing traction or deep, proven Stellar / domain knowledge ... 5. Eligible submissions enter Community Vote"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/integration-track/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "* Teams that have applications with existing traction integrating with: ... You must integrate with at least one building block from the [official SCF Integrati…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/quarterly-governance-process.md",
+      "observedAt": "2026-11-02",
+      "quote": "Integration | Applications with existing traction integrating building blocks to support Stellar. | Panel Review only | Review Integration Track Use Cases and v…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02",
+      "quote": "The submission must address an [open RFP](rfp-track.md#current-open-rfps) from the current quarter ... Submissions are reviewed by 2 reviewers from that quarter…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/resubmission.md",
+      "observedAt": "2026-11-02",
+      "quote": "You may resubmit your project to any future SCF round as long as the submission window is open"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02",
+      "quote": "$150K in XLM* Max. Award Amount"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-build-tracks",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-build-tracks",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate: truth.asOf is 2026-11-02 while the answer said 'As of 2026-07-10'.",
+    "sources": []
+   },
+   {
+    "id": "q-infra-testnet-vs-futurenet",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Every answer claim holds on the live Networks page (A) and live endpoints (F) on 2026-11-02. Only the snapshot date moves. The answer names no protocol version, so the 2026-11-03 Protocol 30 Testnet upgrade does not stale it; the existing notes clause already covers that window.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Testnet is a smaller, free-to-use network maintained by SDF that functions like Mainnet but doesn't connect to real money. It resets on a regular cadence ... Fu…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet. ... Can fund both account addresses (G…) and contract addresses (C…)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Network Passphrase Public Global Stellar Network ; September 2015 Test SDF Network ; September 2015 Test SDF Future Network ; October 2022"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://rpc-futurenet.stellar.org getNetwork; POST https://soroban-testnet.stellar.org getVersionInfo",
+      "observedAt": "2026-11-02",
+      "quote": "{\"friendbotUrl\":\"https://friendbot-futurenet.stellar.org/\",\"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":29} ; Testnet \"protocolVersio…"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-testnet-vs-futurenet",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-infra-testnet-vs-futurenet",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate: truth.asOf is 2026-11-02 while the answer said 'As of 2026-08-04'.",
+    "sources": []
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "The caution is a Horizon-lifecycle canonical-page cap, which ADR-0008 accepts. The change only adds the finding id and an expiry tied to sd-072 being fixed upstream and the card matching, as the skill requires. The live Lab card still says 'Horizon is considered deprecated.' (2026-11-02T17:46Z), so the trigger is live. The text keeps the lint-canonical form ('official ... page', 'not a wrong claim…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon Endpoints Horizon is considered deprecated. RPC Methods RPC methods are a set of functions"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs . While it will continue to receive updates to maint…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs."
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs('Horizon is considered deprecated API Explorer')",
+      "observedAt": "2026-11-02",
+      "quote": "https://developers.stellar.org/docs/tools/lab/api-explorer: 'Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfo…"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-docs/sd-072-lab-api-explorer-horizon-deprecated-label.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: verified ... upstreamTitle: Lab API Explorer card says Horizon is deprecated; other pages say it is nearing end-of-life"
+     },
+     {
+      "class": "B",
+      "ref": "research/decisions/0008-human-review-eval-and-playground-policy.md",
+      "observedAt": "2026-11-02",
+      "quote": "The accepted set is exactly base reserve, Horizon lifecycle, and RPC pagination. Each caution names its provenance and expiry."
+     }
+    ]
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "truth.verified.rootCause[1]",
+    "decision": "accept",
+    "newText": null,
+    "note": "sd-072 exists in improvements/stellar-docs/ with matching evidence, and the quoted overview label matches the live APIs page. With an improvements/ path in rootCause, the notes' symmetric caution satisfies the lint.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon Endpoints Horizon is considered deprecated. RPC Methods RPC methods are a set of functions"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs . While it will continue to receive updates to maint…"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-docs/sd-072-lab-api-explorer-horizon-deprecated-label.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: verified ... upstreamTitle: Lab API Explorer card says Horizon is deprecated; other pages say it is nearing end-of-life"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-protocol-network-passphrases-list",
+    "field": "truth.verified.rootCause[0]",
+    "decision": "modify",
+    "newText": "Eval-side authoring flaw: golden.answer kept a judge-facing cross-reference to q-protocol-network-passphrases after the corpus migration dropped that case (eval/qa/corpus/migration-ledger.json, ABSORB-TRIAGE).",
+    "note": "The proposal is right to drop the '.agents/TODO.md' pointer: TODO.md has no passphrase entry. But the new text says the flaw is 'recorded in the round ledger', and the ledger has no such record (Results: Pending). The newText states the flaw without an unverified pointer. The migration-ledger reference is confirmed.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "eval/qa/corpus/migration-ledger.json (sourceId q-protocol-network-passphrases)",
+      "observedAt": "2026-11-02",
+      "quote": "\"reason\": \"Documented drop under ABSORB-TRIAGE: absorb: q-protocol-network-passphrases-list must gain ..."
+     },
+     {
+      "class": "B",
+      "ref": ".agents/rounds/2026-11-02-golden-audit.md",
+      "observedAt": "2026-11-02",
+      "quote": "## Results  Pending."
+     },
+     {
+      "class": "B",
+      "ref": ".agents/TODO.md",
+      "observedAt": "2026-11-02",
+      "quote": "grep 'passphrases' returns no match"
+     },
+     {
+      "class": "F",
+      "ref": "GET https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://horizon-futurenet.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "network_passphrase 'Public Global Stellar Network ; September 2015' / 'Test SDF Network ; September 2015' / 'Test SDF Future Network ; October 2022'"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-network-passphrases-list",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   }
+  ],
+  "urlsHit": [
+   "https://developers.stellar.org/docs/build/guides/transactions/create-account",
+   "https://developers.stellar.org/docs/tools/lab/api-explorer",
+   "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+   "https://developers.stellar.org/docs/data/apis",
+   "https://developers.stellar.org/docs/networks",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+   "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+   "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion",
+   "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring",
+   "gh api repos/stellar/stellar-rpc/releases",
+   "gh api repos/stellar/stellar-rpc/contents/cmd/stellar-rpc/internal/jsonrpc.go?ref=v30.0.0",
+   "gh api repos/stellar/stellar-rpc/git/trees/main?recursive=1",
+   "gh api repos/stellar/stellar-rpc/git/trees/archive-node-beta?recursive=1",
+   "gh api repos/stellar/stellar-rpc/git/ref/tags/archive-node-beta",
+   "gh api repos/stellar/stellar-rpc/contents/cmd/stellar-rpc/internal/rpcv2/jsonrpc.go?ref=main",
+   "POST https://soroban-testnet.stellar.org (getVersionInfo, getHealth, queryEvents)",
+   "POST https://mainnet.sorobanrpc.com (getVersionInfo, getHealth, queryEvents)",
+   "POST https://rpc-futurenet.stellar.org getNetwork",
+   "GET https://horizon.stellar.org/",
+   "GET https://horizon-testnet.stellar.org/",
+   "GET https://horizon-futurenet.stellar.org/",
+   "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/constitution.md",
+   "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md",
+   "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/core-concepts.md",
+   "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+   "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction",
+   "gh api repos/Trustless-Work/trustlesswork-sdk-js/contents/src/transport/http-transport.ts",
+   "gh api repos/Trustless-Work/trustlesswork-sdk-js/commits/main",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/open-track.md",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/integration-track/README.md",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/rfp-track.md",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/resubmission.md",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/quarterly-governance-process.md",
+   "gh api repos/stellar/scf-handbook/git/trees/main?recursive=1",
+   "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award",
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track",
+   "https://communityfund.stellar.org/awards",
+   "https://stellarlight.xyz/api/repos/search?q=zero-knowledge&limit=5",
+   "Raven mcp execute stellarDocs.search_docs x5 (observedAt 2026-11-02T17:49:05Z)"
+  ]
+ },
+ "applier": {}
+}

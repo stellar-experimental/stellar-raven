@@ -1,1 +1,176 @@
-{"id":"q-tool-cli-testnet-identity-howto","question":"How do I set up a funded testnet identity (keypair) with the Stellar CLI so I can sign transactions on testnet?","surface":["stellarDocs.search_protocol_concepts_docs","stellarDocs.search_sdk_cli_tools_docs","stellarDocs.search_soroban_contract_docs"],"golden":{"answer":"Use the **unified `stellar` CLI** (not the old `soroban` binary):\n\n1. **Generate a named identity and fund it on testnet in one step:**\n   `stellar keys generate <name> --network testnet --fund`\n   (the `--fund` flag funds the new account via **Friendbot**; without it the account is unfunded and unusable until funded).\n2. **Inspect the public key:** `stellar keys address <name>`.\n3. **Use it as the signer/source account** by name in later commands, e.g.\n   `stellar contract invoke --source-account <name> --network testnet ...`.\n\nNote: **testnet is periodically reset**, so a funded testnet account is not permanent. A brand-new account needs the base reserve from Friendbot before it can sign/submit. `--source` is still accepted by the contract CLI as an alias for `--source-account`, but canonical examples should show `--source-account`.","keyFacts":["Generates a named identity with `stellar keys generate <name> --network testnet`.","Funds the testnet account via Friendbot (the CLI can fund on generate, or `--fund`)."],"avoid":["Do NOT use the deprecated `soroban` CLI binary name as the current command (it is the unified `stellar` CLI).","Do NOT claim a new testnet account is usable without funding (it needs the base reserve from Friendbot)."],"notes":"Axis-C how-to rebalance. Procedure → stellar_docs_mcp. Distinct from q-infra-friendbot-fund-testnet (funding focus) and q-tool-cli-install. Trap = deprecated `soroban` binary or unfunded account.\nAlso good if the answer: Notes the identity can then be referenced by name as the source/signer in subsequent CLI commands. | Mentions inspecting the public key (e.g. `stellar keys address <name>`).\nGolden cites: A Stellar CLI / keys / testnet setup page on developers.stellar.org.\nCorrected 2026-07-07: the signer example now uses `--source-account`. `--source` is a valid alias, so do not fail alias-only answers unless they frame it as canonical while omitting `--source-account` or pair it with stale `--global`/old-target instructions.\nAccurately quoting the canonical upstream skill source on `--global` for key generation or `--source` as the canonical signer flag is not a wrong claim while a cached or older copy still shows that pre-2026-07-15 sk-001 content; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."},"tags":{"category":"tooling-infra","service":"stellarDocs","freshness":"stable"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"real-world","status":"confirmed","sources":[{"class":"A","ref":"https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup","note":"class inferred at migration"},{"class":"A","ref":"https://developers.stellar.org/docs/tools/cli/stellar-cli","note":"class inferred at migration"}],"corroboration":[{"claim":"Current testnet key generation command is `stellar keys generate <name> --network testnet --fund`.","verdict":"confirmed","evidence":[{"class":"F","ref":"F: local `stellar keys generate --help` from CLI 27.0.0 — usage is `stellar keys generate [OPTIONS] <NAME>`, with `--network` and `--fund`, no `--global`","observedAt":"2026-07-11","note":"verbatim legacy evidence descriptor imported at migration"},{"class":"A","ref":"A/E: Stellar Raven docs search 2026-07-07 for `stellar keys generate` returned official examples using `stellar keys generate --fund` / generated identities without `--global`","observedAt":"2026-07-07","note":"verbatim legacy evidence descriptor imported at migration"},{"class":"E","ref":"A/E: Stellar Raven docs search 2026-07-07 for `stellar keys generate` returned official examples using `stellar keys generate --fund` / generated identities without `--global`","observedAt":"2026-07-07","note":"verbatim legacy evidence descriptor imported at migration"}]},{"claim":"Using the identity as a contract signer should be shown with canonical `--source-account`; `--source` is merely an alias.","verdict":"confirmed","evidence":[{"class":"F","ref":"F: local `stellar contract invoke --help` from CLI 27.0.0 — usage uses `--source-account`; help lists `[aliases: --source]`","observedAt":"2026-07-11","note":"verbatim legacy evidence descriptor imported at migration"},{"class":"B","ref":"B/C: Stellar Raven `scout.explainRepo` 2026-07-07 confirmed the alias is defined for the `source_account` field","observedAt":"2026-07-07","note":"verbatim legacy evidence descriptor imported at migration"},{"class":"C","ref":"B/C: Stellar Raven `scout.explainRepo` 2026-07-07 confirmed the alias is defined for the `source_account` field","observedAt":"2026-07-07","note":"verbatim legacy evidence descriptor imported at migration"}]}],"verified":{"date":"2026-08-29","by":"golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)","evidence":["Local empirical execution 2026-07-07: `stellar keys generate --help` and `stellar contract invoke --help` from `stellar 27.0.0`.","Stellar Raven production MCP probes 2026-07-07: official docs search for key generation and repo explanation for source-account alias behavior.","Sibling sweep 2026-07-07 identified this kept case as an answer-level signer example needing canonicalization.","Structural re-form (symmetric-caution): added a cached-skill grading caution for sk-001; the identity and signer facts are unchanged.","No live recheck was required for this pure symmetric-caution re-form.","Improvements review 2026-08-27: improvements/resolved.json entry sk-001 records the 2026-07-15 upstream fix; the disputed claims are older `--global` key-generation and canonical `--source` signer guidance.","Sibling sweep 2026-08-27: grep sk-001|--global|--source-account|keys generate → q-soroban-deploy-cli, q-sor-build-target-wasm32v1, q-ti-cli-rust-windows-troubleshooting; no contradiction","Structural re-form (long-fact): shortened the named-identity command fact; all command and funding claims remain in the fact set and answer.","Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/cli/stellar-cli — the current official CLI manual defines `stellar keys generate [OPTIONS] <NAME>` and the `--network` option.","Sibling sweep 2026-08-29: grep stellar keys generate|--network testnet|named identity|Friendbot → q-soroban-deploy-cli, q-infra-testnet-vs-futurenet, q-ti-friendbot-ratelimit-alternatives, and q-tool-cli-testnet-identity-howto; no contradiction."],"rootCause":["Eval-side canonicalization drift: the identity setup was current, but the follow-up contract signer example preserved the alias form.","improvements/resolved.json entry sk-001 — fixed upstream and refreshed locally at commit 3d75a157f6fe; current mirrored examples use wasm32v1-none and --source-account.",".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"]},"origin":"raven-next q-tool-cli-testnet-identity-howto"}}
+{
+  "id": "q-tool-cli-testnet-identity-howto",
+  "question": "How do I set up a funded testnet identity (keypair) with the Stellar CLI so I can sign transactions on testnet?",
+  "surface": [
+    "stellarDocs.search_protocol_concepts_docs",
+    "stellarDocs.search_sdk_cli_tools_docs",
+    "stellarDocs.search_soroban_contract_docs"
+  ],
+  "golden": {
+    "answer": "Use the **unified `stellar` CLI** (not the old `soroban` binary):\n\n1. **Generate a named identity and fund it on testnet in one step:**\n   `stellar keys generate <name> --network testnet --fund`\n   (the `--fund` flag funds the new account via **Friendbot**; without it the account is unfunded and unusable until funded).\n2. **Inspect the public key:** `stellar keys address <name>`.\n3. **Use it as the signer/source account** by name in later commands, e.g.\n   `stellar contract invoke --source-account <name> --network testnet ...`.\n\nNote: **testnet is periodically reset**, so a funded testnet account is not permanent. A brand-new account needs the base reserve from Friendbot before it can sign/submit. `--source` is still accepted by the contract CLI as an alias for `--source-account`, but canonical examples should show `--source-account`.",
+    "keyFacts": [
+      "Generates a named identity with `stellar keys generate <name> --network testnet`.",
+      "Funds the testnet account via Friendbot (the CLI can fund on generate, or `--fund`)."
+    ],
+    "avoid": [
+      "Do NOT use the deprecated `soroban` CLI binary name as the current command (it is the unified `stellar` CLI).",
+      "Do NOT claim a new testnet account is usable without funding (it needs the base reserve from Friendbot)."
+    ],
+    "notes": "Axis-C how-to rebalance. Procedure → stellar_docs_mcp. Distinct from q-infra-friendbot-fund-testnet (funding focus) and q-tool-cli-install. Trap = deprecated `soroban` binary or unfunded account.\nAlso good if the answer: Notes the identity can then be referenced by name as the source/signer in subsequent CLI commands. | Mentions inspecting the public key (e.g. `stellar keys address <name>`).\nGolden cites: A Stellar CLI / keys / testnet setup page on developers.stellar.org.\nCorrected 2026-07-07: the signer example now uses `--source-account`. `--source` is a valid alias, so do not fail alias-only answers unless they frame it as canonical while omitting `--source-account` or pair it with stale `--global`/old-target instructions.\nAccurately quoting the canonical upstream skill source on `--global` for key generation or `--source` as the canonical signer flag is not a wrong claim while a cached or older copy still shows that pre-2026-07-15 sk-001 content; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "stellarDocs",
+    "freshness": "stable"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup",
+        "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+        "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "local `stellar keys generate --help`, stellar 28.1.0 (c0f4d0da)",
+        "note": "Usage: stellar keys generate [OPTIONS] <NAME> ... --fund  Fund generated key pair ... -n, --network <NETWORK>  Name of network to use from config",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "stellarDocs.search_sdk_cli_tools_docs 'stellar keys generate --fund testnet identity' -> https://developers.stellar.org/docs/tools/cli/agent-cli/quickstart#step-3-create-a-key-for-your-agent",
+        "note": "stellar keys generate agent-1 --network testnet --fund ... Pass --fund",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/stellar-cli/releases/latest",
+        "note": "tag v28.1.0 published 2026-09-26T16:33:53Z (matches local binary)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local `stellar keys generate --help` / `stellar keys --help` (28.1.0)",
+        "note": "--fund  Fund generated key pair; fund  Fund an identity on a test network",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks",
+        "note": "Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet ... Friendbot Available | No | Yes (10,000 XLM) | Yes (10,000 XLM)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local `stellar keys --help` (28.1.0)",
+        "note": "public-key  Given an identity return its address (public key) [alias: address]",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local `stellar contract invoke --help` (28.1.0)",
+        "note": "-s, --source-account <SOURCE_ACCOUNT>  Account that where transaction originates from. Alias `source`.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-sign#tx-send",
+        "note": "--source alice ... (docs examples use both spellings)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local `stellar --version`",
+        "note": "stellar 28.1.0",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "improvements/resolved.json#sk-001",
+        "note": "resolved 2026-07-15 upstream fix",
+        "observedAt": "2026-11-02"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Current testnet key generation command is `stellar keys generate <name> --network testnet --fund`.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "F: local `stellar keys generate --help` from CLI 27.0.0 — usage is `stellar keys generate [OPTIONS] <NAME>`, with `--network` and `--fund`, no `--global`",
+            "observedAt": "2026-07-11",
+            "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "A/E: Stellar Raven docs search 2026-07-07 for `stellar keys generate` returned official examples using `stellar keys generate --fund` / generated identities without `--global`",
+            "observedAt": "2026-07-07",
+            "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "E",
+            "ref": "A/E: Stellar Raven docs search 2026-07-07 for `stellar keys generate` returned official examples using `stellar keys generate --fund` / generated identities without `--global`",
+            "observedAt": "2026-07-07",
+            "note": "verbatim legacy evidence descriptor imported at migration"
+          }
+        ]
+      },
+      {
+        "claim": "Using the identity as a contract signer should be shown with canonical `--source-account`; `--source` is merely an alias.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "F: local `stellar contract invoke --help` from CLI 27.0.0 — usage uses `--source-account`; help lists `[aliases: --source]`",
+            "observedAt": "2026-07-11",
+            "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "B",
+            "ref": "B/C: Stellar Raven `scout.explainRepo` 2026-07-07 confirmed the alias is defined for the `source_account` field",
+            "observedAt": "2026-07-07",
+            "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "C",
+            "ref": "B/C: Stellar Raven `scout.explainRepo` 2026-07-07 confirmed the alias is defined for the `source_account` field",
+            "observedAt": "2026-07-07",
+            "note": "verbatim legacy evidence descriptor imported at migration"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
+      "evidence": [
+        "F: local `stellar keys generate --help`, stellar 28.1.0 (c0f4d0da) — \"Usage: stellar keys generate [OPTIONS] <NAME> ... --fund  Fund generated key pair ... -n, --network <NETWORK>  Name of network to use from config\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
+        "E: stellarDocs.search_sdk_cli_tools_docs 'stellar keys generate --fund testnet identity' -> https://developers.stellar.org/docs/tools/cli/agent-cli/quickstart#step-3-create-a-key-for-your-agent — \"stellar keys generate agent-1 --network testnet --fund ... Pass --fund\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
+        "B: https://api.github.com/repos/stellar/stellar-cli/releases/latest — \"tag v28.1.0 published 2026-09-26T16:33:53Z (matches local binary)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
+        "F: local `stellar keys generate --help` / `stellar keys --help` (28.1.0) — \"--fund  Fund generated key pair; fund  Fund an identity on a test network\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1]",
+        "A: https://developers.stellar.org/docs/networks — \"Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet ... Friendbot Available | No | Yes (10,000 XLM) | Yes (10,000 XLM)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1]",
+        "F: local `stellar keys --help` (28.1.0) — \"public-key  Given an identity return its address (public key) [alias: address]\" (observedAt 2026-11-02) → confirmed: golden.answer",
+        "F: local `stellar contract invoke --help` (28.1.0) — \"-s, --source-account <SOURCE_ACCOUNT>  Account that where transaction originates from. Alias `source`.\" (observedAt 2026-11-02) → confirmed: golden.answer / golden.notes",
+        "E: https://developers.stellar.org/docs/tools/cli/cookbook/tx-sign#tx-send — \"--source alice ... (docs examples use both spellings)\" (observedAt 2026-11-02) → confirmed: golden.answer / golden.notes",
+        "F: local `stellar --version` — \"stellar 28.1.0\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
+        "A: https://developers.stellar.org/docs/tools/cli/stellar-cli — \"current manual documents `stellar` commands\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
+        "A: https://developers.stellar.org/docs/networks — \"Mainnet ... requires XLM to cover minimum balances; Testnet funding: Free via Friendbot\" (observedAt 2026-11-02) → confirmed: golden.avoid[1]",
+        "B: improvements/resolved.json#sk-001 — \"resolved 2026-07-15 upstream fix\" (observedAt 2026-11-02) → confirmed-as-of: golden.notes",
+        "Sibling sweep 2026-11-02: q-soroban-deploy-cli, q-ti-secret-key-vs-mnemonic-derivation, q-edge-jailbreak-generate-secret-keys, q-infra-friendbot-fund-testnet; no contradiction found by the proposer matrix."
+      ]
+    },
+    "origin": "raven-next q-tool-cli-testnet-identity-howto"
+  }
+}

@@ -32,7 +32,7 @@
       {
         "class": "B",
         "ref": "skills.stellar-light.stellar-scout",
-        "note": "Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow."
+        "note": "Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow. Re-read 2026-11-02 at pin 9f77b3f9."
       },
       {
         "class": "C",
@@ -41,22 +41,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-05)",
       "evidence": [
-        "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.",
-        "skills.stellar-light.stellar-scout exists and supports the behavioral golden.",
-        "Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.stellar-light.stellar-scout'). Same bytes, re-verified by digest; only the pointer notation changed.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened the Scout endpoint and coverage-limit fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/Stellar-Light/stellar-scout/d25b9f6bd842159b5a33aa6125ecb62373c2d8b5/SKILL.md — the pinned workflow uses Scout endpoints for landscape and next steps while requiring coverage limits.",
-        "Sibling sweep 2026-08-29: grep stellar-scout|Stellar Scout playbook|Deep Dive Mode → q-defi-rwa-scf-similar, q-tool-cli-skills-discovery, q-scf-skill-stellar-scout, and related ecosystem cases; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Golden audit 2026-11-02 re-verification, no gospel change.",
+        "B 2026-11-02: https://raw.githubusercontent.com/Stellar-Light/stellar-scout/9f77b3f9433be8b57b2b78a7c14b94855779f4fe/SKILL.md (pin moved from d25b9f6b to 9f77b3f9 in catalog commit 1f9bebbc) — '### Step 0: Disambiguate the user type first ... ## Two modes ... ### 1. Conversational Mode (default) ... ### 2. Deep Dive Mode ... ## Specialized workflows'; 'Do not speculate. If a step can't be answered from the endpoints below, say so explicitly.'; 'Worth a manual GitHub search before assuming a full gap'; 'Recommend only partners the API returns; never invent one'.",
+        "C 2026-11-02: Raven production execute codemode.skill.read('skills.stellar-light.stellar-scout') served the same pinned body ('## Evidence floor ... **Do not speculate.**').",
+        "Note: the pinned body adds a fourth specialized workflow (Hackathon Build Brief); the golden lists examples, not an exhaustive set, and no avoid item freezes the list.",
+        "Sibling sweep 2026-11-02: q-defi-rwa-scf-similar and q-tool-cli-skills-discovery; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (coverage)"

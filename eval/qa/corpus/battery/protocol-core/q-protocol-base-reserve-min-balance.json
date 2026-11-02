@@ -224,14 +224,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
+      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5); re-confirmed by Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
       "evidence": [
         "No gospel change 2026-11-02: question, answer, keyFacts, avoid, notes, tags, and truth.asOf (2026-07-11, the dated ledger in the answer) are unchanged. This event refreshes judge-blind provenance and reverifyBy only.",
         "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 ledger 65268657 reports base_reserve_in_stroops 5000000 on protocol 29; https://horizon-testnet.stellar.org/ledgers?order=desc&limit=1 ledger 5521086 reports 5000000.",
         "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/lumens ('One base reserve is currently 0.5 XLM'; two base reserves, currently 1 XLM; sponsored zero starting balance; contract data pays rent) and https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance (sponsorship-aware formula; selling liabilities separate).",
         "Live B 2026-11-02: stellar-core@b8c4f12d6f1159d67be8743c87a3c7df839ae7f4 src/transactions/TransactionUtils.cpp lines 903-906 and 611-613; stellar-xdr Stellar-ledger.x LEDGER_UPGRADE_BASE_RESERVE; CAP-0033 REVOKE_SPONSORSHIP_LOW_RESERVE; CAP-0038 two base reserves for a pool-share trustline; CAP-0046-07 rent fee.",
         "Source repair 2026-11-02: the Liquidity Pools URL moved to https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools after the 2026-10-22 Mintlify migration; the old path returns 404.",
-        "Sibling sweep 2026-11-02: grep 'base reserve|baseReserve|minimum balance' (23 cases), spot-checked q-edge-1xlm-activation-fee, q-asset-trustline-basics, q-asset-amm-fee-reserve, q-pc-sponsored-reserves, and q-pc-account-merge-reclaim-reserve; no contradiction."
+        "Sibling sweep 2026-11-02: grep 'base reserve|baseReserve|minimum balance' (23 cases), spot-checked q-edge-1xlm-activation-fee, q-asset-trustline-basics, q-asset-amm-fee-reserve, q-pc-sponsored-reserves, and q-pc-account-merge-reclaim-reserve; no contradiction.",
+        "Live re-check 2026-11-02 (confirmed-as-of): Base reserve 5,000,000 stroops (0.5 XLM), dated configuration — F https://horizon.stellar.org/ledgers?order=desc&limit=1 'ledger 65269905 closed 2026-11-02T16:01:49Z protocol 29 base_reserve_in_stroops 5000000'; A https://developers.stellar.org/docs/learn/fundamentals/lumens 'One base reserve is currently 0.5 XLM.'",
+        "Live re-check 2026-11-02 (confirmed): Sponsorship-aware min balance formula; selling liabilities separate — B https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionUtils.cpp 'effEntries = 2 + numSubentries + numSponsoring - numSponsored; return effEntries * baseReserve'; A https://developers.stellar.org/docs/learn/fundamentals/lumens '`available balance` = `balance` - `minimum balance` - `liabilities.selling`.'",
+        "Live re-check 2026-11-02 (confirmed): Pool-share trustline counts as two subentries — B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md 'The pool share trust line `tl` has ... The pool share trust line should count as two subentries'",
+        "Sibling sweep 2026-11-02: q-pc-sponsored-reserves carries the same formula; no contradiction."
       ]
     },
     "origin": "raven-next q-protocol-base-reserve-min-balance"

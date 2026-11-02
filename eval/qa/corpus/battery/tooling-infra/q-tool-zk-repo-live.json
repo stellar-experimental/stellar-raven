@@ -15,9 +15,10 @@
       "Uses repoScore as ranking/navigation, not correctness/security/production-readiness proof."
     ],
     "avoid": [
-      "Treats X-Ray Games or any other archived result as an eternal winner.",
+      "Claims a repository's answer-time repoScore rank is permanent or network-wide.",
       "Reads the repoScore sort as a correctness, security, maintenance, or production-readiness ranking."
-    ]
+    ],
+    "notes": "Observed 2026-11-02: FredericRezeau/xray-games is not archived; Scout flags it hackathonWinner for Stellar Hacks: ZK Gaming, and DoraHacks lists xray.games 2nd place. Stating that dated, sourced win is not a wrong claim."
   },
   "tags": {
     "category": "tooling-infra",
@@ -31,7 +32,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "C",
@@ -40,6 +41,24 @@
       {
         "class": "B",
         "ref": "catalog/manifest.json#scout.searchRepos"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/FredericRezeau/xray-games",
+        "note": "archived false, pushed_at 2026-02-16T08:40:34Z, homepage https://xray.games.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=xray",
+        "note": "generatedAt 2026-11-02T16:41:20Z: fredericrezeau/xray-games isArchived false, hackathonWinner true, judgedHackathon 'Stellar Hacks: ZK Gaming', repoScore 62.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk-gaming/report",
+        "note": "'2nd Place — $2,000 xray.games' (via Parallel web_search).",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -71,37 +90,47 @@
         ]
       },
       {
-        "claim": "One archived ZK repository remains permanently top-ranked.",
+        "claim": "A repository's answer-time repoScore rank is permanent or network-wide (the former avoid premise that X-Ray Games is an archived permanent winner was false: the repository is not archived).",
         "verdict": "contradicted",
         "evidence": [
           {
             "class": "C",
-            "ref": "https://stellarlight.xyz/api/repos/search?q=zero-knowledge",
-            "observedAt": "2026-07-11"
+            "ref": "https://stellarlight.xyz/api/repos/search?q=zero-knowledge&limit=10",
+            "observedAt": "2026-11-02",
+            "note": "counts returned 10, total 184; repoScore is an answer-time grade and rows change between observations."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/FredericRezeau/xray-games",
+            "observedAt": "2026-11-02",
+            "note": "archived false, pushed_at 2026-02-16T08:40:34Z."
+          },
+          {
+            "class": "D",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk-gaming/report",
+            "observedAt": "2026-11-02",
+            "note": "xray.games placed 2nd in Stellar Hacks: ZK Gaming; a dated, sourced historical win is not a wrong claim."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
       "evidence": [
-        "solo://proj/49/process/3414",
-        "solo://proj/49/process/3420",
-        "catalog/manifest.json#scout.searchRepos",
-        "Todo 1256 corpus lane (2026-07-28, F5): the golden told the grader to sort by repoScore and pick the “strongest” ZK reference repositories without saying what that ordering is evidence of, while cluster-131's members forbid inferring correctness, security, audit scope, maintenance, or production readiness from repoScore. The wording now states that the repoScore ordering is the index's answer-time navigation/ranking signal and scopes the superlative to it. Internal-consistency repair — no new external source consulted; the case now joins cluster-131.",
-        "Upstream schema evidence (inventory/stellar-light.json, searchRepos repoScore description; ADV-1 reconciliation 2026-07-28): repoScore is Scout's own composite 'Quality grade (0-100) = freshness + traction + hackathon/SCF/builder authority — Lead with high-score repos'. Its formula contains no correctness, security-audit, maintenance, or production-readiness input, so the golden's boundary — order candidates by it, never infer those attributes from it — restates the served contract's scope rather than contradicting the schema's quality-grade label.",
-        "Structural re-form (compound-predicate): Split one compound fact into hackathonWinner, codeVerified, and repoScore facts; truth unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — scout.searchRepos still exposes hackathonWinner as a Boolean result field.",
-        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — scout.searchRepos still defines codeVerified from a repository source-code scan.",
-        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — scout.searchRepos still defines repoScore from freshness, traction, and authority inputs.",
-        "Sibling sweep 2026-08-27: grep hackathonWinner|codeVerified|repoScore|zero-knowledge → q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery, q-tool-oracle-repo-live, q-tool-passkey-repo-live, q-tool-indexer-repos-discovery; no contradiction"
+        "B gh api repos/FredericRezeau/xray-games (observedAt 2026-11-02): 'archived false, pushed_at 2026-02-16T08:40:34Z, homepage https://xray.games'.",
+        "C https://stellarlight.xyz/api/repos/search?q=xray (generatedAt 2026-11-02T16:41:20Z; Raven scout.searchRepos asOf 2026-11-02T16:42:13Z): 'fredericrezeau/xray-games isArchived false, hackathonWinner true, judgedHackathon \"Stellar Hacks: ZK Gaming\", repoScore 62'.",
+        "D Parallel web_search -> https://dorahacks.io/hackathon/stellar-hacks-zk-gaming/report (observedAt 2026-11-02): '2nd Place — $2,000 xray.games xray.games is a trustless arcade platform that proves player skill entirely on-chain using zero-knowledge proofs'.",
+        "C https://stellarlight.xyz/api/repos/search?q=zero-knowledge&limit=10 (observedAt 2026-11-02): 'counts {returned 10, total 184}'; codeVerified carries scan fields (scannedAt 2026-10-05T22:52:12.992Z), not audit evidence.",
+        "Sibling sweep 2026-11-02: grep of the battery for xray-games/X-Ray Games found only this case; q-protocol-bn254-poseidon-xray, q-tool-sdk-repos-discovery, and q-tool-smart-wallet-repos-discovery carry no archived or permanent-rank claim about it.",
+        "Pass 2 change: avoid[0] re-worded from a presentation rule ('Presents ...') to a concrete false-content claim ('Claims ...'); the trapped claim and its contradicted corroboration row are unchanged. Sibling q-tool-oracle-repo-live uses the same 'Claims ...' avoid form.",
+        "Pass 2 sibling sweep 2026-11-02: grep repoScore over the battery -> q-tool-oracle-repo-live, q-tool-smart-wallet-repos-discovery, q-tool-indexer-repos-discovery; all forbid freezing repoScore order or reading it as a quality proof; no contradiction.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.avoid[0]: Wording-only fix for the avoid-binding lint. 'Claims ... is permanent or network-wide' is a concrete false-content avoid and matches the rubric's explicit-permanence override. It does not punish a possibly-true claim: a dated, page-scoped rank stays exempt under the freeze-clause rule. Live Stellar Light rows confirm repoScore is an answer-time field over a 184-row result set.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+]: Accurate eval-side authoring flaw; the old text starts with 'Presents', which NON_CONTENT_AVOID_RE flags."
       ],
       "rootCause": [
-        "eval-authoring",
-        "The golden's repoScore comparison instruction did not say what the ordering does and does not establish, leaving open a reading where 'strongest = highest repoScore' counts as proof of correctness, security, or production readiness — attributes outside the score's freshness/traction/authority formula.",
-        "Tracked at solo://proj/49/todo/corpus-follow-ups-fr--1256 (todo 1256, F5) with the adversarial-review reconciliation in the same todo's comments.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Eval-side authoring flaw: avoid text inherited from Boxy origin sl-code-zk-xray-games-top labelled X-Ray Games an archived result without a source; GitHub and Scout show it not archived.",
+        "Eval-side authoring flaw: avoid[0] was written as a presentation rule ('Presents ...'), which the avoid-binding lint flags as not a concrete false-content avoid."
       ]
     },
     "origin": "boxy sl-code-zk-xray-games-top"

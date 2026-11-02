@@ -7,7 +7,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- Recommended structure is **two accounts**: a separate **issuing account** and a **distribution account** [1].\n- The **issuing account** mints supply by sending the asset, but it cannot hold a balance of its own asset. It manages authorization flags, should be **locked down / cold storage**, and should be used rarely. The **distribution account** is the public-facing account that sends the asset to users and holds a working float [1].\n- Rationale is **blast-radius / segregation of duties**: if the hot distribution account is compromised, only the **float** is at risk, not the total supply, and the issuer retains flag/clawback control [1].\n- Assets are defined by the **`(asset_code, issuer)`** pair, and holders need a **trustline**; a single-account setup is acceptable only for testing [1].",
+    "answer": "- Recommended structure is **two accounts**: a separate **issuing account** and a **distribution account** [1].\n- The **issuing account** mints supply by sending the asset, but it cannot hold a balance of its own asset. It manages authorization flags, should be **locked down / cold storage**, and should be used rarely. The **distribution account** is the public-facing account that sends the asset to users and holds a working float [1].\n- Rationale is **blast-radius / segregation of duties**: if the hot distribution account is compromised, only the **float** is at risk, not the total supply, and the issuer retains flag/clawback control [1].\n- Assets are defined by the **`(asset_code, issuer)`** pair, and holders need a **trustline**; a separate distribution account is not strictly required, but it is the documented best practice [1].",
     "keyFacts": [
       "Recommends two accounts: a separate issuing account and a distribution account.",
       "The issuing account creates supply and manages authorization flags.",
@@ -42,6 +42,12 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp",
         "note": "Canonical protocol implementation rejects an issuer trustline to its own asset."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+        "note": "Tutorial: \"Although it is not required to create a distribution account, it is best practice\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -83,18 +89,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "CONFLICT: The issuing account holds supply vs https://developers.stellar.org/docs/tokens/control-asset-access — the page says the issuer creates or mints the asset but cannot hold a balance of its own asset.",
-        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/tokens/control-asset-access says the issuer creates supply but ‘can’t actually hold a balance of its own asset.’",
-        "Conflict resolution 2026-08-29: https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp rejects issuer self trust with `CHANGE_TRUST_SELF_NOT_ALLOWED`.",
-        "Sibling sweep 2026-08-29: grep issuing account|distribution account|own asset → q-aas-burn-clawback-redemption-mechanics, q-asset-issue-asset-howto, q-asset-stablecoin-issuers-discovery, q-asset-trustline-basics, q-asset-two-account-issuer, q-edge-ambig-stellar-token-meaning, q-sep-clawback-prereq-flag, q-ti-enumerate-holders-airdrop; no contradiction after correction."
+        "[A] https://developers.stellar.org/docs/tokens/control-asset-access — \"It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account.\" (observedAt 2026-10-26; supports golden.keyFacts[0]: confirmed)",
+        "[E] stellarDocs.search_docs 'issuing account distribution account best practice' -> control-asset-access#issuing-and-distribution-accounts — \"to create two accounts when issuing an asset\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/control-asset-access — \"The issuing account creates (or mints) the asset on the network by executing a payment operation.\" (observedAt 2026-10-26; supports golden.keyFacts[1]: confirmed)",
+        "[B] https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp — \"CHANGE_TRUST_SELF_NOT_ALLOWED (prior event 2026-08-29)\" (observedAt 2026-08-29; supports golden.keyFacts[1]: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/control-asset-access — \"The distribution account is the first recipient of the issued asset and handles all other transactions.\" (observedAt 2026-10-26; supports golden.keyFacts[2]: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/control-asset-access — \"an issuing account can't actually hold a balance of its own asset.\" (observedAt 2026-10-26; supports golden.avoid[2]: confirmed)",
+        "[A] https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tokens/how-to-issue-an-asset.mdx — \"Although it is not required to create a distribution account, it is best practice, so we will do so in this example.\" (observedAt 2026-11-02; supports golden.answer: unverifiable)",
+        "[E] stellarDocs.search_docs -> how-to-issue-an-asset#distribution-account-keypair — \"Although it is not required to create a distribution account, it is best practice\" (observedAt 2026-11-02; supports golden.answer: unverifiable)",
+        "[A] https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — \"Although it is not required to create a distribution account, it is best practice, so we will do so in this example.\" (observedAt 2026-11-02 (Parallel web_fetch; cache acquired_at 2026-10-26); supports golden.answer: verifier accept)",
+        "[A] https://developers.stellar.org/docs/tokens/control-asset-access — \"It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account. ... an issuing account can't actually hold a balance of its own asset.\" (observedAt 2026-11-02 (Parallel web_fetch; cache acquired_at 2026-10-26); supports golden.answer: verifier accept)",
+        "[E] stellarDocs.search_docs q='not required to create a distribution account best practice' -> https://developers.stellar.org/docs/tokens/how-to-issue-an-asset#distribution-account-keypair — \"Although it is not required to create a distribution account, it is best practice\" (observedAt 2026-11-02; supports golden.answer: verifier accept)",
+        "Sibling sweep 2026-11-02: grep 'only for testing|single-account' across eval/qa/corpus/battery -> only this case; siblings q-asset-issue-asset-howto, q-asset-trustline-basics checked; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring transcription",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side authoring flaw: golden answer glossed an unsourced 'only for testing' limit onto the cited page."
       ]
     },
     "origin": "raven-next q-asset-two-account-issuer"

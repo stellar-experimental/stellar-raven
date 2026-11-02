@@ -35,7 +35,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-13",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
@@ -51,6 +51,12 @@
         "class": "C",
         "ref": "http://localhost:8787/mcp",
         "note": "Live directory and broad-recovery probes on 2026-07-13."
+      },
+      {
+        "class": "C",
+        "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'decentralized lending for stablecoins',limit:5}",
+        "note": "match_mode 'semantic'; note 'No exact substring match ... showing the closest projects by meaning'; rows carry similarity scores.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -74,30 +80,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-05)",
       "evidence": [
-        "2026-07-13 localhost directory, semantic, Scout research, and docs probes for Justin Rice and Strupey.",
-        "catalog/manifest.json exact-ID retrieval profiles and semantic-match description notes.",
-        "solo://proj/49/scratchpad/evidence-poor-retrie--611",
-        "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-017; the semantic-fallback and open-world recovery rules are unchanged.",
-        "Improvements review 2026-08-27: improvements/lumenloop/ll-017-semantic-person-match-provenance.md remains reported upstream; the disputed claim is whether match_mode semantic directory rows establish exact identity without provenance.",
-        "Sibling sweep 2026-08-27: grep ll-017|match_mode semantic → q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; all symmetric-caution provenance is unchanged.",
-        "Sibling sweep 2026-08-27: grep semantic fallback|match_mode semantic|nearby semantic row|exact identity → q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-builder-justin-rice-history; no contradiction",
-        "Structural re-form (compound-predicate): Split the open-world recovery requirements into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: catalog/manifest.json#lumenloop.search_directory — the current contract still separates directory scope from open-world identity, history, project, and topic questions.",
-        "Live re-check 2026-08-27: catalog/manifest.json#lumenloop.search_content_semantic — the current contract still defines the broad content/research recovery pass.",
-        "Live re-check 2026-08-27: catalog/manifest.json#lumenloop.search_content_semantic — the current contract still requires exact identity, source, and date before attribution.",
-        "Sibling sweep 2026-08-27: grep match_mode|open-world|exact identity → q-edge-closed-world-builder-directory-miss, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history; no contradiction"
-      ],
-      "rootCause": [
-        "Semantic-neighbor output was data-shaped and could be mistaken for sufficient evidence.",
-        "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Lumenloop 2026-11-02: POST https://api.lumenloop.com/v1/tools/search_directory {query:'decentralized lending for stablecoins',limit:5} — match_mode 'semantic'; note \"No exact substring match ... showing the closest projects by meaning\"; rows carry similarity (k2-lend 0.608).",
+        "catalog/manifest.json#lumenloop.search_directory 2026-11-02 — \"A match_mode semantic row is a candidate, not exact identity proof.\"; retrievalProfile recoverWith lumenloop.search_content_semantic, scout.searchProjects, scout.searchResearch.",
+        "Raven execute host footer 2026-11-02 — \"These rows are candidates, not identity or absence proof: require an exact identity or canonical slug plus source and date\".",
+        "improvements/lumenloop/ll-017-semantic-person-match-provenance.md 2026-11-02 — status reported-upstream; the ll-017 grading caution stays.",
+        "No gospel change: the proposer confirmed every judge-facing claim; no change was proposed.",
+        "Sibling sweep 2026-11-02: q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (gap-ops); generalized 2026-07-13"

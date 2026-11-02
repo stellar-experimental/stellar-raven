@@ -1,0 +1,1674 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "assets-anchors-seps-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-aas-burn-clawback-redemption-mechanics",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Burning an issued asset is done by sending it back to the issuing account.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md",
+       "observedAt": "2026-11-02",
+       "quote": "To delete, or \"burn\", an asset, you must send it back to the account that issued it."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+       "observedAt": "2026-11-02",
+       "quote": "Transfers to the issuer account will burn the token, while transfers from the issuer account will mint."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "The SAC describes the clawed-back amount as burned; clawback needs clawback-enabled trustlines/flags.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+       "observedAt": "2026-11-02",
+       "quote": "Clawback `amount` from `from` account. `amount` is burned in the clawback process."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+       "observedAt": "2026-11-02",
+       "quote": "With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any *subsequent* trustlines established with this account will have clawbacks enabled."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed in all cases that an account holds an asset, the issuer must be able to …"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Issuer does not hold its own classic asset as a normal balance.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust.md",
+       "observedAt": "2026-11-02",
+       "quote": "CHANGE_TRUST_SELF_NOT_ALLOWED: The source account attempted to create a trustline for itself, which is not allowed."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/0c99950e96128beba3319aa96b116646ce974e69/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs#L337-L343",
+       "observedAt": "2026-11-02",
+       "quote": "fn mint ... check_not_issuer(e, &to)?;"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-aas-issuer-fees-supply-cap-freeze; q-comp-clawback-cap0035; q-sep-clawback-prereq-flag; q-comp-sac-inherits-flags"
+  },
+  {
+   "id": "q-aas-claim-received-claimable-balances",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Horizon's claimant filter discovers claimable-balance ids.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-all-claimable-balances.md",
+       "observedAt": "2026-11-02",
+       "quote": "OpenAPI parameters include `ClaimantParam` (name: claimant) and `SponsorParam`."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/claimable_balances?claimant=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "Live pubnet response returned 2 records (ids 00000000434beb59b5d4..., 00000000873d800ac36e...) and a claimant-filtered next link."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "An equivalent ledger-entry lookup discovers balance ids.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries.md",
+       "observedAt": "2026-11-02",
+       "quote": "keys string[] required — Array containing the keys of the ledger entries you wish to retrieve."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md",
+       "observedAt": "2026-11-02",
+       "quote": "// Replace with your actual Claimable Balance ID ... const ledgerKey = StellarSdk.xdr.LedgerKey.claimableBalance(new StellarSdk.xdr.LedgerKeyClaimableBalance({ …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "struct LedgerKey ... case CLAIMABLE_BALANCE: struct { ClaimableBalanceID balanceID; } claimableBalance;"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..4]",
+     "claim": "ClaimClaimableBalance per id from the claimant; predicate must be true; failure CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md",
+       "observedAt": "2026-11-02",
+       "quote": "search for the source account of this operation in the list of claimants on the entry. If a match on the claimant is found, and the ClaimPredicate evaluates to …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "struct ClaimClaimableBalanceOp { ClaimableBalanceID balanceID; }; ... CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM = -2,"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Non-native claims need trustline, limit, authorization.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations.md",
+       "observedAt": "2026-11-02",
+       "quote": "CLAIM_CLAIMABLE_BALANCE_LINE_FULL -3 The account claiming the ClaimableBalanceEntry does not have sufficient limits to receive amount of the asset"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md",
+       "observedAt": "2026-11-02",
+       "quote": "A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an `op_no_trust` err…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "remove",
+     "new": null,
+     "reason": "A true Horizon-only answer fails this fact; RPC getLedgerEntries cannot discover ids by claimant, and the golden answer does not state it."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Verified Horizon endpoint, claim operation, and predicate failure semantics. As of 2026-11-02, Horizon's `claimant` filter is the claimant-indexed discovery path; Stellar RPC `getLedgerEntries` reads a claimable balance only by a known balance id and has no claimant filter. Do not require an RPC discovery step.\nAlso good if the answer: Looks up a known balance id via Horizon `/claimable_balances/:id` or RPC `getLedgerEntries`. | Explains batching multiple claim operations in one transaction when feasible. | Mentions re-querying the claimant filter after confirmation to verify no remaining clai…",
+     "reason": "Record the RPC boundary as a grader caution and keep the by-id lookup as optional credit."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the 2026-08-29 long-fact split (35c90ecf) turned the disjunct 'or equivalent ledger-entry lookup' into a separate required keyFact that no claimant-indexed RPC method supports."
+   ],
+   "siblings": "q-asset-claimable-balance; q-infra-horizon-vs-rpc; q-raph-claimable-balance-safety; q-protocol-operation-types-list"
+  },
+  {
+   "id": "q-aas-claimable-predicates-expiry-reserves",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Up to 10 claimants; predicate types unconditional/AND/OR/NOT/before-absolute/before-relative.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "Claimant claimants<10>; CLAIM_PREDICATE_UNCONDITIONAL = 0, CLAIM_PREDICATE_AND = 1, CLAIM_PREDICATE_OR = 2, CLAIM_PREDICATE_NOT = 3, CLAIM_PREDICATE_BEFORE_ABSO…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md",
+       "observedAt": "2026-11-02",
+       "quote": "let aCanReclaim = StellarSdk.Claimant.predicateNot(StellarSdk.Claimant.predicateBeforeAbsoluteTime(soon.toString()))"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Each claimant raises the creator's minimum balance by one base reserve while the entry exists.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md",
+       "observedAt": "2026-11-02",
+       "quote": "Each ClaimableBalanceEntry is a ledger entry, and each claimant in that entry increases the source account's minimum balance by one base reserve."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "// Amount of native asset to pay the reserve  int64 reserve;"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "No automatic expiry; no at-will creator reclaim; balances can be stranded.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md",
+       "observedAt": "2026-11-02",
+       "quote": "if a claimable balance isn't claimed, it sits on the ledger forever ... there is no recovery mechanism for a claimable balance in general — if none of the predi…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "struct Claimant ... ClaimPredicate predicate; // Claimable if predicate is true"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-claimable-balance; q-raph-claimable-balance-safety; q-comp-clawback-cap0035"
+  },
+  {
+   "id": "q-aas-issuer-fees-supply-cap-freeze",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Supply caps are operational: stop minting or lock issuer (master weight 0).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+       "observedAt": "2026-11-02",
+       "quote": "it is possible to lock down the issuing account of an asset so that the asset's supply cannot increase. To do this, first set the issuing account's master weigh…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/0c99950e96128beba3319aa96b116646ce974e69/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs#L337-L366",
+       "observedAt": "2026-11-02",
+       "quote": "fn mint ... let admin = read_administrator(e)?; admin.require_auth()?; ... fn set_admin ... write_administrator(e, new_admin...)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "AUTH_REQUIRED/REVOCABLE/CLAWBACK_ENABLED semantics; clawback requires revocable.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+       "observedAt": "2026-11-02",
+       "quote": "When `AUTH_REVOCABLE_FLAG` is enabled, an issuer can revoke an existing trustline's authorization, thereby freezing the asset held by an account. ... Note that …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed in all cases that an account holds an asset, the issuer must be able to …"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "No protocol-level per-transfer issuer fee hook for classic assets.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+       "observedAt": "2026-11-02",
+       "quote": "Flags listed: AUTH_REQUIRED, AUTH_REVOCABLE, AUTH_IMMUTABLE, AUTH_CLAWBACK_ENABLED; no fee flag"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations.md",
+       "observedAt": "2026-11-02",
+       "quote": "Payment/path-payment operations carry no issuer fee parameter"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Verified flags and issuer-control boundaries against control-asset-access and CAP-35 (live 2026-06-29). Transfer-fee absence is inferred from the classic asset operation model and SAC docs rather than a single explicit negative statement. Differentiated from q-aas-burn-clawback-redemption-mechanics: this file owns the fee/cap/freeze feasibility debunk and AUTH_* enumeration and now references rather than re-derives burn accounting.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` c…",
+     "reason": "Docs and SAC source show a non-issuer SAC admin can mint after the issuer is locked; the golden presents issuer locking as a supply cap without this caveat."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the supply-cap claim omitted the documented SAC-admin caveat on control-asset-access."
+   ],
+   "siblings": "q-aas-burn-clawback-redemption-mechanics; q-asset-issue-asset-howto; q-comp-sac-inherits-flags; q-comp-auth-flags-overview"
+  },
+  {
+   "id": "q-aas-sep30-recoverable-wallets",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.notes",
+     "claim": "SEP-30 status is Draft.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft ... Updated: 2021-05-04 Version: 0.8.1"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep30.md",
+       "observedAt": "2026-11-02",
+       "quote": "During this flow the wallet communicates with one or more recovery signer servers to register the wallet for a later recovery if it's needed."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts",
+     "claim": "Recovery servers are pre-registered account signers; no third-party control; SEP-10 or external JWT auth.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
+       "observedAt": "2026-11-02",
+       "quote": "regain access to a Stellar account that it owns after the individual has lost its private key without providing any third party control of the account. ... prer…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep30.md",
+       "observedAt": "2026-11-02",
+       "quote": "The [Sep-30] standard defines the standard way for an individual (e.g., a user or wallet) to regain access to their Stellar account after losing its private key…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-passkey-wallet-recovery; q-tool-passkey-wallet-recovery"
+  },
+  {
+   "id": "q-aas-trustline-limit-lifecycle",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "op_invalid_limit: limit below balance + buying liabilities; removal with nonzero balance.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations.md",
+       "observedAt": "2026-11-02",
+       "quote": "CHANGE_TRUST_INVALID_LIMIT -3 The `limit` is not sufficient to hold the current balance of the trustline and still satisfy its buying liabilities. This error oc…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/ChangeTrustOpFrame.cpp#L192-L245",
+       "observedAt": "2026-11-02",
+       "quote": "if (mChangeTrust.limit < getMinimumLimit(...)) { // Can't drop the limit below the balance you are holding ... CHANGE_TRUST_INVALID_LIMIT; ... // new trust line…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Removal = ChangeTrust limit 0; reserve freed; LP references block deletion.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/ChangeTrustOpFrame.cpp#L208-L212",
+       "observedAt": "2026-11-02",
+       "quote": "liquidityPoolUseCount != 0 -> CHANGE_TRUST_CANNOT_DELETE"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust.md",
+       "observedAt": "2026-11-02",
+       "quote": "For every new trustline added to an account, the minimum reserve of XLM that account must hold increases."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-aas-claim-received-claimable-balances; q-asset-trustline-vs-sac"
+  },
+  {
+   "id": "q-anchor-endpoint-discovery",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SEP-1 stellar.toml advertises TRANSFER_SERVER_SEP0024 and WEB_AUTH_ENDPOINT.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "TRANSFER_SERVER_SEP0024 | uses https:// | The server used for SEP-24 ... WEB_AUTH_ENDPOINT | The endpoint used for SEP-10 Web Authentication | WEB_AUTH_FOR_CONT…"
+      },
+      {
+       "class": "F",
+       "ref": "https://mgxanchor.moneygram.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "WEB_AUTH_ENDPOINT = \"https://mgxanchor.moneygram.com/stellarsepservice/auth\" TRANSFER_SERVER_SEP0024 = \"https://mgxanchor.moneygram.com/stellarsepservice/sep24\"…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "SEP-10 authentication precedes protected SEP-24 interactions.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+       "observedAt": "2026-11-02",
+       "quote": "Version 3.8.0 (Updated 2025-09-10): Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both to enable authenticated deposits, wi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform.md",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-45 — Web authentication using challenge/responses for contract accounts"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft Created: 2024-10-08 Updated: 2025-12-16 Version: 0.1.1"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "Directory does not supply authenticated endpoints; SEP-24 needs domain discovery and auth.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+       "observedAt": "2026-11-02",
+       "quote": "An anchor must define the location of their TRANSFER_SERVER_SEP0024 in their stellar.toml. This is how a wallet knows where to find the anchor's server."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "Partner rows are directory profiles (name, tagline, ramps, regions); no SEP-24 endpoint field observed"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Begin with the asset issuer's home domain, fetch /.well-known/stellar.toml under SEP-1, and read the advertised WEB_AUTH_ENDPOINT and TRANSFER_SERVER_SEP0024 values. Authenticate with SEP-10 (or SEP-45 for contract accounts, when the anchor advertises WEB_AUTH_FOR_CONTRACTS_ENDPOINT), then call SEP-24's info and interactive endpoints and track the transaction status. A directory entry can help find an anchor, but it is not the integration contract; the issuer's signed operational domain and current stellar.toml are authoritative. Test against a sandbox before using production credentials.",
+     "reason": "SEP-24 v3.8.0 allows SEP-45 auth; answer names only SEP-10."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "SEP-10 (or SEP-45 for contract accounts) auth precedes protected SEP-24 calls.",
+     "reason": "Keep the auth requirement durable without failing a true SEP-45 answer."
+    },
+    {
+     "field": "golden.notes",
+     "op": "add",
+     "new": "As of 2026-11-02, SEP-24 v3.8.0 (Active) says anchors and clients must support SEP-10 or SEP-45 (Draft, contract accounts) or both. An answer that names SEP-45 for contract-account wallets is not wrong.",
+     "reason": "Grader caution with as-of date."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the keyFact pinned SEP-10 as the only SEP-24 authentication, but SEP-24 v3.8.0 (2025-09-10) allows SEP-10 and/or SEP-45."
+   ],
+   "siblings": "q-sep6-sep24-sep31-choice; q-sep-45-contract-auth; q-sep-interactive-deposit-withdraw; q-sep-wallet-seps-list"
+  },
+  {
+   "id": "q-anchor-list-builders-discovery",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 the live partner directory returned 27 anchor profiles; first page Etherfuse, Transparent Network, APS Money.",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "21 rows (generatedAt 2026-11-02T15:53:59.646Z): Etherfuse, Transparent Network, APS Money, CLPX, FinClusive, Zeam Money, Ripe Money, Alfred Pay, Boss Pay, Click…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?type=anchor&all=1&limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "24 rows: the 21 above plus nTokens, Elroy App, Wallet Guru"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Sample anchors have real-world footprints.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://docs.etherfuse.com/guides/chains/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Anchor mode (SEP-24) — For Stellar offramps you can use anchor mode (useAnchor: true)"
+      },
+      {
+       "class": "D",
+       "ref": "https://aps.money/",
+       "observedAt": "2026-11-02",
+       "quote": "Payments for Stellar Ecosystem — Implementing SEP protocols allows APS to bridge traditional finance with Stellar-based DeFi"
+      },
+      {
+       "class": "A",
+       "ref": "https://mgxanchor.moneygram.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "# MoneyGram Stellar service powered by the Anchor Platform. ... TRANSFER_SERVER_SEP0024 = ..."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.stellarlight.xyz/partners",
+       "observedAt": "2026-11-02",
+       "quote": "Anchor Available Transparent Network ... Anchor Aging Clickspesa ... Anchor Aging Yellow Card ... Anchor Aging Bitso"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "stellar.org/use-cases/ramps resolves and describes Ramps.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://stellar.org/use-cases/ramps",
+       "observedAt": "2026-11-02",
+       "quote": "curl -L final URL https://stellar.org/solutions/cross-border-payments (HTTP 200)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors.md",
+       "observedAt": "2026-11-02",
+       "quote": "View the [Anchor Directory](https://anchors.stellar.org) ... SDF-maintained [Anchor Platform] ... If you're looking for MoneyGram Ramps, see the [Integrate with…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-11-02, the live partner directory filtered to anchors returned 21 anchor profiles (24 with thin profiles included); the first page included Etherfuse, Transparent Network, and APS Money, and the list also included MoneyGram, Bitso, and Yellow Card.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time, and should keep anchor …",
+     "reason": "Dated roster drifted (27 -> 21); old count is unverifiable; dangling 'stable distinctions above' replaced with the operator/tooling distinction from notes."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Discovery → scout_projects. Freshness-sensitive (anchor roster shifts). The 'answer' is correct routing + a directory-grounded list, not a fixed roster. Source list anchors the routing/grounding requirement; named operators must come from the live directory, not be invented. Re-checked 2026-11-02: stellar.org/use-cases/ramps now redirects to stellar.org/solutions/cross-border-payments; developers.stellar.org/docs/learn/fundamentals/anchors still links the Anchor Directory and names MoneyGram Ramps and the Anchor Platform. Project search (category Anchor) is a different source basis with a diff…",
+     "reason": "Stale URL claim; add source-basis caution."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: the answer referred to 'the stable distinctions above' after a re-form removed that text."
+   ],
+   "siblings": "q-crp-anchors-by-corridor; q-crp-partner-detail-after-discovery; q-jutsu-cash-crypto-ramps; q-asset-stablecoin-issuers-discovery; q-crp-regional-offramp-mobilemoney"
+  },
+  {
+   "id": "q-anchor-moneygram-ramps",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Wallets integrate MoneyGram via client-side SEP-24 with SEP-10 auth.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer/getting-started",
+       "observedAt": "2026-11-02",
+       "quote": "Widget partners on Solana or Stellar use the same key model and POST /v1/sessions . You do not implement SEP-10 / SEP-24 on the widget path. ... Legacy Stellar …"
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model. New Stellar wallet integrations should use the widg…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/redirects.json",
+       "observedAt": "2026-11-02",
+       "quote": "{\"source\": \"/docs/build/apps/moneygram-access-integration-guide\", \"destination\": \"https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-r…"
+      },
+      {
+       "class": "D",
+       "ref": "https://xramps.moneygram.com/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Integrate USDC cash-in and cash-out for Stellar wallets with the Ramps widget SDK and API keys. ... Existing whitelist partners on the legacy SEP-10 / SEP-24 pa…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask 2026-11-02",
+       "observedAt": "2026-11-02",
+       "quote": "For new Stellar wallet integrations, MoneyGram's current documented path is the widget SDK with API keys and server-created sessions ... The SEP-10/SEP-24 ancho…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "MoneyGram Ramps is a Stellar anchor for cash-in/out.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://mgxanchor.moneygram.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "# MoneyGram Stellar service powered by the Anchor Platform. ... TRANSFER_SERVER_SEP0024 ... [[CURRENCIES]] code = \"USDC\" ... ORG_DESCRIPTION = \"Cash in and out …"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/ramps/moneygram.md",
+       "observedAt": "2026-11-02",
+       "quote": "MoneyGram Ramps is a MoneyGram product that enables users of third-party applications, such as crypto wallets and exchanges, to cash-in (deposit) and cash-out (…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "It runs on the Stellar Ramps standard so wallets get one integration to many cash points.",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://stellar.org/use-cases/ramps",
+       "observedAt": "2026-11-02",
+       "quote": "Now redirects to https://stellar.org/solutions/cross-border-payments"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/solutions/cross-border-payments",
+       "observedAt": "2026-11-02",
+       "quote": "One MoneyGram Ramps integration offers USDC cash-in and cash-out in 170+ countries."
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer",
+       "observedAt": "2026-11-02",
+       "quote": "Users complete KYC and pick up or drop off cash at 480,000+ MoneyGram locations in 170+ countries."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "170+ off-ramp countries.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Coverage: 480,000+ MoneyGram locations · 170+ countries for off-ramps"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/products-and-tools/moneygram",
+       "observedAt": "2026-11-02",
+       "quote": "170+ Countries with USDC cash-out"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "MoneyGram was not fully integrated into Tier-1 quorum in July/early August 2026; target mid-August.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://thefintechtimes.com/moneygram-figure-markets-and-range-join-stellar-as-tier-1-validators/",
+       "observedAt": "2026-11-02",
+       "quote": "The SDF said the three new validators are expected to be fully integrated into the network's quorum configuration by mid-August 2026."
+      },
+      {
+       "class": "F",
+       "ref": "https://radar.withobsrvr.com/api/v1",
+       "observedAt": "2026-11-02",
+       "quote": "time 2026-11-02T15:45:46Z: MoneyGram validators GAVEOQE4..., GBPBEOYM..., GAW3OEQR... are all in transitiveQuorumSet (30 nodes; orgs incl. SDF, LOBSTR, Franklin…"
+      },
+      {
+       "class": "D",
+       "ref": "https://cryptobriefing.com/stellar-ranks-second-active-developers/",
+       "observedAt": "2026-11-02",
+       "quote": "The network also added three new Tier 1 validators during the quarter, bringing the total to 10. MoneyGram was among the new additions."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Ramps settles in USDC, not MGUSD.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer/getting-started",
+       "observedAt": "2026-11-02",
+       "quote": "Supported asset today: USDC on Solana or Stellar."
+      },
+      {
+       "class": "F",
+       "ref": "https://mgxanchor.moneygram.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "[[CURRENCIES]] code = \"USDC\" issuer = \"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\" status = \"live\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "- **MoneyGram Ramps** (earlier MoneyGram Access) lets wallet and exchange users **cash in (deposit) and cash out (withdraw)** physical cash at MoneyGram locations, settling in **Stellar USDC**, with no bank account required [1][2].\n- In Stellar's anchor model, MoneyGram runs a **SEP-24 anchor**: its `stellar.toml` advertises SEP-10 and SEP-24 endpoints. On that path the wallet authenticates with **SEP-10**, opens MoneyGram's hosted webview for KYC, then sends or receives USDC with a memo [1].\n- As of 2026-11-02, MoneyGram's developer portal labels the SEP-10/SEP-24 path **legacy** for existing…",
+     "reason": "MoneyGram now calls SEP-10/SEP-24 legacy and directs new wallets to a widget SDK; Stellar docs redirect to MoneyGram docs."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "One MoneyGram integration gives wallets access to its cash locations.",
+     "reason": "'Stellar Ramps standard' is unverifiable; keep the confirmed one-integration fact."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Re-verified 2026-11-02: MoneyGram Ramps cash-in/out settles in Stellar USDC. MoneyGram's developer portal (xramps.moneygram.com/ops/developer) directs new Stellar wallets to a widget SDK + API keys + server-side sessions path and labels the SEP-10/SEP-24 anchor path legacy for existing allowlisted partners. The legacy operator guide is still Version 1.2, Stellar + USDC, July 2026. The developers.stellar.org MoneyGram guide now redirects to MoneyGram's own docs. Do not penalize an answer that describes either path; an answer that describes only SEP-24 + SEP-10 is incomplete, not wrong. SEP-38 i…",
+     "reason": "As-of note, symmetric grader caution, Tier-1 current-status caution."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-pay-moneygram-ramps; q-comp-cross-moneygram-partnership-sep24; q-scf-cross-decaf-sep24; q-crp-anchors-by-corridor; q-hist-remittance-corridors; q-crp-custodial-vs-noncustodial-wallets; q-jutsu-cash-crypto-ramps; q-sep-interactive-deposit-withdraw"
+  },
+  {
+   "id": "q-anchor-platform-what",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Implements SEP-1/6/10/12/24/31/38 plus SEP-45.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform.md",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-1 ... SEP-6 ... SEP-10 ... SEP-12 ... SEP-24 ... SEP-31 — Cross-border payment processing (receive only) ... SEP-38 ... SEP-45 — Web authentication using ch…"
+      },
+      {
+       "class": "F",
+       "ref": "https://mgxanchor.moneygram.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "# MoneyGram Stellar service powered by the Anchor Platform. ... WEB_AUTH_FOR_CONTRACTS_ENDPOINT = .../sep45/auth"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/anchor-platform/releases/tag/5.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "5.0.0 (2026-10-23) changelog touches SEP-1, SEP-6, SEP-10, SEP-12, SEP-24, SEP-31, SEP-38 code paths"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SDF's Java Anchor Platform is a backend/toolset.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/anchor-platform",
+       "observedAt": "2026-11-02",
+       "quote": "description: 'Java SDK for the Stellar network anchor development.'; languages: Kotlin 3367219 bytes, Java 1516161 bytes; latest release 5.0.0 2026-10-23"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform.md",
+       "observedAt": "2026-11-02",
+       "quote": "The Anchor Platform provides a set of tools and APIs for building on and off-ramp services on the Stellar network."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "Canonical repos include stellar/typescript-wallet-sdk and stellar/stellar-disbursement-platform-backend.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/typescript-wallet-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "description: 'Typescript Wallet SDK to build Stellar wallets'"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+       "observedAt": "2026-11-02",
+       "quote": "description: 'Stellar Disbursement Platform Backend'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.keyFacts[4]",
+     "op": "remove",
+     "new": null,
+     "reason": "Absorbed off-question keyFact; a true answer fails it."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "remove",
+     "new": null,
+     "reason": "Same; repo naming becomes optional credit."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Dossier §5.4. Verified: SDF-maintained Java toolset; docs list SEP-1/6/10/12/24/31/38/45. scout_repos acceptable (graded repo).\nAs of 2026-11-02 the stellar/anchor-platform repo describes itself as a 'Java SDK'; GitHub reports Kotlin as its largest language (JVM). Do not penalize a Java, Kotlin, or JVM description. The docs mark SEP-31 as receive only.\nAlso good if the answer: Names the canonical repo stellar/anchor-platform. | It is the fastest way to go live as an anchor without re-implementing the SEP endpoints.\nGolden cites: The Anchor Platform page on developers.stellar.org or the stellar…",
+     "reason": "Language caution and optional repo credit."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the 2026-07-11 rebalance (74afce0f) absorbed repo-discovery keyFacts from the dropped q-anchor-platform-repo-discovery into a case whose question does not ask for repos."
+   ],
+   "siblings": "q-anchor-sdp-vs-anchor-platform; q-asset-wallet-sdk-seps; q-sep-45-contract-auth; q-production-anchor-architecture; q-sep6-sep24-sep31-choice"
+  },
+  {
+   "id": "q-anchor-sdp-vs-anchor-platform",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Wallet SDK wraps client-side SEP-10/12/24/38, not SEP-31.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro.md",
+       "observedAt": "2026-11-02",
+       "quote": "[SEP-1] ... [SEP-10] ... [SEP-24] ... [SEP-6] ... [SEP-12] ... [SEP-38] ... Besides the SEPs supported by the anchor class the wallet SDK also has support for t…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/typescript-wallet-sdk/tree/e10f441a4fd085963475b05a1b165f20e846b47e/@stellar/typescript-wallet-sdk/src/walletSdk",
+       "observedAt": "2026-11-02",
+       "quote": "Anchor/Sep6.ts, Anchor/Sep24.ts, Anchor/Sep38.ts, Auth/, Customer/, Recovery/, Uri/Sep7Tx.ts; no SEP-31 module"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep30.md",
+       "observedAt": "2026-11-02",
+       "quote": "During this flow the wallet communicates with one or more recovery signer servers"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0..2]",
+     "claim": "AP SEP set; SDP bulk payments; SDP native SEP-10/24.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform.md",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-1, 6, 10, 12, 24, 31 (receive only), 38, 45"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24, providing wallet authentication and interactive deposit flows with…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/internal/data/disbursement_instructions.go#L49",
+       "observedAt": "2026-11-02",
+       "quote": "const MaxInstructionsPerDisbursement = 10000"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Three-way comparison reverified 2026-08-05. The declared Docs surfaces support the role and current-architecture comparison, not the stellar.org product page's numeric advertisement. Corrected 2026-11-02: that page advertises up to 10,000 payments per batch, and the SDP backend enforces the same 10,000-instruction cap per disbursement (`MaxInstructionsPerDisbursement`). It is an SDP application limit, not a Stellar protocol limit. Do not require the number here, and do not penalize an answer that states it as an SDP per-disbursement cap. As of 2026-11-02 the official Anchor Platform page and s…",
+     "reason": "Wallet SDK covers SEP-1/6/7/30 too; prevent the misnumbering trap from punishing a true list."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the Wallet SDK SEP list (SEP-10/12/24/38) is a subset, and the misnumbering avoid can punish a true fuller list."
+   ],
+   "siblings": "q-asset-wallet-sdk-seps; q-sep-wallet-seps-list; q-anchor-platform-what; q-anchor-sdp-what; q-pay-sdp-disbursement; q-crp-sdp-operation; q-tool-wallets-comparison"
+  },
+  {
+   "id": "q-anchor-sdp-what",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts",
+     "claim": "SDP bulk-payment stack; native SEP-10/24; optional downstream rails; 10,000-instruction cap is SDP-level.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform.md",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Disbursement Platform (SDP) is a tool built for organizations to make bulk payments to a group of recipients over the Stellar network."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24 ... without requiring external Anchor Platform integration."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/internal/data/disbursement_instructions.go#L49",
+       "observedAt": "2026-11-02",
+       "quote": "const MaxInstructionsPerDisbursement = 10000"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-anchor-sdp-vs-anchor-platform; q-pay-sdp-disbursement; q-crp-sdp-operation"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-aas-claim-received-claimable-balances",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "RPC getLedgerEntries takes ledger keys only; it cannot discover balances by claimant. The keyFact required an impossible 'equivalent' discovery path. Removal is a truth fix, not laundering.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+      "observedAt": "2026-11-02",
+      "quote": "The `getLedgerEntries` method returns the \"values\" (or \"entries\") for a given set of \"keys\"."
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/go/blob/master/protocols/rpc/get_ledger_entries.go",
+      "observedAt": "2026-11-02",
+      "quote": "type GetLedgerEntriesRequest struct { Keys []string `json:\"keys\"`; Format string `json:\"xdrFormat,omitempty\"` }"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://mainnet.sorobanrpc.com getLedgerEntries with params {claimant:...}",
+      "observedAt": "2026-11-02",
+      "quote": "{\"error\":{\"code\":-32603,\"message\":\"could not query captive core: no keys specified in request\"}}"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/claimable_balances?claimant=GAVEOQE4O53I7OLY43HIUVKLLMALHSCNPVBKXB46FBDVRTDXRBIPHTFP&limit=1",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200; _links.self echoes claimant=...; 0 records (claimant filter accepted)"
+     }
+    ]
+   },
+   {
+    "id": "q-aas-claim-received-claimable-balances",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "New note is true (Horizon claimant filter is the claimant-indexed path; RPC reads by known id only). Moves RPC by-id lookup to also-good. Keeps date.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+      "observedAt": "2026-11-02",
+      "quote": "The `getLedgerEntries` method returns the \"values\" (or \"entries\") for a given set of \"keys\"."
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/go/blob/master/protocols/rpc/get_ledger_entries.go",
+      "observedAt": "2026-11-02",
+      "quote": "type GetLedgerEntriesRequest struct { Keys []string `json:\"keys\"`; Format string `json:\"xdrFormat,omitempty\"` }"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://mainnet.sorobanrpc.com getLedgerEntries with params {claimant:...}",
+      "observedAt": "2026-11-02",
+      "quote": "{\"error\":{\"code\":-32603,\"message\":\"could not query captive core: no keys specified in request\"}}"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/claimable_balances?claimant=GAVEOQE4O53I7OLY43HIUVKLLMALHSCNPVBKXB46FBDVRTDXRBIPHTFP&limit=1",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200; _links.self echoes claimant=...; 0 records (claimant filter accepted)"
+     }
+    ]
+   },
+   {
+    "id": "q-aas-issuer-fees-supply-cap-freeze",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Caveat is exact to the docs and the SAC source. It is a symmetric do-not-penalize caution, not a new requirement.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+      "observedAt": "2026-11-02",
+      "quote": "If the asset has a Stellar Asset Contract, also make sure the admin for the contract was not updated from the default (which is the issuer) using the `set_admin…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+      "observedAt": "2026-11-02",
+      "quote": "The asset issuer becomes the *initial* administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards …"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
+      "observedAt": "2026-11-02",
+      "quote": "pub(crate) fn mint(...) { ... let admin = read_administrator(e)?; admin.require_auth()?;"
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-endpoint-discovery",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "SEP-45 alternative is in SEP-24 v3.8.0 and the TOML field name is exact. SEP-10 stays the named default.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Active ... Version 3.8.0 ... Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both to enable authenticated deposits, w…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+      "observedAt": "2026-11-02",
+      "quote": "| WEB_AUTH_FOR_CONTRACTS_ENDPOINT | uses `https://` | The endpoint used for SEP-45 Web Authentication |"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0045 Title: Stellar Web Authentication for Contract Accounts ... Status: Draft ... Version: 0.1.1"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'SEP-45 web authentication contract accounts SEP-24' -> https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/getting-started",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-24: SEP-1 (Stellar Info File), SEP-10 (Stellar Authentication) and SEP-45 (Stellar Web Authentication for contract account)."
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-endpoint-discovery",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "78 chars (<=90). The parenthetical is an alternative, so a SEP-10-only answer still satisfies it.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Active ... Version 3.8.0 ... Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both to enable authenticated deposits, w…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+      "observedAt": "2026-11-02",
+      "quote": "| WEB_AUTH_FOR_CONTRACTS_ENDPOINT | uses `https://` | The endpoint used for SEP-45 Web Authentication |"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0045 Title: Stellar Web Authentication for Contract Accounts ... Status: Draft ... Version: 0.1.1"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'SEP-45 web authentication contract accounts SEP-24' -> https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/getting-started",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-24: SEP-1 (Stellar Info File), SEP-10 (Stellar Authentication) and SEP-45 (Stellar Web Authentication for contract account)."
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-endpoint-discovery",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Dated, accurate, and protects a true SEP-45 answer. Marks SEP-45 Draft.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Active ... Version 3.8.0 ... Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both to enable authenticated deposits, w…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+      "observedAt": "2026-11-02",
+      "quote": "| WEB_AUTH_FOR_CONTRACTS_ENDPOINT | uses `https://` | The endpoint used for SEP-45 Web Authentication |"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0045 Title: Stellar Web Authentication for Contract Accounts ... Status: Draft ... Version: 0.1.1"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'SEP-45 web authentication contract accounts SEP-24' -> https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/getting-started",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-24: SEP-1 (Stellar Info File), SEP-10 (Stellar Authentication) and SEP-45 (Stellar Web Authentication for contract account)."
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-list-builders-discovery",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "21/24 counts, first-page names, and MoneyGram/Bitso/Yellow Card all reproduce on 2026-11-02. As-of date kept. Removes a dangling 'stable distinctions above' reference.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100",
+      "observedAt": "2026-11-02",
+      "quote": "meta.counts {returned:21,total:21,filteredOut:3}; generatedAt 2026-11-02T16:27:34Z; names: Etherfuse, Transparent Network, APS Money, ... Yellow Card, Bitso, Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100&all=1",
+      "observedAt": "2026-11-02",
+      "quote": "meta.counts {returned:24,total:24,filteredOut:0}; adds nTokens, Elroy App, Wallet Guru"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?type=Anchor&limit=100",
+      "observedAt": "2026-11-02",
+      "quote": "meta.counts {returned:44,total:44} (different source basis)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://stellar.org/use-cases/ramps",
+      "observedAt": "2026-11-02",
+      "quote": "200 final=https://stellar.org/solutions/cross-border-payments redirects=1"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+      "observedAt": "2026-11-02",
+      "quote": "View the Anchor Directory (https://anchors.stellar.org) for more information on existing Stellar anchors. ... If you're looking for MoneyGram Ramps, see the ...…"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search 'Yellow Card Etherfuse APS Money Stellar anchor on-ramp' -> https://www.stellarlight.xyz/partners",
+      "observedAt": "2026-11-02",
+      "quote": "AnchorAvailable Etherfuse ... AnchorAvailable APS Money ... AnchorAging Yellow Card (real-world sample check: Bitso, Yellow Card, MoneyGram are established publ…"
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-list-builders-discovery",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Redirect and docs-page claims reproduce. Do-not-penalize for either dated count basis is symmetric and justified (21 partners vs 44 projects).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100",
+      "observedAt": "2026-11-02",
+      "quote": "meta.counts {returned:21,total:21,filteredOut:3}; generatedAt 2026-11-02T16:27:34Z; names: Etherfuse, Transparent Network, APS Money, ... Yellow Card, Bitso, Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/partners?type=anchor&limit=100&all=1",
+      "observedAt": "2026-11-02",
+      "quote": "meta.counts {returned:24,total:24,filteredOut:0}; adds nTokens, Elroy App, Wallet Guru"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?type=Anchor&limit=100",
+      "observedAt": "2026-11-02",
+      "quote": "meta.counts {returned:44,total:44} (different source basis)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://stellar.org/use-cases/ramps",
+      "observedAt": "2026-11-02",
+      "quote": "200 final=https://stellar.org/solutions/cross-border-payments redirects=1"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+      "observedAt": "2026-11-02",
+      "quote": "View the Anchor Directory (https://anchors.stellar.org) for more information on existing Stellar anchors. ... If you're looking for MoneyGram Ramps, see the ...…"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search 'Yellow Card Etherfuse APS Money Stellar anchor on-ramp' -> https://www.stellarlight.xyz/partners",
+      "observedAt": "2026-11-02",
+      "quote": "AnchorAvailable Etherfuse ... AnchorAvailable APS Money ... AnchorAging Yellow Card (real-world sample check: Bitso, Yellow Card, MoneyGram are established publ…"
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-moneygram-ramps",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Every bullet reproduces: TOML advertises SEP-10/24; portal labels SEP path legacy for existing whitelist partners; widget uses API keys and server sessions and must not mix SEP calls; 170+ cash-out from MoneyGram and SDF; MoneyGram handles KYC, compliance, settlement. Dated.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer",
+      "observedAt": "2026-11-02",
+      "quote": "Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24."
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "| Legacy Stellar only | SEP-10 + SEP-24 anchor (whitelist) | ... Do not mix SEP anchor calls into a widget integration ... | KYC / compliance | ... | Quoting an…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Existing whitelist partners on the legacy SEP-10 / SEP-24 path can stay there"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "MoneyGram Ramps — Stellar Integration Guide (USDC) Version 1.2 · Stellar + USDC · July 2026 ... Legacy integration path ... New Stellar wallet integrations shou…"
+     },
+     {
+      "class": "F",
+      "ref": "https://stellar.moneygram.com/.well-known/stellar.toml",
+      "observedAt": "2026-11-02",
+      "quote": "WEB_AUTH_ENDPOINT = \"https://stellar.moneygram.com/stellaradapterservice/auth\" TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/se…"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+      "observedAt": "2026-11-02",
+      "quote": "200 final=https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/solutions/cross-border-payments",
+      "observedAt": "2026-11-02",
+      "quote": "One MoneyGram Ramps integration offers USDC cash-in and cash-out in 170+ countries. ... 170+ Countries with USDC cash-out"
+     },
+     {
+      "class": "C",
+      "ref": "https://radar.withobsrvr.com/api/v1/nodes",
+      "observedAt": "2026-11-02",
+      "quote": "SDF 1/2/3 quorumSet (dateUpdated 2026-10-14) contain all 3 MoneyGram Validator keys; MoneyGram org subQuorum30DaysAvailability 100"
+     },
+     {
+      "class": "D",
+      "ref": "https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/",
+      "observedAt": "2026-11-02",
+      "quote": "The new validators are expected to be fully integrated into Stellar's quorum configuration by mid-August."
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-moneygram-ramps",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "69 chars. Old 'Stellar Ramps standard' is not a standard; new text is true for both paths and is easier, not harder, to satisfy truthfully.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer",
+      "observedAt": "2026-11-02",
+      "quote": "Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24."
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "| Legacy Stellar only | SEP-10 + SEP-24 anchor (whitelist) | ... Do not mix SEP anchor calls into a widget integration ... | KYC / compliance | ... | Quoting an…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Existing whitelist partners on the legacy SEP-10 / SEP-24 path can stay there"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "MoneyGram Ramps — Stellar Integration Guide (USDC) Version 1.2 · Stellar + USDC · July 2026 ... Legacy integration path ... New Stellar wallet integrations shou…"
+     },
+     {
+      "class": "F",
+      "ref": "https://stellar.moneygram.com/.well-known/stellar.toml",
+      "observedAt": "2026-11-02",
+      "quote": "WEB_AUTH_ENDPOINT = \"https://stellar.moneygram.com/stellaradapterservice/auth\" TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/se…"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+      "observedAt": "2026-11-02",
+      "quote": "200 final=https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/solutions/cross-border-payments",
+      "observedAt": "2026-11-02",
+      "quote": "One MoneyGram Ramps integration offers USDC cash-in and cash-out in 170+ countries. ... 170+ Countries with USDC cash-out"
+     },
+     {
+      "class": "C",
+      "ref": "https://radar.withobsrvr.com/api/v1/nodes",
+      "observedAt": "2026-11-02",
+      "quote": "SDF 1/2/3 quorumSet (dateUpdated 2026-10-14) contain all 3 MoneyGram Validator keys; MoneyGram org subQuorum30DaysAvailability 100"
+     },
+     {
+      "class": "D",
+      "ref": "https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/",
+      "observedAt": "2026-11-02",
+      "quote": "The new validators are expected to be fully integrated into Stellar's quorum configuration by mid-August."
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-moneygram-ramps",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Re-verified 2026-11-02: MoneyGram Ramps cash-in/out settles in Stellar USDC. MoneyGram's developer portal (xramps.moneygram.com/ops/developer) directs new Stellar wallets to a widget SDK + API keys + server-side sessions path and labels the SEP-10/SEP-24 anchor path legacy for existing allowlisted partners. The legacy operator guide is still Version 1.2, Stellar + USDC, July 2026. The developers.stellar.org MoneyGram guide now redirects to MoneyGram's own docs. Do not penalize an answer that describes either path; an answer that describes only SEP-24 + SEP-10 is incomplete, not wrong. SEP-38 i…",
+    "note": "All claims reproduce except the Radar wording: I verified that SDF validators' quorum sets include all three MoneyGram keys, not a 'transitive quorum set' field. Reworded to the verified fact. Avoid-item timing caution kept.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer",
+      "observedAt": "2026-11-02",
+      "quote": "Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24."
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "| Legacy Stellar only | SEP-10 + SEP-24 anchor (whitelist) | ... Do not mix SEP anchor calls into a widget integration ... | KYC / compliance | ... | Quoting an…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Existing whitelist partners on the legacy SEP-10 / SEP-24 path can stay there"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "MoneyGram Ramps — Stellar Integration Guide (USDC) Version 1.2 · Stellar + USDC · July 2026 ... Legacy integration path ... New Stellar wallet integrations shou…"
+     },
+     {
+      "class": "F",
+      "ref": "https://stellar.moneygram.com/.well-known/stellar.toml",
+      "observedAt": "2026-11-02",
+      "quote": "WEB_AUTH_ENDPOINT = \"https://stellar.moneygram.com/stellaradapterservice/auth\" TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/se…"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+      "observedAt": "2026-11-02",
+      "quote": "200 final=https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/solutions/cross-border-payments",
+      "observedAt": "2026-11-02",
+      "quote": "One MoneyGram Ramps integration offers USDC cash-in and cash-out in 170+ countries. ... 170+ Countries with USDC cash-out"
+     },
+     {
+      "class": "C",
+      "ref": "https://radar.withobsrvr.com/api/v1/nodes",
+      "observedAt": "2026-11-02",
+      "quote": "SDF 1/2/3 quorumSet (dateUpdated 2026-10-14) contain all 3 MoneyGram Validator keys; MoneyGram org subQuorum30DaysAvailability 100"
+     },
+     {
+      "class": "D",
+      "ref": "https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/",
+      "observedAt": "2026-11-02",
+      "quote": "The new validators are expected to be fully integrated into Stellar's quorum configuration by mid-August."
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-platform-what",
+    "field": "golden.keyFacts[4]",
+    "decision": "accept",
+    "note": "SDP backend repo is off-topic for 'what is AP and which SEPs'. Requiring it penalized correct answers.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "{\"description\":\"Java SDK for the Stellar network anchor development.\",\"language\":\"Kotlin\"}; languages Kotlin 3367219, Java 1516161"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-31 — Cross-border payment processing (receive only) ... SEP-45 — Web authentication using challenge/responses for contract accounts"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'Anchor Platform SEP-31 receive' -> https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/getting-started",
+      "observedAt": "2026-11-02",
+      "quote": "building a cross-border payments recieve-side service compatible with SEP-31"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search -> https://developers.stellar.org/docs/platforms/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-31 — Cross-border payment processing (receive only)"
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-platform-what",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "Repo naming is not asked; moved to also-good. Remaining keyFacts cover role and SEP set.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "{\"description\":\"Java SDK for the Stellar network anchor development.\",\"language\":\"Kotlin\"}; languages Kotlin 3367219, Java 1516161"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-31 — Cross-border payment processing (receive only) ... SEP-45 — Web authentication using challenge/responses for contract accounts"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'Anchor Platform SEP-31 receive' -> https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/getting-started",
+      "observedAt": "2026-11-02",
+      "quote": "building a cross-border payments recieve-side service compatible with SEP-31"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search -> https://developers.stellar.org/docs/platforms/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-31 — Cross-border payment processing (receive only)"
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-platform-what",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Java SDK self-description and Kotlin-majority reproduce; SEP-31 receive-only reproduces. Symmetric caution.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "{\"description\":\"Java SDK for the Stellar network anchor development.\",\"language\":\"Kotlin\"}; languages Kotlin 3367219, Java 1516161"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-31 — Cross-border payment processing (receive only) ... SEP-45 — Web authentication using challenge/responses for contract accounts"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'Anchor Platform SEP-31 receive' -> https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/getting-started",
+      "observedAt": "2026-11-02",
+      "quote": "building a cross-border payments recieve-side service compatible with SEP-31"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search -> https://developers.stellar.org/docs/platforms/anchor-platform",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-31 — Cross-border payment processing (receive only)"
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-sdp-vs-anchor-platform",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Wallet SDK SEP-1/6/7/30 support reproduces in source and docs. Caution only widens acceptable answers; the 'not SEP-31' avoid stays intact.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/typescript-wallet-sdk/tree/main/@stellar/typescript-wallet-sdk/src/walletSdk",
+      "observedAt": "2026-11-02",
+      "quote": "Anchor/{Sep6.ts,Sep24.ts,Sep38.ts}; Anchor/index.ts imports StellarToml and 'Get anchor information from a TOML file'; Recovery/index.ts 'Used for Account Recov…"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'wallet SDK SEP-7 URI' -> https://developers.stellar.org/docs/build/apps/wallet/intro#anchor-basics",
+      "observedAt": "2026-11-02",
+      "quote": "anchor class the wallet SDK also has support for the SEP-7 protocol"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'wallet SDK SEP-30 recovery' -> https://developers.stellar.org/docs/build/apps/wallet/sep30",
+      "observedAt": "2026-11-02",
+      "quote": "Next, we need to define SEP-30 identities"
+     },
+     {
+      "class": "F",
+      "ref": "curl https://developers.stellar.org/docs/build/apps/wallet/{sep6,sep7,sep30}",
+      "observedAt": "2026-11-02",
+      "quote": "all 200"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "POST https://mainnet.sorobanrpc.com getLedgerEntries with params {claimant:...}",
+   "curl -L https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+   "curl -L https://stellar.org/use-cases/ramps",
+   "curl https://developers.stellar.org/docs/build/apps/wallet/{sep6,sep7,sep30}",
+   "gh api repos/stellar/anchor-platform",
+   "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+   "https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-all-claimable-balances",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+   "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+   "https://developers.stellar.org/docs/platforms/anchor-platform",
+   "https://developers.stellar.org/docs/tokens/control-asset-access",
+   "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+   "https://github.com/stellar/go/blob/master/protocols/rpc/get_ledger_entries.go",
+   "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
+   "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+   "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+   "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+   "https://github.com/stellar/typescript-wallet-sdk/tree/main/@stellar/typescript-wallet-sdk/src/walletSdk",
+   "https://horizon.stellar.org/claimable_balances?claimant=GAVEOQE4O53I7OLY43HIUVKLLMALHSCNPVBKXB46FBDVRTDXRBIPHTFP&limit=1",
+   "https://radar.withobsrvr.com/api/v1/nodes",
+   "https://radar.withobsrvr.com/api/v1/organizations",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md",
+   "https://stellar.moneygram.com/.well-known/stellar.toml",
+   "https://stellar.org/case-studies/moneygram-international",
+   "https://stellar.org/solutions/cross-border-payments",
+   "https://stellarlight.xyz/api/partners?type=anchor&limit=100",
+   "https://stellarlight.xyz/api/partners?type=anchor&limit=100&all=1",
+   "https://stellarlight.xyz/api/projects/search?type=Anchor&limit=100",
+   "https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/",
+   "https://x.com/MoneyGram/status/2077731969597653389",
+   "https://xramps.moneygram.com/ops/developer",
+   "https://xramps.moneygram.com/ops/developer/guides/stellar",
+   "https://xramps.moneygram.com/ops/developer/stellar",
+   "https://xramps.moneygram.com/stellar",
+   "perplexity_search 'Yellow Card Etherfuse APS Money Stellar anchor on-ramp' -> https://www.stellarlight.xyz/partners",
+   "perplexity_search -> https://developers.stellar.org/docs/platforms/anchor-platform",
+   "stellarDocs.search_docs 'Anchor Platform SEP-31 receive' -> https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/getting-started",
+   "stellarDocs.search_docs 'SEP-45 web authentication contract accounts SEP-24' -> https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/getting-started",
+   "stellarDocs.search_docs 'wallet SDK SEP-30 recovery' -> https://developers.stellar.org/docs/build/apps/wallet/sep30",
+   "stellarDocs.search_docs 'wallet SDK SEP-7 URI' -> https://developers.stellar.org/docs/build/apps/wallet/intro#anchor-basics"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-aas-claim-received-claimable-balances; q-aas-issuer-fees-supply-cap-freeze; q-anchor-endpoint-discovery; q-anchor-list-builders-discovery; q-anchor-moneygram-ramps; q-anchor-platform-what; q-anchor-sdp-vs-anchor-platform",
+  "verifiedOnly": "q-aas-burn-clawback-redemption-mechanics; q-aas-claimable-predicates-expiry-reserves; q-aas-sep30-recoverable-wallets; q-aas-trustline-limit-lifecycle; q-anchor-sdp-what",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-pay-moneygram-ramps",
+    "issue": "Cross-batch sibling (batch compliance-rwa-payments-04): its keyFact \"Identifies Stellar USDC plus SEP-10/SEP-24\" describes only the MoneyGram path that the portal now labels legacy; q-anchor-moneygram-ramps now names both paths. Reconcile so the two goldens agree."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-aas-claim-received-claimable-balances",
+    "log": "Removed keyFacts[1] (impossible RPC claimant discovery); notes replaced (Horizon claimant filter is discovery path; RPC by-id lookup is also-good); +3 sources, +1 corroboration row; truth.verified refreshed."
+   },
+   {
+    "id": "q-aas-issuer-fees-supply-cap-freeze",
+    "log": "Notes: added SAC-admin set_admin supply-cap caveat (do-not-penalize); +1 source, +1 corroboration row; truth.verified refreshed."
+   },
+   {
+    "id": "q-anchor-endpoint-discovery",
+    "log": "Answer + keyFacts[1]: SEP-10 or SEP-45 (contract accounts) auth; notes added (dated SEP-24 v3.8.0 caution); truth.asOf=2026-11-02; +3 sources, +1 corroboration row; truth.verified refreshed."
+   },
+   {
+    "id": "q-anchor-list-builders-discovery",
+    "log": "Answer re-dated to 2026-11-02 (21/24 anchor profiles, MoneyGram/Bitso/Yellow Card) and dangling reference fixed; notes updated (ramps redirect, dual count basis caution); truth.asOf=2026-11-02; +5 sources, +1 corpus-only corroboration row; truth.verified refreshed."
+   },
+   {
+    "id": "q-anchor-moneygram-ramps",
+    "log": "Answer rewritten for legacy SEP-10/24 vs widget paths; keyFacts[1] drops 'Stellar Ramps standard'; notes = verifier-modified text; domain->mixed; asOf=2026-11-02; reverifyBy=2027-06-12; +6 sources; corroboration rewritten (3 rows); truth.verified refreshed."
+   },
+   {
+    "id": "q-anchor-platform-what",
+    "log": "Removed keyFacts[3..4] (off-question repo facts); notes add Java/Kotlin/JVM caution and SEP-31 receive-only, repo naming to also-good; asOf=2026-11-02; +1 source, +1 corroboration row; truth.verified refreshed."
+   },
+   {
+    "id": "q-anchor-sdp-vs-anchor-platform",
+    "log": "Notes add Wallet SDK SEP-1/6/7/30 do-not-penalize caution; asOf=2026-11-02; reverifyBy 2027-02-10 -> 2027-06-04; +2 sources, +1 corroboration row; truth.verified refreshed."
+   },
+   {
+    "id": "q-aas-burn-clawback-redemption-mechanics",
+    "log": "Verified only; truth.verified refreshed (A+B evidence, sibling sweep)."
+   },
+   {
+    "id": "q-aas-claimable-predicates-expiry-reserves",
+    "log": "Verified only; truth.verified refreshed (A+B evidence, sibling sweep)."
+   },
+   {
+    "id": "q-aas-sep30-recoverable-wallets",
+    "log": "Verified only; truth.verified refreshed (A+B evidence, sibling sweep)."
+   },
+   {
+    "id": "q-aas-trustline-limit-lifecycle",
+    "log": "Verified only; truth.verified refreshed (A+B evidence, sibling sweep). Added 2 corroboration rows (A+B) to clear the negative-claim corroboration warning."
+   },
+   {
+    "id": "q-anchor-sdp-what",
+    "log": "Verified only; truth.verified refreshed (A+B evidence, sibling sweep); reverifyBy 2027-02-08 -> 2027-06-23."
+   }
+  ]
+ }
+}

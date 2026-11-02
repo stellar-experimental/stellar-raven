@@ -77,26 +77,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
       "evidence": [
-        "eval/qa/consistency-register.json sweep 2026-07-03 (the contradiction record); deep-verification quotes/URLs in Solo scratchpad 521",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live research corpus returned a June 2026 Messari interview reporting about $2.8B of tokenized RWAs, while older dated results carried smaller figures.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): shortened the source-supported observation rule; truth unchanged.",
-        "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the dated report supports its observation with a publication date and measured values.",
-        "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report dates its $1.52B value to Q1-end and its $2B threshold to April 11.",
-        "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report provides a dated tokenized-RWA value.",
-        "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report states that its RWA market-cap measure excludes stablecoins.",
-        "Sibling sweep 2026-08-29: grep 2.8B|1.52B|tokenized-RWA → q-asset-rwa-tokenized-freshness only; no sibling contradiction."
-      ],
-      "rootCause": [
-        "eval-side authoring: the '$1.2-1.5B' range came from a third-party paraphrase, not the report; single-source-class verification",
-        "solo://proj/49/todo/corpus-health-instru--829 (contradiction-scan instrument, first sweep) — sibling sweep 2026-07-03: grep for 2.8B/2.84/1.52/Messari/rwa.xyz hits exactly the three RWA cases, all corrected in this pass",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "2026-11-02 [A] https://app.rwa.xyz/networks/stellar (via Parallel search) — \"Distributed Asset Value $3.92B ▲ +14.00% from 30d ago ... RWA Count 84 ... as of 10/31/2026\" (claim: golden.keyFacts[2..3] confirmed-as-of: A current tokenized-RWA value with dated source and scope can be reported)",
+        "2026-10-28 [D] https://finance.yahoo.com/markets/crypto/articles/stellar-lands-securitize-climbs-tokenized-124500037.html — \"As of Oct. 28, Stellar held about $3.77 billion in distributed RWA value, placing it fourth\" (claim: golden.keyFacts[2..3] confirmed-as-of: A current tokenized-RWA value with dated source and scope can be reported)",
+        "2026-11-02 [C] lumenloop.search_content_semantic('tokenized real-world assets on Stellar total value billion') — \"'Tokenized RWAs on Stellar cross $4 billion as euro-denominated assets lead growth' (2026-09-02); 'Stellar sees tokenized RWAs double in Q2 ... $3.05B' (2026-08-05)\" (claim: golden.keyFacts[2..3] confirmed-as-of: A current tokenized-RWA value with dated source and scope can be reported)",
+        "2026-11-02 [C] Lumenloop corpus (prior verification 2026-07-11) — \"dated historical observation\" (claim: golden.answer confirmed-as-of: As of 2026-07-11 corpus returned a June 2026 Messari interview with ~$2.8B)",
+        "2026-11-02 [D] sibling q-eco-stellar-rwa-stablecoin-volume notes: SDF President interview (2026-06-04) states RWA stack ~$2.8B — \"\" (claim: golden.answer confirmed-as-of: As of 2026-07-11 corpus returned a June 2026 Messari interview with ~$2.8B)",
+        "2026-11-02 [C] lumenloop: Messari 'State of Stellar: Real-world Assets' 2025-10-16 — \"Stellar hosts over $533 million in real-world assets excluding stablecoins\" (claim: golden.notes confirmed-as-of: '~4x YoY growth' and 'low-single-digit $B as of early/mid 2026')",
+        "2026-11-02 [A] https://app.rwa.xyz/networks/stellar — \"$3.92B distributed (10/31/2026)\" (claim: golden.notes confirmed-as-of: '~4x YoY growth' and 'low-single-digit $B as of early/mid 2026')",
+        "Sibling sweep 2026-11-02: proposer checked q-eco-stellar-rwa-stablecoin-volume, q-rwa-projects-tokenizing-stellar, q-defi-rwa-treasury-funding-live, q-edge-noinfo-exact-tvl-figure; no gospel change in this case, so no sibling contradiction can arise from this event."
       ]
     },
     "origin": "raven-next q-asset-rwa-tokenized-freshness"

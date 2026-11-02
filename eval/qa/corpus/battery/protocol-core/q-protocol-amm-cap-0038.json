@@ -62,19 +62,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Shortened the native AMM launch fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/protocol-upgrades — the official history dates Protocol 18 to 2021-11-03 and assigns AMM liquidity to CAP-0038.",
-        "Sibling sweep 2026-08-29: grep Protocol 18|CAP-0038|native AMM|liquidity pool → q-asset-sdex-vs-amm, q-asset-amm-fee-reserve, q-edge-factcheck-soroswap-first-amm; no contradiction",
-        "Corroboration audit 2026-08-29: added 1 row(s) for native AMM ledger implementation; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
+        "Live re-check 2026-11-02 (confirmed): Native AMMs launched via CAP-0038 in Protocol 18, 2021-11-03 — A https://stellar.org/protocol-upgrades 'Protocol 18 11-3-2021 - CAP-0038 (Automated market marker liquidity.)'; B https://github.com/stellar/stellar-protocol/blob/master/core/README.md '| [CAP-0038](cap-0038.md) | 18 | Automated Market Makers | Jonathan Jove | Final |'; D https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar (via Perplexity) 'November 3, 2021 — Today at 15:00 UTC, Stellar validators voted to upgrade the network to Protocol 18, which adds Automated Market Maker (AMM) functionality'",
+        "Live re-check 2026-11-02 (confirmed): Native AMM is protocol-level, not a smart contract; constant product; pool ledger entry — D https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar 'Liquidity pools can be created on Stellar without requiring smart contracts'; B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md 'int64 reserveA; // amount of A in the pool ... pool share trust line'",
+        "Sibling sweep 2026-11-02: q-asset-sdex-vs-amm, q-asset-amm-fee-reserve, q-edge-factcheck-soroswap-first-amm; no contradiction with CAP-0038/P18 2021-11-03."
       ]
     },
     "origin": "raven-next q-protocol-amm-cap-0038"

@@ -90,37 +90,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-02)",
       "evidence": [
-        "Cloudflare production rays a1a519aa3907e144 through a1a51b394acdc572 for the shared Stellar Raven interaction.",
-        "2026-07-13 localhost positive and negative recovery probes against the existing Solo dev process.",
-        "scripts/catalog-data/retrieval-profiles.mjs (RETRIEVAL_PROFILES) and src/mcp/tools.ts (SEARCH_DESCRIPTION/EXECUTE_DESCRIPTION evidence-sufficiency rules).",
-        "solo://proj/49/scratchpad/evidence-poor-retrie--611",
-        "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-017; the open-world recovery and identity-validation rules are unchanged.",
-        "Improvements review 2026-08-27: improvements/lumenloop/ll-017-semantic-person-match-provenance.md remains reported upstream; the disputed claim is whether semantic person matches establish identity without exact-match or matched-span provenance.",
-        "Sibling sweep 2026-08-27: grep ll-017|semantic exact identity → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-strupey-ambiguous-stellar-history, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction",
-        "Structural re-form (compound-predicate): tightened broad-pass, candidate-validation, and insufficient-evidence requirements into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/scripts/catalog-data/retrieval-profiles.mjs — the matching current local source still routes one bounded, claim-fit recovery pass across semantic content, research, A/V, or docs.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — the matching current local source still keeps semantic neighbors provisional until exact identity and dated provenance support attribution.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — the matching current local source still requires a scoped unverified result and disambiguation after evidence gaps.",
-        "Sibling sweep 2026-08-27: grep open-world|semantic neighbor|canonical slug|disambiguat → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-strupey-ambiguous-stellar-history, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 3 review (gt2-grok-rev)): removed the added qualifier \"apt\"; truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — an exact empty remained limited to its named source.",
-        "Live re-check 2026-08-30: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — the source required one bounded broad pass.",
-        "Live re-check 2026-08-30: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — semantic neighbors remained candidates until exact identity and dated provenance.",
-        "Live re-check 2026-08-30: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — closed-world empty results remained source-scoped.",
-        "Live re-check 2026-08-30: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — unresolved broad gaps required an unverified answer or more context.",
-        "Sibling sweep 2026-08-30: grep open-world|semantic neighbors|narrow directories → q-builder-content-by-person, q-builder-justin-rice-history, q-edge-closed-world-builder-directory-miss, q-edge-deep-full-history-report, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-gap-contracts-domain-empty, q-gap-hackathon-brief-evidence-boundaries, q-gap-scout-get-skill-detail, q-gap-semantic-directory-fallback, q-gap-semantic-similar-projects, q-soroban-av-passkeys-talk, q-ti-skill-integration-finder, q-tool-skill-detail-install, q-tool-smart-wallet-repos-discovery; no contradiction"
-      ],
-      "rootCause": [
-        "Evidence sufficiency was inferred from healthy envelopes rather than the answer's claim scope.",
-        "Broad recovery capability existed but was not surfaced as a bounded contingency after narrow misses.",
-        "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
-        "solo://proj/49/scratchpad/evidence-poor-retrie--611",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Live 2026-11-02 (class B): src/mcp/tools.ts:320 — 'For an open-world identity, history, or topic question, an ok call whose rows are empty, off-target, adjacent, or only semantic candidates grounds no negative conclusion ... Make one wider pass'.",
+        "Live 2026-11-02 (class B): catalog/manifest.json — scout.getBuilders, scout.searchProjects, lumenloop.search_content_semantic, scout.searchResearch, lumenloop.find_av_passages, stellarDocs.search_docs all exposed.",
+        "Live 2026-11-02 (class C): Raven execute lumenloop.find_content_by_entity (Justin Rice) EVIDENCE RECOVERY footer — 'they do not ground an open-world negative ... make one bounded wider pass using an exact recovery candidate: lumenloop.search_content_semantic ... scout.searchResearch ... lumenloop.find_av_passages'.",
+        "Live 2026-11-02 (class B): improvements/lumenloop/ll-017-semantic-person-match-provenance.md — 'status: reported-upstream'; not in improvements/resolved.json, so the notes caution stands.",
+        "Verdict: unchanged. No gospel change; no sibling sweep required beyond the proposer's sibling list, which records no contradiction."
       ]
     },
     "origin": "authored 2026-07-13 from production miss and multi-model SOLO review"

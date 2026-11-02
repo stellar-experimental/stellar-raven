@@ -5,7 +5,7 @@
     "skills.openzeppelin-stellar.upgrade-stellar-contracts"
   ],
   "golden": {
-    "answer": "OpenZeppelin's current upgrade support wraps Soroban's native `env.deployer().update_current_contract_wasm(new_wasm_hash)`; it is not an EVM proxy/delegatecall. Use the current `Upgradeable` trait/client/helper surface and implement authorization explicitly before replacement. Storage remains at the same address, so compatible layout and any migration are the application's responsibility. Where the new implementation must run migration after replacement, use the documented explicit migration pattern or auxiliary Upgrader flow so upgrade and migration are transaction-atomic. Check the pinned OZ release docs/source instead of relying on retired `#[derive(Upgradeable)]`, `UpgradeableMigratable`, or `*Internal` APIs.",
+    "answer": "OpenZeppelin's current upgrade support wraps Soroban's native in-place executable update. As of OZ v0.8.0 (2026-10-20, soroban-sdk 28) that call is `env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))`; v0.7.x used the now-deprecated `update_current_contract_wasm(new_wasm_hash)`. It is not an EVM proxy/delegatecall. Use the current `Upgradeable` trait/client/helper surface and implement authorization explicitly before replacement. Storage remains at the same address, so compatible layout and any migration are the application's responsibility. Where the new implementation must run migration after replacement, use the documented explicit migration pattern or auxiliary Upgrader flow so upgrade and migration are transaction-atomic. Check the pinned OZ release docs/source instead of relying on retired `#[derive(Upgradeable)]`, `UpgradeableMigratable`, or `*Internal` APIs.",
     "keyFacts": [
       "Uses native in-place Wasm replacement at the same contract address/state.",
       "Names the current `Upgradeable` trait, client, and helper surface.",
@@ -15,7 +15,7 @@
       "Do NOT describe EVM proxy/delegatecall mechanics.",
       "Do NOT use retired UpgradeableMigratable/Internal derives as the current API or imply storage compatibility is automatic."
     ],
-    "notes": "Current OpenZeppelin Stellar Contracts uses the direct `Upgradeable` trait/client/helper surface over Soroban's native update_current_contract_wasm; it does not expose the retired `#[derive(Upgradeable)]`, `UpgradeableMigratable`, or `*Internal` APIs as current. Access control remains with the implementor, and the Upgrader flow supports atomic upgrade+migrate. Verified against current OZ source/docs and the SDF upgrading-contracts guide on 2026-08-04.\nAlso good if the answer: Upgrades must be access-controlled (only an authorized admin/role can call upgrade). | Storage-key layout must remain compatible across the upgrade; a migrate hook handles state changes atomically.\nGolden cites: OpenZeppelin Stellar docs/source (Upgradeable module) or developers.stellar.org upgrade guide."
+    "notes": "Current OpenZeppelin Stellar Contracts uses the direct `Upgradeable` trait/client/helper surface over Soroban's native in-place executable update (`update_current_contract(ContractExecutable::Wasm(..))` from v0.8.0 on soroban-sdk 28; deprecated `update_current_contract_wasm` in v0.7.x; accept either name); it does not expose the retired `#[derive(Upgradeable)]`, `UpgradeableMigratable`, or `*Internal` APIs as current. Access control remains with the implementor, and the Upgrader flow supports atomic upgrade+migrate. Verified against current OZ source/docs and the SDF upgrading-contracts guide on 2026-08-04.\nAlso good if the answer: Upgrades must be access-controlled (only an authorized admin/role can call upgrade). | Storage-key layout must remain compatible across the upgrade; a migrate hook handles state changes atomically.\nGolden cites: OpenZeppelin Stellar docs/source (Upgradeable module) or developers.stellar.org upgrade guide."
   },
   "tags": {
     "category": "soroban",
@@ -29,8 +29,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
-    "reverifyBy": "2026-12-24",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-19",
     "sources": [
       {
         "class": "D",
@@ -46,11 +46,35 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/storage.rs",
+        "note": "OZ v0.8.0 upgradeable storage.rs: update_current_contract(ContractExecutable::Wasm)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.7.3/packages/contract-utils/src/upgradeable/storage.rs",
+        "note": "OZ v0.7.3 upgradeable storage.rs: update_current_contract_wasm",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0",
+        "note": "OZ v0.8.0 release (2026-10-20)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+        "note": "SDK 28 release notes: update_current_contract replaces deprecated update_current_contract_wasm",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
-        "claim": "Current OZ upgradeability uses the native update_current_contract_wasm mechanism through current Upgradeable/client/helper APIs; migration is explicit and the auxiliary Upgrader can make upgrade+migrate transaction-atomic.",
+        "claim": "Current OZ upgradeability uses the native in-place executable update (update_current_contract(ContractExecutable::Wasm(..)) from v0.8.0; deprecated update_current_contract_wasm in v0.7.x) through current Upgradeable/client/helper APIs; migration is explicit and the auxiliary Upgrader can make upgrade+migrate transaction-atomic.",
         "verdict": "confirmed",
         "evidence": [
           {
@@ -70,24 +94,67 @@
             "ref": "A: Stellar native contract-upgrade documentation",
             "observedAt": "2026-08-04",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/storage.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact source: `e.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash.clone()));`"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'an auxiliary contract called `Upgrader` can be used to wrap both invocations, enabling an atomic upgrade-and-migrate process.'"
+          }
+        ]
+      },
+      {
+        "claim": "As of OZ v0.8.0 (2026-10-20, soroban-sdk 28) the upgrade helper calls `env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))`; v0.7.x used the now-deprecated `update_current_contract_wasm(new_wasm_hash)`.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/storage.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact source: `e.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash.clone()));` (v0.8.0 Cargo.toml soroban-sdk = \"28.0.0\"; release published 2026-10-20T16:58:32Z)."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.7.3/packages/contract-utils/src/upgradeable/storage.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact source: `e.deployer().update_current_contract_wasm(new_wasm_hash.clone());` (v0.7.3, soroban-sdk 26.1.0)."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: '`update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'the key function used is `env.deployer().update_current_contract`, which takes a `ContractExecutable` wrapping the Wasm hash of the new contract as a parameter'."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and independent blind 3329 fully agreed the historical derives/Internal/Migratable surface must be replaced.",
-        "Structural re-form (negative-predicate): split the current API and migration fact; the retired-API trap remains in avoid, so truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts — native update_current_contract_wasm still replaces Wasm at the same contract address",
-        "Live re-check 2026-08-27: https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable — the current surface still uses the Upgradeable trait, generated client, and helper",
-        "Live re-check 2026-08-27: https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable — explicit migration and the auxiliary Upgrader flow remain current patterns",
-        "Sibling sweep 2026-08-27: grep Upgradeable|Upgrader|update_current_contract_wasm|migration → q-soroban-upgradeable-storage-compat, q-soroban-storage-migration, q-sor-stale-spec-after-upgrade; no contradiction"
+        "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/storage.rs — \"e.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash.clone()));\" (observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.7.3/packages/contract-utils/src/upgradeable/storage.rs — \"e.deployer().update_current_contract_wasm(new_wasm_hash.clone());\" (observedAt 2026-11-02)",
+        "gh api repos/OpenZeppelin/stellar-contracts/releases — v0.8.0 published 2026-10-20T16:58:32Z; v0.8.0 Cargo.toml soroban-sdk = \"28.0.0\" (observedAt 2026-11-02)",
+        "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0 — \"`update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated.\" (observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts — \"the key function used is `env.deployer().update_current_contract`, which takes a `ContractExecutable` wrapping the Wasm hash\" (observedAt 2026-11-02)",
+        "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable — \"an auxiliary contract called `Upgrader` can be used to wrap both invocations, enabling an atomic upgrade-and-migrate process\" (observedAt 2026-11-02)",
+        "Independent verifier (verify/soroban-05.json): accept on golden.answer and golden.notes.",
+        "Sibling sweep 2026-11-02: grep update_current_contract_wasm → q-soroban-upgradeable-storage-compat keyFact still names the deprecated call (true but dated; escalated, outside batch); q-soroban-contract-id-derivation truth note only; q-soroban-factory-pattern updated in this batch; q-soroban-storage-migration, q-sor-stale-spec-after-upgrade: no contradiction."
       ],
       "rootCause": [
-        "Plain upstream API drift: a historical OpenZeppelin macro surface was treated as permanent.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-soroban-oz-upgradeable-macro"

@@ -259,28 +259,23 @@
       }
     ],
     "verified": {
-      "date": "2026-10-15",
-      "by": "golden-truth lane G1, 2026-10-15 round (Claude Opus 5.5)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-03)",
       "evidence": [
-        "https://docs.zenex.trade/deployments/contract-addresses",
-        "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
-        "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
-        "https://api.stellar.expert/explorer/public/contract/CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB",
-        "https://docs.noether.exchange/protocol/contracts",
-        "Public mainnet RPC https://mainnet.sorobanrpc.com: simulate get_pause_state on CBC2XPFPI2DI7CVGRHDLVIHENIPFJJOGSUPAHLWZ43UTHK5TFJVIHJTC, latestLedger 64960458, 2026-10-15T18:14Z",
-        "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
-        "Scout read 2026-10-15T18:12:41Z https://stellarlight.xyz/api/projects/search?q=Zenex&limit=1: shortDescription now says 'Live on Stellar mainnet'; deployment.network mainnet, basis human-verified (aggregator; not counted as corroboration).",
-        "Operator announcement channel https://x.com/ZenithProtocols: profile bio reads 'First Perpetuals Exchange on Stellar over at Zenex.Trade'; posts were not readable without login, so no dated launch post was read.",
-        "Independent Codex review of 6c6c4f9e (findings R1-R4) and its approval of a3c8b059: .agents/rounds/2026-10-15-truth-maintenance.md, Golden verdict",
-        "https://kryonprotocol.vercel.app/",
-        "https://kryonprotocol.vercel.app/api/markets/1",
-        "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) for Kryon engine CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ, vault, order gateway, and oracle, latestLedger 64960822, 2026-10-15T18:44Z",
-        "https://horizon.stellar.org/accounts/GCGPFN26NHKERBIEVOZN7SIFMB7T2TIWRMUQAQRWIOEKYPZL4D3O3AP3/operations?order=desc",
-        "Sibling sweep 2026-10-15 (after R1): grep -il 'zenex|noether|kryon|perpetual|perps' across eval/qa/corpus/battery → q-defi-perps-whitespace, q-eco-defi-market-map, q-defi-named-newer-protocols (updated together); q-crp-cme-xlm-futures-dates covers CME futures; no member asserts a venue count or an exclusive roster."
-      ],
-      "rootCause": [
-        "freshness-drift",
-        "improvements/resolved.json entry sls-091 — related upstream defect: Scout's Zenex shortDescription kept a testnet-only statement beside its sourced mainnet fields; fixed live (re-checked 2026-10-15)."
+        "2026-11-02 [B] https://github.com/zenith-protocols/zenex-docs/blob/main/docs/deployments.md — \"This page lists every contract of the live Zenex deployment on Stellar mainnet ... | Status | Active | Market contract CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB\" (proposer claim, confirmed-as-of: Zenex runs a live Stellar mainnet perp market (XLM-USD).)",
+        "2026-11-02 [F] https://mainnet.sorobanrpc.com getEvents CAOZCITW...42IB from ledger 65148900 (latest 65269851) — \"427 events: open_fill 16 (last 2026-11-01T09:40:29Z), close_fill 13, liquidation 8 (last 2026-10-30T15:12:59Z), accrual_update 322 (last 2026-11-02T15:45:34Z)\" (proposer claim, confirmed-as-of: Zenex runs a live Stellar mainnet perp market (XLM-USD).)",
+        "2026-11-02 [C] https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026 — \"Zenith Protocols' Zenex perpetual futures exchange is also live on Stellar mainnet\" (proposer claim, confirmed-as-of: Zenex runs a live Stellar mainnet perp market (XLM-USD).)",
+        "2026-11-02 [A] https://noether.exchange/ — \"The contracts are already live on Stellar mainnet — paused, with no funds inside, until the independent audit clears\" (proposer claim, confirmed-as-of: Noether has mainnet contracts paused; trading not open until the audit.)",
+        "2026-11-02 [F] https://mainnet.sorobanrpc.com simulate get_pause_state on CBC2XPFPI2DI7CVGRHDLVIHENIPFJJOGSUPAHLWZ43UTHK5TFJVIHJTC — \"[1,1791048662]\" (proposer claim, confirmed-as-of: Noether has mainnet contracts paused; trading not open until the audit.)",
+        "2026-10-30 [C] https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026 — \"Noether DEX presented at Meridian: a Soroban-native perpetual futures exchange with 13 testnet markets and mainnet contracts deployed pending audit.\" (proposer claim, confirmed-as-of: Noether has mainnet contracts paused; trading not open until the audit.)",
+        "2026-11-02 [A] http://kryonprotocol.live/ — \"8 Perpetual Markets Live on Stellar Mainnet XLM · BTC · ETH · SOL · XRP · ADA · BNB · TRX\" (proposer claim, confirmed-as-of: Kryon advertises mainnet perps; no on-chain settlement activity after 2026-08-25 found.)",
+        "2026-11-02 [F] https://mainnet.sorobanrpc.com getLedgerEntries instance CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ — \"lastModifiedLedgerSeq 64124564 (unchanged); getEvents from ledger 65149000: 0 events\" (proposer claim, confirmed-as-of: Kryon advertises mainnet perps; no on-chain settlement activity after 2026-08-25 found.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=Stellars%20Finance — \"Stellars Finance Pre-Release ... deployment network testnet, basis human-verified, asOf 2026-08-28\" (proposer claim, confirmed-as-of: Stellars Finance shows no mainnet trading evidence.)",
+        "2026-11-02 [D] Parallel web_search 'Stellar perpetuals DEX mainnet launch' + Perplexity search — \"no Stellars Finance mainnet launch result\" (proposer claim, confirmed-as-of: Stellars Finance shows no mainnet trading evidence.)",
+        "2026-11-02 [F] https://mainnet.sorobanrpc.com getEvents Zenex market — \"open_fill 2026-11-01\" (proposer claim, contradicted: Traps (Zenex testnet-only; Zenex only venue; no Stellar perp DEX; leveraged loops = perps) punish false claims.)",
+        "2026-11-02 [A] http://kryonprotocol.live/ — \"Perpetual Markets Live on Stellar Mainnet\" (proposer claim, contradicted: Traps (Zenex testnet-only; Zenex only venue; no Stellar perp DEX; leveraged loops = perps) punish false claims.)",
+        "No gospel change: proposer verdict 'unchanged'; every answer, keyFact, and avoid claim was re-checked against the sources above on 2026-11-02 (proposer only; the verifier reviewed proposed changes only).",
+        "Sibling sweep 2026-11-02: q-eco-defi-market-map, q-defi-named-newer-protocols; no gospel change here. Kryon now advertises 8 markets on kryonprotocol.live; the golden's XLM-PERP claim remains a true subset and its availability stays unresolved."
       ]
     },
     "origin": "raven-next q-defi-perps-whitespace"

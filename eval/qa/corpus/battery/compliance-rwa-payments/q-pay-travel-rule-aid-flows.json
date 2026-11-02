@@ -86,24 +86,13 @@
       }
     ],
     "verified": {
-      "date": "2026-10-01",
-      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
       "evidence": [
-        "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3): removed the legacy line 'SDF-published responsibility framing: the originating org / licensed anchor holds Travel Rule/KYC; SDF disclaims control over independent orgs' fees in aid flows'. It assigned the duty by label and merged Travel Rule with KYC, which avoid items 1 and 3 and the 2026-07-10 CORRECTION line reject. The also-good lines are unchanged. Answer, keyFacts, and avoid are unchanged.",
-        "Live re-check 2026-10-01 (class A): https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — duties attach to the transmittor's financial institution and intermediary financial institutions, by role in the transmittal.",
-        "Sibling sweep 2026-10-01: q-pay-anchor-msb-licensing, q-comp-finclusive-caas, q-crp-custodial-vs-noncustodial-wallets, q-crp-become-an-anchor-licensing, and q-comp-anchor-compliance-stack all scope duties by entity and activity; no contradiction.",
-        "Solo scratchpad 575 GT-11 legal role/route matrices",
-        "Structural re-form (negative-predicate): Shortened the duty-allocation fact and recast two comparison facts as positive requirements; truth unchanged",
-        "Live re-check 2026-08-27: https://www.ecfr.gov/current/title-31/part-1010/section-1010.410 — the rule assigned different data and record duties by financial-institution role and applied a $3,000 threshold.",
-        "Live re-check 2026-08-27: https://www.fatf-gafi.org/content/dam/fatf-gafi/guidance/Updated-Guidance-VA-VASP.pdf.coredownload.inline.pdf — FATF described Travel Rule data duties separately from CDD and other preventive measures.",
-        "Live re-check 2026-08-27: https://www.fatf-gafi.org/content/dam/fatf-gafi/guidance/Updated-Guidance-VA-VASP.pdf.coredownload.inline.pdf — FATF distinguished transfers involving VASPs from peer-to-peer transfers without an obliged entity.",
-        "Sibling sweep 2026-08-27: grep Travel Rule|VASP-to-unhosted|CDD/KYC|humanitarian aid → q-comp-anchor-compliance-stack, q-comp-finclusive-caas, q-hist-unhcr-stellar-aid-assist, q-pay-travel-rule-aid-flows; no contradiction"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
-        "Program roles and a network disclaimer were promoted into legal conclusions.",
-        "CDD/KYC and intermediary Travel Rule duties were conflated.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1010/subpart-D/section-1010.410 (observedAt 2026-11-02): \"(f) Any transmittor's financial institution or intermediary financial institution located within the United States shall include in any transmittal order for a transmittal of funds in the amount of $3,000 or more\".",
+        "https://eur-lex.europa.eu/eli/reg/2023/1113/oj/eng (observedAt 2026-11-02): \"in the case of a transfer of an amount exceeding EUR 1 000 to a self-hosted address, the crypto-asset service provider of the originator shall take adequate measures to assess whether that address is owned or controlled by the originator\".",
+        "D perplexity_ask 2026-11-02 (independent class): US 31 CFR 1010.410(f) uses USD 3,000; EU 2023/1113 Article 14(5) uses EUR 1,000; FATF revised R.16 adopted but not yet in effect.",
+        "Sibling sweep 2026-11-02: q-comp-finclusive-caas, q-comp-anchor-compliance-stack, q-pay-anchor-msb-licensing, q-crp-custodial-vs-noncustodial-wallets; no contradiction."
       ]
     },
     "origin": "raven-next q-pay-travel-rule-aid-flows"

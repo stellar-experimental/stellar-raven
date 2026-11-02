@@ -18,7 +18,7 @@
       "Do NOT claim TWAP/VWAP alone would have prevented YieldBlox.",
       "Do NOT call multiple feeds independent when they share the same market root."
     ],
-    "notes": "2026-06-29: verified the incident is real and well-documented — Feb 2026 oracle-manipulation exploit against Blend V2 / YieldBlox DAO pool, USTRY (Etherfuse) collateral inflated ~100x via low-liquidity Reflector feeds, ~$10M+ drain (BlockSec post-mortem; corroborated by Blockaid/Binance/Medium). The four defensive measures (staleness/timestamp checks, deviation bounds, multi-source/TWAP, liquidity-aware pricing) are standard oracle-security guidance; rubric gates on the practices + naming the incident, not the exact $ figure (which varies $10M–$10.8M across reports).\nAlso good if the answer: References Reflector and the real YieldBlox/USTRY oracle-manipulation incident as motivation.\nGolden cites: A Reflector / oracle-security source and the real incident reference.\nCORRECTION 2026-07-10: require layered economic defenses. YieldBlox's prices were fresh and already VWAP-aggregated; staleness was not causal and TWAP alone is unsupported as a guaranteed prevention."
+    "notes": "2026-06-29: verified the incident is real and well-documented — Feb 2026 oracle-manipulation exploit against Blend V2 / YieldBlox DAO pool, USTRY (Etherfuse) collateral inflated ~100x via low-liquidity Reflector feeds, ~$10M+ drain (BlockSec post-mortem; corroborated by Blockaid/Binance/Medium). The rubric gates on the layered practices in the key facts. Naming the incident is nice-to-have, and the exact $ figure is not gated (reports vary from about $10.2M to $10.97M).\nAlso good if the answer: References Reflector and the real YieldBlox/USTRY oracle-manipulation incident as motivation.\nGolden cites: A Reflector / oracle-security source and the real incident reference.\nCORRECTION 2026-07-10: require layered economic defenses. YieldBlox's prices were fresh and already VWAP-aggregated; staleness was not causal and TWAP alone is unsupported as a guaranteed prevention."
   },
   "tags": {
     "category": "soroban",
@@ -62,6 +62,24 @@
         "class": "D",
         "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "D",
+        "ref": "https://newsletter.rekt.news/p/yieldblox-rekt",
+        "note": "rekt.news YieldBlox report: $10.97M",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+        "note": "YieldBlox PoC: ~$10.86M; poisoned Reflector rounds",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/transactions/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657",
+        "note": "Horizon XLM borrow transaction 2026-02-22",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -112,28 +130,59 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Reported YieldBlox loss figures vary from about $10.2M to $10.97M; the exact figure is valuation-dependent and is not gated.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'used the inflated valuation to drain approximately $10.2 million worth of XLM and USDC'."
+          },
+          {
+            "class": "D",
+            "ref": "https://newsletter.rekt.news/p/yieldblox-rekt",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: '$10.97 million gone from YieldBlox's community-managed pool on Blend V2'."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'Impact: ~$10.86M drained'."
+          },
+          {
+            "class": "C",
+            "ref": "Raven lumenloop.search_content_semantic id 3662 (www.rekt.news, 2026-02-27)",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'YieldBlox lost $10.97 million on Blend V2'."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/transactions/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657",
+            "observedAt": "2026-11-02",
+            "note": "created_at 2026-02-22T00:24:27Z, ledger 61340408, successful true (the XLM borrow transaction)."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-09 primary/blind defensive-control matrices",
-        "Structural re-form (presentation-avoid): deleted the omission avoid item because an existing key fact already requires exposure containment and response controls; the trap target remains enforced.",
-        "No live re-check was required because the avoid deletion does not change the required content.",
-        "Sibling sweep 2026-08-27: grep YieldBlox|fresh poisoned|exposure caps|circuit breakers → q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit; no contradiction",
-        "Structural re-form (long-fact): Shortened the oracle-control facts and split exposure from response; truth unchanged.",
-        "Live re-check 2026-08-29: https://docs.blend.capital/pool-creators/selecting-an-oracle — the current Blend owner docs recommend multi-source aggregation and time-windowed feeds.",
-        "Live re-check 2026-08-29: https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — the incident report documents near-zero liquidity and the failed adjacent-window deviation check.",
-        "Live re-check 2026-08-29: https://docs.blend.capital/pool-creators/adding-assets/risk-parameters.md — the current Blend owner docs define utilization and supply caps to limit oracle-attack exposure.",
-        "Live re-check 2026-08-29: https://docs.blend.capital/pool-creators/pool-management.md — the current Blend owner docs define On-Ice/Frozen response states and pool migration.",
-        "Sibling sweep 2026-08-29: grep YieldBlox|market-depth|clean baseline|circuit breaker|recovery planning → q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, q-defi-etherfuse-stablebonds, q-pc-slp-0004-0006-status, and q-soroban-oracle-defensive-consumption; no contradiction"
+        "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — \"used the inflated valuation to drain approximately $10.2 million worth of XLM and USDC\"; \"The manipulated price persisted across two consecutive price feed updates.\" (observedAt 2026-11-02)",
+        "https://newsletter.rekt.news/p/yieldblox-rekt — \"$10.97 million gone from YieldBlox's community-managed pool on Blend V2\" (observedAt 2026-11-02)",
+        "https://github.com/DK27ss/YieldBlox-10M-PoC — \"Impact: ~$10.86M drained\"; \"Reflector::prices([Stellar, USTRY], 4) → [POISONED, POISONED, normal, normal]\" (observedAt 2026-11-02)",
+        "https://docs.blend.capital/pool-creators/selecting-an-oracle — \"Oracles CANNOT be changed after a pool is created\" (observedAt 2026-11-02)",
+        "Raven lumenloop.search_content_semantic id 3662 (www.rekt.news) — \"YieldBlox lost $10.97 million on Blend V2\" (observedAt 2026-11-02)",
+        "F: https://horizon.stellar.org/transactions/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657 — created_at 2026-02-22T00:24:27Z, ledger 61340408 (observedAt 2026-11-02)",
+        "Independent verifier (verify/soroban-05.json): accept on golden.notes; keyFacts and avoid unchanged.",
+        "Sibling sweep 2026-11-02: grep '10.8M' → q-comp-yieldblox-oracle-incident (states ~$10.2M with range to ~$10.86M; consistent, figure ungated there too); q-hist-yieldblox-v2-2026-exploit, q-defi-reflector-oracle: no contradiction."
       ],
       "rootCause": [
-        "Generic oracle checklist omitted economic and operational containment.",
-        "Incident motivation was misread as a stale/single-spot failure.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side note residue: pre-correction note text said the rubric gates on naming the incident and listed multi-source/TWAP as standard measures, conflicting with the keyFacts and the 2026-07-10 correction; the loss range omitted the $10.97M report."
       ]
     },
     "origin": "raven-next q-soroban-oracle-defensive-consumption"

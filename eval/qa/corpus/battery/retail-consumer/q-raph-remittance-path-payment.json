@@ -32,11 +32,37 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments"
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+        "observedAt": "2026-11-02",
+        "note": "Re-observed by the golden audit: \"path payments cross through the SDEX and/or liquidity pools ... For the path payment to succeed, there has to be a DEX offer or liquidity pool exchange path in existence.\""
       },
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+        "note": "Golden audit 2026-11-02: \"Transactions are atomic.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+        "note": "Golden audit 2026-11-02: \"PATH_PAYMENT_STRICT_RECEIVE_TOO_FEW_OFFERS ... Stellar only considers paths of length 5 or shorter.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x",
+        "note": "Golden audit 2026-11-02: \"txFAILED = -1, // one of the operations failed (none were applied)\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/setup",
+        "note": "Golden audit 2026-11-02: \"anchors ... on and off-ramps that connect the Stellar network to traditional\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -59,21 +85,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
-        "https://github.com/stellar/stellar-core/blob/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
-        "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — ramps are the fiat endpoints; class B SEP-0006 defines anchor deposit and withdrawal; class B PathPaymentStrictReceiveOpFrame.cpp converts each hop where liquidity exists.",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/path-payments — balances settle at the end of the operation; class B TransactionFrame.cpp commits only on success; provider fees and FX stay off-chain.",
-        "Sibling sweep 2026-08-31: grep remittance|path payment|cross-border|FX → 40 other cases; read q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-crp-anchors-by-corridor; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "A https://developers.stellar.org/docs/build/guides/transactions/path-payments — \"path payments cross through the SDEX and/or liquidity pools ... For the path payment to succeed, there has to be a DEX offer or liquidity pool exchange path in existence.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0-1]: confirmed)",
+        "A https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — \"Transactions are atomic.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0-1]: confirmed)",
+        "A https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"PATH_PAYMENT_STRICT_RECEIVE_TOO_FEW_OFFERS ... Stellar only considers paths of length 5 or shorter.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0-1]: confirmed)",
+        "B https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x — \"txFAILED = -1, // one of the operations failed (none were applied)\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0-1]: confirmed)",
+        "A https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/setup — \"anchors ... on and off-ramps that connect the Stellar network to traditional\" (observedAt 2026-11-02; supports golden.avoid[0-1]: confirmed)",
+        "C lumenloop.search_content_semantic -> https://stellar.org/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration — \"on and off ramps provided by Stellar anchors\" (observedAt 2026-11-02; supports golden.avoid[0-1]: confirmed)",
+        "Sibling set checked by the proposer 2026-11-02: q-asset-usdc-eurc-path-fx, q-crp-anchors-by-corridor, q-defi-arbitrage-pathpayment-bots; no contradiction recorded."
       ]
     },
     "origin": "raph remittance-end-to-end-vs-banks"

@@ -38,8 +38,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-11",
-    "reverifyBy": "2026-11-26",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-01",
     "sources": [
       {
         "class": "A",
@@ -75,6 +75,48 @@
         "class": "C",
         "ref": "https://stellarlight.xyz/api/repos/search",
         "note": "Live Scout repository discovery endpoint observed 2026-07-13; discovery metadata is not license, audit, deployment, compatibility, or quality proof."
+      },
+      {
+        "class": "C",
+        "ref": "Raven MCP search tool contract (observed 2026-11-02)",
+        "note": "For a design-stage request to create a new artifact, include one bounded prior-art pass ... at most two Scout repo/project discovery calls, one focused detail call, and three returned candidates",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.searchRepos",
+        "note": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Raven search kind=skill 'indexer event ingestion history data skill'",
+        "note": "skills.stellar-dev.data ... Hubble/Galexie for deep history ... building any indexer/analytics workflow",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "gh api repos/{stellar/stellar-ledger-data-indexer,stellar/stellar-galexie,stellar/stellar-etl,stellar/go-stellar-sdk}",
+        "note": "archived false for all; pushed_at 2026-10-30, 2026-10-29, 2026-10-28, 2026-10-31",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=indexer",
+        "note": "counts {returned:20,total:129}; stellar/stellar-ledger-data-indexer 92, stellar/stellar-galexie 92, stellar/stellar-etl 90, stellar/go-stellar-sdk 100, subquery/stellar-subql-starter 59 (dormant); row keys include repoScore, codeVerified, activityState; no license key",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-rpc/releases/tag/v30.0.0",
+        "note": "`getEvents` no longer returns the `inSuccessfulContractCall` field ... Added Protocol 30 support (no retention or new events-method change)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Parallel web_fetch https://developers.stellar.org/docs/data/indexers",
+        "note": "lists SubQuery, Mercury, OBSRVR Flow, Goldsky, Allium, Space and Time as external providers",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -128,24 +170,25 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
       "evidence": [
-        "https://developers.stellar.org/docs/data/indexers",
-        "https://developers.stellar.org/docs/build/guides/events/ingest",
-        "https://github.com/stellar/stellar-ledger-data-indexer",
-        "https://github.com/stellar/stellar-galexie",
-        "https://github.com/stellar/go-stellar-sdk/tree/main/ingest",
-        "https://github.com/stellar/stellar-etl",
-        "https://stellarlight.xyz/api/repos/search?q=stellar-ledger-data-indexer",
-        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
-        "https://developers.stellar.org/docs/data/indexers — live re-check 2026-08-27 confirms distinct hosted, exporter, ingest, ETL, and indexer roles.",
-        "Structural re-form 2026-08-27: preserved the bounded prior-art, authority, role taxonomy, unknown-field, inspection, and ranking claims.",
-        "Sibling sweep 2026-08-27: q-tool-indexer-repos-discovery and q-ti-self-host-retention-backfill showed no contradiction."
-      ],
-      "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "C: Raven MCP search tool contract (observed 2026-11-02) — \"For a design-stage request to create a new artifact, include one bounded prior-art pass ... at most two Scout repo/project discovery calls, one focused detail call, and three returned candidates\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
+        "B: catalog/manifest.json#scout.searchRepos — \"Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
+        "C: Raven search kind=skill 'indexer event ingestion history data skill' — \"skills.stellar-dev.data ... Hubble/Galexie for deep history ... building any indexer/analytics workflow\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1]",
+        "A: https://developers.stellar.org/docs/data/indexers — \"Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang packages ... Mirror, also called Pipelines: a highly efficient tool to Extract, Transform, & Load (ETL)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1]",
+        "A: https://developers.stellar.org/docs/data/indexers — \"Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang packages ... Mirror, also called Pipelines: a highly efficient tool to Extract, Transform, & Load (ETL)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2..3]",
+        "A: https://developers.stellar.org/docs/build/guides/events/ingest — \"Stellar RPC provides a getEvents method ... However, the data retention window for these events is 7 days at most. If you need access to a longer-lived record of these events you'll want to \"ingest\" the events as they are published\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2..3]",
+        "B: gh api repos/{stellar/stellar-ledger-data-indexer,stellar/stellar-galexie,stellar/stellar-etl,stellar/go-stellar-sdk} — \"archived false for all; pushed_at 2026-10-30, 2026-10-29, 2026-10-28, 2026-10-31\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2..3]",
+        "C: https://stellarlight.xyz/api/repos/search?q=indexer — \"counts {returned:20,total:129}; stellar/stellar-ledger-data-indexer 92, stellar/stellar-galexie 92, stellar/stellar-etl 90, stellar/go-stellar-sdk 100, subquery/stellar-subql-starter 59 (dormant); row keys include repoScore, codeVerified, activityState; no license key\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2..3]",
+        "C: https://stellarlight.xyz/api/repos/search?q=indexer — \"counts {returned:20,total:129}; stellar/stellar-ledger-data-indexer 92, stellar/stellar-galexie 92, stellar/stellar-etl 90, stellar/go-stellar-sdk 100, subquery/stellar-subql-starter 59 (dormant); row keys include repoScore, codeVerified, activityState; no license key\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[4] / golden.avoid[4]",
+        "B: catalog/manifest.json#scout.searchRepos — \"Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[4] / golden.avoid[4]",
+        "A: https://developers.stellar.org/docs/build/guides/events/ingest — \"Stellar RPC provides a getEvents method ... However, the data retention window for these events is 7 days at most. If you need access to a longer-lived record of these events you'll want to \"ingest\" the events as they are published\" (observedAt 2026-11-02) → confirmed: golden.avoid[1]",
+        "A: https://developers.stellar.org/docs/data/indexers — \"Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang packages ... Mirror, also called Pipelines: a highly efficient tool to Extract, Transform, & Load (ETL)\" (observedAt 2026-11-02) → confirmed: golden.avoid[1]",
+        "B: https://github.com/stellar/stellar-rpc/releases/tag/v30.0.0 — \"`getEvents` no longer returns the `inSuccessfulContractCall` field ... Added Protocol 30 support (no retention or new events-method change)\" (observedAt 2026-11-02) → confirmed: golden.avoid[1]",
+        "B: catalog/manifest.json#scout.searchRepos — \"Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.\" (observedAt 2026-11-02) → confirmed: golden.avoid[3]",
+        "D: Parallel web_fetch https://developers.stellar.org/docs/data/indexers — \"lists SubQuery, Mercury, OBSRVR Flow, Goldsky, Allium, Space and Time as external providers\" (observedAt 2026-11-02) → confirmed: golden.avoid[3]",
+        "Sibling sweep 2026-11-02: q-tool-indexer-repos-discovery, q-ti-self-host-retention-backfill, q-soroban-greenfield-escrow-prior-art-preflight, q-tool-go-sdk-ingest; no contradiction found by the proposer matrix."
       ]
     },
     "origin": "authored prior-art build-route review 2026-07-13"

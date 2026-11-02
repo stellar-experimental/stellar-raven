@@ -112,23 +112,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-02) — verified unchanged, no gospel change",
       "evidence": [
-        "Solo scratchpad 575 GT-04 and GT-07 primary/blind reviews",
-        "Sibling sweep included q-asset-sac-functions, q-asset-trustline-vs-sac, and q-ti-fetch-all-balances-classic-sac",
-        "Structural re-form (compound-predicate): Split three compound key facts into five atomic facts; all same-asset, state-storage, control-field, admin, delegation, address-type, and native-XLM claims remain unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed one classic asset with preserved SAC authorization and clawback controls.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed G-account issued-asset balances in classic trustlines.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed C-address balances and authorization state in ContractData with analogous clawback rules.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed issuer initial/default administration for issued assets and no administrator for native XLM.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — showed current-admin delegation to G or C addresses.",
-        "Sibling sweep 2026-08-27: grep SAC admin|ContractData|native XLM → q-sor-contract-trustlines-c-address, q-ti-fetch-all-balances-classic-sac, q-sor-sac-introspection, q-comp-auth-flags-overview, q-asset-trustline-vs-sac; contradiction found in q-asset-trustline-vs-sac answer's permanent-issuer-admin wording"
-      ],
-      "rootCause": [
-        "G-address trustline wording was generalized to C contracts.",
-        "Initial/default admin was conflated with permanent current admin.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Re-verified unchanged 2026-11-02; no gospel change.",
+        "Live A (Parallel capture acquired 2026-10-24): https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"Classic trustline semantics will be followed. ... Using Address::Contract: The balance and authorization state will be stored in contract storage, as opposed to a trustline.\" and \"Because the Native Stellar token doesn't have an issuer, it will not have an administrator either.\"",
+        "Live A (acquired 2026-10-11): https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — \"A SAC Admin address can be either a regular Stellar account (G...), or it can be a smart contract (C...) address.\"",
+        "Live B 2026-11-02: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/balance.rs — \"authorized: true, clawback: is_asset_clawback_enabled(e)?\"; admin.rs — \"pub(crate) fn write_administrator(e: &Host, id: Address)\".",
+        "Sibling sweep 2026-11-02: q-sor-contract-trustlines-c-address, q-asset-trustline-vs-sac, q-asset-deploy-sac-cli; no contradiction."
       ]
     },
     "origin": "raven-next q-comp-sac-inherits-flags"

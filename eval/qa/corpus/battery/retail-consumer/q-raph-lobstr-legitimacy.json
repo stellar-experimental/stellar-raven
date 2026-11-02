@@ -5,7 +5,7 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-08-31; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are generated and encrypted on-device with user-password participation, are stored locally on-device for decryption and signing, and also exist as an encrypted copy on LOBSTR servers that LOBSTR says it cannot decrypt; accounts created before 2020-09-01 that were never migrated are a documented exception. Its 12-word Recovery Phrase (or older wallet-specific 10-word Recovery Code) must be kept private/offline; LOBSTR says it cannot reconstruct users’ phrase, code, secret, or password. Install only from links reached through `lobstr.co`, verify the app publisher, and use 2FA plus multisig or hardware signing when the threat model warrants it.",
+    "answer": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-11-02; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are generated and encrypted on-device, with the account password or, for Passkey accounts, a passkey-derived (PRF) key taking part, are stored locally on-device for decryption and signing, and also exist as an encrypted copy on LOBSTR servers that LOBSTR says it cannot decrypt; accounts created before 2020-09-01 that were never migrated are a documented exception. Its 12-word Recovery Phrase (or older wallet-specific 10-word Recovery Code) must be kept private/offline; LOBSTR says it cannot reconstruct users’ phrase, code, secret, or password. Install only from links reached through `lobstr.co`, verify the app publisher, and use 2FA plus multisig or hardware signing when the threat model warrants it.",
     "keyFacts": [
       "Identifies LOBSTR as an active Ultra Stellar third-party wallet.",
       "Dates the LOBSTR activity assessment to an observation date.",
@@ -34,8 +34,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-31",
-    "reverifyBy": "2026-11-30",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-25",
     "sources": [
       {
         "class": "A",
@@ -56,6 +56,24 @@
       {
         "class": "A",
         "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr"
+      },
+      {
+        "class": "A",
+        "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000231572-passkey-accounts-on-lobstr",
+        "note": "'PRF is a Passkey (WebAuthn) protocol extension that allows LOBSTR to generate a unique encryption key for your account.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://x.com/lobstr/status/2110361044829057488",
+        "note": "2026-10-14: 'New on LOBSTR web: you can create an account with a Passkey and skip email sign-up and passwords entirely.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://itunes.apple.com/lookup?id=1404357892&country=us",
+        "note": "'LOBSTR Wallet: Buy XLM & XRP', ULTRA STELLAR, LLC, 16.2.0, released 2026-10-26.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -157,51 +175,76 @@
             "note": "Independent sweep (lane A D6) found an active publisher and current app; user allegations found in the sweep did not establish provider fraud or cryptographic safety."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02 LOBSTR key encryption uses the account password or, for Passkey accounts, a passkey-derived (PRF) key; Passkey accounts exist on mobile and, since 2026-10-14, on the web, while the help-center security article still maps passkeys to mobile only.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000231572-passkey-accounts-on-lobstr",
+            "observedAt": "2026-11-02",
+            "note": "'PRF is a Passkey (WebAuthn) protocol extension that allows LOBSTR to generate a unique encryption key for your account.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+            "observedAt": "2026-11-02",
+            "note": "'Passkey accounts, available in the LOBSTR mobile apps. Email-based accounts, available through the LOBSTR Web App.' (Modified on Fri, 26 Jun; lags the web passkey launch)."
+          },
+          {
+            "class": "A",
+            "ref": "https://x.com/lobstr/status/2110361044829057488",
+            "observedAt": "2026-11-02",
+            "note": "Oct 14, 2026: 'New on LOBSTR web: you can create an account with a Passkey and skip email sign-up and passwords entirely.'"
+          },
+          {
+            "class": "D",
+            "ref": "https://lobstr.co/",
+            "observedAt": "2026-11-02",
+            "note": "Via Parallel search excerpt: '[Get Started](https://lobstr.co/authorization/signup/passkey/)'."
+          },
+          {
+            "class": "A",
+            "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key-",
+            "observedAt": "2026-11-02",
+            "note": "'User passwords take part in the process of encryption/decryption of secret keys.'"
+          }
+        ]
+      },
+      {
+        "claim": "LOBSTR has a current official Apple listing published by Ultra Stellar as of 2026-11-02.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://itunes.apple.com/lookup?id=1404357892&country=us",
+            "observedAt": "2026-11-02",
+            "note": "'LOBSTR Wallet: Buy XLM & XRP', sellerName 'ULTRA STELLAR, LLC', 16.2.0, currentVersionReleaseDate 2026-10-26T07:48:06Z."
+          },
+          {
+            "class": "A",
+            "ref": "https://ultrastellar.com/",
+            "observedAt": "2026-11-02",
+            "note": "'our products LOBSTR StellarX LOBSTR Vault StellarTerm'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-10-09",
-      "by": "golden-truth lane G fix round, 2026-10-09 r1009b round (Claude Fable 5.1, high); independent review finding 2 (lane report tmp/report-gospel.md, Fix round)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch varial-retail)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key-",
-        "https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key-",
-        "https://ultrastellar.com/",
-        "https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892",
-        "Structural re-form (snapshot-date): Split the wallet identity from its snapshot date; truth is unchanged.",
-        "Live re-check 2026-08-27: https://ultrastellar.com/ — Ultra Stellar listed LOBSTR as its web and mobile wallet product.",
-        "Live re-check 2026-08-27: https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892 — Apple listed the active LOBSTR app and ULTRA STELLAR, LLC as developer.",
-        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar → q-defi-aquarius-what-is, q-defi-soroswap-vs-stellarx, q-eco-dex-saturation, q-eco-freighter-wallet, q-eco-lobstr-wallet, q-eco-xbull-wallet, q-raph-lobstr-legitimacy; no contradiction",
-        "Structural re-form (compound-predicate): Split current storage documentation, the pre-2020 exception, and recovery-credential handling into atomic facts; truth is unchanged.",
-        "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — described on-device access and local storage of downloaded encrypted keys.",
-        "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000001273 — preserved the pre-2020 unmigrated wallet-key storage exception.",
-        "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — required credentials to stay unshared and stated LOBSTR lacks access to them.",
-        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|recovery phrase → q-eco-lobstr-wallet, q-defi-aquarius-what-is, q-raph-lobstr-legitimacy; no contradiction",
-        "Gospel change 2026-08-31: the answer's dated activity observation moved from 'as of 2026-07-11' to 'as of 2026-08-31'; storage language stays source-relative ('Current LOBSTR documentation says … stored locally/on-device') with the era-independent avoid item unchanged; no other judge-facing text changed.",
-        "Live re-check 2026-08-31: https://lobstr.co/terms/ — Ultra Stellar OÜ, 'an independent commercial entity unaffiliated with the Stellar Development Foundation'; class D Apple lookup: ULTRA STELLAR, LLC, version 15.6.0 (2026-08-19).",
-        "Live re-check 2026-08-31: https://itunes.apple.com/lookup?id=1404357892&country=us — version 15.6.0 released 2026-08-19T12:06:08Z; class A ultrastellar.com lists LOBSTR; observation dated 2026-08-31 in the answer.",
-        "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — 'decrypted and accessed by users on-device' and an encrypted server copy; owner docs only (no class F audit), so the fact stays source-relative.",
-        "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key- — 'before September 1, 2020' unmigrated accounts reveal the key only on the website; article 151000001273 keeps the exception after the July 10, 2026 deadline.",
-        "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — do not share; LOBSTR team has no access; class A recovery.lobstr.co needs the user's phrase or code; 'trusted services' is generic wording.",
-        "Lane reconciliation 2026-08-31: lane A marked keyFact 5 disputed on the restore article's 'trusted services' sentence; the blind lane resolved that phrase as ordinary English (no named product, no docs-index hit) and confirmed every source-relative keyFact; the blind lane's extra metadata-control claim is not a keyFact and was not added.",
-        "Sibling sweep 2026-08-31: grep LOBSTR|Ultra Stellar|Recovery code|September 1, 2020 → 15 other cases; read q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-tool-wallets-comparison, q-raph-restore-wallet, q-raph-withdraw-exchange-self-custody; no contradiction",
-        "Gospel change 2026-09-04: the answer's storage sentence now states both halves of LOBSTR's own security article — on-device generation, encryption, storage, decryption, and signing with password participation, plus an encrypted server copy that LOBSTR says it cannot decrypt. The 2026-08-31 corroboration row already verified the server copy, but the answer omitted it. The parent answer was era-bounded and did not say `only`. keyFacts, avoid, notes, and the dated activity observation are unchanged.",
-        "Live re-check 2026-09-04 (post-drift current truth): https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — 'We store the encrypted version of the Recovery phrase/Secret key on our server'; 'The keys themselves can only be decrypted and accessed by users on-device'; 'The transaction signing also happens locally on-device'.",
-        "Live re-check 2026-09-04: https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key- — 'before September 1, 2020' unmigrated accounts reveal the key only on the website; https://lobstr.freshdesk.com/support/solutions/articles/151000001273 — pre-September 1, 2020 keys 'stored inside our platform in encrypted form', migration deadline July 10, 2026, unmigrated wallets stop working until migrated.",
-        "Live re-check 2026-09-04: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — 'We (the LOBSTR team) do not have access to users' Recovery phrases, Secret keys, Recovery codes, or Account passwords'; 'Do not share your Recovery Phrase and Secret key with anyone'.",
-        "Sibling sweep 2026-09-04: grep LOBSTR|on-device|server-side|Recovery Phrase over eval/qa/corpus/battery → only q-raph-lobstr-legitimacy states a LOBSTR key-storage location; q-eco-lobstr-wallet says non-custodial only; no contradiction.",
-        "Re-judge 2026-09-04: not run (this lane makes no paid calls). The 2026-09-04T05-40-51-variantA row failed on an era-independent local-only claim and the missing pre-2020 exception; the corrected answer contradicts that claim more directly, so the expected direction is unchanged.",
-        "Required-behavior note 2026-10-09: the official-install-path instruction already in the golden answer is now named as required behavior in golden.notes (the case schema caps key facts at five, and the five existing facts stay); truth, asOf, and reverifyBy unchanged.",
-        "Live re-check 2026-10-09: https://lobstr.co/ — the official site lists 'LOBSTR for iOS' and 'LOBSTR for Android' and links https://play.google.com/store/apps/details?id=com.lobstr.client, so the publisher can be checked from a lobstr.co-reached link (class A, HTTP 200).",
-        "Live re-check 2026-10-09: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — 'Always verify the domain and email addresses where the communication is coming from'; 'type the URL into your browser address bar and then bookmark the site. Only use the bookmark to visit the site'; red flags include 'assets that were sent to you in tiny amounts through a claimable balance'; phishing uses 'dummy websites ... to induce you to enter your secret key' (class A, HTTP 200).",
-        "Sibling sweep 2026-10-09: re-read all nine scam-check traps against their golden answers (q-raph-claimable-balance-safety, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-n3-wallet-hacked-support-redirect, q-n3-issues-842-backup-faucet-wallet); each directed protective instruction is now a key fact or named as supporting background; no contradiction between siblings."
+        "https://lobstr.freshdesk.com/support/solutions/articles/151000231572-passkey-accounts-on-lobstr — 'PRF is a Passkey (WebAuthn) protocol extension that allows LOBSTR to generate a unique encryption key for your account.' (observedAt 2026-11-02).",
+        "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — 'LOBSTR currently supports two types of accounts: Passkey accounts, available in the LOBSTR mobile apps. Email-based accounts, available through the LOBSTR Web App.' (Modified 26 Jun; observedAt 2026-11-02).",
+        "https://x.com/lobstr/status/2110361044829057488 — 'New on LOBSTR web: you can create an account with a Passkey and skip email sign-up and passwords entirely.' (2026-10-14; observedAt 2026-11-02). The answer uses platform-neutral wording so neither the doc-faithful nor the current-product answer is penalized.",
+        "https://itunes.apple.com/lookup?id=1404357892&country=us — 'LOBSTR Wallet: Buy XLM & XRP', ULTRA STELLAR, LLC, 16.2.0, 2026-10-26 (observedAt 2026-11-02).",
+        "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key- — pre-September 1, 2020 unmigrated-account exception still documented (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: battery cases naming LOBSTR (q-eco-lobstr-wallet, q-raph-restore-wallet, q-raph-claimable-balance-safety, q-edge-ambig-best-wallet, q-eco-stellar-wallets-list and 15 others) checked for LOBSTR passkey/key-storage claims; none contradicts the new wording.",
+        "Proposer matrix /private/tmp/claude-501/golden-audit/matrices/varial-retail.json; independent verifier decisions /private/tmp/claude-501/golden-audit/verify/varial-retail.json (accept/modify); applier spot-checked README, npm, www.freighter.app redirect, and SDF blog RSS on 2026-11-02."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Make the claimable-balance safety warning a key fact",
-        "independent review of the lane (2026-10-09): a protective behavior the golden answer directs was absent from the key facts, so trap grading could treat it as background"
+        "freshness-drift"
       ]
     },
     "origin": "raph wallet-lobstr-legitimacy-recovery-storage"

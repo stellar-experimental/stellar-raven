@@ -1,1 +1,162 @@
-{"id":"q-defi-cluster-rollup-live","question":"Give a current quantitative view of Stellar ecosystem clusters and the ecosystem-wide category/funding rollup.","surface":["scout.getClusters","scout.analyzeEcosystem"],"golden":{"answer":"Call getClusters and analyzeEcosystem({dimension:\"all\"}), or separate analyzeEcosystem category and funding calls. Present cluster metrics separately from ecosystem-wide category and funding totals, cite each generatedAt and scope, label SCF dollars as the service's reconstructed project-based total, and state that overlapping type clusters are not summable.","keyFacts":["Uses cluster analysis plus analyzeEcosystem all or separate category and funding rollups.","Labels SCF dollars as the service's reconstructed project-based total.","Keeps separate denominators for clusters versus rollups.","Reports generatedAt and scope for each view.","Treats overlapping type clusters as nonsummable."],"avoid":["Merges cluster and rollup totals as though they share an identical population."]},"tags":{"category":"defi-ecosystem","service":"scout","freshness":"live"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/clusters?dimension=category"},{"class":"C","ref":"https://stellarlight.xyz/api/analyze?dimension=categories"},{"class":"B","ref":"catalog/manifest.json#scout.analyzeEcosystem"},{"class":"C","ref":"https://stellarlight.xyz/api/analyze?dimension=funding"}],"corroboration":[{"claim":"Clusters and ecosystem rollups are distinct dated views whose denominators must be stated.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/clusters?dimension=category","observedAt":"2026-07-11"},{"class":"C","ref":"https://stellarlight.xyz/api/analyze?dimension=categories","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.analyzeEcosystem","observedAt":"2026-07-11"},{"class":"C","ref":"https://stellarlight.xyz/api/analyze?dimension=funding","observedAt":"2026-07-11"}]},{"claim":"The two views can be summed as one identical population.","verdict":"contradicted","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/analyze?dimension=categories","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-08-27","by":"golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","catalog/manifest.json#scout.analyzeEcosystem","Structural re-form (compound-predicate): split rollup labeling, denominator, timestamp, scope, and overlap requirements into atomic facts; the truth is unchanged.","Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current API reference still exposes cluster analysis plus all, category, and funding rollups.","Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current funding reference still describes reconstructed SCF project totals.","Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current API reference still gives distinct cluster and rollup populations.","Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current cluster and analysis responses still carry generatedAt and scope metadata.","Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current reference still treats type clusters as overlapping views.","Sibling sweep 2026-08-27: grep cluster rollup|denominator|overlapping type|SCF total → q-defi-category-funding-ratio-live, q-scf-funding-by-category, q-defi-tooling-whitespace-live, q-eco-defi-market-map, q-scf-total-distributed; no contradiction"],"rootCause":["eval-authoring",".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"]},"origin":"core-35 ecosystem-cluster-and-rollup"}}
+{
+  "id": "q-defi-cluster-rollup-live",
+  "question": "Give a current quantitative view of Stellar ecosystem clusters and the ecosystem-wide category/funding rollup.",
+  "surface": [
+    "scout.getClusters",
+    "scout.analyzeEcosystem"
+  ],
+  "golden": {
+    "answer": "Call getClusters and analyzeEcosystem({dimension:\"all\"}), or separate analyzeEcosystem category and funding calls. Report each view's generatedAt, scope, and meta.population id: matching ids mean mechanically comparable numbers, and different ids mean different populations. Label SCF dollars as the service's reconstructed project-based total, and state that overlapping type clusters are not summable.",
+    "keyFacts": [
+      "Uses cluster analysis plus analyzeEcosystem all or separate category and funding rollups.",
+      "Labels SCF dollars as the service's reconstructed project-based total.",
+      "Compares each view's population id before combining cluster and rollup numbers.",
+      "Reports generatedAt and scope for each view.",
+      "Treats overlapping type clusters as nonsummable."
+    ],
+    "avoid": [
+      "Treats views with different population ids as one population, or sums type clusters as a project total."
+    ]
+  },
+  "tags": {
+    "category": "defi-ecosystem",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-11-02",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/clusters?dimension=category"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/analyze?dimension=categories"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.analyzeEcosystem"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/analyze?dimension=funding"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+        "note": "population.id projects|status:Development+Live+Pre-Release, included 906; 25 type clusters sum to 1206 (overlapping).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/analyze?dimension=all",
+        "note": "meta.population.id projects|status:Development+Live+Pre-Release; gaps: 'A project counts under EACH of its types.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellarlight.xyz/api/openapi.json#/components/schemas/PopulationScope",
+        "note": "'Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations'",
+        "observedAt": "2026-11-02"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Cluster and rollup views each report a meta.population id; identical ids are mechanically comparable. On 2026-11-02 clusters and analyzeEcosystem shared projects|status:Development+Live+Pre-Release (906 projects).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+            "observedAt": "2026-11-02",
+            "note": "population.id projects|status:Development+Live+Pre-Release, totalAvailable 906, included 906, truncated false"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+            "observedAt": "2026-11-02",
+            "note": "meta.population.id projects|status:Development+Live+Pre-Release; methodologyVersion funding-v2 (2026-07-05)"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/api/openapi.json#/components/schemas/PopulationScope",
+            "observedAt": "2026-11-02",
+            "note": "Identical ids are mechanically comparable; different ids are DIFFERENT populations"
+          }
+        ]
+      },
+      {
+        "claim": "SCF dollars are the service's reconstructed project-based total.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+            "observedAt": "2026-11-02",
+            "note": "'Dollar totals are in-house reconstructions: SCF does not publish per-award amounts for all rounds'"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/api/openapi.json",
+            "observedAt": "2026-11-02",
+            "note": "funding methodologyVersion funding-v2 (2026-07-05)"
+          }
+        ]
+      },
+      {
+        "claim": "Overlapping type clusters can be summed as a project total.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+            "observedAt": "2026-11-02",
+            "note": "25 type clusters, summed size 1206 over a 906-project population"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/analyze?dimension=all#gaps",
+            "observedAt": "2026-11-02",
+            "note": "'A project counts under EACH of its types.'"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-02)",
+      "evidence": [
+        "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=all — \"validDimensions: all, hackathons, categories, funding, tvl, gaps, developers, toolchain\" (proposer claim, confirmed: getClusters plus analyzeEcosystem all, or separate category and funding rollups, give the quantitative view.)",
+        "2026-11-02 [A] https://stellarlight.xyz/api/openapi.json#/api/clusters — \"Groups the active Stellar project directory into topic clusters ... dimension=category|types\" (proposer claim, confirmed: getClusters plus analyzeEcosystem all, or separate category and funding rollups, give the quantitative view.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=funding — \"Counts distinct PROJECTS with scf.awarded=true ... Dollar totals are in-house reconstructions: SCF does not publish per-award amounts for all rounds\" (proposer claim, confirmed: SCF dollars are the service's reconstructed project-based total.)",
+        "2026-11-02 [A] https://stellarlight.xyz/api/openapi.json — \"funding methodologyVersion funding-v2 (2026-07-05); scfTotalDistributedUSD 58585451.99 over 582 projects\" (proposer claim, confirmed: SCF dollars are the service's reconstructed project-based total.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/clusters?dimension=category — \"population.id projects|status:Development+Live+Pre-Release, totalAvailable 906, included 906; 7 category clusters sum to size 906, scfFunded 582, scfTotalUSD 58585451.99\" (proposer claim, contradicted: Clusters and rollups have separate denominators / are not an identical population.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=categories — \"population.id projects|status:Development+Live+Pre-Release; totalProjects 906; per-category counts identical to clusters\" (proposer claim, contradicted: Clusters and rollups have separate denominators / are not an identical population.)",
+        "2026-11-02 [A] https://stellarlight.xyz/api/openapi.json#/components/schemas/PopulationScope — \"Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations\" (proposer claim, contradicted: Clusters and rollups have separate denominators / are not an identical population.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/clusters?dimension=types — \"25 type clusters, summed size 1206 over a 906-project population\" (proposer claim, confirmed: Type clusters overlap and are not summable.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=all#gaps — \"A project counts under EACH of its types.\" (proposer claim, confirmed: Type clusters overlap and are not summable.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/clusters — \"meta.generatedAt 2026-11-02T15:50:21.826Z; population.statusScope [Development, Live, Pre-Release]\" (proposer claim, confirmed: Each view carries generatedAt and scope.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/clusters?dimension=category — \"\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"totalAvailable\": 906, \"included\": 906, \"truncated\": false}\" (independent verifier, accept on golden.answer)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/clusters?dimension=types — \"\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"included\": 906}\" (independent verifier, accept on golden.answer)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=all — \"meta.population.id \"projects|status:Development+Live+Pre-Release\"; categories.scope \"Active projects only ... don't merge the two without labeling the source.\"\" (independent verifier, accept on golden.answer)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=funding — \"meta.population.id \"projects|status:Development+Live+Pre-Release\"; funding.methodologyVersion \"funding-v2 (2026-07-05)\", scfTotalDistributedUSD 58585451.99\" (independent verifier, accept on golden.answer)",
+        "2026-11-02 [B] catalog/manifest.json#scout.analyzeEcosystem outputSchema meta.population (upstream OpenAPI https://stellarlight.xyz/api/openapi.json) — \"Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations — never merge/sum them without labeling the scopes.\" (independent verifier, accept on golden.answer)",
+        "Change: answer now asks for each view's meta.population id (matching ids comparable, different ids are different populations); keyFacts[2] and avoid[0] replaced so they no longer assert a cluster/rollup denominator split; prior 'identical population' contradicted corroboration row removed (live ids match); asOf 2026-07-11 -> 2026-11-02.",
+        "Root-cause note: the 2026-07-11 golden assumed clusters and rollups use separate populations (the clusters endpoint then truncated at 500); the live service now reports one shared 906-project population id, so the old avoid punished a true claim.",
+        "Sibling sweep 2026-11-02: grep 'separate denominators|identical population|population id' over the battery → only this case. Checked q-defi-category-funding-ratio-live, q-scf-funding-by-category, q-defi-tooling-whitespace-live, q-defi-category-saturation-live, q-scf-total-distributed, q-eco-defi-market-map. No direct contradiction; q-defi-category-funding-ratio-live ('report it as a separate population') and q-scf-funding-by-category ('/api/clusters truncates at 500') carry older population assumptions and are escalated to their own batches."
+      ],
+      "rootCause": [
+        "freshness-drift",
+        ".agents/TODO.md — eval-side authoring flaw: the avoid asserted a cluster/rollup population split that the service does not guarantee"
+      ]
+    },
+    "origin": "core-35 ecosystem-cluster-and-rollup"
+  }
+}

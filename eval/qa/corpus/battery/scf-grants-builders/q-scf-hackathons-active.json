@@ -6,7 +6,7 @@
     "scout.getHackathons"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live hackathon feed returned 10 recent events; its newest result was `Stellar Hacks: Real-World ZK`, which ended 2026-07-03.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the live hackathon feed listed 27 events and no active or upcoming rows; its newest result was `HackMeridian 2026` (Lisbon), which ended 2026-10-26.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -17,7 +17,7 @@
       "Do NOT turn a scoped catalog zero-result into a permanent global absence claim.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "GT-38 CORRECTION 2026-07-10: the scoped live feed returned zero active/upcoming rows; Real-World ZK completed July 3. Grade dated source-bound reporting and live re-check guidance, not hidden operation use.\nGT-38 independently confirmed by processes 3297/3299."
+    "notes": "GT-38 CORRECTION 2026-07-10: the scoped live feed returned zero active/upcoming rows; Real-World ZK completed July 3. Grade dated source-bound reporting and live re-check guidance, not hidden operation use.\nGT-38 independently confirmed by processes 3297/3299.\n2026-11-02 re-check: the feed again returned zero active/upcoming rows. That zero is feed-relative: a sourced real-world Stellar event outside the feed (for example Velocity's University of Waterloo 'Blockchain Innovation Challenge powered by Stellar', Nov 2-18, 2026, UW students only) is not a wrong claim."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,7 +31,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "C",
@@ -52,6 +52,36 @@
         "class": "D",
         "ref": "https://x.com/BuildOnStellar",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons?limit=100",
+        "note": "generatedAt 2026-11-02T16:32:28.789Z; counts {curated 7, dorahacks 20, returned 27, total 27}; every row completed; newest hackmeridian-2026 2026-10-25..2026-10-26",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons?status=active",
+        "note": "active total 0; upcoming total 0 (generatedAt 2026-11-02T16:32:35Z)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.hackmeridian.com/schedule",
+        "note": "'When 25–26 October 2026 Where ONE16, Lisbon Submissions close Mon 26 Oct, 12:00'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://meridian.stellar.org/event-details",
+        "note": "'HackMeridian is the annual Meridian hackathon, running October 25–26, 2026'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar",
+        "note": "'Who: All University of Waterloo students ... When: Nov 2-18, 2026'; absent from the Scout feed",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -73,31 +103,45 @@
           }
         ],
         "note": "Legacy verdict: confirmed-source-relative."
+      },
+      {
+        "claim": "As of 2026-11-02, the Scout hackathon feed lists 27 events, none active or upcoming; the newest is HackMeridian 2026 (Lisbon), which ended 2026-10-26.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons?limit=100",
+            "observedAt": "2026-11-02",
+            "note": "total 27; all completed; hackmeridian-2026 newest"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.hackmeridian.com/schedule",
+            "observedAt": "2026-11-02",
+            "note": "25–26 October 2026, ONE16, Lisbon; submissions close Mon 26 Oct 12:00"
+          },
+          {
+            "class": "A",
+            "ref": "https://meridian.stellar.org/event-details",
+            "observedAt": "2026-11-02",
+            "note": "HackMeridian October 25–26, 2026"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-38 primary 3297 and blind 3299.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live hackathon feed returned 10 recent events; its newest result was `Stellar Hacks: Real-World ZK`, which ended 2026-07-03.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Real-World ZK|hackathon → q-gap-upcoming-hackathon-fallback, q-scf-current-hackathons-compare-live, q-scf-hackathons-active; no contradiction",
-        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://dorahacks.io/hackathon/stellar-hacks-zk/detail — the official event record gives dated submission and extended-deadline observations.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/hackathons — the current page now shows an upcoming HackMeridian event, confirming the roster needs a visible as-of date.",
-        "Live re-check 2026-08-29: https://dorahacks.io/hackathon/stellar-hacks-zk/detail — the dated record identifies Real-World ZK and its completed submission period.",
-        "Sibling sweep 2026-08-29: grep Real-World ZK|HackMeridian|active or upcoming → q-hist-meridian-2026-corrected-venue; no contradiction"
+        "C 2026-11-02: https://stellarlight.xyz/api/hackathons?limit=100 — generatedAt 2026-11-02T16:32:28.789Z; counts {curated 7, dorahacks 20, returned 27, total 27}; every row status completed; 'hackmeridian-2026 | HackMeridian 2026 | completed 2026-10-25 2026-10-26'.",
+        "C 2026-11-02: https://stellarlight.xyz/api/hackathons?status=active and ?status=upcoming — total 0 each (generatedAt 2026-11-02T16:32:35Z).",
+        "A 2026-11-02: https://www.hackmeridian.com/schedule — 'When 25–26 October 2026 Where ONE16, Lisbon Submissions close Mon 26 Oct, 12:00'.",
+        "A 2026-11-02: https://meridian.stellar.org/event-details — 'HackMeridian is the annual Meridian hackathon, running October 25–26, 2026, the two days before the main Meridian conference.'",
+        "D 2026-11-02: https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar and https://uwaterloo.ca/events/ (via perplexity_search) — 'Who: All University of Waterloo students ... When: Nov 2-18, 2026'; an off-feed Stellar event, so the feed zero stays source-relative.",
+        "Sibling sweep 2026-11-02: grep Real-World ZK|HackMeridian → q-hist-meridian-2026-corrected-venue (HackMeridian Oct 25–26, 2026 at ONE16 Lisbon; consistent), q-gap-upcoming-hackathon-fallback, q-scf-current-hackathons-compare-live; no contradiction."
       ],
       "rootCause": [
-        "Normal weekly event-status drift plus an eval-side global-absence risk.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-scf-hackathons-active"

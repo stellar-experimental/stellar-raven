@@ -5,7 +5,7 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "Exact passphrase string per network [1][2]:\n\n- **Public network**: `Public Global Stellar Network ; September 2015`\n- **Testnet**: `Test SDF Network ; September 2015`\n- **Futurenet**: `Test SDF Future Network ; October 2022`\n\nThere is no separate \"mainnet\" passphrase distinct from the public-network one. (Why the passphrase matters — network-id hashing, replay protection, signing — is covered by `q-protocol-network-passphrases`; this variant is the bare per-network enumeration.)",
+    "answer": "Exact passphrase string per network [1][2]:\n\n- **Public network**: `Public Global Stellar Network ; September 2015`\n- **Testnet**: `Test SDF Network ; September 2015`\n- **Futurenet**: `Test SDF Future Network ; October 2022`\n\nThere is no separate \"mainnet\" passphrase distinct from the public-network one.",
     "keyFacts": [
       "Gives the exact public passphrase: 'Public Global Stellar Network ; September 2015'.",
       "Gives the testnet passphrase exactly: 'Test SDF Network ; September 2015'."
@@ -14,7 +14,7 @@
       "Do NOT garble the passphrase strings (e.g. wrong date, missing the ' ; ' separator, or swapping public/test strings).",
       "Do NOT invent a separate 'mainnet' passphrase distinct from the public-network one."
     ],
-    "notes": "Reviewed 2026-06-29: differentiated from q-protocol-network-passphrases by stripping the 'why they matter' rationale (network-id hashing / replay / signing) — this is the bare-enumeration variant; the rationale now lives only in the factual sibling. Strings verified against developers.stellar.org/docs/networks. Trap = garbling the strings.\nAlso good if the answer: Gives the futurenet passphrase exactly ('Test SDF Future Network ; October 2022').\nGolden cites: A networks / network-passphrase page on developers.stellar.org."
+    "notes": "Bare per-network enumeration: the network-id/replay/signing rationale is not required. Strings verified against developers.stellar.org/docs/networks. Trap = garbling the strings.\nAlso good if the answer: Gives the futurenet passphrase exactly ('Test SDF Future Network ; October 2022').\nGolden cites: A networks / network-passphrase page on developers.stellar.org."
   },
   "tags": {
     "category": "protocol-core",
@@ -38,6 +38,18 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/networks",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://horizon-futurenet.stellar.org/",
+        "note": "network_passphrase: 'Public Global Stellar Network ; September 2015' | 'Test SDF Network ; September 2015' | 'Test SDF Future Network ; October 2022'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/networks#network-passphrases",
+        "note": "stellarDocs.search_docs: Testnet 'Test SDF Network ; September 2015'; Futurenet 'Test SDF Future Network ; October 2022'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -58,23 +70,46 @@
             "note": "Exact SDK constant: `PUBLIC = \"Public Global Stellar Network ; September 2015\"`; no separate mainnet enum exists."
           }
         ]
+      },
+      {
+        "claim": "The public, testnet, and futurenet passphrases are 'Public Global Stellar Network ; September 2015', 'Test SDF Network ; September 2015', and 'Test SDF Future Network ; October 2022'.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks",
+            "observedAt": "2026-11-02",
+            "note": "Mainnet: 'Public Global Stellar Network ; September 2015' Testnet: 'Test SDF Network ; September 2015' Futurenet: 'Test SDF Future Network ; October 2022'."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://horizon-futurenet.stellar.org/",
+            "observedAt": "2026-11-02",
+            "note": "Root network_passphrase values match the three strings exactly."
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/networks#network-passphrases",
+            "observedAt": "2026-11-02",
+            "note": "Index record carries the testnet and futurenet strings."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Shortened one long exact-passphrase fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/networks — the official network comparison lists `Public Global Stellar Network ; September 2015` exactly.",
-        "Sibling sweep 2026-08-29: grep Public Global Stellar Network ; September 2015|Test SDF Network ; September 2015|Test SDF Future Network ; October 2022 → q-protocol-network-passphrases-list only; no contradiction.",
-        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-2.md): reviewer saw 404 on https://developers.stellar.org/docs/learn/fundamentals/networks; it resolved 200 for the orchestrator on 2026-08-29 (curl -L), so the URL stays and https://developers.stellar.org/docs/networks is added as a second live confirmation of the exact public and testnet passphrases.",
-        "Corroboration audit 2026-08-29: added 1 row(s) for public-network mainnet naming; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+        "Class A 2026-11-02: https://developers.stellar.org/docs/networks — 'Mainnet: Public Global Stellar Network ; September 2015 Testnet: Test SDF Network ; September 2015 Futurenet: Test SDF Future Network ; October 2022'.",
+        "Class F 2026-11-02: https://horizon.stellar.org/, https://horizon-testnet.stellar.org/, https://horizon-futurenet.stellar.org/ — network_passphrase fields match exactly.",
+        "Class E 2026-11-02: stellarDocs.search_docs → https://developers.stellar.org/docs/networks#network-passphrases.",
+        "Repo evidence 2026-11-02: eval/qa/corpus/migration-ledger.json records q-protocol-network-passphrases as a documented drop (ABSORB-TRIAGE), so the judge-facing cross-reference pointed at a retired case.",
+        "Change: removed the answer's parenthetical cross-reference to the retired case and replaced the dated review history in golden.notes with a scope line ('rationale is not required'); strings, keyFacts, and avoid items unchanged (verifier accept on both fields).",
+        "Sibling sweep 2026-11-02: grep 'Public Global Stellar Network|Test SDF Future Network' over eval/qa/corpus/battery — q-eco-defi-market-map, q-defi-named-newer-protocols, q-defi-perps-whitespace, q-n3-pi-network-wrong-chain; q-protocol-futurenet-vs-testnet, q-ti-testnet-mainnet-migration, q-tool-cli-testnet-identity-howto checked; no conflicting string.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) modify truth.verified.rootCause[0]: The proposal is right to drop the '.agents/TODO.md' pointer: TODO.md has no passphrase entry. But the new text says the flaw is 'recorded in the round ledger', and the ledger has no such record (Results: Pending). The newText states the flaw without an unverified pointer. The migration-ledger reference is confirmed."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Eval-side authoring flaw: golden.answer kept a judge-facing cross-reference to q-protocol-network-passphrases after the corpus migration dropped that case (eval/qa/corpus/migration-ledger.json, ABSORB-TRIAGE)."
       ]
     },
     "origin": "raven-next q-protocol-network-passphrases-list"

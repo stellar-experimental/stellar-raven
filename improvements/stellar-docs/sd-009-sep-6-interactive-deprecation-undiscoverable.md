@@ -13,6 +13,7 @@ evidence:
 recurrences:
   - date: 2026-11-02
     evidence: live re-check on the Mintlify docs search after the 2026-10-22 migration: `stellarDocs.search_docs` `SEP-6 interactive components deprecated SEP-24` with includeContent returns the SEP-6 tutorial, anchors fundamentals, SDP get-sep-24-info, Anchor Platform SEP guide, and SEP-10 tutorial; no returned section contains `deprecat`. The gap is content, not the search backend. Ledger: .agents/rounds/2026-11-02-mintlify-migration.md
+    evidence: golden audit pass 2 live recheck 2026-11-02T17:26:21Z - Raven stellarDocs.search_docs 'SEP-6 interactive deprecated SEP-24' returned five anchor and SEP pages with no deprecated-status text; a grep of stellar/stellar-docs main 7cb5e8a4 docs/ for 'interactive components are deprecated' and 'deprecated in favor of SEP-24' returns no file. Issue #2575 remains closed not_planned. Owner decision stands; no re-file. Cases q-sep-6-24-deprecation and q-sep6-sep24-sep31-choice.
   - date: 2026-08-11
     evidence: live Docs search for `SEP-6 interactive deprecated SEP-24` still returns no deprecated-status text. Issue #2575 remains closed by the docs owner; the recorded maintainer rationale is ElliotFriend's 2026-07-13 noise-and-placement decision.
   - date: 2026-07-10

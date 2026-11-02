@@ -35,7 +35,7 @@
     "domain": "mixed",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2027-01-25",
+    "reverifyBy": "2027-03-23",
     "sources": [
       {
         "class": "C",
@@ -94,17 +94,14 @@
       }
     ],
     "verified": {
-      "date": "2026-10-27",
-      "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "Live re-check 2026-10-27 (A/F): https://registry.npmjs.org/@socketfi%2Fserver — latest 1.1.0 (2026-07-05); description: server-side SDK for verifying SocketFi authentication tokens and preparing Soroban transactions.",
-        "Live re-check 2026-10-27 (C): production Raven scout.searchProjects(q=SocketFi) — status Live, scfAwarded true (SCF #32 Build, official record), non-custodial Soroban smart wallet with passkey sign-in, social-profile binding, and gas abstraction; lumenloop.find_content_about_project(slug=socketfi) still indexes @socketfi/server as a token-verifying SDK that prepares transactions for paymaster signing.",
-        "Live re-check 2026-10-27 (B): Scout repo rows show active Socket-Fi/socketfi-smart-account commits through 2026-10-21 (https://github.com/Socket-Fi/socketfi-smart-account).",
-        "Live re-check 2026-10-27 (A): https://developers.stellar.org/docs/build/guides/auth/contract-authorization — __check_auth is the reserved CustomAccountInterface hook the host invokes when require_auth/require_auth_for_args is called; it verifies credentials and policy.",
-        "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
-      ],
-      "rootCause": [
-        "freshness-drift"
+        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case).",
+        "golden.keyFacts[0] confirmed-as-of: A https://registry.npmjs.org/@socketfi%2Fserver — 'latest 1.1.0 (2026-07-05T09:15:46Z); description: Server-side SDK for verifying SocketFi authentication tokens and preparing Soroban transactions.' | C Lumenloop find_content_about_project {slug:'socketfi'} — 'Verifies SocketFi authentication tokens and prepares Soroban transactions for paymaster signing' (observedAt 2026-11-02).",
+        "golden.keyFacts[2] confirmed-as-of: C GET https://stellarlight.xyz/api/projects/search?q=SocketFi — 'status Live (statusAsOf 2026-08-30); scfAwarded true; scfAwardedRounds [32]' | D https://communityfund.stellar.org/project/socketfi-smart-wallet-infra-on-stellar-ipr (Perplexity) — 'SocketFi: Soroban Smart Wallet App SCF #32 $88.2K Build Awarded' | B https://github.com/Socket-Fi/socketfi-smart-account — 'Soroban-native `__check_auth` integration' (observedAt 2026-11-02).",
+        "golden.keyFacts[3]: E Raven stellarDocs.search_docs '__check_auth custom account require_auth' — authorization#contract-account and complex-account hits | B https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071-01.md (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-soroban-contract-id-derivation, q-pc-doc-category-validator-search checked; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (cross-service)"

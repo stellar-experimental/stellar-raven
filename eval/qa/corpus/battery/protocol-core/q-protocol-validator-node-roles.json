@@ -34,7 +34,8 @@
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/validators",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -100,21 +101,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Split two validator-role facts into three atomic facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-core/blob/master/docs/stellar-core_example.cfg — current Core configuration marks a watcher as passive and outside consensus.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators — current docs say validators participate in consensus by voting on and signing ledger changes.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators — current docs say Full Validators publish history archives and Basic Validators do not.",
-        "Sibling sweep 2026-08-29: grep Watcher|Basic Validator|Full Validator|history archive → q-protocol-tier1-requirements, q-edge-validators-reverse-tx-fork-detection, q-ti-historical-pointintime-balances; no contradiction",
-        "Corroboration audit 2026-08-29: added 3 row(s) for watcher, archive, and reward boundaries; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 3 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/master/docs/stellar-core_example.cfg — 'should not be used on a node participating in consensus, only a passive \"watcher\" node. ... Only nodes that want to participate in SCP should set NODE_IS_VALIDATOR=true.' (claim: Watcher nodes are passive outside consensus; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/packages/blob/master/docs/running-a-full-validator.md — 'start off with a working `watcher` config and simply add the required validator configuration parameters (NODE_IS_VALIDATOR, NODE_SEED)' (claim: Watcher nodes are passive outside consensus; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/validators — 'configured to participate in consensus by voting on — and signing off on — changes to the ledger' (claim: Validators sign ledger changes through consensus voting; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/validators — 'a Basic Validator does not publish a history archive; a Full Validator publishes one covering the network's complete history.' (claim: Only Full Validators publish a public history archive; verdict confirmed)",
+        "Live D 2026-11-02: https://github.com/nemorixgroup/Stellar-Knowledge-Base/blob/main/module-02-consensus/README.md — 'Basic Validator: participates in consensus, does not publish a history archive' (claim: Only Full Validators publish a public history archive; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/validators — 'There are two varieties of non-validating nodes ... Stellar RPC Nodes ... Galexie Nodes' (claim: RPC and Galexie are non-consensus roles; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator on the Stellar network.' (claim: Stake-size difference / watchers vote are false; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-protocol-tier1-requirements checked; no contradiction."
       ]
     },
     "origin": "raven-next q-protocol-validator-node-roles"

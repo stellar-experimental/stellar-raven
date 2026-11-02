@@ -1,0 +1,1659 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "soroban-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-gap-digest-soroban-adjacent",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Runnable digest with theme subject Soroban returns dated window, deduped typed items, per-type counts, softEmpty, upcomingEvents, and a call audit",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute codemode.skill.run('skills.lumenloop.stellar-ecosystem-digest',{subject:'Soroban',subjectType:'theme',days:7})",
+       "observedAt": "2026-11-02",
+       "quote": "keys [subject,subjectType,window,items,counts,softEmpty,upcomingEvents,calls]; window 2026-10-26..2026-11-02; counts articles 5, av 5, events 5, research 1; sof…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-ecosystem-digest/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Produce a dated, cited digest of recent Stellar ecosystem activity ... Always date. Put publishing_date on each item and the window in the title"
+      },
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest (codemode.describe)",
+       "observedAt": "2026-11-02",
+       "quote": "softEmpty: true <=> the window matched nothing - a quiet window, not a failure. calls: Host-recorded constituent-call audit trail"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "A no-item digest is not an error",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest",
+       "observedAt": "2026-11-02",
+       "quote": "true <=> the window matched nothing - a quiet window, not a failure."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Roundup snippets are authoritative protocol specification (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-ecosystem-digest/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "The corpus is the source of record for ecosystem freshness"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-digest-defi-adjacent"
+  },
+  {
+   "id": "q-gap-explainrepo-payload-ok",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "explainRepo pinned to stellar/stellar-core routes explicitly and returns ok, answered, source-grounded answer, repo metadata, repo/DeepWiki URLs",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute scout.explainRepo({q:'where are transaction result codes handled',repo:'stellar/stellar-core'})",
+       "observedAt": "2026-11-02",
+       "quote": "ok true; answered true; routedVia 'explicit'; answerSource 'deepwiki'; answerAsOf null; repoMeta.lastCommitAt 2026-10-22; sources.repoUrl https://github.com/ste…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json via catalog/manifest.json#scout.explainRepo (GET /api/repos/explain)",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: the upstream payload carries its own ok flag at data.ok - distinct from the envelope call-status ok."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "codeVerified.isDeployableContract means stellar-core is a deployable Soroban contract (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven scout.explainRepo payload",
+       "observedAt": "2026-11-02",
+       "quote": "codeVerified.isDeployableContract: false; repoMeta.kind 'platform'; contractInterface lists an ApplyLoadToken test contract inside the repo"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core",
+       "observedAt": "2026-11-02",
+       "quote": "stellar-core is the validator node software, not a deployable contract"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-explain-repo-payload-status; q-soroban-deploy-cli"
+  },
+  {
+   "id": "q-gap-scout-list-skill-directory",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SDF-filtered listSkills returned seven entries (dated 2026-07-11) with slug, install, source, kind, homepage/raw URL, compatibility",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute scout.listSkills({source:'sdf'})",
+       "observedAt": "2026-11-02",
+       "quote": "meta.counts {returned:8,total:8}; slugs agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs; row keys slug,name,tagline,des…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills?source=sdf (raw GET)",
+       "observedAt": "2026-11-02",
+       "quote": "8 rows: ['agentic-payments','cross-chain','dapp','data','standards','assets','smart-contracts','zk-proofs']"
+      },
+      {
+       "class": "A",
+       "ref": "https://skills.stellar.org/llms.txt (named in listSkills meta.registry)",
+       "observedAt": "2026-11-02",
+       "quote": "meta.registry {live:true, listed:58, served:57, merged:10}"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "listSkills for discovery, getSkill for one known skill",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#scout.listSkills",
+       "observedAt": "2026-11-02",
+       "quote": "Not for ONE named skill's full content -> use getSkill."
+      },
+      {
+       "class": "C",
+       "ref": "catalog/manifest.json has scout.getSkill exposed",
+       "observedAt": "2026-11-02",
+       "quote": "grep count 1"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Gateway-served skills are a subset of the live directory",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#scout.listSkills",
+       "observedAt": "2026-11-02",
+       "quote": "this is the live ecosystem DIRECTORY - skills plus MCP servers, SDKs, and CLIs ...; most entries are not mirrored skills."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "listSkills returns full instructions for every skill (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills?source=sdf",
+       "observedAt": "2026-11-02",
+       "quote": "rows carry description/install/rawUrl metadata, no SKILL.md body field"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Use `scout.listSkills` to browse the live installable directory, optionally filtering by source or kind. An SDF-filtered probe returned seven entries on 2026-07-11 and eight on 2026-11-02, each with slug, install command, source, kind, homepage/raw URL, and compatibility; treat the count and slugs as an observation with its date. Then use `getSkill` for one named entry.",
+     "reason": "freshness drift: the live SDF count is now eight (Raven + raw Stellar Light, 2026-11-02); keep both dated observations."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "N1 live contract probe 2026-07-11: Succeeded with a source=sdf filter and returned seven skill-directory entries — a DATED 2026-07-11 snapshot: that roster included a 'soroban' entry, a slug the 2026-07-28 re-verification found retired in favour of 'smart-contracts'. Treat the count and slugs as an observation with its date, never a current guarantee. Re-probe 2026-11-02: source=sdf returned eight entries (agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs); do not penalize a sourced, dated count that differs from either snapshot.",
+     "reason": "record the 2026-11-02 dated roster and a symmetric grader caution for dated counts."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-skill-detail-install; q-tool-cli-skills-discovery; q-gap-scout-get-skill-detail"
+  },
+  {
+   "id": "q-passkey-smart-account-architecture",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "CAP-0051 added native secp256r1 verification in Protocol 21",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0051.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Smart Contract Host Functionality: Secp256r1 Verification ... Status: Final ... Protocol version: 21"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades (via Parallel web_search)",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 21 6/18/2024 - CAP-0051 (Support secp256r1 verification)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "__check_auth validates contract-account credentials and policy",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "They hold assets and enforce authorization in `__check_auth` instead of a single secret key."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071-01.md",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 27 adds delegate_account_auth for delegating authentication from an Address's __check_auth; __check_auth remains the hook."
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs(query='Soroban contracts cannot interact with SDEX claimable balances sponsorships')",
+       "observedAt": "2026-11-02",
+       "quote": "hit https://developers.stellar.org/docs/build/smart-contracts/overview#stellar-smart-contract-faqs"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Origin/RP-ID: W3C assigns to RP; OZ and Passkey Kit verifiers omit on-chain",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs",
+       "observedAt": "2026-11-02",
+       "quote": "re-verified 2026-11-02 by the prior lane; OZ main HEAD is still ddc327eb (2026-10-20)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-infra-secp256r1-passkeys; q-passkey-platform-constraints; q-passkey-wallet-recovery"
+  },
+  {
+   "id": "q-passkey-wallet-recovery",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Seedless passkey; recovery must be pre-authorized in contract policy; Ed25519 fallback may use its own seed",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, policy signers, session keys or anything the contract can verify."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/kalepail/passkey-kit/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "A wallet is a Soroban smart contract whose signers can be secp256r1 passkeys, Ed25519 keys, or policy contracts. ... build signer-management transactions."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/Socket-Fi/socketfi-smart-account (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "two other bindings can recover one inaccessible slot, and BLS recovery can replace only one slot."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Recovery controls: rotation/revocation, delays, notifications, cancellation, thresholds, audit events",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+       "observedAt": "2026-11-02",
+       "quote": "add a cooldown after actions like key rotation or large transfers ... reject and emit an event ... Separate roles (admin vs. standard) so daily use can be deleg…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/smart_account/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Rule 1: Admin group - 3 of 3 signers ... Rule 2: User group - 3 of 5 signers, with spending limit policy ... optional expiration (valid_until)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Loss of every signer/admin/guardian/upgrade path is protocol-unrecoverable",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "enforce authorization in `__check_auth` instead of a single secret key"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/smart_account/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "If the rule has no policies, all rule signers must be [authenticated]"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Platform passkey sync is availability, not independent contract recovery",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.google.com/identity/passkeys/supported-environments",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200 on 2026-11-02; passkey sync is a provider/platform feature"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Registration: ... store the public key (and optional credential ID) in contract state."
+      }
+     ]
+    },
+    {
+     "field": "truth.sources[0].ref",
+     "claim": "Cited recovery page exists",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+       "observedAt": "2026-11-02",
+       "quote": "curl -L: 404 at https://developers.stellar.org/docs/build/guides/contract-accounts/recovery"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/sitemap.xml",
+       "observedAt": "2026-11-02",
+       "quote": "no 'recover' path under contract-accounts or apps"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.sources[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "cited page 404s (redirects to /docs/build/guides/contract-accounts/recovery, HTTP 404; absent from sitemap.xml)."
+    },
+    {
+     "field": "truth.sources[+]",
+     "op": "append",
+     "new": {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets"
+     },
+     "reason": "live official smart-wallet page supports multi-signer (passkey, Ed25519, policy) design."
+    },
+    {
+     "field": "truth.corroboration[0].evidence[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "same dead URL in corroboration evidence."
+    },
+    {
+     "field": "truth.corroboration[1].evidence[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "same dead URL in corroboration evidence."
+    },
+    {
+     "field": "truth.corroboration[2].evidence[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "same dead URL in corroboration evidence."
+    },
+    {
+     "field": "truth.corroboration[3].evidence[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "same dead URL in corroboration evidence."
+    },
+    {
+     "field": "truth.corroboration[4].evidence[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "same dead URL in corroboration evidence."
+    },
+    {
+     "field": "truth.corroboration[5].evidence[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "same dead URL in corroboration evidence."
+    },
+    {
+     "field": "truth.corroboration[6].evidence[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "same dead URL in corroboration evidence."
+    },
+    {
+     "field": "truth.corroboration[7].evidence[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+     "reason": "same dead URL in corroboration evidence."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-passkey-smart-account-architecture; q-passkey-platform-constraints; q-smart-account-scoped-policy-signers; q-tool-passkey-wallet-recovery"
+  },
+  {
+   "id": "q-smart-account-scoped-policy-signers",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Contract-account credentials can bind calls, amounts, assets, time windows",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+       "observedAt": "2026-11-02",
+       "quote": "Put the logic in `__check_auth` ... Spend limits ... Allow lists ... Inspect both the root invocation and any subinvocations in auth_context ... Time rules"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/policies/spending_limit.rs",
+       "observedAt": "2026-11-02",
+       "quote": "enforces spending limits over a configurable rolling time window"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/smart_account/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "A context rule binds a set of signers and policies to a specific operation ... optional expiration (valid_until)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Session credentials narrowly scoped instead of full-control key",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+       "observedAt": "2026-11-02",
+       "quote": "Generate a short-lived session key ... limit it to one function plus a maximum amount ... Reject if the session key is unknown, expired, out of allowance, or us…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/smart_account/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "context rules ... policies ... all-or-nothing enforcement"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Policy/verifier contracts support partner co-signing without unrestricted signers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+       "observedAt": "2026-11-02",
+       "quote": "Offload specific checks ... to a dedicated policy contract ... For high-risk contract calls ... require the end user plus a policy signer"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/smart_account/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Policies - External contracts attached to context rules that enforce business logic"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Classic thresholds are the only way to scope authorization (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+       "observedAt": "2026-11-02",
+       "quote": "Layer spend limits, allow lists, time rules, and other guardrails onto contract accounts."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Session signer must receive master private key (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+       "observedAt": "2026-11-02",
+       "quote": "a p256 key created client-side and kept in secure browser storage"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-passkey-wallet-recovery; q-smart-account-limits-recovery; q-smart-account-what"
+  },
+  {
+   "id": "q-sor-build-target-wasm32v1",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Answer text states the build-target distinctions the question asks for",
+     "verdict": "contradicted",
+     "sources": []
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "wasm32v1-none is the current build target",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+       "observedAt": "2026-11-02",
+       "quote": "New Soroban contracts should be built with Rust `v1.84.0` or later, and use the `wasm32v1-none` target."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/build.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub(crate) const WASM_TARGET: &str = \"wasm32v1-none\"; ... if current_version < v184 { Ok(WASM_TARGET_OLD.into()) } else { Ok(WASM_TARGET.into()) }"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract build --print-commands-only (CLI 28.1.0, rustc 1.93.0, fresh `stellar contract init`)",
+       "observedAt": "2026-11-02",
+       "quote": "cargo rustc --manifest-path=contracts/hello-world/Cargo.toml --crate-type=cdylib --target=wasm32v1-none --release"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs(query='wasm32v1-none can\\'t find crate for core')",
+       "observedAt": "2026-11-02",
+       "quote": "hit hello-world#build-the-contract"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "stellar contract build selects the target and release profile",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+       "observedAt": "2026-11-02",
+       "quote": "This is a small wrapper around `cargo build` that sets the target to `wasm32v1-none` and the profile to `release` (it also optimizes the resulting `.wasm` file …"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract build --help (CLI 28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "--profile <PROFILE> Build with the specified profile [default: release] ... --optimize ... Enabled by default"
+      },
+      {
+       "class": "A",
+       "ref": "https://doc.rust-lang.org/cargo/commands/cargo-build.html",
+       "observedAt": "2026-11-02",
+       "quote": "Build for the specified target architecture. ... The default is the host architecture."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "wasm32-unknown-unknown unsuitable for current Soroban builds",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+       "observedAt": "2026-11-02",
+       "quote": "The `wasm32-unknown-unknown` target is not supported for building Soroban contracts when using Rust 1.82 or newer. On those versions, `wasm32-unknown-unknown` e…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/build.rs",
+       "observedAt": "2026-11-02",
+       "quote": "\"use a rust version other than 1.81, 1.82, 1.83 or 1.91.0 to build contracts\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Missing core crate fixed by installing the target for the active toolchain",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+       "observedAt": "2026-11-02",
+       "quote": "If you get an error like `can't find crate for 'core'`, it means you didn't install the wasm32 target ... `rustup target add wasm32v1-none` (reminder, this requ…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup",
+       "observedAt": "2026-11-02",
+       "quote": "the WebAssembly target is installed per-toolchain. If you update your Rust version, you'll need to reinstall the `wasm32v1-none` target"
+      },
+      {
+       "class": "F",
+       "ref": "local rustc 1.93.0 + stellar CLI 28.1.0 build plan",
+       "observedAt": "2026-11-02",
+       "quote": "target flag present; builds require the installed target"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Misspelled 'wasm32v1- none' or wasm32-unknown-unknown as final answer (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+       "observedAt": "2026-11-02",
+       "quote": "not supported ... Rust 1.82 or newer"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Verified with CLI 25.2.0",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar --version",
+       "observedAt": "2026-11-02",
+       "quote": "stellar 28.1.0 (c0f4d0da)"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-cli/releases/latest",
+       "observedAt": "2026-11-02",
+       "quote": "v28.1.0 2026-09-26"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Build new Soroban contracts for `wasm32v1-none`. As of 2026-11-02 (Stellar CLI 28.1.0), `stellar contract build` wraps `cargo build --target wasm32v1-none --release` and optimizes the Wasm by default. The output is `target/wasm32v1-none/release/<contract>.wasm`. Plain `cargo build` uses the host target and the dev profile unless you pass `--target wasm32v1-none --release` or configure them. `wasm32v1-none` needs Rust 1.84 or later. On Rust 1.82 and later, `wasm32-unknown-unknown` enables Wasm features (reference-types, multi-value) that Soroban does not support, so the SDK build script fails. …",
+     "reason": "authoring flaw: templated answer lacks the substantive distinctions; replace with verified facts (A docs, B CLI source, F CLI run) and a dated CLI version."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Verified with Stellar Docs MCP and local `stellar contract build --help` from CLI 25.2.0; re-checked 2026-11-02 with CLI 28.1.0, whose `--print-commands-only` shows `--target=wasm32v1-none --release`.",
+     "reason": "record the dated 2026-11-02 CLI re-check."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the super-corpus rebuild left a generic grounded-answer template as golden.answer, with a dangling reference to 'stable distinctions above'."
+   ],
+   "siblings": "q-soroban-deploy-cli; q-soroban-wasm-language; q-ti-cli-rust-windows-troubleshooting; q-tool-cli-testnet-identity-howto; q-tool-rust-soroban-sdk"
+  },
+  {
+   "id": "q-sor-classic-dex-from-contract",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Contracts use SAC for accounts/assets; cannot use SDEX, claimable balances, sponsorships",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/overview",
+       "observedAt": "2026-11-02",
+       "quote": "Can Soroban contracts interact with any other Stellar operations? No. Aside from the interactions with accounts and assets mentioned above. This means that Soro…"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs(query='Soroban contracts cannot interact with SDEX claimable balances sponsorships')",
+       "observedAt": "2026-11-02",
+       "quote": "hit https://developers.stellar.org/docs/build/smart-contracts/overview#stellar-smart-contract-faqs"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "No Final/Implemented CAP (through CAP-0088, Protocol 30) changes Soroban one-op-per-tx or adds contract access to SDEX/claimable balances/sponsorships; CAP-0050…"
+      },
+      {
+       "class": "D",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions (via Parallel web_search)",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Manage Buy/Sell Offer place SDEX orders",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Operations are used to send payments, invoke a smart contract function, enter orders into the decentralized exchange"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-0006 | 11 | Add ManageBuyOffer Operation | Final"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "InvokeHostFunctionOp/ExtendFootprintTTLOp/RestoreFootprintOp allow one op per tx",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Smart contract transactions (those with `InvokeHostFunctionOp`, `ExtendFootprintTTLOp`, or `RestoreFootprintOp` operations) can only have one operation per tran…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+       "observedAt": "2026-11-02",
+       "quote": "There is only a single `InvokeHostFunctionOp` allowed per transaction."
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs(query='only one InvokeHostFunctionOp per transaction')",
+       "observedAt": "2026-11-02",
+       "quote": "hits list-of-operations#invoke-host-function: 'Note that Soroban transactions can only contain one operation per transaction.'"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "No Final/Implemented CAP (through CAP-0088, Protocol 30) changes Soroban one-op-per-tx or adds contract access to SDEX/claimable balances/sponsorships; CAP-0050…"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version: 29; core_version stellar-core 30.0.0"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "A tx can contain a classic op and InvokeHostFunctionOp (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "except smart contract transactions, which can only have one operation per transaction"
+      },
+      {
+       "class": "D",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions (via Parallel web_search)",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-contract-as-claimable-arbiter; q-defi-sdex-offer-lifecycle; q-edge-factcheck-soroswap-first-amm"
+  },
+  {
+   "id": "q-sor-contract-as-claimable-arbiter",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Contracts cannot claim or arbitrate classic claimable balances",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/overview",
+       "observedAt": "2026-11-02",
+       "quote": "Can Soroban contracts interact with any other Stellar operations? No. Aside from the interactions with accounts and assets mentioned above. This means that Soro…"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs(query='Soroban contracts cannot interact with SDEX claimable balances sponsorships')",
+       "observedAt": "2026-11-02",
+       "quote": "hit https://developers.stellar.org/docs/build/smart-contracts/overview#stellar-smart-contract-faqs"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "No Final/Implemented CAP (through CAP-0088, Protocol 30) changes Soroban one-op-per-tx or adds contract access to SDEX/claimable balances/sponsorships; CAP-0050…"
+      },
+      {
+       "class": "D",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions (via Parallel web_search)",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Soroban escrow holds SAC/SEP-41 balances in contract storage",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "When the SAC transfers assets between contracts, it uses Contract Data ledger entries to store the balances for contracts."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Asset Contract is the only way for contracts to interact with Stellar assets"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "approve is a SAC token-contract call needing authorization",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "fn approve(env: Env, from: Address, spender: Address, amount: i128, live_until_ledger: u32);"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+       "observedAt": "2026-11-02",
+       "quote": "`SorobanAuthorizationEntry` contains a tree of invocations with `rootInvocation` as a root. This tree is authorized by a user specified in `credentials`."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-classic-dex-from-contract; q-asset-claimable-balance; q-aas-claimable-predicates-expiry-reserves; q-sor-sep41-transfer-vs-transferfrom"
+  },
+  {
+   "id": "q-sor-contract-trustlines-c-address",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Contracts use SAC to interact with classic assets",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Asset Contract is the only way for contracts to interact with Stellar assets, either the native XLM asset, or those issued by Stellar accounts."
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs(query='SAC trust function create trustline Protocol 26')",
+       "observedAt": "2026-11-02",
+       "quote": "hits stellar-asset-contract#interacting-with-classic-stellar-assets"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "C-address contract storage vs G-address trustline models, i128 vs i64",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "Using `Address::Contract` - The balance and authorization state will be stored in contract storage, as opposed to a trustline. Balances are stored in a 128-bit …"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "C-address send/receive uses SAC transfer flows",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts",
+       "observedAt": "2026-11-02",
+       "quote": "To perform a 'transfer' through an SAC, it is necessary to assemble a 'InvokeHostFunctionOp' operation ... Since the release of the Unified Asset Events (CAP-67…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "G recipients need a funded trustline unless P26 SAC trust creates it (auth + base reserve)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "When a trustline is actually created, the SAC requires authorization from `addr` ... The account holding the new trustline must satisfy the network's base reser…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin",
+       "observedAt": "2026-11-02",
+       "quote": "As of Yardstick, Protocol 26 (CAP-73), this creates the receiver's STAR trustline as part of the same invocation"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0073.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Allow SAC to create G-account balances ... Status: Final ... Protocol version: 26"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version: 29; core_version stellar-core 30.0.0"
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/stellar-protocol-upgrades-2026 (Parallel web_search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Asset Contract gains a trust function that creates a trustline for a G-account from inside a contract call ... The account holder must still authori…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "CAP-0073 status 'Implemented'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0073.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| CAP-0073 | 26 | Allow SAC to create G-account balances | Dmytro Kozhevin | Final |"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version: 29; core_version stellar-core 30.0.0"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Use classic Change Trust on a C-address (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "This is a no-op if the input address is a C-address"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Protocol 26 SAC `trust` (CAP-0073, Final; Protocol 26 is live on mainnet) wording",
+     "reason": "CAP-0073 status is now Final (CAP header + README table); Protocol 29 on mainnet per Horizon."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-pc-protocol-26-yardstick; q-ti-fetch-all-balances-classic-sac; q-sor-sac-introspection; q-soroban-sac-balance-storage"
+  },
+  {
+   "id": "q-sor-cross-socketfi-auth",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "@socketfi/server is a token-verifying backend SDK that prepares Soroban txs for paymaster signing",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://registry.npmjs.org/@socketfi%2Fserver",
+       "observedAt": "2026-11-02",
+       "quote": "latest 1.1.0 (2026-07-05T09:15:46Z); description: Server-side SDK for verifying SocketFi authentication tokens and preparing Soroban transactions."
+      },
+      {
+       "class": "C",
+       "ref": "Lumenloop POST https://api.lumenloop.com/v1/tools/find_content_about_project {slug:'socketfi'} (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "title @socketfi/server; summary: Verifies SocketFi authentication tokens and prepares Soroban transactions for paymaster signing with automatic simulation and a…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Scout: SocketFi live, SCF-funded, non-custodial Soroban smart wallet with passkeys",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=SocketFi (raw GET)",
+       "observedAt": "2026-11-02",
+       "quote": "status Live (statusAsOf 2026-08-30); scfAwarded true; scfBasis official-record; scfAwardedRounds [32]; shortDescription: smart wallet dApp built on Soroban ... …"
+      },
+      {
+       "class": "D",
+       "ref": "https://communityfund.stellar.org/project/socketfi-smart-wallet-infra-on-stellar-ipr (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "SocketFi: Soroban Smart Wallet App SCF #32 $88.2K Build Awarded"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/Socket-Fi/socketfi-smart-account (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Official SocketFi smart account contracts for Soroban with passkeys ... Soroban-native `__check_auth` integration"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "__check_auth is the contract-account hook invoked by require_auth",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs(query='__check_auth custom account require_auth')",
+       "observedAt": "2026-11-02",
+       "quote": "authorization#contract-account: '...CustomAccountInterface and __check_auth becomes a contract account. If any contract calls require_auth for the Address...'; …"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071-01.md",
+       "observedAt": "2026-11-02",
+       "quote": "delegating the authentication logic from an Address's __check_auth function"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "SocketFi is a classic G-address wallet checked by SEP-10 (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/Socket-Fi/socketfi-smart-account",
+       "observedAt": "2026-11-02",
+       "quote": "Soroban-native `__check_auth` integration"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-contract-id-derivation; q-pc-doc-category-validator-search"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-gap-scout-list-skill-directory",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Count of 8 confirmed across C (live Stellar Light), B (SDF repo), A (SDF registry). New text keeps both dated snapshots and the 'observation with its date' framing; row fields confirmed in the live payload.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/skills?source=sdf",
+      "observedAt": "2026-11-02",
+      "quote": "meta.counts.returned: 8; slugs agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs; each row has slug, install, source, kin…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-dev-skill/contents/skills",
+      "observedAt": "2026-11-02",
+      "quote": "agentic-payments assets cross-chain dapp data smart-contracts standards zk-proofs (8 directories)"
+     },
+     {
+      "class": "A",
+      "ref": "https://skills.stellar.org/llms.txt",
+      "observedAt": "2026-11-02",
+      "quote": "'## Included Stellar Skills' lists Smart Contracts, Agentic Payments, Frontend (dapp), Assets, APIs (data), ZK, Cross-Chain, Ecosystem (standards) = 8 SDF entri…"
+     }
+    ]
+   },
+   {
+    "id": "q-gap-scout-list-skill-directory",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Slug list matches all three classes exactly. The leniency sentence widens credit for a sourced dated count; it does not punish a possibly-true claim. Orchestrator: add a truth.corroboration confirmed-as-of row and truth.verified evidence for this diff.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/skills?source=sdf",
+      "observedAt": "2026-11-02",
+      "quote": "meta.counts.returned: 8; slugs agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs; each row has slug, install, source, kin…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-dev-skill/contents/skills",
+      "observedAt": "2026-11-02",
+      "quote": "agentic-payments assets cross-chain dapp data smart-contracts standards zk-proofs (8 directories)"
+     },
+     {
+      "class": "A",
+      "ref": "https://skills.stellar.org/llms.txt",
+      "observedAt": "2026-11-02",
+      "quote": "'## Included Stellar Skills' lists Smart Contracts, Agentic Payments, Frontend (dapp), Assets, APIs (data), ZK, Cross-Chain, Ecosystem (standards) = 8 SDF entri…"
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.sources[0].ref",
+    "decision": "accept",
+    "note": "The old ref is dead (308 to a 404). stellar-docs has no commit history for any recovery page under apps/smart-wallets or guides/contract-accounts, so the old page may never have existed as a dedicated page. advanced-patterns is the closest live official page (admin-held recovery role, guardian policy signer, cooldown after key rotation, events).",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/blob/main/redirects.json",
+      "observedAt": "2026-11-02",
+      "quote": "\"source\": \"/docs/build/apps/smart-wallets/:slug*\", \"destination\": \"/docs/build/guides/contract-accounts/:slug*\""
+     },
+     {
+      "class": "B",
+      "ref": "https://developers.stellar.org/sitemap.xml",
+      "observedAt": "2026-11-02",
+      "quote": "contract-accounts pages listed: (index), advanced-patterns, examples, smart-wallets; no recovery page"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+      "observedAt": "2026-11-02",
+      "quote": "Separate roles (admin vs. standard) so daily use can be delegated while upgrades or recovery stay with admins."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+      "observedAt": "2026-11-02",
+      "quote": "add a cooldown after actions like key rotation or large transfers."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "note": "smart-wallets is the live official page for seedless passkeys, Ed25519 signers, and cloud-synced passkeys. It grounds rows 0, 4, and 5 better than advanced-patterns.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "You want a passkey or hardware key experience without exposing seed phrases."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Keys stay on the device or synced across devices through cloud providers."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, policy signers, session keys or anything the contract can verify."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.corroboration[0].evidence[0].ref",
+    "decision": "modify",
+    "newText": "{\"class\": \"A\", \"ref\": \"https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets\", \"observedAt\": \"2026-11-02\"}",
+    "note": "Modify, not accept: the proposal swaps the ref but keeps observedAt 2026-07-11, which dates an observation of a page nobody read then. Set observedAt to 2026-11-02. Use smart-wallets, not advanced-patterns: it states passkeys work 'without exposing seed phrases' and that Ed25519 keys are valid signers.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "You want a passkey or hardware key experience without exposing seed phrases."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, policy signers, session keys or anything the contract can verify."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.corroboration[1].evidence[0].ref",
+    "decision": "modify",
+    "newText": "{\"class\": \"A\", \"ref\": \"https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns\", \"observedAt\": \"2026-11-02\"}",
+    "note": "Modify, not accept: the proposal swaps the ref but keeps observedAt 2026-07-11, which dates an observation of a page nobody read then. Set observedAt to 2026-11-02. advanced-patterns supports only admin-held recovery/upgrade roles. It does not say that loss of every path is unrecoverable; that consequence rests on the __check_auth model and the OpenZeppelin source row. Keep the B row.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+      "observedAt": "2026-11-02",
+      "quote": "Separate roles (admin vs. standard) so daily use can be delegated while upgrades or recovery stay with admins."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.corroboration[2].evidence[0].ref",
+    "decision": "modify",
+    "newText": "{\"class\": \"A\", \"ref\": \"https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns\", \"observedAt\": \"2026-11-02\"}",
+    "note": "Modify, not accept: the proposal swaps the ref but keeps observedAt 2026-07-11, which dates an observation of a page nobody read then. Set observedAt to 2026-11-02. Supported: cooldown after key rotation, policy signer for changing signers, event emission; smart-wallets adds thresholds and timelocks. Notifications and cancellation are not stated on either page.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+      "observedAt": "2026-11-02",
+      "quote": "add a cooldown after actions like key rotation or large transfers."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+      "observedAt": "2026-11-02",
+      "quote": "For high-risk contract calls (e.g. large transfers, changing signers), require the end user plus a policy signer"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+      "observedAt": "2026-11-02",
+      "quote": "reject and emit an event with the attempted amount and remaining allowance."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.corroboration[3].evidence[0].ref",
+    "decision": "modify",
+    "newText": "{\"class\": \"A\", \"ref\": \"https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns\", \"observedAt\": \"2026-11-02\"}",
+    "note": "Modify, not accept: the proposal swaps the ref but keeps observedAt 2026-07-11, which dates an observation of a page nobody read then. Set observedAt to 2026-11-02. advanced-patterns names a guardian key as a policy signer. It does not state a disclosure duty; treat the row as design guidance, not a quoted rule.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+      "observedAt": "2026-11-02",
+      "quote": "A policy signer exists to approve or deny specific actions (for example, an auditor key, a guardian key, or a service that enforces spending rules)."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.corroboration[4].evidence[0].ref",
+    "decision": "modify",
+    "newText": "{\"class\": \"A\", \"ref\": \"https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets\", \"observedAt\": \"2026-11-02\"}",
+    "note": "Modify, not accept: the proposal swaps the ref but keeps observedAt 2026-07-11, which dates an observation of a page nobody read then. Set observedAt to 2026-11-02. Use smart-wallets: 'synced across devices through cloud providers' grounds the availability half. advanced-patterns does not discuss sync.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Keys stay on the device or synced across devices through cloud providers."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.corroboration[5].evidence[0].ref",
+    "decision": "modify",
+    "newText": "{\"class\": \"A\", \"ref\": \"https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets\", \"observedAt\": \"2026-11-02\"}",
+    "note": "Modify, not accept: the proposal swaps the ref but keeps observedAt 2026-07-11, which dates an observation of a page nobody read then. Set observedAt to 2026-11-02. Use smart-wallets: the contract stores only the passkey public key, so the contract address cannot recreate a private credential.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Registration: use WebAuthn to create a device keypair; store the public key (and optional credential ID) in contract state."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.corroboration[6].evidence[0].ref",
+    "decision": "modify",
+    "newText": "{\"class\": \"A\", \"ref\": \"https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns\", \"observedAt\": \"2026-11-02\"}",
+    "note": "Modify, not accept: the proposal swaps the ref but keeps observedAt 2026-07-11, which dates an observation of a page nobody read then. Set observedAt to 2026-11-02. Admin-held recovery role implies recovery authority must exist before loss; consistent with the contradicted verdict.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+      "observedAt": "2026-11-02",
+      "quote": "Separate roles (admin vs. standard) so daily use can be delegated while upgrades or recovery stay with admins."
+     }
+    ]
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "field": "truth.corroboration[7].evidence[0].ref",
+    "decision": "modify",
+    "newText": "{\"class\": \"A\", \"ref\": \"https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets\", \"observedAt\": \"2026-11-02\"}",
+    "note": "Modify, not accept: the proposal swaps the ref but keeps observedAt 2026-07-11, which dates an observation of a page nobody read then. Set observedAt to 2026-11-02. Use smart-wallets: Ed25519 keys are listed as ordinary valid signers, which supports the contradicted verdict for the avoid item.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+      "observedAt": "2026-11-02",
+      "quote": "curl: 308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, policy signers, session keys or anything the contract can verify."
+     }
+    ]
+   },
+   {
+    "id": "q-sor-build-target-wasm32v1",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "Build new Soroban contracts for `wasm32v1-none` with `stellar contract build`. As of 2026-11-02 (Stellar CLI 28.1.0, soroban-sdk 29.0.1), the CLI runs cargo with `--target=wasm32v1-none --release`, sets the build marker the SDK requires, and optimizes the Wasm by default. The output is `target/wasm32v1-none/release/<contract>.wasm`. Plain `cargo build` defaults to the host target and the dev profile. Since soroban-sdk 28, a Wasm build outside the CLI fails with `soroban-sdk requires stellar-cli v25.2.0+ to build a contract`; `cargo test` is unaffected. `wasm32v1-none` needs Rust 1.84 or later.…",
+    "note": "Most of the proposal is confirmed (Rust 1.84, the 1.82 wasm32-unknown-unknown feature failure, the core-crate fix, the output path, optimize-by-default, CLI 28.1.0 latest). But 'wraps cargo build --target wasm32v1-none --release' and 'plain cargo build ... unless you pass --target wasm32v1-none --release' imply that plain cargo with those flags builds a contract. Since soroban-sdk 28.0.0 (verified…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+      "observedAt": "2026-11-02",
+      "quote": "The `wasm32-unknown-unknown` target is **not supported** for building Soroban contracts when using Rust 1.82 or newer. On those versions, `wasm32-unknown-unknow…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar smart contracts require **Rust toolchain `v1.84.0` or higher** ... If you update your Rust version, you'll need to reinstall the `wasm32v1-none` target …"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+      "observedAt": "2026-11-02",
+      "quote": "If you get an error like `can't find crate for 'core'` ... running `rustup target add wasm32v1-none` ... A `.wasm` file will be outputted ... at `target/wasm32v…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/build.rs",
+      "observedAt": "2026-11-02",
+      "quote": "panic!(\"Rust compiler 1.82+ with target 'wasm32-unknown-unknown' is unsupported by the Soroban Environment, use 'wasm32v1-none' available with Rust 1.84+. ... r…"
+     },
+     {
+      "class": "F",
+      "ref": "local: stellar 28.1.0 (c0f4d0da), rustc 1.93.0; scratch crate with soroban-sdk =29.0.1",
+      "observedAt": "2026-11-02",
+      "quote": "`cargo build --target wasm32v1-none --release` -> build-script-build exit status 1: 'error: soroban-sdk requires stellar-cli v25.2.0+ to build a contract'. `ste…"
+     },
+     {
+      "class": "F",
+      "ref": "local: stellar contract build --print-commands-only (CLI 28.1.0)",
+      "observedAt": "2026-11-02",
+      "quote": "SOROBAN_SDK_BUILD_SYSTEM_SUPPORTS_SPEC_SHAKING_V2=1 STELLAR_CLI_VERSION=28.1.0 cargo rustc --manifest-path=Cargo.toml --crate-type=cdylib --target=wasm32v1-none…"
+     },
+     {
+      "class": "F",
+      "ref": "local: stellar contract build --help (CLI 28.1.0)",
+      "observedAt": "2026-11-02",
+      "quote": "--optimize [<OPTIMIZE>] Optimize the generated wasm. Enabled by default; pass `--optimize=false` to disable. Requires the `additional-libs` feature [default: tr…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases/latest",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+      "observedAt": "2026-11-02",
+      "quote": "contracts must be built with `stellar contract build` from `stellar-cli` v25.2.0 or newer. Building for Wasm with anything else now fails: error: soroban-sdk re…"
+     },
+     {
+      "class": "D",
+      "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/ (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Build contracts with `stellar contract build` ... Do not build contracts with `cargo build`. As of soroban-sdk v28, stellar-cli v25.2.0 or newer is required."
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'stellar contract build wasm32v1-none cargo build release' (observedAt 2026-11-02T16:36:18Z)",
+      "observedAt": "2026-11-02",
+      "quote": "hello-world#build-the-contract: 'small wrapper around cargo build that sets the target to wasm32v1-none and the profile to release'; upload-wasm-bytecode: 'carg…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-build-target-wasm32v1",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Verified with Stellar Docs MCP and local `stellar contract build --help` from CLI 25.2.0; re-checked 2026-11-02 with CLI 28.1.0, whose `--print-commands-only` shows `cargo rustc --crate-type=cdylib --target=wasm32v1-none --release` with the SDK build marker set; a soroban-sdk 29.0.1 plain `cargo build --target wasm32v1-none --release` failed at the SDK build script. Do not penalize an answer that describes the CLI as a wrapper around `cargo build`, as the Hello World page does.",
+    "note": "The proposal's notes text is true but omits the SDK gate. The last sentence is a symmetric leniency for a docs-backed framing, not a cap or an avoid item. Replace-substring on the same old text.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "local: stellar contract build --print-commands-only (CLI 28.1.0)",
+      "observedAt": "2026-11-02",
+      "quote": "SOROBAN_SDK_BUILD_SYSTEM_SUPPORTS_SPEC_SHAKING_V2=1 STELLAR_CLI_VERSION=28.1.0 cargo rustc --manifest-path=Cargo.toml --crate-type=cdylib --target=wasm32v1-none…"
+     },
+     {
+      "class": "F",
+      "ref": "local: stellar 28.1.0 (c0f4d0da), rustc 1.93.0; scratch crate with soroban-sdk =29.0.1",
+      "observedAt": "2026-11-02",
+      "quote": "`cargo build --target wasm32v1-none --release` -> build-script-build exit status 1: 'error: soroban-sdk requires stellar-cli v25.2.0+ to build a contract'. `ste…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+      "observedAt": "2026-11-02",
+      "quote": "If you get an error like `can't find crate for 'core'` ... running `rustup target add wasm32v1-none` ... A `.wasm` file will be outputted ... at `target/wasm32v…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-contract-trustlines-c-address",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "'Implemented' is stale; CAP-0073 is Final, and mainnet is past Protocol 26 (at 29). The new wording is stable once true, so it needs no as-of date. Orchestrator: update the truth.verified evidence for this judge-facing notes change.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP: 0073 / Title: Allow SAC to create G-account balances / Status: Final / Protocol version: 26"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| [CAP-0073](cap-0073.md) | 26 | Allow SAC to create G-account balances | Dmytro Kozhevin | Final |"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "## Protocol 26 (Mainnet, May 6, 2026) ... Allow SAC to Create G-Account Balances: [CAP-73]"
+     },
+     {
+      "class": "F",
+      "ref": "GET https://horizon.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, history_latest_ledger_closed_at 2026-11-02T16:34:19Z"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://stellarlight.xyz/api/skills?source=sdf",
+   "https://skills.stellar.org/llms.txt",
+   "https://api.github.com/repos/stellar/stellar-dev-skill/contents/skills",
+   "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
+   "https://developers.stellar.org/docs/build/guides/contract-accounts/recovery",
+   "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+   "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+   "https://developers.stellar.org/docs/build/apps/smart-wallets",
+   "https://developers.stellar.org/sitemap.xml",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/contract-accounts/advanced-patterns.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/contract-accounts/smart-wallets.mdx",
+   "https://api.github.com/repos/stellar/stellar-docs/commits?path=docs/build/apps/smart-wallets/recovery.mdx",
+   "https://github.com/stellar/stellar-docs/blob/main/redirects.json",
+   "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
+   "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+   "https://developers.stellar.org/docs/networks/software-versions",
+   "https://horizon.stellar.org/",
+   "https://api.github.com/repos/stellar/stellar-cli/releases",
+   "https://api.github.com/repos/stellar/rs-soroban-sdk/releases",
+   "https://github.com/stellar/rs-soroban-sdk/blob/{v26.0.1,v27.0.0,v28.0.0,v29.0.0,v29.0.1,main}/soroban-sdk/build.rs",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/smart-contracts/getting-started/setup.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/contract-development/rust-dialect.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/smart-contracts/getting-started/hello-world.mdx",
+   "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+   "https://docs.rs/soroban-sdk/latest/soroban_sdk/",
+   "https://docs.rs/crate/soroban-sdk/28.0.0/source/build.rs",
+   "Raven stellarDocs.search_docs x2",
+   "https://api.github.com/repos/OpenZeppelin/stellar-contracts/contents/packages/accounts"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-gap-scout-list-skill-directory; q-sor-build-target-wasm32v1; q-sor-contract-trustlines-c-address",
+  "verifiedOnly": "q-passkey-wallet-recovery; q-gap-digest-soroban-adjacent; q-gap-explainrepo-payload-ok; q-passkey-smart-account-architecture; q-smart-account-scoped-policy-signers; q-sor-classic-dex-from-contract; q-sor-contract-as-claimable-arbiter; q-sor-cross-socketfi-auth",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-sor-build-target-wasm32v1",
+    "issue": "Verifier asks the orchestrator to file an improvements/ finding: the Hello World page (developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world) still calls stellar contract build a wrapper/shortcut for cargo build, but since soroban-sdk 28 a plain cargo Wasm build fails without the CLI marker. The applier edits case files only, so the finding is not filed."
+   },
+   {
+    "id": "q-sor-build-target-wasm32v1",
+    "issue": "The new golden.answer pins dated versions (Stellar CLI 28.1.0, soroban-sdk 29.0.1), but tags.freshness stays live with no truth.reverifyBy. Changing freshness to scheduled is a judge-facing change that nobody proposed or verified, so it needs an owner decision."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-gap-scout-list-skill-directory",
+    "log": "golden.answer + golden.notes: added the dated 2026-11-02 SDF roster (8 entries) beside the 2026-07-11 snapshot and a symmetric dated-count caution; asOf 2026-11-02; 3 sources + 1 corroboration row (C/B/A); verified refreshed (rootCause freshness-drift)."
+   },
+   {
+    "id": "q-passkey-wallet-recovery",
+    "log": "Provenance only: replaced the dead recovery URL in truth.sources[0] and all 8 corroboration rows with advanced-patterns or smart-wallets (verifier modify, observedAt 2026-11-02, per-row quotes); appended the smart-wallets source; verified refreshed."
+   },
+   {
+    "id": "q-sor-build-target-wasm32v1",
+    "log": "golden.answer replaced with the verifier's modify text (dated CLI 28.1.0 / soroban-sdk 29.0.1, SDK CLI gate); golden.notes re-check sentence + Hello World leniency; asOf 2026-11-02; 5 sources added, A sources dated; corroboration row re-evidenced (solo ref replaced) + 2 new rows; verified refreshed (authoring-flaw rootCause)."
+   },
+   {
+    "id": "q-sor-contract-trustlines-c-address",
+    "log": "golden.notes: CAP-0073 'Implemented' -> 'Final; Protocol 26 is live on mainnet'; 3 sources + 1 corroboration row (B/A/F); verified refreshed (rootCause freshness-drift)."
+   },
+   {
+    "id": "q-gap-digest-soroban-adjacent",
+    "log": "verified refreshed with C/B/A evidence; asOf 2026-11-02; gospel unchanged."
+   },
+   {
+    "id": "q-gap-explainrepo-payload-ok",
+    "log": "verified refreshed with C/A/B evidence; asOf 2026-11-02; gospel unchanged."
+   },
+   {
+    "id": "q-passkey-smart-account-architecture",
+    "log": "verified refreshed with B/A evidence; gospel unchanged; reverifyBy 2027-02-03 -> 2027-03-09."
+   },
+   {
+    "id": "q-smart-account-scoped-policy-signers",
+    "log": "verified refreshed with A/B evidence; gospel unchanged."
+   },
+   {
+    "id": "q-sor-classic-dex-from-contract",
+    "log": "verified refreshed with A/B/E/F/D evidence; gospel unchanged."
+   },
+   {
+    "id": "q-sor-contract-as-claimable-arbiter",
+    "log": "verified refreshed with A/E/B/D evidence; gospel unchanged."
+   },
+   {
+    "id": "q-sor-cross-socketfi-auth",
+    "log": "verified refreshed with A/C/D/B/E evidence; gospel unchanged; reverifyBy 2027-01-25 -> 2027-03-23."
+   }
+  ]
+ }
+}

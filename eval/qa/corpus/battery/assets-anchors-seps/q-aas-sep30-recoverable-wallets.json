@@ -55,22 +55,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/apps/wallet/sep30",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Split server roles from key custody and shortened the recovery dependency; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md — SEP-30 makes recovery servers account signers and has them sign signer-change transactions.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md — SEP-30 has the server generate its own signing key, not hold the user's master secret.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md — SEP-30 requires preregistration, account signers, configured thresholds, and a client-server flow.",
-        "Sibling sweep 2026-08-29: grep SEP-30 → q-tool-passkey-wallet-recovery, q-aas-sep30-recoverable-wallets; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md — 'Status: Draft ... Updated: 2021-05-04 Version: 0.8.1' (claim: SEP-30 status is Draft.; verdict confirmed-as-of)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/apps/wallet/sep30.md — 'During this flow the wallet communicates with one or more recovery signer servers to register the wallet for a later recovery if it's needed.' (claim: SEP-30 status is Draft.; verdict confirmed-as-of)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md — 'regain access to a Stellar account that it owns after the individual has lost its private key without providing any third party control of the account. ... preregister the account ... and add those servers as signers of the account.' (claim: Recovery servers are pre-registered account signers; no third-party control; SEP-10 or external JWT auth.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/apps/wallet/sep30.md — 'The [Sep-30] standard defines the standard way for an individual (e.g., a user or wallet) to regain access to their Stellar account after losing its private key without providing any third party control of the account.' (claim: Recovery servers are pre-registered account signers; no third-party control; SEP-10 or external JWT auth.; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-passkey-wallet-recovery, q-tool-passkey-wallet-recovery checked; no contradiction."
       ]
     },
     "origin": "raven-next q-aas-sep30-recoverable-wallets",

@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A classic Stellar account has a master key and optional additional **signers**, each with a weight. Operations are assigned **low, medium, or high** thresholds, and the valid signatures' combined weight must meet the transaction's required threshold; this is Stellar's native multisig model. Classic `SignerKey` has exactly four forms: **ed25519**, **pre-authorized transaction hash**, **hashX**, and **ed25519 signed payload** (the last added by CAP-0040 in Protocol 19). **secp256r1 is not a classic SignerKey**: CAP-0051/P21 exposed secp256r1 verification for Soroban custom-account/passkey authorization.\n\nThe transaction source account's sequence number provides replay protection and source-local ordering. Under the default precondition, a transaction's sequence must be exactly current + 1. That rule is not unconditional: CAP-0021/P19 `minSeqNum` makes a transaction valid when `minSeqNum <= current account sequence < transaction sequence`; if it succeeds, the account advances directly to the transaction sequence. Failed or unapplied transactions do not automatically consume the sequence.",
+    "answer": "A classic Stellar account has a master key and optional additional **signers**, each with a weight. Operations are assigned **low, medium, or high** thresholds, and the valid signatures' combined weight must meet the transaction's required threshold; this is Stellar's native multisig model. Classic `SignerKey` has exactly four forms: **ed25519**, **pre-authorized transaction hash**, **hashX**, and **ed25519 signed payload** (the last added by CAP-0040 in Protocol 19). **secp256r1 is not a classic SignerKey**: CAP-0051/P21 exposed secp256r1 verification for Soroban custom-account/passkey authorization.\n\nThe transaction source account's sequence number provides replay protection and source-local ordering. Under the default precondition, a transaction's sequence must be exactly current + 1. That rule is not unconditional: CAP-0021/P19 `minSeqNum` makes a transaction valid when `minSeqNum <= current account sequence < transaction sequence`; if it succeeds, the account advances directly to the transaction sequence. A transaction rejected before ledger inclusion does not consume the sequence; an included transaction consumes it even when its operations fail.",
     "keyFacts": [
       "Explains signer weights and low/medium/high thresholds for classic native multisig.",
       "Lists all four classic SignerKey forms.",
@@ -57,6 +57,24 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+        "note": "'If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed ... For each transaction, the account's sequence number is consumed (increased by 1)'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp",
+        "note": "'There are only a few possible reasons for why we would *not* update the sequence number ... In any other scenario we should update the sequence number'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/accounts/GDJO6CLNYWMBY7SKUN5ETMTNGZBOYDC4KNXISMFNVFQ7WSTSN5P3CBR3",
+        "note": "Failed included tx (successful=false, ledger 65270250, seq 241038254755846192, fee_charged 200) left the account sequence at 241038254755846192.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -95,26 +113,53 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "A transaction rejected before ledger inclusion does not consume the source sequence; an included transaction consumes it even when its operations fail.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+            "observedAt": "2026-11-02",
+            "note": "Invalid: sequence not incremented and no fee; applied: sequence consumed, operations may fail."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp",
+            "observedAt": "2026-11-02",
+            "note": "Sequence update skipped only for no source account or bad sequence."
+          },
+          {
+            "class": "E",
+            "ref": "Raven stellarDocs.search_docs 'sequence number will not be incremented no fee consumed'",
+            "observedAt": "2026-11-02",
+            "note": "Returns the transaction-lifecycle passage."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/accounts/GDJO6CLNYWMBY7SKUN5ETMTNGZBOYDC4KNXISMFNVFQ7WSTSN5P3CBR3 and /transactions?include_failed=true",
+            "observedAt": "2026-11-02",
+            "note": "Failed included tx seq 241038254755846192 equals the account's current sequence."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently found the classic/Soroban signer-category error and the minSeqNum exception.",
-        "2026-07-11 author re-check against stellar-xdr 8521b97b, CAP-0021, CAP-0040, and CAP-0051.",
-        "Structural re-form (presentation-avoid): Removed the signed-payload omission demand because the key fact already requires all four forms; preserved the secp256r1 false-content trap; truth is unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep ed25519 signed payload|secp256r1|SignerKey → q-infra-secp256r1-passkeys, q-protocol-19-preconditions-cap-0021, q-protocol-accounts-signers-thresholds; no contradiction",
-        "Structural re-form (compound-predicate): Split the classic SignerKey forms from Soroban/custom authentication; truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-xdr/blob/master/Stellar-types.x and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0040.md confirm the four classic SignerKey forms.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md confirms secp256r1 verification for Soroban custom-account authentication.",
-        "Sibling sweep 2026-08-27: grep SignerKey|secp256r1|custom auth → q-infra-secp256r1-passkeys, q-protocol-19-preconditions-cap-0021, q-pc-multisig-setup-lifecycle; no contradiction"
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle 'If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed ... For each transaction, the account's sequence number is consumed (increased by 1) ... The entire transaction will fail if any operation fails'.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions 'valid when S satisfies minSeqNum <= S < tx.seqNum ... after a transaction is executed, the account will always set its sequence number to the transaction's sequence number.'",
+        "Live B 2026-11-02: stellar-core@b8c4f12d6f1159d67be8743c87a3c7df839ae7f4 src/transactions/TransactionFrame.cpp 'There are only a few possible reasons for why we would *not* update the sequence number ... In any other scenario we should update the sequence number'; stellar-xdr Stellar-types.x SignerKeyType has four arms.",
+        "Live E 2026-11-02: Raven stellarDocs.search_docs returns the transaction-lifecycle passage 'rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed'.",
+        "Live F 2026-11-02: https://horizon.stellar.org/accounts/GDJO6CLNYWMBY7SKUN5ETMTNGZBOYDC4KNXISMFNVFQ7WSTSN5P3CBR3 failed tx 5e0f70fc... successful=false, ledger 65270250, seq 241038254755846192, fee_charged 200; account sequence now 241038254755846192.",
+        "Independent verifier accepted golden.answer (/private/tmp/claude-501/golden-audit/verify/protocol-core-03.json).",
+        "Sibling sweep 2026-11-02: q-pc-tx-finality-failure-semantics (same rule: included failures consume fee and sequence; pre-inclusion rejection consumes neither), q-pc-sequence-numbers-ordering-replace, q-protocol-19-preconditions-cap-0021; now consistent, no contradiction."
       ],
       "rootCause": [
-        "Eval-side conflation of classic account SignerKey with Soroban custom-account authentication, plus pre-CAP-0021 sequence shorthand.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Eval-side authoring flaw: the GT-31 rewrite used 'failed' for pre-inclusion rejection, contradicting included-failure sequence consumption in sibling q-pc-tx-finality-failure-semantics.",
+        ".agents/rounds/2026-11-02-golden-audit.md (batch protocol-core-03)"
       ]
     },
     "origin": "raven-next q-protocol-accounts-signers-thresholds"

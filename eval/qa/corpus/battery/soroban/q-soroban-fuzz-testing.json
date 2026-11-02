@@ -39,6 +39,12 @@
         "class": "B",
         "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v27.0.0/soroban-sdk/src/testutils/arbitrary.rs",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/testutils/arbitrary.rs",
+        "note": "SDK v29.0.1 testutils/arbitrary.rs",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -68,21 +74,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329; blind narrowed unsupported auditor/prevalence wording while retaining the tooling.",
-        "Structural re-form (long-fact): Split two long fuzz-testing facts into four atomic facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the official example adapts fuzz tests into reusable property tests with proptest and constructs an Env.",
-        "Live re-check 2026-08-29: https://github.com/stellar/rs-soroban-sdk/blob/v27.0.0/soroban-sdk/src/testutils/arbitrary.rs — SDK source documents cargo-fuzz, Arbitrary, SorobanArbitrary, and Env conversion.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the official example presents state assertions across generated calls as a testing strategy.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the source establishes an example workflow, not vendor practice or defect prevalence.",
-        "Sibling sweep 2026-08-29: grep SorobanArbitrary|cargo-fuzz|libFuzzer|proptest|fuzz testing → q-soroban-fuzz-testing; no contradiction.",
-        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-3.md): deleted the presentation-shaped fact 'Avoids unsupported claims about tool use or defect prevalence'; the existing avoid item already carries that trap; truth unchanged versus HEAD."
-      ],
-      "rootCause": [
-        "Eval-side source overreach from a testing recommendation to vendor practice and finding-frequency claims.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — \"demonstrates how to fuzz test Soroban contracts with [`cargo-fuzz`] and customize the input to fuzz tests with the [`arbitrary`] crate. It also demonstrates how to adapt fuzz tests into reusable property tests\"; \"Soroban has built-in support for fuzzing Soroban contracts with `cargo-fuzz`.\" (observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/testutils/arbitrary.rs — \"Randomized testing of contracts, with [`cargo-fuzz`], [`cargo-afl`], or [`proptest`]. ... defines the [`SorobanArbitrary`] trait\" (observedAt 2026-11-02)",
+        "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0 — \"Use `SorobanArbitrary` prototypes with `proptest`, now documented in `testutils::proptest`.\" (observedAt 2026-11-02)",
+        "No gospel change: all keyFacts and avoid items confirmed; SDK 28+ additions (cargo-afl, ArbitraryAddressAccount) are additive.",
+        "Sibling sweep 2026-11-02: q-soroban-vuln-classes: no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-fuzz-testing"

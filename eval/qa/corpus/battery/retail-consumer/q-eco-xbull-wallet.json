@@ -10,24 +10,25 @@
     "lumenloop.search_documents"
   ],
   "golden": {
-    "answer": "**xBull** is an open-source, non-custodial Stellar wallet built by **Creit-Tech**. As of **2026-07-10**, current evidence supported the Chrome/Firefox extension, web/PWA, and iOS surfaces, with the public repo/release still on the v1.x line. The project's own page described the passkey-based hybrid **V2 as coming**, not already introduced. The Google Play URL returned 404, so do not claim current Android store availability without a fresh listing.\n\nRe-check platform availability, maintained release, signing/Soroban features, and integrations before recommending it. Stars and broad 'widely integrated' claims are volatile and not part of identity. xBull is not an SDF or Ultra Stellar product.",
+    "answer": "**xBull** is an open-source, non-custodial Stellar wallet built by **Creit-Tech**. As of **2026-11-02**, current evidence supported the Chrome/Firefox extension and web/PWA surfaces, with the public repo/release still on the v1.x line (v1.40.0). The project's own page described the passkey-based hybrid **V2 as coming**, not already introduced. The checked App Store and Google Play URLs both returned 404, so do not claim current iOS or Android store availability without a fresh listing.\n\nRe-check platform availability, maintained release, signing/Soroban features, and integrations before recommending it. Stars and broad 'widely integrated' claims are volatile and not part of identity. xBull is not an SDF or Ultra Stellar product.",
     "keyFacts": [
       "Identifies xBull as Creit-Tech's open-source non-custodial Stellar wallet.",
       "Dates verified platform claims.",
       "Treats passkey/hybrid V2 as forthcoming.",
-      "Treats Android availability as unverified/absent at the checked store URL."
+      "Treats iOS and Android store availability as unverified/absent at checked URLs."
     ],
     "avoid": [
-      "Do NOT say V2/passkeys were already introduced or claim Android availability from code/directory metadata alone.",
+      "Do NOT say xBull V2 or its passkey support has already shipped.",
+      "Do NOT say xBull is currently listed on the iOS App Store or Google Play.",
       "Do NOT freeze star counts, broad integration/features, or current maintenance without dated evidence.",
       "Do NOT attribute xBull to SDF or Ultra Stellar."
     ],
-    "notes": "Per-project identity → lumenloop_get_project. Verified on Scout: xBull = open-source non-custodial Stellar wallet (browser ext + web + iOS/Android) by Creit-Tech; repo Creit-Tech/xBull-Wallet (TypeScript, ~32 stars, repoScore 61). Creit-Tech (CreitTech) also runs a Reflector oracle node — but xBull is the wallet. V2 = passkey-based hybrid.\nAlso good if the answer: Notes its V2 introduced a passkey-based hybrid wallet experience.\nGolden cites: A source identifying xBull / Creit-Tech.\nGT-20 CORRECTION 2026-07-10: completed-V2 and current-Android claims are contradicted. Platform/support/maintainer facts are quarterly-freshness even though inherited tags cannot yet be overridden.\nAccurately quoting the canonical Scout source on xBull's `Live` label as proof of Android availability is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "Per-project identity → lumenloop_get_project. Verified on Scout (2026-11-02): xBull = open-source non-custodial Stellar wallet (browser extension + web app) by Creit Tech; Scout says its former iOS/Android store apps are no longer available (store listings checked 2026-07-13); repo Creit-Tech/xBull-Wallet (TypeScript, ~32 stars, repoScore 61). Creit-Tech (CreitTech) also runs a Reflector oracle node — but xBull is the wallet. V2 = passkey-based hybrid.\nAlso good if the answer: Notes that the passkey-based hybrid V2 is announced as coming.\nGolden cites: A source identifying xBull / Creit-Tech.\nGT-20 CORRECTION 2026-07-10: completed-V2 and current-Android claims are contradicted. Platform/support/maintainer facts are scheduled-freshness facts.\nAs of 2026-11-02, Scout's `Live` status for xBull rests on the web wallet and Chrome extension only (its lifecycle note says so), so that label is not evidence of a store app. Lumenloop's xbull description still lists Android and iOS; that platform claim is stale."
   },
   "tags": {
     "category": "retail-consumer",
     "service": "lumenloop",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -53,9 +54,52 @@
         "note": "class inferred at migration"
       },
       {
-        "class": "D",
+        "class": "F",
         "ref": "https://apps.apple.com/us/app/xbull-wallet/id6705122563",
-        "note": "class inferred at migration"
+        "note": "HTTP 404 on 2026-11-02 (also /es, /gb); kept as the checked negative URL.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://xbull.app/",
+        "note": "'Passkeys and a new interface are coming with xBull Wallet v2 ... Created by Creit Tech'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Creit-Tech/xBull-Wallet/releases",
+        "note": "Latest v1.40.0, published 2025-08-12.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://itunes.apple.com/lookup?id=6705122563",
+        "note": "resultCount 0 in us, es, gb, de, in, br.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://play.google.com/store/apps/details?id=app.xbull.wallet",
+        "note": "HTTP 404 (app.xbull.mobile also 404).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=xbull",
+        "note": "Scout: 'Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13).'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=xbull (xbull row: status, availability, lifecycle)",
+        "note": "status 'Live', statusBasis human-verified; availability ios 'unavailable' and android 'unavailable' (checkedAt 2026-07-13); lifecycle.note 'Live basis = web wallet (xbull.app) + Chrome Web Store extension, both verified 2026-07-13 ... platform claims in the description were corrected accordingly (sls-024/#533).'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Stellar Raven MCP execute lumenloop.get_project({slug:'xbull', compact:true})",
+        "note": "description: 'It supports multiple platforms, including web browsers, Android, and iOS devices'; stale against the store checks.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -88,30 +132,75 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02 xBull's checked iOS App Store and Google Play listings are unavailable; the browser extension and web app remain, the release line is v1.40.0, and V2 with passkeys is still announced as coming.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://itunes.apple.com/lookup?id=6705122563&country={us,es,gb,de,in,br}",
+            "observedAt": "2026-11-02",
+            "note": "resultCount 0 in every region; apps.apple.com/us/app/xbull-wallet/id6705122563 returns 404."
+          },
+          {
+            "class": "F",
+            "ref": "https://play.google.com/store/apps/details?id=app.xbull.wallet",
+            "observedAt": "2026-11-02",
+            "note": "404; id=app.xbull.mobile also 404."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=xbull",
+            "observedAt": "2026-11-02",
+            "note": "'Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13).'"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.appbrain.com/app/xbull-wallet/app.xbull.mobile",
+            "observedAt": "2026-11-02",
+            "note": "Via Perplexity search: 'This app is currently not available on Google Play.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://xbull.app/",
+            "observedAt": "2026-11-02",
+            "note": "'Passkeys and a new interface are coming with xBull Wallet v2'."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/Creit-Tech/xBull-Wallet/releases",
+            "observedAt": "2026-11-02",
+            "note": "Latest v1.40.0, published 2025-08-12."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task wallets-hackathons-safety)",
       "evidence": [
-        "Solo scratchpad 575 GT-20 primary 3256 and blind 3257",
-        "Sibling sweep: wallet overview/list/similar and Wallets Kit integration cases",
-        "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
-        "Reviewed improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed claim: xBull's Live label proves current Android availability.",
-        "Sibling sweep 2026-08-27: grep xBull|Creit-Tech|Google Play → q-builder-by-scf-tier, q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-eco-xbull-wallet, q-edge-ambig-best-wallet, q-soroban-x402-auth-entry-signing, q-ti-connect-wallet-button-code, q-tool-freighter-wallet, q-tool-wallets-comparison; no contradiction",
-        "Structural re-form (compound-predicate): split platform dating, V2 status, and Android store-status requirements into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://chromewebstore.google.com/detail/xbull-wallet/omajpeaffjgmlpmhbfdjepdejoemifpe — the current listing exposes a dated platform version for verification.",
-        "Live re-check 2026-08-27: https://xbull.app/ — the current operator page still describes passkey/hybrid V2 as coming.",
-        "Live re-check 2026-08-27: https://play.google.com/store/apps/details?id=app.xbull.mobile — the current check could not retrieve a listing, so Android availability remains unverified at that URL.",
-        "Sibling sweep 2026-08-27: grep xBull|Creit-Tech|passkey|Google Play → q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-builder-by-scf-tier, q-tool-wallets-comparison, q-ti-connect-wallet-button-code, q-soroban-x402-auth-entry-signing, q-eco-lobstr-wallet, q-tool-freighter-wallet; no contradiction"
+        "https://itunes.apple.com/lookup?id=6705122563 — resultCount 0 in us, es, gb, de, in, br; https://apps.apple.com/us/app/xbull-wallet/id6705122563 → 404 (observedAt 2026-11-02).",
+        "https://play.google.com/store/apps/details?id=app.xbull.wallet and id=app.xbull.mobile → 404 (observedAt 2026-11-02).",
+        "https://stellarlight.xyz/api/projects/search?q=xbull — 'Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13).' (observedAt 2026-11-02).",
+        "https://www.appbrain.com/app/xbull-wallet/app.xbull.mobile (via Perplexity) — 'This app is currently not available on Google Play.' (observedAt 2026-11-02).",
+        "https://xbull.app/ — 'Passkeys and a new interface are coming with xBull Wallet v2 ... Created by Creit Tech' (observedAt 2026-11-02).",
+        "https://api.github.com/repos/Creit-Tech/xBull-Wallet/releases — latest v1.40.0 published 2025-08-12; Chrome Web Store omajpeaffjgmlpmhbfdjepdejoemifpe 200 (1.40.0); Firefox AMO 'xBull Wallet' 1.22.0, last_updated 2024-06-18 (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: battery cases naming xBull → q-builder-by-scf-tier, q-defi-reflector-oracle, q-eco-freighter-wallet, q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-raph-lobstr-legitimacy, q-ti-connect-wallet-button-code; none claims xBull iOS or Android store availability.",
+        "Pass 1 proposer matrix and independent verifier decisions (accept/modify): .agents/rounds/2026-11-02-golden-audit.md, batch varial-retail; applier spot-checked README, npm, www.freighter.app redirect, and SDF blog RSS on 2026-11-02.",
+        "Pass 2 2026-11-02: Scout xbull row (https://stellarlight.xyz/api/projects/search?q=xbull) lifecycle.note 'Live basis = web wallet (xbull.app) + Chrome Web Store extension' and availability ios/android 'unavailable', so the notes caution about quoting Scout's Live label as Android proof lost its trigger and is removed (ADR-0008 also bars partial caps for aggregator claims). avoid[0] is split into two answer-visible predicates; the old 'from code/directory metadata alone' clause named a basis the judge cannot see. Lumenloop get_project xbull still lists Android and iOS (observedAt 2026-11-02). The Scout correction traces to improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md (lifecycle note cites sls-024/#533); the caution expired through freshness-drift.",
+        "Sibling sweep pass 2 2026-11-02: q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-builder-by-scf-tier, q-ti-connect-wallet-button-code, q-defi-reflector-oracle, q-raph-lobstr-legitimacy; none claims xBull store availability or a shipped V2; no contradiction.",
+        "Upstream finding filed 2026-11-02 (pass 3): improvements/lumenloop/ll-038-xbull-record-stale-mobile-platforms.md (status verified). Re-check 2026-11-02T18:33:49Z: Lumenloop get_project xbull description still says 'web browsers, Android, and iOS devices'; projects/xbull.yaml in lumenloop/stellar-ecosystem-db carries the same sentence; App Store id6705122563 and both Google Play package pages return HTTP 404."
       ],
       "rootCause": [
-        "A roadmap was rewritten as shipped behavior, and code/directory presence was promoted into current app-store availability.",
-        "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift",
+        "Eval-side authoring flaw: a stale 'Also good' note rewarded a shipped-V2 claim that avoid[0] punishes.",
+        "Eval-side authoring flaw: avoid[0] conditioned on the answer's unseen evidence basis ('from code/directory metadata alone') and joined two predicates.",
+        "improvements/lumenloop/ll-038-xbull-record-stale-mobile-platforms.md"
       ]
     },
-    "origin": "raven-next q-eco-xbull-wallet"
+    "origin": "raven-next q-eco-xbull-wallet",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-23"
   }
 }

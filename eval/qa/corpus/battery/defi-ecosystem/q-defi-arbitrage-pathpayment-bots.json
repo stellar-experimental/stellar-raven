@@ -34,7 +34,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -78,31 +78,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (compound-predicate): Recast five long or compound key facts as five atomic facts and moved the unsupported-memory contrast to avoid; every dating, pathfinding, profitability-risk, small-account, simulation, and guard claim remains unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/path-payments — provided current source-backed path-payment observations with dated page metadata.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/path-payments — showed strict-send/strict-receive path payments across SDEX or pool liquidity.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — showed liquidity, spreads, fees, slippage, and price-risk inputs to profitability.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — showed transaction costs and congestion; the existing truth retains failure, competition, capital, and small-account risks.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths — showed path estimates and strict-send destination constraints; the strict-receive endpoint showed send-max constraints.",
-        "Sibling sweep 2026-08-27: grep path payment|strict-send|strict-receive|arbitrage → q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, q-defi-sdex-offer-lifecycle, q-asset-sdex-vs-amm, q-scf-hummingbot-kelp-closed-rfp, q-protocol-operation-types-list; no contradiction",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the guide states that AMMs charge 30 bps and distribute the fee to liquidity providers.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — CAP-0038 sets the fee at \"0.3%\" and discusses profit-driven liquidity allocation.",
-        "Sibling sweep 2026-08-29: grep PathPaymentStrictSend|PathPaymentStrictReceive|0.3%|30 bps|arbitrage → q-asset-amm-fee-reserve, q-asset-path-payment-ops, q-asset-sdex-vs-amm, q-defi-market-making-kelp, q-defi-sdex-offer-lifecycle, q-protocol-operation-types-list, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, and q-scf-hummingbot-kelp-closed-rfp; no contradiction.",
-        "Corroboration audit 2026-08-29: replaced an absence-of-profit implication with the true AMM fee and no-guarantee boundary; Sol+Grok class agreement, targeted probe decided disposition"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        "eval-authoring overgeneralization",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "2026-11-02 [A] https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/path-payment-strict-send — \"PATH_PAYMENT_STRICT_SEND_UNDER_DESTMIN\" (proposer claim, confirmed: PathPaymentStrictSend/StrictReceive with destination_min / send_max; UNDER_DESTMIN, OVER_SENDMAX, TOO_FEW_OFFERS codes)",
+        "2026-11-02 [E] stellarDocs.search_docs(\"PATH_PAYMENT_STRICT_RECEIVE_OVER_SENDMAX TOO_FEW_OFFERS\") — \"PATH_PAYMENT_STRICT_RECEIVE_TOO_FEW_OFFERS There is no path of offers\" (proposer claim, confirmed: PathPaymentStrictSend/StrictReceive with destination_min / send_max; UNDER_DESTMIN, OVER_SENDMAX, TOO_FEW_OFFERS codes)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/apps/example-application-tutorial/querying-data#findstrictsendpaths — \"findStrictSendPaths({ sourceAsset, sourceAmount, destination...\" (proposer claim, confirmed: PathPaymentStrictSend/StrictReceive with destination_min / send_max; UNDER_DESTMIN, OVER_SENDMAX, TOO_FEW_OFFERS codes)",
+        "2026-11-02 [B] https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — \"const LIQUIDITY_POOL_FEE_V18 = 30;\" (proposer claim, confirmed: Protocol AMM fee is 0.3% to LPs; CAP-38 discusses profit-driven liquidity)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"liquidity pool fee 0.3% (docs page in truth.sources)\" (proposer claim, confirmed: Protocol AMM fee is 0.3% to LPs; CAP-38 discusses profit-driven liquidity)",
+        "2026-11-02 [B] https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — \"trying to deploy their capital in the most profitable way\" (proposer claim, confirmed: Protocol AMM fee is 0.3% to LPs; CAP-38 discusses profit-driven liquidity)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/path-payments — \"path payment guide (stable protocol mechanics)\" (proposer claim, confirmed: No-guarantee profitability framing; avoid items punish promises of profit)",
+        "No gospel change: proposer verdict 'unchanged'; every answer, keyFact, and avoid claim was re-checked against the sources above on 2026-11-02.",
+        "Sibling sweep 2026-11-02: checked battery grep for the case entities (no topical sibling found); no gospel change in this case, so no sibling contradiction can arise from this event."
       ]
     },
     "origin": "raven-next q-defi-arbitrage-pathpayment-bots"

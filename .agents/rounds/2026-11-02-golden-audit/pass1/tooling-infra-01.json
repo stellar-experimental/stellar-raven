@@ -1,0 +1,1312 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "tooling-infra-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-gap-av-offset-not-timestamp",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "find_av_passages returns summary, recording metadata, link, similarity, and start_offset",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages {query:'Soroban',limit:3} (raw, Bearer key)",
+       "observedAt": "2026-11-02",
+       "quote": "row keys av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity; av_id 1310 start_offset 24300 similarity 0.527"
+      },
+      {
+       "class": "C",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) lumenloop.find_av_passages({query:'Soroban',limit:2})",
+       "observedAt": "2026-11-02",
+       "quote": "keys [av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity]; caveat unverified-match"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "start_offset is an opaque ordering offset, not seconds",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "GET https://api.lumenloop.com/v1/tools (Lumenloop owner tool description)",
+       "observedAt": "2026-11-02",
+       "quote": "start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds"
+      },
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#lumenloop.find_av_passages",
+       "observedAt": "2026-11-02",
+       "quote": "start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds; do not render it as a timestamp or build a deep…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "cite the returned link and passage summary",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#lumenloop.find_av_passages",
+       "observedAt": "2026-11-02",
+       "quote": "Transcript text itself is never returned — cite the link + the passage summary."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "rendering start_offset as a timestamp / deep link is wrong",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "GET https://api.lumenloop.com/v1/tools",
+       "observedAt": "2026-11-02",
+       "quote": "NOT playback seconds; do"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "live probe row contains start_offset=24300, summary, URL, created_at",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages",
+       "observedAt": "2026-11-02",
+       "quote": "\"created_at\": \"2026-04-29T08:49:29.127Z\", \"start_offset\": 24300"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-gap-lumen-content-tag-vocabulary",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "get_tags_vocabulary returns content-tag rows with IDs, names, slugs, and article/AV counts",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_tags_vocabulary {} (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"id\": 2, \"name\": \"Anchors\", \"slug\": \"anchors\", ... \"article_count\": 3, \"av_count\": 0, \"total_count\": 3}"
+      },
+      {
+       "class": "A",
+       "ref": "GET https://api.lumenloop.com/v1/tools#get_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "These tags are used for articles and AV content, NOT for directory projects."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "content tags are for articles and AV",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#lumenloop.get_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "These tags are used for articles and AV content, NOT for directory projects."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "content-tag vocabulary differs from project-tag vocabulary",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#lumenloop.get_project_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "For article/AV content tags use get_tags_vocabulary instead."
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "{count: 85, tags:[{id:131,name:'Accounting',slug:'accounting'}...]} - distinct id space from content tag ids"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "a content tag count is not a project-directory count",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "article_count / av_count / total_count fields only"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-lumen-project-tag-vocabulary"
+  },
+  {
+   "id": "q-gap-lumen-documents-browse",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "list_documents({collection:'events', period:'upcoming'}) returns document summaries and pagination",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/list_documents {collection:'events',period:'upcoming',limit:5} (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "\"pagination\":{\"total\":14,\"page\":1,\"limit\":5,\"hasMore\":true}; items Noir X Velo Hackathon, Riserva London ..."
+      },
+      {
+       "class": "C",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) lumenloop.list_documents({collection:'events',period:'upcoming',limit:3})",
+       "observedAt": "2026-11-02",
+       "quote": "pag {total:14,page:1,limit:3,hasMore:true}"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "list_documents plus period for upcoming-event browsing",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#lumenloop.list_documents inputSchema.period",
+       "observedAt": "2026-11-02",
+       "quote": "\"period\": {\"description\": \"Events only: filter by time period\", \"enum\": [\"all\",\"upcoming\",\"past\"]}"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "browsing and exact title/URL substring lookup are different actions",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "GET https://api.lumenloop.com/v1/tools#list_documents",
+       "observedAt": "2026-11-02",
+       "quote": "Its optional \"search\" is the SAME exact case-insensitive SUBSTRING match on title and URL as search_documents (not body text, not meaning)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "time_period is not a valid argument",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) lumenloop.list_documents({collection:'events',time_period:'upcoming'})",
+       "observedAt": "2026-11-02",
+       "quote": "invalid arguments for lumenloop.list_documents — no call was made ... time_period: unknown argument (allowed: collection, limit, order, page, period, search, so…"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/list_documents {collection:'events',time_period:'upcoming'} (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "success:true, pagination total 1192 (all events; the unknown argument was silently ignored)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-lumen-exact-document-empty"
+  },
+  {
+   "id": "q-gap-lumen-exact-document-empty",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "absent-token exact search succeeds with items [], pagination total 0, and a title/URL-substring hint",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/search_documents {collection:'articles',query:'zzqxv-nonexistent-token-9271'} (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"items\":[],\"pagination\":{\"total\":0,...},\"hint\":\"0 title/URL matches for \\\"zzqxv-nonexistent-token-9271\\\" in articles — this tool is exact substring matching on…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) lumenloop.search_documents(same)",
+       "observedAt": "2026-11-02",
+       "quote": "ok:true, same items/pagination/hint"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "search_documents matches title and URL substrings, not semantic body",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "GET https://api.lumenloop.com/v1/tools#search_documents",
+       "observedAt": "2026-11-02",
+       "quote": "Exact keyword lookup: case-insensitive SUBSTRING match on title and URL only (NOT body text, NOT meaning)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "an exact-keyword miss does not prove the topic has no Lumenloop content",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#lumenloop.search_documents retrievalProfile",
+       "observedAt": "2026-11-02",
+       "quote": "recoverWith lumenloop.search_content_semantic on empty"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-lumen-documents-browse"
+  },
+  {
+   "id": "q-gap-lumen-project-tag-vocabulary",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "get_project_tags_vocabulary returns count and tag objects with name and slug",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary {} (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"success\": true, \"data\": {\"count\": 85, \"tags\": [{\"id\": 131, \"name\": \"Accounting\", \"slug\": \"accounting\"}, ..."
+      },
+      {
+       "class": "A",
+       "ref": "GET https://api.lumenloop.com/v1/tools#get_project_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "Returns: { count, tags: [...] } — each tag: { id, name, slug }."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "project tags are distinct from content tags",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "GET https://api.lumenloop.com/v1/tools#get_project_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "For article/AV content tags use get_tags_vocabulary instead."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-lumen-content-tag-vocabulary"
+  },
+  {
+   "id": "q-gap-rpc-horizon-unindexed-reference",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "generated RPC-method and Horizon-endpoint reference pages are outside the search index",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs",
+       "observedAt": "2026-11-02",
+       "quote": "Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides a…"
+      },
+      {
+       "class": "E",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) stellarDocs.search_rpc_horizon_data_docs + search_docs for 'getLedgers', 'getTransactions method parameters', 'simulateTransaction method', 'Horizon list all offers endpoint', 'retrieve an account horizon endpoint'",
+       "observedAt": "2026-11-02",
+       "quote": "no hit under /api-reference/methods/* or /horizon/api-reference/<endpoint>; rpc_horizon soft-empty for two queries"
+      },
+      {
+       "class": "A",
+       "ref": "curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers and .../horizon/api-reference/retrieve-an-account",
+       "observedAt": "2026-11-02",
+       "quote": "both HTTP 200 (pages exist after the 2026-10-22 Mintlify migration)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "API existence cannot be inferred from an unindexed search miss",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200 although the search index returns no method page"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-infra-rpc-methods-list"
+  },
+  {
+   "id": "q-gap-scout-get-skill-detail",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "getSkill({name:'agentic-payments'}) returns metadata plus full skill.content",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "GET https://stellarlight.xyz/api/skills/agentic-payments (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "200; slug agentic-payments, source sdf, content length 6717; meta.source https://skills.stellar.org/skills/agentic-payments/SKILL.md"
+      },
+      {
+       "class": "C",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) scout.getSkill({name:'agentic-payments'})",
+       "observedAt": "2026-11-02",
+       "quote": "slug agentic-payments, name 'Agent Payments (x402 + MPP)', source sdf, kind skill-md, contentLen 6717"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "unknown name is a soft-empty miss with a listSkills discovery hint",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "GET https://stellarlight.xyz/api/skills/zz-no-such-skill-9271 (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "404 {\"error\":\"unknown skill: zz-no-such-skill-9271\",\"hint\":\"Try /api/skills to list all available slugs.\"}"
+      },
+      {
+       "class": "B",
+       "ref": "src/adapters/scout.ts:17,138",
+       "observedAt": "2026-11-02",
+       "quote": "404 unknown slug → kind \"soft-empty\"; kind: res.status === 404 ? \"soft-empty\" : \"error\""
+      },
+      {
+       "class": "C",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) scout.getSkill({name:'zz-no-such-skill-9271'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty, status 404, message 'unknown skill: zz-no-such-skill-9271'"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "listSkills first for discovery",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) scout.listSkills({q:'agentic payments'})",
+       "observedAt": "2026-11-02",
+       "quote": "agentic-payments (sdf), lumenloop-ecosystem-scout (lumenloop), nirium-agentic-payments (community)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "codemode.skill.read serves sectioned, pinned, hash-verified upstream playbooks; bodies not bundled here",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) codemode.skill.read('skills.stellar-dev.agentic-payments')",
+       "observedAt": "2026-11-02",
+       "quote": "url https://raw.githubusercontent.com/stellar/stellar-dev-skill/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/SKILL.md; sections quick-decisi…"
+      },
+      {
+       "class": "B",
+       "ref": "ecosystem-skills/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "This directory stores no skill body. It stores addresses: a commit SHA for each source, and a path and a git blob hash for each file."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "a getSkill miss is not open-world absence; directory entries are not all served skills",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#scout.listSkills",
+       "observedAt": "2026-11-02",
+       "quote": "most entries are not mirrored skills."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-skill-detail-install"
+  },
+  {
+   "id": "q-infra-horizon-vs-rpc",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Horizon is REST/HAL with curated resources and SSE streaming; RPC is JSON-RPC for current state, recent tx/events, classic + contract, simulation, submission; not a drop-in Horizon replacement",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc",
+       "observedAt": "2026-10-09",
+       "quote": "Responses are JSON in the HAL format ... RPC's JSON-RPC API uses JSON-RPC 2.0"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc",
+       "observedAt": "2026-10-22",
+       "quote": "A drop-in replacement for Horizon. Horizon provides several indexing features not commonly supported by RPC nodes."
+      },
+      {
+       "class": "B",
+       "ref": "stellar-docs@de38543 tree: docs/data/apis/horizon/api-reference/structure/streaming.mdx, response-format.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "files present"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[4] / avoid[1]",
+     "claim": "Horizon is nearing end-of-life, not already deprecated",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/de38543086d312eadcb69f3456d02b6aaa3e54bb/docs/data/apis/index.mdx:30",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and [Portfolio APIs]"
+      },
+      {
+       "class": "B",
+       "ref": "stellar-docs@de38543 docs/learn/migrate/evm/smart-contract-deployment.mdx:59",
+       "observedAt": "2026-11-02",
+       "quote": "the Horizon API (nearing end-of-life)"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 'Stellar Horizon API deprecation announcement 2026 end-of-life date' -> developers.stellar.org/docs/data/apis/index (dated 2026-10-22)",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs."
+      },
+      {
+       "class": "E",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) stellarDocs.search_rpc_horizon_data_docs('Horizon nearing end-of-life deprecated in favor of Stellar RPC')",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/data/apis#horizon: Horizon is nearing end-of-life and will eventually be deprecated"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Conflicting official page: Lab API Explorer card says 'Horizon is considered deprecated.'",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "curl https://developers.stellar.org/docs/tools/lab/api-explorer",
+       "observedAt": "2026-11-02",
+       "quote": "<span data-as=\"p\">Horizon is considered deprecated.</span> (2 matches)"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/de38543086d312eadcb69f3456d02b6aaa3e54bb/docs/tools/lab/api-explorer/index.mdx:13",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon is considered deprecated."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/700ed32d0b2bac10e265cdc5fb1a4b70671ab130",
+       "observedAt": "2026-11-02",
+       "quote": "build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941); pre-migration README.mdx used <DocCardList /> and horizon-endpoint.mdx said 'Horizon …"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search result https://developers.stellar.org/docs/tools/lab/api-explorer/index (dated 2026-10-21)",
+       "observedAt": "2026-11-02",
+       "quote": "## Horizon Endpoints Horizon is considered deprecated."
+      },
+      {
+       "class": "E",
+       "ref": "Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) stellarDocs.search_docs('Horizon is considered deprecated')",
+       "observedAt": "2026-11-02",
+       "quote": "api-explorer record still indexes pre-migration text: Horizon is nearing end-of-life and will eventually be deprecated"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": " Canonical-page caution 2026-11-02: since the 2026-10-22 Mintlify migration (stellar-docs 700ed32d), the official Stellar Lab API Explorer page (https://developers.stellar.org/docs/tools/lab/api-explorer) says 'Horizon is considered deprecated.' The APIs overview and the Lab Horizon Endpoints page still say nearing end-of-life. An attributed quote of that official page is not a wrong claim; grade caps at partial for that claim unless the answer reconciles it with the APIs overview. An unattributed 'already deprecated' claim still fires the avoid. Remove this caution when the Lab card matches t…",
+     "reason": "New official-page conflict (Lab API Explorer card, Mintlify migration 2026-10-22) would make avoid[1] fire on an attributed quote; ADR-0008 canonical-page grading applies to Horizon lifecycle."
+    }
+   ],
+   "rootCause": [
+    "Upstream stellar-docs Mintlify migration (commit 700ed32d, 2026-10-22) replaced the Lab API Explorer DocCardList with a hand-written card saying 'Horizon is considered deprecated.' (finding to file under improvements/stellar-docs/)"
+   ],
+   "siblings": "q-pc-practical-fee-setting; q-ti-compute-token-lp-market-data; q-infra-which-indexer; q-infra-hubble-bigquery"
+  },
+  {
+   "id": "q-infra-hubble-bigquery",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "public BigQuery dataset path crypto-stellar.crypto_stellar for historical analytics",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-docs@de38543 docs/data/analytics/hubble/developer-guide/connecting-to-bigquery/index.mdx:20,79",
+       "observedAt": "2026-11-02",
+       "quote": "open the [crypto-stellar.crypto_stellar] dataset ... dataset_id = 'crypto-stellar.crypto_stellar'"
+      },
+      {
+       "class": "A",
+       "ref": "curl https://developers.stellar.org/docs/data/analytics/hubble/developer-guide/connecting-to-bigquery",
+       "observedAt": "2026-11-02",
+       "quote": "crypto-stellar.crypto_stellar"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search (excluding developers.stellar.org) -> https://stellar.org/blog/developers/beyond-the-blockchain-unlocking-the-power-of-analytics-with-hubble",
+       "observedAt": "2026-11-02",
+       "quote": "Users with a Google Cloud Project can follow the link to the dataset `crypto-stellar.crypto_stellar`"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / avoid[0]",
+     "claim": "Hubble is read-only historical analytics, not real-time, cannot submit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-docs@de38543 docs/data/analytics/hubble/index.mdx:8,20",
+       "observedAt": "2026-11-02",
+       "quote": "Hubble should not be used for real-time data retrieval and cannot submit transactions to the network. ... Hubble is read-only; it cannot interact with the Stell…"
+      },
+      {
+       "class": "A",
+       "ref": "curl https://developers.stellar.org/docs/data/analytics/hubble",
+       "observedAt": "2026-11-02",
+       "quote": "read-only; it cannot interact with the Stellar Ne..."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "intraday batch updates with no same-day guarantee",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-docs@de38543 docs/data/analytics/hubble/index.mdx:21",
+       "observedAt": "2026-11-02",
+       "quote": "The database is updated in intraday batches. There is no guarantee for same-day data availability."
+      },
+      {
+       "class": "A",
+       "ref": "curl https://developers.stellar.org/docs/data/analytics/hubble",
+       "observedAt": "2026-11-02",
+       "quote": "intraday batches. There is no guarantee for same-day data availability."
+      },
+      {
+       "class": "D",
+       "ref": "stellar.org blog (2023-07-11) via perplexity_search",
+       "observedAt": "2026-11-02",
+       "quote": "Hubble stays up-to-date through intraday batches that execute every 30 minutes."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-infra-which-indexer; q-ti-historical-pointintime-balances; q-crp-export-tx-history-taxes; q-ti-enumerate-all-contracts"
+  },
+  {
+   "id": "q-infra-quickstart-local-network",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "`stellar container start local` is the current CLI command; `docker run -i -p 8000:8000 stellar/quickstart --local` is the Docker equivalent",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-docs@de38543 docs/tools/quickstart/getting-started/index.mdx:20",
+       "observedAt": "2026-11-02",
+       "quote": "stellar container start local"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/quickstart/main/README.md:29",
+       "observedAt": "2026-11-02",
+       "quote": "> docker run -i -p 8000:8000 stellar/quickstart --local"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 (latest release v28.1.0, 2026-09-26): stellar container start --help",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: stellar container start [OPTIONS] [NETWORK] ... Default is `local` [possible values: local, testnet, futurenet, pubnet]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "bundles Core, Horizon, RPC, Friendbot, Lab; local RPC at http://localhost:8000/rpc",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar/quickstart README.md:50,58,59,173",
+       "observedAt": "2026-11-02",
+       "quote": "stellar-lab - Web UI; RPC: `http://localhost:8000/rpc`; Lab: `http://localhost:8000/lab`; --enable core,horizon,rpc,lab"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "four modes: local, testnet, futurenet, pubnet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "curl https://developers.stellar.org/docs/tools/quickstart/network-modes",
+       "observedAt": "2026-11-02",
+       "quote": "The four available network modes are `local`, `testnet`, `futurenet` and `pubnet` (mainnet)."
+      },
+      {
+       "class": "F",
+       "ref": "stellar container start --help",
+       "observedAt": "2026-11-02",
+       "quote": "[possible values: local, testnet, futurenet, pubnet]"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2] / keyFacts[3]",
+     "claim": "only local is hermetic with a local Friendbot; testnet/futurenet Friendbot is proxied",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-docs@de38543 docs/tools/quickstart/faucet.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "In local network mode, a local Friendbot is running. In testnet and futurenet network modes, requests to the local `:8000/friendbot` endpoint will be proxied to…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "development/CI infrastructure, not production; ephemeral unless persistence configured",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-docs@de38543 docs/tools/quickstart/index.mdx:14 and advanced-usage/container.mdx:6",
+       "observedAt": "2026-11-02",
+       "quote": "Quickstart is intended for use in development, not in production ... default, non-validating, ephemeral configuration ... host-based volume ... persistence of d…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "`stellar network container start` is not the current command",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0: stellar network container start --help",
+       "observedAt": "2026-11-02",
+       "quote": "error: unrecognized subcommand 'container'"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/getting-started",
+       "observedAt": "2026-11-02",
+       "quote": "stellar container start local"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "'Also good if the answer: `stellar network container start testnet` (Stellar CLI) boots the Quickstart container'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0: stellar network container start --help",
+       "observedAt": "2026-11-02",
+       "quote": "error: unrecognized subcommand 'container'"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0: stellar container start --help",
+       "observedAt": "2026-11-02",
+       "quote": "By default, when starting a testnet container ... docker run --rm -p 8000:8000 --name stellar stellar/quickstart:latest --testnet --enable rpc,horizon"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "`stellar container start testnet` (Stellar CLI) boots the Quickstart container in testnet mode.",
+     "reason": "Note rewards the retired command shape that avoid[0] punishes and that current CLI 28.1.0 rejects."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the 2026-07-11 GT-50 correction updated the answer and avoid to `stellar container start` but left the archived 'also good' note on the retired `stellar network container start` shape."
+   ],
+   "siblings": ""
+  },
+  {
+   "id": "q-infra-rpc-methods-list",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "exactly 12 application methods",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-docs/contents/openrpc/src/stellar-rpc/methods?ref=main",
+       "observedAt": "2026-11-02",
+       "quote": "getEvents getFeeStats getHealth getLatestLedger getLedgerEntries getLedgers getNetwork getTransaction getTransactions getVersionInfo sendTransaction simulateTra…"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org getVersionInfo / getHealth",
+       "observedAt": "2026-11-02",
+       "quote": "version 30.0.0-13e53516...; getHealth result status healthy, ledgerRetentionWindow 120960"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "getLedgerEntry, getMethods, rpc.discover are not methods",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org getLedgerEntry / getMethods / rpc.discover",
+       "observedAt": "2026-11-02",
+       "quote": "{\"code\":-32601,\"message\":\"method not found\",\"data\":\"getLedgerEntry\"} (same for getMethods, rpc.discover)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "getEvents reference cites ~24h default with ~7-day max; 'also good' 24h default",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "curl https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+       "observedAt": "2026-11-02",
+       "quote": "stock default of 120960 ledgers (about 7 days, depend..."
+      },
+      {
+       "class": "B",
+       "ref": "stellar-docs openrpc/src/stellar-rpc/methods/getEvents.json@de38543 (changed in 75aae6dd 2026-07-21, 'Replace stale RPC transaction and event retention guidance (#2595) (#2656)')",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar-RPC retains a bounded, ledger-denominated history of recent transactions and events, configured by a single history-retention-window setting with a stoc…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/config/options.go:314-320",
+       "observedAt": "2026-11-02",
+       "quote": "Name: \"history-retention-window\" ... the default value is %d which corresponds to about 7 days of history (no separate event retention option)"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org getHealth",
+       "observedAt": "2026-11-02",
+       "quote": "ledgerRetentionWindow 120960"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (new)",
+     "claim": "archive-node beta adds beta-only queryEvents and full-history getEvents/getLedgers/getTransaction(s)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/archive-node-beta/docs/API-CHANGES-BETA.md (tag archive-node-beta -> d277ba48, 2026-09-30)",
+       "observedAt": "2026-11-02",
+       "quote": "getEvents, getLedgers, getTransaction, and getTransactions now serve full history. ... queryEvents is a new method in the archive node. The current RPC does not…"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org and https://mainnet.sorobanrpc.com queryEvents",
+       "observedAt": "2026-11-02",
+       "quote": "{\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.validationcloud.io/v1/stellar/overview (via sibling lane, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "Pubnet RPC v2 (Beta): Stellar RPC only (full history from ledger 2)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / keyFacts[4]",
+     "claim": "ordinary getLedgers/getEvents are retention-bounded; deep history needs archive-backed providers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org getLedgers (no startLedger)",
+       "observedAt": "2026-11-02",
+       "quote": "start ledger (0) must be between the oldest ledger: 5401552 and the latest ledger: 5522511 for this rpc instance"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers (source providers.mdx main)",
+       "observedAt": "2026-11-02",
+       "quote": "Currently only the getLedgers RPC method supports this feature."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Retention normalized (re-verified 2026-11-02): the getEvents reference and stellar-rpc v30.0.0 config use one history-retention-window with a stock default of 120960 ledgers (~7 days); there is no separate 24h event default.",
+     "reason": "getEvents reference and stellar-rpc config no longer state a 24h event default (docs PR #2656, sd-023 resolved)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "`getEvents` retrieves contract events within the provider's retention window (stock default 120960 ledgers, about 7 days, as of 2026-11-02).",
+     "reason": "'Also good' fragment rewards a now-false 24h default."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nArchive-node beta 2026-11-02: SDF's stellar-rpc tag archive-node-beta (2026-09-30) adds a beta-only `queryEvents` method and serves full history for getEvents, getLedgers, getTransaction, and getTransactions. Stock RPC v30.0.0 returns method not found for queryEvents. Do not penalize an answer that names these as beta-only; the 12 stock methods remain the gate.",
+     "reason": "Beta-only queryEvents and full-history methods exist; protect a true beta-scoped answer without changing the 12-method gate."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/resolved.json entry sd-023 (stellar-docs PR #2656 replaced the 24h/7-day event retention prose)"
+   ],
+   "siblings": "q-soroban-publish-events; q-infra-rpc-provider-archive-tier; q-crp-export-tx-history-taxes; q-ti-rpc-gettransactions-pagination-xdr; q-ti-self-host-retention-backfill; q-gap-rpc-horizon-unindexed-reference"
+  },
+  {
+   "id": "q-infra-rpc-provider-archive-tier",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "As of 2026-11-02, 16 providers and nine RPC Archive rows: Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock, node101",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/rpc/providers.mdx (main = de38543)",
+       "observedAt": "2026-11-02",
+       "quote": "16 provider rows; RPC Archive ✅ for Validation Cloud*, Gateway*, Ankr, Obsrvr*, OnFinality*, Lightsail Network - Quasar*, Exaion, GetBlock, node101"
+      },
+      {
+       "class": "A",
+       "ref": "curl https://developers.stellar.org/docs/data/apis/rpc/providers",
+       "observedAt": "2026-11-02",
+       "quote": "node101, GetBlock, Alchemy present; 'Currently only the' footnote present"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "official RPC Archive tier is getLedgers-only",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "providers.mdx:29",
+       "observedAt": "2026-11-02",
+       "quote": "Currently only the [getLedgers](./api-reference/methods/getLedgers) RPC method supports this feature."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "archive-node-beta tag 2026-09-30 serves full history for getEvents/getLedgers/getTransaction(s)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-rpc/commits/archive-node-beta",
+       "observedAt": "2026-11-02",
+       "quote": "d277ba48 2026-09-30T17:08:00Z"
+      },
+      {
+       "class": "B",
+       "ref": "stellar-rpc archive-node-beta docs/API-CHANGES-BETA.md",
+       "observedAt": "2026-11-02",
+       "quote": "getEvents, getLedgers, getTransaction, and getTransactions now serve full history."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-infra-rpc-methods-list; q-crp-export-tx-history-taxes; q-ti-rpc-gettransactions-pagination-xdr"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier lane (Claude Opus 5.5); proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Conflict is real and correctly characterized: one official Lab card says 'considered deprecated'; the APIs overview, the Lab Horizon Endpoints page, the indexers overview, and third-party sources all use future tense (nearing end-of-life / will be deprecated). Strongest authority keeps 'nearing end-of-life'. Horizon lifecycle is one of the three ADR-0008 accepted canonical-page-caution cases, so t…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon Endpoints ... Horizon is considered deprecated."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs. While it will continue to receive updates to mainta…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tools/lab/api-explorer/index.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "<Card title=\"Horizon Endpoints\" icon=\"file-lines\" href=\"/docs/tools/lab/api-explorer/horizon-endpoint\"> Horizon is considered deprecated. </Card>"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/commit/700ed32d0b2bac10e265cdc5fb1a4b70671ab130",
+      "observedAt": "2026-11-02",
+      "quote": "build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941) — 2026-10-22T18:00:55Z; only commit in index.mdx history; pre-migration README.mdx use…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search; https://developers.stellar.org/docs/data/indexers/index",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon: as mentioned above, Horizon will soon be deprecated, but for now it is the only way to get some of this data."
+     },
+     {
+      "class": "D",
+      "ref": "https://chainstack.com/learn/compare/top-6-stellar-rpc-providers-for-payments/",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon ... is nearing end-of-life per Stellar's own documentation — no new feature development, though it keeps receiving compatibility updates with no publish…"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs({query:'Horizon is considered deprecated API Explorer'})",
+      "observedAt": "2026-11-02",
+      "quote": "both api-explorer hits return 'Horizon is nearing end-of-life and will eventually be deprecated' (index snippet does not surface the card text)"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-quickstart-local-network",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The old 'Also good' note named `stellar network container start testnet`, which the current CLI rejects and which the case's own avoid forbids as canonical. Internal contradiction fixed; new text is executable-verified.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "local stellar CLI 28.1.0 (c0f4d0da): stellar container start --help",
+      "observedAt": "2026-11-02",
+      "quote": "By default, when starting a testnet container ... `docker run --rm -p 8000:8000 --name stellar stellar/quickstart:latest --testnet --enable rpc,horizon` ... [po…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar CLI 28.1.0: stellar network container start --help",
+      "observedAt": "2026-11-02",
+      "quote": "error: unrecognized subcommand 'container'"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases/latest",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z (matches the local binary tested)"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/lab/quickstart-with-lab#start-quickstart",
+      "observedAt": "2026-11-02",
+      "quote": "Start Quickstart with the Stellar CLI using the following command: stellar container start testnet"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-container-start",
+      "observedAt": "2026-11-02",
+      "quote": "docker run --rm -p 8000:8000 --name stellar stellar/quickstart:latest --testnet --enable rpc,horizon  Usage: stellar container start"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-rpc-methods-list",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "getEvents page no longer contains any 24-hour / 24h text. The surrounding 'Rubric gates on the durable limited window fact' sentence is untouched. Sibling q-soroban-publish-events (out of batch) still carries an sd-023 cache-scoped caution about the old 24-hour wording; its expiry condition (live page no longer shows it) now appears met — flag for its owning lane.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar-RPC retains a bounded, ledger-denominated history of recent transactions and events, configured by a single history-retention-window setting with a stoc…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+      "observedAt": "2026-11-02",
+      "quote": "Name: \"history-retention-window\", ... \"configures history retention window for transactions and events, expressed in number of ledgers, the default value is %d …"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://soroban-testnet.stellar.org getHealth (version 30.0.0-13e53516)",
+      "observedAt": "2026-11-02",
+      "quote": "\"ledgerRetentionWindow\":120960"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring#backfilling-history-on-startup",
+      "observedAt": "2026-11-02",
+      "quote": "HISTORY_RETENTION_WINDOW sets the target size of that window. The default is 120960 ledgers, which is about 7"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-rpc-methods-list",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removes the stale '24h default, ~7 days max' pair. New text is provider-scoped ('provider's retention window', 'stock default') and dated, so it does not trip the case's own avoid on a universal event-retention day count. Keeps the as-of date on a volatile value.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "stock default of 120960 ledgers (about 7 days, depending on ledger cadence); requests are served from within that retained range"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+      "observedAt": "2026-11-02",
+      "quote": "DefaultValue: uint32(SevenDayOfLedgers)"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://mainnet.sorobanrpc.com getHealth (v29.0.1)",
+      "observedAt": "2026-11-02",
+      "quote": "\"oldestLedger\":65149374 ... \"latestLedger\":65270333 ... \"ledgerRetentionWindow\":120960"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-rpc-methods-list",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Every clause re-derived. The note protects a true beta-scoped claim, keeps the 12 stock methods as the gate (confirmed in v30.0.0 source), and adds no avoid item. The archive tag is an annotated git tag, not a GitHub release (releases/tags/archive-node-beta returns 404); the wording 'tag' is accurate.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-rpc/git/tags/e45ee57a8250d5399298db60e7218c70c369e400",
+      "observedAt": "2026-11-02",
+      "quote": "archive-node-beta 2026-09-30T17:11:41Z tamirms -> d277ba48 'rpcv2: trim the sample config and fix the archive node runbook (#1054)'"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/archive-node-beta/docs/API-CHANGES-BETA.md",
+      "observedAt": "2026-11-02",
+      "quote": "No existing method, parameter, or response field was removed. `getEvents`, `getLedgers`, `getTransaction`, and `getTransactions` now serve full history. ... `qu…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/jsonrpc.go",
+      "observedAt": "2026-11-02",
+      "quote": "handlers registered: getHealth, getEvents, getNetwork, getVersionInfo, getLatestLedger, getLedgers, getLedgerEntries, getTransaction, getTransactions, sendTrans…"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://soroban-testnet.stellar.org queryEvents (getVersionInfo 30.0.0-13e53516)",
+      "observedAt": "2026-11-02",
+      "quote": "{\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}"
+     },
+     {
+      "class": "D",
+      "ref": "https://hub.docker.com/r/stellar/unsafe-stellar-rpc (Parallel web_search excerpt)",
+      "observedAt": "2026-11-02",
+      "quote": "Unreleased beta builds of stellar-rpc. Not safe for production use ... Recent tags archive-node-beta"
+     },
+     {
+      "class": "D",
+      "ref": "https://github.com/stellar/go-stellar-sdk/commit/0f59d2edfb0d41d5f9d52d609c054177df1983bd (Parallel web_search excerpt)",
+      "observedAt": "2026-11-02",
+      "quote": "rpc: rename getEventsV2 to queryEvents (#6012)"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://developers.stellar.org/docs/tools/lab/api-explorer",
+   "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+   "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoints (404)",
+   "https://developers.stellar.org/docs/data/apis",
+   "https://developers.stellar.org/docs/data/apis/horizon",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+   "gh api repos/stellar/stellar-docs/commits/700ed32d",
+   "gh api repos/stellar/stellar-docs/commits?path=docs/tools/lab/api-explorer/index.mdx",
+   "gh api repos/stellar/stellar-docs/contents/docs/tools/lab/api-explorer/index.mdx (main)",
+   "gh api repos/stellar/stellar-docs/contents/docs/tools/lab/api-explorer/README.mdx?ref=700ed32d^",
+   "gh api repos/stellar/stellar-docs/contents/docs/tools/lab/api-explorer/horizon-endpoint.mdx?ref=700ed32d^",
+   "gh api repos/stellar/stellar-rpc/releases; /tags; /git/ref/tags/archive-node-beta; /git/tags/e45ee57a",
+   "gh api repos/stellar/stellar-rpc/contents/docs/API-CHANGES-BETA.md?ref=archive-node-beta",
+   "gh api repos/stellar/stellar-rpc/contents/cmd/stellar-rpc/internal/config/options.go?ref=v30.0.0",
+   "gh api repos/stellar/stellar-rpc/contents/cmd/stellar-rpc/internal/jsonrpc.go?ref=v30.0.0",
+   "gh api repos/stellar/stellar-cli/releases/latest",
+   "POST https://soroban-testnet.stellar.org getVersionInfo / queryEvents / getHealth",
+   "POST https://mainnet.sorobanrpc.com getVersionInfo / queryEvents / getHealth",
+   "local stellar CLI 28.1.0: stellar container start --help; stellar network container start --help",
+   "Raven stellarDocs.search_docs x3 (observedAt 2026-11-02T16:38:20Z)",
+   "Perplexity perplexity_search 'Stellar Horizon deprecated nearing end-of-life Stellar RPC 2026'",
+   "Parallel web_search (archive node beta queryEvents; getEventsV2 #1872)",
+   "https://raw.githubusercontent.com/stellar/stellar-rpc/archive-node-beta/docs/ARCHIVE-NODE-BETA-RUNBOOK.md (via Parallel excerpt)",
+   "https://hub.docker.com/r/stellar/unsafe-stellar-rpc (via Parallel excerpt)",
+   "https://chainstack.com/learn/compare/top-6-stellar-rpc-providers-for-payments/ (via Perplexity excerpt)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-infra-horizon-vs-rpc; q-infra-quickstart-local-network; q-infra-rpc-methods-list",
+  "verifiedOnly": "q-gap-av-offset-not-timestamp; q-gap-lumen-content-tag-vocabulary; q-gap-lumen-documents-browse; q-gap-lumen-exact-document-empty; q-gap-lumen-project-tag-vocabulary; q-gap-rpc-horizon-unindexed-reference; q-gap-scout-get-skill-detail; q-infra-hubble-bigquery; q-infra-rpc-provider-archive-tier",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "issue": "Upstream finding to file under improvements/stellar-docs/: the Lab API Explorer card (docs/tools/lab/api-explorer/index.mdx@de38543, Mintlify migration 700ed32d) says 'Horizon is considered deprecated.' against the APIs overview 'nearing end-of-life'; the search index also still serves pre-migration api-explorer text. rootCause currently cites freshness-drift plus the commit, with no improvements/ path."
+   },
+   {
+    "id": "q-soroban-publish-events",
+    "issue": "Out of batch: its sd-023 cache-scoped caution about the old 24-hour getEvents wording appears expired (live getEvents page has no 24-hour text as of 2026-11-02); flag for its owning lane."
+   },
+   {
+    "id": "q-gap-av-offset-not-timestamp",
+    "issue": "Upstream defect (no gospel impact): Lumenloop find_av_passages return text still calls created_at the recording's date; av_id 1310 (Meridian 2023 talk) has created_at 2026-04-29. Recurrence of improvements/lumenloop/ll-019."
+   },
+   {
+    "id": "q-gap-lumen-documents-browse",
+    "issue": "Upstream defect (no gospel impact): raw Lumenloop list_documents silently ignores the unknown argument time_period (total 1192 vs 14 with period=upcoming); same class as improvements/lumenloop/ll-028. Raven rejects it host-side."
+   },
+   {
+    "id": "tooling-infra-01",
+    "issue": "All 12 batch cases now fail lint lifecycle-registry 'registry caseContentSha256 is stale'; the orchestrator must run npm run eval:qa:register (and eval:qa:compile) once all appliers finish."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "log": "gospel: appended the Lab API Explorer canonical-page caution to golden.notes (verifier accept); status confirmed->mixed; asOf 2026-11-02; +3 sources, +1 disputed corroboration row (both sides); new verified with rootCause freshness-drift + upstream commit 700ed32d."
+   },
+   {
+    "id": "q-infra-quickstart-local-network",
+    "log": "gospel: also-good note now names `stellar container start testnet` instead of the retired `stellar network container start testnet` (verifier accept); +2 sources; new verified with eval-side authoring-flaw rootCause."
+   },
+   {
+    "id": "q-infra-rpc-methods-list",
+    "log": "gospel: replaced two stale 24h getEvents retention fragments and appended the archive-node beta note (3 verifier accepts); asOf 2026-11-02; reverifyBy 2027-01-22->2027-05-12; +4 sources, +1 confirmed-as-of corroboration row; rootCause freshness-drift + sd-023 + archive-node-beta tag."
+   },
+   {
+    "id": "q-gap-av-offset-not-timestamp",
+    "log": "verified-only: truth.verified refreshed (A, C evidence) and asOf 2026-11-02."
+   },
+   {
+    "id": "q-gap-lumen-content-tag-vocabulary",
+    "log": "verified-only: truth.verified refreshed (A, C evidence) and asOf 2026-11-02."
+   },
+   {
+    "id": "q-gap-lumen-documents-browse",
+    "log": "verified-only: truth.verified refreshed (A, C evidence) and asOf 2026-11-02."
+   },
+   {
+    "id": "q-gap-lumen-exact-document-empty",
+    "log": "verified-only: truth.verified refreshed (A, C evidence) and asOf 2026-11-02."
+   },
+   {
+    "id": "q-gap-lumen-project-tag-vocabulary",
+    "log": "verified-only: truth.verified refreshed (A, C evidence) and asOf 2026-11-02."
+   },
+   {
+    "id": "q-gap-rpc-horizon-unindexed-reference",
+    "log": "verified-only: truth.verified refreshed (A, E evidence) and asOf 2026-11-02."
+   },
+   {
+    "id": "q-gap-scout-get-skill-detail",
+    "log": "verified-only: truth.verified refreshed (A, B, C evidence) and asOf 2026-11-02."
+   },
+   {
+    "id": "q-infra-hubble-bigquery",
+    "log": "verified-only: truth.verified refreshed (A, B, D evidence) and asOf 2026-11-02."
+   },
+   {
+    "id": "q-infra-rpc-provider-archive-tier",
+    "log": "verified-only: kept the same-day #310 verification event (with its gospel rootCause), appended one audit re-walk evidence line; reverifyBy 2027-02-12->2027-05-21 (scheduled case; no event-tied reason in the matrix)."
+   }
+  ]
+ }
+}

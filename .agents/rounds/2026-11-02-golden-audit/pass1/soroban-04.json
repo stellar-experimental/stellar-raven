@@ -1,0 +1,1832 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "soroban-04",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-soroban-auth-recursion-dos-audit",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "V2.1 relocates the authorization DoS write-up to Appendix A.2.2 as V-SOR-APP-VUL-003, Severity Critical, Status Investigated; V2.1 V-SOR-VUL-002 is a Low metering item",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "A.2.2 V-SOR-APP-VUL-003: Denial of Service During Authorization Severity Critical Commit 2674d86 Type Denial of Service Status Investigated"
+      },
+      {
+       "class": "A",
+       "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "V-SOR-VUL-002 Incorrect Metering When Adding Trackers Low Open"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "first row: Stellar Soroban Core: Veridise https://stellarsecurityportal.com/report/42; no meta.exactMiss"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "V2 labeled the item V-SOR-VUL-002 Critical/Investigated while its summary counts zero Critical issues",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://stellarsecurityportal.com/api/v1/reports/28",
+       "observedAt": "2026-11-02",
+       "quote": "V-SOR-VUL-002 Denial of Service During Authorization Critical Investigated ... Table 2.3: Vulnerability Summary. Critical-Severity Issues 0 0"
+      },
+      {
+       "class": "A",
+       "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "The most severe issue is the use of unchecked arithmetic ... (V-SOR-VUL-001) [Medium]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "V2 inline analysis judged the item invalid; failed require_auth propagates Err",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://stellarsecurityportal.com/api/v1/reports/28",
+       "observedAt": "2026-11-02",
+       "quote": "it is usually frowned upon for the __check_auth function to call require_auth on its own address, as this can lead to infinite recursion. The concern here is th…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/v30.0.0/soroban-env-host/src/auth.rs",
+       "observedAt": "2026-11-02",
+       "quote": "we don't allow using tracker to verify auth for itself ... Thus we simply skip the trackers that have already been borrowed."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "unversioned ID / live exploit / reentrancy claims are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "A.2 Invalid Issues ... A.2.2 V-SOR-APP-VUL-003"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Scout exact-miss control still fires for V-SOR-APP-VUL-999 and not for the real ID",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "meta.exactMiss {identifiers:[V-SOR-APP-VUL-999]}"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-soroban-auth-audit-live"
+  },
+  {
+   "id": "q-soroban-av-passkeys-talk",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "lumenloop.find_av_passages returns summary/long_summary, title, url, channel, created_at, start_offset and no transcript text",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute lumenloop.find_av_passages {query:\"Stellar passkeys secp256r1 smart wallet signing\"}",
+       "observedAt": "2026-11-02",
+       "quote": "rowKeys: av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages (raw)",
+       "observedAt": "2026-11-02",
+       "quote": "keys [av_id, channel, created_at, long_summary, similarity, slug, start_offset, summary, title, url]"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.find_av_passages",
+       "observedAt": "2026-11-02",
+       "quote": "Transcript text itself is never returned"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "\"available channel/date metadata\" — created_at is not a recording date",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages",
+       "observedAt": "2026-11-02",
+       "quote": "title: Workshop: Stellar | Multichain Day | DEVCON 2024, start_offset: 8100, created_at: 2026-04-02T23:21:21.744Z"
+      },
+      {
+       "class": "D",
+       "ref": "https://archive.devcon.org/",
+       "observedAt": "2026-11-02",
+       "quote": "Bangkok, Thailand Nov 12 - Nov 15, 2024"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.find_av_passages",
+       "observedAt": "2026-11-02",
+       "quote": "created_at (upstream metadata; do not treat it as the recording date or recency evidence)"
+      },
+      {
+       "class": "A",
+       "ref": "https://api.lumenloop.com/v1/docs",
+       "observedAt": "2026-11-02",
+       "quote": "created_at (the recording's date — use it to judge and cite how recent the talk is)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "start_offset is opaque, not seconds",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.find_av_passages",
+       "observedAt": "2026-11-02",
+       "quote": "start_offset (an opaque transcript chunk offset ... NOT playback seconds"
+      },
+      {
+       "class": "A",
+       "ref": "https://api.lumenloop.com/v1/docs",
+       "observedAt": "2026-11-02",
+       "quote": "start_offset is an opaque ordering key, not playback seconds"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "sk-004 upstream skill still claims verbatim passages, so the cache caution stands",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/lumenloop/lumenloop-skills/blob/a87ca9573/skills/stellar-project-dossier/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "| 5 | Direct quotes | `find_av_passages(query)` | transcript passages to quote |"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/lumenloop/lumenloop-skills/issues/1",
+       "observedAt": "2026-11-02",
+       "quote": "state open (updated 2026-07-07)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Use the exact exposed operation `lumenloop.find_av_passages` with a query for Stellar passkeys, secp256r1, WebAuthn, or smart-wallet signing. Return each AI-generated `summary`/`long_summary` with the parent recording title, URL, and channel; do not present `created_at` as the recording date. The exposed response does **not** contain transcript text, so do not quote it as spoken words or attribute a summary to a named speaker. Treat `start_offset` as an opaque chunk/order key, not seconds or playback timestamp. If no relevant row appears, report a corpus-bounded miss and do not substitute a do…",
+     "reason": "created_at is not a recording date (live DEVCON 2024 row created 2026-04-02; manifest contract; ll-019)."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Volatile corpus behavior re-verified 2026-11-02."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-06-15",
+     "reason": "Re-verified; stagger into the batch window."
+    }
+   ],
+   "rootCause": [
+    "improvements/lumenloop/ll-019-av-output-contract-shape-and-date.md",
+    "freshness-drift"
+   ],
+   "siblings": "q-gap-av-offset-not-timestamp; q-ti-video-tutorials; q-edge-open-world-recovery-after-narrow-miss; q-builder-justin-rice-history"
+  },
+  {
+   "id": "q-soroban-check-auth-custom-account",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "__check_auth ABI (signature_payload: BytesN<32>, signature: Val, auth_contexts: Vec<Context>); host-only dispatch",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md",
+       "observedAt": "2026-11-02",
+       "quote": "fn __check_auth(signature_payload: BytesN<32>, signature: Val, auth_contexts: Vec<Context>) -> Result<(), Error>;"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account",
+       "observedAt": "2026-11-02",
+       "quote": "__check_auth is a reserved function and can only be called by the Soroban environment in response to a call to require_auth. Any direct call to __check_auth wil…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/auth.rs",
+       "observedAt": "2026-11-02",
+       "quote": "fn __check_auth(env: Env, signature_payload: Hash<32>, signatures: Self::Signature, auth_contexts: Vec<Context>) -> Result<(), Self::Error>;"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "host handles standard nonce, expiry, replay",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md",
+       "observedAt": "2026-11-02",
+       "quote": "Nonce is an arbitrary int64 number used for replay prevention ... Before trying to consume the nonce, host makes sure that the signature expiration ledger is va…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+       "observedAt": "2026-11-02",
+       "quote": "Replay protection is also implemented in the host, i.e., there is normally no need for a contract to manage its own nonces."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "never call require_auth on own address inside __check_auth (recursion)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account",
+       "observedAt": "2026-11-02",
+       "quote": "Note, that `__check_auth` function shouldn't call `require_auth` on the contract's own address in order to avoid infinite recursion."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/v30.0.0/soroban-env-host/src/auth.rs",
+       "observedAt": "2026-11-02",
+       "quote": "we don't allow something like address.require_auth()->address_contract.__check_auth()->address.require_auth()"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "EIP-4337 / direct invocation / mandatory home-grown nonce / recursive self require_auth are wrong models",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/auth/contract-authorization",
+       "observedAt": "2026-11-02",
+       "quote": "The function is a reserved function, and it is invoked automatically by the Host ... It cannot be called manually."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-require-auth; q-passkey-smart-account-architecture; q-soroban-auth-recursion-dos-audit"
+  },
+  {
+   "id": "q-soroban-cli-bindings",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0]",
+     "claim": "TypeScript bindings take --wasm | --wasm-hash | --contract-id",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 (c0f4d0da) `stellar contract bindings typescript --help`",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>`"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "TypeScript CLI bindings are current (not deprecated) — drifted",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/blob/v28.1.0/cmd/soroban-cli/src/commands/contract/bindings.rs",
+       "observedAt": "2026-11-02",
+       "quote": "/// ⚠️ Deprecated, use the JavaScript Stellar SDK instead (https://github.com/stellar/js-stellar-sdk#cli). Generate a TypeScript / JavaScript package"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+       "observedAt": "2026-11-02",
+       "quote": "TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+       "observedAt": "2026-11-02",
+       "quote": "typescript — ⚠️ Deprecated, use the JavaScript Stellar SDK instead"
+      },
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract bindings --help`",
+       "observedAt": "2026-11-02",
+       "quote": "typescript  ⚠️ Deprecated, use the JavaScript Stellar SDK instead (https://github.com/stellar/js-stellar-sdk#cli)."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"stellar contract bindings typescript deprecated JavaScript SDK generate\"",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-contract-bindings-typescript (deprecated text indexed)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "JS SDK generator takes the same three inputs",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/js-stellar-sdk/blob/master/README.md#cli",
+       "observedAt": "2026-11-02",
+       "quote": "npx @stellar/stellar-sdk generate [options] ... --wasm <path> | --wasm-hash <hash> | --contract-id <id> ... --output-dir <dir>"
+      },
+      {
+       "class": "C",
+       "ref": "npm view @stellar/stellar-sdk (17.4.0, 2026-10-25)",
+       "observedAt": "2026-11-02",
+       "quote": "bin: stellar-js, stellar-sdk, stellar-contract-bindings-typescript"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Rust bindings take only local --wasm",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract bindings rust --help`",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: stellar contract bindings rust [OPTIONS] --wasm <WASM>"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: `stellar contract bindings rust --wasm <WASM>`"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "placeholder languages not implemented; KMP added in 28.1.0",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract bindings kmp`",
+       "observedAt": "2026-11-02",
+       "quote": "error: kmp binding generation is not implemented in the stellar-cli, but is available via the tool located here: https://github.com/lightsail-network/stellar-co…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+       "observedAt": "2026-11-02",
+       "quote": "New Kotlin Multiplatform (KMP) target for `stellar contract bindings`."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+       "observedAt": "2026-11-02",
+       "quote": "`python` — Generate Python bindings (requires external plugin)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "generalizing TS inputs to Rust / auto-sync / stellar contract abi are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0",
+       "observedAt": "2026-11-02",
+       "quote": "Rust: --wasm only; no `contract abi` subcommand in `stellar contract --help`"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Use the language-specific subcommand. As of Stellar CLI 28.1.0 (2026-09-26), `stellar contract bindings typescript --output-dir <dir> (--wasm <file> | --wasm-hash <hash> | --contract-id <C…>)` still generates a TypeScript package, but the CLI marks it deprecated in favor of the JavaScript Stellar SDK generator (`npx @stellar/stellar-sdk generate`, which takes the same three inputs). Rust binding generation is implemented only from local `--wasm` and emits Rust source; for an on-chain Rust target, first fetch/export the exact Wasm and generate from that file. Python, Java, Flutter, Swift, PHP, …",
+     "reason": "CLI 28.1.0 deprecates TypeScript bindings toward the JS SDK generator and adds a KMP placeholder."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "CLI TypeScript bindings take Wasm, Wasm hash, or contract ID; CLI 28.1.0 deprecates them.",
+     "reason": "Version-qualify TS fact and add deprecation."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "As of CLI 28.1.0, Rust bindings accept only local Wasm input.",
+     "reason": "Re-verified on CLI 28.1.0."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "As of CLI 28.1.0, placeholder language commands are not built-in generators.",
+     "reason": "KMP placeholder added; still not built-in."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Command + targets (--wasm / --wasm-hash / --contract-id) and language list verified against the Stellar CLI manual. 2026-06-29 differentiation: this file is the simple CLI bindings how-to (deployed contract OR local Wasm); the no-address→discover-functions/constructor→deploy-with-constructor-args JS-SDK flow is owned by q-sor-bindings-from-wasm-no-address. Fixed q to name the local-Wasm target.\nAlso good if the answer: You can target a deployed contract id or a local .wasm to produce the bindings. | In Rust, the `contractimport!` macro is the in-code equivalent for typed cross-contract clients…",
+     "reason": "Record the 28.1.0 re-run."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Volatile CLI behavior re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-06-10",
+     "reason": "Stagger into batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-ti-bindings-to-nextjs-integration; q-tool-which-sdk-comparison; q-sor-bindings-from-wasm-no-address"
+  },
+  {
+   "id": "q-soroban-constructor-lifecycle",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "CAP-0058 Final, Protocol 22, mainnet vote 2024-12-05, testnet 2024-11-12",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Constructors for Soroban contracts Status: Final ... Protocol version: 22"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-22-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "December 5: Mainnet upgrade vote ... upgradetime=2024-12-05T17:00:00Z&protocolversion=22"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/StellarOrg/status/1856427537536262237",
+       "observedAt": "2026-11-02",
+       "quote": "Today, the Testnet upgraded to Protocol 22! Next up, validators vote on the Mainnet Upgrade on December 5th."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "__constructor reserved; runs once atomically at creation; not on code update; must return Void",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md",
+       "observedAt": "2026-11-02",
+       "quote": "When the contract has its code updated it is not considered created and thus constructor won't be called. ... `__constructor` must return `Val::VOID`"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool#initialize-the-contract",
+       "observedAt": "2026-11-02",
+       "quote": "When this contract is deployed, the __constructor function will automatically and atomically be invoked"
+      },
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract deploy --help`",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2; front-running reduction",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md",
+       "observedAt": "2026-11-02",
+       "quote": "Introduce a new HostFunction XDR variant HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2 ... harder for developers to accidentally make their contracts prone to front-run…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/announcing-protocol-22",
+       "observedAt": "2026-11-02",
+       "quote": "It also enhances security by making it harder for developers to unintentionally expose their contracts to front-running"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-factory-pattern; q-soroban-deploy-cli"
+  },
+  {
+   "id": "q-soroban-contract-build-verification",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[4]/notes",
+     "claim": "SEP-55 Draft v0.4.1; SEP-58 Draft v0.6.0 Updated 2026-07-15",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Contract Build Verification Status: Draft Created: 2024-09-28 Updated: 2025-03-12 Version: 0.4.1"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Contract Build Reproducibility for Verification Status: Draft Created: 2026-05-01 Updated: 2026-07-15 Version: 0.6.0"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol/sep-58",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft Created: 2026-05-01 Updated: 2026-07-15 Version: 0.6.0"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0],[2]",
+     "claim": "SEP-55 GitHub Attestations + contractmetav0 source_repo/home_domain; source not on-chain",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar doesn't store the source code of contracts in the blockchain ... `source_repo=github:<user_name>/<repo_name>` ... `home_domain=<domain_name>`"
+      },
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract info build --help`",
+       "observedAt": "2026-11-02",
+       "quote": "If the contract has a meta entry like `source_repo=github:user/repo`, this command will try to fetch the attestation information for the WASM file."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "SEP-58 rebuild vocabulary bldimg/bldopt/source_sha256/source_uri, complementary to SEP-55",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
+       "observedAt": "2026-11-02",
+       "quote": "Complementary to SEP-55, which uses signed CI attestations instead of independent rebuild ... bldimg ... bldopt ... source_sha256 ... source_uri"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"SEP-58 contract build reproducibility bldimg\"",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-contract-build-archive: prints its SHA-256 (the SEP-58 source_sha256)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Build Info and stellar contract info meta show build info",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract info --help`",
+       "observedAt": "2026-11-02",
+       "quote": "meta  Output the metadata stored in a contract ... build  Output the contract build information, if available"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "SEP-49 is Upgradeable Contracts",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0049.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Upgradeable Contracts Status: Draft"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Freshness:true — SEP-55/SEP-58 are Draft and numbers/titles can change. As observed 2026-11-02, SEP-55 is Draft v0.4.1 and SEP-58 is Draft v0.6.0 (preamble Updated 2026-07-15); its rebuild-based bldimg/bldopt/source_sha256 model remains complementary to SEP-55's attestation-based GitHub Attestations + contractmetav0 source_repo model. NOT SEP-49 (that is Upgradeable Contracts). Both confirm Stellar does not store source on-chain.\nAlso good if the answer: 'Build verified' attests that the published build workflow produced the WASM, not that the source is safe/audited.\nGolden cites: A primary de…",
+     "reason": "Refresh the in-text as-of for Draft SEP versions; add the SEP-55 version."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Volatile Draft status re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-06-17",
+     "reason": "Stagger into batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-soroban-contractmeta-vs-contractevent"
+  },
+  {
+   "id": "q-soroban-contract-id-derivation",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "address = hash of ContractIDPreimage + network ID",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "case ENVELOPE_TYPE_CONTRACT_ID: struct { Hash networkID; ContractIDPreimage contractIDPreimage; } contractID;"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"ContractIDPreimage network id salt contract address\"",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction#function: TYPE_CONTRACT_ID: struct { Hash …"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 `contract id wasm --salt 00..01 --source-account GAAZI4...CWN7` testnet vs pubnet passphrase",
+       "observedAt": "2026-11-02",
+       "quote": "testnet CBFWMUHS...G2AK; pubnet CCWMHVA6...HJ4H"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "same deployer+salt -> same address; different salt -> different address; no Wasm input",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 `stellar contract id wasm` (no --wasm argument)",
+       "observedAt": "2026-11-02",
+       "quote": "salt 1 twice -> CBFWMUHSXHMUWUEWWUUYDW4PC64WBT3PR4VYK6JPDUU6ORYFSR24G2AK both times; salt 2 -> CALMTUW27NKNJQOZCQJSXE5I374KENMSTN7HRWOTVTHJCFZZJLP2GYAR"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+       "observedAt": "2026-11-02",
+       "quote": "CONTRACT_ID_PREIMAGE_FROM_ADDRESS ... address ... salt"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "upgrading Wasm changes the contract id is false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md",
+       "observedAt": "2026-11-02",
+       "quote": "When the contract has its code updated it is not considered created"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-cross-contract-call; q-soroban-oz-upgradeable-macro; q-pc-address-types-strkey"
+  },
+  {
+   "id": "q-soroban-contractmeta-vs-contractevent",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "contractmeta! is a function-like macro writing contractmetav0",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk-macros/src/lib.rs",
+       "observedAt": "2026-11-02",
+       "quote": "#[proc_macro] pub fn contractmeta(metadata: TokenStream) -> TokenStream"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/lib.rs",
+       "observedAt": "2026-11-02",
+       "quote": "under the section name 'contractmetav0' ... contractmeta!(key=\"desc\", val=\"hello world contract\");"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"contractmeta! contractmetav0\"",
+       "observedAt": "2026-11-02",
+       "quote": "--meta <META> — Add key-value to contract meta (adds the meta to the contractmetav0 custom section)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "#[contractevent] is an attribute macro for typed runtime events",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk-macros/src/lib.rs",
+       "observedAt": "2026-11-02",
+       "quote": "#[proc_macro_attribute] pub fn contractevent(metadata: TokenStream, input: TokenStream) -> TokenStream"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events",
+       "observedAt": "2026-07-11",
+       "quote": "(previously verified 2026-07-11; page still cited)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-contract-build-verification"
+  },
+  {
+   "id": "q-soroban-cross-contract-call",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "generated client (contractimport!) wraps Env::invoke_contract",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/conventions/cross-contract",
+       "observedAt": "2026-11-02",
+       "quote": "A common way to do this is to load the Wasm of a contract using contractimport! ... Behind the scenes, this way of doing it is simply a convenient wrapper aroun…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/v30.0.0/soroban-env-host/src/auth.rs",
+       "observedAt": "2026-11-02",
+       "quote": "The first type -- contract invoker address -- is associated with a set of ..."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "external auth must cover invocation tree; direct invoker implicitly authorized",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+       "observedAt": "2026-11-02",
+       "quote": "Hence all the require_auth calls made on behalf of the direct invoker contract Address are considered to be authorized (but not any calls on behalf of the contr…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md",
+       "observedAt": "2026-11-02",
+       "quote": "Whenever a contract calls require_auth for an account, host iterates over every non-exhausted SorobanAuthorizationEntry where credentials match"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-require-auth-propagation; q-sor-decode-hosterror-codes; q-soroban-check-auth-custom-account"
+  },
+  {
+   "id": "q-soroban-deploy-cli",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "stellar contract build -> target/wasm32v1-none/release/",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+       "observedAt": "2026-11-02",
+       "quote": "A .wasm file will be outputted in the target directory, at target/wasm32v1-none/release/hello_world.wasm."
+      },
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract build --help`",
+       "observedAt": "2026-11-02",
+       "quote": "Crates are built for the wasm32 target ... with their release profile"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "deploy --wasm --source-account --network testnet; keys generate --fund",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet",
+       "observedAt": "2026-11-02",
+       "quote": "stellar keys generate alice --network testnet --fund ... stellar contract deploy --wasm target/wasm32v1-none/release/hello_world.wasm --source-account alice --n…"
+      },
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract deploy --help`",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...] ... -s, --source-account <SOURCE_ACCOUNT> [alias:…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "invoke --id <C...> --source-account --network testnet -- <fn>",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet",
+       "observedAt": "2026-11-02",
+       "quote": "stellar contract invoke --id CACDYF3C... --source-account alice --network testnet -- hello --to RPC"
+      },
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 `stellar contract invoke --help`",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: stellar contract invoke [OPTIONS] --contract-id <CONTRACT_ID> --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_FN_AND_ARGS>...]"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "--source remains an alias of --source-account",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local stellar 28.1.0 deploy --help",
+       "observedAt": "2026-11-02",
+       "quote": "[alias: --source]"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+       "observedAt": "2026-11-02",
+       "quote": "stellar contract install ... --source-account <SOURCE_ACCOUNT>"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "CLI 28.1.0 and current docs re-verified; truth unchanged."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-06-24",
+     "reason": "Stagger into batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-sor-build-target-wasm32v1; q-tool-cli-testnet-identity-howto; q-asset-deploy-sac-cli; q-soroban-constructor-lifecycle"
+  },
+  {
+   "id": "q-soroban-event-indexing-design",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[1..2]",
+     "claim": "custom SEP-41 transfer/mint topics [transfer,from,to]/[mint,to]; SAC/CAP-67 append SEP-11 asset",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "The event has topics: Symbol with value \"mint\"; Address the address to hold the newly minted tokens."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
+       "observedAt": "2026-11-02",
+       "quote": "contract: asset, topics: [\"mint\", to:Address, sep0011_asset:String], data: amount:i128"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/token-interface",
+       "observedAt": "2026-11-02",
+       "quote": "transfer | [\"transfer\", from, to] | [\"transfer\", from, to, sep0011_asset]"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "topic-count authenticity inference is unsafe",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/pull/1994",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-41: permit additional event topics merged=2026-09-15T22:20:07Z"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "Implementers may emit additional topics beyond those defined for each event."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "decode topics/data; SEP-41 has vec and map data formats",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/pull/1947",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-41: Add map event bodies merged=2026-07-27"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/token-interface",
+       "observedAt": "2026-11-02",
+       "quote": "data `{ amount: i128, to_muxed_id: Option<u64> }: Map` ... Legacy implementations may emit ... data `amount: i128`"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "tx/op metadata distinguishes event paths",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
+       "observedAt": "2026-11-02",
+       "quote": "(re-read 2026-08-29; CAP Final, Protocol version 23)"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/announcing-protocol-23",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-0067 allows built-in classic operations to emit asset events in the same format as smart contract transaction events"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified SEP-41/CAP-67 schema; no gospel drift."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-06-30",
+     "reason": "Stagger into batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-sep-41-token-interface; q-protocol-23-whisk-caps; q-soroban-token-transfer-pattern; q-ti-enumerate-holders-airdrop; q-ti-fetch-all-balances-classic-sac"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5)",
+  "decisions": [
+   {
+    "id": "q-soroban-cli-bindings",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "All new claims re-derived: 28.1.0 released 2026-09-26; TS still generates (F) with deprecation warning; npx @stellar/stellar-sdk generate takes --wasm/--wasm-hash/--contract-id; KMP placeholder exits not-implemented (exit 1) pointing to lightsail-network tooling; Rust --wasm only. Version-qualified, not laundering.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "New Kotlin Multiplatform (KMP) target for `stellar contract bindings`. TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor …"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z (latest, not prerelease); v28.0.0 2026-08-26; v27.1.0 2026-07-31; v27.0.0 2026-06-17"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ... Usage: `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--was…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... You can generate bindings from three different sources ... `--wasm <path>` ... `--wasm-hash <hash>` ... `--contr…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da) probes: bindings --help, typescript --wasm, rust --wasm, python/java/flutter/swift/php/kmp",
+      "observedAt": "2026-11-02",
+      "quote": "⚠️ `stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK instead ... ✅ Generated! | rust emitted `pub const WASM: &[u8] = soroban…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: stellar cli 28.1.0 typescript bindings deprecated (hits github release v28.1.0, stellar.github.io/js-stellar-sdk, npmjs @stellar/stellar-sdk)",
+      "observedAt": "2026-11-02",
+      "quote": "Note that the Stellar CLI currently ships its own native `stellar contract bindings typescript` command (now deprecated)."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-cli-bindings",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "89 chars (<=90). Deprecation is a true, material current fact (A+B+F). Bundles inputs + deprecation; acceptable.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "New Kotlin Multiplatform (KMP) target for `stellar contract bindings`. TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor …"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z (latest, not prerelease); v28.0.0 2026-08-26; v27.1.0 2026-07-31; v27.0.0 2026-06-17"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ... Usage: `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--was…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... You can generate bindings from three different sources ... `--wasm <path>` ... `--wasm-hash <hash>` ... `--contr…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da) probes: bindings --help, typescript --wasm, rust --wasm, python/java/flutter/swift/php/kmp",
+      "observedAt": "2026-11-02",
+      "quote": "⚠️ `stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK instead ... ✅ Generated! | rust emitted `pub const WASM: &[u8] = soroban…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: stellar cli 28.1.0 typescript bindings deprecated (hits github release v28.1.0, stellar.github.io/js-stellar-sdk, npmjs @stellar/stellar-sdk)",
+      "observedAt": "2026-11-02",
+      "quote": "Note that the Stellar CLI currently ships its own native `stellar contract bindings typescript` command (now deprecated)."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-cli-bindings",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "Rust usage `--wasm <WASM>` only, in 28.1.0 help (F) and CLI manual (A). 61 chars.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "New Kotlin Multiplatform (KMP) target for `stellar contract bindings`. TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor …"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z (latest, not prerelease); v28.0.0 2026-08-26; v27.1.0 2026-07-31; v27.0.0 2026-06-17"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ... Usage: `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--was…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... You can generate bindings from three different sources ... `--wasm <path>` ... `--wasm-hash <hash>` ... `--contr…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da) probes: bindings --help, typescript --wasm, rust --wasm, python/java/flutter/swift/php/kmp",
+      "observedAt": "2026-11-02",
+      "quote": "⚠️ `stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK instead ... ✅ Generated! | rust emitted `pub const WASM: &[u8] = soroban…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: stellar cli 28.1.0 typescript bindings deprecated (hits github release v28.1.0, stellar.github.io/js-stellar-sdk, npmjs @stellar/stellar-sdk)",
+      "observedAt": "2026-11-02",
+      "quote": "Note that the Stellar CLI currently ships its own native `stellar contract bindings typescript` command (now deprecated)."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-cli-bindings",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "Placeholders python/java/flutter/swift/php/kmp all exit 1 with not-implemented message (F); manual says 'requires external plugin' (A). 76 chars.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "New Kotlin Multiplatform (KMP) target for `stellar contract bindings`. TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor …"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z (latest, not prerelease); v28.0.0 2026-08-26; v27.1.0 2026-07-31; v27.0.0 2026-06-17"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ... Usage: `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--was…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... You can generate bindings from three different sources ... `--wasm <path>` ... `--wasm-hash <hash>` ... `--contr…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da) probes: bindings --help, typescript --wasm, rust --wasm, python/java/flutter/swift/php/kmp",
+      "observedAt": "2026-11-02",
+      "quote": "⚠️ `stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK instead ... ✅ Generated! | rust emitted `pub const WASM: &[u8] = soroban…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: stellar cli 28.1.0 typescript bindings deprecated (hits github release v28.1.0, stellar.github.io/js-stellar-sdk, npmjs @stellar/stellar-sdk)",
+      "observedAt": "2026-11-02",
+      "quote": "Note that the Stellar CLI currently ships its own native `stellar contract bindings typescript` command (now deprecated)."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-cli-bindings",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Accurate re-run summary.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "New Kotlin Multiplatform (KMP) target for `stellar contract bindings`. TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor …"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z (latest, not prerelease); v28.0.0 2026-08-26; v27.1.0 2026-07-31; v27.0.0 2026-06-17"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ... Usage: `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--was…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... You can generate bindings from three different sources ... `--wasm <path>` ... `--wasm-hash <hash>` ... `--contr…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da) probes: bindings --help, typescript --wasm, rust --wasm, python/java/flutter/swift/php/kmp",
+      "observedAt": "2026-11-02",
+      "quote": "⚠️ `stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK instead ... ✅ Generated! | rust emitted `pub const WASM: &[u8] = soroban…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: stellar cli 28.1.0 typescript bindings deprecated (hits github release v28.1.0, stellar.github.io/js-stellar-sdk, npmjs @stellar/stellar-sdk)",
+      "observedAt": "2026-11-02",
+      "quote": "Note that the Stellar CLI currently ships its own native `stellar contract bindings typescript` command (now deprecated)."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-cli-bindings",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified today.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "New Kotlin Multiplatform (KMP) target for `stellar contract bindings`. TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor …"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z (latest, not prerelease); v28.0.0 2026-08-26; v27.1.0 2026-07-31; v27.0.0 2026-06-17"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ... Usage: `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--was…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... You can generate bindings from three different sources ... `--wasm <path>` ... `--wasm-hash <hash>` ... `--contr…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da) probes: bindings --help, typescript --wasm, rust --wasm, python/java/flutter/swift/php/kmp",
+      "observedAt": "2026-11-02",
+      "quote": "⚠️ `stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK instead ... ✅ Generated! | rust emitted `pub const WASM: &[u8] = soroban…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: stellar cli 28.1.0 typescript bindings deprecated (hits github release v28.1.0, stellar.github.io/js-stellar-sdk, npmjs @stellar/stellar-sdk)",
+      "observedAt": "2026-11-02",
+      "quote": "Note that the Stellar CLI currently ships its own native `stellar contract bindings typescript` command (now deprecated)."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-cli-bindings",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Inside the assigned 2027-06 window. CLI moves fast (TS command may be removed), so the earliest slot in the window is appropriate.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "New Kotlin Multiplatform (KMP) target for `stellar contract bindings`. TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor …"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v28.1.0 2026-09-26T16:33:53Z (latest, not prerelease); v28.0.0 2026-08-26; v27.1.0 2026-07-31; v27.0.0 2026-06-17"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ... Usage: `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--was…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... You can generate bindings from three different sources ... `--wasm <path>` ... `--wasm-hash <hash>` ... `--contr…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da) probes: bindings --help, typescript --wasm, rust --wasm, python/java/flutter/swift/php/kmp",
+      "observedAt": "2026-11-02",
+      "quote": "⚠️ `stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK instead ... ✅ Generated! | rust emitted `pub const WASM: &[u8] = soroban…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: stellar cli 28.1.0 typescript bindings deprecated (hits github release v28.1.0, stellar.github.io/js-stellar-sdk, npmjs @stellar/stellar-sdk)",
+      "observedAt": "2026-11-02",
+      "quote": "Note that the Stellar CLI currently ships its own native `stellar contract bindings typescript` command (now deprecated)."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-av-passkeys-talk",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Live rows (raw C + Raven C) carry title/url/channel/created_at but no recording-date field; created_at 2026-04-02 on a recording of an event held 2024-11-12 (D) proves it is ingestion metadata. Upstream /v1/tools text calls created_at 'the recording's date' — that doc claim is refuted by the data, and the repo manifest already overrides it. Not a dispute: the data settles it. Consider an improveme…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages {query:'Stellar passkeys secp256r1 smart wallet signing',limit:5}",
+      "observedAt": "2026-11-02",
+      "quote": "row keys: av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity; 'Workshop: Stellar | Multichain Day | DEVCON 2024' created_at '2…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven MCP execute lumenloop.find_av_passages (observedAt 2026-11-02T16:37:29.857Z)",
+      "observedAt": "2026-11-02",
+      "quote": "same rows and keys; no transcript field; created_at 2026-04-02T23:21:21.744Z for the DEVCON 2024 workshop"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.org/events/community/sdf-at-devcon-2024 ; https://luma.com/multichaindaydevcon (Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Wrapped: multichain day — November 12, 2024 11 am - 7 pm"
+     },
+     {
+      "class": "E",
+      "ref": "catalog/manifest.json lumenloop.find_av_passages description",
+      "observedAt": "2026-11-02",
+      "quote": "created_at (upstream metadata; do not treat it as the recording date or recency evidence)"
+     },
+     {
+      "class": "A",
+      "ref": "GET https://api.lumenloop.com/v1/tools (upstream tool listing; CONFLICTING doc)",
+      "observedAt": "2026-11-02",
+      "quote": "created_at (the recording's date — use it to judge and cite how recent the talk is)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-av-passkeys-talk",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-observed today.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages {query:'Stellar passkeys secp256r1 smart wallet signing',limit:5}",
+      "observedAt": "2026-11-02",
+      "quote": "row keys: av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity; 'Workshop: Stellar | Multichain Day | DEVCON 2024' created_at '2…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven MCP execute lumenloop.find_av_passages (observedAt 2026-11-02T16:37:29.857Z)",
+      "observedAt": "2026-11-02",
+      "quote": "same rows and keys; no transcript field; created_at 2026-04-02T23:21:21.744Z for the DEVCON 2024 workshop"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.org/events/community/sdf-at-devcon-2024 ; https://luma.com/multichaindaydevcon (Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Wrapped: multichain day — November 12, 2024 11 am - 7 pm"
+     },
+     {
+      "class": "E",
+      "ref": "catalog/manifest.json lumenloop.find_av_passages description",
+      "observedAt": "2026-11-02",
+      "quote": "created_at (upstream metadata; do not treat it as the recording date or recency evidence)"
+     },
+     {
+      "class": "A",
+      "ref": "GET https://api.lumenloop.com/v1/tools (upstream tool listing; CONFLICTING doc)",
+      "observedAt": "2026-11-02",
+      "quote": "created_at (the recording's date — use it to judge and cite how recent the talk is)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-av-passkeys-talk",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Inside assigned window.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages {query:'Stellar passkeys secp256r1 smart wallet signing',limit:5}",
+      "observedAt": "2026-11-02",
+      "quote": "row keys: av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity; 'Workshop: Stellar | Multichain Day | DEVCON 2024' created_at '2…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven MCP execute lumenloop.find_av_passages (observedAt 2026-11-02T16:37:29.857Z)",
+      "observedAt": "2026-11-02",
+      "quote": "same rows and keys; no transcript field; created_at 2026-04-02T23:21:21.744Z for the DEVCON 2024 workshop"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.org/events/community/sdf-at-devcon-2024 ; https://luma.com/multichaindaydevcon (Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Wrapped: multichain day — November 12, 2024 11 am - 7 pm"
+     },
+     {
+      "class": "E",
+      "ref": "catalog/manifest.json lumenloop.find_av_passages description",
+      "observedAt": "2026-11-02",
+      "quote": "created_at (upstream metadata; do not treat it as the recording date or recency evidence)"
+     },
+     {
+      "class": "A",
+      "ref": "GET https://api.lumenloop.com/v1/tools (upstream tool listing; CONFLICTING doc)",
+      "observedAt": "2026-11-02",
+      "quote": "created_at (the recording's date — use it to judge and cite how recent the talk is)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-contract-build-verification",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "SEP-55 Draft v0.4.1 and SEP-58 Draft v0.6.0 (preamble Updated 2026-07-15) confirmed. Optional polish: 'its rebuild-based' now has two antecedents; 'SEP-58's rebuild-based' would read clearer. Side observations (no change proposed): SEP-58 now also defines `bldarg` (commit 2026-07-20, same version); the ecosystem README lists SEP-55 as 'Contract Build Info' while its preamble says 'Contract Build V…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0055 Title: Contract Build Verification ... Status: Draft ... Updated: 2025-03-12 Version: 0.4.1"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0058 Title: Contract Build Reproducibility for Verification ... Status: Draft ... Updated: 2026-07-15 Version: 0.6.0 ... Complementary to [SEP-55] ... `bld…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0058.md",
+      "observedAt": "2026-11-02",
+      "quote": "aed3394b 2026-07-20 Add SEP-58 bldarg for arguments ahead of bldopt (#1965)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| [SEP-0055](sep-0055.md) | Contract Build Info | Nando Vieira | Draft | ... | [SEP-0058](sep-0058.md) | Contract Build Reproducibility for Verification | Leigh…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 `stellar contract info --help`",
+      "observedAt": "2026-11-02",
+      "quote": "meta  Output the metadata stored in a contract ... build  Output the contract build information, if available"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-contract-build-verification",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified today; golden claims (Draft status, attestation vs rebuild, complementary, contractmetav0 source_repo, info meta) hold.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0055 Title: Contract Build Verification ... Status: Draft ... Updated: 2025-03-12 Version: 0.4.1"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0058 Title: Contract Build Reproducibility for Verification ... Status: Draft ... Updated: 2026-07-15 Version: 0.6.0 ... Complementary to [SEP-55] ... `bld…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0058.md",
+      "observedAt": "2026-11-02",
+      "quote": "aed3394b 2026-07-20 Add SEP-58 bldarg for arguments ahead of bldopt (#1965)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| [SEP-0055](sep-0055.md) | Contract Build Info | Nando Vieira | Draft | ... | [SEP-0058](sep-0058.md) | Contract Build Reproducibility for Verification | Leigh…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 `stellar contract info --help`",
+      "observedAt": "2026-11-02",
+      "quote": "meta  Output the metadata stored in a contract ... build  Output the contract build information, if available"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-contract-build-verification",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Inside assigned window.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0055 Title: Contract Build Verification ... Status: Draft ... Updated: 2025-03-12 Version: 0.4.1"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0058 Title: Contract Build Reproducibility for Verification ... Status: Draft ... Updated: 2026-07-15 Version: 0.6.0 ... Complementary to [SEP-55] ... `bld…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0058.md",
+      "observedAt": "2026-11-02",
+      "quote": "aed3394b 2026-07-20 Add SEP-58 bldarg for arguments ahead of bldopt (#1965)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| [SEP-0055](sep-0055.md) | Contract Build Info | Nando Vieira | Draft | ... | [SEP-0058](sep-0058.md) | Contract Build Reproducibility for Verification | Leigh…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 `stellar contract info --help`",
+      "observedAt": "2026-11-02",
+      "quote": "meta  Output the metadata stored in a contract ... build  Output the contract build information, if available"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-deploy-cli",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Every golden step re-derived (A+E+F): wasm32v1-none output, keys generate --fund, deploy --source-account (alias --source), --alias, constructor args after --, invoke --id. Note: 28.x deploy auto-builds when --wasm is omitted inside a Cargo workspace; golden flow remains valid.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+      "observedAt": "2026-11-02",
+      "quote": "A `.wasm` file will be outputted in the `target` directory, at `target/wasm32v1-none/release/hello_world.wasm`."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet",
+      "observedAt": "2026-11-02",
+      "quote": "stellar keys generate alice --network testnet --fund ... stellar contract deploy --wasm target/wasm32v1-none/release/hello_world.wasm --source-account alice --n…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'stellar contract deploy source-account testnet wasm32v1-none' (observedAt 2026-11-02T16:38:25Z)",
+      "observedAt": "2026-11-02",
+      "quote": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts: stellar contract deploy --wasm target/wasm32v1-none/release/... --source-accou…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 deploy/invoke/keys --help and `stellar contract build --print-commands-only`",
+      "observedAt": "2026-11-02",
+      "quote": "Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...] ... [alias: --source] | keys generate: --fund Fun…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-deploy-cli",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Inside assigned window.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+      "observedAt": "2026-11-02",
+      "quote": "A `.wasm` file will be outputted in the `target` directory, at `target/wasm32v1-none/release/hello_world.wasm`."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet",
+      "observedAt": "2026-11-02",
+      "quote": "stellar keys generate alice --network testnet --fund ... stellar contract deploy --wasm target/wasm32v1-none/release/hello_world.wasm --source-account alice --n…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'stellar contract deploy source-account testnet wasm32v1-none' (observedAt 2026-11-02T16:38:25Z)",
+      "observedAt": "2026-11-02",
+      "quote": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts: stellar contract deploy --wasm target/wasm32v1-none/release/... --source-accou…"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 deploy/invoke/keys --help and `stellar contract build --print-commands-only`",
+      "observedAt": "2026-11-02",
+      "quote": "Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...] ... [alias: --source] | keys generate: --fund Fun…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-event-indexing-design",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "CAP-67 (Final, P23) asset-appended SAC/Classic schema confirmed by spec (B), docs (E), and live testnet 4-topic native SAC transfer (F); 7-day RPC retention confirmed. SEP-41 moved to v0.5.2 (2026-08-24) and now says implementers may emit additional topics; this reinforces the existing avoid ('infer authenticity solely from topic count') and does not falsify '[transfer,from,to]/[mint,to]' as the d…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0067.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... Protocol version: 23 ... contract: asset, topics: [\"transfer\", from:Address, to:Address, sep0011_asset:String], data: amount:i128 ... topics: …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "Updated: 2026-08-24 Version 0.5.2 ... topics - `[\"transfer\", from: Address, to: Address]` ... data - `amount: i128` or `{ amount: i128, to_muxed_id: ... }` ... …"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs (observedAt 2026-11-02T16:38:25Z): docs/build/guides/transactions/send-and-receive-payments; docs/build/guides/events/publish",
+      "observedAt": "2026-11-02",
+      "quote": "Transfer Topics Model: an array of four topics, specified in CAP-67 ... Use Stellar RPC's getEvents method for querying events, with a 7 day retention window"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://soroban-testnet.stellar.org getEvents topics [transfer,*,*,*] startLedger latest-2000",
+      "observedAt": "2026-11-02",
+      "quote": "id 0023711560958480384-0000000000 contract CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC topics=4, last topic AAAADgAAAAZuYXRpdmUAAA== (String \"nativ…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-event-indexing-design",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Inside assigned window.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0067.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... Protocol version: 23 ... contract: asset, topics: [\"transfer\", from:Address, to:Address, sep0011_asset:String], data: amount:i128 ... topics: …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "Updated: 2026-08-24 Version 0.5.2 ... topics - `[\"transfer\", from: Address, to: Address]` ... data - `amount: i128` or `{ amount: i128, to_muxed_id: ... }` ... …"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs (observedAt 2026-11-02T16:38:25Z): docs/build/guides/transactions/send-and-receive-payments; docs/build/guides/events/publish",
+      "observedAt": "2026-11-02",
+      "quote": "Transfer Topics Model: an array of four topics, specified in CAP-67 ... Use Stellar RPC's getEvents method for querying events, with a 7 day retention window"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://soroban-testnet.stellar.org getEvents topics [transfer,*,*,*] startLedger latest-2000",
+      "observedAt": "2026-11-02",
+      "quote": "id 0023711560958480384-0000000000 contract CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC topics=4, last topic AAAADgAAAAZuYXRpdmUAAA== (String \"nativ…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://github.com/stellar/stellar-cli/releases (gh api)",
+   "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0 (gh api)",
+   "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+   "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+   "https://github.com/stellar/js-stellar-sdk/releases (gh api)",
+   "https://stellar.github.io/js-stellar-sdk",
+   "https://www.npmjs.com/package/@stellar/stellar-sdk",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md",
+   "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0055.md",
+   "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0058.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0067.md",
+   "https://api.lumenloop.com/v1/tools/find_av_passages (POST, read-only search)",
+   "https://api.lumenloop.com/v1/tools (GET)",
+   "Raven MCP execute lumenloop.find_av_passages",
+   "Raven MCP execute stellarDocs.search_docs x3",
+   "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+   "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet",
+   "https://soroban-testnet.stellar.org (getLatestLedger, getEvents)",
+   "https://stellar.org/events/community/sdf-at-devcon-2024 (Perplexity)",
+   "https://luma.com/multichaindaydevcon (Perplexity)",
+   "https://archive.devcon.org/ (Perplexity)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-soroban-cli-bindings; q-soroban-av-passkeys-talk; q-soroban-contract-build-verification",
+  "verifiedOnly": "q-soroban-deploy-cli; q-soroban-event-indexing-design; q-soroban-constructor-lifecycle; q-soroban-auth-recursion-dos-audit; q-soroban-check-auth-custom-account; q-soroban-contract-id-derivation; q-soroban-contractmeta-vs-contractevent; q-soroban-cross-contract-call",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "issue": "Sibling drift (batch varial-dev, not edited here): its answer calls `stellar contract bindings typescript` the \"current\" command, but Stellar CLI 28.1.0 (2026-09-26) deprecates it in favor of `npx @stellar/stellar-sdk generate` (A+B+F evidence in verify/soroban-04.json)."
+   },
+   {
+    "id": "q-soroban-event-indexing-design",
+    "issue": "Upstream defect for improvements/: Stellar Docs token-interface events table lists SEP-41 mint as \"not part of this interface\" while SEP-41 defines a Mint Event; verifier also suggests a follow-up wording that indexers must tolerate extra topics (SEP-41 v0.5.2)."
+   },
+   {
+    "id": "q-soroban-av-passkeys-talk",
+    "issue": "Upstream recurrences for improvements/: Lumenloop GET /v1/tools still calls created_at \"the recording's date\" (ll-019 open); lumenloop-skills stellar-project-dossier still teaches find_av_passages as verbatim quotes (sk-004)."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-soroban-cli-bindings",
+    "log": "Answer, keyFacts[0-2], notes re-qualified to CLI 28.1.0 (TS bindings deprecated toward npx @stellar/stellar-sdk generate; KMP placeholder added); asOf 2026-11-02; reverifyBy 2027-06-10; +3 sources, +1 corroboration row; verified refreshed; rootCause freshness-drift."
+   },
+   {
+    "id": "q-soroban-av-passkeys-talk",
+    "log": "Answer: channel only, do not present created_at as recording date; asOf 2026-11-02; reverifyBy 2027-06-15; +2 sources, +1 corroboration row (C/D/E vs conflicting A); verified refreshed; rootCause ll-019 + freshness-drift."
+   },
+   {
+    "id": "q-soroban-contract-build-verification",
+    "log": "Notes as-of refreshed to 2026-11-02 with SEP-55 Draft v0.4.1 and SEP-58 Draft v0.6.0; asOf 2026-11-02; reverifyBy 2027-06-17; +3 sources, +1 corroboration row; verified refreshed; rootCause freshness-drift."
+   },
+   {
+    "id": "q-soroban-deploy-cli",
+    "log": "No gospel change; asOf 2026-11-02; reverifyBy 2027-06-24; +1 F source; verified refreshed (A+E+F)."
+   },
+   {
+    "id": "q-soroban-event-indexing-design",
+    "log": "No gospel change; asOf 2026-11-02; reverifyBy 2027-06-30; +1 F source; verified refreshed (B+E+F)."
+   },
+   {
+    "id": "q-soroban-constructor-lifecycle",
+    "log": "No gospel change; scheduled reverifyBy 2027-02-25 -> 2027-06-03; asOf kept 2024-12-05 (event date); verified refreshed (B+A+D+F)."
+   },
+   {
+    "id": "q-soroban-auth-recursion-dos-audit",
+    "log": "No gospel change; verified refreshed (A+D+C+B)."
+   },
+   {
+    "id": "q-soroban-check-auth-custom-account",
+    "log": "No gospel change; verified refreshed (B+A)."
+   },
+   {
+    "id": "q-soroban-contract-id-derivation",
+    "log": "No gospel change; verified refreshed (B+E+F)."
+   },
+   {
+    "id": "q-soroban-contractmeta-vs-contractevent",
+    "log": "No gospel change; verified refreshed (B+E)."
+   },
+   {
+    "id": "q-soroban-cross-contract-call",
+    "log": "No gospel change; verified refreshed (A+B)."
+   }
+  ]
+ }
+}

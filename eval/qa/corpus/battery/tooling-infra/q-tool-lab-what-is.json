@@ -34,8 +34,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2027-01-21",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-29",
     "sources": [
       {
         "class": "A",
@@ -56,6 +56,30 @@
         "class": "A",
         "ref": "https://stellar.org/blog/developers/introducing-the-all-new-stellar-lab",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "curl -sI https://lab.stellar.org",
+        "note": "HTTP/2 200",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/laboratory",
+        "note": "archived false, pushed 2026-11-01",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks",
+        "note": "Friendbot Available | No | Yes (10,000 XLM) | Yes (10,000 XLM)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "stellarDocs.search_sdk_cli_tools_docs 'Stellar Lab build sign submit transactions Friendbot'",
+        "note": "Developers can use Stellar Lab to build and submit transactions",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -103,20 +127,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
       "evidence": [
-        "GT-55 primary 3392 and sealed blind 3393 independently agreed on the Mainnet/account versus Testnet-Futurenet/Friendbot boundary.",
-        "Current Lab page and live product establish build/sign/simulate/submit, Horizon/RPC, contract, account, and XDR capabilities.",
-        "Sibling q-ti-stellar-lab-usage-and-new-ui already carries the detailed UI, localStorage, signing, and self-hosted/offline boundary; this case remains capabilities-at-a-glance.",
-        "https://developers.stellar.org/docs/tools/lab — live re-check 2026-08-27 confirms the official capabilities and network scope.",
-        "https://developers.stellar.org/docs/networks — live re-check 2026-08-27 confirms Friendbot funds only Testnet and Futurenet.",
-        "Structural re-form 2026-08-27: preserved Stellar Lab, build/sign/simulate/submit, contract/API/XDR, account-network, Friendbot, and workflow-scope claims.",
-        "Sibling sweep 2026-08-27: q-ti-stellar-lab-usage-and-new-ui showed no contradiction."
-      ],
-      "rootCause": [
-        "Eval-side network/faucet wording ambiguity; current upstream Lab documentation already states the correct boundary.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "A: https://developers.stellar.org/docs/tools/lab — \"Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Testnet and Futurenet. ... Simulate and Submit ... XDR ⇔ JSON Support\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
+        "F: curl -sI https://lab.stellar.org — \"HTTP/2 200\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
+        "B: https://api.github.com/repos/stellar/laboratory — \"archived false, pushed 2026-11-01\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
+        "A: https://developers.stellar.org/docs/tools/lab — \"Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Testnet and Futurenet. ... Simulate and Submit ... XDR ⇔ JSON Support\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2]",
+        "A: https://developers.stellar.org/docs/tools/lab — \"Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Testnet and Futurenet. ... Simulate and Submit ... XDR ⇔ JSON Support\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[0]",
+        "A: https://developers.stellar.org/docs/networks — \"Friendbot Available | No | Yes (10,000 XLM) | Yes (10,000 XLM)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[0]",
+        "E: stellarDocs.search_sdk_cli_tools_docs 'Stellar Lab build sign submit transactions Friendbot' — \"Developers can use Stellar Lab to build and submit transactions\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[0]",
+        "Sibling sweep 2026-11-02: q-ti-stellar-lab-usage-and-new-ui, q-ti-secret-key-vs-mnemonic-derivation; no contradiction found by the proposer matrix."
       ]
     },
     "origin": "raven-next q-tool-lab-what-is"

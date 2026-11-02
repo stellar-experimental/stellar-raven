@@ -19,7 +19,7 @@
       "SEP-56 proves that an off-chain asset exists and is fully reserved.",
       "Issuing a token removes the need for custody, redemption, and securities-law analysis."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence."
+    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -33,8 +33,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-10-06",
-    "reverifyBy": "2027-02-16",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-16",
     "sources": [
       {
         "class": "A",
@@ -43,6 +43,24 @@
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0056.md",
+        "note": "SEP: 0056 Title: Tokenized Vault Standard; Status: Draft; Version: 0.1.2.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+        "note": "SEP: 0041 Title: Soroban Token Interface; Updated 2026-08-24; Version 0.5.2.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts#audited-modules-available",
+        "note": "Raven stellarDocs.search_docs 'SEP-56 tokenized vault standard draft': \"The Fungible Token Vault extends the Fungible Token and implements SEP-56 Tokenized Vault Standard\".",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -109,6 +127,24 @@
             "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
             "observedAt": "2026-10-06",
             "note": "Official guide calls contract tokens SEP-41 implementations."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0056.md",
+            "observedAt": "2026-11-02",
+            "note": "\"SEP: 0056 Title: Tokenized Vault Standard ... Status: Draft ... Version: 0.1.2\""
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-11-02",
+            "note": "\"SEP: 0041 Title: Soroban Token Interface ... Updated: 2026-08-24 Version 0.5.2\""
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts#audited-modules-available",
+            "observedAt": "2026-11-02",
+            "note": "\"The Fungible Token Vault extends the Fungible Token and implements SEP-56 Tokenized Vault Standard\""
           }
         ]
       },
@@ -150,15 +186,18 @@
       }
     ],
     "verified": {
-      "date": "2026-10-06",
-      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
       "evidence": [
-        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
-        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md — Status Draft, Version 0.1.2, tokenized-vault scope.",
-        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — Soroban Token Interface, Version 0.5.2 (updated 2026-08-24; the golden states only that SEP-41 is a token interface).",
-        "Live A 2026-10-06: https://developers.stellar.org/docs/tokens/control-asset-access, https://developers.stellar.org/docs/tokens/anatomy-of-an-asset, and https://developers.stellar.org/docs/tokens/publishing-asset-info — issuer flags, tokenization model comparison, redemption instructions, and reserve attestation; B: SEP-1 defines the same fields.",
-        "Live A 2026-10-06: https://stellar.org/use-cases/tokenization — regulated custody providers and native asset controls. Observation (no truth change): the official tokenization comparison now names SEP-57 T-REX (Draft, Version 0.4.0, updated 2026-09-08) for regulated tokens; the golden does not deny it.",
-        "Sibling sweep 2026-10-06: grep SEP-56|SEP-0056|tokenized vault → no other case; no contradiction."
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0056.md (observedAt 2026-11-02): \"SEP: 0056 Title: Tokenized Vault Standard ... Status: Draft ... Version: 0.1.2\" (unchanged since 2025-11-06).",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md (observedAt 2026-11-02): \"SEP: 0041 Title: Soroban Token Interface ... Updated: 2026-08-24 Version 0.5.2\".",
+        "Raven stellarDocs.search_docs 'SEP-56 tokenized vault standard draft' -> https://developers.stellar.org/docs/tools/openzeppelin-contracts#audited-modules-available (observedAt 2026-11-02): \"The Fungible Token Vault extends the Fungible Token and implements SEP-56 Tokenized Vault Standard\".",
+        "stellarDocs.search_docs -> https://developers.stellar.org/docs/tokens/control-asset-access#authorization-revocable-0x2 (observedAt 2026-11-02): \"This setting is useful for issuers of regulated assets\".",
+        "Independent verifier 2026-11-02 accepted the golden.notes as-of date bump (/private/tmp/claude-501/golden-audit/verify/compliance-rwa-payments-04.json).",
+        "Sibling sweep 2026-11-02: q-rwa-stellar-vs-erc20-regulated, q-crp-oz-rwa-erc3643-trex, q-sep-41-token-interface; no contradiction (SEP-56 still Draft vault interface; SEP-41 still the token interface)."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "kaan rwa-tokenization-stellar"

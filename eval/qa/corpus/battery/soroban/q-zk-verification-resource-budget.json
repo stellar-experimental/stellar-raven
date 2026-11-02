@@ -33,7 +33,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2027-02-05",
+    "reverifyBy": "2027-04-27",
     "sources": [
       {
         "class": "A",
@@ -136,13 +136,14 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus author re-check, Claude Opus 5.5)",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-07)",
       "evidence": [
-        "Re-verified unchanged 2026-11-02; the answer pins no constant.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/tools/quickstart/network-modes says '`unlimited` sets limits to the maximum resources that can be configured', so local success does not prove a public-network fit.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering says 'Resource limits are determined by a validator vote and can be adjusted'; the storage-strategies appendix records SLP-0007 (live on Mainnet since 2026-10-22) changing per-ledger caps, which supports the no-pinned-constants guidance.",
-        "Live F 2026-11-02: RPC getLedgerEntries CONFIG_SETTING_CONTRACT_COMPUTE_V0 on mainnet reports tx_max_instructions 400000000 and tx_memory_limit 41943040 (entry modified recently).",
-        "Sibling sweep 2026-11-02: q-zk-host-functions-status, q-zk-proof-systems-stellar, and q-sor-persistent-unbounded-collection-cap; no contradiction."
+        "Re-verified unchanged 2026-11-02 (no gospel change; verifier received no proposal for this case).",
+        "golden.keyFacts[0] / avoid[0] confirmed: A https://developers.stellar.org/docs/tools/quickstart/network-modes \u2014 'unlimited sets limits to the maximum resources that can be configured ... testnet sets limits to match those used on testnet (the default quickstart configuration)' (observedAt 2026-11-02) | E stellarDocs.search_docs 'unlimited limits quickstart' (2026-11-02T16:14:44Z) \u2014 'hits network-modes#local and quickstart/cloud 'unlimited - Max limits supported'' (observedAt 2026-11-02)",
+        "golden.keyFacts[1..2] confirmed: A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction \u2014 'This endpoint calculates the effective transaction data, required authorizations, and minimal resource fee.' (observedAt 2026-11-02) | C https://raw.githubusercontent.com/stellar/stellar-dev-skill/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/smart-contracts/testing.md (via skills.stellar.org/skills/smart-contracts/testing.md) \u2014 'Simulation reports CPU instructions, ledger reads/writes, and fees without submitting.' (observedAt 2026-11-02)",
+        "golden.keyFacts[3] confirmed: A https://developers.stellar.org/docs/build/apps/privacy \u2014 'These verifiers build on the cryptographic host functions introduced in Stellar's Protocol 25/26 releases, making them efficient and affordable to run.' (observedAt 2026-11-02) | D https://github.com/crackedstudio/sharibo/blob/main/contracts/BENCHMARKS.md \u2014 'Each additional public input in the circuit increases the contract verification cost by one scalar multiplication in G1 (~4.6M instructions).' (observedAt 2026-11-02)",
+        "golden.avoid[1] contradicted: A https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering \u2014 'Resource limits are determined by a validator vote and can be adjusted' (observedAt 2026-11-02) | F stellar network settings mainnet \u2014 'tx_max_instructions 400000000 vs third-party docs still citing 100M' (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-zk-host-functions-status, q-zk-proof-systems-stellar, q-sor-persistent-unbounded-collection-cap checked; no contradiction."
       ]
     },
     "origin": "kaan zk-verification-resource-budget"

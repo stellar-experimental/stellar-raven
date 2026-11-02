@@ -15,7 +15,7 @@
       "Do NOT call BucketList a classic per-transaction Merkle proof or conflate state and transaction proofs.",
       "Do NOT claim an RPC/Horizon/indexer row is self-authenticating or that a compact standard proof API exists without a cited system."
     ],
-    "notes": "GT-29 CORRECTION 2026-07-10: verify full transaction-set/result XDR hashes, header chain, and SCP/quorum finality. BucketList commits state; retrieval rows are not self-authenticating, and no standard compact one-call per-transaction proof was found in the audited surfaces.\nGT-29 independently confirmed by processes 3276/3278; sd-014 owns the missing verification guide.\nAccurately quoting the canonical Stellar documentation on Bucket List state commitments without a full-XDR inclusion recipe is not a wrong claim while sd-014 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "GT-29 CORRECTION 2026-07-10: verify full transaction-set/result XDR hashes, header chain, and SCP/quorum finality. BucketList commits state; retrieval rows are not self-authenticating, and no standard compact one-call per-transaction proof was found in the audited surfaces.\nGT-29 independently confirmed by processes 3276/3278; sd-014 owns the missing verification guide.\nAccurately quoting the canonical Stellar documentation on Bucket List state commitments without a full-XDR inclusion recipe is not a wrong claim while sd-014 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\nProtocol 28 edge case (as of 2026-11-02): under CAP-0083 (Final; Mainnet since 2026-09-16), a ledger whose transaction set validators vote to drop carries txSetHash 0x0 with STELLAR_VALUE_EMPTY_TX_SET and applies no transactions. Stating this edge case is correct."
   },
   "tags": {
     "category": "protocol-core",
@@ -44,6 +44,36 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TxSetFrame.cpp",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md",
+        "note": "Status: Final ... Protocol version: 28 ... txSetHash : Set to 0x0 ... ext : Set to STELLAR_VALUE_EMPTY_TX_SET ... ledgers containing a STELLAR_VALUE_EMPTY_TX_SET value should be treated as any other ledger with an empty transaction set.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x",
+        "note": "STELLAR_VALUE_EMPTY_TX_SET = 2, STELLAR_VALUE_SIGNED_MS = 3, STELLAR_VALUE_EMPTY_TX_SET_MS = 4",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://status.stellar.org/incidents/b0j6rd8gtsvb",
+        "note": "Mainnet Adapter, Protocol 28 Upgrade Vote ... The scheduled maintenance has been completed. Posted Sep 16, 2026 - 17:05 UTC",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/ledgers/64458445 and /ledgers/64458446",
+        "note": "ledger 64458445 protocol_version 27 closed 2026-09-16T17:00:01Z; ledger 64458446 protocol_version 28 closed 2026-09-16T17:00:06Z",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://coinmarketcal.com/news/stellar-activates-protocol-28-as-record-throughput-and-rwa-value-climb (Parallel search)",
+        "note": "Stellar activated Protocol 28 on Sept. 17, one day after validators approved the mainnet upgrade. (secondary; contradicted by ledger data, which shows 2026-09-16T17:00:06Z)",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -71,29 +101,60 @@
           }
         ],
         "note": "Legacy verdict: confirmed-with-source-bounded-negative."
+      },
+      {
+        "claim": "CAP-0083 (Final, Protocol 28, Mainnet since 2026-09-16) externalizes txSetHash 0x0 with STELLAR_VALUE_EMPTY_TX_SET for a dropped transaction set.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md",
+            "observedAt": "2026-11-02",
+            "note": "Status: Final ... Protocol version: 28 ... txSetHash : Set to 0x0 ... ext : Set to STELLAR_VALUE_EMPTY_TX_SET ... ledgers containing a STELLAR_VALUE_EMPTY_TX_SET value should be treated as any other ledger with an empty transaction set."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x",
+            "observedAt": "2026-11-02",
+            "note": "STELLAR_VALUE_EMPTY_TX_SET = 2, STELLAR_VALUE_SIGNED_MS = 3, STELLAR_VALUE_EMPTY_TX_SET_MS = 4"
+          },
+          {
+            "class": "A",
+            "ref": "https://status.stellar.org/incidents/b0j6rd8gtsvb",
+            "observedAt": "2026-11-02",
+            "note": "Mainnet Adapter, Protocol 28 Upgrade Vote ... The scheduled maintenance has been completed. Posted Sep 16, 2026 - 17:05 UTC"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/64458445 and /ledgers/64458446",
+            "observedAt": "2026-11-02",
+            "note": "ledger 64458445 protocol_version 27 closed 2026-09-16T17:00:01Z; ledger 64458446 protocol_version 28 closed 2026-09-16T17:00:06Z"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both required a concrete verification recipe. Reviewer retained official 'applied to previous ledger' semantics with clarified production relation.",
-        "Structural re-form (symmetric-caution): Added a claim-specific caution for the missing transaction-inclusion recipe; the truth is unchanged.",
-        "Finding read 2026-08-27: improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md — disputed whether fragmented commitment docs provide a full-XDR inclusion proof recipe.",
-        "Sibling sweep 2026-08-27: grep Bucket List|txSetHash|txSetResultHash → q-protocol-ledger-header-fields, q-protocol-24-whisk-incident; no contradiction",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid clause as the same concrete false-content claim; both trap targets are unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claims.",
-        "Sibling sweep 2026-08-27: grep self-authenticating|compact standard proof → q-sor-doc-timestamping-manage-data; no contradiction",
-        "Structural re-form (long-fact): Shortened the transaction-inclusion verification fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers — the official page defines the header chain, SCP-agreed transaction-set hash, and transaction-result hash.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-core/blob/master/src/herder/TxSetFrame.cpp — the current source computes transaction-set content hashes from the previous ledger hash and transaction XDR.",
-        "Sibling sweep 2026-08-29: grep Bucket List|txSetHash|txSetResultHash|full-XDR|SCP finality → q-protocol-ledger-header-fields, q-protocol-24-whisk-incident, q-pc-bucketlist-vs-merkle-inclusion-proof; no contradiction."
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md -- 'Status: Final ... Protocol version: 28 ... txSetHash : Set to 0x0 ... ext : Set to STELLAR_VALUE_EMPTY_TX_SET ... ledgers containing a STELLAR_VALUE_EMPTY_TX_SET value should be treated as any other ledger with an empty transaction set.'",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x -- 'STELLAR_VALUE_EMPTY_TX_SET = 2, STELLAR_VALUE_SIGNED_MS = 3, STELLAR_VALUE_EMPTY_TX_SET_MS = 4'",
+        "Live A 2026-11-02: https://status.stellar.org/incidents/b0j6rd8gtsvb -- 'Mainnet Adapter, Protocol 28 Upgrade Vote ... The scheduled maintenance has been completed. Posted Sep 16, 2026 - 17:05 UTC'",
+        "Live F 2026-11-02: https://horizon.stellar.org/ledgers/64458445 and /ledgers/64458446 -- 'ledger 64458445 protocol_version 27 closed 2026-09-16T17:00:01Z; ledger 64458446 protocol_version 28 closed 2026-09-16T17:00:06Z'",
+        "Live D 2026-11-02: https://coinmarketcal.com/news/stellar-activates-protocol-28-as-record-throughput-and-rwa-value-climb (Parallel search) -- 'Stellar activated Protocol 28 on Sept. 17, one day after validators approved the mainnet upgrade. (secondary; contradicted by ledger data, which shows 2026-09-16T17:00:06Z)'",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x -- 'Hash txSetHash; // transaction set to apply to previous ledger ... Hash txSetResultHash; // the TransactionResultSet that led to this ledger Hash bucketListHash; // hash of the ledger state'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers -- 'Transaction set hash: Hash of the transaction set applied to the previous ledger. ... Bucket list hash: Hash of all the objects in this ledger.'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-docs/issues/2611 -- 'state OPEN, updatedAt 2026-07-21'",
+        "Live D 2026-11-02: Parallel web_search 'Stellar transaction inclusion proof light client' (3 queries) -- 'No result describes a standard compact Stellar per-transaction inclusion proof API; results are ledger docs, XDR, CAP-0083, RPC methods.'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0083.md -- 'Status: Final ... Protocol version: 28 ... When the network votes to drop a transaction set, validators will externalize a StellarValue with fields set as follows: txSetHash : Set to 0x0 ... ext : Set to STELLAR_VALUE_EMPTY_TX_SET'",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x -- 'case STELLAR_VALUE_EMPTY_TX_SET: ... proposedValue'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 28 (Mainnet, September 16, 2026); Protocol 29 (Mainnet, October 1, 2026)'",
+        "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- 'protocol_version=29'",
+        "Independent verifier decisions: golden.notes (accept) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Sibling sweep 2026-11-02: grep CAP-0083 / Protocol 28 -> q-protocol-ledger-close-time states Protocol 28 activated on 2026-09-16 (consistent); q-protocol-ledger-header-fields and q-edge-validators-reverse-tx-fork-detection checked; no contradiction."
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-pc-bucketlist-vs-merkle-inclusion-proof"

@@ -29,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
@@ -40,28 +40,23 @@
         "class": "C",
         "ref": "http://localhost:8787/mcp",
         "note": "Live localhost search→execute probe."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/explain?q=where%20are%20transaction%20result%20codes%20defined&repo=stellar/stellar-core",
+        "note": "Payload carries its own ok, routedVia explicit, answerSource deepwiki, answerAsOf null, sources.repoUrl.",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
       "evidence": [
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; explainRepo returned envelope ok=true and payload data.ok=true with an explicitly routed stellar/stellar-core answer and repo sources.",
-        "catalog/manifest.json exists and supports the behavioral golden.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (presentation-avoid): Reworded the repo-explanation presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep explainRepo|data.ok|repo explanation → q-gap-explainrepo-payload-ok, q-gap-scout-status-envelope, q-ti-explain-repo-payload-status; no contradiction",
-        "Structural re-form (long-fact): Split one long explainRepo fact into two atomic facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live manifest defines explainRepo for a deep code question.",
-        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live manifest defines an optional owner/name repo input.",
-        "Sibling sweep 2026-08-29: grep explainRepo|data.ok|routed repository|owner/repo → q-gap-scout-status-envelope, q-gap-explainrepo-payload-ok, q-soroban-deploy-cli, q-ti-explain-repo-payload-status, q-ti-rpc-gettransactions-pagination-xdr, q-ti-scaffold-stellar, q-tool-cli-testnet-identity-howto; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes B, C); the proposer proposed no change and the verifier listed the case as no-proposal.",
+        "Class B (golden.answer, confirmed-as-of): catalog/manifest.json#scout.explainRepo — \"Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable ... the upstream payload carries its own ok flag at data.ok\" (observedAt 2026-11-02)",
+        "Class C (golden.answer, confirmed-as-of): https://stellarlight.xyz/api/repos/explain?q=where%20are%20transaction%20result%20codes%20defined&repo=stellar/stellar-core — \"\"ok\": true, \"routedVia\": \"explicit\", \"answered\": true, \"answerSource\": \"deepwiki\", \"answerAsOf\": null, sources.repoUrl https://github.com/stellar/stellar-core\" (observedAt 2026-11-02)",
+        "Class C (golden.answer, confirmed-as-of): https://stellarlight.xyz/api/repos/explain?q=where%20are%20transaction%20result%20codes%20defined — \"\"routedVia\": \"canonical\"; meta.warnings: \"answerAsOf is null: DeepWiki exposes no index date ... Verify any specific value ... against repoUrl\"\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-gap-explainrepo-payload-ok checked; no conflicting fact."
       ]
     },
     "origin": "authored 2026-07 (coverage)"

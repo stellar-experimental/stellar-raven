@@ -5,7 +5,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSDF uses XLM entrusted under its published mandate and describes selling existing XLM through **Kraken, Coinbase, Bitstamp, and direct sales** to fund operating expenses and broader mandate work. Those sales do not mint new XLM. Current disclosures discuss liquidity and price discovery, but they do not promise an XLM price peg, floor, or guarantee. SDF's **November 2019** burn announcement also said it would not burn additional lumens. As of **2026-07-10**, no newer primary SDF announcement of another burn was found in the current mandate/reporting surfaces. Treat both the 2019 statement and current absence as dated evidence—not a perpetual guarantee or forecast. Use the live mandate/dashboard or latest quarterly report for any balance, and do not sum mixed-timestamp bucket rows as a synchronized exhaustive holding.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSDF uses XLM entrusted under its published mandate and describes selling existing XLM through **Kraken, Coinbase, Bitstamp, and direct sales** to fund operating expenses and broader mandate work. Those sales do not mint new XLM. Current mandate disclosures discuss liquidity and market-making support, but they do not promise an XLM price peg, floor, or guarantee. SDF's **November 2019** burn announcement also said it would not burn additional lumens. As of **2026-07-10**, no newer primary SDF announcement of another burn was found in the current mandate/reporting surfaces. Treat both the 2019 statement and current absence as dated evidence—not a perpetual guarantee or forecast. Use the live mandate/dashboard or latest quarterly report for any balance, and do not sum mixed-timestamp bucket rows as a synchronized exhaustive holding.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -46,6 +46,18 @@
         "class": "A",
         "ref": "https://stellar.org/quarterly-reports",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/an-updated-mandate-for-a-growing-stellar-ecosystem",
+        "note": "2025 mandate update: the Assets and Liquidity account 'supports ... market-making programs'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://messari.io/report/state-of-stellar-q4-2025",
+        "note": "Independent report: Assets and Liquidity used to support 'market-making programs'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -66,32 +78,50 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "SDF's current mandate disclosures describe liquidity and market-making support for key assets and contain no price-discovery, price-support, peg, or floor language.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/mandate",
+            "observedAt": "2026-11-02",
+            "note": "\"SDF helps increase liquidity by funding market-making programs for key assets\"; raw-HTML grep: 'price discovery' 0 hits, 'market-making' 2 hits, 'price support|floor|peg' 0 hits (Last updated: October 31, 2026)."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/an-updated-mandate-for-a-growing-stellar-ecosystem",
+            "observedAt": "2026-11-02",
+            "note": "\"This account supports asset issuance partnerships with institutions and fintechs, market-making programs, on and off-ramp infrastructure\""
+          },
+          {
+            "class": "D",
+            "ref": "https://messari.io/report/state-of-stellar-q4-2025",
+            "observedAt": "2026-11-02",
+            "note": "\"Assets and Liquidity : 3.5 billion XLM ... market-making programs\""
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-28 primary 3274 and blind 3275; seven-case substantive agreement.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): Added a claim-specific caution for cached SDF bucket labels and XLM balances; the truth is unchanged.",
-        "Finding read 2026-08-27: improvements/resolved.json entry sd-012 — fixed older SDF bucket labels and fixed-balance prose on 2026-07-27.",
-        "Sibling sweep 2026-08-27: grep SDF Development|Assets & Liquidity|XLM holdings|additional burn → q-hot-sdf-transparency-wallets-reports, q-org-sdf-mandate-buckets, q-org-sdf-structure-mandate; no contradiction",
-        "Structural re-form (long-fact): shortened the source-and-date requirement; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/foundation/mandate supplies current source-backed SDF holdings, account scopes, sales channels, and mandate uses.",
-        "Live re-check 2026-08-29: https://stellar.org/foundation/mandate shows an update time for each current bucket.",
-        "Live re-check 2026-08-29: https://stellar.org/foundation/mandate and https://stellar.org/quarterly-reports give account scopes, update times, and report-quarter labels for holdings or sales figures.",
-        "Sibling sweep 2026-08-29: grep XLM holdings|additional burn|direct sales|Kraken|Coinbase|Bitstamp|SDF Development|Assets & Liquidity → q-hot-sdf-transparency-wallets-reports, q-org-sdf-mandate-buckets, q-org-sdf-structure-mandate, and q-hot-sdf-xlm-holdings-sales; no contradiction."
+        "[A] golden.answer (confirmed): https://stellar.org/foundation/mandate :: \"The SDF sells XLM from this account on public exchanges like Kraken, Coinbase, and Bitstamp and through direct sales, in order to pay for the operational expenses of the SDF and to support the broader work of the Mandate.\" (observedAt 2026-11-02)",
+        "[D] golden.answer (confirmed): https://app.blockworks.com/report/state-of-stellar-q1-2026 (via perplexity_search) :: \"SDF Development: 2.56 billion XLM ... This account covers SDF's operational expenses\" (observedAt 2026-11-02)",
+        "[A] golden.answer (unverifiable): https://stellar.org/foundation/mandate :: \"0 matches for 'price' or 'discovery'; 'SDF helps increase liquidity by funding market-making programs for key assets'\" (observedAt 2026-11-02)",
+        "[A] golden.answer (unverifiable): https://stellar.org/foundation/mandate/2019 :: \"0 matches for 'price' or 'discovery'\" (observedAt 2026-11-02)",
+        "[A] golden.answer (unverifiable): https://stellar.org/blog/foundation-news/sdfs-next-steps :: \"0 matches for 'price' or 'discovery'\" (observedAt 2026-11-02)",
+        "[A] golden.answer (confirmed-as-of): https://stellar.org/blog/foundation-news/sdfs-next-steps :: \"SDF will not burn any additional lumens.\" (observedAt 2026-11-02)",
+        "[D] golden.answer (confirmed-as-of): perplexity_search 'Stellar Development Foundation XLM burn announcement 2026' (recency year) :: \"No 2026 burn announcement; results describe the 2019 burn and the 2026-10-28 fee-pool rewards discussion\" (observedAt 2026-11-02)",
+        "[A] golden.answer (confirmed-as-of): https://stellar.org/xlm-utility :: \"Fee-pool activation whitepaper models rewards for locked XLM; outline has no burn section\" (observedAt 2026-11-02)",
+        "[A] golden.avoid[0] (contradicted): https://stellar.org/foundation/mandate :: \"0 matches for 'peg' or 'price' on the current mandate page\" (observedAt 2026-11-02)",
+        "[A] golden.answer (verifier accept): https://stellar.org/quarterly-reports :: raw-HTML grep 'price discovery' 0 hits; latest listed report Q3 2026 (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep 'price discovery' across eval/qa/corpus/battery -> only this case; q-hot-sdf-transparency-wallets-reports, q-org-sdf-mandate-buckets, q-org-sdf-structure-mandate, q-hot-fee-pool-burn-deflation checked; no contradiction."
       ],
       "rootCause": [
-        "Eval-side negative-claim provenance collapsed a dated policy statement and current search absence.",
-        "improvements/stellar-docs/sd-012-mandate-wallet-label-drift.md",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side authoring flaw: the answer paraphrased mandate liquidity text as 'price discovery', a phrase no cited primary source carries (.agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-02)."
       ]
     },
     "origin": "raven-next q-hot-sdf-xlm-holdings-sales"

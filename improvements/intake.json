@@ -204,8 +204,28 @@
       "reason": "The @cloudflare/codemode package metadata names cloudflare/agents as its issue owner; searchConnectors lives in packages/codemode."
     },
     "cs-002": {
-      "repo": "soroswap/docs",
-      "reason": "soroswap/docs publishes docs.soroswap.finance and owns concepts/aggregator.mdx and aggregator/supported-amms.mdx."
+      "intake": "unclear",
+      "reason": "soroswap/docs published docs.soroswap.finance and owned the stale pages when cs-002 was filed. On 2026-11-02 https://api.github.com/repos/soroswap/docs returns HTTP 404, and no other public soroswap repository owns the docs."
+    },
+    "cs-003": {
+      "repo": "stellar/stellar-protocol",
+      "reason": "stellar/stellar-protocol owns ecosystem/README.md and every sep-NNNN.md preamble."
+    },
+    "cs-004": {
+      "repo": "circlefin/stellar-cctp",
+      "reason": "developers.circle.com has no public content repository. circlefin/stellar-cctp is Circle's public, issue-enabled repository for the Stellar CCTP contracts that the page documents."
+    },
+    "cs-005": {
+      "repo": "circlefin/stellar-cctp",
+      "reason": "developers.circle.com has no public content repository. circlefin/stellar-cctp is Circle's public, issue-enabled repository for Stellar CCTP."
+    },
+    "cs-006": {
+      "intake": "unclear",
+      "reason": "Paxos serves the stellar.toml from token-metadata.paxos.com; no public paxosglobal repository holds it (checked 2026-11-02). The file names support@paxos.com as ORG_OFFICIAL_EMAIL."
+    },
+    "cs-007": {
+      "repo": "trionlabs/stellar-8004",
+      "reason": "trionlabs/stellar-8004 owns README.md and has issues enabled."
     },
     "sk-027": {
       "repo": "Stellar-Light/stellar-scout",
@@ -234,6 +254,18 @@
     "sd-058": {
       "repo": "stellar/stellar-docs",
       "reason": "The fee-payer signing and x402 XDR extraction examples are source content owned by stellar/stellar-docs."
+    },
+    "ll-037": {
+      "repo": "lumenloop/lumenloop-backend",
+      "reason": "get_related_projects not-found semantics are Lumenloop API behavior; lumenloop/lumenloop-backend owns the API."
+    },
+    "ll-038": {
+      "repo": "lumenloop/stellar-ecosystem-db",
+      "reason": "Committed directory-record correction to projects/xbull.yaml."
+    },
+    "sd-077": {
+      "intake": "unclear",
+      "reason": "Both pages are stellar.org program pages, not developers.stellar.org content, so stellar/stellar-docs does not own them. The stellar.org page copy has no public issue tracker (checked 2026-11-02)."
     }
   }
 }

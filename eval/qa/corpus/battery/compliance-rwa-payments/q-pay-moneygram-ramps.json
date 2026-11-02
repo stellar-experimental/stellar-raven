@@ -7,11 +7,11 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-08-14, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nOn **2026-08-14**, the MoneyGram operator guide returned HTTP 200 and identified itself as **Version 1.2 · Stellar + USDC · July 2026**. Its production table stated a **15 USDC minimum**, a **950 USDC cash-in maximum**, and a **2,500 USDC cash-out maximum**. MoneyGram's live SEP-24 `/info` endpoint simultaneously advertised a **1 USDC minimum** for both directions, with the same **950 USDC cash-in maximum** and **2,500 USDC cash-out maximum**. The two official layers disagree on the minimum, so do not present either minimum as the single settled value.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. MoneyGram's developer portal directs **new Stellar partners** to a **widget SDK + API-key** path: the partner server creates sessions, the widget runs the flow, and the wallet signs Stellar USDC. On that path the partner does not implement SEP-10 or SEP-24 directly. The **legacy whitelist anchor path** uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**, and existing whitelist partners may stay on it. It is distinct from SDP.\n\nOn **2026-11-02**, the legacy operator guide still identified itself as **Version 1.2 · Stellar + USDC · July 2026**. Its production table stated a **15 USDC minimum**, a **950 USDC cash-in maximum**, and a **2,500 USDC cash-out maximum**. The SEP-24 `/info` endpoint of the production anchor that the guide names (`mgxanchor.moneygram.com`) advertised the same three values. The older `stellar.moneygram.com` SEP-24 `/info` endpoint still advertised a **1 USDC minimum** for both directions, with the same maximums. Official surfaces still disagree on the minimum, so attribute and date any minimum rather than presenting one as the single settled value.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Identifies Stellar USDC plus SEP-10/SEP-24.",
+      "Identifies Stellar USDC, the widget/API-key path, and the legacy SEP-10/SEP-24 path.",
       "Treats country coverage as source-, date-, and direction-specific.",
       "Treats corporate and broader marketing counts as distinct scopes."
     ],
@@ -21,7 +21,7 @@
       "Do NOT conflate MoneyGram Ramps with SDP.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "CORRECTION 2026-08-14: MoneyGram's live Version 1.2 operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum. Both official layers were observed on 2026-08-14. Both layers agree on the 950 USDC cash-in maximum and 2,500 USDC cash-out maximum. Sources disagree on the minimum; do not penalize either minimum when the answer dates and attributes it accurately. Penalize an unsupported winner or an undated minimum. Limits and country counts are freshness-sensitive. Trap: wrong SEP (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
+    "notes": "CORRECTION 2026-11-02: MoneyGram's developer portal labels SEP-10/SEP-24 the legacy whitelist anchor path and directs new Stellar partners to its widget SDK + API-key path. Accept either path when the answer dates and attributes it. An answer that presents SEP-10/SEP-24 as the only current route for a new integration misses the widget path. The legacy guide's named production anchor (mgxanchor.moneygram.com) /info states a 15 USDC minimum, matching the guide; the older stellar.moneygram.com /info still states a 1 USDC minimum. Both were observed on 2026-11-02. Do not penalize either minimum when the answer dates and attributes it accurately. Penalize an unsupported winner or an undated minimum. All observed surfaces agree on the 950 USDC cash-in maximum and 2,500 USDC cash-out maximum. Limits and country counts are freshness-sensitive. Trap: wrong SEP for the legacy path (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -35,12 +35,13 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-08-14",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
         "ref": "https://xramps.moneygram.com/ops/dev/stellar",
-        "note": "Observed 2026-08-14: the live MoneyGram Ramps operator guide returned HTTP 200 and identified itself as Version 1.2, July 2026. Its production table states min 15 and max 950 USDC for cash-in, and min 15 and max 2,500 USDC for cash-out."
+        "note": "Observed 2026-11-02: the legacy-path operator guide (Version 1.2, July 2026) labels SEP-10/SEP-24 the legacy whitelist path and directs new Stellar wallets to the widget + API keys path. Its production table states min 15 and max 950 USDC for cash-in, and min 15 and max 2,500 USDC for cash-out; it names https://mgxanchor.moneygram.com/stellarsepservice/sep24 as production.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "D",
@@ -55,12 +56,43 @@
       {
         "class": "F",
         "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
-        "note": "Observed 2026-08-14: deposit.USDC min_amount 1, max_amount 950; withdraw.USDC min_amount 1, max_amount 2500."
+        "note": "Observed 2026-08-14 and again 2026-11-02: deposit.USDC min_amount 1, max_amount 950; withdraw.USDC min_amount 1, max_amount 2500.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/ops/developer/getting-started",
+        "note": "Widget partners on Stellar use API keys and POST /v1/sessions; they do not implement SEP-10/SEP-24 on the widget path.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/ops/developer/chains/stellar",
+        "note": "Stellar widget SDK + API keys page; partners already on the Stellar whitelist integrate via SEP-10 and SEP-24.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/ops/developer/guides/web-stellar",
+        "note": "New Stellar pilot partners use the widget path; existing SEP-24 partners may continue on the anchor path during transition.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+        "note": "Production anchor named by the legacy guide: deposit.USDC min 15 max 950; withdraw.USDC min 15 max 2500.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://xramps.moneygram.com/sdk/index.global.js",
+        "note": "Live production widget SDK asset (HTTP 200; contains createRamps, onSignTransaction).",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
-        "claim": "The live operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum for both directions.",
+        "claim": "The legacy operator guide and the guide-named mgxanchor SEP-24 /info endpoint state a 15 USDC minimum, while the older stellar.moneygram.com SEP-24 /info endpoint states a 1 USDC minimum for both directions.",
         "verdict": "disputed",
         "evidence": [
           {
@@ -74,6 +106,24 @@
             "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
             "observedAt": "2026-08-14",
             "note": "The live production endpoint advertised min_amount 1 for deposit.USDC and withdraw.USDC."
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "observedAt": "2026-11-02",
+            "note": "Version 1.2 guide production table: On-ramp (cash-in) 15 USDC min; Off-ramp (cash-out) 15 USDC min."
+          },
+          {
+            "class": "F",
+            "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+            "observedAt": "2026-11-02",
+            "note": "{\"deposit\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":950}},\"withdraw\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":2500}}"
+          },
+          {
+            "class": "F",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "observedAt": "2026-11-02",
+            "note": "deposit.USDC min_amount 1, max_amount 950; withdraw.USDC min_amount 1, max_amount 2500."
           }
         ]
       },
@@ -92,6 +142,24 @@
             "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
             "observedAt": "2026-08-14",
             "note": "The live production endpoint advertised max_amount 950 for deposit.USDC and 2500 for withdraw.USDC."
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "observedAt": "2026-11-02",
+            "note": "Guide still states 950 USDC cash-in max and 2,500 USDC cash-out max."
+          },
+          {
+            "class": "F",
+            "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+            "observedAt": "2026-11-02",
+            "note": "max_amount 950 (deposit) and 2500 (withdraw)."
+          },
+          {
+            "class": "F",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "observedAt": "2026-11-02",
+            "note": "max_amount 950 (deposit) and 2500 (withdraw)."
           }
         ]
       },
@@ -120,8 +188,8 @@
         ]
       },
       {
-        "claim": "Identifies Stellar USDC plus SEP-10/SEP-24.",
-        "verdict": "confirmed",
+        "claim": "Identifies Stellar USDC, the widget/API-key path, and the legacy SEP-10/SEP-24 path.",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
@@ -140,36 +208,51 @@
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
             "observedAt": "2026-07-11",
             "note": "Fetched SEP-24 source defines the interactive deposit/withdrawal layer."
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "observedAt": "2026-11-02",
+            "note": "\"Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model. New Stellar wallet integrations should use the widget + API keys path\""
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/developer/getting-started",
+            "observedAt": "2026-11-02",
+            "note": "\"Widget partners on Solana or Stellar use the same key model and POST /v1/sessions . You do not implement SEP-10 / SEP-24 on the widget path.\""
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/developer/chains/stellar",
+            "observedAt": "2026-11-02",
+            "note": "\"Partners already on the Stellar whitelist integrate via SEP-10 and SEP-24, not the widget SDK.\""
+          },
+          {
+            "class": "F",
+            "ref": "https://xramps.moneygram.com/sdk/index.global.js",
+            "observedAt": "2026-11-02",
+            "note": "HTTP 200, 9955 bytes; contains createRamps, onSignTransaction, RAMPS_SIGN_TRANSACTION."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
       "evidence": [
-        "https://xramps.moneygram.com/ops/dev/stellar",
-        "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
-        "https://stellar.moneygram.com/.well-known/stellar.toml",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0010.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
-        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
-        "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
-        "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC.",
-        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction",
-        "Structural re-form (negative-predicate): Shortened the dated-source fact and recast the marketing-scope fact as a positive requirement; truth unchanged",
-        "Live re-check 2026-08-27: https://xramps.moneygram.com/ops/dev/stellar — the current guide identified SEP-10, SEP-24, Stellar USDC, dated limits, and 170+ off-ramp countries.",
-        "Live re-check 2026-08-27: https://xramps.moneygram.com/ops/dev/stellar — the current guide scoped its country count to off-ramps, consistent with treating broader marketing counts separately.",
-        "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-list-builders-discovery, q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction"
+        "https://xramps.moneygram.com/ops/dev/stellar (observedAt 2026-11-02): \"Version 1.2 · Stellar + USDC · July 2026 ... Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model. New Stellar wallet integrations should use the widget + API keys path\"; production table 15/950 cash-in and 15/2,500 cash-out USDC.",
+        "https://xramps.moneygram.com/ops/developer/getting-started (observedAt 2026-11-02): \"Widget partners on Solana or Stellar use the same key model and POST /v1/sessions . You do not implement SEP-10 / SEP-24 on the widget path.\"",
+        "https://xramps.moneygram.com/ops/developer/guides/web-stellar (observedAt 2026-11-02): \"Existing SEP-24 partners may continue on the anchor path during transition. New Stellar pilot partners should use this widget path.\"",
+        "https://xramps.moneygram.com/ops/developer/chains/stellar (observedAt 2026-11-02): \"Partners already on the Stellar whitelist integrate via SEP-10 and SEP-24, not the widget SDK.\"",
+        "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info (observedAt 2026-11-02): deposit.USDC min_amount 15 max_amount 950; withdraw.USDC min_amount 15 max_amount 2500.",
+        "https://stellar.moneygram.com/stellaradapterservice/sep24/info (observedAt 2026-11-02): deposit.USDC min_amount 1 max_amount 950; withdraw.USDC min_amount 1 max_amount 2500. The minimum dispute stands; truth.status stays disputed.",
+        "https://xramps.moneygram.com/sdk/index.global.js (observedAt 2026-11-02): HTTP 200; contains createRamps and onSignTransaction (live widget SDK).",
+        "D sweep 2026-11-02 (perplexity_search \"MoneyGram Ramps Stellar widget SDK API keys legacy SEP-24\"): only MoneyGram's own pages surfaced; no contradicting source.",
+        "Independent verifier 2026-11-02 accepted golden.answer, golden.keyFacts[2], and golden.notes (.agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04, verifier).",
+        "Sibling sweep 2026-11-02 (pass 2): grep MoneyGram + SEP-24|minimum|widget -> q-anchor-moneygram-ramps (both paths, widget for new partners), q-crp-anchors-by-corridor (pass 2 adds the widget/legacy split and per-host minimum to notes), q-comp-cross-moneygram-partnership-sep24, q-scf-cross-decaf-sep24, q-hist-remittance-corridors, q-crp-remittance-founder-advisory, q-crp-custodial-vs-noncustodial-wallets, q-jutsu-cash-crypto-ramps; no contradiction (SEP-10/SEP-24 remains true for the legacy whitelist path; mgxanchor /info 15 and stellar.moneygram.com /info 1 re-observed 2026-11-02T17:36:52Z)."
       ],
       "rootCause": [
-        "freshness-drift",
-        "eval-authoring: a disputed minimum remained pinned after the live official layers diverged.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-pay-moneygram-ramps"

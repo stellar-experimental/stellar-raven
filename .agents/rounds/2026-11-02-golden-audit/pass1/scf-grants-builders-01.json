@@ -1,0 +1,880 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "scf-grants-builders-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-builder-by-region-latam",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 the live builder directory returned 19 Latin America matches, including builders in Chile and Brazil",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?location=Latin%20America&limit=200",
+       "observedAt": "2026-11-02",
+       "quote": "counts: {returned: 51, total: 51}; locations include 'Santiago, Chile' and 'Petrópolis, Rio de Janeiro, Brazil'"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.getBuilders({location:'Latin America'}) via raven.stellar.org",
+       "observedAt": "2026-11-02",
+       "quote": "latam: {returned:1, total:51}"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Live filters are q/location/skill",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (apiVersion 1.9.116)",
+       "observedAt": "2026-11-02",
+       "quote": "/api/builders parameters: q, location, skill"
+      },
+      {
+       "class": "F",
+       "ref": "https://stellarlight.xyz/api/builders?featured=true",
+       "observedAt": "2026-11-02",
+       "quote": "supportedParams: [q, skill, tech, location, limit, offset, fields]"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Roster is not permanent; directory rows do not prove mainnet/audit/seniority; observed set is not complete",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?location=Latin%20America",
+       "observedAt": "2026-11-02",
+       "quote": "matchBasis: 'This is candidate discovery, NOT verified experience: treat bio/role text as claims.'"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/status",
+       "observedAt": "2026-11-02",
+       "quote": "builders count 399, notes 'Synced from Stellar Passport: small and growing dataset'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-comp-cross-bitso-sep31; q-builder-by-scf-tier; q-builder-rust-soroban-devs"
+  },
+  {
+   "id": "q-builder-by-scf-tier",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Scout no longer exposes an SCF-tier field or filter for builders",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://stellarlight.xyz/api/builders?scfTier=top",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 400: 'Unsupported query parameter(s): scfTier. This endpoint does not filter by them (no SCF-tier/award data exists on builder profiles: a project's award …"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (1.9.116)",
+       "observedAt": "2026-11-02",
+       "quote": "'SCF-tier or award-track filtering (unsupported; no SCF-tier data exists on profiles; the never-populated `scfTier` response field was removed in 1.7.19; a proj…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getBuilders",
+       "observedAt": "2026-11-02",
+       "quote": "'Profiles carry NO populated SCF-tier/award data.'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 the SCF-awarded project directory reported 402 projects; Lobstr, xBull, Reflector on page one",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?scfAwarded=true&limit=20",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned: 20, total: 613}; first rows ['Lobstr', 'xBull', 'Reflector', 'Blend', 'Soroswap', ...]"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]/avoid[1]",
+     "claim": "Governance roles (Verified Members), project awards, and person attribution are distinct signals",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/builders?scfTier=top",
+       "observedAt": "2026-11-02",
+       "quote": "'a project's award history lives on /api/projects/search rows'"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getBuilders",
+       "observedAt": "2026-11-02",
+       "quote": "'Profiles carry NO populated SCF-tier/award data.'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-builder-by-region-latam; q-builder-rust-soroban-devs"
+  },
+  {
+   "id": "q-builder-content-by-person",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-13 the official Developer Docs author index listed seven posts",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "Parallel web_fetch cached copy of https://developers.stellar.org/meetings/authors/kalepail (acquired 2026-10-01)",
+       "observedAt": "2026-10-01",
+       "quote": "title: Tyler van der Hoeven - 7 posts | Stellar Docs"
+      },
+      {
+       "class": "F",
+       "ref": "curl https://developers.stellar.org/meetings/authors/kalepail",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP/2 404; <title>Page Not Found</title>; x-mintlify-client-version: 0.0.4044"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/700ed32d0",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-22 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)'"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs (README)",
+       "observedAt": "2026-11-02",
+       "quote": "'Contributed here before October 2026? The site moved from Docusaurus to Mintlify'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "2024-06-13 developer meeting covers Super Peach, Passkey Kit, Launchtube with Tyler van der Hoeven",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/meetings/2024/06/13",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200; page text 'Tyler created Super Peach, a web3 application' and 'Tyler van der Hoeven'; Passkey and Launchtube mentions present"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/meetings/2024/06/13.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "code search kalepail in meetings/ hits meetings/2024/06/13.mdx"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Practical Path Payments 2020-04-10; Turing Complete Contract Proposal page renders July 10, 2020 while body says June 19; SDF Developer Advocates AMA 2023-05-04",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/events/community/practical-path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "'Practical path payments Date and time April 10, 2020 at 5.00 PM UTC ... Tyler van der Hoeven'"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/events/community/turing-complete-contract-proposal-for-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "'Date and time July 10, 2020 at 5.00 PM UTC ... tune in on June 19th 2020, 1:00 PM ET!'"
+      },
+      {
+       "class": "C",
+       "ref": "Lumenloop search_content_semantic {query:'Tyler van der Hoeven'}",
+       "observedAt": "2026-11-02",
+       "quote": "events row 'AMA with SDF's new Developer Advocates' https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer/notes",
+     "claim": "kalepail/passkey-kit archived and points to stellar/passkey-kit; stellar/launchtube archived, last push 2026-01-14",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/kalepail/passkey-kit",
+       "observedAt": "2026-11-02",
+       "quote": "archived: true; description '[MOVED → github.com/stellar/passkey-kit] ...'"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/launchtube",
+       "observedAt": "2026-11-02",
+       "quote": "archived: true; pushed_at 2026-01-14T03:09:51Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]/keyFacts[3]",
+     "claim": "Exact Lumenloop person lane is all-empty; semantic matches need exact-name validation",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/find_content_by_entity {entity:'Tyler van der Hoeven', entity_type:'person'}",
+       "observedAt": "2026-11-02",
+       "quote": "success true; articles 0, av 0, events 0, proposals 0, scf_submissions 0"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/search_content_semantic {query:'Tyler van der Hoeven'}",
+       "observedAt": "2026-11-02",
+       "quote": "_weak_match true; _top_similarity 0.231; mixed off-target rows plus an exact-name AV 'Stellar Lounge at SXSW ft: Tyler van der Hoeven of SDF'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-35 CORRECTION 2026-07-10: the exact Lumenloop person lane is all-empty and Scout has no Tyler row. Grade a bounded official-source roster and explicit validation of semantic candidates; empty service output is inconclusive.\nGT-35 independently confirmed by processes 3287/3289; this case is freshness-sensitive despite its inherited tag.\nAccurately quoting the canonical LumenLoop source on Tyler's empty exact-person lane or unverified semantic person matches is not a wrong claim while ll-005 and ll-017 stand; grade caps at partial for those claims unless the answer contradicts the golden fact…",
+     "reason": "Author index URL returns HTTP 404 since the 2026-10-22 Mintlify migration; the 'still lists' wording would steer a judge to expect a now-unavailable source."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-passkey-wallet-recovery; q-soroban-add-signer-smart-wallet-howto; q-passkey-platform-constraints; q-tool-passkeykit-smart-wallet; q-tool-smart-wallet-repos-discovery; q-edge-lumenloop-person-entity-empty"
+  },
+  {
+   "id": "q-builder-justin-rice-history",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SDF live leadership page lists Justin Rice as VP of Ecosystem (observed 2026-07-13)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/team",
+       "observedAt": "2026-11-02",
+       "quote": "Leadership card 'Justin Rice' with 'VP of Ecosystem' present in page HTML"
+      },
+      {
+       "class": "D",
+       "ref": "https://meridian.stellar.org/schedule (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "'Justin Rice VP of Ecosystem Stellar (SDF)' (dated 2026-09-21)"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.hackmeridian.com/build/mentors (via Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "'Justin VP of Ecosystem Stellar Development Foundation'"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (proposed)",
+     "claim": "A 2026-07-16 SDF press release calls him 'Vice President of Ecosystem Growth'",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+       "observedAt": "2026-11-02",
+       "quote": "'said Justin Rice, Vice President of Ecosystem Growth at the Stellar Development Foundation'; page date 2026-07-16"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity search 'Justin Rice Stellar Development Foundation VP Ecosystem 2026'",
+       "observedAt": "2026-11-02",
+       "quote": "same press release surfaced, Date: 2026-07-16, quoting 'Vice President of Ecosystem Growth'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Head of Ecosystem for 2021-02-16 AMA; VP of Ecosystem by 2021-04-20 GBBC; CoinDesk 2021-11-03; AMM post 2021-07-01; Soroban Is Feature Complete 2023-08-22",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/community/events/ama-with-justin-rice",
+       "observedAt": "2026-10-27",
+       "quote": "Re-checked 2026-10-27 per truth.verified; head of Ecosystem, 2021-02-16"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/soroban-is-feature-complete",
+       "observedAt": "2026-10-27",
+       "quote": "Author Justin Rice (re-checked 2026-10-27)"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/search_content_semantic {query:'Justin Rice Stellar Development Foundation'}",
+       "observedAt": "2026-11-02",
+       "quote": "SDF quarterly-in-review articles/events rows; no exact-name attribution without validation"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[3]",
+     "claim": "Exact person lane empty does not imply no history",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/find_content_by_entity {entity:'Justin Rice', entity_type:'person'}",
+       "observedAt": "2026-11-02",
+       "quote": "success true; all five groups 0"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Positive control for evidence-poor recovery. The answer should recover exact-name dated history from broad content/research after narrow directory or person lanes miss, while refusing to convert historical titles into a current-role assertion.\nAccurately quoting the canonical LumenLoop source on Justin Rice semantic matches without exact-name, matched-span, or source-date provenance is not a wrong claim while ll-017 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\nA first-party SDF press release dated 2026-07-16 call…",
+     "reason": "First-party 2026-07-16 press release uses a different current title; encode the variant so a dated, sourced answer is not marked wrong."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-gap-semantic-directory-fallback; q-edge-lumenloop-person-entity-empty; q-edge-strupey-ambiguous-stellar-history; q-edge-open-world-recovery-after-narrow-miss"
+  },
+  {
+   "id": "q-builder-lumenloop-regions-vocab",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 get_regions returned 95 values with case variants such as africa/Africa",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_regions",
+       "observedAt": "2026-11-02",
+       "quote": "data.count 100; case pairs africa/Africa, asia/Asia, europe/Europe, global/Global, latam/LATAM, mena/MENA"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.get_regions",
+       "observedAt": "2026-11-02",
+       "quote": "'Get all distinct region values (based_in + operating_region) currently used in the directory'"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Values are not canonical/normalized, not shared with Scout builders; Scout builders page is not the source",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_regions",
+       "observedAt": "2026-11-02",
+       "quote": "mixed macro-regions and countries incl. 'Latin America & Caribbean' alongside 'latam'/'LATAM'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?location=Latin%20America",
+       "observedAt": "2026-11-02",
+       "quote": "Scout builder location is free text such as 'Chile, Temuco', 'Recife. Brazil. Earth.'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-lumenloop-categories-vocab; q-eco-lobstr-wallet; q-ti-vocab-regions-live"
+  },
+  {
+   "id": "q-builder-rust-soroban-devs",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 five Rust matches including Samuel Ogera and Asman Malika",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?skill=Rust&limit=200",
+       "observedAt": "2026-11-02",
+       "quote": "filters echo q: 'rust'; counts {returned: 50, total: 50}; match.basis code-language 40, profile-text 10"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?q=Ogera and ?q=Malika",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned: 0, total: 0} for both"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Scout does not expose populated skills/scfTier attributes or scfTier/featured filters",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://stellarlight.xyz/api/builders?featured=true",
+       "observedAt": "2026-11-02",
+       "quote": "'Unsupported query parameter(s): featured.' supportedParams [q, skill, tech, location, limit, offset, fields]"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (1.9.116)",
+       "observedAt": "2026-11-02",
+       "quote": "'the never-populated `scfTier` response field was removed in 1.7.19'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?limit=200 (two pages)",
+       "observedAt": "2026-11-02",
+       "quote": "isFeatured true on 0 of 300 rows; no skills field on rows"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Directory matches, code evidence and experience are distinct signals",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?q=rust",
+       "observedAt": "2026-11-02",
+       "quote": "matchBasis: 'these rows sort BELOW all prose hits because owning a Rust repo is a candidate signal, not verified experience'"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getBuilders",
+       "observedAt": "2026-11-02",
+       "quote": "'bounded directory-membership surface, not an exhaustive biography'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-35 CORRECTION 2026-07-10: grade a dated live-union candidate roster with direct code evidence and explicit evidence tiers. A directory match does not prove experience, seniority, deployment, or availability.\nGT-35 independently confirmed by processes 3287/3289; re-check roster and activity at answer time.\nAccurately quoting the canonical Scout source on Rust builder match provenance is not a wrong claim while a cached or older copy still shows matches without provenance before the 2026-07-14 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fac…",
+     "reason": "Both named 2026-07-11 examples are absent from the live directory on 2026-11-02; record the drift so a current grounded roster is not penalized."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-builder-by-region-latam; q-builder-by-scf-tier"
+  },
+  {
+   "id": "q-gap-builders-person-empty",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Absent query returns builders [], total 0, filter-miss advisory naming directory size (114 on 2026-07-11; 226 on 2026-09-30)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?q=zzzzqqq&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned: 0, total: 0}; advisory 'The directory has 399 builder profiles, but none match these filters ... This is a filter miss, not an empty or unseed…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.getBuilders({q:'zzzzqqq'})",
+       "observedAt": "2026-11-02",
+       "quote": "same advisory naming 399 profiles"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/status",
+       "observedAt": "2026-11-02",
+       "quote": "builders count 399, lastUpdatedAt 2026-11-02T06:00:15.005Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts",
+     "claim": "Builder search is a person directory; filter miss differs from empty directory",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getBuilders",
+       "observedAt": "2026-11-02",
+       "quote": "'The Stellar PEOPLE directory — builder profiles synced from Stellar Passport'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?q=zzzzqqq",
+       "observedAt": "2026-11-02",
+       "quote": "tryInstead includes '/api/people?q=...' for SDF roster as a separate index"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-edge-closed-world-builder-directory-miss; q-gap-leaderboard-project-not-builder; q-builder-by-region-latam"
+  },
+  {
+   "id": "q-gap-compare-hackathons",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "compareHackathons requires 2–5 resolved slugs",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-zk",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 400 {'error':'must provide at least 2 slugs'}"
+      },
+      {
+       "class": "F",
+       "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=a,b,c,d,e,f",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 400 {'error':'max 5 slugs per request'}"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "slugs: '2-5 hackathon slugs, comma-separated (?slugs=a,b)'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Comparison returns snapshots and a deltas block comparing prize pools and registered hackers",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-zk,stellar-agents-x402-stripe-mpp",
+       "observedAt": "2026-11-02",
+       "quote": "keys [meta, hackathons, deltas]; deltas.notes 'registered hackers: stellar-hacks-zk = 678 vs ... 591'; deltas.prizePoolUSD {highest, lowest, rangeUSD: 0}"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.compareHackathons",
+       "observedAt": "2026-11-02",
+       "quote": "'per-event snapshot (prize pool, submissions, winners, prize-per-winner, and cohort DURABILITY ...) plus a deltas block'"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Comparison summary does not give winner names or global order",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "compare response hackathons[] keys",
+       "observedAt": "2026-11-02",
+       "quote": "['endDate','externalUrl','hackersCount','name','prizePerWinnerUSD','prizePoolUSD','profile','slug','source','startDate','status','submissionCount','winnerCount'…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-zk",
+       "observedAt": "2026-11-02",
+       "quote": "winners with hackathonPlacement '1st Place - $5,000 in XLM', placementRank 1"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-hackathon-compare-live; q-scf-current-hackathons-compare-live; q-gap-hackathon-winner-order"
+  },
+  {
+   "id": "q-gap-hackathon-brief-evidence-boundaries",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0..1]",
+     "claim": "Empty liveContracts.contracts is registry-relative; null domain means unmapped",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+       "observedAt": "2026-11-02",
+       "quote": "liveContracts {domain: null, basis: 'no code domain in the contracts registry fits the Payments vertical as a whole', contracts: [], note: 'No verified contract…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.hackathonBrief",
+       "observedAt": "2026-11-02",
+       "quote": "'liveContracts (verified mainnet contracts for the idea's closest code domain; empty = no verified contract on record, never nothing on mainnet)'"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]/avoid[2]",
+     "claim": "whatNotToClaim items are fact-derived cautions, not external verdicts",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+       "observedAt": "2026-11-02",
+       "quote": "whatNotToClaim[2]: 'No verified contract in the registry for this domain is NOT 'nothing exists on mainnet'; the registry is evidence-gated.'"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.hackathonBrief",
+       "observedAt": "2026-11-02",
+       "quote": "'whatNotToClaim (cautions derived from this brief's own facts). No verdicts'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-contracts-domain-empty; q-scout-hackathon-brief-first-hour"
+  },
+  {
+   "id": "q-gap-hackathon-winner-order",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts",
+     "claim": "Winners come from getHackathon placement fields; list/compare order does not express winner order",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/buildonstellarchile",
+       "observedAt": "2026-11-02",
+       "quote": "winnersRanked false; 14 winners all hackathonPlacement 'Winners', placementRank null"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/hackmeridian-2025",
+       "observedAt": "2026-11-02",
+       "quote": "per-track '1st Place' rows for Composability and Open Innovation (placementRank 1 twice), so array order is not a global ranking"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getHackathon",
+       "observedAt": "2026-11-02",
+       "quote": "'many events label every winner just Winners with placementRank null — there the winners array order is NOT a ranking'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-kale-winner-live; q-gap-compare-hackathons; q-scf-hackathon-compare-live"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5), 2026-11-02; proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-builder-content-by-person",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The 404 and the 2026-10-22 Mintlify migration are confirmed by live HTTP (F) and the stellar-docs PR record (B). No replacement author page was found (llms.txt lists none). The new text keeps the seven-post count in past tense with its 2026-09-30 date, keeps all other dated observations, and only relieves the answer from citing a dead URL. Not score laundering.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/meetings/authors/kalepail",
+      "observedAt": "2026-11-02T16:31:54Z",
+      "quote": "HTTP 404 (no redirect); /meetings/authors/kalepail/ and /meetings/authors also 404"
+     },
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/meetings",
+      "observedAt": "2026-11-02T16:32:04Z",
+      "quote": "HTTP 200; headers x-mintlify-client-version: 0.0.4044, x-mint-proxy-version: 1.0.0-prod, assets under /_mintlify/"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2941",
+      "observedAt": "2026-11-02",
+      "quote": "build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941), merged 2026-10-22T18:00:57Z (commit 700ed32d)"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2948",
+      "observedAt": "2026-11-02",
+      "quote": "docs: update contributor guides for Mintlify, merged 2026-10-23T15:44:49Z"
+     },
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/meetings/2024/06/13",
+      "observedAt": "2026-11-02T16:31:54Z",
+      "quote": "HTTP 200; page text contains 'kalepail' and 'van der Hoeven'"
+     },
+     {
+      "class": "F",
+      "ref": "https://stellar.org/events/community/practical-path-payments; https://stellar.org/community/events/turing-complete-contract-proposal-for-stellar (301 to /events/community/...); https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates",
+      "observedAt": "2026-11-02T16:31:54Z",
+      "quote": "HTTP 200 for all three"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/kalepail/passkey-kit, repos/stellar/passkey-kit, repos/stellar/launchtube",
+      "observedAt": "2026-11-02",
+      "quote": "kalepail/passkey-kit archived=true '[MOVED → github.com/stellar/passkey-kit]'; stellar/launchtube archived=true pushed_at 2026-01-14T03:09:51Z"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-justin-rice-history",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Both titles coexist in first-party material: the 2026-07-16 press release says 'Vice President of Ecosystem Growth' while the team page and Meridian 2026 schedule still say 'VP of Ecosystem'. The note correctly frames this as a dated wording variant, not a contradiction. It protects a true claim instead of punishing it; it adds no avoid item and drops no date.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+      "observedAt": "2026-11-02",
+      "quote": "\"...That's exactly what you want from the infrastructure layer of a global financial network\" said Justin Rice, Vice President of Ecosystem Growth at the Stella…"
+     },
+     {
+      "class": "D",
+      "ref": "https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/",
+      "observedAt": "2026-11-02",
+      "quote": "– Justin Rice, Vice President of Ecosystem Growth, Stellar Development Foundation (dated July 16, 2026; via Perplexity search)"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.cryptopolitan.com/stellar-moneygram-tier-1-validator-two-more/",
+      "observedAt": "2026-11-02",
+      "quote": "Justin Rice, the foundation's vice president of ecosystem growth, said the three new validators will be taking an active part (Published July 17, 2026)"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.cointrust.com/market-news/stellar-appoints-moneygram-as-tier-1-network-validator",
+      "observedAt": "2026-11-02",
+      "quote": "Justin Rice, Vice President of Ecosystem Growth at the foundation, explained... (Jul 17, 2026; via Parallel search)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/foundation/team",
+      "observedAt": "2026-11-02",
+      "quote": "page text contains 'VP of Ecosystem' (no 'Ecosystem Growth')"
+     },
+     {
+      "class": "A",
+      "ref": "https://meridian.stellar.org/schedule",
+      "observedAt": "2026-11-02",
+      "quote": "Justin Rice / VP of Ecosystem / Stellar (SDF) (via Perplexity search, dated 2026-10-27)"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-rust-soroban-devs",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "GT-35 CORRECTION 2026-07-10: grade a dated live-union candidate roster with direct code evidence and explicit evidence tiers. A directory match does not prove experience, seniority, deployment, or availability.\nGT-35 independently confirmed by processes 3287/3289; re-check roster and activity at answer time.\nAccurately quoting the canonical Scout source on Rust builder match provenance is not a wrong claim while a cached or older copy still shows matches without provenance before the 2026-07-14 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fac…",
+    "note": "The substance holds: neither 2026-07-11 example name appears, and both are now absent from the directory entirely. The proposed counts are off by one: the full result set is 51 matches with 40 code-language rows; the default 50-row page holds 39 code-language rows, so '50 matches (40 admitted by code language)' mixes the two views. Corrected to the full-set figures, which stay dated. Single-class …",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/builders?skill=Rust&limit=200",
+      "observedAt": "2026-11-02T16:33:27Z",
+      "quote": "meta.counts {returned: 51, total: 51}; match.basis counts {profile-text: 11, code-language: 40}; generatedAt 2026-11-02T16:33:27.144Z; no row contains 'ogera' o…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/builders?skill=rust and https://stellarlight.xyz/api/builders?q=rust",
+      "observedAt": "2026-11-02T16:33Z",
+      "quote": "meta.counts {returned: 50, total: 51} (default page cap 50); page basis {profile-text: 11, code-language: 39}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/builders?q=Ogera / ?q=Malika / ?q=Asman (limit=200)",
+      "observedAt": "2026-11-02T16:34:58Z",
+      "quote": "meta.counts {returned: 0, total: 0} for each"
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-builder-content-by-person; q-builder-justin-rice-history; q-builder-rust-soroban-devs",
+  "verifiedOnly": "q-builder-by-region-latam; q-builder-by-scf-tier; q-builder-lumenloop-regions-vocab; q-gap-builders-person-empty; q-gap-compare-hackathons; q-gap-hackathon-brief-evidence-boundaries; q-gap-hackathon-winner-order",
+  "untouched": "",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-builder-content-by-person",
+    "log": "golden.notes: 2026-09-30 author-index line now past tense plus the 2026-11-02 HTTP 404 after the 2026-10-22 Mintlify migration (verifier accept); asOf 2026-11-02; reverifyBy 2027-01-07 -> 2027-03-09; +2 sources (F 404, B PR #2941); +1 corroboration row; verified refreshed, rootCause freshness-drift."
+   },
+   {
+    "id": "q-builder-justin-rice-history",
+    "log": "golden.notes: adds the 2026-07-16 first-party 'Vice President of Ecosystem Growth' wording as a dated variant, not a wrong title (verifier accept); asOf 2026-11-02; reverifyBy 2027-02-01 -> 2027-03-23; +3 sources (A press release, 2 D echoes); +1 corroboration row; verified refreshed, rootCause freshness-drift."
+   },
+   {
+    "id": "q-builder-rust-soroban-devs",
+    "log": "golden.notes: adds the 2026-11-02 re-check with the verifier's modified full-set figures (51 matches, 40 by code language; Ogera and Malika absent); asOf 2026-11-02; +1 source; +1 corroboration row; verified refreshed, rootCause freshness-drift. Live case, no reverifyBy."
+   },
+   {
+    "id": "q-builder-by-region-latam",
+    "log": "truth.verified refreshed only (A openapi/status, F supportedParams, C 51 Latin America rows); no gospel change."
+   },
+   {
+    "id": "q-builder-by-scf-tier",
+    "log": "truth.verified refreshed only (F HTTP 400 scfTier, A openapi 1.9.116, B manifest, C 613 SCF-awarded projects); no gospel change."
+   },
+   {
+    "id": "q-builder-lumenloop-regions-vocab",
+    "log": "truth.verified refreshed only (C get_regions count 100 with six case pairs, B manifest, C Scout free-text locations); no gospel change."
+   },
+   {
+    "id": "q-gap-builders-person-empty",
+    "log": "truth.verified refreshed only (C filter-miss advisory naming 399 profiles, A /api/status 399, B manifest); no gospel change."
+   },
+   {
+    "id": "q-gap-compare-hackathons",
+    "log": "truth.verified refreshed only (F 2-slug and 5-slug HTTP 400 errors, A openapi, C compare deltas, B manifest); no gospel change."
+   },
+   {
+    "id": "q-gap-hackathon-brief-evidence-boundaries",
+    "log": "truth.verified refreshed only (C null-domain empty liveContracts plus defi-lending control, B manifest); no gospel change."
+   },
+   {
+    "id": "q-gap-hackathon-winner-order",
+    "log": "truth.verified refreshed only (C winnersRanked false and per-track placementRank 1 duplicates, B manifest); no gospel change."
+   }
+  ]
+ }
+}

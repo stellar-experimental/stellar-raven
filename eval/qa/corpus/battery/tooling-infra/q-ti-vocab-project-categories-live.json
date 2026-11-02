@@ -28,7 +28,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
@@ -42,16 +42,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-04)",
       "evidence": [
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; get_categories returned envelope ok=true with the live controlled category rows.",
-        "catalog/manifest.json exists and supports the behavioral golden.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Verification-only event 2026-11-02: no judge-facing field changed; truth.asOf refreshed to the live observation date.",
+        "Live C 2026-11-02: https://api.lumenloop.com/v1/tools/get_categories (direct read) — {count:5, categories:[Applications, Developer Tooling, Education & Community, Financial Protocols, Infrastructure & Services]}",
+        "Live A 2026-11-02: https://api.lumenloop.com/v1/tools — 'get_categories | Get the controlled vocabulary of categories. Use these exact values when setting project categories.'",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/projects?limit=200 — Scout category values: User-Facing App, Protocol/Contract, Infrastructure, Tooling, Asset, Anchor (a separate taxonomy)",
+        "B 2026-11-02: catalog/manifest.json lumenloop.get_categories — manifest description matches upstream",
+        "Sibling sweep 2026-11-02: q-defi-lumenloop-categories-vocab, q-tool-taxonomy-dispatch-live checked; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the live lumenloop.get_categories read and the upstream tool listing agree with the behavioral golden."
       ]
     },
     "origin": "authored 2026-07 (coverage)"

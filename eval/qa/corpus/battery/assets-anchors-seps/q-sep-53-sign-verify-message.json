@@ -37,16 +37,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
-      ],
-      "rootCause": [
-        "eval-authoring"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0053.md — \"Title: Sign and Verify Messages / Status: Final / Created: 2025-02-01 / Updated: 2026-06-18 / Version: 1.0.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0053](sep-0053.md) | Sign and Verify Messages | Jun Luo, Pamphile Roy, OrbitLens, Piyal Basu | Final |\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[B] https://github.com/stellar/stellar-protocol/commits/master/ecosystem/sep-0053.md — \"b1933843 2026-06-18 SEP-53: Change Status to Final (#1963)\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed-as-of)",
+        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0053.md — \"a fixed prefix string is used: \"Stellar Signed Message:\\n\" ... This proposal standardizes on single-round SHA-256 ... Proving control of a Stellar address on social platforms; Verifying off-chain agreements or terms; Integrating with cross-chain or multi-chain dApps that require address proof\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[D] https://docs.walletconnect.com/wallets/chains/stellar (Parallel web_search) — \"sign(Ed25519, sha256(\"Stellar Signed Message:\\n\" || message)) ... matches the finalized SEP-53 convention\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[A] https://developers.stellar.org/docs/tools/cli/stellar-cli#subcommands — \"message — Sign and verify arbitrary messages using SEP-53\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
+        "[B] https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs — \"/// The prefix used for SEP-53 message signing.\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
+        "[E] stellarDocs.search_docs 'SEP-53 sign verify message' -> developers.stellar.org/docs/tools/cli/agent-cli/guides/sign-messages — \"stellar message sign and verify implement SEP-53\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0010.md — \"Title: Stellar Web Authentication / Status: Active / Version: 3.4.1\" (observedAt 2026-11-02; supports golden.avoid[1]: confirmed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: checked q-sep53-message-signing; no contradiction with this case's facts."
       ]
     },
     "origin": "raven-next q-sep-53-sign-verify-message",

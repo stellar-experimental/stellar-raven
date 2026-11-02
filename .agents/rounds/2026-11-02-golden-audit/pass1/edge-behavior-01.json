@@ -1,0 +1,1197 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "edge-behavior-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-edge-1xlm-activation-fee",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "As of 2026-07-10 base reserve 0.5 XLM; empty unsponsored account minimum 1 XLM (two reserves)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "One base reserve is currently 0.5 XLM. ... An account must always maintain a minimum balance of two base reserves (currently 1 XLM)."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "sequence 65269857 closed_at 2026-11-02T15:57:49Z base_fee_in_stroops 100 base_reserve_in_stroops 5000000 protocol_version 29"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask (cites developers.stellar.org lumens, create-account, stellar.org/faq)",
+       "observedAt": "2026-11-02",
+       "quote": "0.5 XLM per base reserve. An empty, self-funded account needs 1 XLM ... not a separate 'activation' or 'verification' fee."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Transaction fees are separate; minimum is 100 stroops per operation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-11-02",
+       "quote": "100 stroops per operation (the network minimum)."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "sequence 65269857 closed_at 2026-11-02T15:57:49Z base_fee_in_stroops 100 base_reserve_in_stroops 5000000 protocol_version 29"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2] / avoid[1]",
+     "claim": "Self-funding a new own G-address via CreateAccount can be legitimate; third-party unlock payments, seed disclosure, or signing to unlock are scam patterns",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "malicious entities set up dummy websites ... to induce you to enter your secret key ... Always verify the domain"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/create-account",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200; CreateAccount funding guide present"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask (cites developers.stellar.org lumens, create-account, stellar.org/faq)",
+       "observedAt": "2026-11-02",
+       "quote": "0.5 XLM per base reserve. An empty, self-funded account needs 1 XLM ... not a separate 'activation' or 'verification' fee."
+      }
+     ]
+    },
+    {
+     "field": "avoid[0]",
+     "claim": "1 XLM is not the base reserve and not an activation fee",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "One base reserve is currently 0.5 XLM. ... An account must always maintain a minimum balance of two base reserves (currently 1 XLM)."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "sequence 65269857 closed_at 2026-11-02T15:57:49Z base_fee_in_stroops 100 base_reserve_in_stroops 5000000 protocol_version 29"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3] / avoid[2]",
+     "claim": "Provider verdict must stay conditional without exact URL/address evidence",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "malicious entities set up dummy websites ... to induce you to enter your secret key ... Always verify the domain"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-base-reserve-min-balance; q-pc-account-activation-not-found; q-pc-sponsored-reserves; q-raph-low-xlm-transfer-fail; q-asset-amm-fee-reserve"
+  },
+  {
+   "id": "q-edge-ambig-stellar-token-meaning",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[0]",
+     "claim": "Classic issued asset = code + issuer + trustlines",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+       "observedAt": "2026-11-02",
+       "quote": "Assets are uniquely identified by the combination of their asset code and issuer."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200 on 2026-11-02"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1]",
+     "claim": "SAC is the contract API for the same Classic or native asset and implements SEP-41",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The SAC implements the SEP-41 Token Interface ... a Stellar asset is simply an API for interacting with the asset."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200; SEP-41 token interface spec present"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2]",
+     "claim": "A custom Soroban token is its own contract",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The SAC implements the SEP-41 Token Interface ... a Stellar asset is simply an API for interacting with the asset."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200; SEP-41 token interface spec present"
+      }
+     ]
+    },
+    {
+     "field": "avoid[0..1]",
+     "claim": "Conflation and Solidity/ERC-20 deployment framing are wrong",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The SAC implements the SEP-41 Token Interface ... a Stellar asset is simply an API for interacting with the asset."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-trustline-vs-sac; q-asset-issue-asset-howto; q-sep-41-token-interface; q-asset-deploy-sac-cli"
+  },
+  {
+   "id": "q-edge-asset-site-scam-detection",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[0]",
+     "claim": "Exact identity needs code+issuer or contract ID; tickers are non-unique",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+       "observedAt": "2026-11-02",
+       "quote": "Assets are uniquely identified by the combination of their asset code and issuer."
+      },
+      {
+       "class": "F",
+       "ref": "prior evidence: Horizon multiple issuers sharing USDC code",
+       "observedAt": "2026-07-11",
+       "quote": "see truth.corroboration 2026-07-11"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1]",
+     "claim": "Bidirectional issuer-domain / stellar.toml verification",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "the home_domain of your Stellar account to the domain that hosts your stellar.toml"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0032.md",
+       "observedAt": "2026-11-02",
+       "quote": "Reverse verification of an asset issuer address and domain ... confirm that the domain and issuer both claim to"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2..3] / avoid[0]",
+     "claim": "TOML/home_domain/explorer metadata corroborate identity but do not certify legitimacy",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0032.md",
+       "observedAt": "2026-11-02",
+       "quote": "Reverse verification of an asset issuer address and domain ... confirm that the domain and issuer both claim to"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "malicious entities set up dummy websites ... to induce you to enter your secret key ... Always verify the domain"
+      }
+     ]
+    },
+    {
+     "field": "avoid[1]",
+     "claim": "Never connect/sign/send/reveal credentials to test legitimacy",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "malicious entities set up dummy websites ... to induce you to enter your secret key ... Always verify the domain"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sep-1-toml; q-aas-trusted-asset-list-whitelist; q-raph-scam-spam-tokens; q-raph-unsolicited-airdrop; q-raph-lobstr-legitimacy"
+  },
+  {
+   "id": "q-edge-closed-world-builder-directory-miss",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "No exact Strupey builder record in Scout's builder directory when checked on 2026-07-13",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T15:57:55Z; counts returned=0 total=0; partial=false; advisory: 'The directory has 399 builder profiles, but none match ... This is a filt…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getBuilders",
+       "observedAt": "2026-11-02",
+       "quote": "operation still exposed as the Scout builder-directory surface"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1] / avoid[0]",
+     "claim": "Directory miss is not proof of non-existence",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T15:57:55Z; counts returned=0 total=0; partial=false; advisory: 'The directory has 399 builder profiles, but none match ... This is a filt…"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2] / avoid[1]",
+     "claim": "Closed-world question needs no open-world pass",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T15:57:55Z; counts returned=0 total=0; partial=false; advisory: 'The directory has 399 builder profiles, but none match ... This is a filt…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-edge-strupey-ambiguous-stellar-history; q-gap-semantic-directory-fallback; q-edge-open-world-recovery-after-narrow-miss; q-edge-lumenloop-person-entity-empty"
+  },
+  {
+   "id": "q-edge-deep-full-history-report",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "The July 31, 2014 SDF launch article describes development led by Jed McCaleb and the foundation led by Joyce Kim",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/introducing-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "(page date 2014-07-31) Stellar Development is led by Jed McCaleb ... and Professor David Mazières ... The Foundation is led by Joyce Kim as Executive Director"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search -> https://en.wikipedia.org/wiki/Stellar_(payment_network) and https://app.blockworks.com/projects/stellar/about",
+       "observedAt": "2026-11-02",
+       "quote": "Release July 31, 2014 ... Stellar was founded in July 2014 by Jed McCaleb, David Mazières, and Joyce Kim"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/first-year",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar.org grew from a scrappy pair of cofounders— Jed McCaleb and Joyce Kim ... Chief Scientist David Mazières released a white paper"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[0..1] / avoid[0]",
+     "claim": "A bounded, dated history is honest; claiming exhaustiveness is not",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/introducing-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "(page date 2014-07-31) Stellar Development is led by Jed McCaleb ... and Professor David Mazières ... The Foundation is led by Joyce Kim as Executive Director"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json (worktree, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "request_research occurrences: 0; research ids exposed: lumenloop.list_research, scout.searchResearch only"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "I can provide a **bounded, dated history**, but not honestly claim that one response leaves nothing out. Define the period and source universe, cite primary archives, identify gaps, and offer staged eras or a narrower follow-up. The July 31, 2014 SDF launch article describes development led by Jed McCaleb and David Mazières and the foundation led by Joyce Kim as Executive Director; use that narrower contemporaneous wording unless a primary source supports a stronger founder formulation. Thorough free research is allowed—the requirement is honest scope and provenance, not refusal triggered by t…",
+     "reason": "Primary 2014 article names David Mazières as co-lead of development; add him and Kim's exact title so the golden does not imply a narrower record than the source."
+    }
+   ],
+   "rootCause": [
+    "eval-side authoring flaw: paraphrase of the 2014 launch article dropped co-lead David Mazières"
+   ],
+   "siblings": "q-org-mazieres-chief-scientist; q-org-sdf-board-directors"
+  },
+  {
+   "id": "q-edge-doc-category-filter-empty",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Category op overfetches and filters client-side; a filtered empty is soft-empty, distinct from an index-wide zero",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "src/adapters/stellar-docs.ts:12-21,560-580",
+       "observedAt": "2026-11-02",
+       "quote": "category ops overfetch (hitsPerPage 100) and keep hits whose url_without_anchor matches a URL prefix ... A filtered candidate window cannot establish absence fr…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.search_docs_in_category({query:'validator quorum set configuration',category:'tokens'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty: The returned candidate window contains no hits for this operation. Try stellarDocs.search_docs for a broader search."
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.search_docs({query:'validator quorum set configuration'})",
+       "observedAt": "2026-11-02",
+       "quote": "ok; top hits https://developers.stellar.org/docs/validators/tier-1-orgs, /docs/validators/admin-guide/configuring"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "'none belong to the requested docs category'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "src/adapters/stellar-docs.ts:12-21,560-580",
+       "observedAt": "2026-11-02",
+       "quote": "category ops overfetch (hitsPerPage 100) and keep hits whose url_without_anchor matches a URL prefix ... A filtered candidate window cannot establish absence fr…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.search_docs_in_category({query:'validator quorum set configuration',category:'tokens'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty: The returned candidate window contains no hits for this operation. Try stellarDocs.search_docs for a broader search."
+      }
+     ]
+    },
+    {
+     "field": "avoid[0..1]",
+     "claim": "Validators page is not a tokens result; filtered empty is not an outage",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.search_docs_in_category({query:'validator quorum set configuration',category:'tokens'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty: The returned candidate window contains no hits for this operation. Try stellarDocs.search_docs for a broader search."
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.search_docs({query:'validator quorum set configuration'})",
+       "observedAt": "2026-11-02",
+       "quote": "ok; top hits https://developers.stellar.org/docs/validators/tier-1-orgs, /docs/validators/admin-guide/configuring"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Preserve the soft-empty distinction: the index may have matched pages before adapter filtering, but none in the returned candidate window belong to the requested docs category, so this does not prove the category has no match. Do not return cross-category hits as if they satisfied the filter. Suggest the correct category or a corpus-wide search when the user's scope allows it.",
+     "reason": "Adapter filters only a candidate window (src/adapters/stellar-docs.ts); a filtered empty does not prove the category lacks a match."
+    }
+   ],
+   "rootCause": [
+    "eval-side authoring flaw: golden stated category absence stronger than the adapter's candidate-window filter supports"
+   ],
+   "siblings": "q-pc-doc-category-validator-search; q-edge-doc-title-zero-hits; q-edge-doc-page-sections-soft-empty"
+  },
+  {
+   "id": "q-edge-doc-page-sections-soft-empty",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Unindexed /docs path returns soft-empty, not data or transport error",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.get_doc_page_sections({path:'/docs/build/guides/nonexistent-page-xyz-2026'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty: The page-section queries returned no matching records ... Check url_without_anchor from a search hit."
+      },
+      {
+       "class": "B",
+       "ref": "src/adapters/stellar-docs.ts:532-538",
+       "observedAt": "2026-11-02",
+       "quote": "kind: \"soft-empty\", message: `The page-section queries returned no matching records ...`"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1]",
+     "claim": "Recover with url_without_anchor from a real search hit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.get_doc_page_sections({path:'/docs/build/guides/nonexistent-page-xyz-2026'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty: The page-section queries returned no matching records ... Check url_without_anchor from a search hit."
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json stellarDocs.get_doc_page_sections inputSchema.path",
+       "observedAt": "2026-11-02",
+       "quote": "Use url_without_anchor from a previous search hit."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[1]",
+     "claim": "Some auto-generated API-reference pages are not in the index",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "specs/stellar-docs.json:36 (last commit e104e87f 2026-10-02)",
+       "observedAt": "2026-11-02",
+       "quote": "Auto-generated per-method RPC reference pages ... and per-endpoint Horizon reference pages are NOT in the index."
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.get_doc_page_sections({path:'/docs/data/apis/rpc/api-reference/methods/getLedgerEntries'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty; the same page returns HTTP 200 on developers.stellar.org (curl 2026-11-02)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "...are 'intentionally' not indexed",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "specs/stellar-docs.json:36 (last commit e104e87f 2026-10-02)",
+       "observedAt": "2026-11-02",
+       "quote": "Auto-generated per-method RPC reference pages ... and per-endpoint Horizon reference pages are NOT in the index."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Return and preserve a soft-empty path-not-indexed outcome. Do not fabricate sections and do not call it a network failure. Recover by using a path copied from url_without_anchor in a real search hit; remember that some auto-generated API-reference pages are not in the index.",
+     "reason": "Intent behind the index exclusion is unsourced; keep the verified fact only."
+    }
+   ],
+   "rootCause": [
+    "eval-side authoring flaw: unsourced intent attributed to the docs index exclusion"
+   ],
+   "siblings": "q-sor-doc-page-sections-followup; q-sor-doc-title-discovery; q-edge-doc-title-zero-hits"
+  },
+  {
+   "id": "q-edge-doc-title-zero-hits",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0..1]",
+     "claim": "Title-search zero is an index-scoped zero; broaden and do not fabricate",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.search_doc_titles({query:'zqxv flurbonic wombatization'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty: This query returned no hits in the docs index with the operation filters. hint: Scope the negative to this docs index."
+      },
+      {
+       "class": "B",
+       "ref": "src/adapters/stellar-docs.ts:568-580",
+       "observedAt": "2026-11-02",
+       "quote": "body.nbHits === 0 ? 'This query returned no hits in the docs index with the operation filters.'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Unindexed auto-generated pages: consult the operation's index constraint",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "specs/stellar-docs.json:36 (last commit e104e87f 2026-10-02)",
+       "observedAt": "2026-11-02",
+       "quote": "Auto-generated per-method RPC reference pages ... and per-endpoint Horizon reference pages are NOT in the index."
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute stellarDocs.get_doc_page_sections({path:'/docs/data/apis/rpc/api-reference/methods/getLedgerEntries'})",
+       "observedAt": "2026-11-02",
+       "quote": "kind soft-empty; the same page returns HTTP 200 on developers.stellar.org (curl 2026-11-02)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-doc-title-discovery; q-edge-doc-page-sections-soft-empty"
+  },
+  {
+   "id": "q-edge-exchange-memo-lost-funds",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[0..1]",
+     "claim": "Check tx success first; on-chain settlement differs from custodian credit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200 on 2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-11-02",
+       "quote": "an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2]",
+     "claim": "Both memo and muxed-address deposit models exist",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-11-02",
+       "quote": "an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/muxed-accounts-faq",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200 on 2026-11-02"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3..4] / avoid[0]",
+     "claim": "Official custodian support; recovery discretionary and not guaranteed",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://support.kraken.com/in/articles/crypto-assets-deposit-recovery",
+       "observedAt": "2026-11-02",
+       "quote": "No Guarantee of Recovery : ... successful recovery of funds is not guaranteed"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-11-02",
+       "quote": "an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos."
+      }
+     ]
+    },
+    {
+     "field": "avoid[1]",
+     "claim": "Never share secrets/2FA/signatures",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "malicious entities set up dummy websites ... to induce you to enter your secret key ... Always verify the domain"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-missing-exchange-memo; q-raph-exchange-memo; q-pc-muxed-accounts; q-pc-memos-reference"
+  },
+  {
+   "id": "q-edge-exhaustive-defi-deep-report",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "A dated, bounded category map is the honest deliverable",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/what-the-defi-is-happening-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200 on 2026-11-02"
+      },
+      {
+       "class": "E",
+       "ref": "Raven execute stellarDocs.search_meeting_notes -> https://developers.stellar.org/meetings/2026/04/16#defi-ecosystem-update",
+       "observedAt": "2026-11-02",
+       "quote": "Blend has crossed $80 million in TVL"
+      }
+     ]
+    },
+    {
+     "field": "avoid[0]",
+     "claim": "No hidden/paid operations; no invented caps",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json (worktree, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "request_research occurrences: 0; research ids exposed: lumenloop.list_research, scout.searchResearch only"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-edge-deep-full-history-report; q-eco-defi-projects-discovery"
+  },
+  {
+   "id": "q-edge-factcheck-soroswap-first-amm",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Protocol-native AMM pools activated with CAP-0038 / Protocol 18 on 2021-11-03",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "San Francisco — November 3, 2021 — Today at 15:00 UTC, Stellar validators voted to upgrade the network to Protocol 18, which adds Automated Market Maker (AMM) f…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP: 0038 Title: Automated Market Makers ... Status: Final ... Protocol version: 18"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search -> https://stellar.org/blog/developers/protocol-18-upgrade-complete",
+       "observedAt": "2026-11-02",
+       "quote": "Today, November 3, 2021 at 15:00 UTC, the Stellar public network successfully upgraded to Protocol 18."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Classic SDEX order book predates both",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Cross-border payments leveraging AMMs will utilize liquidity pools if the rate is better than what is available through Stellar's decentralized exchange."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1]",
+     "claim": "Soroswap's first-DEX/aggregator wording is operator marketing",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/soroswap/sdk/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Official TypeScript SDK for Soroswap.Finance - The first DEX and exchange aggregator built on Stellar, powered by smart contracts on Soroban."
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search -> https://stellarlight.xyz/project/soroswap",
+       "observedAt": "2026-11-02",
+       "quote": "Soroswap is the first decentralized exchange (DEX) and DEX aggregator on Stellar Soroban, live on mainnet."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "At 2026-09-03 the Soroswap-AMM series was ~$1.19M; max < $10M; $1B false",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://api.llama.fi/protocol/soroswap-amm and /protocol/soroswap",
+       "observedAt": "2026-11-02",
+       "quote": "Soroswap AMM currentChainTvls Stellar 1165054; series max 9799848 (2025-07-18); parent last point 2026-11-02 = 1165054"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask (cites defillama.com/protocol/soroswap)",
+       "observedAt": "2026-11-02",
+       "quote": "DefiLlama reports $1.17 million. Its recorded all-time high is $9.8 million, so it has not exceeded $1 billion."
+      }
+     ]
+    },
+    {
+     "field": "avoid[0..1]",
+     "claim": "Affirming first AMM or $1B TVL is false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "San Francisco — November 3, 2021 — Today at 15:00 UTC, Stellar validators voted to upgrade the network to Protocol 18, which adds Automated Market Maker (AMM) f…"
+      },
+      {
+       "class": "F",
+       "ref": "https://api.llama.fi/protocol/soroswap-amm and /protocol/soroswap",
+       "observedAt": "2026-11-02",
+       "quote": "Soroswap AMM currentChainTvls Stellar 1165054; series max 9799848 (2025-07-18); parent last point 2026-11-02 = 1165054"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.sources[2].ref",
+     "op": "replace",
+     "new": "https://github.com/soroswap/sdk",
+     "reason": "Cited repo now 404; the SDK README carries the same operator firstness wording (provenance repair, judge-blind)."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-amm-cap-0038; q-defi-soroswap-what-is; q-defi-soroswap-vs-stellarx; q-asset-sdex-vs-amm; q-edge-fresh-latest-blend-tvl"
+  },
+  {
+   "id": "q-edge-fresh-latest-blend-tvl",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "A grounded answer obtains the current value 'from the current LumenLoop corpus'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute lumenloop.get_project({slug:'blend'})",
+       "observedAt": "2026-11-02",
+       "quote": "Blend Capital record keys: slug,title,description,category,tags,operating_region,based_in,other_names,parent,links,scf,mainnet — no TVL field"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.searchProjects({q:'Blend'})",
+       "observedAt": "2026-11-02",
+       "quote": "Blend tvlUSD 129334939 tvlAsOf 2026-11-02T13:19:15Z tvlMethodUrl https://defillama.com/protocol/blend-pools llamaSlugs blend-pools, blend-pools-v2, blend-backst…"
+      },
+      {
+       "class": "F",
+       "ref": "https://api.llama.fi/protocol/blend",
+       "observedAt": "2026-11-02",
+       "quote": "currentChainTvls Stellar 130038598, borrowed 39619547; 2026-10-01 173192824 (series max); 2026-11-02 130038598; 2026-04-16 96899917"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "$170M Stellar DeFi TVL in an April 2026 developer meeting",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute lumenloop.find_av_passages({query:'DeFi TVL 170 million Stellar'})",
+       "observedAt": "2026-11-02",
+       "quote": "'Stellar Developer Meeting - 04/23/2026' https://www.youtube.com/watch?v=E6asxPAA3wU summary: 'Q1 2026 ecosystem metrics showing 2B RWA market cap and 170M DeFi…"
+      },
+      {
+       "class": "F",
+       "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+       "observedAt": "2026-11-02",
+       "quote": "2026-04-16 177677304; 2026-04-30 185396558 (Stellar chain TVL, not Blend)"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2] (new example)",
+     "claim": "As of 2026-11-02 DefiLlama Blend ~$130M; 2026-10-01 ~$173M; borrowed ~$40M separate",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://api.llama.fi/protocol/blend",
+       "observedAt": "2026-11-02",
+       "quote": "currentChainTvls Stellar 130038598, borrowed 39619547; 2026-10-01 173192824 (series max); 2026-11-02 130038598; 2026-04-16 96899917"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.searchProjects({q:'Blend'})",
+       "observedAt": "2026-11-02",
+       "quote": "Blend tvlUSD 129334939 tvlAsOf 2026-11-02T13:19:15Z tvlMethodUrl https://defillama.com/protocol/blend-pools llamaSlugs blend-pools, blend-pools-v2, blend-backst…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "sls-039 history stays provider-hosted (durable caution)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: declined-upstream ... keep consumer guidance directing trend and peak questions to tvlMethodUrl"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer reports a current Blend TVL point from a named provider (for example the DefiLlama Blend series that Scout's Blend row links as `tvlMethodUrl`), states the measurement basis, and makes the observation date visible. For the quarter trend, it gives same-provider points for a declared window. As of 2026-11-02, DefiLlama's Blend series showed about $130M TVL, down from about $173M on 2026-10-01; borrowed (about $40M) is a separate measure. Stellar-wide figures, such as the $170M DeFi TVL reported in the 2026-04-23 developer meeting, are chain measures, not Blend's TVL.\n\nThe dated…",
+     "reason": "Replace the unsupported Lumenloop-sourcing sentence with a named-provider requirement, add a dated Blend example, and label the $170M figure as chain-wide."
+    }
+   ],
+   "rootCause": [
+    "eval-side authoring flaw: templated freshness boilerplate shared with q-eco-defi-tvl-current named Lumenloop as the TVL source and used a chain-wide figure as the Blend example"
+   ],
+   "siblings": "q-eco-defi-tvl-current; q-edge-noinfo-exact-tvl-figure; q-defi-blend-what-is; q-edge-factcheck-soroswap-first-amm"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5), did not read the proposer matrix",
+  "decisions": [
+   {
+    "id": "q-edge-fresh-latest-blend-tvl",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "A grounded answer reports a current Blend TVL point from a named provider (for example DefiLlama's combined Blend series, https://defillama.com/protocol/blend), states the measurement basis, and makes the observation date visible. For the quarter trend, it gives same-provider points for a declared window. As of 2026-11-02, that series showed about $130M TVL, down from about $173M on 2026-10-01 (its all-time high); borrowed (about $40M) is a separate measure. Stellar-wide figures, such as the $170M DeFi TVL in Lumenloop's summary of the 2026-04-23 developer meeting, are chain measures, not Blen…",
+    "note": "Core numbers confirmed: ~$130M (2026-11-02), ~$173M (2026-10-01), borrowed ~$40M, all in the same DefiLlama series. Two corrections. (1) The proposal says Scout's Blend row links this series as tvlMethodUrl. That is false: Scout links https://defillama.com/protocol/blend-pools, the V1 child series that holds about $43.5K, while Scout's tvlUSD ($129.3M) sums the mapped rows, mostly blend-pools-v2. …",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://api.llama.fi/protocol/blend",
+      "observedAt": "2026-11-02T16:27Z",
+      "quote": "currentChainTvls: {'Stellar': 130038598, 'Stellar-borrowed': 39619547, ...}; tvl 2026-10-01 = 173192824; 2026-11-02 = 130038598; series max = 173192824 on 2026-…"
+     },
+     {
+      "class": "A",
+      "ref": "https://defillama.com/protocol/blend",
+      "observedAt": "2026-11-02 (Parallel web_search excerpt)",
+      "quote": "Total Value Locked $130.23m ... All-time high TVL: $173.19m onOct 1, 2026. ... TVL is the default DefiLlama definition, which excludes Pool2 and Active Loans."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=blend&limit=3",
+      "observedAt": "2026-11-02T16:27Z",
+      "quote": "tvlUSD 129334939; tvlAsOf 2026-11-02T13:19:15.688Z; tvlSource defillama; tvlMethod 'sum of the project's mapped DefiLlama protocol rows (see llamaSlugs; e.g. Bl…"
+     },
+     {
+      "class": "F",
+      "ref": "https://api.llama.fi/protocol/blend-pools",
+      "observedAt": "2026-11-02T16:28Z",
+      "quote": "Blend Pools (parent#blend) currentChainTvls Stellar 43517.07816 (V1 series); blend-pools-v2 Stellar 129995081.30215"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'blend'}",
+      "observedAt": "2026-11-02T16:27Z",
+      "quote": "directory rows carry slug/title/description/category/tags/website; no TVL field"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.find_av_passages -> https://www.youtube.com/watch?v=E6asxPAA3wU and https://x.com/i/broadcasts/1mGPaLRVpvZJN",
+      "observedAt": "2026-11-02T16:29Z",
+      "quote": "Stellar Developers meeting covering Q1 2026 ecosystem metrics showing 2B RWA market cap and 170M DeFi TVL ... / DeFi TVL reached $170M (3x YoY)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2026/04/23",
+      "observedAt": "2026-11-02T16:29Z",
+      "quote": "Messari State of Stellar Q1 2026 ... RWA market cap — $2 billion ... Stablecoin market cap — $300 million ... higher TVL attracts more DeFi protocols (no $170M …"
+     },
+     {
+      "class": "D",
+      "ref": "https://bsc.news/post/stellar-tvl-200m-rwa-surge",
+      "observedAt": "2026-11-02",
+      "quote": "the on-chain figure printing $197.41 million on April 24 per DefiLlama ... Blend ... sits at around $110 million in TVL"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-deep-full-history-report",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "The primary 2014 article names both McCaleb and Mazières as development leads and Joyce Kim as Executive Director. The old text omitted Mazières, so it understated the primary record. The new text stays at the contemporaneous role wording and does not add a founder claim. It changes golden.answer only; keyFacts and avoid are unchanged.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/introducing-stellar",
+      "observedAt": "2026-11-02 (Parallel web_fetch, page acquired 2026-10-23)",
+      "quote": "Stellar Development is led by Jed McCaleb (resuming development of the open-source technology he created at Ripple) and Professor David Mazières (head of Stanfo…"
+     },
+     {
+      "class": "D",
+      "ref": "https://steemit.com/cryptocurrency/@lightmansam/an-in-depth-background-of-the-stellar-development-foundation-and-stellar-lumens-part-1",
+      "observedAt": "2026-11-02 (Perplexity search, page dated 2018-05-04)",
+      "quote": "The development of the network was initially lead by Jed McCaleb and Prof. David Mazières, while the foundation was led by Joyce Kim as executive director."
+     }
+    ]
+   },
+   {
+    "id": "q-edge-doc-category-filter-empty",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "The source and the live envelope both scope the empty result to the candidate window. The new clause matches that behavior and keeps the golden from implying a whole-category absence. It adds no avoid item.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "src/adapters/stellar-docs.ts (worktree, lines 12-21 and 554-580)",
+      "observedAt": "2026-11-02",
+      "quote": "category ops overfetch (hitsPerPage 100) and keep hits whose url_without_anchor matches a URL prefix ... A filtered candidate window cannot establish absence fr…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven stellarDocs.search_docs_in_category {query:'validator quorum set configuration', category:'tokens'}",
+      "observedAt": "2026-11-02T16:30:27Z",
+      "quote": "kind: soft-empty, message: 'The returned candidate window contains no hits for this operation. Try stellarDocs.search_docs for a broader search.', status 200"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs {query:'validator quorum set configuration'}",
+      "observedAt": "2026-11-02T16:30:27Z",
+      "quote": "ok, hits: /docs/validators/tier-1-orgs, /docs/validators/admin-guide/configuring"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-doc-page-sections-soft-empty",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "No source states that the exclusion is intentional. The open upstream issue (sd-003 / stellar-docs#2566) treats crawler inclusion as an open task, and the maintainer calls it a crawler-config matter. 'Not in the index' is the observable fact. The edit removes an unsupported intent claim and penalizes no answer.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven stellarDocs.get_doc_page_sections {path:'/docs/data/apis/rpc/api-reference/methods/getTransactions'}",
+      "observedAt": "2026-11-02T16:30:27Z",
+      "quote": "kind: soft-empty, message: 'The page-section queries returned no matching records for /docs/data/apis/rpc/api-reference/methods/getTransactions within their can…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 200 (page exists on the live site while absent from the index)"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/issues/2566",
+      "observedAt": "2026-11-02",
+      "quote": "state open; ElliotFriend 2026-07-21: 'The remaining half — actually including the auto-generated RPC-method pages in the crawl — isn't configurable from this re…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-factcheck-soroswap-first-amm",
+    "field": "truth.sources[2].ref",
+    "decision": "accept",
+    "note": "The old ref is dead (404, not a redirect, so no rename). The soroswap/sdk README carries the exact operator 'first DEX and exchange aggregator' wording that the golden attributes, so the new ref grounds the attributed-marketing claim better. Follow-ups for the applier: the class should be B (operator-owned repo), not the migration-inferred D; truth.corroboration[1].evidence[0].ref and the verified…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/soroswap/docs ; curl -I https://github.com/soroswap/docs",
+      "observedAt": "2026-11-02T16:27Z",
+      "quote": "{\"message\":\"Not Found\",\"status\":\"404\"} ; HTTP/2 404"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/soroswap/sdk (README.md)",
+      "observedAt": "2026-11-02 (repo pushed_at 2026-10-25)",
+      "quote": "Official TypeScript SDK for [Soroswap.Finance](https://soroswap.finance) - The first DEX and exchange aggregator built on Stellar, powered by smart contracts on…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/",
+      "observedAt": "2026-11-02",
+      "quote": "\"title\":\"The Swap Aggregator for Stellar - Soroswap Finance\" (no 'first' claim on the docs home page)"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://api.llama.fi/protocol/blend",
+   "https://api.llama.fi/protocol/blend-pools",
+   "https://api.llama.fi/protocol/blend-backstop",
+   "https://api.llama.fi/protocol/blend-pools-v2",
+   "https://api.llama.fi/protocol/blend-backstop-v2",
+   "https://api.llama.fi/protocols",
+   "https://api.llama.fi/updatedProtocol/parent%23blend",
+   "https://stellarlight.xyz/api/projects/blend",
+   "https://stellarlight.xyz/api/projects/search?q=blend&limit=3",
+   "https://api.lumenloop.com/v1/tools/search_directory",
+   "https://api.lumenloop.com/v1/tools/get_project",
+   "https://stellar.org/blog/foundation-news/introducing-stellar",
+   "https://developers.stellar.org/meetings/2026/04/02",
+   "https://developers.stellar.org/meetings/2026/04/09",
+   "https://developers.stellar.org/meetings/2026/04/16",
+   "https://developers.stellar.org/meetings/2026/04/23",
+   "https://developers.stellar.org/meetings/2026/04/30",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions",
+   "https://github.com/soroswap/docs",
+   "https://api.github.com/repos/soroswap/docs",
+   "https://api.github.com/repos/soroswap/sdk",
+   "https://api.github.com/repos/soroswap/sdk/readme",
+   "https://api.github.com/orgs/soroswap/repos",
+   "https://api.github.com/search/code?q=org:soroswap+%22first+DEX%22",
+   "https://docs.soroswap.finance/",
+   "https://api.github.com/repos/stellar/stellar-docs/issues/2566",
+   "https://api.github.com/repos/stellar/stellar-docs/issues/2566/comments",
+   "Raven MCP: stellarDocs.search_docs, stellarDocs.search_meeting_notes, stellarDocs.search_docs_in_category, stellarDocs.get_doc_page_sections, lumenloop.search_content_semantic, lumenloop.find_av_passages, scout.searchResearch",
+   "Parallel web_search: Messari State of Stellar Q1 2026 DeFi TVL (results incl. defillama.com/protocol/blend, defillama.com/protocol/blend-pools-v2, defillama.com/chain/stellar, bsc.news, news.nbtc.finance)",
+   "Perplexity search: Introducing Stellar 2014 leadership (results incl. stellar.org, messari.io/project/stellar, steemit.com, altfins.com)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-edge-fresh-latest-blend-tvl; q-edge-deep-full-history-report; q-edge-doc-category-filter-empty; q-edge-doc-page-sections-soft-empty",
+  "verifiedOnly": "q-edge-factcheck-soroswap-first-amm; q-edge-closed-world-builder-directory-miss; q-edge-1xlm-activation-fee; q-edge-ambig-stellar-token-meaning; q-edge-asset-site-scam-detection; q-edge-doc-title-zero-hits; q-edge-exchange-memo-lost-funds; q-edge-exhaustive-defi-deep-report",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-edge-fresh-latest-blend-tvl",
+    "issue": "Candidate Scout improvements finding (not filed by this applier): the Blend row tvlMethodUrl is https://defillama.com/protocol/blend-pools (V1 child, about $43.5K) while tvlUSD $129.3M sums blend-pools-v2 and backstops. Proposer also noted Lumenloop search_directory query \"Blend\" returns alphabetical substring matches before Blend Capital."
+   },
+   {
+    "id": "q-eco-defi-tvl-current",
+    "issue": "Sibling outside this batch still carries the shared boilerplate \"obtains the requested current value or state from the current LumenLoop corpus\"; Lumenloop directory rows have no TVL field (observed 2026-11-02). Owner of that batch should review."
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "issue": "Siblings q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx, and q-eco-dex-saturation still cite https://github.com/soroswap/docs, which returns HTTP 404 on 2026-11-02; https://github.com/soroswap/sdk carries the same operator wording."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-edge-fresh-latest-blend-tvl",
+    "log": "golden.answer rewritten (verifier modify): named-provider basis, dated 2026-11-02 DefiLlama Blend example, $170M relabeled as a chain measure; sources replaced with dated refs; 2 corroboration rows; asOf 2026-11-02; verified refreshed."
+   },
+   {
+    "id": "q-edge-deep-full-history-report",
+    "log": "golden.answer adds David Mazières as 2014 development co-lead and Joyce Kim's Executive Director title (verifier accept); dated sources + corroboration row; verified refreshed."
+   },
+   {
+    "id": "q-edge-doc-category-filter-empty",
+    "log": "golden.answer scopes the empty to the returned candidate window (verifier accept); B/C/E sources + corroboration row; asOf 2026-11-02; verified refreshed."
+   },
+   {
+    "id": "q-edge-doc-page-sections-soft-empty",
+    "log": "golden.answer drops the unsourced 'intentionally' (verifier accept); C/A/B sources + confirmed and unverifiable corroboration rows; asOf 2026-11-02; verified refreshed."
+   },
+   {
+    "id": "q-edge-factcheck-soroswap-first-amm",
+    "log": "Truth-only: dead soroswap/docs ref -> B soroswap/sdk (verifier accept), corroboration refs repaired, F 2026-11-02 TVL evidence, A docs.soroswap.finance added; asOf 2026-11-02; reverifyBy 2026-12-17 -> 2027-04-15; verified refreshed."
+   },
+   {
+    "id": "q-edge-closed-world-builder-directory-miss",
+    "log": "Verified-only: Scout builder miss re-observed 2026-11-02 (399 profiles); source + corroboration evidence added; asOf 2026-11-02; reverifyBy 2027-01-12 -> 2027-04-22."
+   },
+   {
+    "id": "q-edge-1xlm-activation-fee",
+    "log": "Verified-only: 0.5 XLM base reserve, 1 XLM minimum, and 100-stroop fee re-confirmed (A+F+D); verified refreshed."
+   },
+   {
+    "id": "q-edge-ambig-stellar-token-meaning",
+    "log": "Verified-only: Classic asset / SAC / custom Soroban token distinctions re-confirmed (A+B); verified refreshed."
+   },
+   {
+    "id": "q-edge-asset-site-scam-detection",
+    "log": "Verified-only: code+issuer identity and SEP-1/SEP-32 bidirectional checks re-confirmed (A+B); verified refreshed."
+   },
+   {
+    "id": "q-edge-doc-title-zero-hits",
+    "log": "Verified-only: index-scoped title zero re-observed (C+B); asOf 2026-11-02; verified refreshed. Added an index-scoped soft-empty corroboration row (C+B) to clear the negative-claim heuristic warning."
+   },
+   {
+    "id": "q-edge-exchange-memo-lost-funds",
+    "log": "Verified-only: memo and muxed deposit models and discretionary custodian recovery re-confirmed (A+D); verified refreshed."
+   },
+   {
+    "id": "q-edge-exhaustive-defi-deep-report",
+    "log": "Verified-only: bounded dated category map and no paid surface re-confirmed (A+E+B); verified refreshed."
+   }
+  ]
+ }
+}

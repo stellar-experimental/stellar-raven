@@ -62,19 +62,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
       "evidence": [
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; a validators/quorum query returned envelope ok=true and validator-prefixed hits.",
-        "specs/stellar-docs.json exists and supports the behavioral golden.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Corroboration audit 2026-08-29: added 1 row(s) for adapter-side category restriction; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Live C 2026-11-02: Raven stellarDocs.search_docs_in_category({query:'quorum',category:'validators'}) -- 'nbHits 56, clientFiltered present; all 5 hits under https://developers.stellar.org/docs/validators/admin-guide/...'",
+        "Live E 2026-11-02: Raven stellarDocs.search_docs({query:'quorum'}) -- 'unfiltered top hit is /docs/learn/fundamentals/stellar-consensus-protocol#quorum (cross-area), confirming the mixing premise'",
+        "Live B 2026-11-02: specs/stellar-docs.json -- 'facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix'",
+        "Live B 2026-11-02: catalog/manifest.json#stellarDocs.search_docs_in_category -- 'enum: build, learn, tokens, data, tools, platforms, validators, networks, meetings'",
+        "Live F 2026-11-02: npx vitest run test/adapters.test.ts -t 'URL-prefix' (worktree) -- 'Test Files 1 passed; Tests 1 passed | 95 skipped'",
+        "Re-verified with no gospel change; proposer matrix /private/tmp/claude-501/golden-audit/matrices/protocol-core-01.json (no proposal, so no verifier decision).",
+        "Sibling sweep 2026-11-02: no topical sibling names search_docs_in_category validators; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (coverage)"

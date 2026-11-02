@@ -39,8 +39,8 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-09-03",
-    "reverifyBy": "2027-01-14",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-18",
     "sources": [
       {
         "class": "A",
@@ -161,40 +161,18 @@
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
       "evidence": [
-        "eval/qa/results/2026-07-03T16-06-45-variantA.json (q-ti-rpc-gettransactions-pagination-xdr)",
-        "Live 2026-07-03: developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — limit 'can range from 1 to 200 — an upper limit that is hardcoded in Stellar-RPC for performance reasons', default 50",
-        "Root cause both sides missed it: RPC method reference pages unindexed in Algolia — improvements/stellar-docs/sd-003",
-        "Solo scratchpad 575, GT-53 primary 3372 and pre-read-locked blind 3378, independently reconciled 2026-07-11.",
-        "Live scout.searchResearch reachability for the official getTransactions and pagination pages, 2026-07-13",
-        "Live scout.explainRepo answer grounded in stellar/stellar-rpc options.go and main.go for configurable 50/200 defaults, 2026-07-13",
-        "solo://proj/49/scratchpad/truth-maintenance-20--627#fable-open-questions-audit",
-        "Independent Terra review 2026-07-14 rechecked stellar-docs#2567, current RPC pagination docs, and stellar-rpc configuration source; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review",
-        "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; confirmed against improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md on 2026-08-26",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep getTransactions 50|200/50|max-transactions-limit|immutable limit → q-ti-rpc-gettransactions-pagination-xdr, q-ti-parse-raw-ledger-data; no contradiction",
-        "Structural re-form (compound-predicate): Split the limits claim and shortened four facts; truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — startLedger was inclusive and omitted when a returned opaque cursor was used.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/pagination — the method table showed getTransactions 50/200, getEvents 100/10000, and getLedgers 50/200; Horizon remained a separate 10/200 surface.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-rpc/blob/04968c0a1711f57529ae777f414f7ddc7401ac97/cmd/stellar-rpc/internal/methods/get_transactions.go#L39-L68 — source retained configurable transaction-page limits behind the dated stock defaults.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — results still covered retained history, failed transactions, optional diagnostics, and cursor continuation.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/data-format — base64 *Xdr fields, JSON *Json fields, and SDK parsing remained distinct response forms.",
-        "Sibling sweep 2026-08-27: grep getTransactions|resultMetaXdr|xdrFormat → q-crp-export-tx-history-taxes, q-infra-rpc-methods-list, q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr; no contradiction",
-        "Owner fix after independent review 2026-08-27: program-log.md § Session 2 › Batch 5 › Part 3 review (gt2-grok-rev) restored the fall-behind behavior claim; truth unchanged versus HEAD.",
-        "Live re-check 2026-09-03: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — the official page calls 200 a hardcoded upper limit and gives default 50.",
-        "Live re-check 2026-09-03: https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/config/options.go — source exposes max-transactions-limit and default-transactions-limit with stock defaults 200 and 50.",
-        "Sibling sweep 2026-09-03: q-ti-rpc-gettransactions-pagination-xdr and q-ti-parse-raw-ledger-data retain the same configurable-default caution; no contradiction.",
-        "Independent blind re-derivation 2026-08-29: review-canonical-rederivation-grok.md confirmed the Docs/source conflict and rejected universal immutability."
-      ],
-      "rootCause": [
-        "improvements/stellar-docs/sd-003 (verified, awaiting upstream) — RPC method reference pages unindexed in Algolia; the upstream fix that would have prevented both the agent's and the golden author's error. When sd-003 is fixed-upstream, this override's facts should be re-verified against the then-indexed page but the correction itself remains valid.",
-        "improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md",
-        "solo://proj/49/todo/golden-fixes-q-scf-r--827",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
+        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes B, E, F); the proposer proposed no change and the verifier listed the case as no-proposal.",
+        "Class B (golden.keyFacts[1], confirmed-as-of): https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go — \"max-events-limit 10000; default-events-limit 100; max-transactions-limit 200; default-transactions-limit 50; max-ledgers-limit 200; default-ledgers-limit 50 (same values on main rpcv1/config/options.go)\" (observedAt 2026-11-02)",
+        "Class F (golden.keyFacts[1], confirmed-as-of): https://soroban-testnet.stellar.org (RPC 30.0.0) — \"getTransactions limit 201 -> \"limit must not exceed 200\"; default page 50 rows; getEvents limit 10001 -> \"limit must not exceed 10000\"\" (observedAt 2026-11-02)",
+        "Class B (golden.keyFacts[1], confirmed-as-of): https://github.com/stellar/stellar-horizon/blob/master/internal/db2/page_query.go — \"DefaultPageSize = 10; MaxPageSize = 200\" (observedAt 2026-11-02)",
+        "Class E (golden.notes, disputed): stellarDocs.search_docs -> https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/pagination — \"These upper limits are hardcoded in Stellar RPC for performance reasons.\" (observedAt 2026-11-02)",
+        "Class B (golden.notes, disputed): improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md — \"status: declined-upstream\" (observedAt 2026-11-02)",
+        "Class F (golden.answer, confirmed): testnet getTransactions base64 — \"events keys transactionEventsXdr, contractEventsXdr; stellar xdr decode --type TransactionEvent -> {\"stage\":\"before_all_txs\",...}; --type ContractEvent -> {\"type\":\"contract\",...}\" (observedAt 2026-11-02)",
+        "Class F (golden.answer, confirmed): testnet getTransactions xdrFormat=json — \"keys envelopeJson, resultJson, resultMetaJson; events transactionEventsJson, contractEventsJson\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-ti-parse-raw-ledger-data checked; no conflicting fact."
       ]
     },
     "origin": "raven-next q-ti-rpc-gettransactions-pagination-xdr"

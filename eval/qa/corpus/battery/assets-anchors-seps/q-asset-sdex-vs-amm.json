@@ -67,23 +67,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (negative-predicate): split two compound facts into five atomic facts and replaced 'separate from' with positive fee wording; truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — SDEX uses orderbooks with Manage Buy Offer and Manage Sell Offer operations.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — Stellar AMMs enforce a constant-product invariant.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the Stellar AMM trade fee remains 30 bps or 0.30%.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — AMM trade fees remain completely separate from network fees.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — an orderbook maker specifies each offer price.",
-        "Sibling sweep 2026-08-27: grep SDEX|constant-product|30 basis points|network fee → q-protocol-amm-cap-0038, q-asset-amm-fee-reserve, q-edge-factcheck-soroswap-first-amm, q-defi-provide-liquidity-impermanent-loss; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored the central-limit orderbook claim; truth unchanged versus HEAD.",
-        "Corroboration audit 2026-08-29: added 1 row(s) for in-ledger SDEX and AMM routing; class agreement Sol+Grok"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"Stellar uses order books to operate its decentralized exchange ... Orders in Stellar behave like limit orders\" (claim: golden.keyFacts[0] confirmed: SDEX is an on-chain order book with ManageBuyOffer/ManageSellOffer)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x — \"MANAGE_SELL_OFFER = 3, CREATE_PASSIVE_SELL_OFFER = 4, MANAGE_BUY_OFFER = 12\" (claim: golden.keyFacts[0] confirmed: SDEX is an on-chain order book with ManageBuyOffer/ManageSellOffer)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"Stellar enforces a constant product invariant ... The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the network fees.\" (claim: golden.keyFacts[1..3] confirmed: Constant product; fixed 30 bps; separate from network fee)",
+        "2026-11-02 [B] https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — \"LIQUIDITY_POOL_FEE_V18 = 30\" (claim: golden.keyFacts[1..3] confirmed: Constant product; fixed 30 bps; separate from network fee)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"Orders in Stellar behave like limit orders ... the order is saved on the orderbook until it is either consumed ... or canceled\" (claim: golden.keyFacts[4] confirmed: Orderbook makers set tighter or wider prices)",
+        "Sibling sweep 2026-11-02: proposer checked q-asset-amm-fee-reserve, q-asset-path-payment-ops; no gospel change in this case, so no sibling contradiction can arise from this event."
       ]
     },
     "origin": "raven-next q-asset-sdex-vs-amm"

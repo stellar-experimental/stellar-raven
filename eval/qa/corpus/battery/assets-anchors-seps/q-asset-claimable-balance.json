@@ -6,7 +6,7 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A **claimable balance** is a native ledger entry that **sets aside an amount of an asset for one or\nmore designated claimants to claim later**, rather than sending it directly to an account. It is\ncreated with the **`CreateClaimableBalance`** operation and redeemed with **`ClaimClaimableBalance`**\n[1]. Each claimant can carry a **claim predicate** — e.g. time bounds (claimable after/before a\ndate), or unconditional — letting you express conditional/deferred transfers and simple escrow-like\npayouts **without any smart contract / Soroban** [1].\n\nUse it instead of a direct payment when **the recipient can't accept the payment yet** — most\ncommonly when they **have not established a trustline** to a non-native asset, or for\n**predicate-gated / time-locked payouts** and airdrops where the sender wants to commit funds now\nand let the recipient claim on their own terms [1]. The entry **holds a base reserve** (sponsored\nby the creator) until claimed. Note: it is a **native protocol feature, not a Soroban escrow\ncontract**, and for a **non-native** asset the claimant must still have (or establish) a trustline\nto that asset to claim it.\n\nSource: [1] developers.stellar.org Claimable Balances docs.",
+    "answer": "A **claimable balance** is a native ledger entry that **sets aside an amount of an asset for one or\nmore designated claimants to claim later**, rather than sending it directly to an account. It is\ncreated with the **`CreateClaimableBalance`** operation and redeemed with **`ClaimClaimableBalance`**\n[1]. Each claimant can carry a **claim predicate** — e.g. time bounds (claimable after/before a\ndate), or unconditional — letting you express conditional/deferred transfers and simple escrow-like\npayouts **without any smart contract / Soroban** [1].\n\nUse it instead of a direct payment when **the recipient can't accept the payment yet** — most\ncommonly when they **have not established a trustline** to a non-native asset, or for\n**predicate-gated / time-locked payouts** and airdrops where the sender wants to commit funds now\nand let the recipient claim on their own terms [1]. The entry **holds one base reserve per claimant** (sponsored\nby the creator) until claimed. Note: it is a **native protocol feature, not a Soroban escrow\ncontract**, and for a **non-native** asset the claimant must still have (or establish) a trustline\nto that asset to claim it.\n\nSource: [1] developers.stellar.org Claimable Balances docs.",
     "keyFacts": [
       "A claimable balance is a ledger entry for a held amount.",
       "A designated claimant later claims that amount.",
@@ -17,7 +17,7 @@
       "Do NOT describe a claimable balance as a smart contract escrow that requires Soroban.",
       "Do NOT claim it bypasses the recipient's need to eventually establish a trustline before claiming a non-native asset."
     ],
-    "notes": "Classic asset primitive from §8.1 table. Verified: native ledger entry created via CreateClaimableBalance, claimed via ClaimClaimableBalance, with claim predicates; entry holds a base reserve. Source URL normalized from the stale learn/encyclopedia path (now a 301 redirect) to build/guides/transactions/claimable-balances, confirmed live 2026-06-29.\nAlso good if the answer: Created via CreateClaimableBalance and claimed via ClaimClaimableBalance, with optional claim predicates (e.g. time bounds).\nGolden cites: A claimable-balances page on developers.stellar.org."
+    "notes": "Classic asset primitive from §8.1 table. Verified: native ledger entry created via CreateClaimableBalance, claimed via ClaimClaimableBalance, with claim predicates; entry holds one base reserve per claimant. Source URL normalized from the stale learn/encyclopedia path (now a 301 redirect) to build/guides/transactions/claimable-balances, confirmed live 2026-06-29.\nAlso good if the answer: Created via CreateClaimableBalance and claimed via ClaimClaimableBalance, with optional claim predicates (e.g. time bounds).\nGolden cites: A claimable-balances page on developers.stellar.org."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -36,6 +36,18 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+        "note": "Golden audit 2026-11-02: \"CREATE_CLAIMABLE_BALANCE_LOW_RESERVE ... For every claimant in the list, the minimum amount of XLM this account must hold will increase by baseReserve.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "stellar/stellar-core src/transactions/SponsorshipUtils.cpp computeMultiplier",
+        "note": "Golden audit 2026-11-02: \"case CLAIMABLE_BALANCE: return static_cast<uint32_t>( le.data.claimableBalance().claimants.size());\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -43,37 +55,64 @@
         "claim": "This is a native protocol feature, not a Soroban escrow contract.",
         "verdict": "confirmed",
         "evidence": [
-        {
-          "class": "A",
-          "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
-          "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "B",
-          "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
-          "observedAt": "2026-08-29",
-          "note": "Exact source: CAP-0023 says `ClaimableBalanceEntry` is a new `LedgerEntry` type and introduces `CreateClaimableBalanceOp` and `ClaimClaimableBalanceOp` as protocol operations."
-        }
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: CAP-0023 says `ClaimableBalanceEntry` is a new `LedgerEntry` type and introduces `CreateClaimableBalanceOp` and `ClaimClaimableBalanceOp` as protocol operations."
+          }
+        ]
+      },
+      {
+        "claim": "Each claimant in a ClaimableBalanceEntry adds one base reserve to the creator's (sponsor's) minimum balance.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"Each ClaimableBalanceEntry is a ledger entry, and each claimant in that entry increases the source account’s minimum balance by one base reserve.\""
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"CREATE_CLAIMABLE_BALANCE_LOW_RESERVE ... For every claimant in the list, the minimum amount of XLM this account must hold will increase by baseReserve.\""
+          },
+          {
+            "class": "B",
+            "ref": "stellar/stellar-core src/transactions/SponsorshipUtils.cpp computeMultiplier",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"case CLAIMABLE_BALANCE: return static_cast<uint32_t>( le.data.claimableBalance().claimants.size());\""
+          }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): split the claimable-balance definition into three short facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — official docs define each claimable balance as a ledger entry for a held asset amount.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/claimablebalances — official docs state that the designated account can claim the amount in the future.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance — official docs describe conditional and delayed claimable-balance transfers.",
-        "Sibling sweep 2026-08-29: grep claimable balance|designated claimant|conditional/deferred → q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-asset-claimable-balance, q-comp-clawback-cap0035, q-crp-export-tx-history-taxes, q-defi-aquarius-what-is, q-raph-claimable-balance-safety, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-sor-classic-dex-from-contract, q-sor-contract-as-claimable-arbiter, q-infra-horizon-vs-rpc, and q-ti-enumerate-holders-airdrop; no contradiction.",
-      "Corroboration audit 2026-08-29: added 1 row(s) for native claimable-balance implementation boundary; class agreement Sol+Grok",
-      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"Each ClaimableBalanceEntry is a ledger entry, and each claimant in that entry increases the source account’s minimum balance by one base reserve.\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"CREATE_CLAIMABLE_BALANCE_LOW_RESERVE ... For every claimant in the list, the minimum amount of XLM this account must hold will increase by baseReserve.\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [B] stellar/stellar-core src/transactions/SponsorshipUtils.cpp computeMultiplier — \"case CLAIMABLE_BALANCE: return static_cast<uint32_t>( le.data.claimableBalance().claimants.size());\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [B] stellar/stellar-core src/transactions/SponsorshipUtils.cpp computeMultiplier — \"case CLAIMABLE_BALANCE: return ... claimants.size()\" (claim: verifier accept golden.notes)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"Each ClaimableBalanceEntry is a ledger entry\" (claim: golden.keyFacts[0] confirmed: A claimable balance is a ledger entry for a held amount)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0023.md — \"ClaimableBalanceEntry ... CreateClaimableBalanceOp / ClaimClaimableBalanceOp\" (claim: golden.keyFacts[0] confirmed: A claimable balance is a ledger entry for a held amount)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"They can be used when you send a non-native asset to an account that has not yet established a trustline ... A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an op_no_trust error.\" (claim: golden.keyFacts[3] confirmed: Useful when recipient has no trustline yet; claimant must still establish a trustline to claim)",
+        "2026-11-02 [E] stellarDocs.search_docs('claimable balance each claimant base reserve') — \"claimant in that entry increases the source account's minimum balance by one base reserve\" (claim: golden.keyFacts[3] confirmed: Useful when recipient has no trustline yet; claimant must still establish a trustline to claim)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"each claimant in that entry increases the source account's minimum balance by one base reserve.\" (claim: golden.answer / golden.notes contradicted: The entry holds a base reserve (sponsored by the creator))",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0023.md — \"Deduct `claimants.size() * baseReserve` of native asset ... `reserve` equal to `claimants.size() * baseReserve`\" (claim: golden.answer / golden.notes contradicted: The entry holds a base reserve (sponsored by the creator))",
+        "2026-11-02 [E] stellarDocs.search_docs via Raven — \"https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance — a claimable balance with one claimant ...\" (claim: golden.answer / golden.notes contradicted: The entry holds a base reserve (sponsored by the creator))",
+        "Sibling sweep 2026-11-02: grep claimable + reserve over eval/qa/corpus/battery → q-aas-claimable-predicates-expiry-reserves already states 'one base reserve per claimant'; q-raph-claimable-balance-safety, q-aas-claim-received-claimable-balances, q-sor-contract-as-claimable-arbiter, q-protocol-operation-types-list, q-infra-horizon-vs-rpc do not state a single-reserve figure; no contradiction with the corrected text."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "eval-side authoring flaw: claimable-balance reserve stated as a single base reserve instead of one per claimant"
       ]
     },
     "origin": "raven-next q-asset-claimable-balance"

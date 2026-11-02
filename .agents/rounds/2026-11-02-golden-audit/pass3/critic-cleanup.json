@@ -1,0 +1,2043 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "critic-cleanup",
+ "kind": "pass3",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-edge-fresh-latest-protocol-version",
+   "claims": [
+    {
+     "claim": "sd-008 (Software Versions page showing P26 as Mainnet-current) is fixed upstream; the live page carries P27/P28/P29 Mainnet sections, so the older-copy caution trigger has expired.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "improvements/resolved.json sd-008",
+       "observedAt": "2026-11-02",
+       "quote": "\"resolved\": \"2026-08-28\" ... upstreamRefs stellar/stellar-docs#2574, pull/2743"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/stellar-docs/pulls/2743",
+       "observedAt": "2026-11-02",
+       "quote": "Update software versions for p27 (Mainnet) and initial p28 ... merged_at 2026-08-13T14:36:09Z (merge 64ca6f66)"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/stellar-docs/issues/2574",
+       "observedAt": "2026-11-02",
+       "quote": "sd-008: The Software Versions page still presents Protocol 27 as Testnet-only after Mainnet activation ... closed 2026-08-13T15:31:59Z"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02T18:40Z",
+       "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+      }
+     ]
+    },
+    {
+     "claim": "Mainnet runs Protocol 29 on 2026-11-02; Core supports 30.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02T18:40:56Z",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65271813"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 (Mainnet, October 1, 2026)"
+      }
+     ]
+    },
+    {
+     "claim": "Bell/P30 Mainnet vote is scheduled for 2026-11-23 17:00 UTC (Testnet 2026-11-03).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade v[ote]"
+      },
+      {
+       "class": "D",
+       "ref": "https://status.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Public Network Protocol Upgrade Vote Nov 23 , 2026 17:00 - 17:05 UTC Validators will vote on whether to upgrade Mainnet to to Bell, Protocol 30."
+      }
+     ]
+    },
+    {
+     "claim": "cluster-120 siblings q-protocol-version-history-list and q-pc-protocol-upgrade-timing use reverifyBy 2026-11-24 and carry the explicit 'dated answer after activation may report P30' sentence.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "eval/qa/corpus/battery/protocol-core/q-protocol-version-history-list.json; q-pc-protocol-upgrade-timing.json",
+       "observedAt": "2026-11-02",
+       "quote": "reverifyBy 2026-11-24; 'a dated answer after activation may correctly report P30 as latest'; 'After those dates, accept a dated live-network report of P30 activ…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Remove the expired sd-008 older-copy partial cap (trigger expired; outside ADR-0008; misdated 2026-08-18). Add the explicit post-activation P30 sentence. The P30 leniency ('grade what a dated live lookup shows') is kept."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "reason": "2026-12-15 -> 2026-11-24 to align with cluster-120 siblings; the day after the scheduled Mainnet vote."
+    },
+    {
+     "field": "truth.verified.evidence[9]",
+     "reason": "Replace the 2026-12-15 event-tie line with the 2026-11-24 rationale."
+    },
+    {
+     "field": "truth.verified.by / evidence[+] / rootCause[+]",
+     "reason": "Provenance for the pass-3 gospel change, with the correct sd-008 dates."
+    }
+   ],
+   "rootCause": [
+    "improvements/resolved.json (sd-008)",
+    "Eval-side authoring flaw: reverifyBy and P30 sentence diverged from cluster-120 siblings"
+   ],
+   "siblings": "q-pc-protocol-upgrade-timing (cap removed in pass 2); q-protocol-27-cap-0071 (cap removed in this task); q-protocol-version-history-list (same P30 sentence, reverifyBy 2026-11-24); numericInvariant 'Mainnet protocol activation history' (says dated later P30 answer is correct); register cluster-024 note still says 'fixed 2026-08-18' and names q-protocol-27-cap-0071 as the cap holder - orchestrator register edit needed"
+  },
+  {
+   "id": "q-protocol-27-cap-0071",
+   "claims": [
+    {
+     "claim": "Same sd-008 expiry as above; the live Software Versions page shows Protocol 27 (Mainnet, July 8, 2026), not Testnet-only.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02T18:40Z",
+       "quote": "Protocol 27 (Mainnet, July 8, 2026) ... Protocol 27 (Testnet, June 18, 2026)"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/stellar-docs/pulls/2743",
+       "observedAt": "2026-11-02",
+       "quote": "merged_at 2026-08-13T14:36:09Z"
+      },
+      {
+       "class": "C",
+       "ref": "improvements/resolved.json sd-008",
+       "observedAt": "2026-11-02",
+       "quote": "\"resolved\": \"2026-08-28\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Remove the expired older-copy partial cap with the wrong 2026-08-18 date. The P30 leniency sentence stays verbatim."
+    },
+    {
+     "field": "truth.verified.by / evidence[+] / rootCause[+]",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "improvements/resolved.json (sd-008)"
+   ],
+   "siblings": "q-pc-protocol-upgrade-timing; q-edge-fresh-latest-protocol-version; q-protocol-version-history-list; register cluster-024 (note text stale)"
+  },
+  {
+   "id": "q-pc-protocol-26-yardstick",
+   "claims": [
+    {
+     "claim": "CAP-0081 preamble lists Protocol version: TBD as of 2026-11-02 (volatile); CAP-0081 did not ship in P26 (stable).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+       "observedAt": "2026-11-02T18:41Z",
+       "quote": "Title: TTL-Ordered Eviction / Status: Accepted / Protocol version: TBD"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 26 (Mainnet, May 6, 2026) section; no CAP-81"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Drop the dated volatile clause from a stable answer; keep 'CAP-0081 (TTL-ordered eviction) did not ship in Yardstick.'"
+    },
+    {
+     "field": "golden.notes",
+     "reason": "Carry the dated preamble fact in notes with the reason it does not change Yardstick membership."
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: dated volatile clause in a stable answer"
+   ],
+   "siblings": "q-protocol-version-history-list (P26 row: no CAP-0081 claim); q-sor-ttl-defaults-extend"
+  },
+  {
+   "id": "q-scf-current-round",
+   "claims": [
+    {
+     "claim": "SCF #46 in Submission with deadline November 9, 2026; #45 Ended; #44 Ended.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T18:42Z",
+       "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 End[ed]"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02T17:29:38Z",
+       "quote": "currentRound 46, currentPhase Submission, lastConfirmedRound 45, submissionWindow.closes 2026-11-09, verifyAt https://communityfund.stellar.org/awards"
+      }
+     ]
+    },
+    {
+     "claim": "The official page showed November 8 before the change.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02",
+       "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 ... awardSubmission close 2026-11-08"
+      }
+     ]
+    },
+    {
+     "claim": "RFP siblings use 'do not penalize a dated, attributed November 8 citation'.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "eval/qa/corpus/battery/scf-grants-builders/q-scf-open-rfps.json, q-scf-rfp-tooling.json, q-scf-open-rfps-live.json notes",
+       "observedAt": "2026-11-02",
+       "quote": "do not penalize a dated, attributed November 8 citation"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Replace the third-party 'at most partial' cap (outside ADR-0008) with a plain rule: 2026-11-09 meets the deadline keyFact; a dated, attributed November 8 citation of the pre-change page is not wrong but does not meet that keyFact. No new tightening added."
+    },
+    {
+     "field": "truth.verified.evidence[3]",
+     "reason": "Drop 'the partial cap holds' wording."
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: third-party partial-cap form"
+   ],
+   "siblings": "q-edge-fresh-latest-scf-round (same change); q-scf-open-rfps; q-scf-rfp-tooling; q-scf-open-rfps-live; SCF dateContingentTrap disposition and cluster-011 text - orchestrator register edit so they name only the RFP cases"
+  },
+  {
+   "id": "q-edge-fresh-latest-scf-round",
+   "claims": [
+    {
+     "claim": "Same as q-scf-current-round.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T18:42Z",
+       "quote": "SCF #46 Submission Deadline to submit: November 9, 2026"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Same plain rule as q-scf-current-round."
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: third-party partial-cap form"
+   ],
+   "siblings": "q-scf-current-round"
+  },
+  {
+   "id": "q-scf-open-rfps-live",
+   "claims": [
+    {
+     "claim": "No Q2 2026 brief is open; Scout lists two Q3 briefs open; official page lists no open brief.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02T17:29:38Z",
+       "quote": "activeQuarter q3-2026; rows scf-round-46 open, layerzero-dvn open, x402-facilitator-bazaar open"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... Coming Soon ... Coming Soon"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.avoid[1]",
+     "reason": "Rephrase 'Pins ... without checking the live status metadata' (judge cannot see the process) as answer-visible content: 'Do NOT call Q2 2026 RFP briefs open now, or name a current SCF round without an as-of date.' Lint: no avoid warning."
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: process-dependent avoid"
+   ],
+   "siblings": "q-scf-open-rfps; q-scf-rfp-tooling; q-scf-passkey-rfps-live; q-scf-rfps-hackathons-live"
+  },
+  {
+   "id": "q-scf-contract-verification-rfp-live",
+   "claims": [
+    {
+     "claim": "Contract Source Verification brief is not open as of 2026-11-02.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02T17:29:38Z",
+       "quote": "returned: scf-round-46, layerzero-dvn, x402-facilitator-bazaar"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02",
+       "quote": "October 2026: New Q4 RFPs are coming soon."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.avoid[0]",
+     "reason": "Rephrase 'without current status evidence' as 'Do NOT call the archived source-verification brief open without an as-of date and attribution.' Clears the lint sourcing-guard warning."
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: process-dependent avoid"
+   ],
+   "siblings": "q-scf-open-rfps-live"
+  },
+  {
+   "id": "q-comp-yieldblox-oracle-incident",
+   "claims": [
+    {
+     "claim": "A separate earlier 14,000 USDC attacker borrow at 00:20:50 UTC (tx 01c2ba75...).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+       "observedAt": "2026-11-02",
+       "quote": "contract_debited 14000.0000000 USDC 2026-02-22T00:20:50Z; account_credited 14000.0000000 USDC"
+      },
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2029289721114051073 (via api.fxtwitter.com)",
+       "observedAt": "2026-11-02",
+       "quote": "[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY"
+      }
+     ]
+    },
+    {
+     "claim": "USD loss valuations are source-specific.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2029289721114051073",
+       "observedAt": "2026-11-02",
+       "quote": "This represents a net loss of ~$10.5M."
+      },
+      {
+       "class": "D",
+       "ref": "https://newsletter.rekt.news/p/yieldblox-rekt",
+       "observedAt": "2026-11-02",
+       "quote": "$10.97 million gone"
+      },
+      {
+       "class": "D",
+       "ref": "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/",
+       "observedAt": "2026-11-02",
+       "quote": "withdrawing $10.2 million of assets"
+      },
+      {
+       "class": "D",
+       "ref": "https://itokenly.com/hacks/yieldblox-blend-v2",
+       "observedAt": "2026-11-02",
+       "quote": "Published estimates range $10,200,000 to$10,850,000"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.keyFacts[2]",
+     "reason": "Split two predicates: 'Treats the 14,000 USDC borrow as a separate, earlier transaction.'"
+    },
+    {
+     "field": "golden.keyFacts[+]",
+     "reason": "Second predicate: 'Treats each USD loss valuation as source-specific.' (An 'Attributes ... source and date' wording tripped the lint multiple-predicate check on 'date'.)"
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: joined predicates"
+   ],
+   "siblings": "q-hist-yieldblox-v2-2026-exploit; cluster-013; cluster-126; numericInvariant 'YieldBlox borrowed XLM USDC totals'"
+  },
+  {
+   "id": "q-infra-horizon-vs-rpc",
+   "claims": [
+    {
+     "claim": "As of 2026-11-02 the APIs overview and Lab Horizon Endpoints page say 'nearing end-of-life and will eventually be deprecated'; the Lab API Explorer card says 'Horizon is considered deprecated.'",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis",
+       "observedAt": "2026-11-02T18:43Z",
+       "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs ."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs ."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon Endpoints Horizon is considered deprecated."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/index.mdx (line 30); docs/tools/lab/api-explorer/horizon-endpoint.mdx (line 8); docs/tools/lab/api-explorer/index.mdx (line 13)",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon is nearing end-of-life and will eventually be deprecated ... | Horizon is considered deprecated."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Re-date the lifecycle sentence from 2026-09-08 to 2026-11-02 and name the two pages, because 'the live official pages' is no longer uniform (Lab card differs; sd-072 caution stays in notes). The opening 'As of 2026-07-11' covers the architecture paragraph and is left unchanged (not re-verified in th…"
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: stale lifecycle date"
+   ],
+   "siblings": "No other case carries a Horizon deprecated-label avoid (pass-2 critic); sd-072 caution unchanged and inside ADR-0008 Horizon lifecycle."
+  },
+  {
+   "id": "q-comp-cross-moneygram-partnership-sep24",
+   "claims": [
+    {
+     "claim": "MoneyGram directs new Stellar wallet integrations to the widget SDK + API keys; SEP-10/SEP-24 is the legacy path for existing whitelist partners.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer",
+       "observedAt": "2026-11-02",
+       "quote": "Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24."
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "New partners: use the Stellar widget hub instead ... New Stellar wallet integrations should use the widget + API keys path"
+      },
+      {
+       "class": "D",
+       "ref": "https://xramps.moneygram.com/ (Parallel web_search)",
+       "observedAt": "2026-11-02",
+       "quote": "Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 path."
+      },
+      {
+       "class": "F",
+       "ref": "https://stellar.moneygram.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/sep24\""
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 308 location: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps"
+      }
+     ]
+    },
+    {
+     "claim": "Scout's MoneyGram partner profile names only SEP-24.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?q=MoneyGram&all=1&limit=20",
+       "observedAt": "2026-11-02T18:44:58Z",
+       "quote": "Moneygram ['sep-24'] 'Via the SEP-24 standard, users deposit and withdraw cash'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Add a dated either-path do-not-penalize note that matches cluster-016 and q-scf-cross-decaf-sep24."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Authored case: lint requires non-empty rootCause on gospel change; none exists today."
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "Provenance."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: sibling split not carried"
+   ],
+   "siblings": "q-anchor-moneygram-ramps; q-pay-moneygram-ramps; q-crp-anchors-by-corridor; q-scf-cross-decaf-sep24"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "golden.notes [change 0, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Caution trigger expired: sd-008 resolved 2026-08-28, PR #2743 merged 2026-08-13, live Software Versions page lists P27/P28/P29 Mainnet and shows no P26-current wording; outside the three ADR-0008 cases. Added P30 sentence is a correctness statement conditioned on activation and matches q-protocol-version-history-list and the numericInvariant; it does not loosen a pre-activation answer.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02T18:50:52Z",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, history_latest_ledger 65271933, history_latest_ledger_closed_at 2026-11-02T18:50:49Z"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2743 ; https://github.com/stellar/stellar-docs/issues/2574 (gh api)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "PR 'Update software versions for p27 (Mainnet) and initial p28' merged_at 2026-08-13T14:36:09Z merge_commit 64ca6f66; issue 'sd-008: The Software Versions page …"
+     },
+     {
+      "class": "C",
+      "ref": "improvements/resolved.json (sd-008)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "\"id\": \"sd-008\" ... \"resolved\": \"2026-08-28\" ... upstreamRefs issues/2574, pull/2743; liveRecheck '2026-08-28T13:16:46Z GET software-versions HTTP 200, Protocol …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "November 3, 2026, 1700 UTC —Testnet upgrade vote ... November 23, 2026, 1700 UTC —Mainnet upgrade vote"
+     },
+     {
+      "class": "D",
+      "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "Stellar Public Network Protocol Upgrade Vote 2026-11-23T17:00:00.000Z 2026-11-23T17:05:00.000Z Validators will vote on whether to upgrade Mainnet to to Bell, Pr…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-protocol-version-history-list, q-pc-protocol-upgrade-timing",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "both reverifyBy 2026-11-24; 'a dated answer after activation may correctly report P30 as latest.'; 'After those dates, accept a dated live-network report of P30…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/consistency-register.json numericInvariants \"Mainnet protocol activation history\"; clusters cluster-024, cluster-120",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "a dated later answer that reports P30 as current is correct; cluster-024 note: 'only q-protocol-27-cap-0071 still carries the older-copy Software Versions cauti…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.reverifyBy [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Event-tied (vote 2026-11-23 17:00 UTC), not before 2026-11-10, same date as cluster-120 siblings for the same event.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "November 3, 2026, 1700 UTC —Testnet upgrade vote ... November 23, 2026, 1700 UTC —Mainnet upgrade vote"
+     },
+     {
+      "class": "D",
+      "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "Stellar Public Network Protocol Upgrade Vote 2026-11-23T17:00:00.000Z 2026-11-23T17:05:00.000Z Validators will vote on whether to upgrade Mainnet to to Bell, Pr…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-protocol-version-history-list, q-pc-protocol-upgrade-timing",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "both reverifyBy 2026-11-24; 'a dated answer after activation may correctly report P30 as latest.'; 'After those dates, accept a dated live-network report of P30…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.evidence[8] [change 2, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Text matches the verified vote date and sibling reverifyBy values.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "November 3, 2026, 1700 UTC —Testnet upgrade vote ... November 23, 2026, 1700 UTC —Mainnet upgrade vote"
+     },
+     {
+      "class": "D",
+      "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "Stellar Public Network Protocol Upgrade Vote 2026-11-23T17:00:00.000Z 2026-11-23T17:05:00.000Z Validators will vote on whether to upgrade Mainnet to to Bell, Pr…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-protocol-version-history-list, q-pc-protocol-upgrade-timing",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "both reverifyBy 2026-11-24; 'a dated answer after activation may correctly report P30 as latest.'; 'After those dates, accept a dated live-network report of P30…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.by [change 3, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Misdating claim verified: the fix landed 2026-08-13 (PR) and was resolved 2026-08-28, not 2026-08-18.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2743 ; https://github.com/stellar/stellar-docs/issues/2574 (gh api)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "PR 'Update software versions for p27 (Mainnet) and initial p28' merged_at 2026-08-13T14:36:09Z merge_commit 64ca6f66; issue 'sd-008: The Software Versions page …"
+     },
+     {
+      "class": "C",
+      "ref": "improvements/resolved.json (sd-008)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "\"id\": \"sd-008\" ... \"resolved\": \"2026-08-28\" ... upstreamRefs issues/2574, pull/2743; liveRecheck '2026-08-28T13:16:46Z GET software-versions HTTP 200, Protocol …"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.evidence[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Dates and refs match my gh api read and improvements/resolved.json.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2743 ; https://github.com/stellar/stellar-docs/issues/2574 (gh api)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "PR 'Update software versions for p27 (Mainnet) and initial p28' merged_at 2026-08-13T14:36:09Z merge_commit 64ca6f66; issue 'sd-008: The Software Versions page …"
+     },
+     {
+      "class": "C",
+      "ref": "improvements/resolved.json (sd-008)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "\"id\": \"sd-008\" ... \"resolved\": \"2026-08-28\" ... upstreamRefs issues/2574, pull/2743; liveRecheck '2026-08-28T13:16:46Z GET software-versions HTTP 200, Protocol …"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.evidence[+] [change 6, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Quotes match the live page.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.evidence[+] [change 7, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "I observed current_protocol_version 29 / core_supported 30 at 18:50Z with history_latest_ledger 65271933; the proposer's 65271813 at 18:40Z is consistent with ~5 s ledgers.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02T18:50:52Z",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, history_latest_ledger 65271933, history_latest_ledger_closed_at 2026-11-02T18:50:49Z"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon-testnet.stellar.org/",
+      "observedAt": "2026-11-02T18:50:52Z",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.evidence[+] [change 8, append]",
+    "decision": "modify",
+    "newText": "Class A 2026-11-02: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide - 'November 3, 2026, 1700 UTC —Testnet upgrade vote' and 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'; class D https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json - 'Stellar Public Network Protocol Upgrade Vote' scheduled 2026-11-23T17:00:00.000Z to 17:05:00.000Z, 'Validators will vote on whether to upgrade Mainnet to to Bell, Protocol 30.'",
+    "note": "Facts verified; quote corrected to the page's exact em-dash text and to the status-page form I could read verbatim.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "November 3, 2026, 1700 UTC —Testnet upgrade vote ... November 23, 2026, 1700 UTC —Mainnet upgrade vote"
+     },
+     {
+      "class": "D",
+      "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "Stellar Public Network Protocol Upgrade Vote 2026-11-23T17:00:00.000Z 2026-11-23T17:05:00.000Z Validators will vote on whether to upgrade Mainnet to to Bell, Pr…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.evidence[+] [change 9, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Sibling claims verified in the case files and register; cluster-024 note does still say 'fixed 2026-08-18'.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-protocol-version-history-list, q-pc-protocol-upgrade-timing",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "both reverifyBy 2026-11-24; 'a dated answer after activation may correctly report P30 as latest.'; 'After those dates, accept a dated live-network report of P30…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/consistency-register.json numericInvariants \"Mainnet protocol activation history\"; clusters cluster-024, cluster-120",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "a dated later answer that reports P30 as current is correct; cluster-024 note: 'only q-protocol-27-cap-0071 still carries the older-copy Software Versions cauti…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.rootCause[+] [change 10, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "rootCause points at improvements/resolved.json; the lint excludes resolved.json from the symmetric-caution trigger, so no new warning.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "improvements/resolved.json (sd-008)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "\"id\": \"sd-008\" ... \"resolved\": \"2026-08-28\" ... upstreamRefs issues/2574, pull/2743; liveRecheck '2026-08-28T13:16:46Z GET software-versions HTTP 200, Protocol …"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2743 ; https://github.com/stellar/stellar-docs/issues/2574 (gh api)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "PR 'Update software versions for p27 (Mainnet) and initial p28' merged_at 2026-08-13T14:36:09Z merge_commit 64ca6f66; issue 'sd-008: The Software Versions page …"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "field": "truth.verified.rootCause[+] [change 11, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: siblings use 2026-11-24 and carry the post-activation sentence.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-protocol-version-history-list, q-pc-protocol-upgrade-timing",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "both reverifyBy 2026-11-24; 'a dated answer after activation may correctly report P30 as latest.'; 'After those dates, accept a dated live-network report of P30…"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "golden.notes [change 0, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Caution trigger expired (live page shows P27 Mainnet July 8, 2026; sd-008 resolved); outside ADR-0008's three cases. P30 sentence kept unchanged.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2743 ; https://github.com/stellar/stellar-docs/issues/2574 (gh api)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "PR 'Update software versions for p27 (Mainnet) and initial p28' merged_at 2026-08-13T14:36:09Z merge_commit 64ca6f66; issue 'sd-008: The Software Versions page …"
+     },
+     {
+      "class": "C",
+      "ref": "improvements/resolved.json (sd-008)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "\"id\": \"sd-008\" ... \"resolved\": \"2026-08-28\" ... upstreamRefs issues/2574, pull/2743; liveRecheck '2026-08-28T13:16:46Z GET software-versions HTTP 200, Protocol …"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02T18:50:52Z",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, history_latest_ledger 65271933, history_latest_ledger_closed_at 2026-11-02T18:50:49Z"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "truth.verified.by [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only. Out-of-scope observation for the orchestrator: this case is tagged freshness 'live' but its golden.answer carries dated volatile values; the task rule says such a case is 'scheduled' with a truth.reverifyBy. It also has no truth.reverifyBy although it names the scheduled 2026-11-23 vote.",
+    "sources": []
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "truth.verified.evidence[+] [change 2, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2743 ; https://github.com/stellar/stellar-docs/issues/2574 (gh api)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "PR 'Update software versions for p27 (Mainnet) and initial p28' merged_at 2026-08-13T14:36:09Z merge_commit 64ca6f66; issue 'sd-008: The Software Versions page …"
+     },
+     {
+      "class": "C",
+      "ref": "improvements/resolved.json (sd-008)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "\"id\": \"sd-008\" ... \"resolved\": \"2026-08-28\" ... upstreamRefs issues/2574, pull/2743; liveRecheck '2026-08-28T13:16:46Z GET software-versions HTTP 200, Protocol …"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2743 ; https://github.com/stellar/stellar-docs/issues/2574 (gh api)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "PR 'Update software versions for p27 (Mainnet) and initial p28' merged_at 2026-08-13T14:36:09Z merge_commit 64ca6f66; issue 'sd-008: The Software Versions page …"
+     },
+     {
+      "class": "C",
+      "ref": "improvements/resolved.json (sd-008)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "\"id\": \"sd-008\" ... \"resolved\": \"2026-08-28\" ... upstreamRefs issues/2574, pull/2743; liveRecheck '2026-08-28T13:16:46Z GET software-versions HTTP 200, Protocol …"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02T18:50:52Z",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30, history_latest_ledger 65271933, history_latest_ledger_closed_at 2026-11-02T18:50:49Z"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "truth.verified.evidence[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified; cluster-024 note needs the orchestrator register edit.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/consistency-register.json numericInvariants \"Mainnet protocol activation history\"; clusters cluster-024, cluster-120",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "a dated later answer that reports P30 as current is correct; cluster-024 note: 'only q-protocol-27-cap-0071 still carries the older-copy Software Versions cauti…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-protocol-version-history-list, q-pc-protocol-upgrade-timing",
+      "observedAt": "2026-11-02T18:52Z",
+      "quote": "both reverifyBy 2026-11-24; 'a dated answer after activation may correctly report P30 as latest.'; 'After those dates, accept a dated live-network report of P30…"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-27-cap-0071",
+    "field": "truth.verified.rootCause[+] [change 6, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "improvements/resolved.json (sd-008)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "\"id\": \"sd-008\" ... \"resolved\": \"2026-08-28\" ... upstreamRefs issues/2574, pull/2743; liveRecheck '2026-08-28T13:16:46Z GET software-versions HTTP 200, Protocol …"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/pull/2743 ; https://github.com/stellar/stellar-docs/issues/2574 (gh api)",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "PR 'Update software versions for p27 (Mainnet) and initial p28' merged_at 2026-08-13T14:36:09Z merge_commit 64ca6f66; issue 'sd-008: The Software Versions page …"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "golden.answer [change 0, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Membership fact unchanged and stable; dated preamble state moves out of the stable answer. 'did not ship in Yardstick' is a verified historical fact (page lists six CAPs, no CAP-0081).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "CAP: 0081 Title: TTL-Ordered Eviction ... Status: Accepted Created: 2026-01-28 ... Protocol version: TBD"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "golden.notes [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Preamble reads 'Protocol version: TBD' live. The added sentence is a symmetric guard: a later CAP-0081 assignment is not penalized, and Yardstick membership stays gated.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "CAP: 0081 Title: TTL-Ordered Eviction ... Status: Accepted Created: 2026-01-28 ... Protocol version: TBD"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "truth.verified.by [change 2, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate description.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "CAP: 0081 Title: TTL-Ordered Eviction ... Status: Accepted Created: 2026-01-28 ... Protocol version: TBD"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Quote verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "CAP: 0081 Title: TTL-Ordered Eviction ... Status: Accepted Created: 2026-01-28 ... Protocol version: TBD"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "truth.verified.evidence[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: P26 Mainnet May 6, 2026 present; no CAP-0081/CAP-81 text on the page.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02T18:51Z",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026) ... Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 20…"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-protocol-26-yardstick",
+    "field": "truth.verified.rootCause[+] [change 6, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate eval-side root cause.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "golden.notes [change 0, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Replaces a third-party partial cap (outside ADR-0008) with the plain keyFact rule. Not score laundering: an attributed November 8 answer still misses the deadline keyFact (rubric gives at most partial) and is not called wrong because the pre-change official page did show November 8 (Wayback verified).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53:00Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, 2…"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 View SCF #45 Notification & Award Distribution Deadline to submit: August 16, 2026"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-scf-open-rfps, q-scf-rfp-tooling",
+      "observedAt": "2026-11-02T18:54Z",
+      "quote": "The awards page showed November 8 in a 2026-10-18 snapshot, and community posts still cite it; do not penalize a dated, attributed November 8 citation."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "truth.verified.by [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "truth.verified.evidence[3] [change 2, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Wording now matches the new rule.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 View SCF #45 Notification & Award Distribution Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53:00Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, 2…"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 View SCF #45 Notification & Award Distribution Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Quote verified live at 18:53Z.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53:00Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, 2…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "truth.verified.evidence[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: snapshot shows 'Deadline to submit: November 8, 2026'.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 View SCF #45 Notification & Award Distribution Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "truth.verified.evidence[+] [change 6, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified; I read generatedAt 18:53:16Z with the same values. Scout cites the official page, so it is not independent of class A.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "truth.verified.evidence[+] [change 7, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: RFP siblings carry the do-not-penalize sentence and do not gate the deadline as a keyFact.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-scf-open-rfps, q-scf-rfp-tooling",
+      "observedAt": "2026-11-02T18:54Z",
+      "quote": "The awards page showed November 8 in a 2026-10-18 snapshot, and community posts still cite it; do not penalize a dated, attributed November 8 citation."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-current-round",
+    "field": "truth.verified.rootCause[+] [change 8, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate eval-side root cause.",
+    "sources": []
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "golden.notes [change 0, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Same rule as q-scf-current-round; consistent with that sibling.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53:00Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, 2…"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 View SCF #45 Notification & Award Distribution Deadline to submit: August 16, 2026"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-scf-open-rfps, q-scf-rfp-tooling",
+      "observedAt": "2026-11-02T18:54Z",
+      "quote": "The awards page showed November 8 in a 2026-10-18 snapshot, and community posts still cite it; do not penalize a dated, attributed November 8 citation."
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "truth.verified.by [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "truth.verified.evidence[3] [change 2, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Matches the new rule.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 View SCF #45 Notification & Award Distribution Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53:00Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, 2…"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 View SCF #45 Notification & Award Distribution Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53:00Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, 2…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "truth.verified.evidence[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "SCF #46 Submission Deadline to submit: November 8, 2026 View SCF #45 Notification & Award Distribution Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "truth.verified.evidence[+] [change 6, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "truth.verified.evidence[+] [change 7, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-scf-open-rfps, q-scf-rfp-tooling",
+      "observedAt": "2026-11-02T18:54Z",
+      "quote": "The awards page showed November 8 in a 2026-10-18 snapshot, and community posts still cite it; do not penalize a dated, attributed November 8 citation."
+     }
+    ]
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "field": "truth.verified.rootCause[+] [change 8, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate eval-side root cause.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "golden.avoid[1] [change 0, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Both clauses are answer-visible. 'Q2 2026 RFP briefs open now' is false in Scout (only q3-2026 rows open) and absent from the official page; the as-of clause matches the lint's answer-visible form and keyFacts[1]. No judge-blind term, so no lint warning.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (twice); no Q2 or source-verificatio…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.by [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.evidence[+] [change 2, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (twice); no Q2 or source-verificatio…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (twice); no Q2 or source-verificatio…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.rootCause[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate eval-side root cause.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "golden.avoid[0] [change 0, replace]",
+    "decision": "modify",
+    "newText": "Do NOT call the archived Q2 2026 source-verification brief open now.",
+    "note": "The proposed form exempts a dated, attributed 'open' claim, but no verified source says the brief is open (Scout: closed q2-2026; official page: absent). That loosens a trap on a false claim. The new text punishes only the false current-status claim. 'Q2 2026' and 'now' leave dated history and any new Q4 brief unpunished. avoid[1] and keyFacts already gate the as-of date and citations.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "contract-source-verification closed q2-2026 Contract Source Verification Service"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (twice); no Q2 or source-verificatio…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.by [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.evidence[+] [change 2, append]",
+    "decision": "modify",
+    "newText": "Gospel change (pass 3): golden.avoid[0] is rephrased as answer-visible false content (calling the archived Q2 2026 source-verification brief open now) instead of evidence the judge cannot see. Intent unchanged; dated history of the Q2 brief is not punished.",
+    "note": "Text must match the modified avoid[0].",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "contract-source-verification closed q2-2026 Contract Source Verification Service"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (twice); no Q2 or source-verificatio…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T18:53:14Z",
+      "quote": "generatedAt 2026-11-02T18:53:16.074Z activeQuarter q3-2026 counts {total 16, open 2, closed 14, syntheticRounds 1}; rows scf-round-46, layerzero-dvn, x402-facil…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (twice); no Q2 or source-verificatio…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.rootCause[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate eval-side root cause.",
+    "sources": []
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.keyFacts[2] [change 0, replace]",
+    "decision": "modify",
+    "newText": "Treats each USD loss valuation as source-specific.",
+    "note": "Appending a sixth keyFact fails compile-qa.mjs (max 5; this case is not a pinned exception). The question asks 'roughly how much', so the valuation predicate is the substantive keyFact. The 14,000 USDC fact stays gated by avoid[1]. This matches q-hist-yieldblox-v2-2026-exploit (valuation keyFact, 14,000 USDC avoid). Not score-driven: the false single-transaction claim still fires avoid[1].",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "Parallel web_search: https://newsletter.rekt.news/p/yieldblox-rekt ; https://www.bankless.com/read/news/lending-market-blend-suffers-10m-exploit ; https://www.theblock.co/post/391725/... ; https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02T18:54Z",
+      "quote": "rekt: '$10.97 million gone'; Bankless: 'exploited for approximately $10.8M'; The Block: 'froze $7.2 million of the $10.2 million stolen from YieldBlox'; iTokenl…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_fetch: https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/ ; https://itokenly.com/hacks/yieldblox-blend-v2",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "Protos: 'with losses valued at over $10 million'; iTokenly (Blend V2 page): 'Published estimates range $10,200,000 to$10,850,000'"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY ... borrowed 61.3M XLM and 1.01M USDC. This represents a net loss of ~$10.5M. (created Wed Mar 0…"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery/*/q-hist-yieldblox-v2-2026-exploit.json; eval/qa/compile-qa.mjs MIGRATION_KEYFACT_EXCEPTIONS",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "keyFact 'Treats the ~$10M headline as a source-specific combined USD value of the XLM/USDC drain.'; avoid 'Do NOT claim 1,014,196.70 USDC moved in one borrow tr…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02T18:53:29Z",
+      "quote": "contract_debited 14000.0000000 USDC 2026-02-22T00:20:50Z; account_credited 14000.0000000 USDC 2026-02-22T00:20:50Z"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.keyFacts[+] [change 1, append]",
+    "decision": "reject",
+    "newText": null,
+    "note": "Would make 6 keyFacts and fail compilation; the predicate moves into keyFacts[2] (modify above).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery/*/q-hist-yieldblox-v2-2026-exploit.json; eval/qa/compile-qa.mjs MIGRATION_KEYFACT_EXCEPTIONS",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "keyFact 'Treats the ~$10M headline as a source-specific combined USD value of the XLM/USDC drain.'; avoid 'Do NOT claim 1,014,196.70 USDC moved in one borrow tr…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.by [change 2, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "modify",
+    "newText": "Gospel change (pass 3): golden.keyFacts[2] now carries one predicate (each USD loss valuation as source-specific). The separate 14,000 USDC borrow stays gated by avoid[1], as in q-hist-yieldblox-v2-2026-exploit; keyFacts stay at five (compile limit). No fact changed.",
+    "note": "Text must match the modified keyFacts.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery/*/q-hist-yieldblox-v2-2026-exploit.json; eval/qa/compile-qa.mjs MIGRATION_KEYFACT_EXCEPTIONS",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "keyFact 'Treats the ~$10M headline as a source-specific combined USD value of the XLM/USDC drain.'; avoid 'Do NOT claim 1,014,196.70 USDC moved in one borrow tr…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02T18:53:29Z",
+      "quote": "contract_debited 14000.0000000 USDC 2026-02-22T00:20:50Z; account_credited 14000.0000000 USDC 2026-02-22T00:20:50Z"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified via the fxtwitter mirror.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02T18:53Z",
+      "quote": "[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY ... borrowed 61.3M XLM and 1.01M USDC. This represents a net loss of ~$10.5M. (created Wed Mar 0…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] [change 6, append]",
+    "decision": "modify",
+    "newText": "Class D 2026-11-02 (Parallel web_search/web_fetch): https://newsletter.rekt.news/p/yieldblox-rekt '$10.97 million gone'; https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/ 'losses valued at over $10 million'; https://www.bankless.com/read/news/lending-market-blend-suffers-10m-exploit 'exploited for approximately $10.8M'; https://itokenly.com/hacks/yieldblox-blend-v2 'Published estimates range $10,200,000 to$10,850,000' - valuations differ by source.",
+    "note": "The proposed Protos quote 'withdrawing $10.2 million of assets' was not in my fetch of that page; I replaced it with the text I read and added Bankless. rekt and iTokenly quotes verified.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "Parallel web_search: https://newsletter.rekt.news/p/yieldblox-rekt ; https://www.bankless.com/read/news/lending-market-blend-suffers-10m-exploit ; https://www.theblock.co/post/391725/... ; https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02T18:54Z",
+      "quote": "rekt: '$10.97 million gone'; Bankless: 'exploited for approximately $10.8M'; The Block: 'froze $7.2 million of the $10.2 million stolen from YieldBlox'; iTokenl…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_fetch: https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/ ; https://itokenly.com/hacks/yieldblox-blend-v2",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "Protos: 'with losses valued at over $10 million'; iTokenly (Blend V2 page): 'Published estimates range $10,200,000 to$10,850,000'"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] [change 7, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified against the sibling file.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery/*/q-hist-yieldblox-v2-2026-exploit.json; eval/qa/compile-qa.mjs MIGRATION_KEYFACT_EXCEPTIONS",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "keyFact 'Treats the ~$10M headline as a source-specific combined USD value of the XLM/USDC drain.'; avoid 'Do NOT claim 1,014,196.70 USDC moved in one borrow tr…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.rootCause[+] [change 8, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate eval-side root cause.",
+    "sources": []
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "golden.answer [change 0, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Re-dating keeps the as-of date and names exactly the two pages that carry the label, which I read live and in source. The Lab card still says 'considered deprecated', so the sd-072 caution trigger is live. Out-of-scope observation for the orchestrator: this case is tagged freshness 'live' but its golden.answer carries dated volatile values; the task rule says such a case is 'scheduled' with a trut…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs ."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon Endpoints Horizon is considered deprecated. RPC Methods"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/ docs/data/apis/index.mdx, docs/tools/lab/api-explorer/horizon-endpoint.mdx, docs/tools/lab/api-explorer/index.mdx",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "index.mdx:30 'Horizon is nearing end-of-life and will eventually be deprecated'; horizon-endpoint.mdx:8 same sentence; api-explorer/index.mdx:13 'Horizon is con…"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "truth.verified.by [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "truth.verified.evidence[+] [change 2, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs ."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon Endpoints Horizon is considered deprecated. RPC Methods"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Quotes verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs ."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "Horizon Endpoints Horizon is considered deprecated. RPC Methods"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Line numbers and text verified on main.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/ docs/data/apis/index.mdx, docs/tools/lab/api-explorer/horizon-endpoint.mdx, docs/tools/lab/api-explorer/index.mdx",
+      "observedAt": "2026-11-02T18:53:47Z",
+      "quote": "index.mdx:30 'Horizon is nearing end-of-life and will eventually be deprecated'; horizon-endpoint.mdx:8 same sentence; api-explorer/index.mdx:13 'Horizon is con…"
+     }
+    ]
+   },
+   {
+    "id": "q-infra-horizon-vs-rpc",
+    "field": "truth.verified.rootCause[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate eval-side root cause.",
+    "sources": []
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "golden.notes [change 0, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "The do-not-penalize sentence names a verified ambiguity: the portal labels SEP-10/SEP-24 legacy and points new wallets to the widget, while the SEP-24 server stays live. It is symmetric and dated. keyFacts still require the SEP-24 definition from the docs, so grading is not loosened.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24."
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "New partners: use the Stellar widget hub instead. ... Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor mode…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ ; https://xramps.moneygram.com/ops/developer/chains/stellar",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 path.; Partners already on the Stellar whitelist integrate via SEP-10 and SEP-24,…"
+     },
+     {
+      "class": "F",
+      "ref": "https://stellar.moneygram.com/.well-known/stellar.toml ; https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/sep24\"; docs guide HTTP 308 -> https://developer.moneygram.com/moneygram-develope…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/partners?q=MoneyGram&all=1&limit=20",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "\"seps\": [\"sep-24\"] ... MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor on Stellar. Via the SEP-24 standard, users deposit and withdraw cash"
+     },
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-anchor-moneygram-ramps, q-scf-cross-decaf-sep24; consistency-register cluster-016",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "q-anchor-moneygram-ramps: 'Do not penalize an answer that describes either path'; cluster-016: 'members accept either path when it is dated and attributed'"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "truth.verified.by [change 1, replace]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "truth.verified.evidence[+] [change 2, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accurate.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-anchor-moneygram-ramps, q-scf-cross-decaf-sep24; consistency-register cluster-016",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "q-anchor-moneygram-ramps: 'Do not penalize an answer that describes either path'; cluster-016: 'members accept either path when it is dated and attributed'"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "truth.verified.evidence[+] [change 3, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Quotes verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24."
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "New partners: use the Stellar widget hub instead. ... Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor mode…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "truth.verified.evidence[+] [change 4, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Quotes verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ ; https://xramps.moneygram.com/ops/developer/chains/stellar",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 path.; Partners already on the Stellar whitelist integrate via SEP-10 and SEP-24,…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "truth.verified.evidence[+] [change 5, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified (toml and 308 redirect).",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://stellar.moneygram.com/.well-known/stellar.toml ; https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/sep24\"; docs guide HTTP 308 -> https://developer.moneygram.com/moneygram-develope…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "truth.verified.evidence[+] [change 6, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/partners?q=MoneyGram&all=1&limit=20",
+      "observedAt": "2026-11-02T18:53:59Z",
+      "quote": "\"seps\": [\"sep-24\"] ... MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor on Stellar. Via the SEP-24 standard, users deposit and withdraw cash"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "truth.verified.evidence[+] [change 7, append]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified for q-anchor-moneygram-ramps and q-scf-cross-decaf-sep24 and cluster-016; I did not open q-pay-moneygram-ramps or q-crp-anchors-by-corridor directly.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "eval/qa/corpus/battery: q-anchor-moneygram-ramps, q-scf-cross-decaf-sep24; consistency-register cluster-016",
+      "observedAt": "2026-11-02T18:55Z",
+      "quote": "q-anchor-moneygram-ramps: 'Do not penalize an answer that describes either path'; cluster-016: 'members accept either path when it is dated and attributed'"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "field": "truth.verified.rootCause [change 8, set]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Valid rootCause: freshness-drift plus an eval-side flaw; the case had no rootCause.",
+    "sources": []
+   }
+  ],
+  "urlsHit": [
+   "https://horizon.stellar.org/",
+   "https://horizon-testnet.stellar.org/",
+   "https://horizon.stellar.org/ledgers/64717644",
+   "https://horizon.stellar.org/ledgers/64717645",
+   "https://developers.stellar.org/docs/networks/software-versions",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+   "gh api repos/stellar/stellar-docs/pulls/2743",
+   "gh api repos/stellar/stellar-docs/issues/2574",
+   "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+   "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+   "https://status.stellar.org/",
+   "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+   "https://communityfund.stellar.org/awards",
+   "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards",
+   "https://stellarlight.xyz/api/rfps?status=open",
+   "https://stellarlight.xyz/api/rfps?q=source%20verification",
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+   "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects?limit=50",
+   "https://api.fxtwitter.com/script3official/status/2029289721114051073",
+   "Parallel web_search (YieldBlox loss estimates)",
+   "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/",
+   "https://itokenly.com/hacks/yieldblox-blend-v2",
+   "https://developers.stellar.org/docs/data/apis",
+   "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+   "https://developers.stellar.org/docs/tools/lab/api-explorer",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/index.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/lab/api-explorer/horizon-endpoint.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/lab/api-explorer/index.mdx",
+   "https://xramps.moneygram.com/",
+   "https://xramps.moneygram.com/ops/developer",
+   "https://xramps.moneygram.com/ops/developer/guides/stellar",
+   "https://xramps.moneygram.com/ops/developer/chains/stellar",
+   "https://stellar.moneygram.com/.well-known/stellar.toml",
+   "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+   "https://stellarlight.xyz/api/partners?q=MoneyGram&all=1&limit=20"
+  ]
+ },
+ "applier": {}
+}

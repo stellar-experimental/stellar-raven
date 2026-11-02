@@ -31,7 +31,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-31",
+    "reverifyBy": "2027-03-29",
     "sources": [
       {
         "class": "D",
@@ -81,29 +81,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
       "evidence": [
-        "Solo scratchpad 575 GT-46/48 primary and blind reviews; GT-48 independently confirmed the list but required TTL wording correction.",
-        "Structural re-form (compound-predicate): Split two compound facts into four atomic facts; every vulnerability family and both current storage caveats are unchanged.",
-        "Live re-check 2026-08-27: https://www.certora.com/blog/roadmap-to-a-soroban-security-audit — current Soroban audit guidance still covers authorization, storage, external calls, and arithmetic/input errors.",
-        "Live re-check 2026-08-27: https://www.certora.com/blog/roadmap-to-a-soroban-security-audit — current guidance still covers resource DoS and application invariants/state transitions.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — P23+ Persistent/Instance restoration semantics remain current.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — resource-limit failures remain atomic transaction failures.",
-        "Sibling sweep 2026-08-27: grep vulnerability|authorization.*storage|P23+|atomic failure → q-sor-evm-to-soroban-porting, q-soroban-auth-recursion-dos-audit, q-soroban-fuzz-testing, q-soroban-instance-storage-dos, q-soroban-storage-types, q-soroban-vuln-classes, q-tool-soroban-auth-audit-live; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 2 review (gt2-grok-rev)): restored the storage/TTL subject of the atomic-failure scope (removed the new noun \"over-limit writes\"); truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://www.certora.com/blog/roadmap-to-a-soroban-security-audit — the audit roadmap still lists authorization/authentication issues, integer overflow, arithmetic bugs, improper error handling, storage key collisions, and denial of service.",
-        "Live re-check 2026-08-30: https://www.certora.com/blog/roadmap-to-a-soroban-security-audit — the roadmap still names denial of service among the threats to model and asks for documented invariants; economic/state-transition review stays application-specific.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — P23+ Persistent/Instance restoration semantics remain current.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — a transaction that attempts to exceed its declared resource limits fails; the failure is the whole transaction.",
-        "Sibling sweep 2026-08-30: grep vulnerability|authorization.*storage|P23+|atomic failure → q-sor-evm-to-soroban-porting, q-soroban-auth-recursion-dos-audit, q-soroban-fuzz-testing, q-soroban-instance-storage-dos, q-soroban-storage-types, q-soroban-vuln-classes, q-tool-soroban-auth-audit-live; no contradiction",
-        "Source repair 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/security returned 404 and https://developers.stellar.org/docs/build/security-docs is only an index (threat modeling, monitoring, web projects); the class-D Certora roadmap and the official fees/resource-limits page now carry the family and atomic-failure checks.",
-        "Owner fix after independent review 2026-08-30 (gmr-grok-rev, review-final-grok.md finding 2): the DoS/invariants re-check line was retargeted from the state-archival page, which does not carry that wording, to the Certora roadmap."
-      ],
-      "rootCause": [
-        "Plain protocol drift from pre-P23 restoration semantics and unsupported irreversible-brick shorthand.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "https://www.certora.com/blog/roadmap-to-a-soroban-security-audit (observedAt 2026-11-02): \"Check your code for authorization/authentication issues, integer overflow, arithmetic bugs and rounding errors, improper error handling, and storage key collisions ... avoid denial-of-service (DoS) attack vectors\".",
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md (observedAt 2026-11-02): \"The custom account authentication is the only case of contract invocation with self-reentrancy allowed\".",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (observedAt 2026-10-26) and https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering (observedAt 2026-10-28) confirm the TTL/archival and resource-limit caveats.",
+        "Verification only: no gospel change. Sibling sweep 2026-11-02: q-sor-evm-to-soroban-porting, q-soroban-auth-recursion-dos-audit; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-vuln-classes"

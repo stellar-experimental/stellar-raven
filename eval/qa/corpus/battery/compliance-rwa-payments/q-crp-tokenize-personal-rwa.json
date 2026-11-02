@@ -102,26 +102,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03; verification only, no gospel change)",
       "evidence": [
-        "Solo scratchpad 575 GT-10 primary/blind RWA-rights matrices",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened the legal-record, lifecycle-map, and control-limit facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — the dated SEC statement shows that tokenization models and holder rights are changeable legal observations.",
-        "Live re-check 2026-08-29: https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — the SEC distinguishes tokens from the master ownership record and notes that some tokens convey no security rights.",
-        "Live re-check 2026-08-29: https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — the SEC confirms that structures and holder rights vary across issuer, custodial, entitlement, and synthetic models.",
-        "Live re-check 2026-08-29: https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — the SEC describes several structures instead of one universal wrapper.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the official docs limit SAC controls to asset administration, authorization, revocation, and clawback mechanics.",
-        "Sibling sweep 2026-08-29: grep tokenized RWA|master securityholder file|ownership record|SPV/trust → q-asset-rwa-tokenized-freshness, q-rwa-tokenization-standards, q-crp-tokenize-personal-rwa; no contradiction"
-      ],
-      "rootCause": [
-        "A directionally safe warning named wrappers/controls without tracing the authoritative legal record and rights pathway.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — 'The crypto asset does not convey any rights, obligations, or benefits of the security ... operates to notify the issuer (or its agent) to record the transfer of ownership of the security on the master securityholder file.' Staff statement with no legal force (observedAt 2026-11-02).",
+        "https://www.franklintempleton.com/press-releases/news-room/2026/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u.s.-registered-tokenized-money-market-fund — 'the first U.S.-registered mutual fund to use a public blockchain as its official system of record' (observedAt 2026-11-02).",
+        "https://www.franklintempleton.com/.well-known/stellar.toml — code=\"BENJI\", desc=\"1 BENJI token corresponds to 1 share of the fund.\" (observedAt 2026-11-02).",
+        "Class B https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — 'T-REX tokens are permissioned tokens'; the answer names SEP-57 without a version, so the v0.4.0 bump does not affect it (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-asset-rwa-tokenized-freshness, q-rwa-tokenization-standards, q-defi-benji-franklin-templeton, q-crp-oz-rwa-erc3643-trex; no contradiction. truth.status unverifiable kept. No gospel change."
       ]
     },
     "origin": "raven-next q-crp-tokenize-personal-rwa"

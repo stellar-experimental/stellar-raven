@@ -22,7 +22,7 @@
       "Do NOT claim clawback/freeze is available unless the relevant flags and trustline authorization model are in place.",
       "Do NOT re-derive the full burn/redemption accounting (transfers-to-issuer-burn); reference clawback as an issuer control and stay on the fee/cap/freeze feasibility question."
     ],
-    "notes": "Verified flags and issuer-control boundaries against control-asset-access and CAP-35 (live 2026-06-29). Transfer-fee absence is inferred from the classic asset operation model and SAC docs rather than a single explicit negative statement. Differentiated from q-aas-burn-clawback-redemption-mechanics: this file owns the fee/cap/freeze feasibility debunk and AUTH_* enumeration and now references rather than re-derives burn accounting.\nAlso good if the answer: Distinguishes freezing/deauthorization from clawback and from burning/redeeming supply. | Mentions Soroban custom tokens could encode different token logic, but that is separate from classic asset issuer flags/SAC behavior.\nGolden cites: Stellar docs on asset authorization flags/clawback and classic asset issuance."
+    "notes": "Verified flags and issuer-control boundaries against control-asset-access and CAP-35 (live 2026-06-29). Transfer-fee absence is inferred from the classic asset operation model and SAC docs rather than a single explicit negative statement. Differentiated from q-aas-burn-clawback-redemption-mechanics: this file owns the fee/cap/freeze feasibility debunk and AUTH_* enumeration and now references rather than re-derives burn accounting.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` can still mint. Do not penalize an answer that adds this caveat.\nAlso good if the answer: Distinguishes freezing/deauthorization from clawback and from burning/redeeming supply. | Mentions Soroban custom tokens could encode different token logic, but that is separate from classic asset issuer flags/SAC behavior.\nGolden cites: Stellar docs on asset authorization flags/clawback and classic asset issuance."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -56,6 +56,12 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
+        "note": "SAC mint requires the current admin's auth; set_admin can move the admin away from the issuer.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -106,29 +112,45 @@
             "note": "The SAC design rationale says total supply is unavailable because Stellar Classic does not support it."
           }
         ]
+      },
+      {
+        "claim": "Locking the issuing account caps classic supply only while any deployed SAC's admin is still the issuer; a SAC admin moved with set_admin can still mint.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'If the asset has a Stellar Asset Contract, also make sure the admin for the contract was not updated from the default (which is the issuer) using the `set_admin` contract call. If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'The asset issuer becomes the *initial* administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact excerpt: 'pub(crate) fn mint(...) { ... let admin = read_administrator(e)?; admin.require_auth()?;'"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (compound-predicate): Split fee, cap, issuer-control, authorization, and clawback claims; moved two false tails to avoid; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed the classic asset model without a built-in per-transfer issuer fee hook.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed operational supply limiting through issuer controls.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed stop-minting and locked/disabled issuer-control patterns.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed authorization and deauthorization of trustlines.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — showed clawback under the required issuer and trustline flags.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed supply limiting through account controls rather than an immutable max-supply field.",
-        "Sibling sweep 2026-08-27: grep per-transfer|supply cap|max supply|AUTH_REVOCABLE_FLAG|AUTH_CLAWBACK_ENABLED_FLAG → q-aas-burn-clawback-redemption-mechanics, q-sep-clawback-prereq-flag, q-comp-auth-flags-overview, q-comp-clawback-holder-risk; no contradiction",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — the page states, \"The following scenarios are not possible using the SAC, but can be implemented with a contract token,\" then lists transfer fees.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/control-asset-access#limiting-the-supply-of-an-asset — the guide limits supply by setting the issuing account's master weight to zero.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x — AccountEntry and TrustLineEntry contain no issuer-fee or max-supply field.",
-        "Sibling sweep 2026-08-29: grep per-transfer issuer fee|max-supply|AUTH_CLAWBACK_ENABLED_FLAG → q-aas-burn-clawback-redemption-mechanics, q-aas-issuer-fees-supply-cap-freeze, and q-sep-clawback-prereq-flag; no contradiction.",
-        "Corroboration audit 2026-08-29: added dated class A and class B support for the fee-hook and max-supply boundaries; Sol+Grok class agreement, targeted probe decided disposition"
+        "Gospel change 2026-11-02: golden.notes add a symmetric caution that locking the issuer caps supply only while a deployed SAC's admin is still the issuer; answers that add this caveat are not penalized. answer, keyFacts, and avoid are unchanged.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tokens/control-asset-access — 'If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tokens/stellar-asset-contract — 'administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function.'",
+        "Live B 2026-11-02: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs — 'pub(crate) fn mint(...) { ... let admin = read_administrator(e)?; admin.require_auth()?;'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — 'The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed in all cases'",
+        "Sibling sweep 2026-11-02: q-aas-burn-clawback-redemption-mechanics, q-asset-issue-asset-howto, q-comp-sac-inherits-flags, q-comp-auth-flags-overview checked; no sibling asserts that a locked issuer makes supply immutable regardless of SAC admin; no contradiction."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Eval-side authoring flaw: the supply-cap claim omitted the documented SAC-admin caveat on control-asset-access."
       ]
     },
     "origin": "raven-next q-aas-issuer-fees-supply-cap-freeze"

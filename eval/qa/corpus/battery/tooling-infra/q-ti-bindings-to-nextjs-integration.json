@@ -5,9 +5,9 @@
     "skills.stellar-dev.dapp"
   ],
   "golden": {
-    "answer": "Generate TypeScript bindings with the current **`stellar contract bindings typescript`** command, then consume the generated output as a workspace/local, packed, or published npm package. Inspect the generated package itself: current v27 output exports a typed **`Client`** and network metadata, while generated README snippets can lag. Regenerate rather than hand-edit generated files when the contract spec changes.\n\nIn a Next.js App Router app, keep Freighter in a **`\"use client\"`** component. Obtain the public address/permission, verify the expected network passphrase, create the generated client with its contract/network/RPC/signing options, call the typed method, let simulation/assembly provide Soroban data/auth/resources, sign the assembled XDR with Freighter, submit through RPC, and poll. Never put a secret key in the browser.\n\nFor a contract transaction, `Tx.fee` is the maximum total: the inclusion-fee bid plus `sorobanData.resourceFee`. The resource budget includes non-refundable charges and potentially refundable budget; do not call the whole resource fee automatically refundable or the total fee inclusion-only.",
+    "answer": "Generate TypeScript bindings with **`stellar contract bindings typescript`** or the JS SDK generator **`npx @stellar/stellar-sdk generate`** (both take `--wasm`, `--wasm-hash`, or `--contract-id`), then consume the generated output as a workspace/local, packed, or published npm package. Inspect the generated package itself: current Stellar CLI 28.1.0 output (as of 2026-11-02) exports a typed **`Client`** and network metadata; 28.1.0 also marks `stellar contract bindings typescript` deprecated in favor of the JS SDK generator, whose output (`@stellar/stellar-sdk` 17.4.0 as of 2026-11-02) also exports `Client`, while generated README snippets can lag. Regenerate rather than hand-edit generated files when the contract spec changes.\n\nIn a Next.js App Router app, keep Freighter (now Varial; `@stellar/freighter-api` or `@stellar/varial-sdk`) in a **`\"use client\"`** component. Obtain the public address/permission, verify the expected network passphrase, create the generated client with its contract/network/RPC/signing options, call the typed method, let simulation/assembly provide Soroban data/auth/resources, sign the assembled XDR with Freighter, submit through RPC, and poll. Never put a secret key in the browser.\n\nFor a contract transaction, `Tx.fee` is the maximum total: the inclusion-fee bid plus `sorobanData.resourceFee`. The resource budget includes non-refundable charges and potentially refundable budget; do not call the whole resource fee automatically refundable or the total fee inclusion-only.",
     "keyFacts": [
-      "Uses `stellar contract bindings typescript` with the generated `Client` and types.",
+      "Generates a typed `Client` with the Stellar CLI or `npx @stellar/stellar-sdk generate`.",
       "Uses an installed/workspace package, a Next.js client boundary, and network validation.",
       "Preserves build/simulate/assemble/sign/submit/poll ordering.",
       "Defines `Tx.fee` as inclusion fee plus Soroban resource fee.",
@@ -15,11 +15,11 @@
     ],
     "avoid": [
       "Do NOT use retired `soroban contract bindings ts`, assume a generated `Contract` export, or hand-edit generated output.",
-      "Do NOT call Freighter during SSR/server rendering or hard-code a mismatched network/passphrase.",
+      "Do NOT call the Freighter/Varial SDK during SSR/server rendering or hard-code a mismatched network/passphrase.",
       "Do NOT put a secret in browser code.",
       "Do NOT describe Tx.fee as inclusion-only or every resource charge as refundable."
     ],
-    "notes": "Verified docs and GitHub release URLs on 2026-06-29. The exact generated client method names can drift with CLI/bindings output, so keep code-level assertions tied to a freshly generated package/version.\nAlso good if the answer: Mentions current JS SDK/package drift and tells the user to verify generated binding README/types against the installed `@stellar/stellar-sdk` and binding output. | Cites the generated bindings/frontend guide and the Stellar fee/resource-fee documentation.\nGolden cites: Primary Stellar docs for TypeScript bindings/frontend integration. | Primary Stellar docs for Soroban resource fee and inclusion fee semantics. | Freighter docs or repo for browser signing behavior.\nGT-51 CORRECTION 2026-07-11: compile against freshly generated types; generated README prose is not authority over generated source. Exact package/API versions remain dated."
+    "notes": "Verified docs and GitHub release URLs on 2026-06-29. The exact generated client method names can drift with CLI/bindings output, so keep code-level assertions tied to a freshly generated package/version.\nAlso good if the answer: Mentions current JS SDK/package drift and tells the user to verify generated binding README/types against the installed `@stellar/stellar-sdk` and binding output. | Cites the generated bindings/frontend guide and the Stellar fee/resource-fee documentation.\nGolden cites: Primary Stellar docs for TypeScript bindings/frontend integration. | Primary Stellar docs for Soroban resource fee and inclusion fee semantics. | Freighter docs or repo for browser signing behavior.\nGT-51 CORRECTION 2026-07-11: compile against freshly generated types; generated README prose is not authority over generated source. Exact package/API versions remain dated.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. Its SDK now ships as `@stellar/varial-sdk` 7.0.0 (2026-10-28) with the same method names; `@stellar/freighter-api` 6.0.1 keeps working, and only the new package adds `disconnect()`. Accept either package.\nGENERATORS (verified 2026-11-02): accept either `stellar contract bindings typescript` (deprecated in Stellar CLI 28.1.0 of 2026-09-26, still working) or `npx @stellar/stellar-sdk generate`; both emit a typed `Client`. Do not penalize an answer for naming only one generator or for omitting the CLI deprecation."
   },
   "tags": {
     "category": "tooling-infra",
@@ -33,8 +33,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-31",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-11",
     "sources": [
       {
         "class": "A",
@@ -60,12 +60,102 @@
         "class": "B",
         "ref": "https://github.com/stellar/js-stellar-sdk/releases/tag/v16.0.1",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+        "note": "SDF announcement of the Freighter-to-Varial rename; RSS pubDate 2026-10-29.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+        "note": "First release under the Varial name, published 2026-10-29.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/freighter",
+        "note": "README: \"Varial (formerly Freighter)\"; manifest name \"Varial Wallet\".",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+        "note": "Redirect to https://varialwallet.com/ and https://docs.varialwallet.com/.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory",
+        "note": "Independent report dating the rename to the 2026-10-29 SDF post (Parallel + Perplexity).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+        "note": "Same SDK under the new package name; freighter-api keeps working; window.freighterApi keeps its name.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://registry.npmjs.org/@stellar/varial-sdk",
+        "note": "Created 2026-10-28, latest 7.0.0; @stellar/freighter-api latest 6.0.1, not deprecated.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+        "note": "TypeScript bindings deprecated in favor of the js-stellar-sdk CLI; generated output still exports Client and networks.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+        "note": "\"`typescript` — Deprecated, use the JavaScript Stellar SDK instead\".",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://crates.io/api/v1/crates/stellar-cli",
+        "note": "max_stable_version 28.1.0.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/stellar-cli/releases/tags/v28.1.0",
+        "note": "TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli. (published_at 2026-09",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/README.md",
+        "note": "npx @stellar/stellar-sdk generate [options] ... | `--wasm <path>` | ... | `--wasm-hash <hash>` | ... | `--contract-id <id>` | ... client.ts # Typed Client class",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/bindings/client.ts",
+        "note": "export class Client extends ContractClient {",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+        "note": "dist-tags.latest '17.4.0' (time 2026-10-25T11:30:46.754Z); bin includes 'stellar-sdk': 'bin/stellar-js'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local: stellar 28.1.0 (c0f4d0da) stellar contract bindings typescript --help",
+        "note": "Usage: stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
         "claim": "Current CLI-generated TypeScript bindings export a Client/package flow usable from a Next.js client boundary, while the generated README still contains stale command/export examples.",
-        "verdict": "confirmed",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
@@ -84,6 +174,24 @@
             "ref": "F: generated-package build and Next.js TypeScript compile",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+            "observedAt": "2026-11-02",
+            "note": "v28.1.0: \"TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli\"; soroban-spec-typescript still emits `export class Client extends ContractClient` and `export const networks`."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+            "observedAt": "2026-11-02",
+            "note": "\"`typescript` — Deprecated, use the JavaScript Stellar SDK instead\"."
+          },
+          {
+            "class": "C",
+            "ref": "https://crates.io/api/v1/crates/stellar-cli",
+            "observedAt": "2026-11-02",
+            "note": "max_stable_version 28.1.0."
           }
         ]
       },
@@ -104,29 +212,137 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "SDF renamed the Freighter wallet to Varial on 2026-10-29; Freighter and Varial name the same SDF-maintained wallet, and extension 5.50.0 is the first Varial release.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+            "observedAt": "2026-11-02",
+            "note": "\"Freighter is now Varial, with a new name and a new focus\"; RSS pubDate Thu, 29 Oct 2026."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+            "observedAt": "2026-11-02",
+            "note": "\"Freighter is now **Varial**. This is the first release under the new name.\""
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/freighter",
+            "observedAt": "2026-11-02",
+            "note": "\"Varial (formerly Freighter) is a non-custodial wallet extension\"; rebrand commit db6d022b 2026-10-28."
+          },
+          {
+            "class": "D",
+            "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory",
+            "observedAt": "2026-11-02",
+            "note": "\"according to a Stellar Foundation blog post published on 2026-10-29\"."
+          },
+          {
+            "class": "F",
+            "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+            "observedAt": "2026-11-02",
+            "note": "www.freighter.app -> https://varialwallet.com/ ; docs.freighter.app -> https://docs.varialwallet.com/."
+          }
+        ]
+      },
+      {
+        "claim": "@stellar/varial-sdk 7.0.0 (created 2026-10-28) is the same SDK as @stellar/freighter-api 6.0.1 plus disconnect(); freighter-api keeps working, and the script-tag global stays window.freighterApi.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+            "observedAt": "2026-11-02",
+            "note": "\"`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/varial-sdk`\"."
+          },
+          {
+            "class": "C",
+            "ref": "https://registry.npmjs.org/@stellar/varial-sdk",
+            "observedAt": "2026-11-02",
+            "note": "varial-sdk created 2026-10-28T23:51:09Z latest 7.0.0; freighter-api latest 6.0.1 (2025-12-03), not deprecated."
+          },
+          {
+            "class": "B",
+            "ref": "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 (index.d.ts, webpack.common.js)",
+            "observedAt": "2026-11-02",
+            "note": "Identical export lists except varial-sdk adds disconnect; UMD library name stays freighterApi."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, Stellar CLI 28.1.0 deprecates `stellar contract bindings typescript` for `npx @stellar/stellar-sdk generate` (@stellar/stellar-sdk 17.4.0); both take --wasm/--wasm-hash/--contract-id and emit a typed Client.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'typescript — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ( https://github.com/stellar/js-stellar-sdk#cli ). Generate a TypeScript / JavaScript package'"
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-cli/releases/tags/v28.1.0",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli. (published_at 2026-09-26T16:33:53Z)'"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/README.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'npx @stellar/stellar-sdk generate [options] ... | `--wasm <path>` | ... | `--wasm-hash <hash>` | ... | `--contract-id <id>` | ... client.ts # Typed Client class with contract methods'"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/bindings/client.ts",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'export class Client extends ContractClient {'"
+          },
+          {
+            "class": "C",
+            "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'dist-tags.latest '17.4.0' (time 2026-10-25T11:30:46.754Z); bin includes 'stellar-sdk': 'bin/stellar-js''"
+          },
+          {
+            "class": "F",
+            "ref": "local: stellar 28.1.0 (c0f4d0da) stellar contract bindings typescript --help",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'Usage: stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>'"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task soroban-api)",
       "evidence": [
-        "Solo scratchpad 575 GT-51 primary process 3353 and blind process 3360 independently agreed on the fee, client-only wallet, generated-type, and current-command corrections; blind matrix sealed before primary read.",
-        "Sibling sweep checked q-sor-bindings-from-wasm-no-address, q-sor-deploy-invoke-from-js-sdk, and q-soroban-fee-structure; they are consistent models.",
-        "Structural re-form (presentation-avoid): Removed the simulation/assembly omission demand because a key fact already requires that ordering; preserved the browser-secret false-content trap; truth is unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep contract bindings typescript|AssembledTransaction|Tx.fee → q-sor-deploy-invoke-from-js-sdk, q-soroban-cli-bindings, q-ti-bindings-to-nextjs-integration; no contradiction",
-        "Structural re-form (negative-predicate): split four compound facts into five atomic positive facts; existing avoid items retain the stale-name and browser-secret traps, so truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/guestbook/bindings — uses `stellar contract bindings typescript` with the generated `Client` and types",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/dapps/frontend-guide — uses an installed/workspace package, a Next.js client boundary, and network validation",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/guestbook/bindings — preserves build/simulate/assemble/sign/submit/poll ordering",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — defines `Tx.fee` as inclusion fee plus Soroban resource fee",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — treats refundable and non-refundable resource components as distinct",
-        "Sibling sweep 2026-08-27: grep bindings typescript|Client|Tx.fee|resource fee → q-sor-deploy-invoke-from-js-sdk, q-soroban-cli-bindings; no contradiction"
+        "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml pubDate Thu, 29 Oct 2026) — \"Freighter is now Varial, with a new name and a new focus\" (observedAt 2026-11-02).",
+        "https://github.com/stellar/freighter/releases/tag/5.50.0 (published_at 2026-10-29T20:32:42Z) — \"Freighter is now **Varial**. This is the first release under the new name.\" (observedAt 2026-11-02).",
+        "https://github.com/stellar/freighter README and rebrand commit db6d022b (2026-10-28, \"Freighter is now Varial (#3048)\") — \"Varial (formerly Freighter) is a non-custodial wallet extension\"; manifest name \"Varial Wallet\" (observedAt 2026-11-02).",
+        "curl -I: https://www.freighter.app -> 301 https://varialwallet.com/ ; https://docs.freighter.app -> 307 https://docs.varialwallet.com/ (observedAt 2026-11-02).",
+        "General web (Parallel search + Perplexity, one class): https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory ; https://www.tokenpost.com/news/technology/43511 — \"according to a Stellar Foundation blog post published on 2026-10-29\" (observedAt 2026-11-02).",
+        "Store and maintainer: Chrome Web Store listing \"Varial Wallet\" 5.51.0; Firefox AMO API still names \"Freighter\" 5.49.0; repo stays stellar/freighter and npm packages stay under the SDF @stellar scope (observedAt 2026-11-02).",
+        "https://docs.varialwallet.com/extension-varial-sdk/installation — \"`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/varial-sdk`\"; \"access the API via `window.freighterApi` (the global keeps its previous name)\" (observedAt 2026-11-02).",
+        "https://registry.npmjs.org/@stellar/varial-sdk created 2026-10-28T23:51:09Z, latest 7.0.0; https://registry.npmjs.org/@stellar/freighter-api latest 6.0.1 (2025-12-03), not deprecated (observedAt 2026-11-02).",
+        "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 index.d.ts — identical export lists except varial-sdk adds `disconnect`; varial-sdk webpack.common.js keeps library \"freighterApi\" (UMD) (observedAt 2026-11-02).",
+        "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0 and cmd/soroban-cli/src/commands/contract/bindings/typescript.rs@v28.1.0 — \"TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli\"; output still `export class Client extends ContractClient`, `export const networks` (observedAt 2026-11-02).",
+        "https://developers.stellar.org/docs/tools/cli/stellar-cli — \"`typescript` — Deprecated, use the JavaScript Stellar SDK instead\"; https://crates.io/api/v1/crates/stellar-cli max_stable_version 28.1.0 (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: grep -rli 'freighter|varial' eval/qa/corpus/battery -> 20 Freighter cases; 11 are in batch varial-dev; the other Varial-lane siblings (q-eco-freighter-wallet, q-tool-freighter-wallet, q-ti-find-export-secret-key) already state the same 2026-10-29 rename and same-product identity; no sibling names a different date, a different wallet, or a removed @stellar/freighter-api.",
+        "https://developers.stellar.org/docs/tools/cli/stellar-cli — \"typescript — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ( https://github.com/stellar/js-stellar-sdk#cli ). Generate a TypeScript / JavaScript package\" (class A, observedAt 2026-11-02)",
+        "https://api.github.com/repos/stellar/stellar-cli/releases/tags/v28.1.0 — \"TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli. (published_at 2026-09-26T16:33:53Z)\" (class B, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/README.md — \"npx @stellar/stellar-sdk generate [options] ... | `--wasm <path>` | ... | `--wasm-hash <hash>` | ... | `--contract-id <id>` | ... client.ts # Typed Client class with contract methods\" (class B, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/bindings/client.ts — \"export class Client extends ContractClient {\" (class B, observedAt 2026-11-02)",
+        "https://registry.npmjs.org/@stellar/stellar-sdk — \"dist-tags.latest '17.4.0' (time 2026-10-25T11:30:46.754Z); bin includes 'stellar-sdk': 'bin/stellar-js'\" (class C, observedAt 2026-11-02)",
+        "local: stellar 28.1.0 (c0f4d0da) stellar contract bindings typescript --help — \"Usage: stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>\" (class F, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02 (pass 2): q-soroban-cli-bindings already states the 28.1.0 deprecation and the `npx @stellar/stellar-sdk generate` generator with the same three inputs (consistent); no other battery case names `stellar contract bindings typescript`.",
+        "Pass-2 proposer matrix, proposals, and independent verifier decisions: .agents/rounds/2026-11-02-golden-audit.md, task soroban-api."
       ],
       "rootCause": [
-        "Eval-side generated-artifact/API drift; the upstream stale generated README is recorded as a research candidate because only the blind lane directly verified the template defect.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-ti-bindings-to-nextjs-integration"

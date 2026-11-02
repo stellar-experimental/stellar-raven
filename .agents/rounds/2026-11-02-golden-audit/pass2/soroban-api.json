@@ -1,0 +1,409 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "soroban-api",
+ "kind": "pass2",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Both generators exist; both accept --wasm/--wasm-hash/--contract-id (CLI help and SDK README); the SDK generator emits `export class Client`; @stellar/stellar-sdk latest 17.4.0 (2026-10-25). Dated values keep as-of 2026-11-02; case is already scheduled.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "typescript — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ( https://github.com/stellar/js-stellar-sdk#cli ). Generate a TypeScript / JavaScript package"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/stellar-cli/releases/tags/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli. (published_at 2026-09…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... | `--wasm <path>` | ... | `--wasm-hash <hash>` | ... | `--contract-id <id>` | ... client.ts # Typed Client class…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/bindings/client.ts",
+      "observedAt": "2026-11-02",
+      "quote": "export class Client extends ContractClient {"
+     },
+     {
+      "class": "C",
+      "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "dist-tags.latest '17.4.0' (time 2026-10-25T11:30:46.754Z); bin includes 'stellar-sdk': 'bin/stellar-js'"
+     },
+     {
+      "class": "F",
+      "ref": "local: stellar 28.1.0 (c0f4d0da) stellar contract bindings typescript --help",
+      "observedAt": "2026-11-02",
+      "quote": "Usage: stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "newText": null,
+    "note": "87 characters, one predicate. Accepting either verified generator is not loosening: both are real current paths and both emit Client.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... | `--wasm <path>` | ... | `--wasm-hash <hash>` | ... | `--contract-id <id>` | ... client.ts # Typed Client class…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/bindings/client.ts",
+      "observedAt": "2026-11-02",
+      "quote": "export class Client extends ContractClient {"
+     },
+     {
+      "class": "F",
+      "ref": "local: stellar 28.1.0 (c0f4d0da) stellar contract bindings typescript --help",
+      "observedAt": "2026-11-02",
+      "quote": "Usage: stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "GENERATORS leniency names the verified ambiguity (two coexisting generators; CLI deprecated but working). Omitting the deprecation is not a keyFact and the question starts from already-generated bindings.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "typescript — ⚠️ Deprecated, use the JavaScript Stellar SDK instead ( https://github.com/stellar/js-stellar-sdk#cli ). Generate a TypeScript / JavaScript package"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/stellar-cli/releases/tags/v28.1.0",
+      "observedAt": "2026-11-02",
+      "quote": "TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli. (published_at 2026-09…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate [options] ... | `--wasm <path>` | ... | `--wasm-hash <hash>` | ... | `--contract-id <id>` | ... client.ts # Typed Client class…"
+     },
+     {
+      "class": "C",
+      "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "dist-tags.latest '17.4.0' (time 2026-10-25T11:30:46.754Z); bin includes 'stellar-sdk': 'bin/stellar-js'"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-wasm-language",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "Aligns the Also-good line with the golden answer and the GT-48 correction; alloc is off by default and a custom allocator is documented. Removes a contradiction, not a leniency.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs",
+      "observedAt": "2026-11-02",
+      "quote": "The `alloc` feature is **disabled by default**. ... # Using a Custom Allocator"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-factory-pattern",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "newText": null,
+    "note": "Golden text carries a dated API version fact (\"As of soroban-sdk 28 (2026-09-18)\"); release date confirmed 2026-09-18. truth.asOf 2026-11-02 already present, so scheduled is valid.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "`deploy_contract` replaces `deploy_v2`, and `update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated. (publ…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>( ... #[deprecated(note = \"use update_current_contract\")] pub fn update_current_contract_wasm"
+     },
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 29.0.1"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-factory-pattern",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-05-21 is after 2026-11-10 and staggered; deploy_v2 removal in a later SDK is the drift to watch.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "`deploy_contract` replaces `deploy_v2`, and `update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated. (publ…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>( ... #[deprecated(note = \"use update_current_contract\")] pub fn update_current_contract_wasm"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-build-target-wasm32v1",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "newText": null,
+    "note": "Golden pins CLI 28.1.0 and soroban-sdk 29.0.1 with an as-of date, so live (behavioral-only) is wrong; scheduled with truth.asOf 2026-11-02 is correct.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 29.0.1"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/build.rs",
+      "observedAt": "2026-11-02",
+      "quote": "let env_name = \"SOROBAN_SDK_BUILD_SYSTEM_SUPPORTS_SPEC_SHAKING_V2\"; ... if std::env::var(env_name).is_err() ... error: soroban-sdk requires stellar-cli v25.2.0+…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-build-target-wasm32v1",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-01-22 is after 2026-11-10 and staggered; SDK/CLI versions move fast, so the earlier date fits.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 29.0.1"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-build-target-wasm32v1",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "Hello World still calls plain cargo build a shortcut (live, and indexed); build.rs at v29.0.1 exits when the CLI env marker is absent, so the equivalence claim is false for SDK 28+. Plain correct/wrong rule scoped to SDK 28+; no partial cap (ADR-0008). Wrapper framing stays correct. sd-075 exists in improvements/stellar-docs/.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+      "observedAt": "2026-11-02",
+      "quote": "This is a small wrapper around cargo build that sets the target to wasm32v1-none and the profile to release (it also optimizes the resulting .wasm file by defau…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/build.rs",
+      "observedAt": "2026-11-02",
+      "quote": "let env_name = \"SOROBAN_SDK_BUILD_SYSTEM_SUPPORTS_SPEC_SHAKING_V2\"; ... if std::env::var(env_name).is_err() ... error: soroban-sdk requires stellar-cli v25.2.0+…"
+     },
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 29.0.1"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs \"stellar contract build wrapper around cargo build shortcut\"",
+      "observedAt": "2026-11-02",
+      "quote": "hello-world#build-the-contract: \"This is a small wrapper around cargo build that sets the target to wasm32v1\""
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-publish-events",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "Removes a non-ADR-0008 canonical-page partial cap and replaces it with a plain rule. The 7-day ceiling is false: history-retention-window validates only positive, default 120960, operators can adjust. A stock/typical ~7-day statement stays correct (symmetric). Raw publish is #[deprecated] in v29.0.1 while the EVM page still shows it. Applier: update truth.verified.rootCause, which still says the i…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/events/ingest",
+      "observedAt": "2026-11-02",
+      "quote": "However, the data retention window for these events is 7 days at most."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+      "observedAt": "2026-11-02",
+      "quote": "Name: \"history-retention-window\", ... \"the default value is %d which corresponds to about 7 days of history\" ... DefaultValue: uint32(limits.SevenDayOfLedgers),…"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://soroban-testnet.stellar.org and https://mainnet.sorobanrpc.com getHealth",
+      "observedAt": "2026-11-02",
+      "quote": "\"ledgerRetentionWindow\":120960 (both endpoints)"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search \"Stellar RPC history-retention-window longer than 7 days\" -> https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+      "observedAt": "2026-11-02",
+      "quote": "Operators of private stellar-rpc instances can adjust this value."
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs \"getEvents retention window 7 days at most ingest events\"",
+      "observedAt": "2026-11-02",
+      "quote": "docs/build/guides/events/ingest: \"the data retention window for these events is 7 days at most\""
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")] ... pub fn publish<T, D>(&self, topics: T, data: D)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-and-rust-advanced-concepts",
+      "observedAt": "2026-11-02",
+      "quote": "let topics = ( symbol_short! ( \"mint\" ), admin, to); e . events () . publish (topics, amount);"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-storage-migration",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "As of 2026-11-02: CAP-86 sparse unpacking applies only to contracts rebuilt with soroban-sdk v28+. Non-Option field additions, type changes, enums, and tuple structs still need migration. Recommending versioned records for every schema change remains correct. The official migrate-contract-storage guide still says reading a stored DataV1 as a DataV2 with an added Option field traps with Error(Object, UnexpectedSize), with no SDK-version scope (observed 2026-11-02; improvements/stellar-docs/sd-070-migrate-contract-storage-cap-86-scope.md). That trap claim is correct for pre-v28 builds, and a v28…",
+    "note": "Guide still carries the unscoped trap claim (live, indexed). Modified the last sentence: v28 release notes say any map key that is not a struct field is ignored, so a removed field of any type does not trap. The proposed \"only ... removed Option field\" left the false claim \"a removed non-Option field traps on v28+\" ungraded, contradicting the golden answer (\"a removed field is ignored\").",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+      "observedAt": "2026-11-02",
+      "quote": "This traps with Error(Object, UnexpectedSize). The Soroban host validates the field count of the XDR-encoded value against the type definition before returning …"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "A field missing from the map reads as `None` if it is an `Option`, and errors otherwise, and a map key that is not a field of the struct is ignored and dropped,…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs \"migrate contract storage UnexpectedSize Option field\"",
+      "observedAt": "2026-11-02",
+      "quote": "migrate-contract-storage#approach-1-read-old-entries-directly-with-the-new-type: \"This traps with Error(Object, UnexpectedSize).\""
+     },
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 29.0.1"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Storage survives the Wasm replacement; keys/types must stay compatible or be migrated. Soroban uses named keys (not EVM slots). Verified against the SDF upgrade guide + OZ migration patterns.\nAlso good if the answer: Use a migration function (run atomically with the upgrade, e.g., an Upgrader/migrate hook) to transform state to the new layout. | The contract address is preserved across the upgrade, so external callers/integrations keep working.\nGolden cites: A developers.stellar.org or OpenZeppelin Stellar upgrade/migration guide.\nAs of 2026-11-02 (soroban-sdk v28+, Protocol 28): `update_curre…",
+    "note": "Same modification as q-soroban-storage-migration for sibling consistency; the golden answer here also says a removed field is ignored (and dropped on rewrite). Upgrade-call facts re-confirmed in deploy.rs v29.0.1.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+      "observedAt": "2026-11-02",
+      "quote": "This traps with Error(Object, UnexpectedSize). The Soroban host validates the field count of the XDR-encoded value against the type definition before returning …"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "A field missing from the map reads as `None` if it is an `Option`, and errors otherwise, and a map key that is not a field of the struct is ignored and dropped,…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>( ... #[deprecated(note = \"use update_current_contract\")] pub fn update_current_contract_wasm"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "`deploy_contract` replaces `deploy_v2`, and `update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated. (publ…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs \"migrate contract storage UnexpectedSize Option field\"",
+      "observedAt": "2026-11-02",
+      "quote": "migrate-contract-storage#approach-1-read-old-entries-directly-with-the-new-type: \"This traps with Error(Object, UnexpectedSize).\""
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "POST https://soroban-testnet.stellar.org and https://mainnet.sorobanrpc.com getHealth",
+   "Parallel web_search \"Stellar RPC history-retention-window longer than 7 days\" -> https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+   "Raven stellarDocs.search_docs \"getEvents retention window 7 days at most ingest events\"",
+   "Raven stellarDocs.search_docs \"migrate contract storage UnexpectedSize Option field\"",
+   "Raven stellarDocs.search_docs \"stellar contract build wrapper around cargo build shortcut\"",
+   "https://api.github.com/repos/stellar/js-stellar-sdk/git/trees/v17.4.0?recursive=1",
+   "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0",
+   "https://api.github.com/repos/stellar/stellar-cli/releases/tags/v28.1.0",
+   "https://crates.io/api/v1/crates/soroban-sdk",
+   "https://developers.stellar.org/docs/build/apps/guestbook/bindings",
+   "https://developers.stellar.org/docs/build/guides/events/ingest",
+   "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
+   "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+   "https://developers.stellar.org/docs/learn/migrate/evm/solidity-and-rust-advanced-concepts",
+   "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+   "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/README.md",
+   "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/bindings/client.ts",
+   "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/bindings/generator.ts",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/build.rs",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+   "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+   "https://registry.npmjs.org/@stellar/stellar-sdk",
+   "local: stellar 28.1.0 (c0f4d0da) stellar contract bindings typescript --help"
+  ]
+ },
+ "applier": {
+  "untouched": "q-soroban-oz-upgradeable-macro; q-soroban-contract-id-derivation"
+ }
+}

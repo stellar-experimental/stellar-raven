@@ -17,7 +17,7 @@
       "Do NOT call contract build verification SEP-49 (SEP-49 is Upgradeable Contracts).",
       "Do NOT claim Stellar stores the contract source code on-chain."
     ],
-    "notes": "Freshness:true — SEP-55/SEP-58 are Draft and numbers/titles can change. As observed 2026-08-04, SEP-58 is Draft v0.6.0, updated 2026-07-15; its rebuild-based bldimg/bldopt/source_sha256 model remains complementary to SEP-55's attestation-based GitHub Attestations + contractmetav0 source_repo model. NOT SEP-49 (that is Upgradeable Contracts). Both confirm Stellar does not store source on-chain.\nAlso good if the answer: 'Build verified' attests that the published build workflow produced the WASM, not that the source is safe/audited.\nGolden cites: A primary developers.stellar.org / SEP repo source for SEP-55 / SEP-58 and the build-verification workflow."
+    "notes": "Freshness:true — SEP-55/SEP-58 are Draft and numbers/titles can change. As observed 2026-11-02, SEP-55 is Draft v0.4.1 and SEP-58 is Draft v0.6.0 (preamble Updated 2026-07-15); its rebuild-based bldimg/bldopt/source_sha256 model remains complementary to SEP-55's attestation-based GitHub Attestations + contractmetav0 source_repo model. NOT SEP-49 (that is Upgradeable Contracts). Both confirm Stellar does not store source on-chain.\nAlso good if the answer: 'Build verified' attests that the published build workflow produced the WASM, not that the source is safe/audited.\nGolden cites: A primary developers.stellar.org / SEP repo source for SEP-55 / SEP-58 and the build-verification workflow."
   },
   "tags": {
     "category": "soroban",
@@ -31,8 +31,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
-    "reverifyBy": "2026-12-10",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-06-17",
     "sources": [
       {
         "class": "B",
@@ -43,28 +43,39 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md",
+        "note": "Preamble: \"Status: Draft ... Updated: 2025-03-12 Version: 0.4.1\".",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md",
+        "note": "Preamble: \"Status: Draft ... Updated: 2026-07-15 Version: 0.6.0\"; complementary to SEP-55; bldimg/bldopt/bldarg/source_sha256.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local stellar 28.1.0 `stellar contract info --help`",
+        "note": "\"build  Output the contract build information, if available\".",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Split the two verification methods and shortened the metadata, tooling, and standard facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md — the current Draft SEP defines CI build verification through GitHub Attestations.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md — the current Draft SEP defines reproducible rebuilds and byte comparison.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md — the current SEP embeds source-linking metadata in the WASM contractmetav0 section.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/lab/smart-contracts/contract-explorer and https://developers.stellar.org/docs/tools/cli/cookbook/contract-build-meta — the current official pages document Lab Build Info and stellar contract info meta.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md and https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md — the current proposal preambles retain both titles and Draft statuses.",
-        "Sibling sweep 2026-08-29: grep SEP-55|SEP-58|contractmetav0|Build Info|soroban-build-workflow → q-soroban-contractmeta-vs-contractevent; no contradiction."
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md — \"Title: Contract Build Verification ... Status: Draft ... Updated: 2025-03-12 Version: 0.4.1\" (observedAt 2026-11-02).",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md — \"Status: Draft ... Updated: 2026-07-15 Version: 0.6.0 ... Complementary to [SEP-55] ... `bldimg` ... `bldopt` ... `bldarg` ... `source_sha256`\" (observedAt 2026-11-02).",
+        "https://stellar.org/protocol/sep-58 — \"Status: Draft Created: 2026-05-01 Updated: 2026-07-15 Version: 0.6.0\" (observedAt 2026-11-02).",
+        "Local stellar 28.1.0 `stellar contract info --help` — \"build  Output the contract build information, if available\" (observedAt 2026-11-02).",
+        "Independent verifier accepted the notes, asOf, and reverifyBy changes: /private/tmp/claude-501/golden-audit/verify/soroban-04.json.",
+        "Sibling sweep 2026-11-02: grep 'SEP-55|SEP-58|sep-0058' over the battery → only this case; q-soroban-contractmeta-vs-contractevent (contractmetav0) has no SEP version claim; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-soroban-contract-build-verification",
@@ -90,6 +101,36 @@
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
             "observedAt": "2026-08-04",
             "note": "Fetched SEP-58 source defines reproducible contract builds and byte comparison."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, SEP-55 is Draft v0.4.1 and SEP-58 is Draft v0.6.0 (Updated 2026-07-15); SEP-58 rebuild metadata complements SEP-55 attestations.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md",
+            "observedAt": "2026-11-02",
+            "note": "\"SEP: 0055 Title: Contract Build Verification ... Status: Draft ... Updated: 2025-03-12 Version: 0.4.1\"."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md",
+            "observedAt": "2026-11-02",
+            "note": "\"SEP: 0058 Title: Contract Build Reproducibility for Verification ... Status: Draft ... Updated: 2026-07-15 Version: 0.6.0 ... Complementary to [SEP-55]\". Latest commit aed3394b 2026-07-20 (#1965, adds bldarg) did not bump the preamble."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/protocol/sep-58",
+            "observedAt": "2026-11-02",
+            "note": "\"Status: Draft Created: 2026-05-01 Updated: 2026-07-15 Version: 0.6.0\"."
+          },
+          {
+            "class": "F",
+            "ref": "local stellar 28.1.0 `stellar contract info build --help`",
+            "observedAt": "2026-11-02",
+            "note": "\"If the contract has a meta entry like `source_repo=github:user/repo`, this command will try to fetch the attestation information for the WASM file.\""
           }
         ]
       }

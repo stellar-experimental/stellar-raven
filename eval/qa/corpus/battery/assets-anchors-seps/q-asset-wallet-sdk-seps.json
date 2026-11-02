@@ -17,7 +17,7 @@
       "Do NOT describe the Wallet SDK as anchor backend infrastructure (that is the Anchor Platform).",
       "Do NOT claim the Wallet SDK wraps SEP-31."
     ],
-    "notes": "Dossier §6.3. Wallet SDK = SDF TypeScript library (stellar/typescript-wallet-sdk) wrapping anchor SEP flows; wallet-side counterpart to the Java Anchor Platform. SEP numbers verified against the anchor stack.\nAlso good if the answer: It is the wallet-side counterpart to the (Java) Anchor Platform.\nGolden cites: The Wallet SDK page on stellar.org or the stellar/typescript-wallet-sdk repo."
+    "notes": "Dossier §6.3. Wallet SDK = SDF TypeScript library (stellar/typescript-wallet-sdk) wrapping anchor SEP flows; wallet-side counterpart to the Java Anchor Platform. SEP numbers verified against the anchor stack.\nAlso good if the answer: It is the wallet-side counterpart to the (Java) Anchor Platform.\nGolden cites: The Wallet SDK page on stellar.org or the stellar/typescript-wallet-sdk repo.\nRe-verified 2026-11-02: the anchor class still lists SEP-1/6/10/12/24/38. The SDK also supports SEP-7 URIs outside the anchor class; naming SEP-7 as that separate feature does not misnumber the SEPs the SDK wraps. The docs also show Kotlin (repo archived), Flutter, and Swift tabs beside TypeScript; naming them is not a wrong claim."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -41,31 +41,35 @@
         "class": "B",
         "ref": "https://github.com/stellar/typescript-wallet-sdk",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/kotlin-wallet-sdk",
+        "note": "gh api: archived true (pushed_at 2026-07-01)",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task payments-assets)",
       "evidence": [
-        "https://stellar.org/products-and-tools/wallet-sdk",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0010.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Shortened the Wallet SDK library-description fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/typescript-wallet-sdk — the Stellar-owned TypeScript repository describes a library for Stellar wallet applications and anchor connections.",
-        "Sibling sweep 2026-08-29: grep TypeScript Wallet SDK|SEP-10.*SEP-12.*SEP-24.*SEP-31.*SEP-38 → q-sep-catalog-list, q-anchor-platform-what, q-asset-wallet-sdk-seps, q-sep-12-kyc, q-crp-custodial-vs-noncustodial-wallets, q-crp-remittance-founder-advisory, q-tool-wallets-comparison; q-anchor-platform-what assigns SEP-31 to Anchor Platform, and no sibling supports Wallet SDK SEP-31",
-        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/build/apps/wallet/intro says ‘Below you can find all the SEPs the anchor class currently supports’ and lists SEP-1/6/10/12/24/38, not SEP-31.",
-        "Conflict resolution 2026-08-29: https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts exposes `sep1`, `sep6`, `sep10`, `sep12`, `sep24`, and `sep38`, with no `sep31` method.",
-        "Sibling sweep 2026-08-29: grep Wallet SDK|SEP-31 → q-anchor-sdp-vs-anchor-platform, q-asset-wallet-sdk-seps, q-sep-wallet-seps-list, q-anchor-platform-what, and related SEP cases; all false Wallet SDK wrap claims are corrected in this lane."
+        "[A] https://developers.stellar.org/docs/build/apps/wallet/intro — \"Below you can find all the SEPs the anchor class currently supports: SEP-1 ... SEP-10 ... SEP-24 ... SEP-6 ... SEP-12 ... SEP-38\" (observedAt 2026-10-01; supports golden.keyFacts[1]: confirmed-as-of)",
+        "[B] https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts — \"async sep1( / sep6(): Sep6 / async sep10() / async sep12(authToken) (no sep31)\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed-as-of)",
+        "[B] gh api repos/stellar/typescript-wallet-sdk — \"archived:false, pushed_at 2026-10-19, 'Typescript Wallet SDK to build Stellar wallets'\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/apps/wallet/intro.mdx — \"<Tab title=\"TypeScript\"> <Tab title=\"Kotlin\"> <Tab title=\"Flutter\"> <Tab title=\"Swift\">\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[A] https://developers.stellar.org/docs/build/apps/wallet/intro — \"Besides the SEPs supported by the anchor class the wallet SDK also has support for the SEP-7 protocol\" (observedAt 2026-10-01; supports golden.notes: confirmed)",
+        "[A] https://developers.stellar.org/docs/build/apps/wallet/intro — \"Below you can find all the SEPs the anchor class currently supports: SEP-1 ... SEP-10 ... SEP-24 ... SEP-6 ... SEP-12 ... SEP-38 ... Besides the SEPs supported by the anchor class the wallet SDK also has support for the SEP-7 protocol\" (observedAt 2026-11-02 (Parallel web_fetch; cache acquired_at 2026-10-01); supports golden.notes: verifier accept)",
+        "[E] stellarDocs.search_docs q='wallet sdk SEP-7 uri' -> https://developers.stellar.org/docs/build/apps/wallet/intro#anchor-basics — \"anchor class the wallet SDK also has support for the SEP-7 protocol which is explored on URI Scheme to\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/apps/wallet/intro.mdx — \"<Tab title=\"TypeScript\"> ... <Tab title=\"Kotlin\"> ... <Tab title=\"Flutter\"> ... <Tab title=\"Swift\">\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
+        "[B] gh api repos/stellar/kotlin-wallet-sdk — \"archived: true (pushed_at 2026-07-01T17:28:43Z); stellar/typescript-wallet-sdk archived: false\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
+        "Sibling sweep 2026-11-02: q-anchor-sdp-vs-anchor-platform ('Wallet SDK ... wrapping client-side SEP-10/12/24/38, not SEP-31'), q-sep-wallet-seps-list, q-anchor-platform-what checked; no contradiction (the note only adds true SEP-7 and language-tab facts).",
+        "Pass 2 change 2026-11-02: golden.notes tie the SEP-7 do-not-penalize line to the misnumbering avoid item it guards; rootCause names that avoid item (consistency-rubric L5). answer, keyFacts, avoid, and tags unchanged.",
+        "Live A 2026-11-02 (curl): https://developers.stellar.org/docs/build/apps/wallet/intro - 'Below you can find all the SEPs the anchor class currently supports: SEP-1 ... SEP-10 ... SEP-24 ... SEP-6 ... SEP-12 ... SEP-38 ... Besides the SEPs supported by the anchor class the wallet SDK also has support for the SEP-7 protocol'; no SEP-31 on the page.",
+        "Live B 2026-11-02 (gh api): stellar/typescript-wallet-sdk src/walletSdk/Anchor/index.ts defines sep1, sep6, sep10, sep12, sep24, sep38 (no sep31); src/walletSdk/Uri holds Sep7Base.ts, Sep7Pay.ts, Sep7Tx.ts; repo archived false (pushed 2026-10-19); stellar/kotlin-wallet-sdk archived true.",
+        "Pass 1 verification event (batch assets-anchors-seps-03, .agents/rounds/2026-11-02-golden-audit.md) produced the earlier 2026-11-02 evidence rows and edits in this branch diff; the pass-2 rows follow."
       ],
       "rootCause": [
-        "eval-authoring",
-        "eval-authoring transcription",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "eval-authoring: the closed SEP list in keyFacts[1] and the avoid item 'Do NOT misnumber the SEPs it wraps' could fire on an answer that adds the SDK's separately documented SEP-7 URI support; the note scopes the wrapped list to the anchor class."
       ]
     },
     "origin": "raven-next q-asset-wallet-sdk-seps",

@@ -8,7 +8,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Friendbot creates/funds a Testnet account with fake **XLM only**; it is not a USDC faucet. First ensure the Testnet account exists and has enough XLM for its base reserve, then establish a trustline to the current Circle-issued Testnet USDC asset. A trustline only permits holding the asset—it does not credit any USDC.\n\nAs of **2026-09-01**, Circle Faucet supported Stellar Testnet and the classic USDC issuer was `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`. The UI observation of 20 test USDC per address/chain per two hours is volatile and is not a grading requirement; recheck issuer, chain support, amount and cooldown before use. A Circle faucet payment is separate from Friendbot. A separate USDC payment can credit an established trustline.\n\nFor classic accounts, identify USDC by code plus issuer/trustline. Its deterministic SAC C-address is the contract bridge for the same classic asset, not a second issuer or a wrapped token. Use only Testnet endpoints/assets and never represent faucet units as redeemable Mainnet value. Maintenance verification should inspect public issuer/service data without calling a faucet.",
+    "answer": "Friendbot creates/funds a Testnet account with fake **XLM only**; it is not a USDC faucet. First ensure the Testnet account exists and has enough XLM for its base reserve, then establish a trustline to the current Circle-issued Testnet USDC asset. A trustline only permits holding the asset—it does not credit any USDC.\n\nAs of **2026-11-02**, Circle Faucet supported Stellar Testnet and the classic USDC issuer was `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`. The UI observation of 20 test USDC per address/chain per two hours is volatile and is not a grading requirement; recheck issuer, chain support, amount and cooldown before use. A Circle faucet payment is separate from Friendbot. A separate USDC payment can credit an established trustline.\n\nFor classic accounts, identify USDC by code plus issuer/trustline. Its deterministic SAC C-address is the contract bridge for the same classic asset, not a second issuer or a wrapped token. Use only Testnet endpoints/assets and never represent faucet units as redeemable Mainnet value. Maintenance verification should inspect public issuer/service data without calling a faucet.",
     "keyFacts": [
       "Identifies Friendbot funding as fake Testnet XLM.",
       "Requires the correct classic USDC trustline plus XLM for the base reserve.",
@@ -36,13 +36,14 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-09-01",
-    "reverifyBy": "2026-12-01",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-08",
     "sources": [
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/networks",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
@@ -57,17 +58,25 @@
       {
         "class": "A",
         "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
-        "note": "Circle's current address registry"
+        "note": "Circle's current address registry",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "C",
         "ref": "https://faucet.circle.com/",
-        "note": "Circle's live faucet surface; read only"
+        "note": "Circle's live faucet surface; read only",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide#setting-up-a-testnet-wallet",
+        "note": "Found via stellarDocs.search_docs: 'Visit the Circle faucet, select Stellar Testnet from the networks'",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -78,8 +87,8 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/networks",
-            "observedAt": "2026-09-01",
-            "note": "Friendbot funds Testnet accounts with fake XLM."
+            "observedAt": "2026-11-02",
+            "note": "'Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet... Provides 10,000 fake XLM when funding a new account'"
           },
           {
             "class": "B",
@@ -90,29 +99,35 @@
         ]
       },
       {
-        "claim": "Circle Faucet supported Stellar Testnet and the issuer was GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-09-01; amount and cooldown are volatile.",
+        "claim": "Circle Faucet supported Stellar Testnet and the issuer was GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-11-02; amount and cooldown are volatile.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
             "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
-            "observedAt": "2026-09-01",
-            "note": "Circle lists the same Stellar Testnet USDC issuer."
+            "observedAt": "2026-11-02",
+            "note": "'Stellar Testnet | USDC-GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5'"
           },
           {
             "class": "C",
             "ref": "https://faucet.circle.com/",
-            "observedAt": "2026-09-01",
-            "note": "The live page listed Stellar Testnet, 20 USDC, and a two-hour cooldown. No faucet request was made."
+            "observedAt": "2026-11-02",
+            "note": "The live page listed Stellar Testnet: 'Developers can request 20 USDC on testnet every 2 hours, per address, and per blockchain.' No faucet request was made."
           },
           {
             "class": "F",
-            "ref": "https://horizon-testnet.stellar.org/accounts/GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
-            "observedAt": "2026-09-01",
-            "note": "A read-only lookup confirmed the issuer account."
+            "ref": "https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+            "observedAt": "2026-11-02",
+            "note": "Read-only lookup: one asset record, accounts.authorized=134727, contract_id CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA; issuer home_domain centre.io."
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide#setting-up-a-testnet-wallet",
+            "observedAt": "2026-11-02",
+            "note": "'Visit the Circle faucet, select Stellar Testnet from the networks'"
           }
         ],
-        "note": "Confirmed as of 2026-09-01."
+        "note": "Confirmed as of 2026-11-02."
       },
       {
         "claim": "The current Stellar Lab offers a USDC path-payment distribution demo.",
@@ -134,15 +149,16 @@
       }
     ],
     "verified": {
-      "date": "2026-09-02",
-      "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/usdc-lane.md (Codex Terra high; orchestrator reconciled)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-03)",
       "evidence": [
-        "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/usdc-lane.md",
-        "Live source 2026-09-01: https://developers.stellar.org/docs/networks",
-        "Issuer review 2026-09-01: https://developers.circle.com/stablecoins/usdc-contract-addresses",
-        "Read-only service review 2026-09-01: https://faucet.circle.com/ and the Testnet issuer account; no faucet request was made.",
-        "Lab review 2026-09-02: https://developers.stellar.org/docs/tools/lab/account and https://developers.stellar.org/docs/build/guides/transactions/path-payments do not establish a Lab USDC distribution route.",
-        "Sibling sweep 2026-09-01: q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui, q-tool-lab-what-is, q-infra-testnet-vs-futurenet, q-asset-trustline-vs-sac, q-asset-deploy-sac-cli, q-sor-contract-trustlines-c-address, and q-asset-usdc-eurc-issuer; no contradiction."
+        "Gospel change 2026-11-02: golden.answer as-of date 2026-09-01 -> 2026-11-02 only; issuer, Stellar Testnet support and the volatile 20 USDC / 2 hours observation re-confirmed (verifier decision: accept).",
+        "Live A 2026-11-02: https://developers.circle.com/stablecoins/usdc-contract-addresses — 'Stellar Testnet | USDC-GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5'",
+        "Live C 2026-11-02: https://faucet.circle.com/ — 'Developers can request 20 USDC on testnet every 2 hours, per address, and per blockchain.' (read only; no faucet request made)",
+        "Live F 2026-11-02: https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 — contract_id CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA; issuer home_domain centre.io",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/networks — 'Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet'",
+        "Live E 2026-11-02: https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide#setting-up-a-testnet-wallet — 'Visit the Circle faucet, select Stellar Testnet from the networks'",
+        "Sibling sweep 2026-11-02: q-ti-friendbot-ratelimit-alternatives, q-asset-usdc-eurc-issuer, q-asset-trustline-vs-sac, q-infra-testnet-vs-futurenet checked; no contradiction."
       ],
       "rootCause": [
         "freshness-drift"

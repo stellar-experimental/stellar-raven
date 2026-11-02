@@ -5,7 +5,7 @@
     "scout.getPeople"
   ],
   "golden": {
-    "answer": "Query `scout.getPeople` with `section: \"Board of directors\"`, page until the returned count reaches the filtered total, and verify the names against SDF's official team page. As of 2026-08-18, the official page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji. Report each returned role and affiliation with the row's `observedAt` and `sourceUrl`; treat both the roster and roles as dated facts. These are SDF governance records, not builder or availability records.",
+    "answer": "Query `scout.getPeople` with `section: \"Board of directors\"`, page until the returned count reaches the filtered total, and verify the names against SDF's official team page. As of 2026-11-02, the official page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji. Report each returned role and affiliation with the row's `observedAt` and `sourceUrl`; treat both the roster and roles as dated facts. These are SDF governance records, not builder or availability records.",
     "keyFacts": [
       "Names Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
       "Dates the official SDF board roster to an observation date.",
@@ -30,64 +30,68 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-18",
-    "reverifyBy": "2026-11-19",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-12",
     "sources": [
       {
         "class": "A",
         "ref": "https://stellar.org/foundation/team",
-        "note": "The official SDF team page showed the Board of directors section and the five named cards on 2026-08-18."
+        "note": "The official SDF team page showed the Board of directors section and the five named cards on 2026-11-02 (first observed 2026-08-18).",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
-        "note": "The read-only probe returned five board rows, their roles, affiliations, source URLs, and observed dates."
+        "note": "The read-only probe on 2026-11-02 returned five board rows (counts returned 5, total 5) with roles, source URLs, and row observedAt 2026-07-19.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://legalclarity.org/who-owns-lumens-stellar-foundation-and-xlm-holders/",
+        "note": "Third-party article (2026-06-15) lists the same five board members; no contradicting roster found in a web sweep.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
-        "claim": "As of 2026-08-18, SDF's board section listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
+        "claim": "As of 2026-11-02, SDF's board section listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
             "ref": "https://stellar.org/foundation/team",
-            "observedAt": "2026-08-18",
-            "note": "Direct HTML inspection showed the board heading and all five named cards."
+            "observedAt": "2026-11-02",
+            "note": "Rendered text: 'Board of directors | Jed McCaleb | Lin-Hua Wu | Ronaldo Lemos | Ginger Baker | Asiff Hirji | Advisors'."
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
-            "observedAt": "2026-08-18",
-            "note": "The live service returned the same five names and identified its official source page."
+            "observedAt": "2026-07-19",
+            "note": "Probed 2026-11-02 (generatedAt 2026-11-02T16:01:14.167Z): same five names, counts returned 5 / total 5, sourceUrl https://stellar.org/foundation/team; the service's row observedAt is 2026-07-19, so this row carries that date."
+          },
+          {
+            "class": "D",
+            "ref": "https://legalclarity.org/who-owns-lumens-stellar-foundation-and-xlm-holders/",
+            "observedAt": "2026-11-02",
+            "note": "\"The foundation's board of directors includes co-founder Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.\" (dated 2026-06-15)"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-02)",
       "evidence": [
-        "https://stellar.org/foundation/team inspected directly on 2026-08-18.",
-        "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 returned the same five names on 2026-08-18.",
-        "Sibling sweep: q-org-mazieres-chief-scientist uses the same people source and keeps its dated title qualification.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
-        "Structural re-form (snapshot-date): Split the board roster from its snapshot date; truth is unchanged.",
-        "Live re-check 2026-08-27: https://stellar.org/foundation/team — the Board of directors section listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
-        "Live re-check 2026-08-27: https://stellar.org/foundation/team — the live roster page remained undated, supporting an observation-date gate.",
-        "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji → q-org-sdf-board-directors only; no contradiction",
-        "Structural re-form (presentation-avoid): Reworded the timeless-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji → q-org-sdf-board-directors only; no contradiction",
-        "Structural re-form (compound-predicate): Replaced prose labels with the exact sourceUrl and observedAt fields under one predicate; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://stellar.org/foundation/team and catalog/manifest.json#scout.getPeople — the official board section and current service contract still support section filtering, pagination, sourceUrl, and observedAt.",
-        "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji|sourceUrl|observedAt → q-org-mazieres-chief-scientist; no contradiction"
+        "[A] golden.keyFacts[0] (confirmed-as-of): https://stellar.org/foundation/team :: \"'Board of directors', 'Jed McCaleb', 'Lin-Hua Wu', 'Ronaldo Lemos', 'Ginger Baker', 'Asiff Hirji', 'Advisors'\" (observedAt 2026-11-02)",
+        "[C] golden.keyFacts[0] (confirmed-as-of): https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 :: \"counts {'returned': 5, 'total': 5}; same five names; meta.observedAt '2026-07-19'\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[0] (confirmed-as-of): https://legalclarity.org/who-owns-lumens-stellar-foundation-and-xlm-holders/ (perplexity_search) :: \"The foundation's board of directors includes co-founder Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.\" (observedAt 2026-11-02)",
+        "[C] golden.answer (confirmed-as-of): https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 :: \"{'name': 'Asiff Hirji', 'role': 'President of MoonPay', 'section': 'Board of directors', 'sourceUrl': 'https://stellar.org/foundation/team', 'observedAt': '2026-07-19'}\" (observedAt 2026-11-02)",
+        "[C] golden.answer (confirmed-as-of): Raven scout.getPeople({section:'Board of directors'}) :: \"counts returned 5 total 5; source https://stellar.org/foundation/team\" (observedAt 2026-11-02)",
+        "Upstream note: Stellar Light /api/people roster row observedAt is 2026-07-19 although the official page is live; content still matches.",
+        "Sibling sweep 2026-11-02: grep 'Asiff Hirji|Board of directors' across eval/qa/corpus/battery -> only this case; q-org-mazieres-chief-scientist checked; no contradiction."
       ],
       "rootCause": [
-        "solo://proj/80/todo/author-five-new-cove--1664",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

@@ -8,14 +8,14 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Triage the toolchain first. Current Stellar smart-contract setup requires Rust 1.84.0 or higher because the supported target is `wasm32v1-none`; the setup guide says to install that target and reinstall it after Rust toolchain updates (https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup). If the build says the wasm file does not exist, confirm that `stellar contract build` succeeded, that you are in the correct workspace/package, and that your deploy/bindings command points at the actual generated `target/.../*.wasm` path.\n\nOn Windows, `rustup` not recognized means Rust is missing from PATH; `link.exe` not recognized usually means the MSVC linker/build tools are missing or the shell is not a Visual Studio developer shell. Either fix the native MSVC toolchain or use WSL consistently. Do not mix WSL paths with Windows shells unless you know exactly which Rust toolchain is building.\n\nFor CLI identity/config errors, treat aliases as named local configuration. `alias already exists` means you already have that key/network alias; list/reuse/remove it instead of creating another with the same name. For funding, distinguish networks: testnet/futurenet/local can use Friendbot or Lab funding, while mainnet cannot. Stellar Lab documents account creation/funding for testnet/futurenet and custom RPC provider support (https://developers.stellar.org/docs/tools/lab). The CLI docs are the source of current command names; use `stellar --help` and the CLI docs before assuming a deprecated `stellar account` command exists (https://developers.stellar.org/docs/tools/cli). For checking balances without a CLI shortcut, use Horizon/RPC/Lab or token/SAC helper flows such as the CLI payments-and-assets cookbook (https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets).",
+    "answer": "Triage the toolchain first. Current Stellar smart-contract setup requires Rust 1.84.0 or higher because the supported target is `wasm32v1-none`; the setup guide says to install that target and reinstall it after Rust toolchain updates (https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup). If the build says the wasm file does not exist, confirm that `stellar contract build` succeeded, that you are in the correct workspace/package, and that your deploy/bindings command points at the actual generated `target/.../*.wasm` path.\n\nOn Windows, `rustup` not recognized means Rust is missing from PATH; `link.exe` not recognized usually means the MSVC linker/build tools are missing or the shell is not a Visual Studio developer shell. Either fix the native MSVC toolchain or use WSL consistently. Do not mix WSL paths with Windows shells unless you know exactly which Rust toolchain is building.\n\nFor CLI identity/config errors, treat aliases as named local configuration. `alias already exists` means you already have that key/network alias; list/reuse/remove it instead of creating another with the same name. For funding, distinguish networks: testnet/futurenet/local can use Friendbot or Lab funding, while mainnet cannot. Stellar Lab documents account creation/funding for testnet/futurenet and custom RPC provider support (https://developers.stellar.org/docs/tools/lab). The CLI docs are the source of current command names; as of Stellar CLI v28.1.0 there is no `stellar account` subcommand, so use `stellar --help` and the CLI docs (https://developers.stellar.org/docs/tools/cli). As of 2026-11-02, Stellar CLI v28.0.0+ reads balances with `stellar token balance --id <native|CODE:ISSUER|contract> --account <G-or-C> --network <network>`; Horizon/RPC/Lab or a SAC `balance` invoke (https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets) also work.",
     "keyFacts": [
       "Uses current Stellar contract target: Rust 1.84+ / wasm32v1-none.",
       "Usually maps missing Wasm to contract-build/workspace/built-Wasm path in deploy/bindings.",
       "Install Windows Rust/rustup with MSVC or WSL; treat rustup/link.exe misses as PATH.",
       "Maps alias already exists to inspect/reuse/remove configured CLI identity/network alias.",
       "Maps Friendbot→testnet/futurenet/local; mainnet→real funds+valid selected/BYO Lab/RPC URL.",
-      "Routes balances: obsolete stellar account→CLI tx/payment/contract, Horizon/RPC, Lab."
+      "Routes balances to stellar token balance (CLI v28+), SAC invoke, Horizon/RPC, or Lab."
     ],
     "avoid": [
       "Do NOT tell users to install only `wasm32-unknown-unknown` as the current target for Stellar contracts.",
@@ -23,7 +23,7 @@
       "Do NOT hide Windows Rust/rustup, MSVC Build Tools, WSL, or PATH prerequisites behind generic Stellar/npm troubleshooting.",
       "Do NOT create a duplicate CLI identity/network alias after alias already exists; inspect/reuse/remove it."
     ],
-    "notes": "Official docs verify Rust/target and Lab/CLI direction. Several quoted error strings are environment-specific and should be empirically reproduced by Phase 3 on Windows/WSL if exact remediation commands are required.\nAlso good if the answer: Cites official setup, CLI, Lab, and RPC/provider docs; uses dated source for current versions where possible.\nGolden cites: Official Stellar setup docs for Rust/target requirements. | Official Stellar CLI/Lab docs for current command and network/provider behavior.\nGT-51 PRECISION CORRECTION 2026-07-11: prefer prebuilt/Winget, require wasm32v1-none and explicit MSVC prerequisites, and keep environment-specific errors source-qualified.\nAccurately quoting the canonical smart-contract skill documentation without error-keyed rows for missing WASM, `link.exe`, identity or alias collisions, or funding is not a wrong claim while a cached or older copy still lacks the rows added by the 2026-08-14 fix; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Official docs verify Rust/target and Lab/CLI direction. Several quoted error strings are environment-specific and should be empirically reproduced by Phase 3 on Windows/WSL if exact remediation commands are required.\nAlso good if the answer: Cites official setup, CLI, Lab, and RPC/provider docs; uses dated source for current versions where possible.\nGolden cites: Official Stellar setup docs for Rust/target requirements. | Official Stellar CLI/Lab docs for current command and network/provider behavior.\nGT-51 PRECISION CORRECTION 2026-07-11: prefer prebuilt/Winget, require wasm32v1-none and explicit MSVC prerequisites, and keep environment-specific errors source-qualified.\nAccurately quoting the canonical smart-contract skill documentation without error-keyed rows for missing WASM, `link.exe`, identity or alias collisions, or funding is not a wrong claim while a cached or older copy still lacks the rows added by the 2026-08-14 fix; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source.\nRECHECK 2026-11-02: `stellar token balance` first appears in Stellar CLI v28.0.0 (2026-08-26). An answer for an older pinned CLI that routes balances through `stellar contract invoke ... -- balance`, Horizon, RPC, or Lab is also correct."
   },
   "tags": {
     "category": "tooling-infra",
@@ -37,8 +37,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-31",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-06-15",
     "sources": [
       {
         "class": "A",
@@ -74,6 +74,30 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-cli/releases/tag/v27.0.0",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.0.0",
+        "note": "v28.0.0 published 2026-08-26; adds stellar token balance (#2651)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
+        "note": "Read balances with stellar token balance",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets",
+        "note": "SAC balance invoke route",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local stellar 28.1.0 (c0f4d0da): stellar token balance --id native --account <G> --network testnet --output json; stellar account --help",
+        "note": "token balance returns JSON balance; 'unrecognized subcommand account'",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -100,40 +124,48 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Stellar CLI v28.0.0 (2026-08-26) added `stellar token balance`; CLI v28.1.0 has no `stellar account` subcommand; SAC balance invoke, Horizon, RPC, and Lab remain valid balance routes",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/blob/v28.0.0/FULL_HELP_DOCS.md — '## `stellar token balance` Read the token balance of an account or contract'; absent in v27.0.0; gh api releases/tags/v28.0.0 published_at 2026-08-26T18:52:07Z",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata — 'Read balances and token metadata with `stellar token balance`, `name`, `symbol`, and `decimals`, no key required.'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "F",
+            "ref": "stellar 28.1.0: `stellar token balance --id native --account <G> --network testnet --output json` -> {\"balance\":...}; `stellar account --help` -> \"error: unrecognized subcommand 'account'\"",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "E",
+            "ref": "Raven stellarDocs.search_docs 'stellar token balance CLI' -> https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-token-balance",
+            "observedAt": "2026-11-02"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-51 primary/blind matrices independently confirmed the current target and source-boundary correction.",
-        "Sibling sweep checked q-tool-cli-install, q-tool-cli-init-build-deploy, and q-sor-build-target-wasm32v1; sk-006 already owns the missing error-keyed upstream coverage.",
-        "Structural re-form (symmetric-caution): added a cached-skill grading caution for sk-006; the CLI and Windows troubleshooting facts are unchanged.",
-        "No live recheck was required for this pure symmetric-caution re-form.",
-        "Improvements review 2026-08-27: improvements/resolved.json entry sk-006 records the 2026-08-14 upstream fix; the disputed claim is whether older skill copies contain error-keyed rows for missing WASM, link.exe, identity or alias collisions, and funding.",
-        "Sibling sweep 2026-08-27: grep sk-006|link.exe|No such file or directory wasm|Unable to fund account|alias already exists → no other topical case; no contradiction",
-        "Structural re-form (compound-predicate): Reworded six pinned long or compound facts in place; the obsolete target and duplicate-alias tails remain concrete avoid claims.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — current contract setup still requires Rust 1.84+ and wasm32v1-none.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — contract build and bindings still require the correct generated Wasm path.",
-        "Live re-check 2026-08-27: https://learn.microsoft.com/en-us/windows/dev-environment/rust/setup — Windows Rust still requires rustup/PATH and MSVC Build Tools or a consistent WSL toolchain.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — aliases remain persistent CLI identity/network configuration with reuse, removal, and overwrite controls.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab — Friendbot funding remains limited to test networks while mainnet uses real funds and a selected or BYO provider.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — current balance inspection routes remain CLI transaction/payment/contract helpers, ledger entry fetch, Horizon/RPC, or Lab rather than a generic stellar account balance command.",
-        "Sibling sweep 2026-08-27: grep wasm32v1-none|link.exe|alias already exists|Unable to fund account|stellar account|BYO RPC → q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 2 review (gt2-grok-rev)): restored the Windows Rust/rustup + MSVC-or-WSL install requirement as a keyFact; truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — current contract setup still requires Rust 1.84+ and wasm32v1-none.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — contract build and bindings still require the correct generated Wasm path.",
-        "Live re-check 2026-08-30: https://learn.microsoft.com/en-us/windows/dev-environment/rust/setup — Windows Rust still requires rustup/PATH and MSVC Build Tools or a consistent WSL toolchain.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/lab — aliases remain persistent CLI identity/network configuration with reuse, removal, and overwrite controls.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/lab — Friendbot funding remains limited to test networks while mainnet uses real funds and a selected or BYO provider.",
-        "Live re-check 2026-08-30: https://learn.microsoft.com/en-us/windows/dev-environment/rust/setup — current balance inspection routes remain CLI transaction/payment/contract helpers, ledger entry fetch, Horizon/RPC, or Lab rather than a gen...",
-        "Sibling sweep 2026-08-30: grep Rust 1.84|wasm32v1-none|link.exe|alias already exists → q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction"
+        "Live B 2026-11-02: https://github.com/stellar/stellar-cli/releases/tag/v28.0.0 published 2026-08-26T18:52:07Z; FULL_HELP_DOCS.md at v28.0.0 and v28.1.0 has '`stellar token balance` Read the token balance of an account or contract'; v27.0.0 does not.",
+        "Live F 2026-11-02: local stellar 28.1.0 (c0f4d0da) — `stellar token balance --id native --account GAIH3ULLFQ4DGSECF2AR555KZ4KNDGEKN4AFI4SU2M7B43MGK3QJZNSR --network testnet --output json` returned a JSON balance; `stellar account --help` returned \"error: unrecognized subcommand 'account'\".",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata — 'Read balances and token metadata with `stellar token balance` ...'; https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets still documents the SAC balance invoke.",
+        "Live E 2026-11-02: Raven stellarDocs.search_docs 'stellar token balance command' — 'stellar token balance --id native --account <ADDRESS> --output json answers'.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — 'Rust toolchain `v1.84.0` or higher, as the `wasm32v1-none` target is only available in recent versions'; Friendbot is not available on Mainnet (https://developers.stellar.org/docs/networks).",
+        "Verifier modification: the negative claim about `stellar account` is date-scoped to CLI v28.1.0, and keyFacts[5] keeps the SAC invoke route so a true older-CLI answer is not punished.",
+        "Sibling sweep 2026-11-02: q-ti-fetch-all-balances-classic-sac and q-ti-custodial-account-generation-c-address use SAC/Horizon balance routes; no contradiction."
       ],
       "rootCause": [
-        "improvements/resolved.json entry sk-006",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "freshness-drift: Stellar CLI v28.0.0 (2026-08-26) added `stellar token balance` after the golden said there was no CLI balance shortcut."
       ]
     },
     "origin": "raven-next q-ti-cli-rust-windows-troubleshooting"

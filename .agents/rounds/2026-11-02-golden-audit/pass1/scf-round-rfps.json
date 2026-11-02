@@ -1,0 +1,1718 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "scf-round-rfps",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-scf-open-rfps",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question",
+     "claim": "Asks which SCF RFPs are open now and what SCF asks builders to build this quarter",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-09-03, two Q3 RFP briefs remain open: LayerZero DVN and x402 Facilitator with Bazaar (presented as the current roster)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-16T18:20:46Z GITBOOK-246, scf-awards/build-award/rfp-track.md +1 -197: '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More c…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/discussions/45",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-13T09:16:21Z, tupui (Pamphile Roy): 'Hi, there is no RFP at the moment. We are not sure at the moment when we will have a list. Hopefully before the dea…"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/lumenloop/status/2112203379225321685",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-19: 'Stellar Community Fund #46 dates to know: Interest form: aim for Oct 23 ... Full submission: Nov 8 New RFPs come after Meridian, with a later deadl…"
+      },
+      {
+       "class": "D",
+       "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab",
+       "observedAt": "2026-11-02",
+       "quote": "2026-09-23: 'RFP Track (Developer Tooling): 4 projects, $445,000 worth of XLM' ... '4 projects were awarded this round across two RFPs.' x402 Facilitator with B…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.rumblefish.dev/blog/post/rumble-fish-grant-stellar-x402-facilitator/",
+       "observedAt": "2026-11-02",
+       "quote": "2026-09-30: 'selected in the RFP Track (Developer Tooling), as one of three teams funded under the x402 Facilitator with Bazaar RFP'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Scout returns one synthetic scf-round-46 row representing #46 Submission through 2026-11-09; not a brief",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Reports the two currently open RFP briefs.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-16T18:20:46Z GITBOOK-246, scf-awards/build-award/rfp-track.md +1 -197: '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More c…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/discussions/45",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-13T09:16:21Z, tupui (Pamphile Roy): 'Hi, there is no RFP at the moment. We are not sure at the moment when we will have a list. Hopefully before the dea…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Reports one synthetic SCF #46 round row.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Distinguishes an RFP brief from a synthetic round row.",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do NOT claim syntheticRounds=0 or omit the current synthetic #46 row.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Do NOT count the synthetic round row as a third RFP brief.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[2]",
+     "claim": "Do NOT claim an open brief guarantees eligibility or an invitation.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'1. Submit the SCF Interest form and indicate your interest in the RFP Track.' '2. Eligible teams will be invited to submit to an upcoming Build round.'"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Teams interested in participating in SCF #46 should submit the interest form ASAP in order to be considered. If you meet the requirements, you will be invited …"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[3]",
+     "claim": "Do NOT claim the observed roster is permanent or complete.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "As of 2026-09-03 two briefs remain open; #46 through 2026-11-09 as of 2026-11-02; Nov 8 attributed = partial cap",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-16T18:20:46Z GITBOOK-246, scf-awards/build-award/rfp-track.md +1 -197: '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More c…"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+       "observedAt": "2026-11-02",
+       "quote": "2026-11-01: 'SCF #46 submissions are due by Nov 8.' (also @lumenloop 2026-10-30 roundup 'applications close November 8'; devgrantsdaily.com 2026-09-21 'closes o…"
+      }
+     ]
+    },
+    {
+     "field": "(new) Q4 RFP briefs not yet published",
+     "claim": "As of 2026-11-02, no Q4 2026 RFP brief is published",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-16T18:20:46Z GITBOOK-246, scf-awards/build-award/rfp-track.md +1 -197: '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More c…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/discussions/45",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-13T09:16:21Z, tupui (Pamphile Roy): 'Hi, there is no RFP at the moment. We are not sure at the moment when we will have a list. Hopefully before the dea…"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/lumenloop/status/2112203379225321685",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-19: 'Stellar Community Fund #46 dates to know: Interest form: aim for Oct 23 ... Full submission: Nov 8 New RFPs come after Meridian, with a later deadl…"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_search + parallel-cli (--after-date 2026-09-20) + perplexity_search (month) + Lumenloop search_content_semantic (date_start 2026-10-01)",
+       "observedAt": "2026-11-02",
+       "quote": "No published Q4 2026 SCF RFP brief found in any result; hits were the RFP Track page, SCF #45 recaps, #46 deadline posts, and Meridian coverage"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer checks the official SCF RFP Track page and the live Scout response, and dates each roster. As of 2026-11-02, the official page lists no open RFP brief. It says \"October 2026: New Q4 RFPs are coming soon.\" A 2026-10-16 handbook edit removed the two Q3 briefs, LayerZero DVN and x402 Facilitator with Bazaar. SCF #45 awarded teams under both. Scout still marks those two Q3 briefs open and adds one synthetic `scf-round-46` row. That row represents #46's Submission window, which runs through 2026-11-09 as of 2026-11-02. It is not a brief. A strong answer reports the official state …",
+     "reason": "Roster contradicted by A+B+D as of 2026-11-02; keep Scout row as dated context."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Reports no open RFP brief on the official RFP Track page as of 2026-11-02.",
+     "reason": "True current answer would fail the old fact."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "replace",
+     "new": "Reports that new Q4 RFPs are announced as coming soon, not yet published.",
+     "reason": "Answers the \"this quarter\" half of the question; replaces a Scout-internal requirement."
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "op": "remove",
+     "new": null,
+     "reason": "Scout-artifact requirement; avoid[1] keeps the brief-vs-row trap."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT claim syntheticRounds=0 or count the synthetic #46 round row as an RFP brief.",
+     "reason": "Drop the omission clause; keep the false-claim traps."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "replace",
+     "new": "Do NOT state without Scout attribution that LayerZero DVN or x402 Bazaar is an open brief now.",
+     "reason": "Answer-visible trap for the contradicted claim."
+    },
+    {
+     "field": "golden.avoid[+]",
+     "op": "append",
+     "new": "Do NOT claim Q4 2026 RFP briefs are published as of 2026-11-02.",
+     "reason": "Traps invented Q4 roster; as-of phrased."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Freshness item: grade dated roster and round behavior. As of 2026-11-02, the official RFP Track page lists no open brief and says \"October 2026: New Q4 RFPs are coming soon.\" Scout /api/rfps?status=open still marks the two Q3 briefs open (activeQuarter q3-2026) and returns one separate #46 synthetic row; that lag is an upstream Scout defect. Correct: the official state, or both sources with the conflict flagged. At most partial: the two Q3 briefs reported as open with Scout attribution and a date, but without the official state. Wrong: the two Q3 briefs stated as open now without attribution. …",
+     "reason": "Encode Scout lag grading and keep the Nov 8 partial cap."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "New observation date."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2026-11-10",
+     "reason": "Event-tied: #46 Submission closes 2026-11-09 and Q4 briefs may publish any day; reverify the day after."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/<new sls finding, to be filed>: Scout /api/rfps keeps withdrawn Q3 briefs status open after the official RFP Track page removed them (2026-10-16)",
+    "eval-side authoring flaw: keyFacts/avoid graded a Scout-internal synthetic row (avoid punished omission, not a false claim)"
+   ],
+   "siblings": "q-scf-rfp-tooling; q-scf-current-round; q-edge-fresh-latest-scf-round; q-scf-open-rfps-live; q-scf-contract-verification-rfp-live; q-scf-passkey-rfps-live; q-scf-rfps-hackathons-live; q-scf-build-tracks; q-scf-skill-stellar-scout; q-defi-x402-on-stellar-what; q-live-rfps-open-now (eval/qa/corpus/live/live-cases.json)"
+  },
+  {
+   "id": "q-scf-rfp-tooling",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "\"Yes. As of 2026-09-03, two open infrastructure briefs remain published: LayerZero DVN and x402 Facilitator with Bazaar.\"",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-16T18:20:46Z GITBOOK-246, scf-awards/build-award/rfp-track.md +1 -197: '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More c…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/discussions/45",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-13T09:16:21Z, tupui (Pamphile Roy): 'Hi, there is no RFP at the moment. We are not sure at the moment when we will have a list. Hopefully before the dea…"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/lumenloop/status/2112203379225321685",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-19: 'Stellar Community Fund #46 dates to know: Interest form: aim for Oct 23 ... Full submission: Nov 8 New RFPs come after Meridian, with a later deadl…"
+      },
+      {
+       "class": "D",
+       "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab",
+       "observedAt": "2026-11-02",
+       "quote": "2026-09-23: 'RFP Track (Developer Tooling): 4 projects, $445,000 worth of XLM' ... '4 projects were awarded this round across two RFPs.' x402 Facilitator with B…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.rumblefish.dev/blog/post/rumble-fish-grant-stellar-x402-facilitator/",
+       "observedAt": "2026-11-02",
+       "quote": "2026-09-30: 'selected in the RFP Track (Developer Tooling), as one of three teams funded under the x402 Facilitator with Bazaar RFP'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Applicants start with the rolling interest form and submit a full proposal only if invited",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'1. Submit the SCF Interest form and indicate your interest in the RFP Track.' '2. Eligible teams will be invited to submit to an upcoming Build round.'"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Teams interested in participating in SCF #46 should submit the interest form ASAP in order to be considered. If you meet the requirements, you will be invited …"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-11-02, #46 accepts submissions through 2026-11-09",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "meta.scfRound: currentRound 46, currentPhase 'Submission', lastConfirmedRound 45, 'In progress: SCF #46 (Submission, submission deadline 2026-11-09). SCF #45 is…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Reports two open infrastructure briefs.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-16T18:20:46Z GITBOOK-246, scf-awards/build-award/rfp-track.md +1 -197: '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More c…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Reports one synthetic SCF #46 round row.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Explains the rolling interest-form-to-invitation path.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'1. Submit the SCF Interest form and indicate your interest in the RFP Track.' '2. Eligible teams will be invited to submit to an upcoming Build round.'"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Teams interested in participating in SCF #46 should submit the interest form ASAP in order to be considered. If you meet the requirements, you will be invited …"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do NOT claim syntheticRounds=0 or count the round row as a brief.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Do NOT claim every interest form receives an invitation.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'1. Submit the SCF Interest form and indicate your interest in the RFP Track.' '2. Eligible teams will be invited to submit to an upcoming Build round.'"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[2]",
+     "claim": "Do NOT claim each brief has a published bounty or community vote.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'3. Submissions are reviewed by 2 reviewers from that quarter’s Category Delegate Panel.' (no community vote for RFP Track; SCF #44 recap: 'RFP Track ... review…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "\"An answer that reports both open briefs and states that scope is correct. An answer that says no RFP is open is wrong.\"",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no LayerZero or x402 brief on the …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-16T18:20:46Z GITBOOK-246, scf-awards/build-award/rfp-track.md +1 -197: '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More c…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/discussions/45",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-13T09:16:21Z, tupui (Pamphile Roy): 'Hi, there is no RFP at the moment. We are not sure at the moment when we will have a list. Hopefully before the dea…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Handbook defines RFP Track as developer tooling; Scout labels the briefs Infrastructure and Payments",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'The submission must address an [open RFP](rfp-track.md#current-open-rfps) from the current quarter'; 'The RFP (Request for Proposals) Track funds developer too…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T14:18:06.597Z: counts open=2 syntheticRounds=1; activeQuarter 'q3-2026'; rows layerzero-dvn status open, x402-facilitator-bazaar status o…"
+      }
+     ]
+    },
+    {
+     "field": "(new) RFP submission must address an open brief from the current quarter",
+     "claim": "An RFP Track submission must address an open RFP from the current quarter",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'The submission must address an [open RFP](rfp-track.md#current-open-rfps) from the current quarter'; 'The RFP (Request for Proposals) Track funds developer too…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/discussions/45",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-13T09:16:21Z, tupui (Pamphile Roy): 'Hi, there is no RFP at the moment. We are not sure at the moment when we will have a list. Hopefully before the dea…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "No, per the official SCF RFP Track page as of 2026-11-02. The page lists no open brief. It says \"October 2026: New Q4 RFPs are coming soon.\" A 2026-10-16 handbook edit removed the two Q3 briefs, LayerZero DVN and x402 Facilitator with Bazaar. SCF #45 awarded teams under both. Scout still marks those two Q3 briefs open and returns one synthetic `scf-round-46` row; that is a source lag. An RFP Track submission must address an open brief from the current quarter. Applicants start with the rolling interest form. They submit a full proposal only if invited. As of 2026-11-02, #46 accepts submissions…",
+     "reason": "Roster contradicted; yes/no flips to no per the official page as of 2026-11-02."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Reports no open RFP brief on the official RFP Track page as of 2026-11-02.",
+     "reason": "Contradicted fact."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Says an RFP Track proposal must answer an open brief from the current quarter.",
+     "reason": "Replace Scout-internal requirement with the official rule that decides the question."
+    },
+    {
+     "field": "golden.avoid[+]",
+     "op": "append",
+     "new": "Do NOT state without Scout attribution that LayerZero DVN or x402 Bazaar is an open brief now.",
+     "reason": "Answer-visible trap for the contradicted claim."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Freshness item: grade dated roster and round behavior. As of 2026-11-02, the official RFP Track page lists no open brief and says \"October 2026: New Q4 RFPs are coming soon.\" Scout /api/rfps?status=open still marks the two Q3 briefs open and returns one separate #46 row; that lag is an upstream Scout defect. Correct: no open brief per the official page, or both sources with the conflict flagged. At most partial: the two Q3 briefs reported as open with Scout attribution and a date, but without the official state. Wrong: the two Q3 briefs stated as open now without attribution. The rolling inter…",
+     "reason": "Remove expired trap; encode Scout-lag grading; keep the Nov 8 partial cap and scope note."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "New observation date."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2026-11-11",
+     "reason": "Event-tied: day after #46 Submission closes, staggered one day from q-scf-open-rfps; Q4 briefs may publish any day."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/<new sls finding, to be filed>: Scout /api/rfps keeps withdrawn Q3 briefs status open after the official RFP Track page removed them (2026-10-16)",
+    "eval-side authoring flaw: notes hard-coded \"says no RFP is open is wrong\", a date-contingent trap with no expiry"
+   ],
+   "siblings": "q-scf-open-rfps; q-scf-current-round; q-edge-fresh-latest-scf-round; q-scf-open-rfps-live; q-scf-contract-verification-rfp-live; q-scf-passkey-rfps-live; q-scf-build-tracks; q-defi-x402-on-stellar-what"
+  },
+  {
+   "id": "q-scf-current-round",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-11-02, SCF #46 is the current round in Submission",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "meta.scfRound: currentRound 46, currentPhase 'Submission', lastConfirmedRound 45, 'In progress: SCF #46 (Submission, submission deadline 2026-11-09). SCF #45 is…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "2026-11-09 is SCF #46 submission deadline",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "meta.scfRound: currentRound 46, currentPhase 'Submission', lastConfirmedRound 45, 'In progress: SCF #46 (Submission, submission deadline 2026-11-09). SCF #45 is…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+       "observedAt": "2026-11-02",
+       "quote": "2026-11-01: 'SCF #46 submissions are due by Nov 8.' (also @lumenloop 2026-10-30 roundup 'applications close November 8'; devgrantsdaily.com 2026-09-21 'closes o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "#45 is the last concluded round; #44 concluded",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "meta.scfRound: currentRound 46, currentPhase 'Submission', lastConfirmedRound 45, 'In progress: SCF #46 (Submission, submission deadline 2026-11-09). SCF #45 is…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Do NOT invent a deadline time, timezone, notification date, or submission count.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Official deadline moved from 2026-11-08 (2026-10-01; 2026-10-18 Wayback) to 2026-11-09; third-party posts still say Nov 8",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+       "observedAt": "2026-11-02",
+       "quote": "2026-11-01: 'SCF #46 submissions are due by Nov 8.' (also @lumenloop 2026-10-30 roundup 'applications close November 8'; devgrantsdaily.com 2026-09-21 'closes o…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-open-rfps; q-scf-rfp-tooling; q-edge-fresh-latest-scf-round; q-scf-submission-lifecycle-deadlines"
+  },
+  {
+   "id": "q-edge-fresh-latest-scf-round",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-11-02, SCF #46 is the current round in Submission",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "meta.scfRound: currentRound 46, currentPhase 'Submission', lastConfirmedRound 45, 'In progress: SCF #46 (Submission, submission deadline 2026-11-09). SCF #45 is…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "2026-11-09 is SCF #46 submission deadline",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "meta.scfRound: currentRound 46, currentPhase 'Submission', lastConfirmedRound 45, 'In progress: SCF #46 (Submission, submission deadline 2026-11-09). SCF #45 is…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+       "observedAt": "2026-11-02",
+       "quote": "2026-11-01: 'SCF #46 submissions are due by Nov 8.' (also @lumenloop 2026-10-30 roundup 'applications close November 8'; devgrantsdaily.com 2026-09-21 'closes o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "#45 is the last concluded round; #44 concluded",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps?status=open",
+       "observedAt": "2026-11-02",
+       "quote": "meta.scfRound: currentRound 46, currentPhase 'Submission', lastConfirmedRound 45, 'In progress: SCF #46 (Submission, submission deadline 2026-11-09). SCF #45 is…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Do NOT invent a deadline time, timezone, notification date, or submission count.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Official deadline moved from 2026-11-08 (2026-10-01; 2026-10-18 Wayback) to 2026-11-09; third-party posts still say Nov 8",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02T15:49Z",
+       "quote": "'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 Ended Deadline to submit: June 14, …"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+       "observedAt": "2026-11-02",
+       "quote": "2026-11-01: 'SCF #46 submissions are due by Nov 8.' (also @lumenloop 2026-10-30 roundup 'applications close November 8'; devgrantsdaily.com 2026-09-21 'closes o…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-open-rfps; q-scf-rfp-tooling; q-scf-current-round; q-scf-submission-lifecycle-deadlines"
+  },
+  {
+   "id": "q-scf-ecosystem-listing-partner-jobs",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Submit an ecosystem project through the embedded Submit Your Project form on the ecosystem page",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/ecosystem",
+       "observedAt": "2026-11-02",
+       "quote": "'Submit your project Want to be included? Are you building a project, product, or application on Stellar and would like to be featured in this project directory…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Service-provider participation via the service-provider page/form, without assuming acceptance",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/ecosystem/service-providers",
+       "observedAt": "2026-11-02",
+       "quote": "'The trusted service providers below have the experience needed to help your business integrate with the Stellar network.' ... 'Connect Want to know more? Loadi…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Hackathon sponsorship is event/organizer-specific unless a named official intake exists",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/events/community",
+       "observedAt": "2026-11-02",
+       "quote": "'Community events Where builders and leaders meet globally Smaller gatherings across the Stellar ecosystem' - event listings; no universal sponsor intake form s…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SDF jobs are on the Foundation careers/Ashby pages; ecosystem jobs on company careers pages",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/careers",
+       "observedAt": "2026-11-02",
+       "quote": "'Browse all open positions' links https://jobs.ashbyhq.com/stellar; https://stellar.org/jobs redirects to https://jobs.ashbyhq.com/stellar"
+      },
+      {
+       "class": "F",
+       "ref": "https://api.ashbyhq.com/posting-api/job-board/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Public job-board API returned 24 jobs (e.g. 'Staff Software Engineer, C++/Rust', 'Director, Research')"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Matching Fund: Enterprise Fund track, pre-seed to Series B, lead investor + term sheet, $200K minimum, 1:1, up to $500K, meaningful Stellar integration, diligence",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/matching-fund",
+       "observedAt": "2026-11-02",
+       "quote": "'designed specifically for earlier stage companies (Pre-seed to Series B)' ... 'secure a lead investor and submit your term sheet. If selected, funds will be ma…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/announcing-the-matching-fund",
+       "observedAt": "2026-11-02",
+       "quote": "'Funds will be matched up to $500K (minimum check size: $200K).' 'Company’s proposal must use Stellar in a meaningful way' 'Submit business and legal diligence …"
+      },
+      {
+       "class": "D",
+       "ref": "https://grantedai.com/grants/matching-fund-stellar-development-foundation-dd9012ef",
+       "observedAt": "2026-11-02",
+       "quote": "'funds will be matched 1:1 up to US $500,000, with a minimum check size of US $200,000' (mirrors official page)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Dated wording \"As of 2026-07-10\" / \"as of **2026-07-10**\"",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/ecosystem",
+       "observedAt": "2026-11-02",
+       "quote": "'Submit your project Want to be included? Are you building a project, product, or application on Stellar and would like to be featured in this project directory…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/ecosystem/service-providers",
+       "observedAt": "2026-11-02",
+       "quote": "'The trusted service providers below have the experience needed to help your business integrate with the Stellar network.' ... 'Connect Want to know more? Loadi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/careers",
+       "observedAt": "2026-11-02",
+       "quote": "'Browse all open positions' links https://jobs.ashbyhq.com/stellar; https://stellar.org/jobs redirects to https://jobs.ashbyhq.com/stellar"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/matching-fund",
+       "observedAt": "2026-11-02",
+       "quote": "'designed specifically for earlier stage companies (Pre-seed to Series B)' ... 'secure a lead investor and submit your term sheet. If selected, funds will be ma…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..3]",
+     "claim": "Memory substitution, acceptance promises/universal sponsor intake, Matching Fund conflation, permanent roster",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/matching-fund",
+       "observedAt": "2026-11-02",
+       "quote": "'designed specifically for earlier stage companies (Pre-seed to Series B)' ... 'secure a lead investor and submit your term sheet. If selected, funds will be ma…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/events/community",
+       "observedAt": "2026-11-02",
+       "quote": "'Community events Where builders and leaders meet globally Smaller gatherings across the Stellar ecosystem' - event listings; no universal sponsor intake form s…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "GT-37 correction: embedded forms, Ashby, Matching Fund 1:1 $200K-$500K",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/ecosystem",
+       "observedAt": "2026-11-02",
+       "quote": "'Submit your project Want to be included? Are you building a project, product, or application on Stellar and would like to be featured in this project directory…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/careers",
+       "observedAt": "2026-11-02",
+       "quote": "'Browse all open positions' links https://jobs.ashbyhq.com/stellar; https://stellar.org/jobs redirects to https://jobs.ashbyhq.com/stellar"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/matching-fund",
+       "observedAt": "2026-11-02",
+       "quote": "'designed specifically for earlier stage companies (Pre-seed to Series B)' ... 'secure a lead investor and submit your term sheet. If selected, funds will be ma…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\nThese are separate workflows as of **2026-11-02**. Submit an ecosystem project through the embedded **Submit Your Project** form on Stellar's ecosystem page; inquire about service-provider participation through the current service-provider page/form, without assuming acceptance. Hackathon sponsorship is event/organizer-specific unless a named offic…",
+     "reason": "Refresh the visible as-of date to the 2026-11-02 re-observation; content unchanged."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "New observation date."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-05-14",
+     "reason": "Not event-tied; stable program pages; land in the batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-scf-vs-sdf-enterprise-fund; q-scf-build-tracks"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5); proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Every claim re-derived: official page lists no brief (A live .md, B commit head); the 2026-10-16 edit removed both Q3 briefs (B diff); SCF #45 awarded teams under both briefs (D recap: 3 x402 teams, Canary for DVN; C Lumenloop #45 submissions); Scout still marks both open plus scf-round-46 (C); #46 deadline 2026-11-09 (A). Primary classes A and B agree and D corroborates the award history, so this…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/rfps?status=open (meta.generatedAt 2026-11-02T15:49:18.132Z) and Raven scout.getRfps({status:'open'}) observedAt 2026-11-02T16:23:03Z",
+      "observedAt": "2026-11-02",
+      "quote": "\"counts\":{\"total\":16,\"open\":2,\"closed\":14,\"matched\":3,\"returned\":3,\"syntheticRounds\":1},\"activeQuarter\":\"q3-2026\" ... rows: scf-round-46 (rowType scf-round, syn…"
+     },
+     {
+      "class": "D",
+      "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (Parallel web_search + web_fetch; published 2026-09-23; mirrored at https://x.com/BuildOnStellar/article/2105977284759072916, 2026-10-02)",
+      "observedAt": "2026-11-02",
+      "quote": "RFP Track (Developer Tooling): 4 projects, $445,000 worth of XLM* ... 4 projects were awarded this round across two RFPs. ### x402 Facilitator with Bazaar (disc…"
+     },
+     {
+      "class": "C",
+      "ref": "Lumenloop POST https://api.lumenloop.com/v1/tools/find_similar_scf_submissions {round:'SCF #45'} (manifest transport)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #45 | Extending Canary DVN for Stellar | Developer Tooling | Build; SCF #45 | x402 facilitator and Bazaar discovery | budget 78000 | linked_project_slugs ['…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 ... SCF #45 Ended Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "True, dated, source-scoped; ~75 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.keyFacts[3]",
+    "decision": "modify",
+    "newText": "Reports new Q4 RFPs as announced but not yet published as of 2026-11-02.",
+    "note": "True today, but the fact is volatile and the proposed text has no as-of date. Lumenloop's 2026-10-23 roundup says new RFPs come after Meridian (late October), so publication may be imminent. Add the date so a later answer that reports newly published Q4 briefs is not penalized. 72 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 (live curl; third-party editorial)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 : Full submissions are due November 8 for up to $150K XLM in non-dilutive funding; new RFPs come after Meridian with a later deadline."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.keyFacts[4]",
+    "decision": "accept",
+    "note": "Removal is justified: the synthetic row exists only in Scout, so the keyFact would punish a correct official-only answer. The revised avoid[0] still catches counting the row as a brief. Not score laundering.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/rfps?status=open (meta.generatedAt 2026-11-02T15:49:18.132Z) and Raven scout.getRfps({status:'open'}) observedAt 2026-11-02T16:23:03Z",
+      "observedAt": "2026-11-02",
+      "quote": "\"counts\":{\"total\":16,\"open\":2,\"closed\":14,\"matched\":3,\"returned\":3,\"syntheticRounds\":1},\"activeQuarter\":\"q3-2026\" ... rows: scf-round-46 (rowType scf-round, syn…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "Answer-visible. Dropping 'or omit the current synthetic #46 row' removes a trap that would punish a correct official-only answer.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/rfps?status=open (meta.generatedAt 2026-11-02T15:49:18.132Z) and Raven scout.getRfps({status:'open'}) observedAt 2026-11-02T16:23:03Z",
+      "observedAt": "2026-11-02",
+      "quote": "\"counts\":{\"total\":16,\"open\":2,\"closed\":14,\"matched\":3,\"returned\":3,\"syntheticRounds\":1},\"activeQuarter\":\"q3-2026\" ... rows: scf-round-46 (rowType scf-round, syn…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "A false claim contradicted by A+B; answer-visible; the Scout-attribution carve-out matches the partial cap in notes.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     },
+     {
+      "class": "D",
+      "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (Parallel web_search + web_fetch; published 2026-09-23; mirrored at https://x.com/BuildOnStellar/article/2105977284759072916, 2026-10-02)",
+      "observedAt": "2026-11-02",
+      "quote": "RFP Track (Developer Tooling): 4 projects, $445,000 worth of XLM* ... 4 projects were awarded this round across two RFPs. ### x402 Facilitator with Bazaar (disc…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.avoid[+]",
+    "decision": "modify",
+    "newText": "Do NOT claim the official RFP Track page listed Q4 2026 briefs on 2026-11-02.",
+    "note": "This is a negative claim. Sweep: live handbook .md, GitHub head (no commit after 2026-10-16), Scout quarters end at q3-2026, Parallel+Perplexity found no Q4 brief. Still rephrase it as source-relative so an answer that reports a Q4 publication after 2026-11-02 is not punished.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_ask (recency=month, context=high): open SCF RFP briefs early Nov 2026",
+      "observedAt": "2026-11-02",
+      "quote": "The available results don't verify whether any Stellar Community Fund RFP Track briefs are open as of early November 2026. (no contradicting source found)"
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 (live curl; third-party editorial)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 : Full submissions are due November 8 for up to $150K XLM in non-dilutive funding; new RFPs come after Meridian with a later deadline."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Grading ladder is consistent with the evidence: correct = official state or both with conflict flagged; partial = Scout-attributed dated Q3 roster; wrong = unattributed 'open now'. This is not a canonical-page caution under ADR-0008 (Scout is an aggregator, not a canonical page). The November 8 partial cap stays valid: Lumenloop roundups and telluscoop still say November 8.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/rfps?status=open (meta.generatedAt 2026-11-02T15:49:18.132Z) and Raven scout.getRfps({status:'open'}) observedAt 2026-11-02T16:23:03Z",
+      "observedAt": "2026-11-02",
+      "quote": "\"counts\":{\"total\":16,\"open\":2,\"closed\":14,\"matched\":3,\"returned\":3,\"syntheticRounds\":1},\"activeQuarter\":\"q3-2026\" ... rows: scf-round-46 (rowType scf-round, syn…"
+     },
+     {
+      "class": "D",
+      "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (Parallel web_search + web_fetch; published 2026-09-23; mirrored at https://x.com/BuildOnStellar/article/2105977284759072916, 2026-10-02)",
+      "observedAt": "2026-11-02",
+      "quote": "RFP Track (Developer Tooling): 4 projects, $445,000 worth of XLM* ... 4 projects were awarded this round across two RFPs. ### x402 Facilitator with Bazaar (disc…"
+     },
+     {
+      "class": "C",
+      "ref": "Lumenloop POST https://api.lumenloop.com/v1/tools/find_similar_scf_submissions {round:'SCF #45'} (manifest transport)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #45 | Extending Canary DVN for Stellar | Developer Tooling | Build; SCF #45 | x402 facilitator and Bazaar discovery | budget 78000 | linked_project_slugs ['…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 ... SCF #45 Ended Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Observed 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 ... SCF #45 Ended Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2026-11-10 falls right after the 2026-11-09 deadline, when the #46 phase changes. Q4 RFPs are also expected after Meridian, so a short horizon is right. It is earlier than the 2027-05 batch window on purpose (event-tied).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 ... SCF #45 Ended Deadline to submit: August 16, 2026"
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 (live curl; third-party editorial)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 : Full submissions are due November 8 for up to $150K XLM in non-dilutive funding; new RFPs come after Meridian with a later deadline."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "'No, per the official page as of 2026-11-02' is confirmed by A+B. The current-quarter rule is quoted verbatim from A. The interest-form-to-invitation path is confirmed by A. Award history comes from D and C. Scout lag is C. Same encoding verdict as q-scf-open-rfps: confirmed-as-of, Scout lag goes to improvements/.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/rfps?status=open (meta.generatedAt 2026-11-02T15:49:18.132Z) and Raven scout.getRfps({status:'open'}) observedAt 2026-11-02T16:23:03Z",
+      "observedAt": "2026-11-02",
+      "quote": "\"counts\":{\"total\":16,\"open\":2,\"closed\":14,\"matched\":3,\"returned\":3,\"syntheticRounds\":1},\"activeQuarter\":\"q3-2026\" ... rows: scf-round-46 (rowType scf-round, syn…"
+     },
+     {
+      "class": "D",
+      "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (Parallel web_search + web_fetch; published 2026-09-23; mirrored at https://x.com/BuildOnStellar/article/2105977284759072916, 2026-10-02)",
+      "observedAt": "2026-11-02",
+      "quote": "RFP Track (Developer Tooling): 4 projects, $445,000 worth of XLM* ... 4 projects were awarded this round across two RFPs. ### x402 Facilitator with Bazaar (disc…"
+     },
+     {
+      "class": "C",
+      "ref": "Lumenloop POST https://api.lumenloop.com/v1/tools/find_similar_scf_submissions {round:'SCF #45'} (manifest transport)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #45 | Extending Canary DVN for Stellar | Developer Tooling | Build; SCF #45 | x402 facilitator and Bazaar discovery | budget 78000 | linked_project_slugs ['…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 ... SCF #45 Ended Deadline to submit: August 16, 2026"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02",
+      "quote": "The submission must address an [open RFP](#current-open-rfps) from the current quarter"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02",
+      "quote": "1. Submit the SCF Interest form and indicate your interest in the RFP Track. ... 2. Eligible teams will be invited to submit to an upcoming Build round."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "True, dated; ~75 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "Durable rule, verbatim support; ~78 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02",
+      "quote": "The submission must address an [open RFP](#current-open-rfps) from the current quarter"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "golden.avoid[+]",
+    "decision": "accept",
+    "note": "Answer-visible; matches sibling avoid and the notes ladder.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     },
+     {
+      "class": "D",
+      "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (Parallel web_search + web_fetch; published 2026-09-23; mirrored at https://x.com/BuildOnStellar/article/2105977284759072916, 2026-10-02)",
+      "observedAt": "2026-11-02",
+      "quote": "RFP Track (Developer Tooling): 4 projects, $445,000 worth of XLM* ... 4 projects were awarded this round across two RFPs. ### x402 Facilitator with Bazaar (disc…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "This removes the old 'An answer that says no RFP is open is wrong', which the evidence now contradicts. The yes/no label is now gated via keyFacts[1], so 'do not gate the yes/no label' is correctly dropped. The scope note is kept in the past tense for the Q3 briefs.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a (gh api; committed 2026-10-16T18:20:46Z, 'GITBOOK-246', +1/-197 in scf-awards/build-award/rfp-track.md; repo pushed_at 2026-10-16T18:20:48Z, no later commit)",
+      "observedAt": "2026-11-02",
+      "quote": "-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** / +_**October 2026: New Q4 RFPs are coming soon.**_ / -<summary>St…"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/rfps?status=open (meta.generatedAt 2026-11-02T15:49:18.132Z) and Raven scout.getRfps({status:'open'}) observedAt 2026-11-02T16:23:03Z",
+      "observedAt": "2026-11-02",
+      "quote": "\"counts\":{\"total\":16,\"open\":2,\"closed\":14,\"matched\":3,\"returned\":3,\"syntheticRounds\":1},\"activeQuarter\":\"q3-2026\" ... rows: scf-round-46 (rowType scf-round, syn…"
+     },
+     {
+      "class": "D",
+      "ref": "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (Parallel web_search + web_fetch; published 2026-09-23; mirrored at https://x.com/BuildOnStellar/article/2105977284759072916, 2026-10-02)",
+      "observedAt": "2026-11-02",
+      "quote": "RFP Track (Developer Tooling): 4 projects, $445,000 worth of XLM* ... 4 projects were awarded this round across two RFPs. ### x402 Facilitator with Bazaar (disc…"
+     },
+     {
+      "class": "C",
+      "ref": "Lumenloop POST https://api.lumenloop.com/v1/tools/find_similar_scf_submissions {round:'SCF #45'} (manifest transport)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #45 | Extending Canary DVN for Stellar | Developer Tooling | Build; SCF #45 | x402 facilitator and Bazaar discovery | budget 78000 | linked_project_slugs ['…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 ... SCF #45 Ended Deadline to submit: August 16, 2026"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02",
+      "quote": "1. Submit the SCF Interest form and indicate your interest in the RFP Track. ... 2. Eligible teams will be invited to submit to an upcoming Build round."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Observed 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (live curl, 2026-11-02T16:21Z)",
+      "observedAt": "2026-11-02",
+      "quote": "#### Current Open RFPs ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (two empty placeholders; no brief li…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2026-11-11 matches the Prescreen & Panel Review start after the 2026-11-09 deadline. It is staggered one day from the sibling case.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Timeline Start Interest Form Submission 2 Weeks Build Award Submission 1 Week Prescreen & Panel Review 1 Week Community Vote for Open Track"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 ... SCF #45 Ended Deadline to submit: August 16, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-ecosystem-listing-partner-jobs",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Only the as-of dates change (2026-07-10 -> 2026-11-02). Every claim was re-observed live today: the Submit-your-project form, the service-provider 'Want to know more?' form, SDF careers -> jobs.ashbyhq.com/stellar, and the Matching Fund terms (Pre-seed to Series B, lead investor + term sheet, 1:1, $200K minimum, $500K maximum). D sweep: no contradiction. Note: the class D hits are SDF-authored pag…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/ecosystem (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Submit your project Want to be included? Are you building a project, product, or application on Stellar and would like to be featured in this project directory?…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/ecosystem/service-providers (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Audit partners Certora ... Connect Want to know more? Loading form..."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/foundation/careers (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "link target https://jobs.ashbyhq.com/stellar"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/events/community",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200 (page live; event-specific paths, not re-read in full)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/matching-fund (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "designed specifically for earlier stage companies (Pre-seed to Series B) ... secure a lead investor and submit your term sheet. If selected, funds will be match…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search: Matching Fund terms (hits: stellar.org matching-fund page, https://stellar.org/blog/foundation-news/announcing-the-matching-fund, https://stellar.org/press/stellar-development-foundation-launches-30-million-fund-to-power-startups-leveraging-blockchain)",
+      "observedAt": "2026-11-02",
+      "quote": "Funds will be matched up to $500K (minimum check size: $200K). ... The Fund is for pre-seed to Series B companies (no contradicting source)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-ecosystem-listing-partner-jobs",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Observed 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/ecosystem (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Submit your project Want to be included? Are you building a project, product, or application on Stellar and would like to be featured in this project directory?…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/matching-fund (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "designed specifically for earlier stage companies (Pre-seed to Series B) ... secure a lead investor and submit your term sheet. If selected, funds will be match…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-ecosystem-listing-partner-jobs",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Not event-tied (freshness 'live', stable program terms). A six-month horizon of 2027-05-14 is inside the batch window. Existing solo:// evidence refs stay as dated records. Do not add new ones.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/matching-fund (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "designed specifically for earlier stage companies (Pre-seed to Series B) ... secure a lead investor and submit your term sheet. If selected, funds will be match…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track (Parallel web_fetch: STALE July cache)",
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (curl, live)",
+   "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md",
+   "gh api repos/stellar/scf-handbook/commits/e07b4bfce1",
+   "gh api repos/stellar/scf-handbook/contents/scf-awards/build-award/rfp-track.md",
+   "https://communityfund.stellar.org/awards (curl, live)",
+   "https://stellarlight.xyz/api/rfps?status=open",
+   "https://stellarlight.xyz/api/rfps",
+   "https://api.lumenloop.com/v1/tools/find_similar_scf_submissions (x3)",
+   "Raven execute: scout.getRfps, lumenloop.search_content_semantic, stellarDocs.search_docs",
+   "Parallel web_search (4 queries: SCF #45 RFP awards, Q4 RFPs)",
+   "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab (Parallel web_fetch)",
+   "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 (curl)",
+   "Perplexity perplexity_search x2, perplexity_ask x1",
+   "https://stellar.org/grants-and-funding/matching-fund",
+   "https://stellar.org/ecosystem",
+   "https://stellar.org/ecosystem/service-providers",
+   "https://stellar.org/foundation/careers",
+   "https://stellar.org/events/community"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-scf-open-rfps; q-scf-rfp-tooling; q-scf-ecosystem-listing-partner-jobs",
+  "verifiedOnly": "q-scf-current-round; q-edge-fresh-latest-scf-round",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-scf-open-rfps",
+    "issue": "File a stellar-light-scout improvements finding: GET https://stellarlight.xyz/api/rfps?status=open still returns layerzero-dvn and x402-facilitator-bazaar as open (activeQuarter q3-2026) on 2026-11-02; official page withdrew them in commit e07b4bfce1 on 2026-10-16. rootCause names it as not yet filed; add the improvements/ path once filed."
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "issue": "Same Scout lag finding as q-scf-open-rfps; also run eval:qa:register: cluster-081 and cluster-085 notes still say 'two current Q3 briefs', and dateContingentTraps disposition text says the roster conflict stays queued (now resolved; its text also has a duplicated '.agents/TODO.md before their 2026-11-12/13 due dates' fragment)."
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "issue": "Out of batch, verifier flag: this case and q-scf-passkey-rfps-live grade 'only open rows returned by the live open-RFP response', which now rewards echoing Scout's withdrawn Q3 briefs; needs a symmetric caution."
+   },
+   {
+    "id": "q-scf-ecosystem-listing-partner-jobs",
+    "issue": "Replacing truth.verified dropped three legacy solo:// evidence refs from the prior event (git history keeps them). The verifier said they 'stay as dated records'; confirm that replacement of the latest-event block is acceptable under the AGENTS.md Solo rule."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-scf-open-rfps",
+    "log": "Confirmed-as-of (not disputed: A live page + B commit e07b4bfce1 + D SCF #45 recap outweigh Scout, which cannot corroborate itself): answer/notes now report no open brief on the official page as of 2026-11-02 with the Scout lag flagged; keyFacts[2,3] replaced (dated via 'in the dated example', a form-only lint re-form of the verifier text), keyFacts[4] removed; avoid[0,1] replaced, a dated Q4 avoid appended; sources and two corroboration rows (confirmed-as-of; contradicted for the mirrored avoid) added; asOf 2026-11-02; reverifyBy 2026-11-10 (event-tied: deadline 2026-11-09, Q4 RFPs expected after Meridian); new truth.verified with rootCause freshness-drift + TODO entry + pending Scout finding."
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "log": "Answer flips to 'No, per the official RFP Track page as of 2026-11-02' with the Scout lag flagged; keyFacts[1,2] replaced (current-quarter rule quoted from A); Scout-attribution avoid appended; notes drop the expired 'says no RFP is open is wrong' trap; sources, corroboration rows, asOf 2026-11-02; reverifyBy 2026-11-11 (event-tied: Panel Review starts 2026-11-11); new truth.verified."
+   },
+   {
+    "id": "q-scf-ecosystem-listing-partner-jobs",
+    "log": "Only as-of dates in golden.answer 2026-07-10 -> 2026-11-02; source notes refreshed with observedAt quotes; added SDF Matching Fund blog (A), Ashby API (F), events page (A) and a Matching Fund corroboration row; asOf 2026-11-02; reverifyBy 2027-05-14; new truth.verified rootCause freshness-drift."
+   },
+   {
+    "id": "q-scf-current-round",
+    "log": "No gospel change. truth.verified evidence prepended with the audit's A/C/D re-observations (by updated, prior event lines kept); Scout source note refreshed; SCF #46 detail page source added; reverifyBy 2026-11-12 kept (event-tied)."
+   },
+   {
+    "id": "q-edge-fresh-latest-scf-round",
+    "log": "No gospel change. Same verified refresh as q-scf-current-round; duplicate communityfund source row removed and the SCF #46 detail page added; reverifyBy 2026-11-12 kept (event-tied)."
+   }
+  ]
+ }
+}

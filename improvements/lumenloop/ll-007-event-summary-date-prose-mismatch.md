@@ -17,6 +17,8 @@ recurrences:
     evidence: GT-39 independently found the Jaipur Builders Camp structured title/date aligned to the direct Luma record while generated summary/slug retained the stale Goa identity
   - date: 2026-08-11
     evidence: event ids 1597 and 1598 still have June 27 structured `start_at` values and summary prose that says July 27; upstream #20 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity
+  - date: 2026-11-02
+    evidence: "POST /v1/tools/search_content_semantic {query: Stellar Builders Camp Jaipur, types: [events]} at 2026-11-02T17:18:48Z returned id 1444 with title \"Stellar Builders Camp - Jaipur Edition\" and start_at 2026-08-21T09:30:00.000Z, but slug stellar-builders-camp-goa-edition and a summary that begins \"5-day immersive builder residency in Goa\". Golden case: q-scf-regional-india."
 probe:
   type: http-text
   url: https://api.lumenloop.com/v1/tools/search_content_semantic

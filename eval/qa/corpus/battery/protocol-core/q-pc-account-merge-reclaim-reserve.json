@@ -16,7 +16,7 @@
       "Do NOT say issued assets transfer through AccountMerge or ignore trustlines/offers/data.",
       "Do NOT require removal of all signers or all sponsorship relationships without the sponsor-versus-sponsored distinction."
     ],
-    "notes": "GT-29 CORRECTION 2026-07-10: current Core allows signer-only subentries and deletes remaining signers during merge. Clear non-signer entries and resolve sponsorship obligations the source provides; do not collapse sponsor and sponsored states.\nGT-29 independently confirmed by processes 3276/3278; sd-013 owns the Docs gap.\nAccurately quoting the canonical Stellar documentation on pre-fix signer cleanup and sponsorship blockers is not a wrong claim while a cached or older copy still shows the wording fixed on 2026-07-27 by sd-013; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "GT-29 CORRECTION 2026-07-10: current Core allows signer-only subentries and deletes remaining signers during merge. Clear non-signer entries and resolve sponsorship obligations the source provides; do not collapse sponsor and sponsored states.\nGT-29 independently confirmed by processes 3276/3278; sd-013 owns the Docs gap."
   },
   "tags": {
     "category": "protocol-core",
@@ -50,6 +50,18 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/MergeOpFrame.cpp",
+        "note": "if (sourceAccount.numSubEntries != sourceAccount.signers.size()) ... ACCOUNT_MERGE_HAS_SUB_ENTRIES; if (getNumSponsoring(...) > 0) ... ACCOUNT_MERGE_IS_SPONSOR; while (!sourceAccount.signers.empty()) remove",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "stellarDocs.search_docs(query=\"account merge has sub entries signers removed\") via Raven execute",
+        "note": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge: 'The source account still has non-signer subentries (trustlines, offers, or data entries). Signers do not block the merge and are remov...",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -70,27 +82,51 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "The sd-013 Docs wording on signer cleanup and sponsorship blockers is fixed upstream, so the cached-copy grading caution has expired.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge",
+            "observedAt": "2026-10-11",
+            "note": "The source account still has non-signer subentries (trustlines, offers, or data entries). Signers are not a blocker — they are removed automatically as part of the merge. [observed Parallel cache, fetched 2026-11-02]"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/MergeOpFrame.cpp",
+            "observedAt": "2026-11-02",
+            "note": "if (sourceAccount.numSubEntries != sourceAccount.signers.size()) ... ACCOUNT_MERGE_HAS_SUB_ENTRIES; if (getNumSponsoring(...) > 0) ... ACCOUNT_MERGE_IS_SPONSOR; while (!sourceAccount.signers.empty()) remove"
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_docs(query=\"account merge has sub entries signers removed\") via Raven execute",
+            "observedAt": "2026-11-02",
+            "note": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge: 'The source account still has non-signer subentries (trustlines, offers, or data entries). Signers do not block the merge and are remov..."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both independently found the signer-cleanup instruction false.",
-        "Structural re-form (symmetric-caution): Added a claim-specific caution for cached merge and sponsorship wording; the truth is unchanged.",
-        "Finding read 2026-08-27: improvements/resolved.json entry sd-013 — fixed signer cleanup and sponsor-versus-sponsored merge semantics on 2026-07-27.",
-        "Sibling sweep 2026-08-27: grep AccountMerge|signer-only|sponsorship → q-protocol-operation-types-list, q-raph-low-xlm-transfer-fail; no contradiction",
-        "Structural re-form (negative-predicate): Split two compound facts into four single-predicate facts; truth unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge — AccountMerge transferred native XLM and removed the source account.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge — the source needed no non-signer subentries before merge.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge — remaining signers, including sponsored signers, were removed automatically.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge — sponsorship provided by the source blocked merge, unlike sponsorship received.",
-        "Sibling sweep 2026-08-27: grep AccountMerge|signer-only|sponsorship|reserve reclamation → q-pc-sponsored-reserves, q-protocol-operation-types-list, q-raph-low-xlm-transfer-fail, and related reserve cases; no contradiction"
+        "Live A 2026-10-11 (Parallel cache, fetched 2026-11-02): https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge -- 'The source account still has non-signer subentries (trustlines, offers, or data entries). Signers are not a blocker — they are removed automatically as part of the merge.'",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/MergeOpFrame.cpp -- 'if (sourceAccount.numSubEntries != sourceAccount.signers.size()) ... ACCOUNT_MERGE_HAS_SUB_ENTRIES; if (getNumSponsoring(...) > 0) ... ACCOUNT_MERGE_IS_SPONSOR; while (!sourceAccount.signers.empty()) remove'",
+        "Live E 2026-11-02: stellarDocs.search_docs(query=\"account merge has sub entries signers removed\") via Raven execute -- 'https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge: 'The source account still has non-signer subentries (trustlines, offers, or data entries). Signers do not block the merge and are removed automatically.''",
+        "Live A 2026-11-02: improvements/resolved.json sd-013 (repo record, not live evidence) -- 'resolved 2026-07-27 via stellar/stellar-docs#2590 / PR #2657'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/master/src/transactions/MergeOpFrame.cpp -- 'if (sourceAccount.numSubEntries != sourceAccount.signers.size()) ... ACCOUNT_MERGE_HAS_SUB_ENTRIES ... while (!sourceAccount.signers.empty()) removeSignerWithPossibleSponsorship(...)'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge -- 'Signers are *not* a blocker — they (including sponsored signers) are removed automatically during the merge.'",
+        "Live B 2026-11-02: MergeOpFrame.cpp -- 'if (getNumSponsoring(sourceAccountEntry.current()) > 0) ... ACCOUNT_MERGE_IS_SPONSOR'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge -- 'Merely being sponsored by another account is not a blocker.'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge -- 'Signers are *not* a blocker'",
+        "Live E 2026-11-02: Raven stellarDocs.search_docs('account merge signers removed sub entries') -- 'snippet: '(including sponsored signers) are removed automatically during the merge''",
+        "Independent verifier decisions: golden.notes (accept) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Sibling sweep 2026-11-02: grep sd-013 / AccountMerge across the battery -> q-pc-account-activation-not-found, q-pc-sponsored-reserves, q-edge-1xlm-activation-fee, q-ti-custodial-account-generation-c-address; no golden contradicts the merge semantics. q-ti-custodial-account-generation-c-address still carries its own sd-013 cached-copy caution (outside this batch)."
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-013-account-creation-merge-sponsorship-semantics.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-pc-account-merge-reclaim-reserve"

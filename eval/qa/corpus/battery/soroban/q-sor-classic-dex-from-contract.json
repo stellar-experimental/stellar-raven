@@ -57,24 +57,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/smart-contracts/overview",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (negative-predicate): split long compound facts and used positive operation boundaries; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/overview — contracts use SAC for assets but cannot use SDEX, claimable balances, or sponsorships",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Manage Buy Offer and Manage Sell Offer remain classic operations",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — the three smart-contract operation types permit one operation per transaction",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction — one InvokeHostFunctionOp is allowed per transaction",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — SAC remains the contract surface for Stellar assets",
-        "Sibling sweep 2026-08-27: grep classic SDEX|Manage Buy Offer|Soroban DEX → q-defi-sdex-offer-lifecycle, q-edge-factcheck-soroswap-first-amm; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case).",
+        "golden.keyFacts[0]: A https://developers.stellar.org/docs/build/smart-contracts/overview — 'This means that Soroban contracts cannot interact with the SDEX, claimable balances, or sponsorships.' | E Raven stellarDocs.search_docs hit overview#stellar-smart-contract-faqs | B https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md — no Final/Implemented CAP through CAP-0088 adds contract access to SDEX; CAP-0050 is Rejected (observedAt 2026-11-02).",
+        "golden.keyFacts[1]: A https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — 'Operations are used to ... enter orders into the decentralized exchange' | B stellar-protocol core/README.md — 'CAP-0006 | 11 | Add ManageBuyOffer Operation | Final' (observedAt 2026-11-02).",
+        "golden.keyFacts[2] + avoid[1]: A operations-and-transactions — 'Smart contract transactions (those with `InvokeHostFunctionOp`, `ExtendFootprintTTLOp`, or `RestoreFootprintOp` operations) can only have one operation per transaction.' | F https://horizon.stellar.org/ — current_protocol_version 29 | D software-versions via Parallel web_search — 'Protocol 29 ... introduces no new CAPs.' (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-sor-contract-as-claimable-arbiter, q-defi-sdex-offer-lifecycle, q-edge-factcheck-soroswap-first-amm checked; no contradiction."
       ]
     },
     "origin": "raven-next q-sor-classic-dex-from-contract",

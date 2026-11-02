@@ -58,22 +58,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "eval/corpus/PROVENANCE.md (privacy-purged Jutsu lineage; raw phrasing unavailable)",
-        "https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account",
-        "https://github.com/stellar/go/blob/master/clients/horizonclient/client.go",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — lookup takes the public key; class F Horizon /accounts/GAAEUUIR…OMNY returned balances with no secret (F3).",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — separate testnet endpoint documented; class F public mainnet /transactions returned public hashes, no auth.",
-        "Sibling sweep 2026-08-31: grep account balances|transaction history|public key|block explorer → 11 other cases; read q-ti-block-explorer-basics, q-crp-export-tx-history-taxes; lane report also read q-ti-historical-pointintime-balances; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "2026-11-02 [A] https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — \"GET /accounts/:account_id ... The balances section in the response will also list all the trustlines this account has established\" (claim: golden.keyFacts[0] confirmed: Lookup uses public address/tx hash, never secret key)",
+        "2026-11-02 [F] https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN/transactions?limit=1&order=desc — \"HTTP 200 with no credentials\" (claim: golden.keyFacts[0] confirmed: Lookup uses public address/tx hash, never secret key)",
+        "2026-11-02 [F] https://horizon.stellar.org/transactions?limit=1&order=desc — \"public tx fdb41ef885c9... created_at 2026-11-02T16:08:14Z returned unauthenticated\" (claim: golden.keyFacts[1] confirmed: Network selection matters; on-chain history is public)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/path-payments — \"new Horizon.Server(\"https://horizon-testnet.stellar.org\") ... Networks.TESTNET\" (claim: golden.keyFacts[1] confirmed: Network selection matters; on-chain history is public)",
+        "Sibling sweep 2026-11-02: siblings checked q-ti-block-explorer-basics, q-crp-export-tx-history-taxes, q-ti-historical-pointintime-balances; no gospel change in this case, no contradiction found."
       ]
     },
     "origin": "authored 2026-07 (jutsu phrasing)"

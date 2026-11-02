@@ -21,7 +21,7 @@
       "Do NOT attribute a GitHub handle, SEP authorship, or other biography details without a source that establishes them.",
       "Do NOT turn an empty exact-person lane into a claim that Justin Rice has no Stellar history."
     ],
-    "notes": "Positive control for evidence-poor recovery. The answer should recover exact-name dated history from broad content/research after narrow directory or person lanes miss, while refusing to convert historical titles into a current-role assertion.\nAccurately quoting the canonical LumenLoop source on Justin Rice semantic matches without exact-name, matched-span, or source-date provenance is not a wrong claim while ll-017 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Positive control for evidence-poor recovery. The answer should recover exact-name dated history from broad content/research after narrow directory or person lanes miss, while refusing to convert historical titles into a current-role assertion.\nAccurately quoting the canonical LumenLoop source on Justin Rice semantic matches without exact-name, matched-span, or source-date provenance is not a wrong claim while ll-017 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\nA first-party SDF press release dated 2026-07-16 calls him \"Vice President of Ecosystem Growth\"; that dated wording variant is not a wrong title and does not contradict the dated team-page observation."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -35,8 +35,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-13",
-    "reverifyBy": "2027-02-01",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-23",
     "sources": [
       {
         "class": "A",
@@ -77,6 +77,24 @@
         "class": "C",
         "ref": "Cloudflare production rays a1a519aa3907e144 through a1a51b394acdc572",
         "note": "Production retrieval evidence: broad semantic search recovered exact-name dated Stellar event rows after narrow calls missed."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+        "note": "SDF press release dated 2026-07-16: 'said Justin Rice, Vice President of Ecosystem Growth at the Stellar Development Foundation.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/",
+        "note": "Dated 2026-07-16: 'Justin Rice, Vice President of Ecosystem Growth, Stellar Development Foundation' (found via Perplexity search).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.cointrust.com/market-news/stellar-appoints-moneygram-as-tier-1-network-validator",
+        "note": "Dated 2026-07-17: 'Justin Rice, Vice President of Ecosystem Growth at the foundation' (found via Parallel search).",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -145,17 +163,48 @@
             "note": "Independent but likely derivative current-profile corroboration; SDF remains authoritative."
           }
         ]
+      },
+      {
+        "claim": "First-party SDF material uses two dated title wordings: 'Vice President of Ecosystem Growth' in a 2026-07-16 press release and 'VP of Ecosystem' on the undated team page and the Meridian 2026 schedule",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+            "observedAt": "2026-11-02",
+            "note": "'...said Justin Rice, Vice President of Ecosystem Growth at the Stellar Development Foundation.'; page data date 2026-07-16."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/team",
+            "observedAt": "2026-11-02",
+            "note": "Leadership card text contains 'VP of Ecosystem' (no 'Ecosystem Growth')."
+          },
+          {
+            "class": "A",
+            "ref": "https://meridian.stellar.org/schedule",
+            "observedAt": "2026-11-02",
+            "note": "'Justin Rice / VP of Ecosystem / Stellar (SDF)' (surfaced via Perplexity search)."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.cryptopolitan.com/stellar-moneygram-tier-1-validator-two-more/",
+            "observedAt": "2026-11-02",
+            "note": "Published 2026-07-17: 'Justin Rice, the foundation's vice president of ecosystem growth'. Secondary press echo of the release, not an independent title source."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-10-27",
-      "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-01)",
       "evidence": [
-        "Live re-check 2026-10-27 (A): https://stellar.org/foundation/team — the Leadership card for Justin Rice carries description \"VP of Ecosystem\"; the page remains undated, so the golden keeps its observation-date gate.",
-        "Live re-check 2026-10-27 (A): https://meridian.stellar.org/schedule — Meridian 2026 speaker card lists Justin Rice, VP of Ecosystem, Stellar (SDF).",
-        "Live re-check 2026-10-27 (D): web sweep (LinkedIn profile headline \"VP of Ecosystem at Stellar Development Foundation\"; https://cointelegraph.com/magazine/6-questions-justin-rice-stellar-development-foundation dated 2020-08-14 calls him Head of Ecosystem) — no contradiction.",
-        "Live re-check 2026-10-27 (A): https://stellar.org/community/events/ama-with-justin-rice (2021-02-16, head of Ecosystem) and https://stellar.org/blog/developers/soroban-is-feature-complete (author Justin Rice) unchanged.",
-        "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
+        "A 2026-11-02: https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators — \"...That's exactly what you want from the infrastructure layer of a global financial network\" said Justin Rice, Vice President of Ecosystem Growth at the Stellar Development Foundation.; page date 2026-07-16.",
+        "A 2026-11-02: https://stellar.org/foundation/team — the Justin Rice Leadership card still contains 'VP of Ecosystem'; https://meridian.stellar.org/schedule lists 'Justin Rice / VP of Ecosystem / Stellar (SDF)'.",
+        "D 2026-11-02: press echoes dated 2026-07-16/17 repeat 'Vice President of Ecosystem Growth' (https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/ via Perplexity; https://www.cointrust.com/market-news/stellar-appoints-moneygram-as-tier-1-network-validator via Parallel; https://www.cryptopolitan.com/stellar-moneygram-tier-1-validator-two-more/).",
+        "C 2026-11-02: Lumenloop find_content_by_entity {entity:'Justin Rice', entity_type:'person'} returned all five groups empty (ll-005 stands); historical A facts re-checked 2026-10-27 stand.",
+        "Change: golden.notes adds that the dated 2026-07-16 first-party wording 'Vice President of Ecosystem Growth' is not a wrong title and does not contradict the dated team-page observation. Verifier decision: accept.",
+        "Sibling sweep 2026-11-02: grep 'Justin Rice' over eval/qa/corpus/battery → q-gap-semantic-directory-fallback, q-edge-lumenloop-person-entity-empty, q-edge-strupey-ambiguous-stellar-history, q-edge-open-world-recovery-after-narrow-miss; none asserts a current title; grep 'Ecosystem Growth' → no other case; no contradiction."
       ],
       "rootCause": [
         "freshness-drift"

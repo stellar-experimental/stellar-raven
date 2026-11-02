@@ -93,21 +93,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the exact root cause, affected/restored qualifiers, CAP-0076 scope, and removal of the no-loss trap.",
-        "2026-07-11 author re-check against CAP-0076 at stellar-protocol fbf05c9d and both SDF incident reports.",
-        "Structural re-form (compound-predicate): Split the incident counts, CAP amendment, fee remediation, and no-fork qualifier into atomic facts; truth is unchanged.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/developers/addressing-state-archival-inconsistencies-protocol-upgrade-vote-next-week confirms 478 affected, 84 restored, and 77 restored-and-modified.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md confirms CAP-0076 amended the 394 never-restored entries.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md confirms 31,879,035 stroops and two actual XLM burns.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem describes ledger-state remediation without a network fork.",
-        "Sibling sweep 2026-08-27: grep Whisk|CAP-0076|state archival → q-protocol-23-whisk-caps, q-protocol-version-history-list, q-pc-protocol-26-yardstick; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side incident compression treated corrupted archival, observed restoration, protocol amendment, and issuer/protocol mitigation as one generic restore path.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
+        "Live re-check 2026-11-02 (confirmed): P24 activated on Mainnet 2025-10-22 — A https://developers.stellar.org/docs/networks/software-versions 'Protocol 24 (Mainnet, October 22, 2025)'; D https://x.com/StellarOrg/status/1981048696826413193 (via Perplexity) 'Validators just voted to upgrade Stellar Mainnet to Protocol 24, which fixes a bug in the state archival feature.'",
+        "Live re-check 2026-11-02 (confirmed): Eviction loaded latest TTL but not latest entry version — A https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem 'While the code correctly checked for expiration by loading the latest Time-To-Live (TTL) value, it failed to load the latest version of the entry itself if there was one'; B https://github.com/stellar/stellar-core/commit/790602666cb26f84fa2e6f510a754152f1a84332 'fix: every eviction candidate loads the latest version of the entry (cited by the post-mortem)'",
+        "Live re-check 2026-11-02 (confirmed): 478 affected; 84 restored, 77 modified; CAP-0076 amended 394 never-restored — B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md '478 ledger entries have been archived with an incorrect state ... 394 entries out of these have never been restored'; A https://stellar.org/blog/developers/addressing-state-archival-inconsistencies-protocol-upgrade-vote-next-week '84 corrupted entries were restored and incorporated into the live ledger state and 77 of those entries were actually modified; the remaining 394 were not restored.'",
+        "Live re-check 2026-11-02 (confirmed): 31,879,035 stroops added to fee pool for two burns (1,000,000 + 30,879,035) — B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md 'Thus `1000000 + 30879035 = 31879035` stroops have been burned, which is reflected via `feePool`.'; A https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem 'After fixes, only 84 remained corrupted and mitigations had to be taken by protocols and issuers.'",
+        "Sibling sweep 2026-11-02: q-protocol-version-history-list keeps P24 on 2025-10-22; no contradiction."
       ]
     },
     "origin": "raven-next q-protocol-24-whisk-incident"

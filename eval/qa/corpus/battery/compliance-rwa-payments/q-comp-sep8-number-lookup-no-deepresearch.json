@@ -68,13 +68,13 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The SEP-8 fact and proportionality lesson are correct, but the inherited rubric exposed a nonexistent paid operation and banned maintainer-side research tools instead of grading a concise primary-source answer.",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-02) — verified unchanged, no gospel change",
       "evidence": [
-        "Solo scratchpad 575 GT-22 blind 3265 sibling sweep; target protocol fact independently verified in GT-08."
-      ],
-      "rootCause": [
-        "A valid proportionality preference was encoded with stale hidden-operation mechanics."
+        "Re-verified unchanged 2026-11-02; no gospel change.",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — \"SEP: 0008 / Title: Regulated Assets / Status: Active / Version 1.7.4\".",
+        "Live E 2026-11-02: stellarDocs search_asset_token_docs → https://developers.stellar.org/docs/tokens/control-asset-access — SEP-8 regulated assets are referenced in the official asset-control docs.",
+        "Sibling sweep 2026-11-02: q-sep-8-regulated-assets, q-comp-sep8-regulated-assets-approval-server; no contradiction."
       ]
     },
     "origin": "raven-next q-comp-sep8-number-lookup-no-deepresearch"

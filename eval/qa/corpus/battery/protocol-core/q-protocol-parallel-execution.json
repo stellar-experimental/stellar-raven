@@ -7,7 +7,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Yes—Stellar now applies non-conflicting smart-contract transactions in bounded parallel clusters. **Protocol 23/Whisk** introduced CAP-0063 scheduling support on 2025-09-03, but initialized `ledgerMaxDependentTxClusters` to **1** (no multi-cluster parallel execution). A separate settings vote activated **2** clusters on **2026-01-29 at 17:00 UTC**; three independent Mainnet RPC reads on 2026-07-10 still decoded setting 2, last modified at ledger 60993066 (17:00:09Z). The scheduler groups disjoint read/write footprints within bounded budgets. This is parallel scheduling, not sharding or a claim that all transactions run concurrently.",
+    "answer": "Yes—Stellar now applies non-conflicting smart-contract transactions in bounded parallel clusters. **Protocol 23/Whisk** introduced CAP-0063 scheduling support on 2025-09-03, but initialized `ledgerMaxDependentTxClusters` to **1** (no multi-cluster parallel execution). Later network-settings votes raised it to **2** on **2026-01-29 at 17:00 UTC** (SLP-0004, ledger 60993066) and to **3** on **2026-10-22 at 17:00 UTC** (SLP-0007, ledger 65080525). As of 2026-11-02, three independent Mainnet RPC reads decoded setting 3; validators can change this setting again. The scheduler groups disjoint read/write footprints within bounded budgets. This is parallel scheduling, not sharding or a claim that all transactions run concurrently.",
     "keyFacts": [
       "CAP-0063/P23 introduced parallel smart-contract scheduling.",
       "Initial configuration preceded later activation.",
@@ -17,12 +17,12 @@
       "Do NOT attribute CAP-0063 to another protocol or call it sharding.",
       "Do NOT say P23 transition itself immediately enabled multiple dependent clusters or that all transactions execute concurrently."
     ],
-    "notes": "Parallel execution = CAP-0063 = Protocol 23 Whisk. DATE CORRECTED to 2025-09-03 (was 2025-06-10 in draft — that was the blog publish date, not activation). Verified via stellar.org 'Introducing Whisk' + Protocol 23 Upgrade Guide: Mainnet vote 2025-09-03 17:00 UTC. Trap is wrong CAP/version.\nAlso good if the answer: Notes this is part of the SDF 'Road to 5000 TPS' scaling effort (parallel core / dissemination work). | Notes Whisk activated on Mainnet 2025-09-03.\nGolden cites: The Protocol 23 / Whisk material and/or CAP-0063, plus the 'Parallelizing Stellar Core' blog.\nGT-25/GT-31/GT-33: P23 support initialized setting one; setting-two activation was independently dated to 2026-01-29. Canonical SLP path is limits/slp-0004.md."
+    "notes": "Parallel execution = CAP-0063 = Protocol 23 Whisk. DATE CORRECTED to 2025-09-03 (was 2025-06-10 in draft — that was the blog publish date, not activation). Verified via stellar.org 'Introducing Whisk' + Protocol 23 Upgrade Guide: Mainnet vote 2025-09-03 17:00 UTC. Trap is wrong CAP/version.\nAlso good if the answer: Notes this is part of the SDF 'Road to 5000 TPS' scaling effort (parallel core / dissemination work). | Notes Whisk activated on Mainnet 2025-09-03.\nGolden cites: The Protocol 23 / Whisk material and/or CAP-0063, plus the 'Parallelizing Stellar Core' blog.\nGT-25/GT-31/GT-33: P23 support initialized setting one; setting-two activation was independently dated to 2026-01-29. Canonical SLP path is limits/slp-0004.md.\nAUDIT 2026-11-02: SLP-0007 (limits/slp-0007.md) raised the setting from 2 to 3 at ledger 65080525 (2026-10-22 17:00 UTC). The current value is a volatile network setting; an undated claim that it is still 2 is stale."
   },
   "tags": {
     "category": "protocol-core",
     "service": "stellarDocs",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -35,54 +35,110 @@
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://stellar.org/blog/developers/introducing-whisk-stellar-protocol-23",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0007.md",
+        "note": "SLP-0007, Status Final: Dependent Tx Clusters 2 → 3.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+        "note": "SLP-0007 live on Mainnet since October 22, 2026; dependent cluster count 2 → 3.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://mainnet.sorobanrpc.com",
+        "note": "getLedgerEntries CONFIG_SETTING id 14 decodes ledgerMaxDependentTxClusters = 3, lastModifiedLedgerSeq 65080525 (same on gateway.fm, lightsail, onfinality RPCs).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/ledgers/65080525",
+        "note": "Settings change ledger closed 2026-10-22T17:00:08Z, protocol_version 29.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
-        "claim": "CAP-0063 support arrived in P23 with one dependent cluster; bounded parallel application is active now with setting two.",
-        "verdict": "confirmed",
+        "claim": "CAP-0063 support arrived in P23 with one dependent cluster; settings votes raised it to 2 on 2026-01-29 (SLP-0004, ledger 60993066) and to 3 on 2026-10-22 (SLP-0007, ledger 65080525); the Mainnet value is 3 as of 2026-11-02.",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "B",
-            "ref": "B: CAP-0063, SLP-0004, stellar-core source",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0007.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'Status: Final' and table row '| Dependent Tx Clusters | 2 | 3 |'. SLP-0004 (limits/slp-0004.md) is Final with '1 thread' → '2 threads'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'SLP-0007 (live on Mainnet since October 22, 2026). ... raised the dependent transaction cluster count (2 → 3)'."
           },
           {
             "class": "C",
-            "ref": "C: two Mainnet RPC setting reads",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-11-02",
+            "note": "getLedgerEntries CONFIG_SETTING id 14 on four Mainnet RPCs: latestLedger 65270251, lastModifiedLedgerSeq 65080525, xdr 000000080000000e00000003 (value 3)."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65080525",
+            "observedAt": "2026-11-02",
+            "note": "sequence 65080525, closed_at 2026-10-22T17:00:08Z; ledger 60993066 closed 2026-01-29T17:00:09Z."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273 sibling reconciliation.",
-        "Structural re-form (long-fact): split capability introduction from later activation; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md — the Final CAP maps parallel smart-contract scheduling to Protocol 23.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md and https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — the initial one-cluster configuration preceded the separate later settings change.",
-        "Sibling sweep 2026-08-29: grep CAP-0063|ledgerMaxDependentTxClusters|parallel smart contract → q-protocol-23-whisk-caps, q-protocol-bls12-381-cap59, q-protocol-version-history-list, and q-protocol-parallel-execution; no contradiction"
+        "Gospel change 2026-11-02 (golden.answer, golden.notes, tags.freshness); the proposer matrix and an independent verifier re-derived each claim from live sources.",
+        "Live A 2026-11-02: https://stellar.org/protocol-upgrades — 'Protocol 23 9/3/25 - CAP-0062 ..., CAP-0063 (Parallel smart contract transaction processing)' (claim: CAP-0063/P23 introduced parallel smart-contract scheduling; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md — 'During the protocol upgrade to version 23, the respective configuration setting ledger entry will be created and ledgerMaxDependentTxClusters will be set to 1 (no parallelism).' (claim: CAP-0063/P23 introduced parallel smart-contract scheduling; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.org/blog/developers/announcing-protocol-23 — 'The Mainnet vote will occur on September 3, 2025 at 10am PST/GMT 17:00.' (claim: P23 activation date 2025-09-03; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.org/protocol-upgrades — 'Protocol 23 9/3/25' (claim: P23 activation date 2025-09-03; verdict confirmed)",
+        "Live F 2026-11-02: https://horizon.stellar.org/ledgers/60993066 — 'closed_at 2026-01-29T17:00:09Z' (claim: Setting raised to 2 on 2026-01-29 17:00 UTC at ledger 60993066; verdict confirmed-as-of)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — 'Instructions/threads | ... | 600'000'000 / 1 thread | 580'000'000 / 2 threads' (claim: Setting raised to 2 on 2026-01-29 17:00 UTC at ledger 60993066; verdict confirmed-as-of)",
+        "Live F 2026-11-02: getLedgerEntries CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 on https://mainnet.sorobanrpc.com, https://soroban-rpc.mainnet.stellar.gateway.fm, https://rpc.lightsail.network — 'decoded words (8, 14, 3), lastModifiedLedgerSeq 65080525, latestLedger 65269941 on all three' (claim: Current setting is 2 (RPC reads 2026-07-10); verdict contradicted)",
+        "Live F 2026-11-02: https://horizon.stellar.org/ledgers/65080525 — 'closed_at 2026-10-22T17:00:08Z' (claim: Current setting is 2 (RPC reads 2026-07-10); verdict contradicted)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0007.md — 'Status: Final ... | Dependent Tx Clusters | 2 | 3 |' (claim: Current setting is 2 (RPC reads 2026-07-10); verdict contradicted)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/storage/storage-strategies — 'SLP-0007 (live on Mainnet since October 22, 2026) ... raised the dependent transaction cluster count (2 → 3)' (claim: Current setting is 2 (RPC reads 2026-07-10); verdict contradicted)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md — 'The number of clusters per stage must not exceed the value of ledgerMaxDependentTxClusters network configuration setting' (claim: Disjoint footprints and a bounded current setting; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md — 'parallel execution logic won't be active until ledgerMaxDependentTxClusters is increased by a separate SLP and a validator vote.' (claim: Wrong protocol / sharding / P23 immediately multi-cluster are false; verdict confirmed)",
+        "Live F 2026-11-02: mainnet RPC getLedgerEntries — 'setting changed 2 -> 3 at ledger 65080525' (claim: stable; verdict contradicted)",
+        "Verifier C 2026-11-02: getLedgerEntries CONFIG_SETTING id 14 (AAAACAAAAA4=) on https://mainnet.sorobanrpc.com, https://soroban-rpc.mainnet.stellar.gateway.fm, https://rpc.lightsail.network, https://stellar.api.onfinality.io/public — 'all four: latestLedger 65270251, lastModifiedLedgerSeq 65080525, xdr 000000080000000e00000003 (ledgerMaxDependentTxClusters = 3)' (field golden.answer; decision accept)",
+        "Verifier F 2026-11-02: https://horizon.stellar.org/ledgers/65080525 — 'sequence 65080525, closed_at 2026-10-22T17:00:08Z, protocol_version 29' (field golden.answer; decision accept)",
+        "Verifier B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md — 'Status: Final ... | Dependent Tx Clusters | 2 | 3 |' (field golden.answer; decision accept)",
+        "Verifier A 2026-11-02: https://developers.stellar.org/docs/build/guides/storage/storage-strategies — 'SLP-0007 (live on Mainnet since October 22, 2026). ... raised the dependent transaction cluster count (2 → 3)' (field golden.answer; decision accept)",
+        "Verifier B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md — 'Status: Final ... | Instructions/threads | ... | 600'000'000 / 1 thread | 580'000'000 / 2 threads |' (field golden.answer; decision accept)",
+        "Verifier F 2026-11-02: https://horizon.stellar.org/ledgers/60993066 — 'sequence 60993066, closed_at 2026-01-29T17:00:09Z, protocol_version 25' (field golden.answer; decision accept)",
+        "Sibling sweep 2026-11-02: grep 'ledgerMaxDependentTxClusters|dependent cluster|setting 2' → q-protocol-23-whisk-caps (dates value two as of 2026-07-11, live freshness; no contradiction but stale tail, escalated) and q-protocol-version-history-list (updated in this batch; no value pinned); no contradiction."
       ],
       "rootCause": [
-        "Eval-side introduction-versus-current-activation conflation.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-protocol-parallel-execution"
+    "origin": "raven-next q-protocol-parallel-execution",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-14"
   }
 }

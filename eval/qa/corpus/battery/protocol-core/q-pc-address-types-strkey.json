@@ -17,7 +17,7 @@
       "Do NOT treat G/C/M/S addresses as interchangeable.",
       "Do NOT ask users to paste secret seeds for decoding."
     ],
-    "notes": "SEP-0023 is the canonical StrKey source. It also documents other prefixes (T/X/P/L/B), but this golden focuses on G/C/M/S.\nAlso good if the answer: Mentions other StrKey prefixes only if relevant and avoids overloading C with EVM contracts.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository."
+    "notes": "SEP-0023 is the canonical StrKey source. It also documents other prefixes (T/X/P/L/B and, since SEP-0023 v1.4.0, W for CAP-0084 muxed contracts, a Protocol 30 feature; Mainnet ran Protocol 29 on 2026-11-02), but this golden focuses on G/C/M/S.\nAlso good if the answer: Mentions other StrKey prefixes only if relevant and avoids overloading C with EVM contracts.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository."
   },
   "tags": {
     "category": "protocol-core",
@@ -46,6 +46,42 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/contract-invoke-arguments#address",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0023.md",
+        "note": "Version: 1.4.0 ... | STRKEY_MUXED_CONTRACT | 22 << 3 | W | ... muxed contracts (introduced in [CAP-84])",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0023.md",
+        "note": "f2d36490 2026-10-14 'SEP-23: add muxed contract strkey (W…) for CAP-84 (#2020)'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md",
+        "note": "CAP: 0084 Title: Muxed Contract Addresses ... Status: Implemented ... Protocol version: 30",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/ and POST https://mainnet.sorobanrpc.com getLatestLedger",
+        "note": "Horizon: current_protocol_version 29, core_supported_protocol_version 30, closed_at 2026-11-02T16:29:09Z; RPC getLatestLedger protocolVersion 29 sequence 65270233",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar (via Perplexity search)",
+        "note": "A contract address can now carry a 64-bit ID, written as a new address format that starts with W. ... The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide (via Perplexity search)",
+        "note": "CAP-84 ... with a new strkey prefix W, defined in SEP-23.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -53,56 +89,90 @@
         "claim": "StrKey is not base58 or raw hex: SEP-0023 defines it as a version byte whose top 5 bits pick the type, followed by the binary payload, a CRC16 checksum, and RFC4648 base32 without padding.",
         "verdict": "confirmed",
         "evidence": [
-        {
-          "class": "B",
-          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
-          "note": "Exact source: each StrKey encodes its type in the version byte, uses base-32, appends a CRC16 checksum, and assigns `STRKEY_CONTRACT` the first character `C`.",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "F",
-          "ref": "https://github.com/stellar/stellar-cli",
-          "observedAt": "2026-08-29",
-          "note": "Observed with `stellar 27.1.0`: `stellar strkey zero contract` returned `CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4`; decoding returned a 32-byte zero contract value, no `=` padding appeared, and a one-character mutation failed as `the strkey is invalid`."
-        }
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
+            "note": "Exact source: each StrKey encodes its type in the version byte, uses base-32, appends a CRC16 checksum, and assigns `STRKEY_CONTRACT` the first character `C`.",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "F",
+            "ref": "https://github.com/stellar/stellar-cli",
+            "observedAt": "2026-08-29",
+            "note": "Observed with `stellar 27.1.0`: `stellar strkey zero contract` returned `CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4`; decoding returned a 32-byte zero contract value, no `=` padding appeared, and a one-character mutation failed as `the strkey is invalid`."
+          }
         ]
       },
       {
         "claim": "C-addresses are Stellar contract addresses, not EVM `0x` addresses.",
         "verdict": "confirmed",
         "evidence": [
-        {
-          "class": "B",
-          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
-          "note": "Exact source: each StrKey encodes its type in the version byte, uses base-32, appends a CRC16 checksum, and assigns `STRKEY_CONTRACT` the first character `C`.",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "F",
-          "ref": "https://github.com/stellar/stellar-cli",
-          "observedAt": "2026-08-29",
-          "note": "Observed with `stellar 27.1.0`: the contract StrKey zero value was `CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4`, and `stellar strkey decode` returned JSON under the `contract` key rather than an EVM `0x` address."
-        }
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
+            "note": "Exact source: each StrKey encodes its type in the version byte, uses base-32, appends a CRC16 checksum, and assigns `STRKEY_CONTRACT` the first character `C`.",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "F",
+            "ref": "https://github.com/stellar/stellar-cli",
+            "observedAt": "2026-08-29",
+            "note": "Observed with `stellar 27.1.0`: the contract StrKey zero value was `CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4`, and `stellar strkey decode` returned JSON under the `contract` key rather than an EVM `0x` address."
+          }
+        ]
+      },
+      {
+        "claim": "SEP-0023 v1.4.0 adds the W prefix for CAP-0084 muxed contracts, a Protocol 30 feature; Mainnet ran Protocol 29 on 2026-11-02.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0023.md",
+            "observedAt": "2026-11-02",
+            "note": "Version: 1.4.0 ... | STRKEY_MUXED_CONTRACT | 22 << 3 | W | ... muxed contracts (introduced in [CAP-84])"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md",
+            "observedAt": "2026-11-02",
+            "note": "CAP: 0084 Title: Muxed Contract Addresses ... Status: Implemented ... Protocol version: 30"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ and POST https://mainnet.sorobanrpc.com getLatestLedger",
+            "observedAt": "2026-11-02",
+            "note": "Horizon: current_protocol_version 29, core_supported_protocol_version 30, closed_at 2026-11-02T16:29:09Z; RPC getLatestLedger protocolVersion 29 sequence 65270233"
+          },
+          {
+            "class": "D",
+            "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar (via Perplexity search)",
+            "observedAt": "2026-11-02",
+            "note": "A contract address can now carry a 64-bit ID, written as a new address format that starts with W. ... The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026."
+          }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (compound-predicate): Shortened the address and encoding facts, then split public-key decoding from secret-material handling; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — SEP-0023 still maps G, S, M, and C to public, private-seed, muxed, and contract types.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — StrKey still uses a version byte, payload, CRC16 checksum, and unpadded RFC4648 base32.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — decoding still reverses StrKey to its binary key payload.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — SEP-0023 still classifies S as an Ed25519 private key or seed.",
-        "Sibling sweep 2026-08-27: grep StrKey|G-address|muxed account|SEP-0023 → q-pc-muxed-accounts, q-sor-contract-trustlines-c-address, q-ti-secret-key-vs-mnemonic-derivation; no contradiction",
-      "Corroboration audit 2026-08-29: added 2 row(s) for StrKey and contract-address encoding contrasts; class agreement Sol+Grok",
-      "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0023.md -- 'Version: 1.4.0 ... | STRKEY_MUXED_CONTRACT | 22 << 3 | W | ... muxed contracts (introduced in [CAP-84])'",
+        "Live B 2026-11-02: gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0023.md -- 'f2d36490 2026-10-14 'SEP-23: add muxed contract strkey (W…) for CAP-84 (#2020)''",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md -- 'CAP: 0084 Title: Muxed Contract Addresses ... Status: Implemented ... Protocol version: 30'",
+        "Live F 2026-11-02: https://horizon.stellar.org/ and POST https://mainnet.sorobanrpc.com getLatestLedger -- 'Horizon: current_protocol_version 29, core_supported_protocol_version 30, closed_at 2026-11-02T16:29:09Z; RPC getLatestLedger protocolVersion 29 sequence 65270233'",
+        "Live D 2026-11-02: https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar (via Perplexity search) -- 'A contract address can now carry a 64-bit ID, written as a new address format that starts with W. ... The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026.'",
+        "Live D 2026-11-02: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide (via Perplexity search) -- 'CAP-84 ... with a new strkey prefix W, defined in SEP-23.'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md -- '| STRKEY_PUBKEY | 6 << 3 | G | ... | STRKEY_MUXED | 12 << 3 | M | ... | STRKEY_PRIVKEY | 18 << 3 | S | ... | STRKEY_CONTRACT | 2 << 3 | C |; 'append an 8-byte ID in network byte order'; 'Compute a 16-bit CRC16 checksum'; 'RFC4648 base-32 encoding without padding''",
+        "Live A 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos -- '(prior verified source; unchanged)'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md -- '| STRKEY_MUXED_CONTRACT | 22 << 3 | W | yes | Hash |'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/commits/master/ecosystem/sep-0023.md -- '2026-10-14 'SEP-23: add muxed contract strkey (W…) for CAP-84 (#2020)''",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0084.md -- 'Status: Implemented ... Protocol version: 30'",
+        "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- 'protocol_version=29'",
+        "Independent verifier decisions: golden.notes (accept) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Sibling sweep 2026-11-02: grep strkey/SEP-0023 -> q-pc-muxed-accounts, q-soroban-contract-id-derivation, q-ti-custodial-account-generation-c-address, q-ti-secret-key-vs-mnemonic-derivation, q-pc-memos-reference, q-protocol-version-history-list; none asserts the prefix list is closed; no contradiction."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-pc-address-types-strkey"

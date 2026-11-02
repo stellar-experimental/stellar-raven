@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-13, the current documentation search returned build examples using `stellar contract build` and output under `target/wasm32v1-none/release/`.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Build new Soroban contracts for `wasm32v1-none` with `stellar contract build`. As of 2026-11-02 (Stellar CLI 28.1.0, soroban-sdk 29.0.1), the CLI runs cargo with `--target=wasm32v1-none --release`, sets the build marker the SDK requires, and optimizes the Wasm by default. The output is `target/wasm32v1-none/release/<contract>.wasm`. Plain `cargo build` defaults to the host target and the dev profile. Since soroban-sdk 28, a Wasm build outside the CLI fails with `soroban-sdk requires stellar-cli v25.2.0+ to build a contract`; `cargo test` is unaffected. `wasm32v1-none` needs Rust 1.84 or later. On Rust 1.82 and later, `wasm32-unknown-unknown` enables Wasm features (reference-types, multi-value) that Soroban does not support, so the SDK build script fails. A `can't find crate for 'core'` error means the target is missing for the active toolchain: run `rustup target add wasm32v1-none`, and run it again after a Rust toolchain update. Date CLI, SDK, and toolchain version claims.",
     "keyFacts": [
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names `wasm32v1-none` as the current build target for new Soroban contracts.",
@@ -20,12 +20,12 @@
       "Do NOT add an ecosystem prior-art or competitor landscape detour to this already-scoped build/debug question; current official docs and CLI evidence are sufficient.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "Verified with Stellar Docs MCP and local `stellar contract build --help` from CLI 25.2.0. The dossier mentions newer protocol/SDK releases, but the target guidance is stable in current docs.\nAlso good if the answer: Mentions output path `target/wasm32v1-none/release/<contract>.wasm`. | Notes target installation is per toolchain, so after Rust upgrades the target may need reinstalling.\nGolden cites: Must cite current Stellar setup/Hello World or Rust dialect docs for `wasm32v1-none`. | Freshness-sensitive answer should cite a dated/current official docs source or local CLI evidence."
+    "notes": "Verified with Stellar Docs MCP and local `stellar contract build --help` from CLI 25.2.0; re-checked 2026-11-02 with CLI 28.1.0, whose `--print-commands-only` shows `cargo rustc --crate-type=cdylib --target=wasm32v1-none --release` with the SDK build marker set; a soroban-sdk 29.0.1 plain `cargo build --target wasm32v1-none --release` failed at the SDK build script. Describing the CLI as a wrapper around cargo is correct (it runs `cargo rustc`). For a soroban-sdk 28+ project, calling plain `cargo build --target wasm32v1-none --release` an equivalent shortcut is wrong, though the official Hello World page still says so (observed 2026-11-02; improvements/stellar-docs/sd-075-hello-world-build-wrapper-claim.md). The dossier mentions newer protocol/SDK releases, but the target guidance is stable in current docs.\nAlso good if the answer: Mentions output path `target/wasm32v1-none/release/<contract>.wasm`. | Notes target installation is per toolchain, so after Rust upgrades the target may need reinstalling.\nGolden cites: Must cite current Stellar setup/Hello World or Rust dialect docs for `wasm32v1-none`. | Freshness-sensitive answer should cite a dated/current official docs source or local CLI evidence."
   },
   "tags": {
     "category": "soroban",
     "service": "stellarDocs",
-    "freshness": "live"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -34,27 +34,78 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-13",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
-        "note": "Official current Hello World build guide accessed 2026-07-13."
+        "note": "Official current Hello World build guide accessed 2026-07-13.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
-        "note": "Official Rust dialect/target guidance accessed 2026-07-13."
+        "note": "Official Rust dialect/target guidance accessed 2026-07-13.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup",
-        "note": "Official smart-contract toolchain setup guide accessed 2026-07-13."
+        "note": "Official smart-contract toolchain setup guide accessed 2026-07-13.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "B",
         "ref": "https://github.com/OpenZeppelin/stellar-contracts",
         "note": "Direct OpenZeppelin Stellar contracts source repository; class B source code, accessed 2026-07-13."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/build.rs",
+        "note": "SDK build script: rejects wasm32-unknown-unknown on Rust 1.82+ and exits with 'soroban-sdk requires stellar-cli v25.2.0+ to build a contract' when the CLI marker is absent on a Wasm target.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/build.rs",
+        "note": "CLI build command: WASM_TARGET = \"wasm32v1-none\" for Rust 1.84+.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+        "note": "SDK v28 release post: contracts must be built with stellar contract build from stellar-cli v25.2.0 or newer; cargo test is unaffected.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local: stellar 28.1.0 (c0f4d0da), rustc 1.93.0; scratch crate with soroban-sdk =29.0.1",
+        "note": "Plain cargo Wasm build failed at the SDK build script; stellar contract build produced target/wasm32v1-none/release/c2.wasm (604 bytes optimized).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/",
+        "note": "Found via Perplexity search: 'Do not build contracts with `cargo build`. As of soroban-sdk v28, stellar-cli v25.2.0 or newer is required.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+        "note": "max_stable_version 29.0.1",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/build.rs",
+        "note": "let env_name = \"SOROBAN_SDK_BUILD_SYSTEM_SUPPORTS_SPEC_SHAKING_V2\"; ... if std::env::var(env_name).is_err() ... error: soroban-sdk requires stellar-cli v25.2.0+ to build a contract",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "Raven stellarDocs.search_docs \"stellar contract build wrapper around cargo build shortcut\"",
+        "note": "hello-world#build-the-contract: \"This is a small wrapper around cargo build that sets the target to wasm32v1\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -65,37 +116,137 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
-            "observedAt": "2026-07-13"
+            "observedAt": "2026-11-02",
+            "note": "'A `.wasm` file will be outputted ... at `target/wasm32v1-none/release/hello_world.wasm`.' and 'The `stellar contract build` command optimizes the generated `.wasm` by default'."
           },
           {
+            "class": "F",
+            "ref": "local: stellar contract build --print-commands-only (CLI 28.1.0)",
+            "observedAt": "2026-11-02",
+            "note": "'SOROBAN_SDK_BUILD_SYSTEM_SUPPORTS_SPEC_SHAKING_V2=1 STELLAR_CLI_VERSION=28.1.0 cargo rustc --manifest-path=Cargo.toml --crate-type=cdylib --target=wasm32v1-none --release'."
+          },
+          {
+            "class": "E",
+            "ref": "Raven stellarDocs.search_docs 'stellar contract build wasm32v1-none cargo build release'",
+            "observedAt": "2026-11-02",
+            "note": "hello-world#build-the-contract and upload-wasm-bytecode returned with the wasm32v1-none release command."
+          }
+        ]
+      },
+      {
+        "claim": "Since soroban-sdk 28, a Wasm build outside `stellar contract build` fails with 'soroban-sdk requires stellar-cli v25.2.0+ to build a contract'; `cargo test` is unaffected.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/build.rs",
+            "observedAt": "2026-11-02",
+            "note": "'if std::env::var(env_name).is_err() && ...TARGET_FAMILY == \"wasm\" { eprintln!(\"error: soroban-sdk requires stellar-cli v25.2.0+ to build a contract\") ; std::process::exit(1) }'."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/soroban-rust-sdk-v28",
+            "observedAt": "2026-11-02",
+            "note": "'contracts must be built with `stellar contract build` from `stellar-cli` v25.2.0 or newer ... Tests are unaffected and can be run with `cargo test`.'"
+          },
+          {
+            "class": "F",
+            "ref": "local: stellar 28.1.0 (c0f4d0da), rustc 1.93.0; scratch crate with soroban-sdk =29.0.1",
+            "observedAt": "2026-11-02",
+            "note": "`cargo build --target wasm32v1-none --release` -> build-script-build exit status 1 with the same error; `stellar contract build` succeeded."
+          },
+          {
+            "class": "D",
+            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/",
+            "observedAt": "2026-11-02",
+            "note": "Via Perplexity: 'As of soroban-sdk v28, stellar-cli v25.2.0 or newer is required.'"
+          }
+        ]
+      },
+      {
+        "claim": "`wasm32v1-none` needs Rust 1.84 or later; on Rust 1.82 and later `wasm32-unknown-unknown` enables reference-types and multi-value, which Soroban does not support.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+            "observedAt": "2026-11-02",
+            "note": "'The `wasm32-unknown-unknown` target is **not supported** for building Soroban contracts when using Rust 1.82 or newer. On those versions, `wasm32-unknown-unknown` enables WebAssembly features (reference-types, multi-value) that the Soroban runtime does not support.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup",
+            "observedAt": "2026-11-02",
+            "note": "'Stellar smart contracts require **Rust toolchain `v1.84.0` or higher** ... If you update your Rust version, you'll need to reinstall the `wasm32v1-none` target for the new toolchain.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/build.rs",
+            "observedAt": "2026-11-02",
+            "note": "'Rust compiler 1.82+ with target 'wasm32-unknown-unknown' is unsupported by the Soroban Environment, use 'wasm32v1-none' available with Rust 1.84+. ... reference-types, multi-value.'"
+          }
+        ]
+      },
+      {
+        "claim": "For soroban-sdk 28+ (29.0.1 as of 2026-11-02), plain `cargo build --target wasm32v1-none --release` is not an equivalent shortcut for `stellar contract build`: the SDK build script requires the CLI build marker.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
             "class": "C",
-            "ref": "solo://proj/49/scratchpad/truth-maintenance-20--575",
-            "observedAt": "2026-07-11",
-            "note": "Durable record of the localhost Docs search and local Stellar CLI 25.2.0 help verification."
+            "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'max_stable_version 29.0.1'"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/build.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'let env_name = \"SOROBAN_SDK_BUILD_SYSTEM_SUPPORTS_SPEC_SHAKING_V2\"; ... if std::env::var(env_name).is_err() ... error: soroban-sdk requires stellar-cli v25.2.0+ to build a contract'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'This is a small wrapper around cargo build that sets the target to wasm32v1-none and the profile to release (it also optimizes the resulting .wasm file by default). You can think of it as a shortcut for the following command: cargo build --target wasm32v1-none --release'"
+          },
+          {
+            "class": "E",
+            "ref": "Raven stellarDocs.search_docs \"stellar contract build wrapper around cargo build shortcut\"",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'hello-world#build-the-contract: \"This is a small wrapper around cargo build that sets the target to wasm32v1\"'"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task soroban-api)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "2026-07-11 localhost:8787 search→execute probe observed: the current documentation search returned build examples using `stellar contract build` and output under `target/wasm32v1-none/release/`.",
-        "solo://proj/49/scratchpad/prior-art-build-rout--613 — durable independent review and no-detour reconciliation",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "solo://proj/49/scratchpad/prior-art-build-rout--613 — established this current official-docs build error as the known-step no-detour control.",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep wasm32v1-none|wasm32-unknown-unknown|stellar contract build → q-soroban-deploy-cli, q-ti-cli-rust-windows-troubleshooting; no contradiction"
+        "golden.answer: replaced the generic grounded-answer template with the verified build-target answer (verifier modify text): wasm32v1-none, CLI 28.1.0 build command, output path, the soroban-sdk 28+ CLI gate, Rust 1.84 / 1.82 limits, and the core-crate fix, dated 2026-11-02.",
+        "golden.notes: recorded the 2026-11-02 CLI 28.1.0 re-check and a symmetric caution for the Hello World 'wrapper around cargo build' framing.",
+        "A https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect — 'The `wasm32-unknown-unknown` target is **not supported** for building Soroban contracts when using Rust 1.82 or newer.' (observedAt 2026-11-02).",
+        "A https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — 'Stellar smart contracts require **Rust toolchain `v1.84.0` or higher**' (observedAt 2026-11-02).",
+        "A https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — 'If you get an error like `can't find crate for 'core'` ... running `rustup target add wasm32v1-none`' and output 'target/wasm32v1-none/release/hello_world.wasm' (observedAt 2026-11-02).",
+        "B https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/build.rs — 'error: soroban-sdk requires stellar-cli v25.2.0+ to build a contract' (observedAt 2026-11-02).",
+        "A https://stellar.org/blog/developers/soroban-rust-sdk-v28 — 'Building for Wasm with anything else now fails ... Tests are unaffected and can be run with `cargo test`.' (observedAt 2026-11-02).",
+        "F local stellar 28.1.0 (c0f4d0da), rustc 1.93.0, soroban-sdk =29.0.1 — plain `cargo build --target wasm32v1-none --release` failed at build-script-build; `stellar contract build` -> 'Wasm Size: 604 bytes optimized (original size was 904 bytes)' (observedAt 2026-11-02).",
+        "F local `stellar contract build --print-commands-only` (CLI 28.1.0) — 'cargo rustc --manifest-path=Cargo.toml --crate-type=cdylib --target=wasm32v1-none --release' (observedAt 2026-11-02).",
+        "B gh api repos/stellar/stellar-cli/releases/latest — 'v28.1.0 2026-09-26T16:33:53Z' (observedAt 2026-11-02).",
+        "E Raven stellarDocs.search_docs 'stellar contract build wasm32v1-none cargo build release' — hello-world#build-the-contract: 'small wrapper around cargo build that sets the target to wasm32v1-none and the profile to release' (observedAt 2026-11-02T16:36:18Z).",
+        "Sibling sweep 2026-11-02: q-soroban-deploy-cli, q-soroban-wasm-language, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk checked; no battery case claims a plain cargo Wasm build succeeds; no contradiction.",
+        "https://crates.io/api/v1/crates/soroban-sdk — \"max_stable_version 29.0.1\" (class C, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/build.rs — \"let env_name = \"SOROBAN_SDK_BUILD_SYSTEM_SUPPORTS_SPEC_SHAKING_V2\"; ... if std::env::var(env_name).is_err() ... error: soroban-sdk requires stellar-cli v25.2.0+ to build a contract\" (class B, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — \"This is a small wrapper around cargo build that sets the target to wasm32v1-none and the profile to release (it also optimizes the resulting .wasm file by default). You can think of it as a shortcut for the following command: cargo build --target wasm32v1-none --release\" (class A, observedAt 2026-11-02)",
+        "Raven stellarDocs.search_docs \"stellar contract build wrapper around cargo build shortcut\" — \"hello-world#build-the-contract: \"This is a small wrapper around cargo build that sets the target to wasm32v1\"\" (class E, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02 (pass 2): grep for 'wrapper around' and 'cargo build --target wasm32v1-none' over the battery found only q-soroban-cross-contract-call (contractimport! wrapper, unrelated); no sibling calls plain cargo build equivalent.",
+        "Pass-2 proposer matrix, proposals, and independent verifier decisions: .agents/rounds/2026-11-02-golden-audit.md, task soroban-api."
       ],
       "rootCause": [
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "prior-art no-detour control",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        "Eval-side authoring flaw: the super-corpus rebuild left a generic grounded-answer template as golden.answer, with a dangling reference to 'stable distinctions above' and none of the target, cargo-vs-CLI, or core-crate facts the question asks for.",
+        "improvements/stellar-docs/sd-075-hello-world-build-wrapper-claim.md"
       ]
     },
-    "origin": "raven-next q-sor-build-target-wasm32v1"
+    "origin": "raven-next q-sor-build-target-wasm32v1",
+    "reverifyBy": "2027-01-22"
   }
 }

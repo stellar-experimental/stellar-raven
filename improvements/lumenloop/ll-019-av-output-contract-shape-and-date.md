@@ -16,6 +16,8 @@ recurrences:
     evidence: "Live A/V output remains a top-level array despite the declared results object; issue #35 remains open."
   - date: 2026-09-02
     evidence: "The DEVCON 2024 row `av_id` 445 had `created_at` `2026-04-02T23:21:21.744Z`. Row `av_id` 1162 had `created_at` `2026-04-28T05:25:34.817Z`. The observed values do not document the field meaning. The Raven catalog correction no longer calls it a recording date."
+  - date: 2026-11-02
+    evidence: "GET https://api.lumenloop.com/v1/tools/find_av_passages still says created_at is \"the recording's date\". POST find_av_passages at 2026-11-02T17:18:48Z returned av_id 445 \"Workshop: Stellar | Multichain Day | DEVCON 2024\" with created_at 2026-04-02T23:21:21.744Z, and av_id 1319 \"All About Tokens & Asset Contracts | Meridian 2023\" with created_at 2026-04-29T08:50:01.168Z. The data is still a top-level array; the output_schema still declares results. Golden cases: q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp."
 ---
 
 ## Finding

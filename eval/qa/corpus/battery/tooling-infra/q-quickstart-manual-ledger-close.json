@@ -6,7 +6,7 @@
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "For current Quickstart local mode, ordinary --local auto-closes roughly every second through testing acceleration. To control closes, start with --enable-core-manual-close (default false), which sets Core MANUAL_CLOSE, then call manualclose; each current call advances one ledger. A requested count parameter remains open in stellar-core issue #4040. Repeated closes advance sequence and close time but do not set an arbitrary timestamp. Use soroban-sdk ledger test utilities for direct unit-test timestamp/sequence mutation, and Quickstart for Core/RPC/TTL/archive integration. Pin the image, and use a fresh volume or explicit reconfiguration if initialized supervisor/service configuration conflicts with changed flags.",
+    "answer": "For current Quickstart local mode, ordinary --local auto-closes roughly every second through testing acceleration. To control closes, start with --enable-core-manual-close (default false), which sets Core MANUAL_CLOSE, then call manualclose; each current call advances one ledger. A requested count parameter remains open in stellar-core issue #4040. Repeated closes advance sequence and close time but do not set an arbitrary timestamp. Under Protocol 30 (CAP-88; the current Quickstart image default as of 2026-11-02), close time has millisecond resolution, so rapid closes can share one whole-second contract timestamp. Use soroban-sdk ledger test utilities for direct unit-test timestamp/sequence mutation, and Quickstart for Core/RPC/TTL/archive integration. Pin the image, and use a fresh volume or explicit reconfiguration if initialized supervisor/service configuration conflicts with changed flags.",
     "keyFacts": [
       "States --local closes at ~1s and opt-in --enable-core-manual-close sets MANUAL_CLOSE.",
       "States manualclose advances one ledger per call, with count support open in issue #4040.",
@@ -20,7 +20,7 @@
       "Manual close is enabled by default whenever Quickstart uses --local.",
       "manualclose accepts a current count parameter or sets any arbitrary timestamp."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence. Do not penalize an answer that sets ENABLE_CORE_MANUAL_CLOSE=true as a container environment variable: the current start script still reads it as the default for --enable-core-manual-close, although the docs show only the flag. Standalone Core with RUN_STANDALONE=true accepts ledgerSeq and closeTime parameters on manualclose (closeTime must still be later than the last close). Quickstart does not set RUN_STANDALONE, so an answer that scopes those parameters to standalone Core is correct; claiming them for Quickstart is not."
+    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence. Do not penalize an answer that sets ENABLE_CORE_MANUAL_CLOSE=true as a container environment variable: the current start script still reads it as the default for --enable-core-manual-close, although the docs show only the flag. Standalone Core with RUN_STANDALONE=true accepts ledgerSeq and closeTime parameters on manualclose (closeTime must still be later than the last close). Quickstart does not set RUN_STANDALONE, so an answer that scopes those parameters to standalone Core is correct; claiming them for Quickstart is not. From Protocol 30 (CAP-88), consecutive ledgers may share the same whole-second closeTime and Soroban ledger timestamp; a claim that every manualclose advances env.ledger().timestamp() by at least one second is wrong unless the answer scopes it to Protocol 29 or earlier."
   },
   "tags": {
     "category": "tooling-infra",
@@ -35,7 +35,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-11-02",
-    "reverifyBy": "2027-02-17",
+    "reverifyBy": "2027-06-07",
     "sources": [
       {
         "class": "A",
@@ -60,6 +60,30 @@
       {
         "class": "A",
         "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0088.md",
+        "note": "CAP-88 Implemented, Protocol 30: millisecond close-time increments; whole-second Soroban timestamps may repeat",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/herder/HerderImpl.cpp#L1694-L1726",
+        "note": "Core v30 next close time = max(now, last close next increment)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/quickstart/blob/main/images.json",
+        "note": "latest image protocol_version_default 30, core v30.0.0",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://hub.docker.com/v2/repositories/stellar/quickstart/tags/latest",
+        "note": "latest tag pushed 2026-10-28",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -308,23 +332,52 @@
             "note": "'Each `manualclose` invocation advances the ledger by one.'"
           }
         ]
+      },
+      {
+        "claim": "Under Protocol 30 (CAP-88), close time has millisecond resolution, so consecutive ledgers can share one whole-second Soroban ledger timestamp; the current Quickstart latest image defaults to Protocol 30",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0088.md — 'Status: Implemented ... Protocol version: 30 ... the minimum increment between consecutive close times was one second; under this CAP it is one millisecond.'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/herder/HerderImpl.cpp — 'if (nextCloseTime <= lclCloseTime) { nextCloseTime = ...'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/quickstart/blob/main/images.json — tag latest, protocol_version_default 30, core v30.0.0",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "F",
+            "ref": "https://hub.docker.com/v2/repositories/stellar/quickstart/tags/latest — latest tag pushed 2026-10-28",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "D",
+            "ref": "Parallel web_search: https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30 — Protocol 30 testnet vote 2026-11-03",
+            "observedAt": "2026-11-02"
+          }
+        ]
       }
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
       "evidence": [
-        "avoid[1] trapped both '--core-manual-close' and 'ENABLE_* syntax'. Only the flag half is false: the start script exits 1 on an unknown container arg. The ENABLE_* half was true, so the trap is narrowed to the flag and golden.notes now tells the grader not to penalize ENABLE_CORE_MANUAL_CLOSE.",
-        "Live B 2026-11-02: https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start still has ': \"${ENABLE_CORE_MANUAL_CLOSE:=false}\"' and the '--enable-core-manual-close' case. Source read only; Docker was not run because the local daemon was unavailable, so there is no F evidence.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/CommandHandler.cpp and https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp accept ledgerSeq and closeTime only with RUN_STANDALONE=true; https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/local/core/etc/stellar-core.cfg has no RUN_STANDALONE line. golden.notes adds this standalone-Core grader caution.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes#manual-close-mode states the one-second local close, the opt-in flag that defaults to false, one ledger per manualclose call, local-mode-only use, and the first-init configuration reuse. It replaces the dead https://developers.stellar.org/docs/build/smart-contracts/testing (HTTP 404).",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/issues/4040 is still open ('Support manual closing N ledgers', updated 2026-07-09), so the count keyFact holds.",
-        "Live A 2026-11-02: https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html (soroban-sdk 29.0.1) has set_sequence_number and set_timestamp. The source is reclassified from F to A because it is generated reference docs, not an execution.",
-        "Corroboration rows now carry per-claim evidence instead of one shared four-source block.",
-        "Sibling sweep 2026-11-02: grep manualclose|enable-core-manual-close|MANUAL_CLOSE|ENABLE_CORE|RUN_STANDALONE|ARTIFICIALLY_ACCELERATE|issues/4040 finds only q-sor-force-fast-archival-localnet. It says ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING is a Core config key, not a Quickstart environment variable; no contradiction."
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0088.md — 'Status: Implemented ... Protocol version: 30 ... the minimum increment between consecutive close times was one second; under this CAP it is one millisecond.'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/v30.0.0/src/herder/HerderImpl.cpp#L1694-L1726 — next close time is max(now, last close next increment).",
+        "Live B 2026-11-02: https://github.com/stellar/quickstart/blob/main/images.json — tag 'latest' has protocol_version_default 30 and core v30.0.0; F: Docker Hub latest tag pushed 2026-10-28.",
+        "Live A 2026-11-02: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide — 'consecutive ledgers may now report the same whole-second timestamp'.",
+        "Prior 2026-11-02 checks remain: --enable-core-manual-close flag, MANUAL_CLOSE, one ledger per manualclose, stellar-core issue #4040 open, RUN_STANDALONE-only ledgerSeq/closeTime (stellar-core v30.0.0 ApplicationImpl.cpp).",
+        "Sibling sweep 2026-11-02: q-sor-force-fast-archival-localnet (ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING); no contradiction with the CAP-88 timestamp note."
       ],
       "rootCause": [
-        "Eval-side authoring flaw: avoid[1] bundled a false claim (--core-manual-close) with a true one (ENABLE_* environment variables still read by the Quickstart start script), so the trap could punish a correct answer."
+        "freshness-drift: the current Quickstart image moved to Protocol 30, where CAP-88 lets consecutive ledgers share a whole-second timestamp; the golden predates that default."
       ]
     },
     "origin": "kaan local-fast-ledger-testing"

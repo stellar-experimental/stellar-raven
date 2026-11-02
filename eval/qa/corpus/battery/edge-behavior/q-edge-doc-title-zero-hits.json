@@ -28,7 +28,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
@@ -42,18 +42,41 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
       "evidence": [
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; a nonsense title returned envelope ok=false with kind soft-empty and reliable zero-hit guidance.",
-        "specs/stellar-docs.json exists and supports the behavioral golden.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
-      ],
-      "rootCause": [
-        "eval-authoring"
+        "Raven stellarDocs.search_doc_titles {query:'zqxv flurbonic wombatization'} (observedAt 2026-11-02): kind soft-empty, 'This query returned no hits in the docs index with the operation filters.' hint 'Scope the negative to this docs index.'",
+        "src/adapters/stellar-docs.ts:568-580 (worktree, 2026-11-02): nbHits === 0 selects the index-scoped no-hits message.",
+        "specs/stellar-docs.json:36 (2026-11-02): 'Auto-generated per-method RPC reference pages ... and per-endpoint Horizon reference pages are NOT in the index.'",
+        "No gospel change. Sibling sweep 2026-11-02: q-sor-doc-title-discovery, q-edge-doc-page-sections-soft-empty; no contradiction."
       ]
     },
-    "origin": "authored 2026-07 (coverage)"
+    "origin": "authored 2026-07 (coverage)",
+    "corroboration": [
+      {
+        "claim": "A docs title-search zero is an index-scoped soft-empty; it does not prove that no such page exists on the live site.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "Raven stellarDocs.search_doc_titles {query:\"zqxv flurbonic wombatization\"}",
+            "observedAt": "2026-11-02",
+            "note": "kind soft-empty: \"This query returned no hits in the docs index with the operation filters.\" hint: \"Scope the negative to this docs index.\""
+          },
+          {
+            "class": "B",
+            "ref": "src/adapters/stellar-docs.ts:568-580",
+            "observedAt": "2026-11-02",
+            "note": "nbHits === 0 selects the index-scoped no-hits message."
+          },
+          {
+            "class": "B",
+            "ref": "specs/stellar-docs.json:36",
+            "observedAt": "2026-11-02",
+            "note": "Auto-generated per-method RPC and per-endpoint Horizon reference pages are NOT in the index, so a live page can still miss."
+          }
+        ]
+      }
+    ]
   }
 }

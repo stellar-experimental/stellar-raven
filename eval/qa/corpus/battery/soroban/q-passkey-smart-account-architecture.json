@@ -35,7 +35,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-11-02",
-    "reverifyBy": "2027-02-03",
+    "reverifyBy": "2027-03-09",
     "sources": [
       {
         "class": "A",
@@ -274,16 +274,13 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus author re-check, Claude Opus 5.5)",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "Gospel correction: the answer and keyFact 3 required wallet code to validate RP ID and origin. W3C WebAuthn assigns those checks to the Relying Party, but the OpenZeppelin verifier (ddc327eb, lines 7-15) and the Passkey Kit verify.rs (30953747) deliberately omit them on-chain. The answer now states both positions, and the notes carry a symmetric grader caution.",
-        "Live B 2026-11-02: CAP-0051 still says secp256r1 verification alone is insufficient for WebAuthn; Protocol 21 is unchanged.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets says to store the public key (and optional credential ID) in contract state; keys stay on the device or provider.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/apps/guestbook/overview gives each user an OpenZeppelin Smart Account deployed from a shared framework Wasm.",
-        "Sibling sweep 2026-11-02: q-infra-secp256r1-passkeys already places origin and RP-ID checks at the relying-party/verifier layer and names the OpenZeppelin omissions, so it stays unchanged. q-passkey-platform-constraints covers client and platform RP-ID validation and is compatible."
-      ],
-      "rootCause": [
-        "Eval-side authoring flaw: the 2026-08-29 re-check read the W3C Relying Party steps as wallet-contract requirements and missed the deliberate on-chain omissions in the OpenZeppelin and Passkey Kit verifiers."
+        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case). The earlier 2026-11-02 event (.agents/rounds/2026-11-02-golden-reverify.md) corrected the RP-ID/origin wording; this audit re-checked that text and kept it.",
+        "golden.keyFacts[1]: B https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0051.md — 'Title: Smart Contract Host Functionality: Secp256r1 Verification ... Status: Final ... Protocol version: 21' | A https://stellar.org/protocol-upgrades — 'Protocol 21 6/18/2024 - CAP-0051 (Support secp256r1 verification)' (observedAt 2026-11-02).",
+        "golden.keyFacts[0]: A https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — 'They hold assets and enforce authorization in `__check_auth` instead of a single secret key.' | B https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071-01.md — delegate_account_auth delegates from an Address's __check_auth (observedAt 2026-11-02).",
+        "golden.answer confirmed-as-of: B https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs — OZ main HEAD still ddc327eb (2026-10-20), so the pinned verifier citations still match (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-infra-secp256r1-passkeys, q-passkey-platform-constraints, q-passkey-wallet-recovery checked; no contradiction."
       ]
     },
     "origin": "kaan passkey-smart-wallet-architecture"

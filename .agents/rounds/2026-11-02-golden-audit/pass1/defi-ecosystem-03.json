@@ -1,0 +1,1386 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "defi-ecosystem-03",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-defi-oracle-landscape-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts",
+     "claim": "A current oracle comparison uses project and repo results, cites URLs, dates judgments, and avoids a universal leader.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects q=oracle (observedAt 2026-11-02T16:02:08Z)",
+       "observedAt": "2026-11-02",
+       "quote": "Reflector Live SCF 444840; DIA Live; Band Live; Lightecho Live; Redstone Finance Live; Orally; Pyth; Quasar; Stellar Oracle Shield; Chainlink Oracles Relayer (2…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.searchRepos q=oracle",
+       "observedAt": "2026-11-02",
+       "quote": "reflector-network/reflector-contract; bp-ventures/lightecho-stellar-oracle; diadata-org/soroban-oracle-feeders; bandprotocol/band-std-reference-contracts-soroba…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+       "observedAt": "2026-10-27",
+       "quote": "Oracle Providers: RedStone ... Reflector Network ... Band ... DIA Oracles ... Pyth ... Chainlink"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "One Stellar oracle is permanently the most established.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+       "observedAt": "2026-10-27",
+       "quote": "lists RedStone, Reflector, Band, DIA, Pyth, Chainlink with mainnet deployments"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-reflector-oracle; q-defi-reflector-alternatives; q-soroban-oracle-defensive-consumption; q-eco-defi-market-map"
+  },
+  {
+   "id": "q-defi-perps-whitespace",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Zenex runs a live Stellar mainnet perp market (XLM-USD).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/zenith-protocols/zenex-docs/blob/main/docs/deployments.md",
+       "observedAt": "2026-11-02",
+       "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet ... | Status | Active | Market contract CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZA…"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com getEvents CAOZCITW...42IB from ledger 65148900 (latest 65269851)",
+       "observedAt": "2026-11-02",
+       "quote": "427 events: open_fill 16 (last 2026-11-01T09:40:29Z), close_fill 13, liquidation 8 (last 2026-10-30T15:12:59Z), accrual_update 322 (last 2026-11-02T15:45:34Z)"
+      },
+      {
+       "class": "C",
+       "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+       "observedAt": "2026-11-02",
+       "quote": "Zenith Protocols' Zenex perpetual futures exchange is also live on Stellar mainnet"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Noether has mainnet contracts paused; trading not open until the audit.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://noether.exchange/",
+       "observedAt": "2026-11-02",
+       "quote": "The contracts are already live on Stellar mainnet — paused, with no funds inside, until the independent audit clears"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com simulate get_pause_state on CBC2XPFPI2DI7CVGRHDLVIHENIPFJJOGSUPAHLWZ43UTHK5TFJVIHJTC",
+       "observedAt": "2026-11-02",
+       "quote": "[1,1791048662]"
+      },
+      {
+       "class": "C",
+       "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026",
+       "observedAt": "2026-10-30",
+       "quote": "Noether DEX presented at Meridian: a Soroban-native perpetual futures exchange with 13 testnet markets and mainnet contracts deployed pending audit."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Kryon)",
+     "claim": "Kryon advertises mainnet perps; no on-chain settlement activity after 2026-08-25 found.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "http://kryonprotocol.live/",
+       "observedAt": "2026-11-02",
+       "quote": "8 Perpetual Markets Live on Stellar Mainnet XLM · BTC · ETH · SOL · XRP · ADA · BNB · TRX"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com getLedgerEntries instance CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ",
+       "observedAt": "2026-11-02",
+       "quote": "lastModifiedLedgerSeq 64124564 (unchanged); getEvents from ledger 65149000: 0 events"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Stellars Finance)",
+     "claim": "Stellars Finance shows no mainnet trading evidence.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Stellars%20Finance",
+       "observedAt": "2026-11-02",
+       "quote": "Stellars Finance Pre-Release ... deployment network testnet, basis human-verified, asOf 2026-08-28"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_search 'Stellar perpetuals DEX mainnet launch' + Perplexity search",
+       "observedAt": "2026-11-02",
+       "quote": "no Stellars Finance mainnet launch result"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..4]",
+     "claim": "Traps (Zenex testnet-only; Zenex only venue; no Stellar perp DEX; leveraged loops = perps) punish false claims.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com getEvents Zenex market",
+       "observedAt": "2026-11-02",
+       "quote": "open_fill 2026-11-01"
+      },
+      {
+       "class": "A",
+       "ref": "http://kryonprotocol.live/",
+       "observedAt": "2026-11-02",
+       "quote": "Perpetual Markets Live on Stellar Mainnet"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-eco-defi-market-map; q-defi-named-newer-protocols"
+  },
+  {
+   "id": "q-defi-phoenix-what-is",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Phoenix is a Soroban AMM/DEX suite with pools, factory, multihop routing, liquidity.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/Phoenix-Protocol-Group/phoenix-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "Source code of the smart contracts of the Phoenix DeFi hub DEX protocol (archived:false, pushed 2026-08-19)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/project/phoenix",
+       "observedAt": "2026-11-02",
+       "quote": "constant-product and stableswap liquidity pools ... a Factory for creating pools and multi-hop routing"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "PHO is Phoenix's classic asset; TOML issuer GAX5...SXJO.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://app.phoenix-hub.io/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "code=\"PHO\" issuer=\"GAX5TXB5RYJNLBUR477PEXM4X75APK2PGMTN6KEFQSESGWFXEAKFSXJO\""
+      },
+      {
+       "class": "C",
+       "ref": "https://lumenloop.com/projects/phoenix",
+       "observedAt": "2026-11-02",
+       "quote": "PHO (primary) Issuer: GAX5TXB5RYJNLBUR477PEXM4X75APK2PGMTN6KEFQSESGWFXEAKFSXJO; Created on Stellar: 2024-05-07"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "PHO tokenomics come from the 2024 initial whitepaper.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.phoenix-hub.io/",
+       "observedAt": "2026-11-02",
+       "quote": "Whitepaper -> https://raw.githubusercontent.com/Phoenix-Protocol-Group/docs/main/Initial%20Phoenix%20Whitepaper.pdf"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (SCF)",
+     "claim": "Official SCF page: 7 awarded submissions, $394.5K total.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/project/recafjXSgVbrp8svj",
+       "observedAt": "2026-11-02",
+       "quote": "Total awarded $394.5K* ... Awarded Submissions 7 (7 status Awarded, 6 Not Awarded; totalAwarded 394500, totalPaid 394500)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/project/phoenix",
+       "observedAt": "2026-11-02",
+       "quote": "Funded Rounds 16 20 25 Total Funded $394,500"
+      },
+      {
+       "class": "C",
+       "ref": "https://lumenloop.com/projects/phoenix",
+       "observedAt": "2026-11-02",
+       "quote": "SCF: funded ($394,500), rounds 16, 20, 25, Liquidity Award - '24 Q1"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Phoenix is one of the AMM liquidity sources aggregated by Soroswap.",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+       "observedAt": "2026-11-02",
+       "quote": "soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com stellar contract info interface CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4",
+       "observedAt": "2026-11-02",
+       "quote": "pub enum Hop { Soroswap, Aqua, Sushi, Phoenix, Comet }"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com simulate get_adapters CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO",
+       "observedAt": "2026-11-02",
+       "quote": "protocol_id 1 router CCLZRD4E72T7JCZCN3P7KNPYNXFYKQCL64ECLX7WP5GNVYPYJGU2IO2G paused false (deprecated contract)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "PHO is a governance token; Phoenix is a lender/oracle/bridge.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/dashboard/submissions/recLOzDpEMgJWDbTe",
+       "observedAt": "2026-11-02",
+       "quote": "Phoenix's AMM enables decentralized swaps of crypto assets"
+      },
+      {
+       "class": "D",
+       "ref": "https://defillama.com/protocol/phoenix-defi-hub",
+       "observedAt": "2026-11-02",
+       "quote": "Category: Dexs Sub Category: AMM"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02, Phoenix's official SCF page reports seven awarded submissions totaling $394.5K.",
+     "reason": "Re-observed unchanged on the primary page; refresh the dated as-of for the near-due scheduled case (reverifyBy 2026-11-19)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "one of the AMM liquidity sources aggregated by Soroswap (per Scout; as of 2026-11-02 Soroswap's docs list Aggregator v3 venues without Phoenix, so do not require it).",
+     "reason": "Soroswap docs now name Aggregator v3 venues Soroswap, Aquarius, SushiSwap V3, Comet; the Phoenix-adapter aggregator CAYP3 is deprecated since 2026-09-24."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-soroswap-what-is; q-defi-soroswap-vs-stellarx; q-eco-dex-saturation; q-defi-provide-liquidity-impermanent-loss"
+  },
+  {
+   "id": "q-defi-provide-liquidity-impermanent-loss",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Classic pools use LiquidityPoolDeposit/Withdraw, non-transferable pool shares, protocol fee; Soroban venues are contract-defined.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "The fee is 30 bps, which is equal to 0.30%. ... Pool shares are similar to other assets on Stellar but they cannot be transferred."
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs 'LiquidityPoolDeposit pool shares fee 0.3%'",
+       "observedAt": "2026-11-02",
+       "quote": "liquidity-on-stellar-sdex-liquidity-pools#liquidity-pool-participation: withdrawing from a liquidity pool with LiquidityPoolWithdrawOp"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "LiquidityPoolDepositOp / LiquidityPoolWithdrawOp definitions"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4], avoid",
+     "claim": "Risk framing (IL definition, no guaranteed APY, roster not permanent).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://defillama.com/chain/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "TVL values move daily (e.g. Blend $131.34m -20.69% 30d as of Oct 31, 2026)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-sdex-vs-amm; q-asset-amm-fee-reserve"
+  },
+  {
+   "id": "q-defi-reflector-oracle",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Reflector is a Stellar/Soroban oracle; nodes aggregate matching signed transactions.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://reflector.network/docs",
+       "observedAt": "2026-10-30",
+       "quote": "combination of specialized smart contracts and peer-to-peer consensus of data provider nodes"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+       "observedAt": "2026-10-27",
+       "quote": "Reflector nodes process, normalize, aggregate, and store trades information"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Three public mainnet feeds update under 4-of-7 weight-1 signers.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com simulate last_timestamp on CALI2BYU...LE6M, CAFJZQWS...4DLN, CBKGPWGK...CJZC",
+       "observedAt": "2026-11-02",
+       "quote": "1793634900 for all three (294 s before observation)"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GC2M2UTZ57GSENZBTPMLPB6QSAL2USIPHMXSUCT2I3V24GYWF3EI6RFA (and GCJ2RDQL..., GCSJ7NZK...)",
+       "observedAt": "2026-11-02",
+       "quote": "thresholds low/med/high 4; 7 signers weight 1; master weight 0"
+      },
+      {
+       "class": "A",
+       "ref": "https://reflector.network/docs",
+       "observedAt": "2026-10-30",
+       "quote": "Status: live (4-of-7 multisig) ... Sampling: 5 minutes"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (paid services)",
+     "claim": "Reflector also offers non-free services (Beam paid feed; Flare, formerly Subscriptions).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract",
+       "observedAt": "2026-11-02",
+       "quote": "ReflectorPulse oracles with a uniform 5-minute update interval provide free access ... ReflectorBeam oracles ... for subscribers with prepaid time-bound per-ass…"
+      },
+      {
+       "class": "A",
+       "ref": "https://reflector.network/docs",
+       "observedAt": "2026-10-30",
+       "quote": "Stellar Pubnet Beam Oracle Contract: CCRV…E2F7 Status: live (4-of-7 multisig)"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com simulate admin/last_timestamp/resolution on CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7; Horizon admin GCFTRCMT...",
+       "observedAt": "2026-11-02",
+       "quote": "admin GCFTRC...; last_timestamp 1792682400 (2026-10-22T15:20Z); resolution 60; same 7 signers threshold 4"
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/reflector-oracle-explained",
+       "observedAt": "2026-10-09",
+       "quote": "Pulse is the free, five-minute feed ... Beam offers one-minute granularity ... for a per-call fee in XRF. Flare, formerly called subscriptions, pushes webhook a…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Public feeds have no possible limits / all services must be free.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://reflector.network/oracles",
+       "observedAt": "2026-11-02",
+       "quote": "Pulse oracles are openly available to use for any smart contract, but require someone to periodically pay oracle upkeep fees."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract",
+       "observedAt": "2026-11-02",
+       "quote": "ReflectorBeam ... prepaid ... purchased with XRF"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRe-checked 2026-11-02: the three Pulse feeds still update every 5 minutes under the 4-of-7 admin signers. Reflector now names its free public feeds Pulse, a paid prepaid-XRF feed Beam (its mainnet Beam oracle uses the same 4-of-7 signers), and its webhook service Flare (formerly Subscriptions). Naming Beam or Flare is correct. An attributed quote of Reflector's 'free for everyone, without limitations' Pulse wording does not fire the no-limits avoid.",
+     "reason": "New Beam/Flare product naming and a symmetric caution so an operator-attributed access quote is not punished."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-sor-reflector-integration-code; q-defi-oracle-landscape-live; q-defi-reflector-alternatives; q-soroban-oracle-defensive-consumption"
+  },
+  {
+   "id": "q-defi-rwa-scf-similar",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer (statuses)",
+     "claim": "Talwex, Lend, TERWA SCF #43 are Awarded; 0xAuth SCF #27 historical award.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+       "observedAt": "2026-11-02",
+       "quote": "title Lend - Tokenized real estate on Stellar, status Awarded, roundName SCF #43, budget 120560, awardType Build"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recK1Xh6hgHosxmbt",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Vault for Real-World Bonds, Awarded, SCF #43, budget 150000 (Talwex)"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recub0G7qf25j381y",
+       "observedAt": "2026-11-02",
+       "quote": "Wine Asset Vault for Stellar, Awarded, SCF #43, budget 97240 (TERWA)"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/rec2UJLCx1DBLgdm4",
+       "observedAt": "2026-11-02",
+       "quote": "0xAuth, Awarded, SCF #27, budget 45000"
+      },
+      {
+       "class": "C",
+       "ref": "Raven lumenloop.get_scf_submissions name=Lend/Talwex/TERWA",
+       "observedAt": "2026-11-02",
+       "quote": "Lend SCF #43 budget 120560 award_type Build; Talwex SCF #43 150000; TERWA SCF #43 97240 (no status field, per ll-013)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Lend totalPaid)",
+     "claim": "Lend showed requested $120,560 and totalPaid $72,336 (observed 2026-08-04).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+       "observedAt": "2026-11-02",
+       "quote": "project: {id recI6b685iE55F7xC, totalAwarded 213460, totalPaid 149635.6, submissions: [Lend : Real Estate for everyone, Awarded, SCF #45, 92900], [..SCF #42 Not…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=lend",
+       "observedAt": "2026-11-02",
+       "quote": "scfTotalAwardedUSD 213460, scfAwardedRounds [43,45], scfRoundAwards 43:120560, 45:92900, scfAsOf 2026-10-03"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..3]",
+     "claim": "award_type/semantic match is not Awarded proof; history is not current status; no timeless BENJI/CRDT/USDY negative.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven lumenloop.get_scf_submissions",
+       "observedAt": "2026-11-02",
+       "quote": "award_type Build present on Awarded and Not Awarded alike (no status field)"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/rec6OmzKQPvWBRAG9 (via Lend project list)",
+       "observedAt": "2026-11-02",
+       "quote": "Lend - Tokenized real estate on Stellar, Not Awarded, SCF #42, Build"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "and its project record showed `totalPaid` of **$72,336**",
+     "reason": "The official page carries totalPaid on the project record, not on the submission."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRe-checked 2026-11-02: the Talwex, Lend, and TERWA SCF #43 pages still show Awarded. Lend's project record now also lists an Awarded SCF #45 submission ($92,900; project total awarded $213,460), and its project-level totalPaid has changed since 2026-08-04. Grade a newer dated figure as current, not as a contradiction.",
+     "reason": "Freshness drift in a field the golden cites as a dated example."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-scf-funded-similar-oracle; q-scf-history-orbit-cdp; q-defi-orbit-cdp; q-scf-skill-submission-radar; q-defi-rwa-treasury-funding-live; q-rwa-projects-tokenizing-stellar"
+  },
+  {
+   "id": "q-defi-rwa-treasury-funding-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts",
+     "claim": "Current RWA/Treasury directory rows with primary links; funding provenance only when supported; unknown otherwise.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects q=treasury (25 total)",
+       "observedAt": "2026-11-02",
+       "quote": "Ondo Live (USDY ... backed by short-term US Treasuries); WisdomTree Live (WTGXX); Spiko Live (EUTBL/USTBL); Etherfuse Live (Stablebonds); Bando Live SCF 75000; …"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02",
+       "quote": "official SCF award records are the affirmative source"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Absence from one result page proves never SCF-funded.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects q=lend.xyz vs raw /api/projects/search?q=lend",
+       "observedAt": "2026-11-02",
+       "quote": "one query returned unrelated rows; another returned Lend with scfTotalAwardedUSD 213460"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-rwa-scf-similar; q-rwa-projects-tokenizing-stellar"
+  },
+  {
+   "id": "q-defi-sdex-offer-lifecycle",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "offer_id 0 creates; nonzero updates; amount 0 deletes.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "/* Creates, updates or deletes an offer ... // 0=create a new offer, otherwise edit an existing offer int64 offerID;"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs 'manage sell offer offer id 0 create delete amount 0'",
+       "observedAt": "2026-11-02",
+       "quote": "list-of-operations#manage-sell-offer; result-codes manage-sell-offer MANAGE_SELL_OFFER_NOT_FOUND"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[0]",
+     "claim": "Horizon offer-created/updated/removed effect types are unused in current source.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go",
+       "observedAt": "2026-11-02",
+       "quote": "// unused // EffectOfferCreated ... EffectType = 30 ... EffectOfferRemoved ... = 31 ... EffectOfferUpdated ... = 32"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/go-stellar-sdk/blob/main/protocols/horizon/effects/main.go",
+       "observedAt": "2026-11-02",
+       "quote": "// unused // EffectOfferCreated: \"offer_created\", ..."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/go (README)",
+       "observedAt": "2026-11-02",
+       "quote": "REPOSITORY DEPRECATED ... This repository has been moved to: github.com/stellar/go-stellar-sdk (repo archived:true)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[2]",
+     "claim": "Classic offers have no protocol-level expiry.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "OfferEntry fields sellerID, offerID, selling, buying, amount, price, flags (no expiry field)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "current Horizon source (`stellar/stellar-horizon`; the `stellar/go` monorepo is archived) marks those effect types unused",
+     "reason": "stellar/go is archived and deprecated; the cited current source moved."
+    },
+    {
+     "field": "truth.sources[3].ref",
+     "op": "set",
+     "new": "https://github.com/stellar/stellar-horizon",
+     "reason": "Point provenance at the live repository."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-go-sdk-ingest; q-asset-path-payment-ops; q-defi-arbitrage-pathpayment-bots; q-asset-sdex-vs-amm; q-defi-market-making-kelp"
+  },
+  {
+   "id": "q-defi-skill-ecosystem-scout",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts/avoid",
+     "claim": "The served skill defines the workflow the golden names.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-ecosystem-scout/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Pass 1 Frame get_categories/get_regions/get_project_tags_vocabulary; Pass 2 Seed short search_directory; Pass 3 Grow find_similar_projects_semantic; Pass 4 Narr…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read('skills.lumenloop.stellar-ecosystem-scout') observed 2026-11-02",
+       "observedAt": "2026-11-02",
+       "quote": "ok; ~10.3k chars; sections listed"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-defi-skill-project-dossier",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts/avoid",
+     "claim": "The served skill defines the workflow the golden names.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-project-dossier/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "1 Resolve the slug search_directory; 2 get_project; 3 get_scf_submissions; 4 find_content_about_project; 5 find_av_passages; 6 find_similar_projects_semantic ..…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven codemode.skill.read('skills.lumenloop.stellar-project-dossier') observed 2026-11-02",
+       "observedAt": "2026-11-02",
+       "quote": "ok; ~10.3k chars; sections listed"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-defi-soroswap-vs-stellarx",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2..3], avoid[2]",
+     "claim": "StellarX is an Ultra Stellar non-custodial trading UI with AMM access; not SDF-built.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://ultrastellar.com/",
+       "observedAt": "2026-10-30",
+       "quote": "Our products LOBSTR StellarX LOBSTR Vault StellarTerm ... StellarX is a powerful trading platform built on the Stellar network ... Access AMMs"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.stellarx.com/",
+       "observedAt": "2026-10-05",
+       "quote": "StellarX is a powerful decentralized trading platform built on the Stellar network. Connect your wallet ... Access AMMs"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Soroswap contracts/API vs StellarX UI; API quotes a wider set than the on-chain aggregator.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+       "observedAt": "2026-11-02",
+       "quote": "Soroswap AMM | Aquarius | SushiSwap V3 | Comet -> Aggregator v3 (Hop::...); SDEX -> Classic path payment"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com getEvents CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4 from ledger 65150000",
+       "observedAt": "2026-11-02",
+       "quote": "641 swap events, last 2026-11-02T15:51:49Z; CAYP3...TXTO: 0 events in the same window"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Its on-chain aggregator routes across Soroban AMM venues only.",
+     "reason": "Aggregator v3 uses typed hops, not adapters; the durable boundary is Soroban venues vs classic SDEX."
+    },
+    {
+     "field": "truth.sources[0].ref",
+     "op": "set",
+     "new": "https://docs.soroswap.finance/aggregator/supported-amms",
+     "reason": "github.com/soroswap/docs returns HTTP 404 on 2026-11-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-soroswap-what-is; q-eco-dex-saturation; q-edge-factcheck-soroswap-first-amm; q-scf-history-soroswap"
+  },
+  {
+   "id": "q-defi-soroswap-what-is",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Soroswap is built by PaltaLabs.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/soroswap/.github/blob/main/profile/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Soroswap.Finance is developed by the **PaltaLabs 🥑** Team."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/",
+       "observedAt": "2026-10-25",
+       "quote": "Developer questions go to dev@paltalabs.io"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (adapter set)",
+     "claim": "Current on-chain execution path and venue set.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3.md",
+       "observedAt": "2026-11-02",
+       "quote": "Aggregator v3 | CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4 ... runs them hop by hop across Soroswap, Aquarius, SushiSwap V3 and Comet ... The prev…"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com stellar contract info interface CARVQX...DDC4",
+       "observedAt": "2026-11-02",
+       "quote": "pub enum Hop { Soroswap(SoroswapHop), Aqua(AquaHop), Sushi(SushiHop), Phoenix(PhoenixHop), Comet(CometHop) }"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com getEvents v3 vs CAYP3 from ledger 65150000",
+       "observedAt": "2026-11-02",
+       "quote": "v3: 641 swap events (last 2026-11-02T15:51:49Z); CAYP3: 0 events"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com simulate get_adapters CAYP3...TXTO",
+       "observedAt": "2026-11-02",
+       "quote": "protocol_id 0,1,2 unpaused (Soroswap, Phoenix, Aqua) — configuration unchanged on the deprecated contract"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2] / avoid[0]",
+     "claim": "'First' wording is Soroswap/Scout marketing, attribute it.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/directory",
+       "observedAt": "2026-11-02",
+       "quote": "Soroswap is the first decentralized exchange (DEX) and DEX aggregator on Stellar Soroban"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/",
+       "observedAt": "2026-10-25",
+       "quote": "The Swap Aggregator for Stellar (current docs home no longer carries the 'first' phrase)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (SOURCE STATUS 2026-09-17)",
+     "claim": "concepts/aggregator and supported-amms pages carry stale testnet/coming-soon labels (cs-002).",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/concepts/aggregator",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 307 -> https://docs.soroswap.finance/ (page removed)"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+       "observedAt": "2026-11-02",
+       "quote": "Supported venues: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/soroswap/docs",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404 (repository and issue #47 no longer public)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "The on-chain aggregator routes only through configured Soroban AMM venues; API/service quotes may additionally include classic SDEX liquidity, executed as a separate classic path payment, so do not merge those layers.",
+     "reason": "Aggregator v3 uses typed hops; operator docs state SDEX quotes build a classic path payment, not an aggregator call."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of **2026-11-02**, Soroswap's docs name Aggregator v3 `CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4` as the mainnet contract for API-built Soroban swaps, with hops across Soroswap, Aquarius, SushiSwap V3, and Comet. They mark the earlier aggregator `CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO` deprecated since 2026-09-24; on 2026-07-10 it returned unpaused Soroswap, Phoenix, and Aqua adapters. The v3 interface also defines a Phoenix hop, but code presence does not prove an active venue. Re-query before relying on any set.",
+     "reason": "The golden's only current-state example names a contract the operator deprecated on 2026-09-24; A + F confirm v3 is the live path."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "SOURCE STATUS 2026-11-02: Soroswap's docs present Aggregator v3 (`CARVQX…DDC4`) as the mainnet execution contract and mark `CAYP3…TXTO` deprecated since 2026-09-24. Mainnet RPC showed recent v3 swap events and none for CAYP3 in the same window. The cs-002 stale pages no longer render: concepts/aggregator redirects to the docs home, and the supported-venues page lists Soroswap, Aquarius, SushiSwap V3, Comet, and SDEX. Credit a dated v3 venue list or a dated CAYP3 snapshot; an undated claim that CAYP3 is the current path is stale.",
+     "reason": "The prior source-status caution describes pages that no longer exist and makes a deprecated contract the grading authority."
+    },
+    {
+     "field": "truth.sources[0].ref",
+     "op": "set",
+     "new": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+     "reason": "github.com/soroswap/docs returns HTTP 404 on 2026-11-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md"
+   ],
+   "siblings": "q-defi-soroswap-vs-stellarx; q-eco-dex-saturation; q-edge-factcheck-soroswap-first-amm; q-scf-history-soroswap; q-defi-phoenix-what-is; q-defi-provide-liquidity-impermanent-loss"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5); proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-defi-phoenix-what-is",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Re-dated fact verified live on the official SCF page (server-rendered HTML). Also update truth.sources[2].note, which still says 're-fetched 2026-08-05'.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/project/recafjXSgVbrp8svj",
+      "observedAt": "2026-11-02",
+      "quote": "Total awarded $394.5K* Awarded Submissions 7 ... \"totalAwarded\":394500,\"totalPaid\":394500"
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchProjects q=Phoenix -> https://stellarlight.xyz/project/phoenix",
+      "observedAt": "2026-11-02T16:30:13Z",
+      "quote": "scfTotalAwardedUSD: 394500, scfAsOf: 2026-09-04"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-phoenix-what-is",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "one of the AMM liquidity sources aggregated by Soroswap (per Scout; as of 2026-11-02 Soroswap's supported-venues page omits Phoenix, though the v3 interface defines a Phoenix hop, so do not require it).",
+    "note": "Direction is correct and avoids requiring a stale claim. Proposed wording 'list Aggregator v3 venues without Phoenix' is imprecise: the v3 Hop enum includes Phoenix; only the API supported-venues list omits it. Soroswap's Phoenix status has changed between doc versions, so the softened 'do not require it' is right.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/project/phoenix (via Raven scout.searchProjects)",
+      "observedAt": "2026-11-02",
+      "quote": "One of the AMM liquidity sources aggregated by Soroswap."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+      "observedAt": "2026-11-02",
+      "quote": "pub enum Hop { Soroswap(SoroswapHop), Aqua(AquaHop), Sushi(SushiHop), Phoenix(PhoenixHop), Comet(CometHop), }"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search result for docs.soroswap.finance/aggregator/supported-amms.md (earlier cached version)",
+      "observedAt": "2026-11-02",
+      "quote": "| [Phoenix](https://www.phoenix-hub.io) | Constant product, stable | Yes (`Hop::Phoenix`) | Not today |"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-reflector-oracle",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "All claims verified across A/B/D plus on-chain F. The attributed-quote clause is not score laundering: it is the operator's verbatim wording and the avoid targets unattributed absolutes. Optional: Reflector's /oracles page says Pulse 'require[s] someone to periodically pay oracle upkeep fees', and Beam's last on-chain update was 2026-10-22; neither contradicts the note.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GC2M2UTZ57GSENZBTPMLPB6QSAL2USIPHMXSUCT2I3V24GYWF3EI6RFA (+ GCJ2RD.., GCSJ7N.., GCFTRC..)",
+      "observedAt": "2026-11-02",
+      "quote": "thresholds low/med/high=4; 7 signers weight 1 each (same key set on all four admins); Pulse admin txs at 16:05:24, 16:10:24, ... 16:30:24Z with 4 signatures eac…"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract read via https://mainnet.sorobanrpc.com for CAFJ..4DLN, CALI..LE6M, CBKG..CJZC, CCRV..E2F7",
+      "observedAt": "2026-11-02",
+      "quote": "admin = GCJ2RD.., GC2M2U.., GCSJ7N.., GCFTRC.. respectively"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/reflector-network/reflector-contract",
+      "observedAt": "2026-11-02",
+      "quote": "ReflectorPulse oracles with a uniform 5-minute update interval provide free access to published price feeds; ReflectorBeam oracles ... faster price updates for …"
+     },
+     {
+      "class": "A",
+      "ref": "https://reflector.network/docs",
+      "observedAt": "2026-11-02",
+      "quote": "Reflector public price feed is free for everyone, without limitations. ... Stellar Pubnet Beam Oracle ... Status: live (4-of-7 multisig)"
+     },
+     {
+      "class": "A",
+      "ref": "https://reflector.network/flare",
+      "observedAt": "2026-11-02",
+      "quote": "nav '/ Flare'; page heading '/ Subscriptions' ... Reflector Subscriptions is a service for user-defined customized triggers ... push a notification to the WebHo…"
+     },
+     {
+      "class": "D",
+      "ref": "https://whalehub.io/blog/reflector-oracle-explained",
+      "observedAt": "2026-11-02",
+      "quote": "Pulse is the free, five-minute feed ... Beam offers one-minute granularity ... for a per-call fee in XRF. Flare, formerly called subscriptions, pushes webhook a…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-rwa-scf-similar",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "totalPaid appears once per page, on the project object, not the submission object, so 'its project record showed totalPaid' is the more accurate field attribution. The figure stays dated 2026-08-04.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+      "observedAt": "2026-11-02",
+      "quote": "{\"id\":\"rec2QeA1y7ln6D3Ii\",\"title\":\"Lend - Tokenized real estate on Stellar\",\"status\":\"Awarded\",\"project\":\"recI6b685iE55F7xC\",\"roundName\":\"SCF #43\",\"budget\":1205…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-rwa-scf-similar",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "All re-check claims hold. Current Lend project totalPaid is 149,635.6 as of 2026-11-02 if the editor wants an explicit current value.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/submissions/reciJ66GV514CRUi4",
+      "observedAt": "2026-11-02",
+      "quote": "\"title\":\"Lend : Real Estate for everyone\",\"status\":\"Awarded\",\"roundName\":\"SCF #45\",\"budget\":92900; project totalAwarded 213460; totalPaid 149635.6"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/submissions/recK1Xh6hgHosxmbt",
+      "observedAt": "2026-11-02",
+      "quote": "Talwex 'Stellar Vault for Real-World Bonds' SCF #43 status Awarded, budget 150000"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/submissions/recub0G7qf25j381y",
+      "observedAt": "2026-11-02",
+      "quote": "TERWA 'Wine Asset Vault for Stellar' SCF #43 status Awarded, budget 97240"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.get_scf_submissions name=Lend",
+      "observedAt": "2026-11-02",
+      "quote": "Lend : Real Estate for everyone, SCF #45, award_type Build, budget 92900, linked_project_slugs [lend]"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-sdex-offer-lifecycle",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "The unused-effects claim carries over to the live Horizon repo; the archive status is confirmed.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/go",
+      "observedAt": "2026-11-02",
+      "quote": "\"archived\":true,\"description\":\"Archived public monorepo of go code\""
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go",
+      "observedAt": "2026-11-02",
+      "quote": "// unused\n// EffectOfferCreated occurs when an account offers to trade an asset\n// EffectOfferCreated EffectType = 30 ... // EffectOfferRemoved EffectType = 31 …"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search -> github.com/stellar/go release page",
+      "observedAt": "2026-11-02",
+      "quote": "This repository was archived by the owner on Dec 16, 2025. It is now read-only."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-sdex-offer-lifecycle",
+    "field": "truth.sources[3].ref",
+    "decision": "accept",
+    "note": "The ref points to the live repo that holds the cited unused-effect markers.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-horizon",
+      "observedAt": "2026-11-02",
+      "quote": "\"archived\":false,\"description\":\"Stellar's Horizon API service\",\"pushed_at\":\"2026-10-30T19:54:38Z\""
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-vs-stellarx",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "v3 uses typed hops, not adapters, so 'venues' is the accurate term. The Soroban-only boundary still holds.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+      "observedAt": "2026-11-02",
+      "quote": "the contract runs them hop by hop across Soroswap, Aquarius, SushiSwap V3 and Comet in one atomic transaction"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/api/sdex.md",
+      "observedAt": "2026-11-02",
+      "quote": "An SDEX quote has platform sdex ... executes as a classic path payment from a G... account"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-vs-stellarx",
+    "field": "truth.sources[0].ref",
+    "decision": "accept",
+    "note": "The old ref is dead (404). The new ref is live and on point. Class should be A for operator docs (or keep the class the corpus uses for project-owned docs).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/soroswap/docs",
+      "observedAt": "2026-11-02",
+      "quote": "Not Found (HTTP 404)"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200; '# Supported venues' lists soroswap, aqua, sushi, comet, sdex"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "golden.answer (sentence 1: layer separation)",
+    "decision": "accept",
+    "note": "Accurate, and it adds the verified execution boundary.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "Soroban routes can split one trade across several venues, hop by hop, and execute in a single atomic transaction through Aggregator v3. SDEX is quoted alongside…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/api/sdex.md",
+      "observedAt": "2026-11-02",
+      "quote": "executes as a classic path payment from a G... account, and cannot pay a C... address"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/project/soroswap (Raven scout.searchProjects)",
+      "observedAt": "2026-11-02",
+      "quote": "Its swap Route API returns quotes and optimal routing across Stellar DEXs, including the Stellar classic DEX (SDEX)."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "golden.answer (sentence 2: deployment snapshot)",
+    "decision": "modify",
+    "newText": "As of **2026-11-02**, Soroswap's docs name Aggregator v3 `CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4` as the mainnet contract for API-built Soroban swaps, with hops across Soroswap, Aquarius, SushiSwap V3, and Comet. They mark the earlier aggregator `CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO` deprecated; since 2026-09-24 the Soroswap API no longer quotes or accepts transactions for it. On 2026-07-10 it returned unpaused Soroswap, Phoenix, and Aqua adapters. The v3 interface also defines a Phoenix hop, but code presence does not prove an active venue. Re-query befor…",
+    "note": "Substance verified. Docs give 2026-09-24 as the API cutoff, not the deprecation date, so 'deprecated since 2026-09-24' over-reads the source; split the clause. The 2026-07-10 snapshot stays dated.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+      "observedAt": "2026-11-02",
+      "quote": "The previous aggregator, `CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO` ... is deprecated. Since 2026-09-24 the Soroswap API neither quotes for it n…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/api/going-to-production.md",
+      "observedAt": "2026-11-02",
+      "quote": "The pre-v3 aggregator contract (`CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`) is deprecated: new integrations use Aggregator v3."
+     },
+     {
+      "class": "F",
+      "ref": "https://mainnet.sorobanrpc.com getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "CARVQX...DDC4: 158 events in ledgers 65160240+ (2026-10-27) and 10 in 65253240+ (latest 2026-11-02T08:19:59Z), topic[0]='swap'; CAYP3...TXTO: 0 events in the sa…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search -> docs.soroswap.finance aggregator-v3 (dated 2026-10-21)",
+      "observedAt": "2026-11-02",
+      "quote": "Since 2026-09-24 the Soroswap API neither quotes for it nor accepts transactions against it"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "SOURCE STATUS 2026-11-02: Soroswap's docs present Aggregator v3 (`CARVQX…DDC4`) as the mainnet execution contract and mark `CAYP3…TXTO` deprecated; since 2026-09-24 the API no longer quotes or accepts transactions for it. Mainnet RPC showed recent v3 swap events and none for CAYP3 in the same window. The cs-002 stale pages no longer render: concepts/aggregator redirects to the docs home, and the supported-venues page lists Soroswap, Aquarius, SushiSwap V3, Comet, and SDEX. Credit a dated v3 venue list or a dated CAYP3 snapshot; an undated claim that CAYP3 is the current path is stale.",
+    "note": "Same date-precision fix as the answer. Everything else verified. If improvements/ cs-002 is still open, the orchestrator should reconcile it, because the stale-page labels it records are gone.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/concepts/aggregator",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200 after redirect to https://docs.soroswap.finance/"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "| Venue | ... soroswap | aqua | sushi | comet | sdex (Classic path payment)"
+     },
+     {
+      "class": "F",
+      "ref": "https://mainnet.sorobanrpc.com getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "v3 events topic[0]='swap' on 2026-11-02; CAYP3 0 events in the same windows"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "truth.sources[0].ref",
+    "decision": "accept",
+    "note": "The old ref is dead. The new ref grounds the v3 claims. Also consider an annotation on sources[1] (github.com/soroswap/aggregator): the docs call it the source of the 'deprecated adapter-based aggregator'.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/soroswap/docs",
+      "observedAt": "2026-11-02",
+      "quote": "Not Found (HTTP 404)"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+      "observedAt": "2026-11-02",
+      "quote": "Aggregator v3 is the contract that executes every Soroban swap built by the Soroswap Aggregator API on mainnet."
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://docs.soroswap.finance/aggregator/supported-amms",
+   "https://docs.soroswap.finance/aggregator/supported-amms.md",
+   "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+   "https://docs.soroswap.finance/concepts/aggregator",
+   "https://docs.soroswap.finance/llms.txt",
+   "https://docs.soroswap.finance/aggregator.md",
+   "https://docs.soroswap.finance/api/going-to-production.md",
+   "https://docs.soroswap.finance/api/sdex.md",
+   "https://mainnet.sorobanrpc.com (getLatestLedger, getEvents for CARVQX...DDC4 and CAYP3...TXTO, contract instance reads for Reflector CAFJ/CALI/CBKG/CCRV)",
+   "https://horizon.stellar.org/accounts/{GCJ2RD..,GC2M2U..,GCSJ7N..,GCFTRC..} and /transactions",
+   "https://communityfund.stellar.org/project/recafjXSgVbrp8svj",
+   "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+   "https://communityfund.stellar.org/submissions/reciJ66GV514CRUi4",
+   "https://communityfund.stellar.org/submissions/recK1Xh6hgHosxmbt",
+   "https://communityfund.stellar.org/submissions/recub0G7qf25j381y",
+   "https://communityfund.stellar.org/project/lend",
+   "https://reflector.network/",
+   "https://reflector.network/docs",
+   "https://reflector.network/pulse",
+   "https://reflector.network/flare",
+   "https://reflector.network/beam",
+   "https://reflector.network/oracles",
+   "https://github.com/reflector-network/reflector-contract (README via search excerpt; gh api repo metadata)",
+   "https://whalehub.io/blog/reflector-oracle-explained",
+   "gh api repos/stellar/go; repos/stellar/stellar-horizon; repos/stellar/stellar-horizon/contents/internal/db2/history/main.go; repos/soroswap/docs (404); repos/soroswap/aggregator",
+   "Raven scout.searchProjects (Phoenix, Soroswap) and lumenloop.get_scf_submissions (Lend)",
+   "Perplexity search: stellar/go archived; Soroswap Aggregator v3",
+   "Parallel web_search: Reflector Pulse/Beam/Flare"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-defi-phoenix-what-is; q-defi-reflector-oracle; q-defi-rwa-scf-similar; q-defi-sdex-offer-lifecycle; q-defi-soroswap-vs-stellarx; q-defi-soroswap-what-is",
+  "verifiedOnly": "q-defi-oracle-landscape-live; q-defi-perps-whitespace; q-defi-provide-liquidity-impermanent-loss; q-defi-rwa-treasury-funding-live; q-defi-skill-ecosystem-scout; q-defi-skill-project-dossier",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-defi-perps-whitespace",
+    "issue": "Scheduled case kept at truth.reverifyBy 2027-01-13, not moved to June 2027: eval/qa/consistency-register.json dateContingentTraps entries[6].disposition quotes 'q-defi-perps-whitespace reverifyBy 2027-01-13' (open Noether-audit/Kryon trap), and this lane may not edit the register. Move both together if the orchestrator wants a June date."
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "issue": "improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md premise is superseded on 2026-11-02 (soroswap/docs repo 404, concepts/aggregator redirects, supported-venues page rewritten for Aggregator v3). The finding needs a status update by the improvements owner. This lane used rootCause freshness-drift only and recorded cs-002 in evidence."
+   },
+   {
+    "id": "q-defi-phoenix-what-is",
+    "issue": "Upstream defect for improvements/ (not filed by this lane): Stellar Light Scout Phoenix and Soroswap records still say Soroswap's aggregator routes Soroswap, Phoenix, Aquarius; operator docs list Soroswap/Aquarius/SushiSwap V3/Comet (+SDEX) https://docs.soroswap.finance/aggregator/supported-amms (2026-11-02)."
+   },
+   {
+    "id": "q-defi-provide-liquidity-impermanent-loss",
+    "issue": "Grader notes keep a 2026-06-29-dated Scout line that Soroswap aggregates Phoenix liquidity; it is dated, so not changed (no proposal), but a later pass may re-date it against the 2026-11-02 v3 venue list."
+   },
+   {
+    "id": "all-batch-ids",
+    "issue": "lifecycle-registry caseContentSha256 is stale errors for all 12 ids remain. They clear only when the orchestrator runs npm run eval:qa:register, which this lane must not run."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-defi-phoenix-what-is",
+    "log": "Re-dated the SCF fact to 2026-11-02; softened the Soroswap-aggregation note (do not require it); reverifyBy 2027-06-09; reclassified repo/TOML sources; added SCF and venue corroboration rows."
+   },
+   {
+    "id": "q-defi-reflector-oracle",
+    "log": "Appended a 2026-11-02 re-check note naming Pulse/Beam/Flare and a symmetric caution for the attributed 'free for everyone' quote; truth.asOf 2026-11-02; added sources and a confirmed-as-of row."
+   },
+   {
+    "id": "q-defi-rwa-scf-similar",
+    "log": "Attributed totalPaid to the project record; appended a 2026-11-02 re-check note (SCF #45 award, changed totalPaid); truth.asOf 2026-11-02; added sources and a confirmed-as-of row."
+   },
+   {
+    "id": "q-defi-sdex-offer-lifecycle",
+    "log": "Re-pointed the 'unused offer effects' source from archived stellar/go to stellar/stellar-horizon in the answer and truth.sources[3]; added a confirmed-as-of row."
+   },
+   {
+    "id": "q-defi-soroswap-vs-stellarx",
+    "log": "Notes: 'adapters' -> 'venues' (v3 uses typed hops); replaced the dead github.com/soroswap/docs source with the live supported-venues page; added a v3 confirmed-as-of row."
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "log": "Answer: layer sentence now states Soroban-only venues and the separate classic SDEX path; replaced the CAYP3 'current' example with a dated v3 snapshot (CAYP3 deprecated, API cutoff 2026-09-24); notes SOURCE STATUS refreshed (cs-002 labels gone); dead docs-repo source replaced; asOf/reverifyBy set."
+   },
+   {
+    "id": "q-defi-oracle-landscape-live",
+    "log": "Verified only: refreshed truth.verified (date, by, evidence); no gospel change."
+   },
+   {
+    "id": "q-defi-perps-whitespace",
+    "log": "Verified only: refreshed truth.verified (date, by, evidence); no gospel change. reverifyBy kept at 2027-01-13: eval/qa/consistency-register.json dateContingentTraps entry (Noether audit / Kryon availability) quotes that date."
+   },
+   {
+    "id": "q-defi-provide-liquidity-impermanent-loss",
+    "log": "Verified only: refreshed truth.verified (date, by, evidence); no gospel change."
+   },
+   {
+    "id": "q-defi-rwa-treasury-funding-live",
+    "log": "Verified only: refreshed truth.verified (date, by, evidence); no gospel change."
+   },
+   {
+    "id": "q-defi-skill-ecosystem-scout",
+    "log": "Verified only: refreshed truth.verified (date, by, evidence); no gospel change."
+   },
+   {
+    "id": "q-defi-skill-project-dossier",
+    "log": "Verified only: refreshed truth.verified (date, by, evidence); no gospel change."
+   }
+  ]
+ }
+}

@@ -1,1 +1,74 @@
-{"id":"q-gap-scout-changelog-envelope","question":"How do I see Scout contract changes without confusing them with current ecosystem data?","surface":["scout.getChangelog","scout.getStatus","scout.getChanges"],"golden":{"answer":"Use `scout.getChangelog({limit})`; it returned a latest-first, contract-affecting feed with `entries`, filter metadata, and an inner payload `ok`. Use `getStatus` for current service health/freshness, not the changelog as a data source.","keyFacts":["Uses `getChangelog` for API/MCP/client contract changes.","Treats payload `ok`, the Raven envelope, and current ecosystem data as distinct concepts."],"avoid":["Do NOT treat a changelog entry as current project, builder, or market data."],"notes":"N1 live contract probe 2026-07-11: Succeeded with two latest-first entries and payload `ok=true`; status and changelog are distinct operations."},"tags":{"category":"protocol-core","service":"scout","freshness":"live"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"A","ref":"catalog/manifest.json#scout.getChangelog","note":"Exposed operation contract and catalog notes."},{"class":"B","ref":"inventory/stellar-light.json","note":"Committed inventory snapshot for the service family."}],"corroboration":[{"claim":"Uses `getChangelog` for API/MCP/client contract changes.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","observedAt":"2026-07-11","note":"Succeeded with two latest-first entries and payload `ok=true`; status and changelog are distinct operations."}]}],"verified":{"date":"2026-08-27","by":"golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)","evidence":["http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","catalog/manifest.json#scout.getChangelog","inventory/stellar-light.json","Structural re-form (negative-predicate): recast the three-way payload, envelope, and ecosystem-data taxonomy as one positive atomic fact; all roles are unchanged.","Live re-check 2026-08-27: https://stellarlight.xyz/api/openapi.json and https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the current getChangelog contract still keeps payload ok apart from the Raven envelope and current ecosystem data.","Sibling sweep 2026-08-27: grep getChangelog|payload ok|current ecosystem data|current health → q-ti-scout-changelog-contract-check and q-gap-scout-status-envelope; no contradiction"],"rootCause":["solo://project/49/scratchpad/p4/n1-gapops",".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"]},"origin":"authored 2026-07 (gap-ops)"}}
+{
+  "id": "q-gap-scout-changelog-envelope",
+  "question": "How do I see Scout contract changes without confusing them with current ecosystem data?",
+  "surface": [
+    "scout.getChangelog",
+    "scout.getStatus",
+    "scout.getChanges"
+  ],
+  "golden": {
+    "answer": "Use `scout.getChangelog({limit})`; it returned a latest-first, contract-affecting feed with `entries`, filter metadata, and an inner payload `ok`. Use `getStatus` for current service health/freshness, not the changelog as a data source.",
+    "keyFacts": [
+      "Uses `getChangelog` for API/MCP/client contract changes.",
+      "Treats payload `ok`, the Raven envelope, and current ecosystem data as distinct concepts."
+    ],
+    "avoid": [
+      "Do NOT treat a changelog entry as current project, builder, or market data."
+    ],
+    "notes": "N1 live contract probe 2026-07-11: Succeeded with two latest-first entries and payload `ok=true`; status and changelog are distinct operations."
+  },
+  "tags": {
+    "category": "protocol-core",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "catalog/manifest.json#scout.getChangelog",
+        "note": "Exposed operation contract and catalog notes."
+      },
+      {
+        "class": "B",
+        "ref": "inventory/stellar-light.json",
+        "note": "Committed inventory snapshot for the service family."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Uses `getChangelog` for API/MCP/client contract changes.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+            "observedAt": "2026-07-11",
+            "note": "Succeeded with two latest-first entries and payload `ok=true`; status and changelog are distinct operations."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+      "evidence": [
+        "Live C 2026-11-02: Raven execute scout.getChangelog({limit:3}) -- 'keys ok,service,version,generatedAt,meta,entries; ok=true; entries dated 2026-11-01, 2026-11-01, 2026-10-31; meta.total=351'",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/changelog?limit=2 -- '\"meta\":{...\"filters\":{\"since\":null,\"limit\":2},\"note\":\"Curated feed of contract-affecting changes (endpoints, tools, params, descriptions). Latest-first.\"}'",
+        "Live B 2026-11-02: catalog/manifest.json#scout.getChangelog -- 'Not for: the actual ecosystem data -> use the relevant search endpoint; current health / source freshness / version -> use scout.getStatus. ... payload carries its own ok flag at data.ok - distinct from the envelope call-status ok.'",
+        "Live B 2026-11-02: catalog/manifest.json#scout.getChangelog -- 'Catalog note: the upstream payload carries its own ok flag at data.ok - distinct from the envelope call-status ok.'",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/changelog?limit=2 -- 'Curated feed of contract-affecting changes (endpoints, tools, params, descriptions).'",
+        "Re-verified with no gospel change; proposer matrix /private/tmp/claude-501/golden-audit/matrices/protocol-core-01.json (no proposal, so no verifier decision).",
+        "Sibling sweep 2026-11-02: q-ti-scout-changelog-contract-check and q-gap-scout-status-envelope checked; no contradiction."
+      ]
+    },
+    "origin": "authored 2026-07 (gap-ops)"
+  }
+}

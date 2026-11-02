@@ -1,1 +1,161 @@
-{"id":"q-tool-sep41-status-live","question":"What currently defines Stellar's smart-contract token interface, and how should SEP-41's status be described now?","surface":["scout.searchResearch","stellarDocs.search_asset_token_docs"],"golden":{"answer":"Retrieve current SEP-41 and official token-interface documentation, cite both, describe the interface, and report the current preamble status/version/update date with an as-of. As observed 2026-08-04, the official preamble says Draft, version 0.5.0, updated 2026-06-08; re-check rather than trusting an archive or prior snapshot.","keyFacts":["Identifies SEP-41 as a token interface rather than the Stellar Asset Contract itself.","Uses the current SEP/spec plus official token-interface documentation.","Dates and sources the current standards status."],"avoid":["Do not state an archival status without checking the current official standard; a currently sourced Draft answer is allowed."]},"tags":{"category":"tooling-infra","service":"scout","freshness":"live"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"real-world","status":"confirmed","asOf":"2026-08-04","sources":[{"class":"A","ref":"https://developers.stellar.org/docs/tokens/token-interface"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md"},{"class":"C","ref":"https://stellarlight.xyz/api/research?q=SEP-41&source=sep"}],"corroboration":[{"claim":"SEP-41 specifies the contract token interface used by SAC and compatible contract tokens.","verdict":"confirmed","evidence":[{"class":"A","ref":"https://developers.stellar.org/docs/tokens/token-interface","observedAt":"2026-08-04"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md","observedAt":"2026-08-04"}]},{"claim":"Current status must be read from the live standard rather than the archive.","verdict":"confirmed","evidence":[{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md","observedAt":"2026-08-04"},{"class":"C","ref":"https://stellarlight.xyz/api/research?q=SEP-41&source=sep","observedAt":"2026-08-04"}]},{"claim":"SEP-41 is necessarily still draft because Boxy called it draft.","verdict":"contradicted","evidence":[{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md","observedAt":"2026-08-04"}]},{"claim":"As observed 2026-08-04, the official SEP-41 preamble says Draft, version 0.5.0, updated 2026-06-08.","verdict":"confirmed-as-of","evidence":[{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md","observedAt":"2026-08-04"},{"class":"A","ref":"https://developers.stellar.org/docs/tokens/token-interface","observedAt":"2026-08-04"},{"class":"C","ref":"https://stellarlight.xyz/api/research?q=SEP-41&source=sep","observedAt":"2026-08-04"}]}],"verified":{"date":"2026-08-04","by":"Full golden correction verifier (Solo 4303) with lead reconciliation","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","https://developers.stellar.org/docs/tokens/token-interface","https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md"],"rootCause":["eval-authoring"]},"origin":"boxy sl-research-sep41-soroban-token-draft"}}
+{
+  "id": "q-tool-sep41-status-live",
+  "question": "What currently defines Stellar's smart-contract token interface, and how should SEP-41's status be described now?",
+  "surface": [
+    "scout.searchResearch",
+    "stellarDocs.search_asset_token_docs"
+  ],
+  "golden": {
+    "answer": "Retrieve current SEP-41 and official token-interface documentation, cite both, describe the interface, and report the current preamble status/version/update date with an as-of. As observed 2026-11-02, the official preamble says Draft, version 0.5.2, updated 2026-08-24; re-check rather than trusting an archive or prior snapshot.",
+    "keyFacts": [
+      "Identifies SEP-41 as a token interface rather than the Stellar Asset Contract itself.",
+      "Uses the current SEP/spec plus official token-interface documentation.",
+      "Dates and sources the current standards status."
+    ],
+    "avoid": [
+      "Do not state an archival status without checking the current official standard; a currently sourced Draft answer is allowed."
+    ]
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-02",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tokens/token-interface"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/research?q=SEP-41&source=sep"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+        "note": "Preamble 'Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md",
+        "note": "Latest commit 4db3e802 2026-09-15 'SEP-41: permit additional event topics (#1994)'; preamble Updated field stays 2026-08-24.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://rya-sge.github.io/access-denied/2026/10/15/stellar-classic-assets-erc20-erc7943/",
+        "note": "'SEP-41 itself is still a Draft (v0.5.2 at the time of writing)' (via Perplexity).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "stellarDocs.search_asset_token_docs 'SEP-41 token interface' -> https://developers.stellar.org/docs/tokens/token-interface#code",
+        "note": "'The interface below uses the Rust soroban-sdk to declare a trait that complies with the SEP-41 token interface'.",
+        "observedAt": "2026-11-02"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "SEP-41 specifies the contract token interface used by SAC and compatible contract tokens.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/token-interface",
+            "observedAt": "2026-08-04"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-08-04"
+          }
+        ]
+      },
+      {
+        "claim": "Current status must be read from the live standard rather than the archive.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-08-04"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/research?q=SEP-41&source=sep",
+            "observedAt": "2026-08-04"
+          }
+        ]
+      },
+      {
+        "claim": "SEP-41 is necessarily still draft because Boxy called it draft.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-08-04"
+          }
+        ]
+      },
+      {
+        "claim": "As observed 2026-11-02, the official SEP-41 preamble says Draft, version 0.5.2, updated 2026-08-24.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-11-02",
+            "note": "'Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2'."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md",
+            "observedAt": "2026-11-02",
+            "note": "v0.5.2 change merged 2026-09-15 (4db3e802) without bumping the Updated field."
+          },
+          {
+            "class": "D",
+            "ref": "https://rya-sge.github.io/access-denied/2026/10/15/stellar-classic-assets-erc20-erc7943/",
+            "observedAt": "2026-11-02",
+            "note": "'SEP-41 itself is still a Draft (v0.5.2 at the time of writing)'."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/research?q=SEP-41&source=sep&limit=3",
+            "observedAt": "2026-11-02",
+            "note": "Soroban Token Interface row publishedAt 2026-08-24T00:00:00.000Z."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-06)",
+      "evidence": [
+        "B https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md (observedAt 2026-11-02): 'Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2'.",
+        "B https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md (observedAt 2026-11-02): latest commit 4db3e802 2026-09-15 'SEP-41: permit additional event topics (#1994)'; diff '-Updated: 2026-08-03 -Version 0.5.1 +Updated: 2026-08-24 +Version 0.5.2'.",
+        "D Perplexity perplexity_search -> https://rya-sge.github.io/access-denied/2026/10/15/stellar-classic-assets-erc20-erc7943/ (observedAt 2026-11-02): 'SEP-41 itself is still a Draft (v0.5.2 at the time of writing)'.",
+        "E Raven stellarDocs.search_asset_token_docs 'SEP-41 token interface' (observedAt 2026-11-02): https://developers.stellar.org/docs/tokens/token-interface#code 'The interface below uses the Rust soroban-sdk to declare a trait that complies with the SEP-41 token interface'.",
+        "Sibling sweep 2026-11-02: q-sep-41-token-interface and q-sor-sep41-transfer-vs-transferfrom already state Draft v0.5.2 updated 2026-08-24 as of 2026-11-02 (consistent); q-rwa-tokenization-standards and q-soroban-token-transfer-pattern pin no SEP-41 version."
+      ],
+      "rootCause": [
+        "freshness-drift"
+      ]
+    },
+    "origin": "boxy sl-research-sep41-soroban-token-draft"
+  }
+}
