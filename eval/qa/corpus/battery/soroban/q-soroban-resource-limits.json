@@ -17,7 +17,7 @@
       "Do NOT reduce limits to one gas scalar or freeze network numbers.",
       "Do NOT say every limit fails only during execution or every resource has a ledger-wide analogue."
     ],
-    "notes": "Freshness: limit constants are validator-voted config and retuned across protocols; reward flagging config-tunability rather than quoting a fixed number. Categories verified against the fees/resource-limits page.\nAlso good if the answer: The Wasm memory limit is a hard ceiling with no fee (you cannot pay to exceed it). | Hitting a resource limit produces a failed transaction at execution, not a soft warning.\nGolden cites: The developers.stellar.org fees/resource-limits/metering page (config settings).\nGT-47 BLIND CORRECTION 2026-07-11: phase enforcement and avoid the every-resource ledger-cap absolute.\nAccurately quoting the canonical Stellar Docs page on Soroban resource XDR with `readBytes`/`refundableFee` or execution-only failure wording is not a wrong claim while a cached or older copy still shows that pre-2026-07-31 content; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Freshness: limit constants are validator-voted config and retuned across protocols; reward flagging config-tunability rather than quoting a fixed number. Categories verified against the fees/resource-limits page.\nAlso good if the answer: The Wasm memory limit is a hard ceiling with no fee (you cannot pay to exceed it). | Hitting a resource limit produces a failed transaction at execution, not a soft warning.\nGolden cites: The developers.stellar.org fees/resource-limits/metering page (config settings).\nGT-47 BLIND CORRECTION 2026-07-11: phase enforcement and avoid the every-resource ledger-cap absolute.\nSince 2026-07-31 (sd-024 resolved), the Stellar Docs transaction and fees pages use `diskReadBytes` and `resourceFee` and describe both pre-execution validation and apply-time failure. An answer that presents `readBytes` or `refundableFee` as current XDR field names, or says every limit fails only at execution, is wrong even when it cites an older docs copy; an answer that labels those names as older XDR is correct."
   },
   "tags": {
     "category": "soroban",
@@ -78,12 +78,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
+      "by": "golden cap backlog 2026-11-02 (caps-2)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering (observedAt 2026-10-28): \"All resources mentioned in the prior section are subject to a per-transaction limit. A transaction's memory (RAM) is also capped, though not subject to any charge.\"",
-        "stellar network settings --no-cache -n mainnet --output json, stellar CLI 28.1.0 on protocol 29 (observedAt 2026-11-02): contract_max_size_bytes 131072; tx_max_instructions 400000000; tx_memory_limit 41943040; contract_data_entry_size_bytes 65536; tx_max_footprint_entries 400; tx_max_contract_events_size_bytes 16384; tx_max_size_bytes 132096.",
-        "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-contract-config-setting.x (observedAt 2026-11-02): \"Memory limit per transaction. Unlike instructions, there is no fee for memory, just the limit. uint32 txMemoryLimit;\"; https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0066.md: \"txMaxFootprintEntries sets the limit on the total number of entries in the transaction footprint\".",
-        "Verification only: proposer confirmed every keyFact, answer claim, note, and avoid item; no gospel change. Sibling sweep 2026-11-02: q-zk-verification-resource-budget, q-infra-simulate-transaction-howto, q-soroban-simulate-resource-fee; no contradiction."
+        "Cap ended 2026-11-02: sd-024 is resolved (improvements/resolved.json, resolved 2026-07-31) and the live pages no longer carry the stale content, so the partial cap became a plain rule.",
+        "A 2026-11-02T21:24:12Z: GET https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction.md — SorobanResources declares \"uint32 diskReadBytes;\" and SorobanTransactionData \"int64 resourceFee;\"; 0 matches for readBytes as a bare field and for refundableFee.",
+        "A 2026-11-02T21:24:12Z: GET https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md — \"Before execution, the declared `sorobanData.resourceFee` must be at least the fee computed from the transaction's *declared* resources, or the transaction is rejected as invalid (`txSOROBAN_INVALID`) ... the transaction fails at apply time\".",
+        "E 2026-11-02T21:26:00Z: Raven stellarDocs.search_docs 'SorobanResources readBytes refundableFee' — top hit is the fees page with the resourceFee formula; no hit shows readBytes or refundableFee as current fields.",
+        "Sibling sweep 2026-11-02: grep of the battery for refundableFee and sd-024 finds only this case; no contradiction.",
+        "Prior verification event: Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06) (2026-11-02); see git history."
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: partial caps follow open upstream findings)",
+        "improvements/resolved.json entry sd-024 (resolved 2026-07-31; the cap it backed ended)"
       ]
     },
     "origin": "raven-next q-soroban-resource-limits"

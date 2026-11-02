@@ -16,7 +16,7 @@
       "Do NOT call SDF for-profit, Ripple, or the unilateral owner/operator of Stellar.",
       "Do NOT repeat ~30B as a current reserve or treat named accounts/report rows as exhaustive without date and scope."
     ],
-    "notes": "GT-28 CORRECTION 2026-07-10: organizational/legal core confirmed. Remove the stale ~30B reserve; any holdings figure requires a dated dashboard/mandate/report and explicit scope.\nGT-28 independently confirmed by processes 3274/3275.\n2026-07-13 provenance repair: current SDF mandate/foundation pages support the mission, self-funding, tax, and no-shareholder claims; independent WEF/LobbyFacts records support the non-stock form; official developer material supports the public, decentralized network distinction.\nAccurately quoting the official Stellar documentation on a roughly 30B XLM current reserve is not a wrong claim while a cached or older copy still shows that pre-2026-07-27 figure; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "GT-28 CORRECTION 2026-07-10: organizational/legal core confirmed. Remove the stale ~30B reserve; any holdings figure requires a dated dashboard/mandate/report and explicit scope.\nGT-28 independently confirmed by processes 3274/3275.\n2026-07-13 provenance repair: current SDF mandate/foundation pages support the mission, self-funding, tax, and no-shareholder claims; independent WEF/LobbyFacts records support the non-stock form; official developer material supports the public, decentralized network distinction.\nThe Stellar docs lumens page has carried no roughly 30B XLM reserve figure since 2026-07-27 (sd-012, resolved; re-checked live 2026-11-02, when it listed bucket accounts without fixed balances and pointed at the mandate page and stellar.expert for live figures). An answer that presents a roughly 30B XLM reserve as current is wrong, whether or not it cites the docs; a holdings figure is correct only with a dated dashboard, mandate, or report source and explicit scope."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -122,23 +122,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-02)",
+      "by": "golden cap backlog 2026-11-02 (caps-1)",
       "evidence": [
-        "[A] golden.answer (confirmed): https://stellar.org/terms-of-service :: \"The Stellar Development Foundation (the \"SDF\", \"we\", or \"us\"), a Delaware non-profit corporation\" (observedAt 2026-11-02)",
-        "[D] golden.answer (confirmed): https://www.lobbyfacts.eu/datacard/stellar-development-foundation?rid=244864450367-86 :: \"SDF is a U.S.-based nonstock, nonprofit organization that contributes to the development and growth of the Stellar network\" (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[0] (confirmed): https://stellar.org/foundation/mandate :: \"SDF is a non-profit organization with a mission: \"creating equitable access to the global financial system leveraging Stellar.\" SDF is not a charity. It is self-funded, pays taxes, and has no shareholders.\" (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[0] (confirmed): https://stellar.org/quarterly-reports :: \"SDF has no shareholders, no dividends, and no profit motive.\" (observedAt 2026-11-02)",
-        "[A] golden.avoid[1] (contradicted): https://stellar.org/foundation/mandate :: \"Bucket totals 2,565,372,641 + 5,228,218,231 + 3,393,741,531 + 3,293,165,235 with differing Last updated stamps (2026-10-28 to 2026-10-31)\" (observedAt 2026-11-02)",
-        "[A] golden.avoid[1] (contradicted): https://developers.stellar.org/docs/learn/fundamentals/lumens :: \"As of July 21st, 2026 ... \"sdfMandate\" : \"15563517195.789479\"\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: q-org-sdf-mandate-buckets, q-hot-sdf-xlm-holdings-sales, q-hot-sdf-transparency-wallets-reports, q-org-mazieres-chief-scientist checked; no contradiction.",
-        "No judge-facing change; prior verification event 2026-08-27 is in git history.",
-        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
+        "[A] 2026-11-02T21:25:32Z GET https://developers.stellar.org/docs/learn/fundamentals/lumens (HTTP 200) → \"SDF organizes these holdings into four buckets. The on-chain accounts in each bucket, as of July 2026, are listed below — balances change continuously, so refer to the mandate page or each account's stellar.expert page for live figures:\" then headings SDF Development (accounts \"Direct Development, Available Funds\", \"Direct Development (Hot 1)\" to \"(Hot 3)\"), Stellar Growth, Product & Innovation, Assets & Liquidity. The page text contains 0 occurrences of \"Ecosystem Support\", \"Use-Case Investment\", \"30 billion\", or \"30B XLM\", and no per-account balance figures.",
+        "[A] 2026-11-02T21:25:32Z GET https://stellar.org/foundation/mandate (HTTP 200) → \"In 2019, SDF divided its XLM holdings into four main accounts: Direct Development, Ecosystem Support, Use-Case Investment and User Acquisition.\" ... \"in 2025, the accounts are being updated to reflect current priorities ...: SDF Development, Stellar Growth, Product and Innovation and Assets and Liquidity.\" The page still says live balances \"will be made available again on this page imminently\" while rendering Current Balance rows with \"Last updated: November 2, 2026 at 6.10 PM UTC\" (the mixed signal the golden already describes; unchanged).",
+        "[E] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven stellarDocs.search_docs(\"lumen supply metrics SDF accounts mandate\") → hit 1 https://developers.stellar.org/docs/learn/fundamentals/lumens (\"This section explains how lumen supply metrics are calculated...\"); the canonical page is discoverable through the docs search.",
+        "Finding: sd-012 is in improvements/resolved.json (resolved 2026-07-27; refs stellar/stellar-docs#2610 and PR #2658; live recheck 2026-07-27 recorded the four current labels and no fixed balances). No active finding backs the cap, and the live page carries the fix, so the cap ends (ADR-0008 amendment 2026-11-02).",
+        "Change: only the cap sentence in golden.notes was replaced by a plain rule; answer, keyFacts, and avoid are unchanged.",
+        "Sibling sweep 2026-11-02: grep '30B' over eval/qa/corpus/battery → only this case; grep 'sd-012' → q-org-sdf-mandate-buckets, q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales (all edited in this lane with the same rule); no contradiction."
       ],
       "rootCause": [
-        "Eval-side historical reserve rounding became an undated present-tense fact.",
-        "improvements/stellar-docs/sd-012-mandate-wallet-label-drift.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: a partial cap needs an active improvements finding; this cap's finding is resolved, so the cap ends)",
+        "improvements/resolved.json entry sd-012 (resolved 2026-07-27; live fix re-confirmed 2026-11-02)"
       ]
     },
     "origin": "raven-next q-org-sdf-structure-mandate"

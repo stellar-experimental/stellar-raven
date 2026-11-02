@@ -67,7 +67,7 @@ Use the lint-canonical form: name the canonical, official, or upstream page or s
 attributed quote is not a wrong claim; and state the partial cap or grade. ADR-0008, as amended,
 accepts a cap only while it names an active `improvements/` finding (`verified`,
 `reported-upstream`, or `declined-upstream`). A cap without one is a plain rule; the `cap-finding`
-lint lane flags it. File the backing finding upstream once its live re-check passes
+lint lane fails on it. File the backing finding upstream once its live re-check passes
 (`improvements-pipeline`). When a finding moves to `fixed-upstream`, remove its caps in the same
 change.
 

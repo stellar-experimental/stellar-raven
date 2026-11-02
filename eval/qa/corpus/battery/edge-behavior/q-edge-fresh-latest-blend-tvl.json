@@ -15,7 +15,7 @@
       "Do NOT answer only with a dashboard pointer, give an undated scalar, fabricate a trend, average provider refreshes, or mix metric classes.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "GT-23 2026-07-10: require a dated same-provider current point plus declared-window start/end trend; a dashboard pointer alone does not answer the question. Keep all examples non-gating and separate TVL, borrowed, pool/backstop, peaks, records, fees, and volume.\nGT-23 CORRECTION 2026-07-10: provider/window/methodology behavior is the gate, not the illustrative values.\nAccurately quoting the canonical Scout source on Blend TVL without provider methodology or quarter history is not a wrong claim while a cached or older Scout copy still shows the pre-2026-07-14 sls-031 point-only fields and sls-039 leaves history provider-hosted; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "GT-23 2026-07-10: require a dated same-provider current point plus declared-window start/end trend; a dashboard pointer alone does not answer the question. Keep all examples non-gating and separate TVL, borrowed, pool/backstop, peaks, records, fees, and volume.\nGT-23 CORRECTION 2026-07-10: provider/window/methodology behavior is the gate, not the illustrative values.\nAccurately quoting the canonical Scout source for a current Blend TVL point without a quarter history is not a wrong claim while sls-039 (declined-upstream) leaves history provider-hosted; grade caps at partial for that claim unless the answer independently contradicts the golden fact. A cached or older Scout copy without provider or methodology fields earns no cap, because Scout has returned `tvlSource` and `tvlMethodUrl` since 2026-07-14 (sls-031, resolved); the provider-source and date requirements still apply."
   },
   "tags": {
     "category": "edge-behavior",
@@ -181,7 +181,7 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
+      "by": "golden cap backlog 2026-11-02 (orchestrator, after independent review rv-caps, Codex gpt-6-astra high)",
       "evidence": [
         "https://api.llama.fi/protocol/blend (observedAt 2026-11-02T16:27Z): currentChainTvls {'Stellar': 130038598, 'Stellar-borrowed': 39619547}; tvl 2026-10-01 = 173192824 (series max); 2026-11-02 = 130038598.",
         "https://defillama.com/protocol/blend (observedAt 2026-11-02): 'Total Value Locked $130.23m ... All-time high TVL: $173.19m onOct 1, 2026. ... TVL is the default DefiLlama definition, which excludes Pool2 and Active Loans.'",
@@ -189,11 +189,16 @@
         "POST https://api.lumenloop.com/v1/tools/search_directory {query:'blend'} (observedAt 2026-11-02T16:27Z): directory rows carry no TVL field; the old 'from the current LumenLoop corpus' basis could not ground the value.",
         "Raven lumenloop.find_av_passages (observedAt 2026-11-02T16:29Z) -> https://www.youtube.com/watch?v=E6asxPAA3wU: 'Stellar Developers meeting covering Q1 2026 ecosystem metrics showing 2B RWA market cap and 170M DeFi TVL'; https://developers.stellar.org/meetings/2026/04/23 does not state $170M (observedAt 2026-11-02).",
         "Independent verifier decision: modify (removed the false claim that Scout's tvlMethodUrl links the combined series; attributed $170M to Lumenloop's meeting summary; labeled 2026-10-01 as the series all-time high).",
-        "Sibling sweep 2026-11-02: grep 'Blend TVL|blend.*TVL|tvlMethodUrl' -> q-eco-defi-tvl-current, q-eco-most-active-defi-projects, q-edge-noinfo-exact-tvl-figure; q-defi-blend-what-is and q-edge-factcheck-soroswap-first-amm also read. No contradiction: q-eco-defi-tvl-current uses $170M as a Stellar-wide DeFi figure, which matches the new chain-measure label."
+        "Sibling sweep 2026-11-02: grep 'Blend TVL|blend.*TVL|tvlMethodUrl' -> q-eco-defi-tvl-current, q-eco-most-active-defi-projects, q-edge-noinfo-exact-tvl-figure; q-defi-blend-what-is and q-edge-factcheck-soroswap-first-amm also read. No contradiction: q-eco-defi-tvl-current uses $170M as a Stellar-wide DeFi figure, which matches the new chain-measure label.",
+        "[C] 2026-11-02T21:48:06Z https://stellarlight.xyz/api/projects/search?q=Blend returned tvlSource 'defillama', tvlMethod, llamaSlugs, and tvlMethodUrl (provenance fields present).",
+        "[C] 2026-11-02T21:43:51Z https://stellarlight.xyz/api/analyze?dimension=tvl returned provider 'DefiLlama', asOf, tvlAsOf, basis, and totalTvlUSD.",
+        "improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md: 'The provenance half of this finding is **resolved**'; only the history ask is declined. The cap now covers only that declined scope (review rv-caps finding 2).",
+        "Sibling re-sweep 2026-11-02 (clusters cluster-021 and cluster-045): q-edge-noinfo-exact-tvl-figure grades a current missing-provider claim wrong; this case no longer credits a cached pre-fix provenance omission, so the two agree. q-defi-aquarius-what-is, q-defi-defindex-honest, and q-eco-defi-tvl-current carry no TVL provenance cap."
       ],
       "rootCause": [
         "eval-side authoring flaw: templated freshness boilerplate shared with q-eco-defi-tvl-current named Lumenloop as the TVL source and used a chain-wide figure as the Blend example",
-        "improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md"
+        "improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md",
+        "improvements/resolved.json entry sls-031 (Scout provider and method fields shipped 2026-07-14)"
       ]
     },
     "origin": "raven-next q-edge-fresh-latest-blend-tvl"

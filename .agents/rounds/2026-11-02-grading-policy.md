@@ -25,6 +25,31 @@ Cap backlog (35 cases, 39 cap sentences on 2026-11-02): `q-asset-stablecoin-issu
 The three `sd-003` caps named in the independent review were already removed by PR #321 (`sd-003`
 retirement), which merged before this branch.
 
+### Cap backlog resolved (2026-11-02)
+
+- Lint precision: the first `cap-finding` rule also matched plain leniency sentences. The rule now
+  counts a sentence with a partial cap, or an attributed-quote sentence that names a canonical,
+  official, or upstream source, and joins only a split attribution and grade pair. On main this
+  leaves 24 real caps in 24 cases; the other 15 flags were plain rules.
+- Outcome: 17 caps ended because the source is fixed and the finding is resolved. Each became a plain
+  rule: a quote labeled historical is correct, and stale text presented as current is wrong. 7 caps
+  stay, each naming an active finding: `sd-078` (new; four Protocol 23 restoration cases),
+  `cs-008` (new; CAP-0046-06 executable name), `sd-072`, and `sd-004` (declined). Outside the
+  backlog, the review also narrowed the Blend TVL cap to the declined `sls-039` history scope.
+- Only `golden.notes` and `truth.verified` changed. The 22 reopened clusters were re-swept and
+  cleared with reasons.
+- Authors: Claude Fable high (caps-1, 13 cases), Claude Opus high (caps-2, 11 cases), and the
+  orchestrator (lint rule, finding ids, review fixes).
+- Independent review: Codex `gpt-6-astra` high,
+  [cap-backlog-review.md](2026-11-02-grading-policy/cap-backlog-review.md), SHIP-WITH-FIXES with
+  three findings: a sentence join that hid an expired cap, a Blend sibling that still credited a
+  resolved provenance omission (clusters 021 and 045), and an unsupported 2026-08-25 date in two
+  audit notes. All three are fixed, and the re-check
+  ([cap-backlog-recheck.md](2026-11-02-grading-policy/cap-backlog-recheck.md)) returns SHIP. The
+  review's `tmp/` evidence paths were lane-local and are not kept.
+- The `cap-finding` lane is now an error. A change that moves a cited finding out of the active
+  states must update its caps in the same change.
+
 ## D2 — freshness tags
 
 The audit named 11 `live` and 5 `stable` cases with dated values. A full scan found 83 `live` and
