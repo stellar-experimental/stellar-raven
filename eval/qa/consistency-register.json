@@ -194,7 +194,7 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-comp-clawback-cap0035 only narrowed 'any holder' to 'a holder's clawback-enabled trustline' (still CAP-0035/P17, compatible with q-comp-clawback-holder-risk); q-sor-confidential-tokens re-states CAP-59 Final/P22 and CAP-74/75 Final/P25; q-sor-contract-trustlines-c-address keeps CAP-73 Final/P26. Every CAP-status/protocol pair in the note still matches.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer Claude Fable 5.1): the only member that changed is q-ti-rpc-gettransactions-pagination-xdr, and its diff is limited to golden.notes (sd-003 marked resolved; sd-004 caution kept). It carries no CAP-status claim. Re-read every CAP/protocol pair across the 14 members: CAP-0035/P17, CAP-0038/P18, CAP-0051/P21, CAP-0058 Final/P22, CAP-0059 Final/P22, CAP-0062/63/65/67 P23, CAP-0071 Final/P27, CAP-0073 Final/P26, CAP-0074/75 Final/P25 all still match the note.",
           "verdict": "consistent"
         },
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Final/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
@@ -212,7 +212,7 @@
           "q-sor-contract-trustlines-c-address": "614ba6a13caf16cce0a154a4fffff4185c237f25b2cf250b9c0a1583b23f99b0",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750",
           "q-soroban-constructor-lifecycle": "798e2a756125c45237bfb757cf8fc9f241341a32e53be7d56ecba91bea614d82",
-          "q-ti-rpc-gettransactions-pagination-xdr": "9da166b53a4663a27c402ed896d1f9d538666d7913a65a4905da088d2f6d6cdc"
+          "q-ti-rpc-gettransactions-pagination-xdr": "4e56c6cf6b92d90a68c28a668e89e0fb130b84baa261848f055e7b272374e54d"
         }
       },
       {
@@ -511,7 +511,7 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The changed members (staking: StelloFi and the fee-pool discussion paper; fee-pool: the same paper as an undecided proposal; ledger close time re-dated to 2026-11-02 with CAP-0088) do not alter the base fee, stroop, base reserve, or 1 XLM minimum constants the note pins. The staking and fee-pool cases describe the fee-pool paper in the same way.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer): the only member that changed is q-pc-practical-fee-setting, whose diff removes the sd-003 partial cap and re-dates the sd-003 note in golden.notes; its answer still gives the dated 100-stroop floor. Re-read the constants across members: base reserve 0.5 XLM (q-asset-trustline-basics, q-edge-1xlm-activation-fee, q-pc-account-activation-not-found, q-protocol-base-reserve-min-balance), empty unsponsored minimum 1 XLM, pool-share trustline 2 base reserves, fees separate. No constant moved.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -524,7 +524,7 @@
           "q-edge-noinfo-stellar-pos-staking-rewards": "673d822b4a7ec68b10fd98dd9841b63e01cc86f6ce5cb38acffdf073605e0f72",
           "q-hot-fee-pool-burn-deflation": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
           "q-pc-account-activation-not-found": "68114c0be44781e8dbcdd94d5d4e16c55087b5f65f76c0aa7b66d6b32744bdcd",
-          "q-pc-practical-fee-setting": "edbe0f1f7dc273354bbf2097d5ed4834187412d0413dd13cc8b65bbd7fe2cb54",
+          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd",
           "q-pc-sponsored-reserves": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
           "q-protocol-ledger-close-time": "b6d6438972116ef0e6c1935e2cd66370c87da8543911166ef1bee7187c5a9b7e",
@@ -554,14 +554,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-infra-rpc-methods-list, q-soroban-publish-events, and q-ti-self-host-retention-backfill now all use the 120960-ledger stock history-retention-window (v30.0.0) with no 24h default. q-infra-horizon-vs-rpc carries the sd-072 Lab 'considered deprecated' caution, and q-infra-which-indexer adds Goldsky Turbo. This matches the note's 2026-11-02 review, including the archive-node-beta nuance, and the unchanged members still say 'nearing end-of-life'.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer): the changed members are q-infra-rpc-methods-list (sd-003 partial-cap sentence removed from golden.notes; the 12-method gate, 120960-ledger retention, and archive-node-beta/queryEvents nuance are unchanged) and q-ti-rpc-gettransactions-pagination-xdr (sd-003 note re-dated; 50/200, cursor, and sd-004 caution unchanged). Horizon lifecycle wording across q-infra-horizon-vs-rpc, q-pc-practical-fee-setting, and q-ti-compute-token-lp-market-data still says nearing end-of-life with the dated sd-072 Lab caution; retention members still use the single history-retention-window (stock 120960) with no 24h default; archive tier remains getLedgers-only with the beta nuance.",
           "verdict": "consistent"
         },
         "note": "Current review 2026-11-02: official Horizon lifecycle wording is split again. The APIs overview and the Lab Horizon Endpoints page say nearing end-of-life, while the Lab API Explorer page says 'Horizon is considered deprecated.' since the 2026-10-22 Mintlify migration (improvements/stellar-docs/sd-072). q-infra-horizon-vs-rpc dates the nearing-end-of-life label and carries an ADR-0008 Horizon-lifecycle caution for an attributed quote of that page. getEvents: the method page and stellar-rpc v30.0.0 use one configurable history-retention-window with a stock default of 120960 ledgers (about 7 days); the 24-hour-default/seven-day-maximum method prose is fixed (sd-023, improvements/resolved.json), and the remaining '7 days at most' wording is on the events ingest guide (sd-068), which q-soroban-publish-events names. Review 2026-09-09: the rendered Horizon pages and their positive indexed records agreed on nearing-end-of-life wording, and the sd-042 source/index conflict was fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose then conflicted with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. The official RPC Archive tier extends getLedgers only; SDF's archive-node beta and provider betas that serve wider full history are dated nuances, not the official tier. Older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "03a774cd7fafcbc2c45ded06c5e0e0d041b2be4413184e350f986b31a8680796",
           "q-infra-hubble-bigquery": "f26308e69f6d9f61a3bd372021f7bbda115cc7ed2e08dd19b4714a622dae989f",
-          "q-infra-rpc-methods-list": "793844412da5431e9bd0ce51b60a519c2675a779230878667cad3d4da20edb91",
+          "q-infra-rpc-methods-list": "390496b268e519710c36cc65537a17e9cf0b524aafdf796e86a9e8b4a1b192b5",
           "q-infra-rpc-provider-archive-tier": "00c3153da6a0a582c325424f65d8cd6b86237250daf2ada6f60224ff2403bc51",
           "q-infra-which-indexer": "a4411c008cf29d0a1a12c5508f109821e14ae22e95cf7e00f02dec6b209390b7",
           "q-soroban-event-indexing-design": "1e04817c51096859f673d34a73b76a1981756bf20df6cc66457bda8ba3c6d606",
@@ -569,7 +569,7 @@
           "q-ti-compute-token-lp-market-data": "d6abb1027dd3e046effcc91b7b29ad7ac21845fcb2f7381ce6ba523ac2aa61b1",
           "q-ti-enumerate-holders-airdrop": "0a1c801a5573023e605f581f0c116c8f74cd50e8bb3bffcc8709b472955a98c8",
           "q-ti-historical-pointintime-balances": "c991d229c472f9bf1ab95554584b3fdc09b0b2b561a01f24d4ea17448a530ec5",
-          "q-ti-rpc-gettransactions-pagination-xdr": "9da166b53a4663a27c402ed896d1f9d538666d7913a65a4905da088d2f6d6cdc",
+          "q-ti-rpc-gettransactions-pagination-xdr": "4e56c6cf6b92d90a68c28a668e89e0fb130b84baa261848f055e7b272374e54d",
           "q-ti-self-host-retention-backfill": "843c2e46f0dae94e9af99dca17a792fcd1b72814efa3038b20b0e81e0acbc049"
         }
       },
@@ -1124,13 +1124,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-validators-reverse-tx-fork-detection still states quorum-relative finality, source-diverse ledger/Core-quorum/archive checks, and separate clawback/custodian operations; q-pc-tx-finality-failure-semantics, q-protocol-quorum-slice-vs-quorum, and q-protocol-tier1-requirements make no conflicting finality or authority claim. The note remains true.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer): the only member that changed is q-pc-tx-finality-failure-semantics, whose diff removes the sd-003 partial cap from golden.notes; its answer still says submission is not finality, pre-inclusion rejection consumes neither fee nor sequence, and NOT_FOUND alone proves nothing. The live getTransaction page lists status SUCCESS, NOT_FOUND, FAILED (class A, 2026-11-02). q-edge-validators-reverse-tx-fork-detection, q-protocol-quorum-slice-vs-quorum, and q-protocol-tier1-requirements make no conflicting finality or authority claim.",
           "verdict": "consistent"
         },
         "note": "Externalized ledgers do not later change on a node under trusted-quorum safety assumptions. Detect split risk with independently operated ledger/hash/result comparisons, Core quorum/intersection diagnostics, and source-diverse archive integrity checks. One endpoint cannot prove absence; issuer clawback/custodian bookkeeping are separate visible operations.",
         "memberContentSha256": {
           "q-edge-validators-reverse-tx-fork-detection": "e48df58f49a1f8e8bd170e1d5b04fd4abd34d2fa3f4d3aab2adb52670c68cf75",
-          "q-pc-tx-finality-failure-semantics": "81b3afdc976c32b38b742b1d11651253121eb052e2859fd0e50cecdfc7ce8e28",
+          "q-pc-tx-finality-failure-semantics": "837ad37f984fe4fc964f47e1aea658385a21816fadfbba00869eb0edcf2c7b9c",
           "q-protocol-quorum-slice-vs-quorum": "6fe3c770036978db809dce568727084f69dfa7b1c6adf1c3dfce6a43f39364a8",
           "q-protocol-tier1-requirements": "b229325c06c351a9667ffaaea846849e828fe4b0f3e75caa62c994332cf7a25f"
         }
@@ -1146,13 +1146,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-hot-fee-pool-burn-deflation still says the fee pool stays inside totalCoins and is sequestration, not burn, keeps CAP-26 (2019-10-28) and the ~55.44B SDF burn (2019-11-04) separate, and says fees are not validator rewards; its new 2026-11-02 note treats SDF's fee-pool rewards paper only as an undecided proposal. q-pc-practical-fee-setting makes no monetary claim, so the note stays true.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes (sd-003 cap removed) and still makes no monetary-supply claim. q-hot-fee-pool-burn-deflation is unchanged: fee pool inside totalCoins, sequestration not burn, CAP-26 2019-10-28 and the SDF burn 2019-11-04 separate, fees not validator rewards.",
           "verdict": "consistent"
         },
         "note": "Core accounts transaction/resource fees in an inaccessible fee pool that remains inside totalCoins conservation; this is non-circulating sequestration, not automatic supply burn. CAP-26 ended inflation on 2019-10-28; SDF's ~55.44B treasury burn on 2019-11-04 was separate. Fees are not validator rewards.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
-          "q-pc-practical-fee-setting": "edbe0f1f7dc273354bbf2097d5ed4834187412d0413dd13cc8b65bbd7fe2cb54"
+          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd"
         }
       },
       {
@@ -1467,14 +1467,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-pc-fee-bump-channel-accounts-feepool notes now verify the fee-pool wording and add a fee-layer caution, and q-hot-fee-pool-burn-deflation added a holder-rewards discussion-paper note; all five members still say the outer fee is charged once, channel sources use their own sequences, RPC getFeeStats is primary, and fees are not validator rewards.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes and still leads with RPC getFeeStats / stellar fees stats, keeps Horizon GET /fee_stats available, and calls Hubble historical analytics. q-pc-fee-bump-channel-accounts-feepool still says the fee source is charged once and channel sources consume their own sequences; q-hot-fee-pool-burn-deflation still says fees are not validator rewards. The live getFeeStats method page is readable through get_doc_page (8,691 chars, 2026-11-02).",
           "verdict": "consistent"
         },
         "note": "Fee source pays the outer charged fee once; inner/outer visible fee fields are not additive charges. Channel transaction sources consume their own sequences. Live estimates should use RPC getFeeStats/current CLI or Horizon /fee_stats; Horizon is legacy/no-new-features but not formally deprecated, and Hubble is historical analytics. Fees are not validator rewards. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
           "q-pc-fee-bump-channel-accounts-feepool": "fb4fe26225f8af7edf19847dcda611b77a3791813c28b13b07fcb1083ee10bac",
-          "q-pc-practical-fee-setting": "edbe0f1f7dc273354bbf2097d5ed4834187412d0413dd13cc8b65bbd7fe2cb54",
+          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd",
           "q-pc-sequence-numbers-ordering-replace": "abd89e306d57a25f792ddc204ccfdc393212444d4881163e7f4543325b04e827",
           "q-ti-channel-accounts-throughput": "c5be78125563837ffad9576a6f201947f573009c68848c0ee48f5b7fa4dfc927"
         }
@@ -1572,13 +1572,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-infra-horizon-vs-rpc now carries the dated sd-072 Lab API Explorer caution and the 2026-11-02 nearing-end-of-life wording, and q-pc-practical-fee-setting keeps its 2026-09-08 label; this matches the note as re-swept on 2026-11-02.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes and keeps its dated 2026-09-08 nearing-end-of-life label and the endpoint-specific Horizon/RPC boundary; q-infra-horizon-vs-rpc is unchanged and carries the dated sd-072 Lab API Explorer caution. The note's two-page split still describes both members.",
           "verdict": "consistent"
         },
         "note": "As of 2026-09-09, the rendered Horizon pages and indexed EVM record agreed on nearing-end-of-life wording, and the sd-042 occurrence was fixed. As of 2026-11-02, the Lab API Explorer page says 'Horizon is considered deprecated.' (sd-072) while the APIs overview still says nearing end-of-life; q-infra-horizon-vs-rpc carries a dated caution for that page, and q-pc-practical-fee-setting keeps its dated 2026-09-08 nearing-end-of-life label. Both cases retain the endpoint-specific Horizon/RPC boundary rather than claiming complete replacement.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "03a774cd7fafcbc2c45ded06c5e0e0d041b2be4413184e350f986b31a8680796",
-          "q-pc-practical-fee-setting": "edbe0f1f7dc273354bbf2097d5ed4834187412d0413dd13cc8b65bbd7fe2cb54"
+          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd"
         }
       },
       {
@@ -1612,13 +1612,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Both members keep the dated 100-stroop floor, getFeeStats-first estimation, Horizon /fee_stats availability, and Hubble-as-historical role. q-infra-horizon-vs-rpc dates the nearing-end-of-life wording to 2026-11-02 and carries the sd-072 Lab API Explorer caution, which the note already states. q-pc-practical-fee-setting's 2026-09-08 nearing-end-of-life wording agrees.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer): both members keep the dated 100-stroop floor, getFeeStats-first estimation, Horizon /fee_stats availability, and Hubble-as-historical role. q-pc-practical-fee-setting's only diff is the sd-003 note in golden.notes; q-infra-horizon-vs-rpc is unchanged.",
           "verdict": "consistent"
         },
         "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. As of 2026-09-09, the rendered Horizon pages and indexed EVM record agreed on nearing-end-of-life wording; as of 2026-11-02, the Lab API Explorer page instead says 'Horizon is considered deprecated.' (sd-072), and q-infra-horizon-vs-rpc carries a dated caution for it.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "03a774cd7fafcbc2c45ded06c5e0e0d041b2be4413184e350f986b31a8680796",
-          "q-pc-practical-fee-setting": "edbe0f1f7dc273354bbf2097d5ed4834187412d0413dd13cc8b65bbd7fe2cb54"
+          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd"
         }
       },
       {
@@ -3700,12 +3700,12 @@
         ],
         "memberContentSha256": {
           "q-edge-1xlm-activation-fee": "40d06ba06d770cb99b51d90a46847572c5c30dfb11b885408b213f33975f8ab4",
-          "q-pc-practical-fee-setting": "edbe0f1f7dc273354bbf2097d5ed4834187412d0413dd13cc8b65bbd7fe2cb54"
+          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd"
         },
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Neither q-edge-1xlm-activation-fee nor q-pc-practical-fee-setting changed judge text. Both still give 100 stroops per operation as the dated minimum. q-pc-practical-fee-setting qualifies it with surge pricing, which matches the rule.",
+          "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes (sd-003 cap removed); its answer still states the dated 100 stroops per operation floor with surge-pricing qualification. q-edge-1xlm-activation-fee is unchanged and still says the current minimum effective fee is 100 stroops per operation. The rule holds.",
           "verdict": "consistent"
         },
         "lastChecked": "2026-11-02"

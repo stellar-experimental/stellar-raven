@@ -281,6 +281,53 @@ One reference to the deleted names remains: `source.authEnv` in the held
 `inventory/stellar-docs-titles.json` (see "Title snapshot held"). Nothing reads it. The first
 refresh after the #223 hold ends rewrites the file without a key.
 
+## Algolia surface retirement
+
+PR #320 (merged `42496f22`, deployed as Worker version `b048356d`) removed the dormant stellar.org
+Algolia spec, every `ALGOLIA_*_SITE` binding, and stale Algolia prose. The `ALGOLIA_*_SITE` secrets
+were then deleted from the Worker (current version `499f58ba`) and from the GitHub repository. On
+2026-11-02 the owner asked to clean local env files. The `ALGOLIA_*` lines were deleted from the main
+checkout `.env` and `.dev.vars` and from this round's worktree. The golden-audit worktree belongs to
+another session, which was asked to clean its own `.dev.vars`. The separate `stellar-raven-jev`
+repository still uses its own Algolia connector and keys; it was left unchanged.
+
+## sd-003 retirement
+
+Conditions from `sd003-recheck.md`: the resolution comment was posted on stellar/stellar-docs#2566,
+the Mintlify adapter is live in production, and the golden audit (#319) released the battery.
+
+Production recheck (2026-11-02T20:02Z, Worker `499f58ba`): `search_docs` 'getTransactions API
+reference limit', and `search_rpc_horizon_data_docs` 'getFeeStats', 'getTransaction status
+NOT_FOUND', and 'Horizon list all transactions endpoint' each rank the named reference page first.
+`get_doc_page` returns the getTransactions 1–200 / default 50 text. `search_docs` 'op_bad_signer'
+still misses the result-code page (`sd-059`).
+
+Golden changes (`golden-truth` skill; rootCause `improvements/resolved.json entry sd-003`):
+
+| Case | Change |
+|---|---|
+| `q-gap-rpc-horizon-unindexed-reference` | Premise reversed: reference pages are searchable by name; response-field text ranks poorly; new avoid item for the false exclusion claim. |
+| `q-pc-doc-category-validator-search` | Path filter and `pathFiltered` replace breadcrumbs and the Algolia hierarchy field; both soft-empty causes named. |
+| `q-edge-doc-title-zero-hits` | A zero title result is soft-empty and inconclusive, not a reliable zero. |
+| `q-infra-rpc-methods-list`, `q-pc-practical-fee-setting`, `q-pc-tx-finality-failure-semantics` | The `sd-003` partial cap is removed. |
+| `q-ti-rpc-gettransactions-pagination-xdr` | The `sd-003` note is marked resolved; the `sd-004` caution stays. |
+
+Sibling sweep: `git grep` for unindexed, search-index, `sd-003`, breadcrumb, hierarchy-facet, and
+reliable-zero wording over the battery. Four other matches are truth history only. The
+`unindexed-api-refs` catalog-note trap floor in `eval/qa/lint-corpus.mjs` was removed, because the
+catalog note it guarded no longer exists.
+
+Independent review: Claude Fable 5.1 at high re-derived each claim from classes A, B, and C/E
+without the author's notes (`sd003-golden-review.md`). Verdict: APPROVE WITH CHANGES; no blocker.
+All three should-fix items and three of four nits are fixed: the resolver ran in this change, the
+response-field claim no longer extends to ParamField, this section exists, the second soft-empty
+cause is named, the `queryEvents` evidence is exact, and the "indexed-title" avoid wording is gone.
+The reviewer re-swept the nine reopened register entries as consistent
+(`sd003-register-review.json`).
+
+The resolver retired `sd-003` to `improvements/resolved.json` with resolving ref
+stellar/stellar-docs#2941.
+
 ## Open items
 
 - None for the switch-over. Follow-ups are in `.agents/TODO.md`: section anchors, `sd-059`, the

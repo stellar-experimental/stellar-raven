@@ -65,7 +65,6 @@ const CATALOG_NOTE_TRAPS = [
   { id: "winner-order", surface: "scout.getHackathon", re: /\bwinner\b.*\border|\border\b.*\bwinner\b/i },
   { id: "av-offset", surface: "lumenloop.find_av_passages", re: /\boffset\b.*\b(?:timestamp|seconds?)|\b(?:timestamp|seconds?)\b.*\boffset\b/i },
   { id: "payload-data-ok", surface: null, re: /\bdata\.ok\b/i },
-  { id: "unindexed-api-refs", surface: "stellarDocs.search_rpc_horizon_data_docs", re: /\b(?:unindexed|not (?:in|indexed)|search index)\b.*\b(?:api|method|endpoint|reference)/i },
   { id: "semantic-fallback", surface: "lumenloop.search_directory", re: /\bsemantic\b.*\bfallback|\bfallback\b.*\bsemantic\b/i },
   { id: "matchPartners-503", surface: "scout.matchPartners", re: /\b503\b/ },
   { id: "zero-upcoming", surface: "scout.getHackathons", re: /\b(?:zero|no)\b.*\bupcoming|\bupcoming\b.*\b(?:zero|none|empty)\b/i }
