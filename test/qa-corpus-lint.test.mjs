@@ -281,7 +281,7 @@ describe("QA corpus lint lanes", () => {
     ]));
   });
 
-  it("permits both the dated seven-row and attributed dated current eight-row archive rosters", () => {
+  it("permits the dated seven-, eight-, and current nine-row archive rosters", () => {
     const kase = JSON.parse(readFileSync(
       join(dirname(fileURLToPath(import.meta.url)), "..", "eval", "qa", "corpus", "battery", "tooling-infra", "q-infra-rpc-provider-archive-tier.json"),
       "utf8"
@@ -290,6 +290,7 @@ describe("QA corpus lint lanes", () => {
     expect(rosterKeyFact).toBeDefined();
     expect(rosterKeyFact).toMatch(/seven/i);
     expect(rosterKeyFact).toMatch(/eight/i);
+    expect(rosterKeyFact).toMatch(/nine/i);
     expect(rosterKeyFact).toMatch(/attribut|dated/i);
     expect(rosterKeyFact).not.toMatch(/must name only|exactly seven|only the seven/i);
   });

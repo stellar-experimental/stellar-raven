@@ -12,11 +12,11 @@
       "Downstream anchor or cash-out rails are optional deployment choices."
     ],
     "avoid": [
-      "Do NOT claim the product page's dated 'up to 10,000 payments' advertisement is a hard implementation or protocol invariant.",
+      "Do NOT claim the 10,000-instruction per-disbursement cap is a Stellar protocol or network limit, or a limit on total payouts across disbursements.",
       "Do NOT confuse SDP with the Anchor Platform, describe it as a wallet, or claim it universally depends on SEP-12/SEP-31 anchor rails.",
       "Do NOT claim current SDP universally requires an external Anchor Platform."
     ],
-    "notes": "Re-scoped 2026-08-05 because the declared developers.stellar.org search surface supports SDP's current architecture but not the stellar.org product page's numeric advertisement. As of 2026-08-05, the product page advertises up to 10,000 payments in one batch; treat that as dated product positioning, not a source-code-enforced ceiling, and do not require the number from a Docs-only answer."
+    "notes": "Re-scoped 2026-08-05 because the declared developers.stellar.org search surface supports SDP's current architecture but not the stellar.org product page's numeric advertisement. Corrected 2026-11-02: the product page ('up to 10,000 payments ... in a single batch') and the SDP backend source agree on a 10,000-instruction cap per disbursement upload (`MaxInstructionsPerDisbursement = 10000`, present since the 1.0.0 open-source release). It is an SDP application limit per disbursement, not a Stellar protocol or network limit, and it does not limit how many disbursements an organization can run. A Docs-only answer does not need the number. Do not penalize an answer that states it as an SDP per-disbursement cap."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -30,13 +30,13 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-11-05",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-08",
     "sources": [
       {
         "class": "A",
         "ref": "https://stellar.org/products-and-tools/disbursement-platform",
-        "note": "class inferred at migration"
+        "note": "Official product page; advertises up to 10,000 payments in a single batch."
       },
       {
         "class": "A",
@@ -46,81 +46,155 @@
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
-        "note": "Canonical implementation source for current native SEP-10/24 and transaction orchestration."
+        "note": "Canonical implementation source for current native SEP-10/24, transaction orchestration, and the per-disbursement instruction cap."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/data/disbursement_instructions.go#L49",
+        "note": "Defines `const MaxInstructionsPerDisbursement = 10000`."
       },
       {
         "class": "D",
         "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
-        "note": "Independent corpus record of SDF media that repeats the dated 10,000-transactions-per-batch product claim."
+        "note": "Independent corpus record of SDF media that repeats the 10,000-transactions-per-batch product claim."
       }
     ],
     "corroboration": [
       {
-        "claim": "Current SDP implements native SEP-10/24 and does not universally depend on an external Anchor Platform; downstream anchor rails are optional deployment choices.",
-        "verdict": "confirmed-as-of",
+        "claim": "SDP is SDF's open-source bulk-payment stack; Dashboard/Admin APIs, Core, and TSS are separate services, and TSS builds, submits, and monitors transactions.",
+        "verdict": "confirmed",
         "evidence": [
           {
             "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform",
+            "observedAt": "2026-11-02",
+            "note": "'The Stellar Disbursement Platform (SDP) is a tool built for organizations to make bulk payments to a group of recipients over the Stellar network.'"
+          },
+          {
+            "class": "A",
             "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
-            "observedAt": "2026-08-05",
-            "note": "Official architecture documents Dashboard, Core, TSS, and current receiver workflows."
+            "observedAt": "2026-11-02",
+            "note": "'The Stellar Disbursement Platform consists of three services deployed together'; 'Transaction Submission Service: the service that submits all payment transactions to the Stellar network.'"
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
-            "observedAt": "2026-08-05",
-            "note": "Canonical source corroborates the current application and native SEP integration paths."
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/README.md",
+            "observedAt": "2026-11-02",
+            "note": "'For each payment detected, the TSS creates and submits a transaction to the Stellar network, monitoring its state until it is confirmed'. Latest release 7.1.0 (2026-10-26) keeps the split."
           }
         ]
       },
       {
-        "claim": "The 10,000 figure is a dated advertised capacity; this verification did not establish it as a hard implementation or protocol ceiling.",
-        "verdict": "confirmed-as-of",
+        "claim": "Current SDP implements native SEP-10/24, publishes its own stellar.toml, and does not universally depend on an external Anchor Platform; downstream anchor or cash-out rails are optional deployment choices.",
+        "verdict": "confirmed",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
-            "observedAt": "2026-08-05",
-            "note": "The product page advertises 'up to 10,000 payments' in one batch."
-          },
-          {
-            "class": "D",
-            "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
-            "observedAt": "2026-08-05",
-            "note": "The SDF-media corpus record repeats up to 10,000 transactions per batch."
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/README.md",
+            "observedAt": "2026-11-02",
+            "note": "'The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24 ... without requiring external Anchor Platform integration.' 'The SDP serves its own SEP10/SEP24 endpoints and the `stellar.toml` file points to these native endpoints'."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
-            "observedAt": "2026-08-05",
-            "note": "A bounded source search did not establish a corresponding hard cap; absence is not asserted."
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/tree/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/serve/httphandler",
+            "observedAt": "2026-11-02",
+            "note": "sep10_handler.go, sep24_handler.go, and sep24_interactive_deposit_handler.go exist; no path matches 'anchorplatform'."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+            "observedAt": "2026-11-02",
+            "note": "'... to local wallets with flexible, region-specific cash-out options for receivers.'"
+          }
+        ]
+      },
+      {
+        "claim": "Receivers may use external SEP-24 wallets, direct Stellar accounts, or embedded passkey-controlled C-address wallets.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+            "observedAt": "2026-11-02",
+            "note": "'Receivers can either use a wallet application that supports SEP-24 for automatic registration, or they can receive funds directly to their Stellar account.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+            "observedAt": "2026-11-02",
+            "note": "'Embedded Wallets are Stellar smart contract accounts that are deployed on-chain when a receiver creates their passkey.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/tree/59538fe211cfbf77d319457ce9c87dde0f1d6b06",
+            "observedAt": "2026-11-02",
+            "note": "internal/data/embedded_wallet.go and internal/serve/httphandler/sep45_handler.go exist."
+          }
+        ]
+      },
+      {
+        "claim": "SDP enforces a 10,000-instruction cap per disbursement upload (MaxInstructionsPerDisbursement = 10000), matching the product page's up to 10,000 payments per batch.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/data/disbursement_instructions.go#L49",
+            "observedAt": "2026-11-02",
+            "note": "'const MaxInstructionsPerDisbursement = 10000'. git log -S finds it in d3251bd (2023-08-14, 'Initial commit for open source release'; first tag 1.0.0-rc1)."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/serve/httphandler/disbursement_handler.go#L865-L866",
+            "observedAt": "2026-11-02",
+            "note": "'return fmt.Errorf(\"number of instructions exceeds maximum of %d\", data.MaxInstructionsPerDisbursement)'. The orchestrator re-confirmed this line independently."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/pull/1229",
+            "observedAt": "2026-11-02",
+            "note": "Merged 2026-10-13, shipped in 7.1.0: more than 10,000 rows returns 400 'number of instructions exceeds maximum of 10000' before the CSV is parsed."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+            "observedAt": "2026-11-02",
+            "note": "'Send up to 10,000 payments of any amount in a single batch by simply uploading a list of receivers to the platform.'"
+          }
+        ]
+      },
+      {
+        "claim": "The 10,000-instruction cap is a Stellar protocol or network limit, or a limit on total payouts across disbursements.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/data/disbursement_instructions.go#L49",
+            "observedAt": "2026-11-02",
+            "note": "The constant lives in the SDP application's data package and is checked against one disbursement's instruction list, not in Stellar Core or the network."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+            "observedAt": "2026-11-02",
+            "note": "The page scopes the figure to 'a single batch' uploaded to the platform."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
       "evidence": [
-        "solo://proj/49/todo/reconcile-bounded-tr--1355",
-        "2026-08-05 exact-phrase lumenloop.search_content_semantic probe for 'up to 10,000 payments' returned 20 candidates and no exact matching row or primary-linked SDF evidence; the numeric ask was therefore removed from the declared Docs-only surface.",
-        "https://stellar.org/products-and-tools/disbursement-platform",
-        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
-        "https://github.com/stellar/stellar-disbursement-platform-backend",
-        "Sibling sweep: q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails.",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep 10,000 payments|hard implementation|SDP → q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, q-pay-sdp-disbursement; no contradiction",
-        "Structural re-form (compound-predicate): Split two compound key facts into three atomic facts and moved the external Anchor Platform negation to avoid; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-disbursement-platform-backend — described SDF's open-source bulk-payment platform and its payment workflow.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-disbursement-platform-backend — documented current native SEP-10/24 support.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture — showed downstream receiver rails as deployment choices.",
-        "Sibling sweep 2026-08-27: q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, and q-pay-sdp-disbursement; no contradiction."
+        "Gospel change 2026-11-02: avoid[0] and the notes called the 10,000 figure dated product positioning and 'not a source-code-enforced ceiling'. That is false. The SDP backend enforces a 10,000-instruction cap per disbursement. avoid[0] now traps the remaining false claim (a protocol or network limit, or a total-payout limit), and the notes allow an answer that states the SDP cap.",
+        "Live B 2026-11-02: stellar-disbursement-platform-backend@59538fe211cfbf77d319457ce9c87dde0f1d6b06 internal/data/disbursement_instructions.go:49 'const MaxInstructionsPerDisbursement = 10000'; internal/serve/httphandler/disbursement_handler.go:865-866 returns 'number of instructions exceeds maximum of %d'. The orchestrator re-confirmed line 865 independently.",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-disbursement-platform-backend/pull/1229 (shipped in release 7.1.0, 2026-10-26) checks the cap before CSV parsing; git log -S dates the constant to d3251bd (2023-08-14, first tag 1.0.0-rc1).",
+        "Live A 2026-11-02: https://stellar.org/products-and-tools/disbursement-platform still says 'Send up to 10,000 payments of any amount in a single batch'.",
+        "Live A/B 2026-11-02: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform, .../admin-guide/design-and-architecture, .../admin-guide/embedded-wallets, and the backend README confirm the bulk-payment role, the Dashboard/Core/TSS split, native SEP-10/24, its own stellar.toml, no required external Anchor Platform, and G-account, SEP-24 wallet, and embedded-wallet receivers. answer, keyFacts, and avoid[1-2] are unchanged.",
+        "The docs URL admin-guide/anchor-platform-integration-points returns 404 after the 2026-10-22 Mintlify migration; no source in this case uses it.",
+        "Sibling sweep 2026-11-02: grep 'Disbursement Platform|SDP|10,000' in the battery. q-anchor-sdp-vs-anchor-platform carried the same false 'not a hard implementation ceiling' text and is corrected in the same change. q-pay-sdp-disbursement, q-crp-sdp-operation, and q-anchor-platform-what agree and do not mention 10,000. Other SDP mentions carry no 10,000 or architecture claim. Register cluster-135's note repeats the old wording and needs a re-sweep."
       ],
       "rootCause": [
-        "freshness-drift",
-        "solo://proj/49/todo/reconcile-bounded-tr--1355",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Eval-side authoring flaw: the 2026-08-05 rescope read only the stellar.org product page and the Docs. It did not read the SDP backend source constant, so avoid[0] and the notes called a source-enforced per-disbursement cap mere product positioning."
       ]
     },
     "origin": "raven-next q-anchor-sdp-what"

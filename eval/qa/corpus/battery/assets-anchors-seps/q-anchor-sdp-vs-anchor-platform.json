@@ -16,10 +16,10 @@
     ],
     "avoid": [
       "Do NOT claim SDP and the Anchor Platform are the same product, or swap their roles.",
-      "Do NOT misnumber the SEPs each component covers or present the product page's dated 10,000-payment advertisement as a hard SDP invariant.",
+      "Do NOT misnumber the SEPs each component covers or claim SDP's 10,000-instruction per-disbursement cap is a Stellar protocol limit.",
       "Do NOT claim the Wallet SDK wraps SEP-31."
     ],
-    "notes": "Three-way comparison reverified 2026-08-05. The declared Docs surfaces support the role and current-architecture comparison, not the stellar.org product page's numeric advertisement. As of 2026-08-05 that page advertises up to 10,000 payments per batch; treat it as dated product positioning, not a hard implementation ceiling, and do not require it here."
+    "notes": "Three-way comparison reverified 2026-08-05. The declared Docs surfaces support the role and current-architecture comparison, not the stellar.org product page's numeric advertisement. Corrected 2026-11-02: that page advertises up to 10,000 payments per batch, and the SDP backend enforces the same 10,000-instruction cap per disbursement (`MaxInstructionsPerDisbursement`). It is an SDP application limit, not a Stellar protocol limit. Do not require the number here, and do not penalize an answer that states it as an SDP per-disbursement cap. As of 2026-11-02 the official Anchor Platform page and source also list SEP-45 (contract-account web authentication); adding SEP-45 to the Anchor Platform list is not misnumbering."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -33,8 +33,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-11-12",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-10",
     "sources": [
       {
         "class": "A",
@@ -54,17 +54,27 @@
       {
         "class": "A",
         "ref": "https://stellar.org/products-and-tools/disbursement-platform",
-        "note": "Current product page; its 10,000-payment claim is dated advertising rather than an implementation invariant."
+        "note": "Current product page; its up-to-10,000-payments-per-batch claim matches the SDP backend's per-disbursement instruction cap."
       },
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
-        "note": "Canonical implementation source for current native SEP-10/24 and transaction orchestration."
+        "note": "Canonical implementation source for current native SEP-10/24, transaction orchestration, and the per-disbursement instruction cap."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/data/disbursement_instructions.go#L49",
+        "note": "Defines `const MaxInstructionsPerDisbursement = 10000`."
       },
       {
         "class": "D",
         "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
-        "note": "Independent corpus record of SDF media that repeats the dated 10,000-transactions-per-batch product claim."
+        "note": "Independent corpus record of SDF media that repeats the 10,000-transactions-per-batch product claim."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/java-stellar-anchor-sdk",
+        "note": "Anchor Platform source; carries SEP-45 request and JWT classes as of 2026-11-02."
       }
     ],
     "corroboration": [
@@ -83,30 +93,78 @@
             "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
             "observedAt": "2026-08-05",
             "note": "Canonical source corroborates SDP's current application and native SEP integration paths."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+            "observedAt": "2026-11-02",
+            "note": "The 'Supported SEPs' list names SEP-1, SEP-6, SEP-10, SEP-12, SEP-24, SEP-31 (receive only), SEP-38, and SEP-45."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/README.md",
+            "observedAt": "2026-11-02",
+            "note": "'The SDP now includes native implementations of ... SEP10 and SEP24 ... without requiring external Anchor Platform integration.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+            "observedAt": "2026-11-02",
+            "note": "Re-observed: 'Below you can find all the SEPs the anchor class currently supports:' lists SEP-1, SEP-10, SEP-24, SEP-6, SEP-12, and SEP-38, not SEP-31."
           }
         ]
       },
       {
-        "claim": "The 10,000 figure is a dated advertised capacity; this verification did not establish it as a hard implementation or protocol ceiling.",
-        "verdict": "confirmed-as-of",
+        "claim": "SDP enforces a 10,000-instruction cap per disbursement upload (MaxInstructionsPerDisbursement = 10000), matching the product page's up to 10,000 payments per batch.",
+        "verdict": "confirmed",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
-            "observedAt": "2026-08-05",
-            "note": "The product page advertises 'up to 10,000 payments' in one batch."
-          },
-          {
-            "class": "D",
-            "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
-            "observedAt": "2026-08-05",
-            "note": "The SDF-media corpus record repeats up to 10,000 transactions per batch."
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/data/disbursement_instructions.go#L49",
+            "observedAt": "2026-11-02",
+            "note": "'const MaxInstructionsPerDisbursement = 10000', present since d3251bd (2023-08-14, first tag 1.0.0-rc1)."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
-            "observedAt": "2026-08-05",
-            "note": "A bounded source search did not establish a corresponding hard cap; absence is not asserted."
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/serve/httphandler/disbursement_handler.go#L865-L866",
+            "observedAt": "2026-11-02",
+            "note": "'return fmt.Errorf(\"number of instructions exceeds maximum of %d\", data.MaxInstructionsPerDisbursement)'."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+            "observedAt": "2026-11-02",
+            "note": "'Send up to 10,000 payments of any amount in a single batch by simply uploading a list of receivers to the platform.'"
+          }
+        ]
+      },
+      {
+        "claim": "SDP's 10,000-instruction per-disbursement cap is a Stellar protocol limit.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/59538fe211cfbf77d319457ce9c87dde0f1d6b06/internal/data/disbursement_instructions.go#L49",
+            "observedAt": "2026-11-02",
+            "note": "The constant lives in the SDP application's data package and is checked per disbursement upload, not in Stellar Core or the network."
+          }
+        ]
+      },
+      {
+        "claim": "The Anchor Platform also implements SEP-45 web authentication for contract accounts.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+            "observedAt": "2026-11-02",
+            "note": "'SEP-45 — Web authentication using challenge/responses for contract accounts'."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/java-stellar-anchor-sdk/tree/2a4b58c3c90d3ca79a7216bd09b92143b2248616/api-schema/src/main/java/org/stellar/anchor/api/sep/sep45",
+            "observedAt": "2026-11-02",
+            "note": "ChallengeRequest, ChallengeResponse, ValidationRequest, and ValidationResponse exist; core/src/main/java/org/stellar/anchor/auth/Sep45Jwt.java exists. Latest release 5.0.0 (2026-10-23)."
           }
         ]
       },
@@ -125,6 +183,12 @@
             "ref": "https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts",
             "observedAt": "2026-08-29",
             "note": "Exact source signatures include `sep10(): Promise<Sep10>`, `sep12(authToken: AuthToken): Promise<Sep12>`, `sep24(): Sep24`, and `sep38(authToken?: AuthToken): Sep38`; no `sep31` client exists."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+            "observedAt": "2026-11-02",
+            "note": "Re-observed: 'Below you can find all the SEPs the anchor class currently supports:' lists SEP-1, SEP-10, SEP-24, SEP-6, SEP-12, and SEP-38, not SEP-31."
           }
         ]
       },
@@ -143,35 +207,31 @@
             "ref": "https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts",
             "observedAt": "2026-08-29",
             "note": "The current Anchor class has no `sep31` method or SEP-31 client implementation."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+            "observedAt": "2026-11-02",
+            "note": "Re-observed: 'Below you can find all the SEPs the anchor class currently supports:' lists SEP-1, SEP-10, SEP-24, SEP-6, SEP-12, and SEP-38, not SEP-31."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
       "evidence": [
-        "solo://proj/49/todo/reconcile-bounded-tr--1355",
-        "2026-08-05 exact-phrase lumenloop.search_content_semantic probe for 'up to 10,000 payments' returned 20 candidates and no exact matching row or primary-linked SDF evidence; the numeric requirement was therefore removed from the declared Docs-only comparison.",
-        "https://developers.stellar.org/docs/platforms/anchor-platform",
-        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
-        "https://github.com/stellar/stellar-disbursement-platform-backend",
-        "Sibling sweep: q-anchor-sdp-what, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails.",
-        "Structural re-form (long-fact): shortened the Anchor Platform fact and split the SDP fact; the conflicting Wallet SDK fact remains unchanged; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the official page confirms the Anchor Platform role and SEP-6/10/12/24/31/38 support.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform — the official page defines SDP as a bulk-payment tool for organizations.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-disbursement-platform-backend — the current implementation serves native SEP-10/24 without external Anchor Platform integration.",
-        "Historical conflict detected 2026-08-29: Wallet SDK wraps SEP-31 vs https://developers.stellar.org/docs/build/apps/wallet/intro — the current supported-SEP list omits SEP-31; resolved by the later conflict-resolution lines.",
-        "Sibling sweep 2026-08-29: grep Anchor Platform|SDP Core|Wallet SDK|SEP-31 → q-anchor-platform-what, q-anchor-sdp-what, q-asset-wallet-sdk-seps, q-crp-sdp-operation, q-pay-sdp-disbursement, q-sep-wallet-seps-list, and related SEP cases; q-asset-wallet-sdk-seps repeats the same current SEP-31 conflict.",
-        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/build/apps/wallet/intro says ‘Below you can find all the SEPs the anchor class currently supports’ and lists SEP-1/6/10/12/24/38, not SEP-31.",
-        "Conflict resolution 2026-08-29: https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts exposes SEP-1/6/10/12/24/38 methods and no SEP-31 client.",
-        "Sibling sweep 2026-08-29: grep Wallet SDK|SEP-31 → q-anchor-sdp-vs-anchor-platform, q-asset-wallet-sdk-seps, q-sep-wallet-seps-list, q-anchor-platform-what, and related SEP cases; all false Wallet SDK wrap claims are corrected in this lane."
+        "Gospel change 2026-11-02: avoid[1] and the notes called the 10,000 figure dated product positioning and 'not a hard implementation ceiling'. That is false. The SDP backend enforces a 10,000-instruction cap per disbursement. avoid[1] now traps the remaining false claim (a Stellar protocol limit), and the notes allow an answer that states the SDP cap.",
+        "Live B 2026-11-02: stellar-disbursement-platform-backend@59538fe211cfbf77d319457ce9c87dde0f1d6b06 internal/data/disbursement_instructions.go:49 'const MaxInstructionsPerDisbursement = 10000'; internal/serve/httphandler/disbursement_handler.go:865-866 rejects more instructions. The orchestrator re-confirmed line 865 independently.",
+        "Live A 2026-11-02: https://stellar.org/products-and-tools/disbursement-platform still says 'Send up to 10,000 payments of any amount in a single batch'.",
+        "Live A/B 2026-11-02: https://developers.stellar.org/docs/platforms/anchor-platform lists SEP-1/6/10/12/24/31/38/45; java-stellar-anchor-sdk@2a4b58c3c90d3ca79a7216bd09b92143b2248616 has SEP-45 classes. The notes now allow SEP-45, so the misnumbering trap does not punish a true claim. keyFacts are unchanged.",
+        "Live A/B 2026-11-02: https://developers.stellar.org/docs/build/apps/wallet/intro and @stellar/typescript-wallet-sdk src/walletSdk/Anchor/index.ts on main still expose SEP-1/6/10/12/24/38 and no SEP-31 client.",
+        "Live B 2026-11-02: the SDP backend README confirms native SEP-10/24 and no required external Anchor Platform.",
+        "Sibling sweep 2026-11-02: corrected together with q-anchor-sdp-what, which had the same false text. q-pay-sdp-disbursement, q-crp-sdp-operation, and q-anchor-platform-what agree and do not mention 10,000. Register cluster-135's note repeats the old wording and needs a re-sweep."
       ],
       "rootCause": [
-        "freshness-drift",
-        "eval-authoring transcription",
-        "solo://proj/49/todo/reconcile-bounded-tr--1355",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side authoring flaw: the 2026-08-05 rescope read only the stellar.org product page and the Docs. It did not read the SDP backend source constant, so avoid[1] and the notes called a source-enforced per-disbursement cap mere product positioning.",
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-anchor-sdp-vs-anchor-platform"

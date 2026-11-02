@@ -1,0 +1,882 @@
+{
+ "lane": "tooling",
+ "asOf": "2026-11-02",
+ "cases": [
+  {
+   "id": "q-mpp-discovery-and-modes",
+   "truthChanged": false,
+   "proposedChanges": "No gospel change. Every keyFact, the answer, and both avoid items still hold. Truth-block refresh only (no lint-triggering field). (1) Replace dead truth.sources/evidence refs: https://developers.stellar.org/docs/build/apps/agentic-payments/mpp is now HTTP 404; the live page is https://developers.stellar.org/docs/build/agentic-payments/mpp. https://github.com/stellar/mpp is 404; the reference SDK is https://github.com/stellar/stellar-mpp-sdk (linked from both SDF docs and mpp.dev). https://github.com/interop-alliance/mpp-services is 404 with no successor found; drop it and use the live C-class probe of https://mpp.dev/mcp/services plus the stellar-dev-skill mpp.md pin. (2) Optional grader-note hardening in golden.notes (gospel field, so only with a truth.verified bump): mpp.dev/payment-methods/stellar still labels the Stellar second intent 'channel' while SDF docs say 'session', so do not penalize either name; and mppx can serve MPP and x402 Challenges on one endpoint through the x402 compatibility wrapper, which still delegates x402 credentials to the official x402 adapter, so 'separate adapters' must not be graded as 'separate endpoints'.",
+   "claims": [
+    {
+     "claim": "MPP is an HTTP-402 payment-negotiation protocol.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+       "quote": "It extends the `402 Payment Required` HTTP status code into a machine-readable payment negotiation layer for both humans and autonomous agents.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/mpp-vs-x402",
+       "quote": "MPP and x402 both use HTTP `402 Payment Required` to charge for API requests.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md",
+       "quote": "Facilitator-free machine payments settled directly on Stellar: per-request Charge mode and channel-backed Session mode.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "SDF docs and mpp.dev are two different owners but the same class A; the stellar-dev-skill pin supplies class B."
+    },
+    {
+     "claim": "On Stellar, Charge settles a SAC transfer per request.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+       "quote": "Immediate one-time payments. Each request triggers a Soroban SAC `transfer` settled on-chain individually.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/payment-methods/stellar",
+       "quote": "**charge** for one-time on-chain transfers",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md",
+       "quote": "per-request Charge mode",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "SDF docs also document Pull (default) and Push credential modes for Charge; not part of the golden."
+    },
+    {
+     "claim": "Session uses a funded unidirectional channel with cumulative off-chain commitments.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+       "quote": "The session intent enables high-frequency, pay-as-you-go payments over unidirectional [payment channels](https://github.com/stellar-experimental/one-way-channel). The funder deposits tokens into the channel once, then makes many off-chain payments by signing cumulative commitments",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide",
+       "quote": "Each commitment is cumulative. The server tracks the highest commitment it has seen; closing the channel batch-settles all payments in a single on-chain transaction.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/SKILL.md",
+       "quote": "Session mode (channel-backed off-chain commits, high-frequency; formerly called Channel mode)",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Naming split: mpp.dev/payment-methods/stellar still says \"**channel** for high-frequency off-chain payment channels\" and its table header is 'Channel', although its link path is /payment-methods/stellar/session. Do not penalize 'channel' as a name."
+    },
+    {
+     "claim": "Publish OpenAPI 3.1, commonly at /openapi.json, with x-payment-info.offers.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/advanced/discovery",
+       "quote": "You serve a standard [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0) document at `/openapi.json` with `x-payment-info` extensions that advertise one or more payment offers for each paid operation.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/advanced/discovery",
+       "quote": "This generates a `GET /openapi.json` endpoint with canonical `x-payment-info.offers[]` entries on each paid route.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md",
+       "quote": "A paid MPP server publishes an [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0) document at `GET /openapi.json`. Each paid operation carries an `x-payment-info` extension holding an `offers[]` array.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "mpp.dev says the flat single-offer form \"is still valid as shorthand for older emitters, but use it only for backward compatibility\"; offers[] is canonical."
+    },
+    {
+     "claim": "Discovery is advisory; the runtime 402 Challenge is authoritative for price, token, network, expiry, and terms.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/advanced/discovery",
+       "quote": "Discovery documents are informational hints. The runtime `402` Challenge remains the authoritative source of payment terms.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md",
+       "quote": "The runtime **402 Challenge is authoritative** for price, token, network, expiry, and terms.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "C",
+       "ref": "https://mpp.dev/mcp/services (MCP initialize, read-only probe)",
+       "quote": "Use this read-only MCP server to discover MPP paid API services and payment terms from https://mpp.dev/api/services.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "The exact five-item list (price, token, network, expiry, terms) is verbatim in the SDF skill; mpp.dev says 'payment terms' generically. No contradiction."
+    },
+    {
+     "claim": "MPPScan, the mpp.dev services directory, and https://mpp.dev/mcp/services are optional discovery surfaces.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/advanced/discovery",
+       "quote": "| [MPPScan](https://mppscan.com) | Public registry of MPP-enabled services with search and analytics |",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/advanced/discovery",
+       "quote": "Agents can query the curated services directory over MCP at `https://mpp.dev/mcp/services`. The server is read-only",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "C",
+       "ref": "https://mpp.dev/mcp/services",
+       "quote": "\"serverInfo\":{\"name\":\"mpp-services-mcp\",\"title\":\"MPP Services MCP server\",\"version\":\"1.0.0\"}",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md",
+       "quote": "Agents can query the curated directory over MCP at `https://mpp.dev/mcp/services`. That server is read-only.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Live POST initialize returned HTTP 200 on 2026-11-02."
+    },
+    {
+     "claim": "MPP and x402 are distinct protocols with non-interchangeable adapters and payloads.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/mpp-vs-x402",
+       "quote": "| **Challenge header** | `PAYMENT-REQUIRED` | `WWW-Authenticate: Payment` |",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/guides/use-mpp-with-x402",
+       "quote": "The wrapper delegates x402 Credentials, lifecycle hooks, verification, and settlement to the official x402 adapter.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/SKILL.md",
+       "quote": "| | x402 | MPP Charge | MPP Session |",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Nuance: mpp.dev says \"You can run both protocols on the same endpoint with `mppx`\" and the server \"accepts either Credential format, and returns the matching Receipt header\". Formats stay distinct, so the claim holds, but a grader must not read 'separate adapters' as 'separate endpoints'. The EVM 'source-chain MPP option verifies and settles through the same x402 resource server'; this is EVM-only, not Stellar."
+    },
+    {
+     "claim": "AVOID: MPP Session requires a new on-chain transfer for every API call.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+       "quote": "no per-payment on-chain transactions, ideal for AI agent interactions",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide",
+       "quote": "No on-chain transaction is needed per payment, making this ideal for high-frequency AI agent interactions.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md",
+       "quote": "channel-backed Session mode",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "The trap stays valid."
+    },
+    {
+     "claim": "AVOID: Listing an API in an MPP directory automatically verifies all client payments.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/advanced/discovery",
+       "quote": "The MCP server is advisory and read-only. After discovery, clients call the target service directly and treat the runtime `402` Challenge as authoritative.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md",
+       "quote": "Fix: the discovery document is advisory. Take price, token, network, expiry, and terms from the 402 Challenge.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "C",
+       "ref": "https://mpp.dev/mcp/services",
+       "quote": "Use this read-only MCP server to discover MPP paid API services",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "The trap stays valid."
+    },
+    {
+     "claim": "SOURCE HEALTH: the case's cited refs still resolve.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/agentic-payments/mpp",
+       "quote": "HTTP/2 404 (\"# Page Not Found\"); related topic points to https://developers.stellar.org/docs/build/agentic-payments/mpp",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/mpp",
+       "quote": "HTTP/2 404 (gh api: Not Found)",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/interop-alliance/mpp-services",
+       "quote": "HTTP/2 404 (gh api: Not Found)",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-mpp-sdk",
+       "quote": "\"description\":\"Stellar blockchain payment method for the Machine Payments Protocol (MPP).\",\"archived\":false,\"pushed_at\":\"2026-10-26T16:19:57Z\"",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Three of four truth.sources refs are dead. This is truth-block provenance rot, not a gospel error. The SDF Docs page move may merit an improvements/ check for a missing redirect."
+    }
+   ],
+   "siblingSweep": "grep -E 'MPPScan|mpp.dev/mcp/services|x-payment-info|\\bMPP\\b' over eval/qa/corpus/battery: q-agent-payment-standard-choice, q-defi-x402-on-stellar-what, q-defi-agentic-payment-standards-compare, q-defi-streaming-payments-prior-art, q-agent-identity-erc8004-stellar. All agree (distinct x402/MPP payloads, Charge on-chain vs Session channel). q-defi-agentic-payment-standards-compare says 'draft Stellar method supports one-time SEP-41 charge transfers and optional session/channel work', which is compatible."
+  },
+  {
+   "id": "q-sor-reflector-integration-code",
+   "truthChanged": false,
+   "proposedChanges": "No gospel change required. The answer, the 3 keyFacts, and the avoid item hold today. Truth-block refresh recommended: (1) The corroboration row 'A live Mainnet Beam oracle deployment exposing lastprice(caller, asset) exists' is no longer 'unverifiable'. It is now confirmed-as-of 2026-11-02: the orchestrator registry lists CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7 with type 'oracle_beam' (dataSource pubnet), its live mainnet spec exposes lastprice(caller, asset), and reflector.network/docs lists 'Stellar Pubnet Beam Oracle Contract: CCRV…E2F7 Status: live'. The SDF oracle-providers table still lists only the three Pulse IDs. (2) Fix dead refs: reflector-contract default branch is 'master'; the truth refs .../blob/main/pulse-contract/src/lib.rs and .../blob/main/beam-contract/src/lib.rs return 404. (3) Optional gospel enrichment (needs truth.verified bump): add the live Beam ID as a dated example in golden.notes 'Also good' so an answer citing CCRV…E2F7 as a live Beam oracle is credited. Also note a new subscriptions contract CBNGTWIV…I2JX (Flare) in the registry; it is not an oracle.",
+   "claims": [
+    {
+     "claim": "Select the live contract from the operator registry by network/type and fetch its live spec.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://orchestrator.reflector.network/config",
+       "quote": "\"network\":\"pubnet\" ... \"type\":\"oracle\" / \"type\":\"oracle_beam\" / \"type\":\"dao\" / \"type\":\"subscriptions\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet --contract-id <id> (stellar 28.1.0)",
+       "quote": "All six registry IDs returned a spec; oracle and oracle_beam specs differ in the lastprice signature.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+       "quote": "Learn how to integrate Reflector feeds [in their documentation](https://reflector.network/docs).",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Guidance-type claim; the registry now mixes oracle, oracle_beam, dao, and subscriptions types, which strengthens the 'select by type' advice."
+    },
+    {
+     "claim": "Current Pulse uses lastprice(asset).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract/blob/b006d297ac1a11dbf97de5f74b9e45dac1acb14a/pulse-contract/src/lib.rs",
+       "quote": "pub fn lastprice(e: &Env, asset: Asset) -> Option<PriceData> {",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet --contract-id CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN",
+       "quote": "fn lastprice(env: soroban_sdk::Env, asset: Asset) -> Option<PriceData>;",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/reflector-network/reflector-contract#readme (README, operator doc)",
+       "quote": "fn lastprice(asset: Asset) -> Option<PriceData>;",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "CALI2BY… and CBKGPWG… live specs show the same one-argument lastprice."
+    },
+    {
+     "claim": "Beam uses lastprice(caller, asset).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract/blob/b006d297ac1a11dbf97de5f74b9e45dac1acb14a/beam-contract/src/lib.rs",
+       "quote": "pub fn lastprice(e: &Env, caller: Address, asset: Asset) -> Option<PriceData> {",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet --contract-id CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7",
+       "quote": "fn lastprice(\n        env: soroban_sdk::Env,\n        caller: soroban_sdk::Address,\n        asset: Asset,\n    ) -> Option<PriceData>;",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Beam source calls caller.require_auth() and access::check_access(e, &caller, &asset) inside lastprice."
+    },
+    {
+     "claim": "Asset is Stellar(Address) or Other(Symbol); return is Option<PriceData>{price:i128,timestamp:u64}.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract/blob/b006d297ac1a11dbf97de5f74b9e45dac1acb14a/oracle/src/types.rs",
+       "quote": "pub enum Asset {\n    Stellar(Address), // Stellar asset contract address\n    Other(Symbol),    // Symbol for all other external price sources\n}",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract/blob/b006d297ac1a11dbf97de5f74b9e45dac1acb14a/oracle/src/types.rs",
+       "quote": "pub struct PriceData {\n    // Price stored with configured decimals places\n    pub price: i128,\n    // Record timestamp\n    pub timestamp: u64,",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet --contract-id CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN",
+       "quote": "pub enum Asset {\n    Stellar(soroban_sdk::Address),\n    Other(soroban_sdk::Symbol),\n}",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Registry shows decimals 14 for exchanges, pubnet, and Beam; the forex entry has no decimals field in config, so decimals() must be read live."
+    },
+    {
+     "claim": "Mainnet registry examples: external-exchanges CAFJZQW…N34DLN, pubnet CALI2BY…B2PLE6M, forex CBKGPWG…DXMCJZC.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://orchestrator.reflector.network/config",
+       "quote": "\"CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN\" ... \"dataSource\":\"exchanges\"; \"CALI2BYU2JE6WVRUFYTS6MSBNEHGJ35P4AVCZYF3B6QOE3QKOB2PLE6M\" ... \"dataSource\":\"pubnet\"; \"CBKGPWGKSKZF52CFHMTRR23TBWTPMRDIYZ4O2P5VS65BMHYH4DXMCJZC\" ... \"dataSource\":\"forex\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+       "quote": "| [`CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN`](https://stellar.expert/explorer/public/contract/CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN) | External CEXs & DEXs | Mainnet |",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet",
+       "quote": "All three IDs expose fn lastprice(env, asset: Asset) and zero fn x_* exports.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "The golden dates these as of 2026-09-02; all three remain current on 2026-11-02."
+    },
+    {
+     "claim": "NEW: a live Mainnet Beam oracle exists: CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://orchestrator.reflector.network/config",
+       "quote": "\"contractId\":\"CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7\",\"dataSource\":\"pubnet\",\"decimals\":14, ... \"timeframe\":60000,\"type\":\"oracle_beam\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://reflector.network/docs (rendered page text, read through a Parallel web_search excerpt)",
+       "quote": "Stellar Pubnet Beam Oracle\nContract: CCRV…E2F7\nStatus: live (4-of-7 multisig)\nBase symbol: USDC centre.io Decimals: 14 Sampling: 1 minutes",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet --contract-id CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7",
+       "quote": "fn track(env, sponsor: Address, consumer: Address, assets: Vec<Asset>, amount: i128) -> Vec<u64>; fn lastprice(env, caller: Address, asset: Asset) -> Option<PriceData>;",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "This replaces the 2026-09-02 'unverifiable' truth row. The SDF oracle-providers table does not list it yet (possible improvements/ docs-gap finding). The golden does not deny Beam's existence, so gospel is not wrong."
+    },
+    {
+     "claim": "CBQSUF…XQLSE is a DAO, not an oracle.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://orchestrator.reflector.network/config",
+       "quote": "\"contractId\":\"CBQSUF57OYX4RIMCZV62DKN6JFOTEKPHIZASMJYOUOCNHGNG2P3XQLSE\",\"depositParams\":{...},\"type\":\"dao\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet --contract-id CBQSUF57OYX4RIMCZV62DKN6JFOTEKPHIZASMJYOUOCNHGNG2P3XQLSE",
+       "quote": "fn set_deposit(... fn unlock(... fn available(env: soroban_sdk::Env, claimant: soroban_sdk::Address) -> i128; fn claim(",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Spec has no lastprice and no x_* export."
+    },
+    {
+     "claim": "Current official source and public Pulse ABI expose lastprice, not x_last_price; the old name survives in the October 2025 snapshot and third-party copies.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract/blob/b006d297ac1a11dbf97de5f74b9e45dac1acb14a/pulse-contract/src/lib.rs",
+       "quote": "pub fn lastprice(e: &Env, asset: Asset) -> Option<PriceData> {",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet (CAFJ…, CALI…, CBKG…, CCRV…)",
+       "quote": "grep -c 'fn x_' → 0 for every oracle spec",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/code-423n4/2025-10-reflector (gh search code x_last_price)",
+       "quote": "code-423n4/2025-10-reflector pulse-contract/src/lib.rs; code-423n4/2025-10-reflector beam-contract/src/lib.rs; code-423n4/2025-10-reflector oracle/src/price_oracle.rs",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "D",
+       "ref": "GitHub code search 'x_last_price'",
+       "quote": "olivmath/reflector-tutorial src/reflector.rs; laina-defi/laina liquidation-bot/src/oracle.rs; candela-network/rs-reflector-client src/lib.rs",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "The reflector.network SPA bundle (app.d02bdbfc198a54bc0628.js) contains 'lastprice' and no 'x_last_price'; it reads contract data from orchestrator.reflector.network."
+    },
+    {
+     "claim": "Beam's deeper XRF call may require authorize_as_current_contract for the nested call.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/reflector-network/reflector-contract#readme",
+       "quote": "// Authorize the XRF burn executed inside track()",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/reflector-network/reflector-contract#readme",
+       "quote": "e.authorize_as_current_contract(Vec::from_array(e, [invocation]));",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet --contract-id CCRVIC2R4W5XZTVBPQR4UNGZAFSVIFDLD64B6RPX2262F36P4ISEE2F7",
+       "quote": "fn track(env, sponsor, consumer, assets, amount: i128)",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "The nested authorization is for the XRF burn inside track(), not for lastprice itself. The golden wording ('may require … for the nested call') is accurate."
+    },
+    {
+     "claim": "NOTE: the README Beam example points to a Pulse contract ID.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/reflector-network/reflector-contract#readme",
+       "quote": "let oracle_address = Address::from_str(&e, \"CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN\");\n...\nlet reflector_client = ReflectorBeamClient::new(&e, &oracle_address);",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "C",
+       "ref": "https://orchestrator.reflector.network/config",
+       "quote": "\"CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN\" ... \"type\":\"oracle\"",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Still true at reflector-contract master b006d297. The real Beam ID is CCRV…E2F7. An upstream README fix is a candidate improvements/ finding."
+    },
+    {
+     "claim": "AVOID: calling CBQ a price oracle, grading x_last_price as current, freezing IDs/specs, or asserting a trap cause without diagnostics.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://orchestrator.reflector.network/config",
+       "quote": "\"type\":\"dao\" (CBQSUF…)",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract info interface --network mainnet",
+       "quote": "no fn x_* in any oracle spec; Pulse vs Beam lastprice arity differs",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract/blob/b006d297ac1a11dbf97de5f74b9e45dac1acb14a/beam-contract/src/lib.rs",
+       "quote": "caller.require_auth();",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Each avoid sub-claim is still false. The registry shows ID churn (new oracle_beam and subscriptions entries since 2026-09-02), so 'do not freeze IDs' is reinforced. Pulse-vs-Beam arity and Beam's require_auth are two real trap sources, so 'do not assert one cause' still holds."
+    },
+    {
+     "claim": "SOURCE HEALTH: truth refs .../reflector-contract/blob/main/... resolve.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/reflector-network/reflector-contract/blob/main/pulse-contract/src/lib.rs",
+       "quote": "HTTP/2 404; gh api: default_branch \"master\"",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Change the truth.corroboration refs to blob/master or pin b006d297ac1a11dbf97de5f74b9e45dac1acb14a."
+    }
+   ],
+   "siblingSweep": "grep -il reflector over battery: 25 cases. Checked for Beam, x_last_price, lastprice, contract IDs, PriceData: q-defi-reflector-oracle, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40, q-tool-oracle-repo-live, q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, q-scf-cross-reflector-rounds-current, q-sor-require-auth-propagation. None asserts IDs, x_last_price, or the absence of a Beam deployment; no contradiction. q-defi-reflector-oracle says public feeds are 'described as free' and forbids an absolute 'no paid service' claim, which is consistent with paid Beam."
+  },
+  {
+   "id": "q-quickstart-manual-ledger-close",
+   "truthChanged": true,
+   "proposedChanges": "One gospel change recommended, plus provenance fixes. (1) GOSPEL (golden.avoid[1]): 'Use obsolete --core-manual-close or ENABLE_* syntax for the current image' over-punishes. The '--core-manual-close' half is correct: the start script rejects it ('Unknown container arg' → exit 1). The 'ENABLE_*' half is false as written. The current start script still honors environment defaults, for example ': \"${ENABLE_CORE_MANUAL_CLOSE:=false}\"', so 'docker run -e ENABLE_CORE_MANUAL_CLOSE=true … --local' sets MANUAL_CLOSE=true. It is undocumented but functional (source-read; not run, because the local Docker daemon was down). Narrow the avoid to '--core-manual-close' (or to 'presents an ENABLE_* environment variable as the documented interface instead of --enable-core-manual-close'). rootCause: authoring flaw, the trap punished a possibly-true claim. (2) GOSPEL-ADJACENT (golden.notes, grader caution): stellar-core's manualclose accepts 'ledgerSeq' and 'closeTime' parameters only when RUN_STANDALONE=true. Quickstart's local core config does not set RUN_STANDALONE, so in Quickstart the request rejects parameters and each call advances one ledger. Add a note so that an answer that correctly says 'standalone Core (not Quickstart) can jump ledgerSeq or set closeTime ≥ next close time' is not penalized under avoid[3] ('sets any arbitrary timestamp'). (3) PROVENANCE: truth.sources A ref https://developers.stellar.org/docs/build/smart-contracts/testing is HTTP 404. Replace it with https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes#manual-close-mode, which now states every Quickstart claim directly. The truth.corroboration rows list one identical 4-source block for every claim; replace them with per-claim evidence. Issue #4040 is still OPEN (updated 2026-07-09), so the count keyFact holds.",
+   "claims": [
+    {
+     "claim": "Ordinary --local auto-closes roughly every second (testing acceleration).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "By default, ledgers close automatically. (In local network mode, that's once every second.)",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/local/core/etc/stellar-core.cfg",
+       "quote": "ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING=true",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/docs/stellar-core_example.cfg",
+       "quote": "# Reduces ledger close time to 1s and checkpoint frequency to every 8 ledgers.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "No F run (Docker daemon unavailable)."
+    },
+    {
+     "claim": "--enable-core-manual-close (default false) sets Core MANUAL_CLOSE.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "The flag sets the `MANUAL_CLOSE` setting in the `etc/stellar-core.cfg` file that the container generates when it initializes, and defaults to `false` when not specified.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+       "quote": "    --enable-core-manual-close)\n      ENABLE_CORE_MANUAL_CLOSE=true",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+       "quote": "run_silent \"finalize-core-config-manual-close\" perl -pi -e \"s/__MANUAL_CLOSE__/$ENABLE_CORE_MANUAL_CLOSE/g\" etc/stellar-core.cfg",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Quickstart README.md does not mention manual close at all; the flag is documented on developers.stellar.org (network-modes, operation-modes, run-command-examples)."
+    },
+    {
+     "claim": "Each current manualclose call advances one ledger.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "Each `manualclose` invocation advances the ledger by one.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/CommandHandler.cpp",
+       "quote": "\"The 'manualclose' command accepts parameters only if the \"\n            \"configuration includes RUN_STANDALONE=true.\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/local/core/etc/stellar-core.cfg",
+       "quote": "MANUAL_CLOSE=__MANUAL_CLOSE__ (no RUN_STANDALONE line in the file)",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Because Quickstart lacks RUN_STANDALONE, the ledgerSeq/closeTime parameters are rejected there. See the standalone-Core nuance below."
+    },
+    {
+     "claim": "A requested count parameter remains open in stellar-core issue #4040.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/issues/4040 (gh api)",
+       "quote": "\"state\":\"open\",\"state_reason\":null,\"title\":\"Support manual closing N ledgers\",\"updated_at\":\"2026-07-09T14:04:12Z\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/CommandHandler.cpp",
+       "quote": "auto manualLedgerSeq = parseOptionalParam<uint32_t>(retMap, \"ledgerSeq\");\n    auto manualCloseTime = parseOptionalParam<TimePoint>(retMap, \"closeTime\");",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "Each `manualclose` invocation advances the ledger by one.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "No 'count' parameter exists at core master b8c4f12d. Related open requests: stellar/quickstart#932 'Feature request: simple option to fast-forward ledgers in --local mode' (open); stellar/quickstart PR #934 '/advance-ledgers' proposal closed unmerged 2026-10-01."
+    },
+    {
+     "claim": "NUANCE: standalone Core (RUN_STANDALONE=true) manualclose accepts ledgerSeq and closeTime.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp",
+       "quote": "        if (mConfig.RUN_STANDALONE)\n        {\n            setManualCloseVirtualTime(manualCloseTime);\n            advanceToLedgerBeforeManualCloseTarget(targetLedgerSeq);",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp",
+       "quote": "\"Manual close time {:d} too early (last \"\n                                       \"close time={:d}, now={:d})\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v15.0.0/src/main/CommandHandler.cpp",
+       "quote": "auto manualLedgerSeq = maybeParseParam(retMap, \"ledgerSeq\", ledgerSeq);",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "This has existed since at least v15.0.0. closeTime must be ≥ max(now, lastCloseTime+1) and ≤ year 2200, so 'any arbitrary timestamp' is still false even in standalone Core. Quickstart does not set RUN_STANDALONE. The golden is correct for Quickstart; add a grader note (see proposedChanges). Single class (B) only, but it is source code."
+    },
+    {
+     "claim": "Repeated closes advance sequence and close time but do not set an arbitrary timestamp.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "Each `manualclose` invocation advances the ledger by one.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp",
+       "quote": "            // These may only be specified if RUN_STANDALONE is configured.\n            releaseAssert(!manualCloseTime);\n            releaseAssert(!manualLedgerSeq);",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Scoped to Quickstart (no RUN_STANDALONE)."
+    },
+    {
+     "claim": "Use soroban-sdk ledger test utilities for direct unit-test timestamp/sequence mutation.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html (soroban-sdk 29.0.1)",
+       "quote": "fn set_sequence_number(&self, sequence_number: u32);\n    fn set_timestamp(&self, timestamp: u64);",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/1f984875530b4dc7af40bc210abbf96208a91be5/soroban-sdk/src/testutils.rs",
+       "quote": "    /// Sets the timestamp.\n    fn set_timestamp(&self, timestamp: u64);",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "The existing truth labels docs.rs as class F; it is generated reference docs (A/B), not empirical execution."
+    },
+    {
+     "claim": "Use Quickstart for Core/RPC/TTL/archive integration.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart",
+       "quote": "Quickstart runs a local version of Stellar Core, Horizon, RPC, and everything else needed to replicate the public network.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/README.md",
+       "quote": "- History Archive: `http://localhost:8000/archive` (available with `--local` only)",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": ""
+    },
+    {
+     "claim": "Flag changes need a fresh volume or explicit reconfiguration because initialized config is reused.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "The core configuration is only generated the first time a container initializes. Adding this flag to a container that already has a configuration (on a persistent volume, for example) has no effect. To pick up the change, start a fresh ephemeral container or clear the mounted volume.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+       "quote": "  if [ -f $COREHOME/.quickstart-initialized ]; then\n    echo \"core: already initialized\"",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Pinning advice is also supported: operation-modes says 'use image digest references to pin to a specific build.'"
+    },
+    {
+     "claim": "AVOID: A Quickstart manual-close endpoint can accelerate testnet or pubnet ledgers.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "Manual close is only usable in local network mode. Stellar Core requires `NODE_IS_VALIDATOR=true` to service a manual close request, and the local network is the only Quickstart configuration that sets it.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp",
+       "quote": "\"Issuing a manual ledger close requires NODE_IS_VALIDATOR to be \"\n            \"set to true.\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/testnet/core/etc/stellar-core.cfg",
+       "quote": "MANUAL_CLOSE=__MANUAL_CLOSE__ (no NODE_IS_VALIDATOR line; same for pubnet/core/etc/stellar-core.cfg)",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Trap valid."
+    },
+    {
+     "claim": "AVOID: Use obsolete --core-manual-close or ENABLE_* syntax for the current image.",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+       "quote": "    *)\n      echo \"Unknown container arg $ARG\" >&2\n      exit 1",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+       "quote": ": \"${ENABLE_CORE_MANUAL_CLOSE:=false}\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/Dockerfile",
+       "quote": "ENTRYPOINT [\"/start\"]",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/run-command-examples",
+       "quote": "  --local \\\n  --enable-core-manual-close",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Split verdict. '--core-manual-close' is contradicted (an unknown arg exits 1), so that half of the trap is valid. 'ENABLE_* syntax' is not obsolete in the image: bash ':=' keeps an env value passed with docker -e, so ENABLE_CORE_MANUAL_CLOSE=true (and ENABLE_RPC, ENABLE_SOROBAN_RPC, etc.) still work. They are undocumented; docs and README show only flags (README documents the env form only for CORE_USE_POSTGRES). Source-read only; F run not possible (Docker daemon down). Per the skill, a trap must not punish a possibly-true claim, so narrow this avoid."
+    },
+    {
+     "claim": "AVOID: Manual close is enabled by default whenever Quickstart uses --local.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "defaults to `false` when not specified.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+       "quote": ": \"${ENABLE_CORE_MANUAL_CLOSE:=false}\"",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Trap valid."
+    },
+    {
+     "claim": "AVOID: manualclose accepts a current count parameter or sets any arbitrary timestamp.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/issues/4040",
+       "quote": "\"state\":\"open\" — \"Expand the capabilities of the `manualclose` http endpoint so that it accepts a parameter `count`\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/CommandHandler.cpp",
+       "quote": "\"The 'manualclose' command accepts parameters only if the \"\n            \"configuration includes RUN_STANDALONE=true.\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+       "quote": "Each `manualclose` invocation advances the ledger by one.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Valid for Quickstart. Edge risk: in standalone Core, closeTime can be set (bounded: ≥ next close time, ≤ 2200) and ledgerSeq can jump ahead. An answer that says this for standalone Core is true, so add the grader note in proposedChanges."
+    },
+    {
+     "claim": "SOURCE HEALTH: truth A ref https://developers.stellar.org/docs/build/smart-contracts/testing resolves.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
+       "quote": "HTTP/2 404 (\"# Page Not Found\")",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Replace it with the operation-modes page."
+    }
+   ],
+   "siblingSweep": "grep -E 'manualclose|enable-core-manual-close|MANUAL_CLOSE|ARTIFICIALLY_ACCELERATE|issues/4040' over battery → q-sor-force-fast-archival-localnet, q-quickstart-manual-ledger-close. q-sor-force-fast-archival-localnet says 'ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING=true speeds ledger closes. These are Core config keys, not universal Quickstart environment variables.' That agrees, and the ENABLE_* finding does not contradict it (it concerns Core cfg keys, not start-script env)."
+  }
+ ]
+}
