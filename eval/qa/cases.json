@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "437f9f4a5c0aa8c656ecc20a81e29f13f1e71cadd5beb4f1fcfb74e55459ea70",
+  "corpusContentSha256": "8d8400a43e0477b17deb49be2922dc1f9db48d7f00bef27f6142152900d3f2a0",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -52755,7 +52755,7 @@
           "Do NOT add an ecosystem prior-art or competitor landscape detour to this already-scoped build/debug question; current official docs and CLI evidence are sufficient.",
           "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Verified with Stellar Docs MCP and local `stellar contract build --help` from CLI 25.2.0; re-checked 2026-11-02 with CLI 28.1.0, whose `--print-commands-only` shows `cargo rustc --crate-type=cdylib --target=wasm32v1-none --release` with the SDK build marker set; a soroban-sdk 29.0.1 plain `cargo build --target wasm32v1-none --release` failed at the SDK build script. Describing the CLI as a wrapper around cargo is correct (it runs `cargo rustc`). For a soroban-sdk 28+ project, calling plain `cargo build --target wasm32v1-none --release` an equivalent shortcut is wrong. The official Hello World page said so until stellar/stellar-docs#2991 (merged 2026-11-02); the live page now says that a direct `cargo build --target wasm32v1-none --release` fails under soroban-sdk 28 or later (improvements/stellar-docs/sd-075-hello-world-build-wrapper-claim.md, fixed-upstream). The dossier mentions newer protocol/SDK releases, but the target guidance is stable in current docs.\nAlso good if the answer: Mentions output path `target/wasm32v1-none/release/<contract>.wasm`. | Notes target installation is per toolchain, so after Rust upgrades the target may need reinstalling.\nGolden cites: Must cite current Stellar setup/Hello World or Rust dialect docs for `wasm32v1-none`. | Freshness-sensitive answer should cite a dated/current official docs source or local CLI evidence."
+        "notes": "Verified with Stellar Docs MCP and local `stellar contract build --help` from CLI 25.2.0; re-checked 2026-11-02 with CLI 28.1.0, whose `--print-commands-only` shows `cargo rustc --crate-type=cdylib --target=wasm32v1-none --release` with the SDK build marker set; a soroban-sdk 29.0.1 plain `cargo build --target wasm32v1-none --release` failed at the SDK build script. Describing the CLI as a wrapper around cargo is correct (it runs `cargo rustc`). For a soroban-sdk 28+ project, calling plain `cargo build --target wasm32v1-none --release` an equivalent shortcut is wrong. The official Hello World page said so until stellar/stellar-docs#2991 (merged 2026-11-02); the live page now says that a direct `cargo build --target wasm32v1-none --release` fails under soroban-sdk 28 or later (finding sd-075, resolved 2026-11-02; see improvements/resolved.json). The dossier mentions newer protocol/SDK releases, but the target guidance is stable in current docs.\nAlso good if the answer: Mentions output path `target/wasm32v1-none/release/<contract>.wasm`. | Notes target installation is per toolchain, so after Rust upgrades the target may need reinstalling.\nGolden cites: Must cite current Stellar setup/Hello World or Rust dialect docs for `wasm32v1-none`. | Freshness-sensitive answer should cite a dated/current official docs source or local CLI evidence."
       },
       "tags": {
         "category": "soroban",
@@ -52955,7 +52955,7 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Upstream filing round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md)",
+          "by": "sd-075 resolver pass 2026-11-02 (.agents/rounds/2026-11-02-upstream-filing.md, \"Resolver pass: sd-075\")",
           "evidence": [
             "golden.answer: replaced the generic grounded-answer template with the verified build-target answer (verifier modify text): wasm32v1-none, CLI 28.1.0 build command, output path, the soroban-sdk 28+ CLI gate, Rust 1.84 / 1.82 limits, and the core-crate fix, dated 2026-11-02.",
             "golden.notes: recorded the 2026-11-02 CLI 28.1.0 re-check and a symmetric caution for the Hello World 'wrapper around cargo build' framing.",
@@ -52975,11 +52975,13 @@
             "Raven stellarDocs.search_docs \"stellar contract build wrapper around cargo build shortcut\" — \"hello-world#build-the-contract: \"This is a small wrapper around cargo build that sets the target to wasm32v1\"\" (class E, observedAt 2026-11-02)",
             "Sibling sweep 2026-11-02 (pass 2): grep for 'wrapper around' and 'cargo build --target wasm32v1-none' over the battery found only q-soroban-cross-contract-call (contractimport! wrapper, unrelated); no sibling calls plain cargo build equivalent.",
             "Pass-2 proposer matrix, proposals, and independent verifier decisions: .agents/rounds/2026-11-02-golden-audit.md, task soroban-api.",
-            "A 2026-11-02 live re-check: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world.md now says 'With `soroban-sdk` 28 or later, running `cargo build --target wasm32v1-none --release` directly fails with the error `soroban-sdk requires stellar-cli v25.2.0+ to build a contract`.' The fix is https://github.com/stellar/stellar-docs/pull/2991 (merged 2026-11-02T20:13:29Z; closes https://github.com/stellar/stellar-docs/issues/2974). golden.notes now records the fix; no other judge-facing field changed."
+            "A 2026-11-02 live re-check: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world.md now says 'With `soroban-sdk` 28 or later, running `cargo build --target wasm32v1-none --release` directly fails with the error `soroban-sdk requires stellar-cli v25.2.0+ to build a contract`.' The fix is https://github.com/stellar/stellar-docs/pull/2991 (merged 2026-11-02T20:13:29Z; closes https://github.com/stellar/stellar-docs/issues/2974). golden.notes now records the fix; no other judge-facing field changed.",
+            "golden.notes: the finding pointer now names the resolved receipt; truth unchanged. Live recheck 2026-11-02T21:23:41Z https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world serves \"soroban-sdk requires stellar-cli v25.2.0+ to build a contract\" and no \"shortcut for\" text; stellar/stellar-docs main hello-world.mdx line 309 says a direct cargo build --target wasm32v1-none --release fails under soroban-sdk 28 or later.",
+            "Sibling sweep 2026-11-02: rg sd-075 over eval/qa/corpus found only this case; consistency-register clusters that name it carry the same #2991 fact."
           ],
           "rootCause": [
             "Eval-side authoring flaw: the super-corpus rebuild left a generic grounded-answer template as golden.answer, with a dangling reference to 'stable distinctions above' and none of the target, cargo-vs-CLI, or core-crate facts the question asks for.",
-            "improvements/stellar-docs/sd-075-hello-world-build-wrapper-claim.md",
+            "improvements/resolved.json entry sd-075 (fixed upstream by stellar/stellar-docs#2991, merged 2026-11-02)",
             "freshness-drift"
           ]
         },
