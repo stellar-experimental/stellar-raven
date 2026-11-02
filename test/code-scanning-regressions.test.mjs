@@ -50,11 +50,10 @@ describe("code scanning regressions", () => {
     expect(terms).not.toContain("aBC");
   });
 
-  it("preserves inventory diagnostics and public app IDs while redacting secret forms", () => {
+  it("preserves inventory diagnostics while redacting secret forms", () => {
     const root = realpathSync(mkdtempSync(join(tmpdir(), "inventory-error-")));
-    const secretNames = ["LUMENLOOP_API_KEY", "ALGOLIA_API_KEY_SITE", "MINTLIFY_ASSISTANT_API_KEY", "MCP_SERVER_SECRET", "WORKOS_API_KEY"];
-    const publicNames = ["ALGOLIA_APPLICATION_ID_SITE"];
-    const fixtures = Object.fromEntries([...secretNames, ...publicNames].map((name, index) =>
+    const secretNames = ["LUMENLOOP_API_KEY", "MINTLIFY_ASSISTANT_API_KEY", "MCP_SERVER_SECRET", "WORKOS_API_KEY"];
+    const fixtures = Object.fromEntries(secretNames.map((name, index) =>
       [name, `fixture-${index}/value+with=symbols`]
     ));
     const forms = (value) => [value, encodeURIComponent(value), Buffer.from(value).toString("base64")];
@@ -77,9 +76,6 @@ describe("code scanning regressions", () => {
       expect(result.stderr.match(/\[redacted\]/g)).toHaveLength(secretNames.length * 3);
       for (const name of secretNames) {
         for (const form of forms(fixtures[name])) expect(result.stderr + result.stdout).not.toContain(form);
-      }
-      for (const name of publicNames) {
-        for (const form of forms(fixtures[name])) expect(result.stderr).toContain(form);
       }
       const missing = run({ LUMENLOOP_API_KEY: "" });
       expect(missing.status).toBe(1);

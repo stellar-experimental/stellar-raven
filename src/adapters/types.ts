@@ -24,9 +24,6 @@ export type AdapterEnv = {
   LUMENLOOP_API_KEY?: string;
   /** developers.stellar.org Mintlify project (assistant key: search and page content). */
   MINTLIFY_ASSISTANT_API_KEY?: string;
-  /** stellar.org site app — English `pages` index only (search-only key). */
-  ALGOLIA_APPLICATION_ID_SITE?: string;
-  ALGOLIA_API_KEY_SITE?: string;
 };
 
 /** Injectable fetch so unit tests run against recorded fixtures, no network. */

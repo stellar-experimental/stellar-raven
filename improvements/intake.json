@@ -3,7 +3,7 @@
   "updated": "2026-10-09",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
-    "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
+    "developers.stellar.org runs on Mintlify, and the docs team owns both its content and its search; content and search findings file in stellar/stellar-docs."
   ],
   "services": {
     "skills": {
@@ -35,7 +35,7 @@
       "type": "mixed",
       "contentRepo": "stellar/stellar-docs",
       "contentRule": "developers.stellar.org content and content-structure findings file in stellar/stellar-docs.",
-      "rankingRule": "Pure Algolia ranking/tokenization findings may need docs/search-owner triage; record intake unclear per finding when the repo cannot plausibly own the search behavior."
+      "rankingRule": "Mintlify search ranking and chunking findings file in stellar/stellar-docs; the docs team owns the Mintlify project."
     },
     "lumenloop": {
       "type": "github-issues",

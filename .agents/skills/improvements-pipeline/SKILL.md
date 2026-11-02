@@ -55,7 +55,7 @@ For a web-surface finding, classify the failing surface before choosing a collec
   scoping over it) fails even though suitable canonical content exists;
 - `site-content` — a broader `stellar.org` page makes a stale or incorrect claim, or an existing
   site section has a clear reader-facing omission;
-- `site-search` — the broader site's Algolia/search layer fails over suitable site content; and
+- `site-search` — the broader site's search layer fails over suitable site content; and
 - `canonical-source` — the defect belongs in the specification, implementation, product, or other
   authority that owns the fact, not in Docs or the marketing site.
 

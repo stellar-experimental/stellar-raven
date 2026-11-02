@@ -13,11 +13,10 @@ for those targets. This directory holds that set.
   vocabularies, and endpoint completeness.
 - `stellar-light-scout/` — the Stellar Light/Scout API: response semantics, missing fields, and
   content-type consistency. It also records positive trust anchors.
-- `stellar-docs/` — the Stellar Docs search surface (the Algolia index): ranking, tokenization,
+- `stellar-docs/` — the Stellar Docs search surface (the Mintlify search): ranking, chunking,
   and vocabulary coverage. A docs-content finding also belongs here when the indexed source
   content is stale or ambiguous. It also belongs here when the content lacks an explanation that
-  grounded agents need. Raven's operator holds Algolia maintenance credentials, so some findings here have a
-  direct-remediation path. See [Resolution paths](#resolution-paths-stellar-docs-upstream-vs-direct-algolia).
+  grounded agents need. See [Resolution paths](#resolution-paths-stellar-docs).
 - `skills/` — the upstream skill sources pinned in `ecosystem-skills/MANIFEST.json`.
   Recommendations target the source repositories. Raven does not vendor skill bodies, so there is
   no local copy to patch. A re-pin to a fork or to a patched branch is not a fix.
@@ -29,7 +28,7 @@ for those targets. This directory holds that set.
 
 Classify a web finding before you file it. The classes are `docs-content`, `docs-search`,
 `site-content`, `site-search`, and `canonical-source`. The two search classes include the related
-Algolia or crawler layer. Only `canonical-source` has its own collection. The other classes are
+search index and its ingestion. Only `canonical-source` has its own collection. The other classes are
 routing categories, not directories.
 
 - A missing search result does not show that Docs or `stellar.org` must own the content.
@@ -107,8 +106,8 @@ Record the exact issue URL in the finding's `evidence` list.
     and research-corpus findings.
   - <https://github.com/Stellar-Light/scout-mcp> — their MCP server surface.
 - `stellar-docs/` content and content-structure findings go to
-  <https://github.com/stellar/stellar-docs>. A pure Algolia ranking or tokenization finding can
-  still need search-owner triage when that repository cannot plausibly own the behavior.
+  <https://github.com/stellar/stellar-docs>. Mintlify search findings also go there: the docs team owns the
+  Mintlify project (for example `sd-059`, filed as stellar/stellar-docs#2995).
 - `lumenloop/` API and content findings go to <https://github.com/lumenloop/lumenloop-backend>
   (authenticated issue access). Directory-record corrections go to
   <https://github.com/lumenloop/stellar-ecosystem-db>. Skill-content findings go to

@@ -12,8 +12,6 @@ Research notes and possible future work. These notes are not committed product p
   [The usage guide](../usage/README.md) describes the implemented private aggregate reports.
 - [Architecture Explorations](./architecture-explorations.md) — open architecture questions and
   their evaluation gates.
-- [Docs Recency Ranking](./docs-recency-ranking.md) — why modification time stays agent-visible
-  metadata or a measured experiment, not a default ranking boost.
 - [Direct Stellar.org Source Coverage](./stellar-org-source-lane.md) — the held `stellarOrg`
   root-service proposal. Revisit it only after its dated review or an explicit source-gap trigger.
 - [Live Ecosystem-Partner Documentation](./partner-doc-live-sources.md) — partner MCP servers

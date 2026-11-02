@@ -127,8 +127,7 @@ Choose the independent reviewer under "Coordination" by tier, not by a fixed mod
   sync remains keyless.
 - Any paid or side-effecting model operation requires host-side request-context approval,
   elicitation, and budget enforcement before it can ship.
-- Mintlify admin and Algolia operator credentials are maintenance-only and never a runtime/sandbox
-  surface. Any write needs a read-only A/B win, a general mechanism rather than per-query hacks,
+- Mintlify admin credentials are maintenance-only and never a runtime/sandbox surface. Any write needs a read-only A/B win, a general mechanism rather than per-query hacks,
   and the guardrails in [`docs/stellar-docs.md`](docs/stellar-docs.md).
 - Evals produce evidence-backed upstream findings in `improvements/`; scores are instruments, not
   the final product.
