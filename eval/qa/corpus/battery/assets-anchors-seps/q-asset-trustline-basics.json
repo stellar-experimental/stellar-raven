@@ -7,7 +7,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve** (0.5 XLM on Mainnet as of 2026-09-30; validators can vote to change it) — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves** (1.0 XLM at that setting).\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
+    "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve** (currently 0.5 XLM on Mainnet, a network parameter that validators can vote to change) — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves** (1.0 XLM at that setting).\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
     "keyFacts": [
       "Defines a trustline as an account's explicit opt-in to hold a non-native asset.",
       "Creates the trustline through ChangeTrust for a specific asset and issuer.",
@@ -46,14 +46,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "2026-11-02 [A] https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — \"Accounts must establish a trustline with the issuing account to hold that issuer's asset. This is true for all assets except for the network's native token, Lumens.\" (claim: golden.keyFacts[0..2] confirmed: Trustline is opt-in via ChangeTrust; payments fail without it; XLM needs none)",
         "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"PAYMENT_NO_TRUST / PAYMENT_NOT_AUTHORIZED result codes\" (claim: golden.keyFacts[0..2] confirmed: Trustline is opt-in via ChangeTrust; payments fail without it; XLM needs none)",
         "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — \"struct TrustLineEntryExtensionV2 { int32 liquidityPoolUseCount; ... } (TrustLineEntry ledger type)\" (claim: golden.keyFacts[0..2] confirmed: Trustline is opt-in via ChangeTrust; payments fail without it; XLM needs none)",
         "2026-11-02 [F] https://horizon.stellar.org/ledgers?order=desc&limit=5 — \"ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart\" (claim: golden.keyFacts[3] / notes confirmed-as-of: One base reserve per trustline; 0.5 XLM on Mainnet as of 2026-09-30)",
         "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"a trustline for asset A (1 base reserve) ... A pool share trustline requires 2 base reserves instead of 1.\" (claim: golden.keyFacts[3] / notes confirmed-as-of: One base reserve per trustline; 0.5 XLM on Mainnet as of 2026-09-30)",
-        "Sibling sweep 2026-11-02: proposer checked q-asset-amm-fee-reserve, q-edge-1xlm-activation-fee, q-hot-fee-pool-burn-deflation; no gospel change in this case, so no sibling contradiction can arise from this event."
+        "Sibling sweep 2026-11-02: proposer checked q-asset-amm-fee-reserve, q-edge-1xlm-activation-fee, q-hot-fee-pool-burn-deflation; no gospel change in this case, so no sibling contradiction can arise from this event.",
+        "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): golden.answer \"(0.5 XLM on Mainnet as of 2026-09-30; validators can vote to change it)\" -> \"(currently 0.5 XLM on Mainnet, a network parameter that validators can vote to change)\". The 2026-11-02 Horizon ledger reads above (base_reserve_in_stroops 5000000) and the Lumens page (\"One base reserve is currently 0.5 XLM\") confirm the value; tags.freshness stays stable."
+      ],
+      "rootCause": [
+        "Eval-side authoring flaw: a stable golden pinned the base reserve with an \"as of <date>\" value. The base reserve is a network parameter that changes only by validator vote, so the golden now states it as the current value with that caveat (durable-fact gating), and the register numericInvariants \"base reserve\" entry keeps sibling cases consistent (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
     "origin": "raven-next q-asset-trustline-basics",

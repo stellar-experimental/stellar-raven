@@ -180,6 +180,21 @@ describe("QA corpus lint lanes", () => {
     expect(findings.some((item) => item.lane === "symmetric-caution")).toBe(warns);
   });
 
+  it.each([
+    ["stable", "As of **2026-07-10**, the base reserve is 0.5 XLM.", true],
+    ["scheduled", "As of **2026-07-10**, the base reserve is 0.5 XLM.", false],
+    ["stable", "Protocol 24 activated on Mainnet on 2025-10-22.", false],
+  ])("flags a %s golden that pins an as-of value: %s", (freshness, answer, flagged) => {
+    const findings = lintGoldenAuthoring([{
+      id: "q-fixture-freshness",
+      question: "What is the base reserve?",
+      golden: { answer, keyFacts: [] },
+      tags: { freshness },
+      truth: {},
+    }]);
+    expect(findings.some((item) => item.lane === "freshness" && item.level === "error")).toBe(flagged);
+  });
+
   it("seeds all register hashes without reopening, then reopens known changes", () => {
     const register = {
       clusters: [{ id: "storage", members: ["q-fixture-gospel"], verdict: "consistent" }],

@@ -3,7 +3,7 @@
   "question": "My wallet says I must pay a one-time 1 XLM fee to activate or verify my Stellar account and funds look locked. What is this really and is it legit?",
   "surface": [],
   "golden": {
-    "answer": "As of **2026-07-10**, Stellar's base reserve is **0.5 XLM**. An empty, unsponsored G-account needs **1 XLM minimum balance** because the formula starts with two reserves; subentries and sponsorship change the requirement. That balance remains in the destination account. It is not a 1 XLM network activation/verification fee. Transaction inclusion fees are separate (the current minimum effective fee is 100 stroops per operation).\n\nFunding **your own** new G-address through CreateAccount can be legitimate. A request to send XLM to an unrelated address, reveal a seed, or sign something to 'unlock' existing funds is a high-risk scam pattern: do not send or disclose anything. Verify whether the destination is your account using an independently reached official wallet/support channel and Horizon. Do not adjudicate the provider's overall legitimacy without its exact URL/address and current primary evidence.",
+    "answer": "Stellar's base reserve is currently **0.5 XLM**, a network parameter that validators can vote to change. An empty, unsponsored G-account needs **1 XLM minimum balance** because the formula starts with two reserves; subentries and sponsorship change the requirement. That balance remains in the destination account. It is not a 1 XLM network activation/verification fee. Transaction inclusion fees are separate (the current minimum effective fee is 100 stroops per operation).\n\nFunding **your own** new G-address through CreateAccount can be legitimate. A request to send XLM to an unrelated address, reveal a seed, or sign something to 'unlock' existing funds is a high-risk scam pattern: do not send or disclose anything. Verify whether the destination is your account using an independently reached official wallet/support channel and Horizon. Do not adjudicate the provider's overall legitimacy without its exact URL/address and current primary evidence.",
     "keyFacts": [
       "Names 0.5 XLM as the base reserve and 1 XLM as the empty-account minimum.",
       "Treats transaction fees as a third category.",
@@ -75,14 +75,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/lumens (observedAt 2026-11-02): 'One base reserve is currently 0.5 XLM. ... An account must always maintain a minimum balance of two base reserves (currently 1 XLM).'",
         "https://horizon.stellar.org/ledgers?order=desc&limit=1 (observedAt 2026-11-02): sequence 65269857 closed_at 2026-11-02T15:57:49Z base_fee_in_stroops 100 base_reserve_in_stroops 5000000 protocol_version 29.",
         "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering (observedAt 2026-11-02): '100 stroops per operation (the network minimum).'",
         "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers (observedAt 2026-11-02): 'malicious entities set up dummy websites ... to induce you to enter your secret key'.",
         "Perplexity ask (observedAt 2026-11-02, cites developers.stellar.org lumens and create-account): 'An empty, self-funded account needs 1 XLM ... not a separate 'activation' or 'verification' fee.'",
-        "No gospel change. Sibling sweep 2026-11-02: q-protocol-base-reserve-min-balance, q-pc-account-activation-not-found, q-pc-sponsored-reserves, q-raph-low-xlm-transfer-fail, q-asset-amm-fee-reserve; no contradiction."
+        "No gospel change. Sibling sweep 2026-11-02: q-protocol-base-reserve-min-balance, q-pc-account-activation-not-found, q-pc-sponsored-reserves, q-raph-low-xlm-transfer-fail, q-asset-amm-fee-reserve; no contradiction.",
+        "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): golden.answer \"As of **2026-07-10**, Stellar's base reserve is **0.5 XLM**.\" -> \"Stellar's base reserve is currently **0.5 XLM**, a network parameter that validators can vote to change.\". The 2026-11-02 Horizon ledger reads above (base_reserve_in_stroops 5000000) and the Lumens page (\"One base reserve is currently 0.5 XLM\") confirm the value; tags.freshness stays stable."
+      ],
+      "rootCause": [
+        "Eval-side authoring flaw: a stable golden pinned the base reserve with an \"as of <date>\" value. The base reserve is a network parameter that changes only by validator vote, so the golden now states it as the current value with that caveat (durable-fact gating), and the register numericInvariants \"base reserve\" entry keeps sibling cases consistent (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
     "origin": "raven-next q-edge-1xlm-activation-fee"

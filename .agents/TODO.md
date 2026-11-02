@@ -872,21 +872,3 @@ The run measures the gaps before the fixes above ship, and then again after them
 
 Safe default: do not run it. Use the free probe evidence until the owner authorizes the spend in
 writing.
-### D. Decide the grading-policy questions from the 2026-11-02 golden audit
-
-The audit (`rounds/2026-11-02-golden-audit.md`, "Owner decisions") added no new partial-cap slot and removed
-expired caps, but three policy questions remain:
-
-1. Partial caps outside the ADR-0008 set. ADR-0008 accepts canonical-page caps for exactly base
-   reserve, Horizon lifecycle, and RPC pagination. Existing aggregator caps (for example
-   `q-tool-wallets-comparison`, `q-eco-stellar-wallets-list`, `q-builder-justin-rice-history`,
-   `q-edge-fresh-latest-blend-tvl`) and the finding-tied canonical cap (`sd-009`) stay on
-   `main`. Convert them to plain correct/wrong rules, or extend the accepted set by decision.
-2. Freshness tags. Eleven `live` and five `stable` cases carry dated example values in golden text.
-   Decide whether such a case is always `scheduled` with a `reverifyBy` date.
-3. Re-judge. The golden-truth skill asks for a re-judge of saved rows whose verdict hinged on a
-   changed golden, with the flip direction recorded. That is paid judge work. The case list is
-   `rounds/2026-11-02-golden-audit/rejudge-set.json` (214 gospel changes, 55 priority).
-
-Safe default: keep the existing caps and tags, and do not re-judge until the owner authorizes the
-spend in writing.

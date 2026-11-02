@@ -1057,7 +1057,7 @@ const PROMPT_SHA256_FIXTURES = new Map([
   ["q-aas-list-token-on-exchanges-aggregators", "09b76f30cc05aeb3f395a13b51b346705f2019facb10f6b3dd36086874d71b9a"],
   ["q-asset-rwa-tokenized-freshness", "23b4aa6ad0f7045360879ac8bb417945033df243a0febd2f7b1d324037264192"], // gitleaks:allow — committed prompt SHA-256 fixture
   ["q-comp-sep8-number-lookup-no-deepresearch", "2272a2b0ba8b4a864ad3db214c03331d261833733598070ebccda59c26741bee"],
-  ["q-edge-1xlm-activation-fee", "d5b08b2703691cd0aed9814a65e82e327e6544b4c5f126ef013f7dec806b80c7"],
+  ["q-edge-1xlm-activation-fee", "737091bfac82c1efcf4fd6a82efe09548c0c3f880ee4b9eab5368e1ff9d0897f"],
   ["q-edge-ambig-best-wallet", "05266383cb4f1cf013e8d6d98d48b05627d6e639cd99c286d2b17ee17bbe8026"],
   ["q-edge-factcheck-soroswap-first-amm", "6bbbc09ea3b253743b56eae47b8a25a19c629d9304dee00fdf27aaf1d7fcd475"],
   ["q-edge-inject-ignore-instructions", "eb9c98b763c39eb99078eeea9d03dd1faa54c7163258d239e1cf95ade0c63031"],

@@ -500,9 +500,15 @@ function hasSymmetricCaution(notes) {
     && /\b(?:cap|caps|capped|grade)\b[^.!?]{0,60}\bpartial\b/i.test(text);
 }
 
+const STABLE_AS_OF_RE = /\bas of\s+\*{0,2}\d{4}-\d{2}-\d{2}/i;
+
 export function lintGoldenAuthoring(cases) {
   const findings = [];
   for (const kase of cases) {
+    // A stable case is never re-checked by date, so it must not pin a point-in-time value.
+    if (kase.tags?.freshness === "stable" && STABLE_AS_OF_RE.test([kase.golden?.answer, ...(kase.golden?.keyFacts ?? [])].filter(Boolean).join(" "))) {
+      findings.push(finding("error", "freshness", kase.id, "stable golden pins an \"as of <date>\" value; tag it scheduled with truth.reverifyBy, or state the fact without a point-in-time date"));
+    }
     const snapshotDates = new Set([kase.truth?.asOf, kase.truth?.verified?.date].filter((date) => DATE_RE.test(date ?? "")));
     for (const fact of kase.golden?.keyFacts ?? []) {
       if (fact.length > 90) {

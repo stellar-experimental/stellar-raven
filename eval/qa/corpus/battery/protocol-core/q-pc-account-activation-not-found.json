@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A Stellar keypair is only cryptographic identity until a successful **CreateAccount** operation creates its ledger entry. A normal Payment to a nonexistent G-address fails with `PAYMENT_NO_DESTINATION`; Payment is not account creation. For the ordinary **unsponsored** path, an empty account needs two base reserves—**1 XLM as of 2026-07-10** with a 0.5 XLM base reserve. CAP-0033 also permits **sponsored account creation with `startingBalance=0`**, shifting those reserves to the sponsor when the sponsorship sandwich and authorizations are correct. On Testnet, Friendbot can create/fund test accounts; on Mainnet use CreateAccount directly or through a real sponsoring/funding service. Re-read current reserve configuration before quoting the numeric minimum.",
+    "answer": "A Stellar keypair is only cryptographic identity until a successful **CreateAccount** operation creates its ledger entry. A normal Payment to a nonexistent G-address fails with `PAYMENT_NO_DESTINATION`; Payment is not account creation. For the ordinary **unsponsored** path, an empty account needs two base reserves—**currently 1 XLM** with the 0.5 XLM base reserve (a network parameter that validators can vote to change). CAP-0033 also permits **sponsored account creation with `startingBalance=0`**, shifting those reserves to the sponsor when the sponsorship sandwich and authorizations are correct. On Testnet, Friendbot can create/fund test accounts; on Mainnet use CreateAccount directly or through a real sponsoring/funding service. Re-read current reserve configuration before quoting the numeric minimum.",
     "keyFacts": [
       "CreateAccount, not key generation or Payment, creates the ledger account.",
       "Distinguishes the dated unsponsored minimum from CAP-0033 sponsored zero-balance creation."
@@ -92,7 +92,7 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/create-account -- 'A valid keypair alone does not make an account.'",
         "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x -- 'PAYMENT_NO_DESTINATION = -5, // destination account does not exist'",
@@ -101,7 +101,11 @@
         "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves -- 'a brand-new account can be created with a startingBalance of 0: wrap the CreateAccount operation in a BeginSponsoringFutureReserves/EndSponsoringFutureReserves sandwich'",
         "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md -- 'Status: Final; Protocol version: 14/15'",
         "Re-verified with no gospel change; proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json (no proposal, so no verifier decision).",
-        "Sibling sweep 2026-11-02: q-edge-1xlm-activation-fee, q-pc-sponsored-reserves, q-pc-account-merge-reclaim-reserve checked; base reserve 0.5 XLM / 1 XLM minimum consistent; no contradiction."
+        "Sibling sweep 2026-11-02: q-edge-1xlm-activation-fee, q-pc-sponsored-reserves, q-pc-account-merge-reclaim-reserve checked; base reserve 0.5 XLM / 1 XLM minimum consistent; no contradiction.",
+        "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): golden.answer \"**1 XLM as of 2026-07-10** with a 0.5 XLM base reserve\" -> \"**currently 1 XLM** with the 0.5 XLM base reserve (a network parameter that validators can vote to change)\". The 2026-11-02 Horizon ledger reads above (base_reserve_in_stroops 5000000) and the Lumens page (\"One base reserve is currently 0.5 XLM\") confirm the value; tags.freshness stays stable."
+      ],
+      "rootCause": [
+        "Eval-side authoring flaw: a stable golden pinned the base reserve with an \"as of <date>\" value. The base reserve is a network parameter that changes only by validator vote, so the golden now states it as the current value with that caveat (durable-fact gating), and the register numericInvariants \"base reserve\" entry keeps sibling cases consistent (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
     "origin": "raven-next q-pc-account-activation-not-found"

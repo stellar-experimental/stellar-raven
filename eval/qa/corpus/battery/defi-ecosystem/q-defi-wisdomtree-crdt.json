@@ -24,7 +24,7 @@
   "tags": {
     "category": "defi-ecosystem",
     "service": "lumenloop",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -84,7 +84,7 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "2025-09-12 launch of CRDYX/CRDT on Ethereum and Stellar; Gapstow index; $25 min; T+0/T+2 [confirmed] — A: https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of — \"September 12, 2025 ... (token ticker: CRDT; fund ticker: CRDYX) ... T+0 settlement for subscriptions, T+2 settlement for redemptions, and a minimum investment of $25. At launch, the fund will be tokenized on the Ethereum and Stellar blockchains.\" (observedAt 2026-11-02)",
         "2025-09-12 launch of CRDYX/CRDT on Ethereum and Stellar; Gapstow index; $25 min; T+0/T+2 [confirmed] — D: https://ethereuminstitutional.org/deployments/wisdomtree-crdt — \"launched in September 2025 on Ethereum and Stellar with a $25 minimum\" (observedAt 2026-11-02)",
@@ -94,9 +94,14 @@
         "CRDT SAC CBQDK4Y3...UK3P [confirmed-as-of] — A: SAC id is derived from code+issuer in the issuer TOML — \"issuer TOML code/issuer pair matches\" (observedAt 2026-11-02)",
         "authorization/revocation/clawback controls [confirmed] — F: Horizon /assets (as above) — \"flags auth_required True, auth_revocable True, auth_clawback_enabled True\" (observedAt 2026-11-02)",
         "authorization/revocation/clawback controls [confirmed] — A: SEC prospectus (inherited 2026-07-11) — \"transfer-agent record determinative\" (observedAt 2026-07-11)",
-        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, q-hist-wisdomtree-rwa; no contradiction recorded."
+        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, q-hist-wisdomtree-rwa; no contradiction recorded.",
+        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-10. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+      ],
+      "rootCause": [
+        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
-    "origin": "raven-next q-defi-wisdomtree-crdt"
+    "origin": "raven-next q-defi-wisdomtree-crdt",
+    "reverifyBy": "2027-01-10"
   }
 }

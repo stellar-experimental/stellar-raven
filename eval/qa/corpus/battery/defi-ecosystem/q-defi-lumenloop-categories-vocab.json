@@ -24,7 +24,7 @@
   "tags": {
     "category": "defi-ecosystem",
     "service": "lumenloop",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -61,15 +61,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — GT-16 primary and blind reviews (Solo 3244/3245, 2026-07-10) empirically found that the inherited answer never enumerates Lumenloop's five controlled values and substitutes Scout's separate seven-category schema. This is a direct vocabulary lookup, not an analogy.",
+      "date": "2026-11-02",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
-        "Solo scratchpad 575: GT-16 primary process 3244 and blind process 3245"
+        "C 2026-11-02T20:08:19Z: Raven execute lumenloop.get_categories({}) returned count 5: Applications (applications, id 16), Developer Tooling (developer-tooling, id 15), Education & Community (education-community, id 14), Financial Protocols (financial-protocols, id 11), Infrastructure & Services (infrastructure-services, id 12). Lumenloop owns this controlled vocabulary, so its own endpoint is the authority for this corpus-grounded list; the five values match the golden.",
+        "Freshness change 2026-11-02: tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-04. No other judge-facing field changed."
       ],
       "rootCause": [
-        "eval-side cross-directory schema conflation: Scout categories were used as illustrative substitutes for Lumenloop values"
+        "eval-side cross-directory schema conflation: Scout categories were used as illustrative substitutes for Lumenloop values",
+        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
-    "origin": "raven-next q-defi-lumenloop-categories-vocab"
+    "origin": "raven-next q-defi-lumenloop-categories-vocab",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-01-04"
   }
 }

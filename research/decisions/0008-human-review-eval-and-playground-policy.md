@@ -1,6 +1,7 @@
 # ADR-0008: Human-review follow-up separates truth, measurement, recovery, and Playground scope
 
-- Status: accepted by the owner (2026-08-28); golden lifecycle implemented 2026-08-29.
+- Status: accepted by the owner (2026-08-28); golden lifecycle implemented 2026-08-29; partial-cap
+  scope amended 2026-11-02.
 - Implementation status: the Playground enforces the 8,000-character user-message ceiling.
   Recovery v2 was rejected and did not ship.
   The truth and measurement decisions remain accepted; [the work queue](../../.agents/TODO.md) owns deferred recovery work.
@@ -137,6 +138,28 @@ an accepted behavior.
 Track Connectors Directory work as blocked externally. Slack and Google Docs own current progress.
 This repository performs no portal, account, credential, contact, submission, or SDF work without
 new authorization.
+
+## Amendment (2026-11-02): partial caps follow open upstream findings
+
+The owner accepted partial caps beyond the original three cases. The 2026-11-02 golden audit found
+about 50 existing caps. Most of them cover stale aggregator data from Scout or Lumenloop. The rest
+cover official pages that conflict with stronger authority. The owner chose to keep partial credit
+and to push the upstream fixes actively.
+
+- A cap applies when an answer accurately quotes a named source, and that source conflicts with
+  stronger applicable authority. The source can be an official page, a canonical source, or an
+  aggregator.
+- Each cap names one active `improvements/` finding. A cap without an active finding becomes a
+  plain correct or wrong rule.
+- A cap ends when its finding reaches `fixed-upstream` and the live source no longer carries the
+  wording. A `declined-upstream` finding keeps the cap until a later owner decision.
+- File each verified finding that backs a cap upstream after its live re-check passes. Use
+  `npm run improvements:file`. Do not leave such a finding unfiled for a later round. When no
+  public tracker exists, record that in `improvements/intake.json` and in the round ledger.
+- An unattributed false claim remains `wrong`.
+
+Base reserve, Horizon lifecycle, and RPC pagination stay in the accepted set under the same rules.
+The record is `.agents/rounds/2026-11-02-grading-policy.md`.
 
 ## Consequences
 

@@ -25,7 +25,7 @@
   "tags": {
     "category": "defi-ecosystem",
     "service": "lumenloop",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -175,7 +175,7 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-03)",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "2026-11-02 [F] https://horizon.stellar.org/accounts/GC2M2UTZ57GSENZBTPMLPB6QSAL2USIPHMXSUCT2I3V24GYWF3EI6RFA (+ GCJ2RD.., GCSJ7N.., GCFTRC..) — \"thresholds low/med/high=4; 7 signers weight 1 each (same key set on all four admins); Pulse admin txs at 16:05:24, 16:10:24, ... 16:30:24Z with 4 signatures each; Beam admin last tx 2026-10-22T15:20:28Z, 4 sigs\" (verifier accept of golden.notes)",
         "2026-11-02 [F] stellar contract read via https://mainnet.sorobanrpc.com for CAFJ..4DLN, CALI..LE6M, CBKG..CJZC, CCRV..E2F7 — \"admin = GCJ2RD.., GC2M2U.., GCSJ7N.., GCFTRC.. respectively\" (verifier accept of golden.notes)",
@@ -194,12 +194,15 @@
         "2026-10-09 [D] https://whalehub.io/blog/reflector-oracle-explained — \"Pulse is the free, five-minute feed ... Beam offers one-minute granularity ... for a per-call fee in XRF. Flare, formerly called subscriptions, pushes webhook alerts\" (proposer claim, confirmed: Reflector also offers non-free services (Beam paid feed; Flare, formerly Subscriptions).)",
         "2026-11-02 [A] https://reflector.network/oracles — \"Pulse oracles are openly available to use for any smart contract, but require someone to periodically pay oracle upkeep fees.\" (proposer claim, contradicted: Public feeds have no possible limits / all services must be free.)",
         "2026-11-02 [B] https://github.com/reflector-network/reflector-contract — \"ReflectorBeam ... prepaid ... purchased with XRF\" (proposer claim, contradicted: Public feeds have no possible limits / all services must be free.)",
-        "Sibling sweep 2026-11-02: grep reflector + beam|flare|subscription → q-sor-reflector-integration-code (Pulse vs Beam signatures, Beam XRF cost; consistent), q-scf-cross-reflector-rounds-current (SCF #29 subscriptions; consistent), q-defi-oracle-landscape-live; no contradiction."
+        "Sibling sweep 2026-11-02: grep reflector + beam|flare|subscription → q-sor-reflector-integration-code (Pulse vs Beam signatures, Beam XRF cost; consistent), q-scf-cross-reflector-rounds-current (SCF #29 subscriptions; consistent), q-defi-oracle-landscape-live; no contradiction.",
+        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-07. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
-    "origin": "raven-next q-defi-reflector-oracle"
+    "origin": "raven-next q-defi-reflector-oracle",
+    "reverifyBy": "2027-01-07"
   }
 }

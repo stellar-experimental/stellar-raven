@@ -81,6 +81,10 @@ case file and its `truth.verified` entry in the finding's evidence, and have the
 `truth.verified.rootCause` point back at the finding. The two references keep the defect and
 its eval-side patch mutually auditable.
 
+A finding that backs a golden partial cap does not wait in `verified`. Re-check it live, dedupe it,
+and file it upstream in the same round (ADR-0008 amendment of 2026-11-02). When the intake rule is
+`unclear`, record why no public owner can receive it.
+
 Resolve intake through `improvements/intake.json`: per-finding override wins, then a service repo,
 then an explicit service-level `unclear` or `mixed` rule. Use honest unclear when no public owner can
 plausibly receive it; do not file to this repo just to close the loop. The drafter script renders and
