@@ -38,13 +38,14 @@ const intake = readIntake();
 const repo = args.repo ?? resolveRepo(finding, intake);
 if (!GITHUB_REPO_RE.test(repo)) fail(`invalid repo '${repo}'; expected owner/repo`);
 
-const sourceCommit = latestSourceCommit(finding.relPath);
-if (!/^[0-9a-f]{40}$/.test(sourceCommit)) {
-  fail(`${id}: finding must exist in git history before it can be resolved`);
-}
-const sourceUrl = `https://github.com/${RAVEN_REPO}/blob/${sourceCommit}/${finding.relPath}`;
 const upstreamRefs = [...new Set(finding.raw.match(githubRefRe) ?? [])].sort();
-const resolvingRefs = [...new Set(args.resolvingRefs.length ? args.resolvingRefs : upstreamRefs)].sort();
+const upstreamRefsGone = [...new Set(args.upstreamRefsGone)].sort();
+const unrecordedGone = upstreamRefsGone.filter((ref) => !upstreamRefs.includes(ref));
+if (unrecordedGone.length) {
+  fail(`every --upstream-ref-gone must be an upstream ref that the finding records; not recorded: ${unrecordedGone.join(", ")}`);
+}
+const commentableRefs = upstreamRefs.filter((ref) => !upstreamRefsGone.includes(ref));
+const resolvingRefs = [...new Set(args.resolvingRefs.length ? args.resolvingRefs : commentableRefs)].sort();
 if (resolvingRefs.some((ref) => !githubRefExactRe.test(ref))) {
   fail("every --resolving-ref must be a GitHub issue or PR URL");
 }
@@ -52,12 +53,22 @@ if (resolvingRefs.some((ref) => !githubRefExactRe.test(ref))) {
 if (!args.referencesReviewed) {
   fail("pass --references-reviewed only after reconciling every repo-wide reference to the finding id");
 }
-if (upstreamRefs.length && !args.upstreamCommented) {
+if (commentableRefs.length && !args.upstreamCommented) {
   fail("pass --upstream-commented only after posting the resolution result and immutable source permalink");
 }
 if (!upstreamRefs.length && !args.upstreamCommentNa) {
   fail("a finding without upstream refs requires --upstream-comment-na");
 }
+const stillResolving = upstreamRefsGone.filter((ref) => !githubRefIsGone(ref));
+if (stillResolving.length) {
+  fail(`--upstream-ref-gone needs GitHub to return HTTP 404 for the ref; it still resolves or the check failed: ${stillResolving.join(", ")}. Post the resolution comment there instead.`);
+}
+
+const sourceCommit = latestSourceCommit(finding.relPath);
+if (!/^[0-9a-f]{40}$/.test(sourceCommit)) {
+  fail(`${id}: finding must exist in git history before it can be resolved`);
+}
+const sourceUrl = `https://github.com/${RAVEN_REPO}/blob/${sourceCommit}/${finding.relPath}`;
 
 const ledger = readResolved();
 ledger.entries ??= [];
@@ -71,6 +82,7 @@ const entry = {
   resolved: args.resolved,
   repo,
   upstreamRefs,
+  ...(upstreamRefsGone.length ? { upstreamRefsGone } : {}),
   resolvingRefs,
   liveRecheck: args.liveRecheck,
   reviewEvidence: args.reviewEvidence,
@@ -88,8 +100,12 @@ const resolutionComment = [
 
 if (args.dryRun) {
   console.log(JSON.stringify(entry, null, 2));
-  console.log("\n--- suggested upstream resolution comment ---\n");
-  console.log(resolutionComment);
+  if (commentableRefs.length) {
+    console.log("\n--- suggested upstream resolution comment ---\n");
+    console.log(resolutionComment);
+  } else {
+    console.log("\nNo upstream comment applies: every upstream ref is gone or none was filed.");
+  }
   process.exit(0);
 }
 
@@ -140,6 +156,15 @@ try {
 console.log(`${id}: retired to improvements/resolved.json`);
 console.log(sourceUrl);
 
+// An upstream ref is gone when GitHub answers HTTP 404 for it: the repository or the issue was
+// deleted or made private, so no resolution comment can be posted there.
+function githubRefIsGone(ref) {
+  const match = ref.match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:issues|pull)\/(\d+)$/i);
+  if (!match) return false;
+  const result = spawnSync("gh", ["api", `repos/${match[1]}/${match[2]}/issues/${match[3]}`, "--silent"], { encoding: "utf8" });
+  return result.status !== 0 && /HTTP 404/.test(result.stderr ?? "");
+}
+
 function latestSourceCommit(relPath) {
   const result = spawnSync("git", ["log", "-1", "--format=%H", "--", relPath], { encoding: "utf8" });
   if (result.status !== 0) return "";
@@ -160,6 +185,7 @@ function parseArgs(argv) {
     upstreamCommentNa: false,
     resolved: new Date().toISOString().slice(0, 10),
     resolvingRefs: [],
+    upstreamRefsGone: [],
   };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -170,6 +196,7 @@ function parseArgs(argv) {
     else if (arg === "--live-recheck") out.liveRecheck = argv[++i];
     else if (arg === "--review-evidence") out.reviewEvidence = argv[++i];
     else if (arg === "--resolving-ref") out.resolvingRefs.push(argv[++i]);
+    else if (arg === "--upstream-ref-gone") out.upstreamRefsGone.push(argv[++i]);
     else if (arg === "--references-reviewed") out.referencesReviewed = true;
     else if (arg === "--upstream-commented") out.upstreamCommented = true;
     else if (arg === "--upstream-comment-na") out.upstreamCommentNa = true;
@@ -178,7 +205,8 @@ function parseArgs(argv) {
 }
 
 function usage() {
-  console.error("usage: node scripts/improvements-resolve.mjs --file improvements/...md --live-recheck <evidence> --review-evidence <evidence> [--resolved YYYY-MM-DD] [--repo owner/name] [--resolving-ref URL ...] --references-reviewed (--upstream-commented | --upstream-comment-na) [--dry-run]");
+  console.error("usage: node scripts/improvements-resolve.mjs --file improvements/...md --live-recheck <evidence> --review-evidence <evidence> [--resolved YYYY-MM-DD] [--repo owner/name] [--resolving-ref URL ...] [--upstream-ref-gone URL ...] --references-reviewed [--upstream-commented | --upstream-comment-na] [--dry-run]");
+  console.error("  --upstream-commented is required while any recorded ref is not gone; --upstream-comment-na is required when the finding records no ref.");
 }
 
 function fail(message, code = 2) {

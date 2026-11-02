@@ -10,15 +10,18 @@ evidence:
   - "2026-11-02 the Set Options result-code page body chunk exists in the index (1,975 characters, contains op_bad_signer) and is returned for its opening sentence, but not for op_bad_signer, SET_OPTIONS_BAD_SIGNER op_bad_signer, or the verbatim sentence 'Any additional signers added to the account cannot be the master key'. The retired Algolia index ranked that page first for 'op_bad_signer set options result codes'."
   - "2026-11-02 paid QA diagnostic, row q-ti-classic-submission-errors: the Mintlify arm searched for the code three times, never saw the op_bad_signer to SET_OPTIONS_BAD_SIGNER mapping, and mapped 'bad signer' onto op_bad_auth (verdict wrong); the Algolia arm saw the mapping (verdict partial). Ledger: .agents/rounds/2026-11-02-mintlify-migration.md"
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/2995
+  - "2026-11-02T22:28Z two-path recheck after the triage bot's question on #2995. The site MCP search (POST https://developers.stellar.org/mcp, tool search_stellar_developer_docs) returns a Horizon result-code page first for op_bad_signer, op_too_many_signers (Set Options), op_line_full (Manage Sell Offer), op_cross_self (Manage Buy Offer), tx_bad_auth_extra (Transaction Result Codes), and the verbatim Set Options sentence; op_low_reserve returns Allow Trust, Manage Data, then Set Options result codes. Author measurement (not repeated by the reviewer, who had no authenticated session): Raven production stellarDocs.search_docs, which calls the Mintlify Discovery API (POST https://api.mintlify.com/discovery/v1/search/stellardevelopmentfoundation, pageSize 50) and then applies its path scope and query-term guard, returns no result-code page in its top 5 for any of the seven queries (observedAt 2026-11-02T22:28:15.134Z). The site MCP search finds these pages for the tested queries. The raw Discovery candidates were not compared with the adapter output in this recheck, so Raven's filtering is not yet excluded as a contributor. Independent review: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section B3."
+  - "2026-11-02 Raven reply https://github.com/stellar/stellar-docs/issues/2995#issuecomment-6590941274 posts the two-path table, agrees that the site MCP search finds the seven checked queries, and withdraws the content-change request (triage option 3) until Raven compares raw Discovery candidates with its adapter output."
 ---
 
 ## Finding
 
-The Stellar Docs search does not find text inside `<ResponseField>` components.
+The Mintlify Discovery search API (`POST /discovery/v1/search/<domain>`) often fails to return a page for text inside its `<ResponseField>` components.
+The site's own MCP search finds the same text (2026-11-02 two-path recheck in the evidence).
 The page store and the rendered site hold the text, but a search for that text rarely returns the page.
 93 docs files use `<ResponseField>`, including every Horizon result-code page and the Horizon resource objects.
 These components hold the Horizon string codes (`op_bad_signer`, `op_line_full`, `tx_bad_auth_extra`) and their meanings.
-A reader who searches for an error code that Horizon returned cannot find the page that explains it.
+Through the Discovery API, a search for an error code that Horizon returned often does not find the page that explains it. The site MCP search did not show this failure for the seven checked queries.
 
 ## Evidence
 
@@ -42,4 +45,4 @@ It does not return it for `op_bad_signer` or for the verbatim description of tha
 
 Make `<ResponseField>` names, types, and descriptions searchable in the docs search index.
 If the search configuration cannot do this, add the Horizon string codes to searchable prose or a Markdown table on each result-code page.
-A recheck: search `op_bad_signer` and confirm the Set Options result-code page is in the top 5.
+A recheck: send `op_bad_signer` to the Discovery search API and confirm the Set Options result-code page is in the top 5.

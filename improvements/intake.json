@@ -199,10 +199,6 @@
       "repo": "cloudflare/agents",
       "reason": "The @cloudflare/codemode package metadata names cloudflare/agents as its issue owner; searchConnectors lives in packages/codemode."
     },
-    "cs-002": {
-      "intake": "unclear",
-      "reason": "soroswap/docs published docs.soroswap.finance and owned the stale pages when cs-002 was filed. On 2026-11-02 https://api.github.com/repos/soroswap/docs returns HTTP 404, and no other public soroswap repository owns the docs."
-    },
     "cs-003": {
       "repo": "stellar/stellar-protocol",
       "reason": "stellar/stellar-protocol owns ecosystem/README.md and every sep-NNNN.md preamble."
@@ -235,14 +231,6 @@
       "repo": "Trustless-Work/trustlesswork-skill",
       "reason": "Trustless Work owns the Core API skill error-link template and the docs-site redirects that serve its problem type URLs; it resolved sk-026 through that repository."
     },
-    "sd-055": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The archival and simulation examples are source content owned by stellar/stellar-docs."
-    },
-    "sd-057": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The Anchor Platform admin guide asset-ID explanation is source content owned by stellar/stellar-docs."
-    },
     "sd-058": {
       "repo": "stellar/stellar-docs",
       "reason": "The fee-payer signing and x402 XDR extraction examples are source content owned by stellar/stellar-docs."
@@ -267,26 +255,6 @@
       "repo": "lumenloop/stellar-ecosystem-db",
       "reason": "Committed directory-record correction to the slender project record (collateral model)."
     },
-    "sk-032": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The Smart Contracts skill version pins and Upgradeability example are owned by stellar/stellar-dev-skill."
-    },
-    "sk-033": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "skills/smart-contracts/development.md is owned by stellar/stellar-dev-skill."
-    },
-    "sk-034": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "skills/smart-contracts/development.md is owned by stellar/stellar-dev-skill."
-    },
-    "sk-035": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The assets and standards skills are owned by stellar/stellar-dev-skill."
-    },
-    "sk-036": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The data and dapp skills are owned by stellar/stellar-dev-skill."
-    },
     "sk-030": {
       "repo": "lumenloop/lumenloop-skills",
       "reason": "lumenloop/lumenloop-skills owns the playbooks that name Freighter."
@@ -298,6 +266,14 @@
     "sd-079": {
       "repo": "stellar/stellar-docs",
       "reason": "docs/build/building-with-ai.mdx, for-agents.js, and the agent-cli architecture page are source content owned by stellar/stellar-docs."
+    },
+    "sd-080": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/build/smart-contracts/example-contracts/fuzzing.mdx is source content owned by stellar/stellar-docs."
+    },
+    "sd-081": {
+      "repo": "stellar/stellar-docs",
+      "reason": "restore-contract-js.mdx and state-archival.mdx are source content owned by stellar/stellar-docs."
     },
     "cs-009": {
       "repo": "Inferara/soroban-security-portal",
