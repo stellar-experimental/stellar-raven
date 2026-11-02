@@ -735,30 +735,6 @@ Each needs a check before a fix:
 
 Done when: each bullet has a merged fix or a recorded "no change" decision.
 
-### File the HackMeridian upstream findings
-
-Route these through the `improvements-pipeline` skill. Cite primary sources, not production
-figures.
-
-- stellar-dev-skill: `development.md` swaps the `try_` result nesting (`Ok(Err(e))` is called the
-  contract error; soroban-sdk gives `Err(Ok(e))`) (R04); the deprecated
-  `update_current_contract_wasm` (R07); the limits table lacks the 400-entry footprint cap (R08);
-  no SEP-8 approval-server section (R30); no `sendTransaction` or `getTransaction` status values
-  (R34); SDK pins at 27 (Q1).
-- Scout: stablecoin issuer of record (MGUSD is issued by Bridge, AUDD by AUDC Pty Ltd, C1USD by
-  Kinesis) and an asset class that keeps USDY and YLDS out (R31); "Live" without a network (R10,
-  R15); audits outside the Audit Bank and OZ audits after v0.3.0-rc.2 (R17, R23); partner SEP lists
-  (Bitso SEP-24, R36); canonical repo ranking (R16, R18); hackathon rubric, winner descriptions,
-  and placements (R24, R26, R27); SCF #45 coverage (R28); Chainlink oracle and native MetaMask rows
-  (Q2, Q18); DEX sub-type tags (Q6).
-- stellar-docs: the state-archival page says `current_ledger + 4095` for the restored persistent
-  minimum TTL, but mainnet uses 2,073,600; "Building with AI" and `llms.txt` still name
-  `raven.stellar.buzz`. (The unindexed RPC method pages, sd-003: Q21, R03, R32, R34, resolved on
-  2026-11-02.)
-- Lumenloop: the Friday roundup leaves Saturday to Monday without news items (R21, near ll-006).
-
-Done when: each item is filed, merged into an existing finding, or rejected with a reason.
-
 ### Add golden cases for the confirmed HackMeridian gaps
 
 Use the `golden-truth` skill. First cases: R04 (`try_` nesting), R20 (testnet reset, December 16,
