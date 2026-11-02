@@ -1,0 +1,791 @@
+{
+ "schema": "qa-freshness-report-v1",
+ "observedAt": "2026-11-02",
+ "endpoint": "https://mcp.parallel.ai/mcp",
+ "tool": "web_decisions",
+ "strong": 0.8,
+ "note": "Twelve current probes hit the free-tier HTTP 429 limit on the first pass and were re-run sequentially; each row is its one successful call.",
+ "current": {
+  "counts": {
+   "agree": 26,
+   "contradict": 2,
+   "no-signal": 7
+  },
+  "results": [
+   {
+    "id": "scf-round-in-submission",
+    "caseId": "q-scf-current-round",
+    "expect": "scf_46",
+    "verdict": "agree",
+    "observed": "scf_46",
+    "probability": 0.996,
+    "citations": [
+     "https://communityfund.stellar.org/awards",
+     "https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46",
+     "https://medium.com/stellar-community/2-years-of-neural-quorum-governance-7bddd319a8cb",
+     "https://communityfund.stellar.org/dashboard/award-rounds",
+     "https://communityfund.stellar.org/governance",
+     "https://coindar.org/en/event/stellar-to-close-scf-44-submissions-on-june-14th-149279",
+     "https://communityfund.stellar.org/",
+     "https://communityfund.stellar.org/stats",
+     "https://es.tradingview.com/news/coindar:faefb96e3094b:0-stellar-to-close-scf-44-submissions-on-june-14th",
+     "https://x.com/TellusCoop/status/2080760163485557103"
+    ]
+   },
+   {
+    "id": "scf-46-submission-deadline",
+    "caseId": "q-edge-fresh-latest-scf-round",
+    "expect": "2026-11-09",
+    "verdict": "contradict",
+    "observed": "2026-11-08",
+    "probability": 1.0,
+    "citations": [
+     "https://communityfund.stellar.org/awards",
+     "https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46",
+     "https://communityfund.stellar.org/governance",
+     "https://github.com/stellar/scf-handbook",
+     "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria",
+     "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md",
+     "https://thegrantindex.com/g/stellar-community-fund-build-award",
+     "https://x.com/BuildOnStellar/article/2080685998065824143",
+     "https://stellarcommunityfund.gitbook.io/scf-handbook/scf-awards/scf-build/budget-guidelines",
+     "https://communityfund.stellar.org/"
+    ]
+   },
+   {
+    "id": "meridian-2026-city",
+    "caseId": "q-hist-meridian-2026-corrected-venue",
+    "expect": "lisbon",
+    "verdict": "agree",
+    "observed": "lisbon",
+    "probability": 0.999,
+    "citations": [
+     "https://meridian.stellar.org/event-details",
+     "https://stellar.org/meridian-addendum",
+     "https://meridian-dev-46fac6.webflow.io/",
+     "https://stellar.org/community/events",
+     "https://marketacross.com/stellar-meridian-2026",
+     "https://luma.com/meridian2026ll",
+     "https://cryptonetworkforum.com/events/meridian-2026",
+     "https://meridian.stellar.org/schedule?speaker=jamie-walker",
+     "https://meridian.stellar.org/side-events",
+     "https://cryptoindustry.com/events/meridian-2026"
+    ]
+   },
+   {
+    "id": "rpc-archive-provider-count",
+    "caseId": "q-infra-rpc-provider-archive-tier",
+    "expect": "9",
+    "verdict": "no-signal",
+    "observed": "unknown",
+    "probability": 0.767,
+    "citations": [
+     "https://developers.stellar.org/docs/data/apis/rpc/providers",
+     "https://developers.stellar.org/docs/data/apis/api-providers",
+     "https://developers.stellar.org/docs/data/apis",
+     "https://developers.stellar.org/docs/networks",
+     "https://www.comparenodes.com/protocols/stellar/",
+     "https://developers.stellar.org/docs/data/rpc/admin-guide",
+     "https://onfinality.io/en/rpc-assistant/stellar-rpc-provider",
+     "https://developers.stellar.org/docs/data/apis/rpc",
+     "https://documentation.onfinality.io/support/stellar",
+     "https://www.quicknode.com/docs/stellar"
+    ]
+   },
+   {
+    "id": "zenex-mainnet-perps",
+    "caseId": "q-defi-perps-whitespace",
+    "expect": true,
+    "verdict": "agree",
+    "observed": true,
+    "probability": 0.966,
+    "citations": [
+     "https://zenex.trade/",
+     "https://docs.zenex.trade/",
+     "https://github.com/zenith-protocols/zenex-docs/blob/main/docs/deployments.md",
+     "https://docs.zenex.trade/deployments/contract-addresses",
+     "https://github.com/zenith-protocols/zenex-docs/blob/main/docs/audits.md",
+     "https://github.com/zenith-protocols/zenex-docs/blob/main/docs/governance.md",
+     "https://lumenloop.com/projects/zenex",
+     "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+     "https://github.com/zenith-protocols",
+     "https://github.com/zenith-protocols/zenex-docs/blob/main/docs/markets/status.md"
+    ]
+   },
+   {
+    "id": "sdf-board-asiff-hirji",
+    "caseId": "q-org-sdf-board-directors",
+    "expect": true,
+    "verdict": "agree",
+    "observed": true,
+    "probability": 0.986,
+    "citations": [
+     "https://stellar.org/press/stellar-development-foundation-appoints-asiff-hirji-of-moonpay-to-board-of-directors",
+     "https://stellar.org/foundation/team?locale=en",
+     "https://stellar.org/foundation/team",
+     "https://www.prnewswire.com/news-releases/stellar-development-foundation-appoints-asiff-hirji-of-moonpay-to-board-of-directors-301767606.html",
+     "http://stellar.org/foundation/mandate",
+     "https://stellar.org/foundation",
+     "https://theorg.com/org/stellar-org/person/asiff-hirji",
+     "https://assets-global.website-files.com/5deac75ecad2173c2ccccbc7/5e28b8bd5c23a8566cd00bc0_SDF-Membership.pdf",
+     "http://blockchain-asia.com/foundation.html"
+    ]
+   },
+   {
+    "id": "confidential-tokens-june-release",
+    "caseId": "q-scf-confidential-tokens-preview",
+    "expect": "testnet_preview",
+    "verdict": "agree",
+    "observed": "testnet_preview",
+    "probability": 0.999,
+    "citations": [
+     "https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar",
+     "https://developers.stellar.org/docs/build/apps/privacy.md",
+     "https://www.cryptotimes.io/2026/06/30/stellar-launches-confidential-tokens-for-private-sep-41-balances",
+     "https://stellar.org/blog/developers",
+     "https://stellar.org/blog?page=9",
+     "https://www.youtube.com/watch?v=nfbr3KuYqPE",
+     "https://stellar.org/es/blog/desarrolladores/developer-preview-confidential-tokens-on-stellar",
+     "https://lumenloop.com/media/stellar-developers-meeting-09-03-2026",
+     "https://github.com/brozorec/stellar-confidential-token-demo",
+     "https://www.youtube.com/watch?v=FxOz4jo3QIE"
+    ]
+   },
+   {
+    "id": "confidential-tokens-still-preview",
+    "caseId": "q-sor-confidential-tokens",
+    "expect": true,
+    "verdict": "agree",
+    "observed": true,
+    "probability": 0.927,
+    "citations": [
+     "https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar",
+     "https://github.com/stellar/stellar-confidential-token",
+     "https://developers.stellar.org/meetings",
+     "https://stellar.org/blog/developers",
+     "https://lumenloop.com/news/developer-preview-confidential-tokens-stellar-2",
+     "https://developers.stellar.org/docs/build/apps/privacy.md",
+     "https://lumenloop.com/media/stellar-developers-meeting-08-06-2026-2",
+     "https://lumenloop.com/media/developer-preview-confidential-tokens-stellar-2",
+     "https://stellar.org/blog/ecosystem/strategy-for-privacy-on-blockchain",
+     "https://lumenquery.io/blog/stellar-confidential-tokens"
+    ]
+   },
+   {
+    "id": "auth-delegation-protocol",
+    "caseId": "q-soroban-auth-delegation-p27",
+    "expect": "27",
+    "verdict": "agree",
+    "observed": "27",
+    "probability": 0.998,
+    "citations": [
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071.md",
+     "https://developers.stellar.org/docs/networks/software-versions",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md",
+     "https://developers.stellar.org/meetings/2026/04/30",
+     "https://stellar.github.io/js-stellar-sdk/guides/07-contract-auth",
+     "https://github.com/lightsail-network/java-stellar-sdk/releases",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+     "https://btctiming.com/en/blog/stellar-protocol-27-zipper-auth-delegation",
+     "https://x.com/StellarOrg?lang=en"
+    ]
+   },
+   {
+    "id": "ledger-close-time",
+    "caseId": "q-protocol-ledger-close-time",
+    "expect": "5s",
+    "verdict": "agree",
+    "observed": "5s",
+    "probability": 0.995,
+    "citations": [
+     "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-ledgers",
+     "https://dashboard.stellar.org/",
+     "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+     "https://stellar.org/foundation/roadmap",
+     "https://developers.stellar.org/docs/networks",
+     "https://servicealert.ai/incident/ledger/jg2pjp5t9bwb",
+     "https://stablecoininsider.org/stablecoin-network/",
+     "https://github.com/stellar/stellar-docs/blob/main/docs/networks/README.mdx",
+     "https://qrindex.org/projects/stellar/",
+     "https://blockworks.com/api/investor-report/stellar-token-holder-report-q2-2026/pdf"
+    ]
+   },
+   {
+    "id": "soroban-sdk-advisory-count",
+    "caseId": "q-soroban-sdk-cve",
+    "expect": "3",
+    "verdict": "no-signal",
+    "observed": "unknown",
+    "probability": 0.92,
+    "citations": []
+   },
+   {
+    "id": "sep55-status",
+    "caseId": "q-soroban-contract-build-verification",
+    "expect": "draft",
+    "verdict": "agree",
+    "observed": "draft",
+    "probability": 0.99,
+    "citations": [
+     "https://github.com/stellar/stellar-protocol/tree/master/ecosystem",
+     "https://github.com/stellar/stellar-protocol/blob/fbf05c9d3220b711e181577e7dca19844c765c3c/ecosystem/README.md",
+     "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0061.md",
+     "https://github.com/orgs/stellar/discussions/2045",
+     "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/ecosystem/sep-0056.md",
+     "https://115.175.65.104:8004/stellar/stellar-protocol",
+     "https://developers.stellar.org/docs/build/guides/contract-accounts",
+     "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/cross-contract-call",
+     "https://developers.stellar.org/docs",
+     "https://paymentauth.org/draft-stellar-charge-00.html"
+    ]
+   },
+   {
+    "id": "scf-43-submissions",
+    "caseId": "q-scf-round-43-results",
+    "expect": "85",
+    "verdict": "agree",
+    "observed": "85",
+    "probability": 0.998,
+    "citations": [
+     "https://medium.com/stellar-community/scf-43-round-recap-62942f07757e",
+     "https://coindar.org/en/event/stellar-to-close-scf-44-submissions-on-june-14th-149279",
+     "https://store.dcentwallet.com/blogs/post/dcent-selected-for-stellar-community-fund",
+     "https://communityfund.stellar.org/",
+     "https://fr.tradingview.com/news/coindar:faefb96e3094b:0-stellar-to-close-scf-44-submissions-on-june-14th",
+     "https://es.tradingview.com/news/coindar:faefb96e3094b:0-stellar-to-close-scf-44-submissions-on-june-14th",
+     "https://medium.com/stellar-community/scf-44-round-recap-b5e8acd87045",
+     "https://medium.com/stellar-community/scf-41-round-recap-319b63ca1218",
+     "https://medium.com/stellar-community/2-years-of-neural-quorum-governance-7bddd319a8cb",
+     "https://bitcoinke.io/2026/10/stellar-community-fund-45/"
+    ]
+   },
+   {
+    "id": "slp-0006-status",
+    "caseId": "q-pc-slp-0004-0006-status",
+    "expect": "draft",
+    "verdict": "no-signal",
+    "observed": "unknown",
+    "probability": 0.971,
+    "citations": [
+     "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md",
+     "https://github.com/stellar/stellar-protocol",
+     "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0007.md",
+     "https://github.com/orgs/stellar/discussions",
+     "https://github.com/stellar/stellar-protocol/blob/master/README.md",
+     "https://developers.stellar.org/docs/networks/resource-limits-fees",
+     "https://www.pppl.gov/research/computational-sciences/stellar",
+     "https://unfccc.int/documents/645770",
+     "https://sam.gov/opp/98169d99750e4eef95b65dd2daa22947/view",
+     "https://www.dhcs.ca.gov/forms-laws-publications/laws-and-regulations/public-notices-for-2026-proposed-state-plan-amendments"
+    ]
+   },
+   {
+    "id": "x402-announcement-date",
+    "caseId": "q-hist-x402-stellar-announcement",
+    "expect": "2026-03",
+    "verdict": "no-signal",
+    "observed": "unknown",
+    "probability": 0.669,
+    "citations": [
+     "https://stellar.org/x402",
+     "https://investors.fiserv.com/news-releases/news-release-details/fiserv-named-charter-member-x402-foundation",
+     "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+     "https://x402.org/blog",
+     "https://www.linuxfoundation.org/press/linux-foundation-announces-operational-launch-of-x402-foundation-to-standardize-internet-native-payments-for-ai-agents-and-applications?hs_amp",
+     "https://www.linuxfoundation.org/press/linux-foundation-announces-operational-launch-of-x402-foundation-to-standardize-internet-native-payments-for-ai-agents-and-applications?hs_amp=true",
+     "https://developers.stellar.org/docs/build/agentic-payments/x402",
+     "https://www.prnewswire.com/news-releases/linux-foundation-announces-operational-launch-of-x402-foundation-to-standardize-internet-native-payments-for-ai-agents-and-applications-302824778.html",
+     "https://www.cloudflare.net/news/news-details/2025/Cloudflare-and-Coinbase-Will-Launch-x402-Foundation/default.aspx",
+     "https://www.coinbase.com/developer-platform/discover/launches/x402"
+    ]
+   },
+   {
+    "id": "flutter-sdk-maintainer",
+    "caseId": "q-tool-flutter-mobile-sdk",
+    "expect": "soneso",
+    "verdict": "agree",
+    "observed": "soneso",
+    "probability": 0.994,
+    "citations": [
+     "https://pub.dev/packages/stellar_flutter_sdk",
+     "https://pub.dev/packages/stellar_flutter_sdk/license",
+     "https://github.com/Soneso/stellar_flutter_sdk",
+     "https://pub.dev/packages/stellar_flutter_sdk/install",
+     "https://flutter.ducafecat.com/en/github/repo/Soneso/stellar_flutter_sdk",
+     "https://github.com/Soneso/stellar_flutter_sdk/releases",
+     "https://argo-navis.dev/",
+     "https://pub.dev/packages/stellar_flutter_sdk/versions",
+     "https://soneso.com/",
+     "https://stellarlight.xyz/project/flutter-stellar-sdk"
+    ]
+   },
+   {
+    "id": "enterprise-fund-portfolio",
+    "caseId": "q-org-sdf-enterprise-fund",
+    "expect": "over_100m",
+    "verdict": "agree",
+    "observed": "over_100m",
+    "probability": 0.998,
+    "citations": [
+     "https://stellar.org/grants-and-funding/matching-fund",
+     "https://stellar.org/foundation/mandate/2019",
+     "https://stellar.org/enterprise-fund/portfolio",
+     "https://stellar.org/enterprise-fund",
+     "https://8130068.fs1.hubspotusercontent-na1.net/hubfs/8130068/Stellar%20Development%20Foundation%20Q1%202024%20Quarterly%20Report.pdf",
+     "https://8130068.fs1.hubspotusercontent-na1.net/hubfs/8130068/SDF%20Q4%202023%20Quarterly%20Report.pdf",
+     "https://stellar.org/press/stellar-development-foundation-invests-5-million-in-wyre",
+     "https://www.prnewswire.com/news-releases/stellar-development-foundation-invests-5-million-in-wyre-301214654.html",
+     "https://altss.com/profile/stellar-development-foundation",
+     "https://innovation.eurasia.undp.org/undp-stellar-digital-payment-solutions"
+    ]
+   },
+   {
+    "id": "dtcc-assets-live",
+    "caseId": "q-crp-dtcc-stellar-connection-plan",
+    "expect": false,
+    "verdict": "agree",
+    "observed": false,
+    "probability": 0.095,
+    "citations": [
+     "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+     "https://stellar.org/solutions/real-world-assets",
+     "https://www.dtcc.com/news/2026/july/15/dtcc-turns-tokenization-into-reality",
+     "http://climateerinvest.blogspot.com/2026/05/major-market-infrastructure-news.html",
+     "https://files.dtcc.com/download/assets/Tokenization+Journey+Timeline+PDF/b19496188a9711f1b66cce6bd943b198",
+     "https://thedefiant.io/education/explainers/dtcc-stellar-tokenization-dtc-custodied-assets-explainer",
+     "https://www.sec.gov/newsroom/speeches-statements/peirce-121125-tokenization-trending-statement-division-trading-markets-no-action-letter-related-dtcs-development",
+     "https://www.govinfo.gov/content/pkg/FR-2026-05-15/pdf/2026-09739.pdf",
+     "https://www.finanznachrichten.de/nachrichten-2026-05/68385221-the-depository-trust-clearing-corporation-dtcc-advances-development-of-new-tokenization-service-convenes-50-firms-to-drive-digital-assets-adoptio-004.htm",
+     "https://www.newswire.ca/news/stellar-development-foundation/"
+    ]
+   },
+   {
+    "id": "classic-ops-per-ledger",
+    "caseId": "q-protocol-max-tx-set-size",
+    "expect": "1000",
+    "verdict": "agree",
+    "observed": "1000",
+    "probability": 0.969,
+    "citations": [
+     "https://developers.stellar.org/docs/networks",
+     "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+     "https://developers.stellar.org/docs/networks/resource-limits-fees",
+     "https://stellar.expert/explorer/public/protocol-history",
+     "https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/ledgers/object",
+     "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-ledgers",
+     "https://stellarindex.io/network",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
+     "https://app.goldsky.com/explore/stellar_mainnet/ledger_entries",
+     "https://app.goldsky.com/explore/stellar_mainnet/ledgers"
+    ]
+   },
+   {
+    "id": "sep53-status",
+    "caseId": "q-sep53-message-signing",
+    "expect": "final",
+    "verdict": "agree",
+    "observed": "final",
+    "probability": 0.981,
+    "citations": [
+     "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+     "https://github.com/orgs/stellar/discussions/1641",
+     "https://docs.intents.aurora.dev/intents-connect/developer-guides/submit-signing",
+     "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+     "https://github.com/stellar/stellar-cli/issues/2345",
+     "https://github.com/stellar/js-stellar-base/issues/827",
+     "https://docs.near-intents.org/api-reference/user-auth/authenticate-user-with-signed-data.md",
+     "https://stellar-sdk.readthedocs.io/en/stable/api.html",
+     "https://developers.stellar.org/assets/files/2025-10-17%20-%20Oak%20-%20stellar-core%20v23.0.0%20-%20protocol%2023%20changes-f3bbd0a71253234a238702c421a71521.pdf",
+     "https://stellar-sdk.readthedocs.io/en/3.1.3/_modules/stellar_sdk/sep/stellar_web_authentication.html"
+    ]
+   },
+   {
+    "id": "yieldblox-exploit-date",
+    "caseId": "q-comp-yieldblox-oracle-incident",
+    "expect": "2026-02",
+    "verdict": "agree",
+    "observed": "2026-02",
+    "probability": 0.999,
+    "citations": [
+     "https://avoid.net/yieldblox-stellar-oracle-manipulation-exploit-feb-2026/audit",
+     "https://smartcontractshacking.com/reports/2026-q1",
+     "https://defillama.com/protocol/blend",
+     "https://avoid.net/yieldblox-stellar-oracle-manipulation-exploit-feb-2026",
+     "https://smartcontractshacking.com/hacks/blend-protocol-hack-2026",
+     "https://lumenloop.com/news/yieldblox-rekt",
+     "https://github.com/kismp123/DeFi-Security-Incident/blob/main/2026/2026-02-22_YieldBlox_PriceDependency_Stellar.md",
+     "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/",
+     "https://olympixscan.com/blog/the-yieldblox-exploit-how-olympix-could-have-prevented-the-10m-loss",
+     "https://www.olympix.security/biweekly-exploits/0x0d9-yieldbox-and-holdstation-exploits-10-64m-lost-to-authorization-bypass-oracle-manipulation-and-key-compromise"
+    ]
+   },
+   {
+    "id": "constructor-protocol",
+    "caseId": "q-soroban-constructor-lifecycle",
+    "expect": "22",
+    "verdict": "agree",
+    "observed": "22",
+    "probability": 0.998,
+    "citations": [
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md",
+     "https://developers.stellar.org/meetings/page/5",
+     "https://github.com/orgs/stellar/discussions/1501",
+     "https://hexdocs.pm/stellar_sdk/changelog.html",
+     "https://stellar-base.hexdocs.pm/0.17.0/changelog.html",
+     "https://developers.stellar.org/meetings/2024/07/25",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046.md",
+     "https://github.com/kommitters/stellar_base/blob/main/CHANGELOG.md",
+     "https://stellar-sdk.hexdocs.pm/0.23.0/changelog.html",
+     "https://groups.google.com/g/stellar-dev/c/VD22SyhrKRU"
+    ]
+   },
+   {
+    "id": "mpp-stellar-modes",
+    "caseId": "q-mpp-discovery-and-modes",
+    "expect": "charge_and_session",
+    "verdict": "agree",
+    "observed": "charge_and_session",
+    "probability": 0.999,
+    "citations": [
+     "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+     "https://developers.stellar.org/meetings/2026/05/07",
+     "https://developers.stellar.org/docs/build/agentic-payments/mpp/charge-guide",
+     "https://mpp.dev/payment-methods/stellar",
+     "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide",
+     "https://mpp.dev/payment-methods",
+     "https://github.com/stellar/stellar-dev-skill/blob/main/skills/agentic-payments/mpp.md",
+     "https://github.com/stellar/stellar-mpp-sdk/blob/main/README.md",
+     "https://mpp.dev/payment-methods/stellar/session",
+     "https://mpp.dev/faq"
+    ]
+   },
+   {
+    "id": "freighter-provider",
+    "caseId": "q-tool-freighter-wallet",
+    "expect": true,
+    "verdict": "no-signal",
+    "observed": true,
+    "probability": 0.551,
+    "citations": []
+   },
+   {
+    "id": "native-xlm-staking",
+    "caseId": "q-raph-xlm-staking",
+    "expect": false,
+    "verdict": "agree",
+    "observed": false,
+    "probability": 0.002,
+    "citations": [
+     "https://www.stakingrewards.com/asset/stellar",
+     "https://plisio.net/crypto/stellar-xlm",
+     "https://whalehub.io/blog/xlm-staking",
+     "https://evedex.com/en/blog/how-to-stake-xlm/",
+     "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+     "https://cryptoticker.io/en/stellar-xlm-price-jump-check/",
+     "https://www.bitrue.com/blog/xlm-staking-guide-2026",
+     "https://coinstats.app/blog/how-to-stake-xlm/",
+     "https://www.cube.exchange/what-is/stellar",
+     "https://www.galaxy.com/insights/research/the-state-of-onchain-yield"
+    ]
+   },
+   {
+    "id": "mazieres-sdf-title",
+    "caseId": "q-org-mazieres-chief-scientist",
+    "expect": "chief_scientist",
+    "verdict": "agree",
+    "observed": "chief_scientist",
+    "probability": 0.993,
+    "citations": [
+     "https://stellar.org/foundation/team",
+     "https://research.stellar.org/",
+     "https://milkeninstitute.org/staff/david-mazieres",
+     "https://stellar.org/grants-and-funding/academic-research-grants",
+     "https://fdc.stanford.edu/people/david-mazieres",
+     "https://www.scs.stanford.edu/~dm/cv.pdf",
+     "https://stellar.org/blog/foundation-news/introducing-stellar",
+     "https://moderncto.io/324-david-mazieres-co-founder-and-chief-scientist-at-stellar",
+     "https://linkedin.com/in/david-mazi%C3%A8res-20a92924"
+    ]
+   },
+   {
+    "id": "ml-dsa-host-functions-live",
+    "caseId": "q-hist-quantum-preparedness-plan",
+    "expect": false,
+    "verdict": "no-signal",
+    "observed": false,
+    "probability": 0.481,
+    "citations": [
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+     "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+     "https://hardyindex.com/chains/stellar",
+     "https://lumenloop.com/news/introducing-quantum-preparedness-plan",
+     "https://www.blockchainposts.com/en/blog/stellar-quantum-preparedness-plan-soroban-ml-dsa",
+     "https://www.digitaltoday.co.kr/en/view/62835/stellar-pursues-quantum-resistant-migration-without-address-changes-signing-key-replacement-central",
+     "https://cryptobriefing.com/stellar-quantum-preparedness-roadmap",
+     "https://nansen.ai/post/stellar-q2-2026-report",
+     "https://blog.lumexo.io/stellar-quantum-preparedness-plan",
+     "https://lumenquery.io/blog/stellar-quantum-preparedness-post-quantum-soroban"
+    ]
+   },
+   {
+    "id": "instaward-maximum",
+    "caseId": "q-scf-ambassador-program",
+    "expect": "15k",
+    "verdict": "agree",
+    "observed": "15k",
+    "probability": 0.893,
+    "citations": [
+     "https://github.com/stellar/scf-handbook/blob/main/scf-awards/instawards/official-rules.md",
+     "https://stellar.gitbook.io/ambassador-program/get-involved/instawards",
+     "https://github.com/Stellar-Light/awesome-stellar-community-fund/blob/main/docs/scf-7-guide.md",
+     "https://github.com/JFWooten4/SCF-handbook/blob/main/scf-awards/instawards/official-rules.md",
+     "https://stellar.org/grants-and-funding",
+     "https://communityfund.stellar.org/",
+     "https://github.com/lumenloop/awesome-stellar-community-fund/blob/main/docs/scf-7-guide.md",
+     "https://github.com/stellar/scf-handbook/tree/main/scf-awards/instawards",
+     "https://stellar.org/blog/ecosystem/stellar-community-fund-a-new-era-of-community-empowerment-begins",
+     "https://communityfund.stellar.org/awards"
+    ]
+   },
+   {
+    "id": "metamask-stellar-default-network",
+    "caseId": "q-edge-metamask-evm-mental-model",
+    "expect": true,
+    "verdict": "agree",
+    "observed": true,
+    "probability": 0.996,
+    "citations": [
+     "https://support.metamask.io/configure/networks/stellar",
+     "https://metamask.com/news/metamask-makes-stellar-a-default-network-bringing-global-payments-into-the-open-money-platform",
+     "https://mvcapital.app/news/metamask-adds-stellar-network-as-default-chain-for-millions-of-users",
+     "https://cryptonite.ae/global/metamask-stellar-default-network-xlm/",
+     "https://www.bitrue.com/blog/stellar-metamask-activation-guide",
+     "https://support.metamask.io/de/configure/networks/stellar",
+     "https://www.binance.com/en/square/post/383700205849930",
+     "https://www.kucoin.com/news/flash/stellar-becomes-default-network-in-metamask-wallet",
+     "https://cryptoslate.com/metamask-adds-stellar-integration-but-cross-chain-bridges-require-manual-setup/",
+     "https://lumenloop.com/news/metamask-makes-stellar-default-network-bringing-global"
+    ]
+   },
+   {
+    "id": "go-sdk-module",
+    "caseId": "q-tool-go-sdk-ingest",
+    "expect": "go_stellar_sdk",
+    "verdict": "no-signal",
+    "observed": "unknown",
+    "probability": 0.524,
+    "citations": []
+   },
+   {
+    "id": "base-reserve",
+    "caseId": "q-protocol-base-reserve-min-balance",
+    "expect": "0.5",
+    "verdict": "agree",
+    "observed": "0.5",
+    "probability": 0.994,
+    "citations": [
+     "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+     "https://cryptoticker.io/en/stellar-xlm-price-jump-check/",
+     "https://github.com/StellarCN/stellar-docs/blob/master/guides/concepts/fees.md",
+     "https://github.com/overcat/stellar-docs/blob/master/guides/concepts/fees.md",
+     "https://dashboard.stellar.org/",
+     "https://eco.com/support/en/articles/15346517-what-is-stellar-the-payments-first-blockchain-for-2026",
+     "https://stellarchain.io/",
+     "https://finary.com/en/crypto/coins/stellar",
+     "https://marketcapof.com/crypto/stellar",
+     "https://defillama.com/stablecoins/stellar"
+    ]
+   },
+   {
+    "id": "contract-wasm-size-cap",
+    "caseId": "q-soroban-wasm-size-limit",
+    "expect": "128kib",
+    "verdict": "contradict",
+    "observed": "64kib",
+    "probability": 0.978,
+    "citations": [
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-02.md",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0054.md",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md",
+     "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+     "https://stellar.github.io/js-stellar-sdk/reference/network-rpc",
+     "https://github.com/stellar/stellar-cli/blob/main/FULL_HELP_DOCS.md",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-09.md",
+     "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new",
+     "https://stellar.expert/explorer/public/protocol-history",
+     "https://docs.dune.com/data-catalog/stellar/evm_v_stellar"
+    ]
+   },
+   {
+    "id": "sdp-requires-anchor-platform",
+    "caseId": "q-anchor-sdp-what",
+    "expect": false,
+    "verdict": "agree",
+    "observed": false,
+    "probability": 0.058,
+    "citations": [
+     "https://developers.stellar.org/platforms/stellar-disbursement-platform/admin-guide/getting-started",
+     "https://github.com/Dead-Bytes/stellar-disbursement-platform-backend-Fork/blob/develop/helmchart/sdp/README.md",
+     "https://developers.stellar.org/platforms/stellar-disbursement-platform/admin-guide/overview",
+     "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform",
+     "https://developers.stellar.org/platforms/stellar-disbursement-platform",
+     "https://platform.solana.com/docs/payments/ramps-providers",
+     "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep6",
+     "https://github.com/stellar/anchor-platform",
+     "https://8130068.fs1.hubspotusercontent-na1.net/hubfs/8130068/Stellar%20Development%20Foundation%20Q1%202024%20Quarterly%20Report.pdf",
+     "https://documents1.worldbank.org/curated/en/099063026162074449/pdf/P511773-dff11519-3fef-46a5-97bf-f4f950846346.pdf"
+    ]
+   },
+   {
+    "id": "cap-0080-protocol",
+    "caseId": "q-zk-host-functions-status",
+    "expect": "26",
+    "verdict": "agree",
+    "observed": "26",
+    "probability": 0.993,
+    "citations": [
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md",
+     "https://stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide",
+     "https://stellar.org/blog/developers/announcing-stellar-x-ray-protocol-25",
+     "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
+     "https://lumenloop.com/news/yardstick-stellar-protocol-26",
+     "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-02.md",
+     "https://stellar.org/blog/developers/stellar-x-ray-protocol-25-upgrade-guide",
+     "https://github.com/Marshal-AM/zklaim",
+     "https://developers.stellar.org/docs/networks"
+    ]
+   },
+   {
+    "id": "sdf-bug-bounty-platform",
+    "caseId": "q-comp-security-disclosure-programs",
+    "expect": "hackerone",
+    "verdict": "agree",
+    "observed": "hackerone",
+    "probability": 0.998,
+    "citations": [
+     "https://stellar.org/bug-bounty-program",
+     "https://hackerone.com/stellar?type=team",
+     "https://stellar.org/grants-and-funding/bug-bounty",
+     "https://hackerone.com/stellar?view_policy=true",
+     "https://github.com/stellar/stellar-core/security",
+     "http://blockchain-asia.com/bug-bounty.html",
+     "https://github.com/stellar/stellar-protocol/security",
+     "https://hackerone.com/stellar",
+     "https://github.com/stellar/stellar-docs/security",
+     "https://github.com/stellar/research/security"
+    ]
+   }
+  ]
+ },
+ "controls": {
+  "counts": {
+   "agree": 2,
+   "contradict": 1,
+   "no-signal": 2
+  },
+  "results": [
+   {
+    "id": "control-scf-45-phase",
+    "caseId": "q-scf-current-round",
+    "expect": "notification_award",
+    "verdict": "agree",
+    "observed": "notification_award",
+    "probability": 0.807,
+    "citations": [
+     "https://communityfund.stellar.org/awards",
+     "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab",
+     "https://www.risein.com/stellar/scf-45",
+     "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria",
+     "https://communityfund.stellar.org/governance",
+     "https://communityfund.stellar.org/dashboard/award-rounds",
+     "https://stellar.gitbook.io/scf-handbook",
+     "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/submission-criteria.md",
+     "https://communityfund.stellar.org/",
+     "https://github.com/stellar/scf-handbook"
+    ]
+   },
+   {
+    "id": "control-scf-46-deadline",
+    "caseId": "q-edge-fresh-latest-scf-round",
+    "expect": "2026-11-08",
+    "verdict": "agree",
+    "observed": "2026-11-08",
+    "probability": 0.999,
+    "citations": [
+     "https://communityfund.stellar.org/awards",
+     "https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46",
+     "https://github.com/stellar/scf-handbook",
+     "https://github.com/stellar/scf-handbook/blob/main/additional-support/faq.md",
+     "https://github.com/stellar/scf-handbook/blob/main/README.md",
+     "https://lumenloop.com/news?tag=scf",
+     "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md",
+     "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria",
+     "https://stellar.org/grants-and-funding",
+     "https://communityfund.stellar.org/"
+    ]
+   },
+   {
+    "id": "control-meridian-upcoming",
+    "caseId": "q-hist-meridian-2026-corrected-venue",
+    "expect": true,
+    "verdict": "contradict",
+    "observed": false,
+    "probability": 0.028,
+    "citations": [
+     "https://meridian.stellar.org/schedule",
+     "https://meridian.stellar.org/",
+     "https://stellar.org/events/community",
+     "https://whalehub.io/blog/meridian-stellar-history",
+     "https://ffnews.com/thought-leadership/crypto-trades-chaos-for-caution-how-stellars-meridian-signals-a-new-institutional-era",
+     "https://meridian.stellar.org/sessions",
+     "https://www.rumblefish.dev/blog/post/meridian-2026",
+     "https://stellar.org/blog/foundation-news?page=4",
+     "https://meridian.org/announcement/2026-meridian-summit",
+     "https://www.coindesk.com/videos/coindesk-live-at-stellar-meridian-2026"
+    ]
+   },
+   {
+    "id": "control-rpc-archive-count",
+    "caseId": "q-infra-rpc-provider-archive-tier",
+    "expect": "7",
+    "verdict": "no-signal",
+    "observed": "unknown",
+    "probability": 0.723,
+    "citations": [
+     "https://developers.stellar.org/docs/data/apis/rpc/providers",
+     "https://developers.stellar.org/docs/data/apis/api-providers",
+     "https://onfinality.io/en/rpc-assistant/stellar-rpc-provider",
+     "https://www.comparenodes.com/protocols/stellar/",
+     "https://www.quicknode.com/docs/stellar",
+     "https://developers.stellar.org/docs/data/apis/rpc",
+     "https://github.com/stellar/stellar-rpc/blob/main/README.md",
+     "https://www.redswitches.com/dedicated-stellar-rpc-node-servers",
+     "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions",
+     "https://stellar.org/blog/foundation-news/stellar-rpc-has-arrived"
+    ]
+   },
+   {
+    "id": "control-no-mainnet-perps",
+    "caseId": "q-defi-perps-whitespace",
+    "expect": true,
+    "verdict": "no-signal",
+    "observed": true,
+    "probability": 0.507,
+    "citations": [
+     "https://www.theblock.co/post/366529/ex-revolut-team-perp-dex-extended-live-on-starknet",
+     "https://www.coinbase.com/en-in/futures/XLP-20DEC30-CDE",
+     "https://dexwatch.com/new-dexes/index.html",
+     "https://www.falconx.io/newsroom/paradex-dime-the-zero-fee-privacy-first-perps-dex",
+     "https://dexwatch.com/dex-ranking/",
+     "https://perpfinder.com/chains/arbitrum",
+     "https://cointelegraph.com/news/aster-layer-1-testnet-live-all-users",
+     "https://news.bitcoin.com/afx-launches-sovereign-layer-1-providing-an-optimized-execution-environment-for-on-chain-perp-dexes",
+     "https://www.coingecko.com/en/coins/aquarius",
+     "https://defillama.com/dexs/chain/solana"
+    ]
+   }
+  ]
+ }
+}

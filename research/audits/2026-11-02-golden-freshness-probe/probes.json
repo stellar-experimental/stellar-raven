@@ -1,0 +1,416 @@
+{
+  "schema": "qa-freshness-probes-v1",
+  "probes": [
+    {
+      "id": "scf-round-in-submission",
+      "caseId": "q-scf-current-round",
+      "caseAsOf": "2026-11-02",
+      "subject": { "program": "Stellar Community Fund (SCF), communityfund.stellar.org" },
+      "question": {
+        "type": "choice",
+        "instructions": "Which Stellar Community Fund round is currently in its Submission phase?",
+        "criteria": { "scf_45": "SCF #45", "scf_46": "SCF #46", "scf_47": "SCF #47", "none": "No SCF round is in Submission", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "scf_46"
+    },
+    {
+      "id": "scf-46-submission-deadline",
+      "caseId": "q-edge-fresh-latest-scf-round",
+      "caseAsOf": "2026-11-02",
+      "subject": { "program": "Stellar Community Fund (SCF) round #46, communityfund.stellar.org" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the submission deadline of Stellar Community Fund round #46?",
+        "criteria": { "2026-11-08": "November 8, 2026", "2026-11-09": "November 9, 2026", "2026-11-16": "November 16, 2026", "other": "Another date", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "2026-11-09"
+    },
+    {
+      "id": "meridian-2026-city",
+      "caseId": "q-hist-meridian-2026-corrected-venue",
+      "caseAsOf": "2026-11-02",
+      "subject": { "event": "Meridian 2026, the Stellar Development Foundation conference" },
+      "question": {
+        "type": "choice",
+        "instructions": "In which city was Meridian 2026 held?",
+        "criteria": { "lisbon": "Lisbon, Portugal", "abu_dhabi": "Abu Dhabi, United Arab Emirates", "other": "Another city", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "lisbon"
+    },
+    {
+      "id": "rpc-archive-provider-count",
+      "caseId": "q-infra-rpc-provider-archive-tier",
+      "caseAsOf": "2026-11-02",
+      "subject": { "page": "Stellar RPC providers table, developers.stellar.org/docs/data/apis/rpc/providers" },
+      "question": {
+        "type": "choice",
+        "instructions": "How many hosted providers does the official Stellar RPC providers table mark as supporting the RPC Archive tier?",
+        "criteria": { "7": "7 providers", "8": "8 providers", "9": "9 providers", "10": "10 providers", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "9"
+    },
+    {
+      "id": "zenex-mainnet-perps",
+      "caseId": "q-defi-perps-whitespace",
+      "caseAsOf": "2026-10-15",
+      "subject": { "project": "Zenex (Zenith Protocols), a perpetual futures DEX on Stellar" },
+      "question": {
+        "type": "noul",
+        "instructions": "Zenex runs a live perpetual-futures DEX on Stellar Mainnet."
+      },
+      "expect": true
+    },
+    {
+      "id": "sdf-board-asiff-hirji",
+      "caseId": "q-org-sdf-board-directors",
+      "caseAsOf": "2026-08-18",
+      "subject": { "organization": "Stellar Development Foundation (SDF) board of directors" },
+      "question": {
+        "type": "noul",
+        "instructions": "Asiff Hirji currently sits on the Stellar Development Foundation board of directors."
+      },
+      "expect": true
+    },
+    {
+      "id": "confidential-tokens-june-release",
+      "caseId": "q-scf-confidential-tokens-preview",
+      "caseAsOf": "2026-07-11",
+      "subject": { "product": "Stellar Confidential Tokens, announced by SDF on June 29, 2026" },
+      "question": {
+        "type": "choice",
+        "instructions": "What did the June 29, 2026 Stellar Confidential Tokens release make available?",
+        "criteria": { "testnet_preview": "A developer preview on Testnet, not approved for Mainnet", "mainnet_launch": "A production launch on Mainnet", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "testnet_preview"
+    },
+    {
+      "id": "confidential-tokens-still-preview",
+      "caseId": "q-sor-confidential-tokens",
+      "caseAsOf": "2026-09-02",
+      "subject": { "product": "Stellar Confidential Tokens" },
+      "question": {
+        "type": "noul",
+        "instructions": "Stellar Confidential Tokens are still a Testnet developer preview and are not yet live on Stellar Mainnet."
+      },
+      "expect": true
+    },
+    {
+      "id": "auth-delegation-protocol",
+      "caseId": "q-soroban-auth-delegation-p27",
+      "caseAsOf": "2026-07-11",
+      "subject": { "feature": "CAP-0071 authentication delegation for Soroban custom accounts" },
+      "question": {
+        "type": "choice",
+        "instructions": "Which Stellar protocol version added CAP-0071 authentication delegation for Soroban custom accounts?",
+        "criteria": { "25": "Protocol 25", "26": "Protocol 26", "27": "Protocol 27", "28": "Protocol 28", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "27"
+    },
+    {
+      "id": "ledger-close-time",
+      "caseId": "q-protocol-ledger-close-time",
+      "caseAsOf": "2026-10-01",
+      "subject": { "network": "Stellar Mainnet ledger close cadence" },
+      "question": {
+        "type": "choice",
+        "instructions": "About how often does Stellar Mainnet currently close a ledger?",
+        "criteria": { "2_5s": "About every 2.5 seconds", "5s": "About every 5 seconds", "10s": "About every 10 seconds", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "5s"
+    },
+    {
+      "id": "soroban-sdk-advisory-count",
+      "caseId": "q-soroban-sdk-cve",
+      "caseAsOf": "2026-09-03",
+      "subject": { "repository": "github.com/stellar/rs-soroban-sdk security advisories (soroban-sdk and soroban-sdk-macros crates)" },
+      "question": {
+        "type": "choice",
+        "instructions": "How many published GitHub security advisories (CVEs) does the stellar/rs-soroban-sdk repository list?",
+        "criteria": { "1": "1 advisory", "2": "2 advisories", "3": "3 advisories", "4": "4 advisories", "5_plus": "5 or more advisories", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "3"
+    },
+    {
+      "id": "sep55-status",
+      "caseId": "q-soroban-contract-build-verification",
+      "caseAsOf": "2026-08-04",
+      "subject": { "standard": "SEP-55, Stellar contract build verification" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the current status of SEP-55 in the stellar-protocol repository?",
+        "criteria": { "draft": "Draft", "active": "Active", "final": "Final", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "draft"
+    },
+    {
+      "id": "scf-43-submissions",
+      "caseId": "q-scf-round-43-results",
+      "caseAsOf": "2026-08-31",
+      "subject": { "program": "Stellar Community Fund round #43 official recap" },
+      "question": {
+        "type": "choice",
+        "instructions": "How many submissions does the official recap of Stellar Community Fund round #43 report?",
+        "criteria": { "75": "75 submissions", "85": "85 submissions", "95": "95 submissions", "105": "105 submissions", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "85"
+    },
+    {
+      "id": "slp-0006-status",
+      "caseId": "q-pc-slp-0004-0006-status",
+      "caseAsOf": "2026-07-11",
+      "subject": { "proposal": "SLP-0006, a Stellar Limits Proposal" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the current status of Stellar Limits Proposal SLP-0006?",
+        "criteria": { "draft": "Draft", "accepted": "Accepted", "final": "Final", "rejected": "Rejected or withdrawn", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "draft"
+    },
+    {
+      "id": "x402-announcement-date",
+      "caseId": "q-hist-x402-stellar-announcement",
+      "caseAsOf": "2026-10-06",
+      "subject": { "announcement": "Stellar Development Foundation announcement of x402 on Stellar" },
+      "question": {
+        "type": "choice",
+        "instructions": "In which month did the Stellar Development Foundation announce x402 on Stellar?",
+        "criteria": { "2025-12": "December 2025", "2026-01": "January 2026", "2026-03": "March 2026", "2026-06": "June 2026", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "2026-03"
+    },
+    {
+      "id": "flutter-sdk-maintainer",
+      "caseId": "q-tool-flutter-mobile-sdk",
+      "caseAsOf": "2026-07-11",
+      "subject": { "package": "stellar_flutter_sdk on pub.dev" },
+      "question": {
+        "type": "choice",
+        "instructions": "Who maintains the stellar_flutter_sdk package?",
+        "criteria": { "sdf": "The Stellar Development Foundation", "soneso": "Soneso, a community maintainer", "other": "Another maintainer", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "soneso"
+    },
+    {
+      "id": "enterprise-fund-portfolio",
+      "caseId": "q-org-sdf-enterprise-fund",
+      "caseAsOf": "2026-10-06",
+      "subject": { "fund": "SDF Enterprise Fund" },
+      "question": {
+        "type": "choice",
+        "instructions": "How large does the Stellar Development Foundation say the SDF Enterprise Fund portfolio is?",
+        "criteria": { "under_50m": "Under $50 million", "over_100m": "Over $100 million", "over_500m": "Over $500 million", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "over_100m"
+    },
+    {
+      "id": "dtcc-assets-live",
+      "caseId": "q-crp-dtcc-stellar-connection-plan",
+      "caseAsOf": "2026-07-11",
+      "subject": { "announcement": "DTCC plan to connect DTC's tokenization service to the Stellar network (May 2026)" },
+      "question": {
+        "type": "noul",
+        "instructions": "DTC-tokenized assets are already live on the Stellar network."
+      },
+      "expect": false
+    },
+    {
+      "id": "classic-ops-per-ledger",
+      "caseId": "q-protocol-max-tx-set-size",
+      "caseAsOf": "2026-08-25",
+      "subject": { "network": "Stellar Mainnet ledger limits" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the current maximum number of classic operations per ledger on Stellar Mainnet?",
+        "criteria": { "100": "100 operations", "1000": "1,000 operations", "5000": "5,000 operations", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "1000"
+    },
+    {
+      "id": "sep53-status",
+      "caseId": "q-sep53-message-signing",
+      "caseAsOf": "2026-10-06",
+      "subject": { "standard": "SEP-53, signing and verifying messages with Stellar keys" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the current status of SEP-53?",
+        "criteria": { "draft": "Draft", "active": "Active", "final": "Final", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "final"
+    },
+    {
+      "id": "yieldblox-exploit-date",
+      "caseId": "q-comp-yieldblox-oracle-incident",
+      "caseAsOf": "2026-10-06",
+      "subject": { "incident": "YieldBlox Blend V2 pool oracle-manipulation exploit on Stellar" },
+      "question": {
+        "type": "choice",
+        "instructions": "In which month did the YieldBlox oracle-manipulation exploit happen?",
+        "criteria": { "2025-11": "November 2025", "2026-02": "February 2026", "2026-05": "May 2026", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "2026-02"
+    },
+    {
+      "id": "constructor-protocol",
+      "caseId": "q-soroban-constructor-lifecycle",
+      "caseAsOf": "2024-12-05",
+      "subject": { "feature": "Soroban contract constructors (CAP-0058, __constructor)" },
+      "question": {
+        "type": "choice",
+        "instructions": "Which Stellar protocol version added Soroban contract constructors?",
+        "criteria": { "20": "Protocol 20", "21": "Protocol 21", "22": "Protocol 22", "23": "Protocol 23", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "22"
+    },
+    {
+      "id": "mpp-stellar-modes",
+      "caseId": "q-mpp-discovery-and-modes",
+      "caseAsOf": "2026-11-02",
+      "subject": { "protocol": "MPP (Machine Payments Protocol) on Stellar" },
+      "question": {
+        "type": "choice",
+        "instructions": "Which payment modes does MPP support on Stellar?",
+        "criteria": { "charge_and_session": "Charge (per-request) and Session (channel-backed)", "charge_only": "Charge only", "session_only": "Session only", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "charge_and_session"
+    },
+    {
+      "id": "freighter-provider",
+      "caseId": "q-tool-freighter-wallet",
+      "caseAsOf": "2026-07-11",
+      "subject": { "product": "Freighter wallet (github.com/stellar/freighter)" },
+      "question": {
+        "type": "noul",
+        "instructions": "Freighter is a wallet provided by the Stellar Development Foundation."
+      },
+      "expect": true
+    },
+    {
+      "id": "native-xlm-staking",
+      "caseId": "q-raph-xlm-staking",
+      "caseAsOf": "2026-07-11",
+      "subject": { "network": "Stellar protocol" },
+      "question": {
+        "type": "noul",
+        "instructions": "The Stellar protocol natively pays staking rewards to XLM holders."
+      },
+      "expect": false
+    },
+    {
+      "id": "mazieres-sdf-title",
+      "caseId": "q-org-mazieres-chief-scientist",
+      "caseAsOf": "2026-07-13",
+      "subject": { "person": "David Mazières, Stellar Development Foundation" },
+      "question": {
+        "type": "choice",
+        "instructions": "Which title does the Stellar Development Foundation give David Mazières?",
+        "criteria": { "chief_scientist": "Founder and Chief Scientist", "ceo": "Chief Executive Officer", "cto": "Chief Technology Officer", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "chief_scientist"
+    },
+    {
+      "id": "ml-dsa-host-functions-live",
+      "caseId": "q-hist-quantum-preparedness-plan",
+      "caseAsOf": "2026-07-11",
+      "subject": { "feature": "ML-DSA (post-quantum) signature verification host functions for Soroban" },
+      "question": {
+        "type": "noul",
+        "instructions": "ML-DSA signature-verification host functions are live on Stellar Mainnet."
+      },
+      "expect": false
+    },
+    {
+      "id": "instaward-maximum",
+      "caseId": "q-scf-ambassador-program",
+      "caseAsOf": "2026-08-04",
+      "subject": { "program": "Stellar Community Fund Instawards recommended by Stellar Ambassadors" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the maximum Instaward amount per project under the Stellar Community Fund?",
+        "criteria": { "5k": "Up to $5,000", "15k": "Up to $15,000", "50k": "Up to $50,000", "150k": "Up to $150,000", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "15k"
+    },
+    {
+      "id": "metamask-stellar-default-network",
+      "caseId": "q-edge-metamask-evm-mental-model",
+      "caseAsOf": "2026-10-01",
+      "subject": { "product": "MetaMask wallet support for Stellar" },
+      "question": {
+        "type": "noul",
+        "instructions": "MetaMask supports Stellar as a default network for XLM."
+      },
+      "expect": true
+    },
+    {
+      "id": "go-sdk-module",
+      "caseId": "q-tool-go-sdk-ingest",
+      "caseAsOf": "2026-07-11",
+      "subject": { "sdk": "The official Stellar Go SDK" },
+      "question": {
+        "type": "choice",
+        "instructions": "Which Go module path should new code use for the official Stellar Go SDK?",
+        "criteria": { "go_stellar_sdk": "github.com/stellar/go-stellar-sdk", "stellar_go": "github.com/stellar/go", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "go_stellar_sdk"
+    },
+    {
+      "id": "base-reserve",
+      "caseId": "q-protocol-base-reserve-min-balance",
+      "caseAsOf": "2026-07-11",
+      "subject": { "network": "Stellar Mainnet base reserve" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the current base reserve on Stellar Mainnet?",
+        "criteria": { "0.1": "0.1 XLM", "0.5": "0.5 XLM", "1": "1 XLM", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "0.5"
+    },
+    {
+      "id": "contract-wasm-size-cap",
+      "caseId": "q-soroban-wasm-size-limit",
+      "caseAsOf": "2026-07-28",
+      "subject": { "network": "Stellar Mainnet contract_max_size_bytes setting" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the current maximum uploaded contract Wasm size on Stellar Mainnet?",
+        "criteria": { "64kib": "65,536 bytes (64 KiB)", "128kib": "131,072 bytes (128 KiB)", "256kib": "262,144 bytes (256 KiB)", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "128kib"
+    },
+    {
+      "id": "sdp-requires-anchor-platform",
+      "caseId": "q-anchor-sdp-what",
+      "caseAsOf": "2026-11-02",
+      "subject": { "product": "Stellar Disbursement Platform (SDP)" },
+      "question": {
+        "type": "noul",
+        "instructions": "The current Stellar Disbursement Platform requires a separate external Anchor Platform deployment."
+      },
+      "expect": false
+    },
+    {
+      "id": "cap-0080-protocol",
+      "caseId": "q-zk-host-functions-status",
+      "caseAsOf": "2026-07-11",
+      "subject": { "feature": "CAP-0080 BN254 multi-scalar multiplication and scalar-field host functions" },
+      "question": {
+        "type": "choice",
+        "instructions": "Which Stellar protocol version activated CAP-0080?",
+        "criteria": { "25": "Protocol 25", "26": "Protocol 26", "27": "Protocol 27", "28": "Protocol 28", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "26"
+    },
+    {
+      "id": "sdf-bug-bounty-platform",
+      "caseId": "q-comp-security-disclosure-programs",
+      "caseAsOf": "2026-08-29",
+      "subject": { "program": "Stellar Development Foundation bug bounty and vulnerability disclosure program" },
+      "question": {
+        "type": "choice",
+        "instructions": "Which platform hosts the Stellar Development Foundation's consolidated bug bounty program?",
+        "criteria": { "hackerone": "HackerOne", "immunefi": "Immunefi", "bugcrowd": "Bugcrowd", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "hackerone"
+    }
+  ]
+}
