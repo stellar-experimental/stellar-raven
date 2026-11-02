@@ -1,0 +1,1101 @@
+{
+ "schema": "qa-quote-sweep-v1",
+ "observedAt": "2026-11-02",
+ "rows": [
+  {
+   "case": "q-agent-payment-standard-choice",
+   "observedAt": "2026-10-06",
+   "ref": "https://mpp.dev/",
+   "quote": "An improved sessions experience",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-agent-payment-standard-choice",
+   "observedAt": "2026-10-06",
+   "ref": "https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md",
+   "quote": "The specification is maintained by OpenAI and Stripe and is currently in beta",
+   "verdict": "drift",
+   "class": "matcher-artifact"
+  },
+  {
+   "case": "q-agent-payment-standard-choice",
+   "observedAt": "2026-10-06",
+   "ref": "https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md",
+   "quote": "Mandates are the core means that AP2 uses to authorize agents",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-agent-payment-standard-choice",
+   "observedAt": "2026-10-06",
+   "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+   "quote": "Each payment is a Soroban SEP-41 transfer settled on-chain individually",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-agent-payment-standard-choice",
+   "observedAt": "2026-10-06",
+   "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+   "quote": "cumulative commitments — no per-payment on-chain transactions",
+   "verdict": "drift",
+   "class": "reworded"
+  },
+  {
+   "case": "q-agent-payment-standard-choice",
+   "observedAt": "2026-10-06",
+   "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+   "quote": "8. Discovery API",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-agent-payment-standard-choice",
+   "observedAt": "2026-10-06",
+   "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+   "quote": "Session handling mechanisms",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-vs-anchor-platform",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+   "quote": "Below you can find all the SEPs the anchor class currently supports:",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-vs-anchor-platform",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+   "quote": "Below you can find all the SEPs the anchor class currently supports:",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-vs-anchor-platform",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+   "quote": "Below you can find all the SEPs the anchor class currently supports:",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-vs-anchor-platform",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+   "quote": "SEP-45 — Web authentication using challenge/responses for contract accounts",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-vs-anchor-platform",
+   "observedAt": "2026-11-02",
+   "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+   "quote": "Send up to 10,000 payments of any amount in a single batch by simply uploading a list of receivers to the platform.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-what",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform",
+   "quote": "The Stellar Disbursement Platform (SDP) is a tool built for organizations to make bulk payments to a group of recipients over the Stellar network.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-what",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+   "quote": "Receivers can either use a wallet application that supports SEP-24 for automatic registration, or they can receive funds directly to their Stellar account.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-what",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+   "quote": "The Stellar Disbursement Platform consists of three services deployed together",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-what",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+   "quote": "Transaction Submission Service: the service that submits all payment transactions to the Stellar network.",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-anchor-sdp-what",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+   "quote": "Embedded Wallets are Stellar smart contract accounts that are deployed on-chain when a receiver creates their passkey.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-what",
+   "observedAt": "2026-11-02",
+   "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/pull/1229",
+   "quote": "number of instructions exceeds maximum of 10000",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-anchor-sdp-what",
+   "observedAt": "2026-11-02",
+   "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+   "quote": "Send up to 10,000 payments of any amount in a single batch by simply uploading a list of receivers to the platform.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-asset-amm-fee-reserve",
+   "observedAt": "2026-09-30",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+   "quote": "A pool share trustline requires 2 base reserves instead of 1",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-asset-amm-fee-reserve",
+   "observedAt": "2026-09-30",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+   "quote": "The fee rate on Stellar is 30 bps, which is equal to 0.30%",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-asset-stablecoin-issuers-discovery",
+   "observedAt": "2026-08-18",
+   "ref": "https://www.circle.com/multi-chain-usdc/stellar",
+   "quote": "grown past $83 million",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-asset-trustline-basics",
+   "observedAt": "2026-09-30",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+   "quote": "Every subentry after that requires an additional base reserve (currently 0.5 XLM)",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-asset-trustline-basics",
+   "observedAt": "2026-09-30",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+   "quote": "One base reserve is currently 0.5 XLM. Validators can vote to change the base reserve",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-cctp-v2-usdc-stellar",
+   "observedAt": "2026-07-28",
+   "ref": "https://developers.circle.com/release-notes/cctp-2026",
+   "quote": "Added support for Stellar mainnet.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-comp-anchor-compliance-stack",
+   "observedAt": "2026-10-01",
+   "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+   "quote": "Although when describing a business model this guidance may use a label by which the general type of product or service may be commonly known, the interpretation provided herein applies only to the business model the guidance describes",
+   "verdict": "drift",
+   "class": "pdf-excluded"
+  },
+  {
+   "case": "q-comp-finclusive-caas",
+   "observedAt": "2026-10-01",
+   "ref": "https://finclusive.com/company/operating-provisions",
+   "quote": "FinClusive is not a bank, does not have a banking charter and is not a licensed Money Services Business. Rather FinClusive is an exempt third party services provider",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-comp-yieldblox-oracle-incident",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+   "quote": "Health factor with manipulated oracle ($106.74/USTRY)",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-comp-yieldblox-oracle-incident",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+   "quote": "USDC liability (reserve 1) 119,028,268,790 d-tokens (~14,000 USDC)",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-comp-yieldblox-oracle-incident",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+   "quote": "feeding into the Reflector oracle",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-crp-custodial-vs-noncustodial-wallets",
+   "observedAt": "2026-08-29",
+   "ref": "https://www.fatf-gafi.org/content/dam/fatf/documents/recommendations/Updated-Guidance-VA-VASP.pdf",
+   "quote": "P2P transactions are not explicitly subject to AML/CFT controls under the FATF Standards,",
+   "verdict": "error",
+   "detail": "HTTP Error 403: Forbidden"
+  },
+  {
+   "case": "q-crp-custodial-vs-noncustodial-wallets",
+   "observedAt": "2026-08-29",
+   "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+   "quote": "The label, however, will not determine the regulatory application,",
+   "verdict": "drift",
+   "class": "pdf-excluded"
+  },
+  {
+   "case": "q-defi-aquarius-what-is",
+   "observedAt": "2026-09-17",
+   "ref": "https://docs.aqua.network/for-projects/what-are-voting-incentives",
+   "quote": "Voters on markets with voting incentives receive daily payouts",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-bridge-evm-to-stellar-axelar",
+   "observedAt": "2026-10-01",
+   "ref": "https://support.metamask.io/configure/networks/stellar/",
+   "quote": "A cross-chain swap (bridge) cannot create a trustline on your behalf.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-bridge-evm-to-stellar-axelar",
+   "observedAt": "2026-10-01",
+   "ref": "https://support.metamask.io/configure/networks/stellar/",
+   "quote": "You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button on the MetaMask homepage.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-market-making-kelp",
+   "observedAt": "2026-08-29",
+   "ref": "https://api.github.com/repos/stellar-deprecated/kelp",
+   "quote": "2023-11-03T05:46:15Z",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-named-newer-protocols",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-named-newer-protocols",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "checked on 6 October 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-named-newer-protocols",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "deployed on 2026-09-29",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-named-newer-protocols",
+   "observedAt": "2026-10-15",
+   "ref": "https://zenex.trade/",
+   "quote": "Leveraged perpetual futures on Stellar. Launch mainnet, or practice on testnet with test funds first.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-perps-whitespace",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-perps-whitespace",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "checked on 6 October 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-perps-whitespace",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "deployed on 2026-09-29",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-perps-whitespace",
+   "observedAt": "2026-10-15",
+   "ref": "https://kryonprotocol.vercel.app/",
+   "quote": "Protocol Launch XLM-PERP Goes Live",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-perps-whitespace",
+   "observedAt": "2026-10-15",
+   "ref": "https://kryonprotocol.vercel.app/",
+   "quote": "XLM-PERP Now Live on Stellar Mainnet USDC-settled perpetual futures with on-chain margin and settlement",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-perps-whitespace",
+   "observedAt": "2026-10-15",
+   "ref": "https://kryonprotocol.vercel.app/ (trade bundle /_next/static/chunks/0_qw2g1pvvdr~.js)",
+   "quote": "Public Global Stellar Network ; September 2015",
+   "verdict": "error",
+   "detail": "URL can't contain control characters. '/ (trade bundle /_next/static/chunks/0_qw2g1pvvdr~.js)' (found at least ' ')"
+  },
+  {
+   "case": "q-defi-perps-whitespace",
+   "observedAt": "2026-10-15",
+   "ref": "https://noether.exchange/",
+   "quote": "The contracts are already live on Stellar mainnet — paused, with no funds inside, until the independent audit clears.",
+   "verdict": "drift",
+   "class": "matcher-artifact"
+  },
+  {
+   "case": "q-defi-perps-whitespace",
+   "observedAt": "2026-10-15",
+   "ref": "https://zenex.trade/",
+   "quote": "Leveraged perpetual futures on Stellar. Launch mainnet, or practice on testnet with test funds first.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-defi-soroswap-what-is",
+   "observedAt": "2026-09-17",
+   "ref": "https://github.com/soroswap/docs (concepts/aggregator.mdx, api/index.mdx)",
+   "quote": "(currently on Testnet)",
+   "verdict": "error",
+   "detail": "URL can't contain control characters. '/soroswap/docs (concepts/aggregator.mdx, api/index.mdx)' (found at least ' ')"
+  },
+  {
+   "case": "q-defi-soroswap-what-is",
+   "observedAt": "2026-09-17",
+   "ref": "https://github.com/soroswap/docs (concepts/aggregator.mdx, api/index.mdx)",
+   "quote": "Soroswap, Phoenix, Aqua and SDEX",
+   "verdict": "error",
+   "detail": "URL can't contain control characters. '/soroswap/docs (concepts/aggregator.mdx, api/index.mdx)' (found at least ' ')"
+  },
+  {
+   "case": "q-defi-soroswap-what-is",
+   "observedAt": "2026-09-17",
+   "ref": "https://github.com/soroswap/docs (concepts/aggregator.mdx, api/index.mdx)",
+   "quote": "Stellar SDEX is not included",
+   "verdict": "error",
+   "detail": "URL can't contain control characters. '/soroswap/docs (concepts/aggregator.mdx, api/index.mdx)' (found at least ' ')"
+  },
+  {
+   "case": "q-eco-defi-market-map",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-eco-defi-market-map",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "checked on 6 October 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-eco-defi-market-map",
+   "observedAt": "2026-10-15",
+   "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+   "quote": "deployed on 2026-09-29",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-eco-defi-market-map",
+   "observedAt": "2026-10-15",
+   "ref": "https://kryonprotocol.vercel.app/",
+   "quote": "Protocol Launch XLM-PERP Goes Live",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-eco-defi-market-map",
+   "observedAt": "2026-10-15",
+   "ref": "https://kryonprotocol.vercel.app/",
+   "quote": "XLM-PERP Now Live on Stellar Mainnet USDC-settled perpetual futures with on-chain margin and settlement",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-eco-defi-market-map",
+   "observedAt": "2026-10-15",
+   "ref": "https://kryonprotocol.vercel.app/ (trade bundle /_next/static/chunks/0_qw2g1pvvdr~.js)",
+   "quote": "Public Global Stellar Network ; September 2015",
+   "verdict": "error",
+   "detail": "URL can't contain control characters. '/ (trade bundle /_next/static/chunks/0_qw2g1pvvdr~.js)' (found at least ' ')"
+  },
+  {
+   "case": "q-eco-defi-market-map",
+   "observedAt": "2026-10-15",
+   "ref": "https://zenex.trade/",
+   "quote": "Leveraged perpetual futures on Stellar. Launch mainnet, or practice on testnet with test funds first.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-eco-stablecoins-on-stellar",
+   "observedAt": "2026-08-18",
+   "ref": "https://www.circle.com/multi-chain-usdc/stellar",
+   "quote": "grown past $83 million",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-edge-fresh-latest-scf-round",
+   "observedAt": "2026-11-02",
+   "ref": "https://communityfund.stellar.org/awards",
+   "quote": "Deadline to submit: November 9, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-edge-metamask-evm-mental-model",
+   "observedAt": "2026-10-01",
+   "ref": "https://support.metamask.io/configure/networks/how-to-use-non-evm-networks/",
+   "quote": "MetaMask does not support Stellar",
+   "verdict": "drift",
+   "class": "source-changed"
+  },
+  {
+   "case": "q-edge-metamask-evm-mental-model",
+   "observedAt": "2026-10-01",
+   "ref": "https://support.metamask.io/configure/networks/how-to-use-non-evm-networks/",
+   "quote": "Navigate Stellar in MetaMask",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-edge-metamask-evm-mental-model",
+   "observedAt": "2026-10-01",
+   "ref": "https://support.metamask.io/configure/networks/stellar/",
+   "quote": "Buying crypto in MetaMask is not available in every country or region.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-edge-metamask-evm-mental-model",
+   "observedAt": "2026-10-01",
+   "ref": "https://support.metamask.io/configure/networks/stellar/",
+   "quote": "MetaMask supports Stellar as a default network, allowing you to manage XLM and other assets.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-hist-meridian-2026-corrected-venue",
+   "observedAt": "2026-11-02",
+   "ref": "https://meridian.stellar.org/",
+   "quote": "Thank you for another amazing Meridian! Check back for details on 2027 soon.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-hist-meridian-2026-corrected-venue",
+   "observedAt": "2026-11-02",
+   "ref": "https://meridian.stellar.org/event-details",
+   "quote": "Meridian 2026 is a two-day in-person conference taking place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-hist-meridian-2026-corrected-venue",
+   "observedAt": "2026-11-02",
+   "ref": "https://meridian.stellar.org/event-details",
+   "quote": "running October 25–26, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-hist-x402-stellar-announcement",
+   "observedAt": "2026-10-06",
+   "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+   "quote": "supports any SEP-41 compliant token",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-hist-x402-stellar-announcement",
+   "observedAt": "2026-10-06",
+   "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+   "quote": "x402 works with Soroban authorization so that clients can pay for API requests via signed auth entries",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-hist-x402-stellar-announcement",
+   "observedAt": "2026-10-06",
+   "ref": "https://stellar.org/blog/foundation-news/x402-on-stellar",
+   "quote": "The settlement layer is live. The agent tooling is being built.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers",
+   "quote": "This method will return an error if `startLedger` is less than the oldest ledger stored in this node",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers",
+   "quote": "you can paginate as long as the pages fall within the history retention of their corresponding RPC provider.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
+   "quote": "Currently only the getLedgers RPC method supports this feature.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
+   "quote": "RPC Archive is a new option for those looking to retrieve full ledger history. Currently only the getLedgers RPC method supports this feature.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
+   "quote": "| [GetBlock](https://getblock.io/nodes/xlm/) | ❌ | ❌ | ✅ | ✅ | ✅ |",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
+   "quote": "| [Validation Cloud\\*](https://app.validationcloud.io) | ❌ | ✅ | ✅ | ✅ | ✅ |",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
+   "quote": "| [node101](https://node101.io/en/rpc/stellar) | ❌ | ✅ | ✅ | ✅ | ✅ |",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://docs.validationcloud.io/v1/stellar/overview",
+   "quote": "Pubnet Archive: Horizon only (1 year history)",
+   "verdict": "error",
+   "detail": "HTTP Error 308: Permanent Redirect"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://docs.validationcloud.io/v1/stellar/overview",
+   "quote": "Pubnet RPC v2 (Beta): Stellar RPC only (full history from ledger 2)",
+   "verdict": "error",
+   "detail": "HTTP Error 308: Permanent Redirect"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://docs.validationcloud.io/v1/stellar/overview",
+   "quote": "`getTransaction`, `getTransactions`, `getLedgers` and `getEvents` can read any Pubnet ledger.",
+   "verdict": "error",
+   "detail": "HTTP Error 308: Permanent Redirect"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://github.com/stellar/stellar-rpc/blob/archive-node-beta/docs/API-CHANGES-BETA.md",
+   "quote": "No existing method, parameter, or response field was removed. `getEvents`, `getLedgers`, `getTransaction`, and `getTransactions` now serve full history.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-infra-rpc-provider-archive-tier",
+   "observedAt": "2026-11-02",
+   "ref": "https://node101.io/en/rpc/stellar",
+   "quote": "Archive Node Services — Query historical account and contract states on supported networks and methods.",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+   "quote": "Each request triggers a Soroban SAC `transfer` settled on-chain individually.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+   "quote": "It extends the `402 Payment Required` HTTP status code into a machine-readable payment negotiation layer",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+   "quote": "The funder deposits tokens into the channel once, then makes many off-chain payments by signing cumulative commitments",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+   "quote": "no per-payment on-chain transactions, ideal for AI agent interactions",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide",
+   "quote": "Each commitment is cumulative. The server tracks the highest commitment it has seen; closing the channel batch-settles all payments in a single on-chain transaction.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide",
+   "quote": "No on-chain transaction is needed per payment, making this ideal for high-frequency AI agent interactions.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/advanced/discovery",
+   "quote": "Agents can query the curated services directory over MCP at `https://mpp.dev/mcp/services`. The server is read-only",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/advanced/discovery",
+   "quote": "Discovery documents are informational hints. The runtime `402` Challenge remains the authoritative source of payment terms.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/advanced/discovery",
+   "quote": "The MCP server is advisory and read-only. After discovery, clients call the target service directly and treat the runtime `402` Challenge as authoritative.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/advanced/discovery",
+   "quote": "You serve a standard OpenAPI 3.1 document at `/openapi.json` with `x-payment-info` extensions",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/advanced/discovery",
+   "quote": "[MPPScan](https://mppscan.com) | Public registry of MPP-enabled services",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/advanced/discovery",
+   "quote": "canonical `x-payment-info.offers[]` entries on each paid route",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/guides/use-mpp-with-x402",
+   "quote": "The wrapper delegates x402 Credentials, lifecycle hooks, verification, and settlement to the official x402 adapter.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/mpp-vs-x402",
+   "quote": "PAYMENT-REQUIRED",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/mpp-vs-x402",
+   "quote": "WWW-Authenticate: Payment",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-mpp-discovery-and-modes",
+   "observedAt": "2026-11-02",
+   "ref": "https://mpp.dev/payment-methods/stellar",
+   "quote": "**charge** for one-time on-chain transfers",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-org-sdf-enterprise-fund",
+   "observedAt": "2026-10-06",
+   "ref": "https://stellar.org/enterprise-fund",
+   "quote": "a venture-style fund",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-pay-anchor-msb-licensing",
+   "observedAt": "2026-10-01",
+   "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+   "quote": "Although when describing a business model this guidance may use a label by which the general type of product or service may be commonly known, the interpretation provided herein applies only to the business model the guidance describes",
+   "verdict": "drift",
+   "class": "pdf-excluded"
+  },
+  {
+   "case": "q-pc-cross-redstone-sep40",
+   "observedAt": "2026-10-06",
+   "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+   "quote": "Publicly availble free price oracles are compatible with SEP40 ecosystem standard interface.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-pc-cross-redstone-sep40",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md",
+   "quote": "Oracle Consumer Interface",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-pc-quantum-preparedness-dormant",
+   "observedAt": "2026-08-24",
+   "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+   "quote": "Stellar has a large population of dormant accounts whose holders are unreachable",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-base-reserve-min-balance",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+   "quote": "(2 + `numSubEntries` + `numSponsoring` - `numSponsored`) * `baseReserve`",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-protocol-base-reserve-min-balance",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+   "quote": "Selling liabilities are not part of the minimum balance.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-base-reserve-min-balance",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#revoke-sponsorship",
+   "quote": "Allows the sponsoring account to remove or transfer sponsorships of existing ledgerEntries and signers.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-base-reserve-min-balance",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools#trustlines",
+   "quote": "A pool share trustline requires 2 base reserves instead of 1.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-base-reserve-min-balance",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+   "quote": "One base reserve is currently 0.5 XLM.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-base-reserve-min-balance",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+   "quote": "a sponsored account can even be created with a starting balance of `0`",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-ledger-close-time",
+   "observedAt": "2026-10-01",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0083.md",
+   "quote": "This will improve SCP performance, as transaction set dissemination is costly and validators can safely make initial progress on consensus while waiting for transaction sets.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-max-tx-set-size",
+   "observedAt": "2026-08-25",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+   "quote": "Resource limits are determined by a validator vote and can be adjusted based on network usage and ecosystem needs with a validator consensus.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-max-tx-set-size",
+   "observedAt": "2026-08-25",
+   "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
+   "quote": "maximum number of Soroban transactions per ledger",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-protocol-max-tx-set-size",
+   "observedAt": "2026-08-25",
+   "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
+   "quote": "uint32 ledgerMaxTxCount;",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/tools/quickstart",
+   "quote": "Quickstart runs a local version of Stellar Core, Horizon, RPC, and everything else needed to replicate the public network.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+   "quote": "Each `manualclose` invocation advances the ledger by one.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+   "quote": "Each `manualclose` invocation advances the ledger by one.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+   "quote": "Each `manualclose` invocation advances the ledger by one.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+   "quote": "Manual close is only usable in local network mode. Stellar Core requires `NODE_IS_VALIDATOR=true` to service a manual close request, and the local network is the only Quickstart configuration that sets it.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+   "quote": "defaults to `false` when not specified.",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/run-command-examples",
+   "quote": "--local --enable-core-manual-close",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
+   "quote": "fn set_sequence_number(&self, sequence_number: u32);",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
+   "quote": "fn set_timestamp(&self, timestamp: u64);",
+   "verdict": "drift"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://github.com/stellar/stellar-core/issues/4040",
+   "quote": "Expand the capabilities of the `manualclose` http endpoint so that it accepts a parameter `count`",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-quickstart-manual-ledger-close",
+   "observedAt": "2026-11-02",
+   "ref": "https://github.com/stellar/stellar-core/issues/4040",
+   "quote": "Support manual closing N ledgers",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-raph-lobstr-legitimacy",
+   "observedAt": "2026-09-04",
+   "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+   "quote": "The keys themselves can only be decrypted and accessed by users on-device",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-raph-lobstr-legitimacy",
+   "observedAt": "2026-09-04",
+   "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+   "quote": "The transaction signing also happens locally on-device",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-raph-lobstr-legitimacy",
+   "observedAt": "2026-09-04",
+   "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+   "quote": "We store the encrypted version of the Recovery phrase/Secret key on our server",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-raph-lobstr-legitimacy",
+   "observedAt": "2026-09-04",
+   "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+   "quote": "downloads the encrypted version of the key from the server and stores it locally",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-raph-lobstr-legitimacy",
+   "observedAt": "2026-09-04",
+   "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+   "quote": "securely stored on your device and uploaded to our server in encrypted form",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-rwa-tokenization-standards",
+   "observedAt": "2026-10-06",
+   "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+   "quote": "When AUTH_REQUIRED_FLAG is enabled, an issuer must approve an account before that account can hold its asset",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-rwa-tokenization-standards",
+   "observedAt": "2026-10-06",
+   "ref": "https://developers.stellar.org/docs/tokens/publishing-asset-info",
+   "quote": "Instructions to redeem your token for the underlying asset",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-rwa-tokenization-standards",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+   "quote": "Soroban Token Interface",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-rwa-tokenization-standards",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+   "quote": "Tokenized Vault Standard",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-rwa-tokenization-standards",
+   "observedAt": "2026-10-06",
+   "ref": "https://stellar.org/use-cases/tokenization",
+   "quote": "regulated financial institutions providing custody services",
+   "verdict": "error",
+   "detail": "HTTP Error 308: Permanent Redirect"
+  },
+  {
+   "case": "q-scf-current-round",
+   "observedAt": "2026-11-02",
+   "ref": "https://communityfund.stellar.org/awards",
+   "quote": "Deadline to submit: November 9, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-scf-open-rfps",
+   "observedAt": "2026-11-02",
+   "ref": "https://communityfund.stellar.org/awards",
+   "quote": "Deadline to submit: November 9, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-scf-open-rfps",
+   "observedAt": "2026-11-02",
+   "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+   "quote": "November 11, 2026 - November 18, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-scf-open-rfps",
+   "observedAt": "2026-11-02",
+   "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+   "quote": "TBD - November 9, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-scf-rfp-tooling",
+   "observedAt": "2026-11-02",
+   "ref": "https://communityfund.stellar.org/awards",
+   "quote": "Deadline to submit: November 9, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-scf-rfp-tooling",
+   "observedAt": "2026-11-02",
+   "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+   "quote": "November 11, 2026 - November 18, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-scf-rfp-tooling",
+   "observedAt": "2026-11-02",
+   "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+   "quote": "TBD - November 9, 2026",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep-6-24-deprecation",
+   "observedAt": "2026-10-06",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+   "quote": "SEP-24: Hosted Deposit and Withdrawal",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep-6-24-deprecation",
+   "observedAt": "2026-10-06",
+   "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+   "quote": "SEP-6: Programmatic Deposit and Withdrawal",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep-6-24-deprecation",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+   "quote": "Status: Active (Interactive components are deprecated in favor of SEP-24)",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep-6-24-deprecation",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+   "quote": "Hosted Deposit and Withdrawal",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep53-message-signing",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/js-stellar-sdk/blob/main/src/base/keypair.ts",
+   "quote": "Stellar Signed Message:\\n",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep53-message-signing",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+   "quote": "Stellar Signed Message:\\n",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep53-message-signing",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+   "quote": "Standard Web Wallet API Interface",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep53-message-signing",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+   "quote": "different implementations risk incompatibility",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sep53-message-signing",
+   "observedAt": "2026-10-06",
+   "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+   "quote": "messageHash = SHA256(encodedMessage)",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sor-reflector-integration-code",
+   "observedAt": "2026-11-02",
+   "ref": "https://github.com/reflector-network/reflector-contract/blob/master/beam-contract/src/lib.rs",
+   "quote": "pub fn lastprice(e: &Env, caller: Address, asset: Asset) -> Option<PriceData> {",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-sor-reflector-integration-code",
+   "observedAt": "2026-11-02",
+   "ref": "https://github.com/reflector-network/reflector-contract/blob/master/pulse-contract/src/lib.rs",
+   "quote": "pub fn lastprice(e: &Env, asset: Asset) -> Option<PriceData> {",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-zk-host-functions-status",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/networks/software-versions",
+   "quote": "Host Functions for Efficient ZK BN254 Use Cases: CAP-80",
+   "verdict": "hold"
+  },
+  {
+   "case": "q-zk-host-functions-status",
+   "observedAt": "2026-11-02",
+   "ref": "https://developers.stellar.org/docs/networks/software-versions",
+   "quote": "Protocol 29 (Mainnet, October 1, 2026)",
+   "verdict": "hold"
+  }
+ ]
+}

@@ -619,14 +619,14 @@
       "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-sdp-vs-anchor-platform.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "29ff5533b913c47babd9f008a0c1145423d46e300114ff0345fe34189ce8ca1e"
+      "caseContentSha256": "ccd9aa90728f2cd6381e964c039ed99c35a1394e0ec2fecf7f204ec250bace63"
     },
     {
       "id": "q-anchor-sdp-what",
       "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-sdp-what.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "6ca03305146367d51ca039407beed4fef45ae083e32373210f81a601dfaaf3f7"
+      "caseContentSha256": "44a32d9d47907b7f0c957bb20698cc42ecab0bd30cc45be7fa330a20f0f7263d"
     },
     {
       "id": "q-ass-cross-bando-stablebonds-sac",
@@ -1452,7 +1452,7 @@
       "path": "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-scf-round.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "0ce9230e0ef3bc1093371ce839d4673a80874b3b8fa677382e44beba704bb801"
+      "caseContentSha256": "c8be6ba4ad107fadfe43d1877723f88d83b04e5e3d2872d9c9e2fbaae30ae650"
     },
     {
       "id": "q-edge-fresh-most-recent-news",
@@ -1774,7 +1774,7 @@
       "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-meridian-2026-corrected-venue.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "b0fd4b26c9b3b0965baa74015de98fc467660228f14414ecdf6f6a8729ede987"
+      "caseContentSha256": "cd85d32750a321988d0be5c9e457a321eb290fa6a6dd599ffaa8fe5c26ef51ef"
     },
     {
       "id": "q-hist-quantum-preparedness-plan",
@@ -1886,14 +1886,14 @@
       "path": "eval/qa/corpus/battery/tooling-infra/q-infra-rpc-provider-archive-tier.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "7b01ce17c20c094af9165266762a192422af1658ac386a145bec41f8ec50dcd1"
+      "caseContentSha256": "55fb341828dd5ae5e2f75c80da53d4e88dc1a6d473d8da4a6b9ed80ebe7a1848"
     },
     {
       "id": "q-infra-secp256r1-passkeys",
       "path": "eval/qa/corpus/battery/tooling-infra/q-infra-secp256r1-passkeys.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "56e42850d326a59435383f8e7c0fecd6847231283fce664a19ebb9bdf48fe3a7"
+      "caseContentSha256": "ef90989dcbe18da0932bf20bf74a21e76181fd8a9ac1fe7beede8408c462944b"
     },
     {
       "id": "q-infra-simulate-transaction-howto",
@@ -1942,7 +1942,7 @@
       "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-mpp-discovery-and-modes.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "b9d3248f30696db70c8758e80f3943745f19b351b52e78be55397fea52548a5f"
+      "caseContentSha256": "101fb331046bb32b68b81524c5bebebb026690deb076261080891da264fecee8"
     },
     {
       "id": "q-n3-cross-thread-memory-exfiltration",
@@ -2068,14 +2068,14 @@
       "path": "eval/qa/corpus/battery/tooling-infra/q-passkey-platform-constraints.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "35c8e77890538ff081864248b3f3df63b76c10dfd8982dcd213ff4f08b3528bb"
+      "caseContentSha256": "096d126e638a2700c22ca573eeebd198c207459e9cf5d96c2cc57ebbda4a8283"
     },
     {
       "id": "q-passkey-smart-account-architecture",
       "path": "eval/qa/corpus/battery/soroban/q-passkey-smart-account-architecture.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "ac07ff9cd276665b02b0951b0251a5981e198a8fbec81fb2aeaed23230c32f97"
+      "caseContentSha256": "b77bc401eb402be78579f27044a1e4e2bedb8d3f7c20600962cb1f21ec138da4"
     },
     {
       "id": "q-passkey-wallet-recovery",
@@ -2313,7 +2313,7 @@
       "path": "eval/qa/corpus/battery/protocol-core/q-protocol-base-reserve-min-balance.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "5887b38ec54dbe6dc8c047ba0fdc7518e0dd0d0d0ac389da8699d8ba939b6f6d"
+      "caseContentSha256": "e332cd3968ef27c71d78517bd3e0b381c92116d0b05c25aba19bbde95e33499f"
     },
     {
       "id": "q-protocol-bls12-381-cap59",
@@ -2453,7 +2453,7 @@
       "path": "eval/qa/corpus/battery/tooling-infra/q-quickstart-manual-ledger-close.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "1148176f39070f50e41185782bc13793cfe732536283ccca6b16a8b31f921c50"
+      "caseContentSha256": "42e591a27a6238e6738e9f2f13dd46835b6279fedbc947d897a7005473ab95c3"
     },
     {
       "id": "q-raph-buy-xlm-safely",
@@ -2712,7 +2712,7 @@
       "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-current-round.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "fc9853a22c9e04e8becd97ee20794bf4f748ab61cd0cb6791f51ae7e3569488f"
+      "caseContentSha256": "2a16299a14bff53146b6b0f84d1a7de6ebef661d1189ed9d8b72b9a7b297b5f4"
     },
     {
       "id": "q-scf-ecosystem-listing-partner-jobs",
@@ -2796,7 +2796,7 @@
       "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-open-rfps.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "a69603724af8d6de451159d5dfe56dd58f5f3270ea2821f116982bab561b167a"
+      "caseContentSha256": "5d9cfda41131248468fd851132e05347caa019ef72eeedc93cf13731075d55ce"
     },
     {
       "id": "q-scf-open-rfps-live",
@@ -2838,7 +2838,7 @@
       "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-rfp-tooling.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "9567b9f0ee80ec51263f73850ea4054e7fad331ac1f8bed1f6212982eac3ab2c"
+      "caseContentSha256": "56a48727ad5e87cb01621661627d792f9d092c454023e12e653d0eb66d00e4a5"
     },
     {
       "id": "q-scf-rfps-hackathons-live",
@@ -3139,7 +3139,7 @@
       "path": "eval/qa/corpus/battery/soroban/q-sor-cross-warmancer-zk-stack.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "991debef4597dcb43f63cd7d4cd5008c4d61d1674beb79dfdf1b0455aa5ed5aa"
+      "caseContentSha256": "183bc57b94f0ddaae7bd43e6dd5745eb2035f46764babe6ee2b1e7c14f3a9633"
     },
     {
       "id": "q-sor-decode-hosterror-codes",
@@ -3216,7 +3216,7 @@
       "path": "eval/qa/corpus/battery/soroban/q-sor-reflector-integration-code.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "7e770e56cfa4a7c64603408744fdb17dd53844a7ba3fd369c553440c97ee69e4"
+      "caseContentSha256": "d153952ba5085f8e72328a1d69f699460940454fbfd8d7f20ddea2fbce5d7e03"
     },
     {
       "id": "q-sor-require-auth-propagation",
@@ -3524,7 +3524,7 @@
       "path": "eval/qa/corpus/battery/soroban/q-soroban-wasm-size-limit.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "ee7ebe59eceae83509736518b820193d2bba85b15e6e4ae5bb4efd34902d43e7"
+      "caseContentSha256": "75499b496aa6d1836503e98380d01a63d75e7166fdc4e1df5f073b315e290c09"
     },
     {
       "id": "q-soroban-x402-auth-entry-signing",
@@ -4021,7 +4021,7 @@
       "path": "eval/qa/corpus/battery/soroban/q-zk-host-functions-status.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "0da36d10224cf279922f02701a9acf06ab480b5a2411cfe2dedefb2a9b750f95"
+      "caseContentSha256": "c9ce993ac1075b1e56099b7a44aca9b22786670d8025d537d0ea99909c23c614"
     },
     {
       "id": "q-zk-nullifier-storage",
@@ -4049,7 +4049,7 @@
       "path": "eval/qa/corpus/battery/soroban/q-zk-verification-resource-budget.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "e834a06fdde1f79d584506c922508447c4d54719e023ca24c8705f6c78c81d2a"
+      "caseContentSha256": "182b1016a4450e5eafb64f40212b04912c153f6086a67161929207a060a28ef8"
     }
   ]
 }

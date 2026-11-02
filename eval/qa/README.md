@@ -182,6 +182,26 @@ The percentage calculation rounds upward.
 [corpus/lifecycle-policy.json](corpus/lifecycle-policy.json) records the cadence anchor and frozen review identity.
 Keep corpus-health results separate from system-quality results.
 
+### Source sentinels
+
+A sentinel re-reads a golden's own primary source and tests one anchor for a volatile value.
+[source-sentinels.json](source-sentinels.json) holds them; [source-sentinels.mjs](source-sentinels.mjs) runs them.
+A check is `present` (the source still states the value), `absent` (a roadmap item has not shipped), or `count` (a roster still has N rows).
+A check that can hold on an empty page (`absent`, or a count of 0) also names a `guard` pattern that proves the page loaded; a failed guard is a read error.
+A failed check is a drift: it queues the case for the golden-truth workflow before its `truth.reverifyBy` date.
+A drift is never evidence for a gospel change.
+
+```sh
+npm run eval:qa:sentinels -- --check        # offline: schema, case IDs, caseAsOf pins
+npm run eval:qa:sentinels -- --ids a,b      # live read of selected sentinels
+```
+
+`caseAsOf` pins the case's `truth.asOf`. A re-verification that changes `truth.asOf` must re-confirm the anchor live (`--ids <id>` also reads a stale sentinel) and update `caseAsOf` in the same change.
+`npm test` fails while the dates differ. It cannot prove the live re-confirmation, so the reviewer checks the run output.
+Write an anchor from text that a plain fetch returns, confirm that it holds live, and avoid commit-pinned URLs, which cannot drift.
+The daily [golden-sentinels workflow](../../.github/workflows/golden-sentinels.yml) keeps one issue, labeled `golden-sentinels`, in step with the drift set.
+The [2026-11-02 trial](../../research/audits/2026-11-02-golden-freshness-probe/README.md) records the method's recall and false-alarm measurements.
+
 ## Stored outcomes and retries
 
 [agent-result.mjs](agent-result.mjs) parses each agent process into `qa-agent-result-v4`.

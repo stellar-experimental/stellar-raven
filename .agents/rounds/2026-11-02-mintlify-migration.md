@@ -84,6 +84,12 @@ vendor scorer's substring and prefix matching on short tokens. It is the general
 already tracked under #223. Zero hit-to-miss regressions is the usual standard. This re-baseline
 departs from it on purpose: the old backend no longer updates, so holding is not an option.
 
+Merge re-baseline (later on 2026-11-02): merging `origin/main` at `1539a872` changed 223 skill
+entries in the manifest (main's ecosystem-skills updates) and no `stellarDocs` entry. Every lane
+total is identical to the 15:05Z baseline, so only the fingerprint (`6e43f09f…`), `baselinedAt`, and
+local trace (`routing-2026-11-02T18-20-51-527Z.json`) moved. The merge also brings #310, which
+re-verified the five goldens whose `reverifyBy` dates expired, so the stale lane passes.
+
 ### Title snapshot held
 
 The new inventory refresh reads page titles from `llms.txt` (666 → 973 titles: +341 path/title

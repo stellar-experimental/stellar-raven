@@ -173,6 +173,13 @@ score/result rationales — "the judge failed this case" is never a reason to ch
 Refresh `truth.asOf` for volatile facts and set a new staggered, quarter-granular
 `truth.reverifyBy` on `scheduled` cases so the stale queue drips instead of cliffing.
 
+**Source sentinels.** When `truth.asOf` moves on a case that has an entry in
+`eval/qa/source-sentinels.json`, re-confirm its anchor live
+(`npm run eval:qa:sentinels -- --ids <id>`) and set its `caseAsOf` to the new date in the same
+change. When a verification confirms a volatile value on a primary page that a plain fetch can
+read, add a sentinel for it. [`eval/qa/README.md`](../../../eval/qa/README.md#source-sentinels)
+defines the format.
+
 **Sibling-consistency sweep (required on every change).** The dominant drift mechanism is a
 correction pass that fixes one file while its topical sibling keeps the old fact — producing
 goldens that cannot both be true. Before closing a
