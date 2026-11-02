@@ -163,8 +163,7 @@ high effort) changed the set and the runner on the same day:
   HackerOne policy. No plain fetch reads the live values.
 - `mazieres-chief-scientist` binds the title to his team card, and `go-sdk-module` binds the module
   to the docs' package location.
-- `mpp-payment-intents` requires the Session section after Charge. `ml-dsa-not-shipped` also
-  matches "post-quantum" and "quantum-safe".
+- `mpp-payment-intents` requires the Session section after Charge.
 - `rpc-archive-provider-names` counts the nine named archive rows, so a replaced provider drifts
   even when the row count stays at nine. Both archive sentinels guard on the table header.
 - `zenex-xlm-usd-market-active` checks the market status, not only the deployment introduction.
@@ -173,3 +172,17 @@ high effort) changed the set and the runner on the same day:
 - The runner reads stale sentinels with `--ids` and reports them as unread in report mode. A drift
   stays in the issue while its source is unreadable. The workflow fails while any sentinel is
   unread, and it runs only on the default branch.
+
+### A missed drift: ML-DSA
+
+The first ML-DSA sentinel, `ml-dsa-not-shipped`, checked that the software-versions page did not
+name ML-DSA. stellar-core v30.0.0 shipped CAP-0087 (ML-DSA verification host functions) on
+2026-10-16. On 2026-11-02 the page still listed no Protocol 30 release, so the sentinel held for
+17 days after the release. Adding `CAP-0087` to the pattern would not have helped: the page was the
+lag, not the pattern.
+
+`mainnet-protocol-29` replaces it. It checks that Mainnet Horizon reports
+`"current_protocol_version": 29`, and it guards on the Mainnet network passphrase. It drifts when
+Mainnet activates Protocol 30 (vote set for 2026-11-23), whatever the release notes call the change.
+A sentinel on a docs page that copies a release is only as fresh as that copy. Anchor on the system
+of record when one exists.
