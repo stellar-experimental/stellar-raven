@@ -1,7 +1,7 @@
 ---
 id: sd-064
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Restore or redirect the meeting author pages that the Mintlify migration removed
 evidence:
@@ -10,7 +10,8 @@ evidence:
   - the same golden case recorded the page as live on 2026-07-13 and on 2026-09-30T21:31Z, with seven author posts dated 2024-01-26 through 2024-06-13
   - stellar/stellar-docs commit 17f2d69198a803d2c5d986583229df1dfc4a398f (parent of the Mintlify migration commit 700ed32d, 2026-10-22) meetings/authors.yml defines seven authors (carstenjacobsen, elliotfriend, kalepail, anataliocs, naman, julian, kaankacar); three entries set page true
   - stellar/stellar-docs main 7cb5e8a492706d2ae95bbb14be737fbf96100058 has no meetings/authors.yml, and redirects.json has no rule for /meetings/authors
-  - golden case q-builder-content-by-person (golden audit pass 2, 2026-11-02)
+  - Raven eval golden case q-builder-content-by-person, audited 2026-11-02
+  - 2026-11-02 pre-existing upstream PR https://github.com/stellar/stellar-docs/pull/2945 (OPEN, opened 2026-10-22 by ElliotFriend) proposes this fix; Raven did not file a separate issue
 ---
 
 ## Finding
@@ -25,7 +26,7 @@ paths.
 
 Readers and tools that follow an old author link get a 404 page and lose the author's post list.
 
-This is a `docs-content` finding. It is a migration regression.
+This is a migration regression.
 
 ## Evidence
 
@@ -40,8 +41,10 @@ Three of them set `page: true`. The current `main` has no `meetings/authors.yml`
 ## Recommendation
 
 Add the author pages back to the meetings section, or add redirects for the old
-`/meetings/authors/<key>` paths. A redirect target can be the meetings index filtered by author,
-or the meetings index itself.
+`/meetings/authors/<key>` paths. A redirect to the meetings index `/meetings` is the smallest fix.
 
 Smallest recheck: `curl -sIL https://developers.stellar.org/meetings/authors/kalepail` returns
 HTTP 200 after a redirect or directly.
+
+The open upstream PR stellar/stellar-docs#2945 adds redirects from `/meetings/authors` and
+`/meetings/authors/:slug*` to `/meetings`.

@@ -66,22 +66,22 @@ Total findings: 110
 | sd-057 | The Anchor Platform admin guide uses Circle's Testnet USDC issuer without a network label. Its asset-ID explanation says the example…       | reported-upstream | 2026-10-09 | 0           |
 | sd-058 | The fee-payer signing example calls removed XDR getter methods with the current JavaScript SDK. It throws TypeError: txEnvelope.v1 is not…  | reported-upstream | 2026-10-09 | 0           |
 | sd-059 | The Stellar Docs search does not find text inside <ResponseField> components. The page store and the rendered site hold the text, but a…    | reported-upstream | 2026-11-02 | 0           |
-| sd-060 | The x402 overview page lists Albedo as a wallet that supports auth-entry signing. Current Albedo integration code does not support…         | verified          | 2026-11-02 | 0           |
+| sd-060 | The x402 overview page lists Albedo as a wallet that supports auth-entry signing. Albedo has no auth-entry signing intent, and the Stellar… | verified          | 2026-11-02 | 0           |
 | sd-061 | The claimable-balances guide says that RPC getLedgerEntries gets the Balance ID. The sample that follows needs the Balance ID as its input  | verified          | 2026-11-02 | 0           |
 | sd-062 | The SDP Registration API reference says that wallets authenticate through Anchor Platform endpoints on a separate host. SDP 6.0.0 removed…  | verified          | 2026-11-02 | 0           |
 | sd-063 | The RestoreFootprintOp section gives a fixed restored-entry TTL of current_ledger_number + 4095 for persistent entries. The live Mainnet…   | verified          | 2026-11-02 | 0           |
-| sd-064 | The Mintlify migration removed the meeting author index pages. It added no redirect. Old links such as /meetings/authors/kalepail now…      | verified          | 2026-11-02 | 0           |
+| sd-064 | The Mintlify migration removed the meeting author index pages. It added no redirect. Old links such as /meetings/authors/kalepail now…      | reported-upstream | 2026-11-02 | 0           |
 | sd-065 | The Debugging Errors page names the resource-limit errors HostError(Budget, LimitExceeded) and HostError(Storage, LimitExceeded). No error… | verified          | 2026-11-02 | 0           |
 | sd-066 | The Test Events guide says that env.events().all() returns every event published since the Env was created. Its example makes three…        | verified          | 2026-11-02 | 0           |
 | sd-067 | The "Events: SEP-41 Tokens vs. Stellar Asset Contracts" table says that the mint and clawback events are "not part of this interface" for…  | verified          | 2026-11-02 | 0           |
 | sd-068 | The events ingest guide says that the getEvents retention window is "7 days at most". The window is the configurable RPC setting…           | verified          | 2026-11-02 | 0           |
 | sd-069 | The EVM migration page "Solidity and Rust Advanced Concepts" teaches events with e.events().publish(topics, amount). soroban-sdk…           | verified          | 2026-11-02 | 0           |
-| sd-070 | The storage migration guide says that reading a stored DataV1 as a DataV2 with an added Option field traps with Error(Object,…              | verified          | 2026-11-02 | 0           |
+| sd-070 | The storage migration guide says that reading a stored DataV1 as a DataV2 with an added Option field traps with Error(Object,…              | reported-upstream | 2026-11-02 | 0           |
 | sd-071 | The ZK page section "BN254 host functions" lists three functions from Protocol 25. It omits the seven BN254 host functions that Protocol…   | verified          | 2026-11-02 | 0           |
 | sd-072 | The Lab API Explorer index page says "Horizon is considered deprecated." in its Horizon Endpoints card. Every other current page uses the…  | verified          | 2026-11-02 | 0           |
 | sd-073 | The Indexers page says "Goldsky Mirrors already support Stellar". Goldsky's own documentation says that Stellar datasets are no longer…     | verified          | 2026-11-02 | 0           |
-| sd-074 | The Scaffold Stellar page tells readers to configure projects with environments.toml. The current Scaffold CLI uses scaffold.yml (schema…   | verified          | 2026-11-02 | 0           |
-| sd-075 | The Hello World tutorial says that stellar contract build is "a small wrapper around cargo build". It says the CLI is "a shortcut for"…     | verified          | 2026-11-02 | 0           |
+| sd-074 | The Scaffold Stellar page tells readers to configure projects with environments.toml. The current Scaffold CLI uses scaffold.yml (schema…   | reported-upstream | 2026-11-02 | 0           |
+| sd-075 | The Hello World tutorial says that stellar contract build is "a small wrapper around cargo build". It says the CLI is "a shortcut for"…     | fixed-upstream    | 2026-11-02 | 0           |
 | sd-077 | Two stellar.org pages describe Marketing Grants eligibility differently for a project that has not launched                                 | verified          | 2026-11-02 | 0           |
 
 ## lumenloop

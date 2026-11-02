@@ -9,21 +9,21 @@ evidence:
   - stellar/stellar-docs main 7cb5e8a492706d2ae95bbb14be737fbf96100058 docs/build/agentic-payments/x402/index.mdx line 26 is "- Albedo"
   - Creit-Tech/Stellar-Wallets-Kit HEAD 9db6b363f678eb7ba95b6349d4a32a60d5b1253b src/sdk/modules/albedo.module.ts lines 57-61 throw code -3 with message 'Albedo does not support the "signAuthEntry" function'
   - 2026-11-02 npm @albedo-link/intent latest 0.13.0 (modified 2025-06-13); src/intent-interface.js defines the intents public_key, sign_message, tx, pay, trust, exchange, implicit_flow, manage_account, and batch, and no auth-entry intent
+  - 2026-11-02 stellar-expert/albedo master c2fe8f68 (2026-08-31) intent/src/intent-interface.js defines the same nine intents, so unreleased Albedo code also has no auth-entry intent
+  - the Wallets Kit Albedo module already rejected signAuthEntry at commit 90b8854a (2025-09-13); the x402 page listed Albedo from its first version, stellar/stellar-docs#2264 (merged 2026-02-18)
   - golden case q-soroban-x402-auth-entry-signing (golden audit pass 2, 2026-11-02)
 ---
 
 ## Finding
 
-The x402 overview page lists Albedo as a wallet that supports auth-entry signing. Current Albedo
-integration code does not support auth-entry signing.
+The x402 overview page lists Albedo as a wallet that supports auth-entry signing. Albedo has no
+auth-entry signing intent, and the Stellar Wallets Kit Albedo module rejects `signAuthEntry`.
 
 The page says that a wallet must support Soroban authorization-entry signing for x402. It then
 lists Albedo with seven other wallets. The Stellar Wallets Kit Albedo module throws an error for
 `signAuthEntry`. The Albedo intent library has no auth-entry intent.
 
 A reader can choose Albedo for an x402 client and get a failure at signing time.
-
-This is a `docs-content` finding.
 
 ## Evidence
 
