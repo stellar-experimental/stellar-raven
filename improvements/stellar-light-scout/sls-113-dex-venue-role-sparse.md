@@ -9,7 +9,7 @@ evidence:
   - "Examples with venueRole null: LumAgg, Lumenswap, CLOB, Zenex, Ichi, Wombat, Balanced, LI.FI, SODAX, Stellarport, SwiftEx, Interstellar."
   - "OpenAPI 1.9.116 Project.venueRole enum ['amm','native-orderbook','aggregator-router','trading-ui','wallet-integrated']: 'count venueRole in ('amm','native-orderbook') for independent venues. Null = not yet classified (unknown, NOT 'not a venue').'"
   - "2026-11-02 GET /api/projects/search?type=DEX&venueRole=amm returned meta.warnings 'Unknown parameter(s) ignored: venueRole. Results are NOT filtered by them. Supported: q, category, type, status, scfAwarded, limit, offset.'"
-  - "Related: active sls-085 (Soroswap contract role) and sls-099 (Soroswap aggregator venue list) cover single records, not taxonomy coverage."
+  - "Related: sls-085 (Soroswap contract role; resolved 2026-11-02) and sls-099 (Soroswap aggregator venue list) cover single records, not taxonomy coverage."
   - "Dedupe 2026-11-02: no Stellar-Light/stellarlight issue names venueRole coverage."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item Q6."
   - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1905

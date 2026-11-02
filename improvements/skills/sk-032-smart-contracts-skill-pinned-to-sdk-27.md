@@ -1,7 +1,7 @@
 ---
 id: sk-032
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "Smart Contracts skill pins soroban-sdk 27 and uses the deprecated update_current_contract_wasm; Mainnet runs Protocol 29"
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - "Dedupe 2026-11-02: gh issue list and gh pr list on stellar/stellar-dev-skill (all states) show no open report of Protocol 29, SDK 28/29, or update_current_contract_wasm. No active Raven finding names update_current_contract_wasm."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' items Q1 and R07."
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/162
+  - "fixed upstream 2026-11-02: https://github.com/stellar/stellar-dev-skill/pull/169 merged and closed #162. Live recheck of the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): skills/smart-contracts/SKILL.md lines 71 and 77 pin soroban-sdk "29"; line 41 drops the mainnet-version clause and keeps RPC getVersionInfo; development.md line 340 calls update_current_contract(ContractExecutable::Wasm(new_wasm_hash)) and line 345 notes the CAP-85 change. crates.io soroban-sdk max_stable_version 29.0.1; Mainnet and Testnet getVersionInfo report protocolVersion 29 (2026-11-02)."
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sk-033
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "development.md swaps the try_ result nesting: soroban-sdk returns the contract error as Err(Ok(e)), not Ok(Err(e))"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Dedupe 2026-11-02: no stellar/stellar-dev-skill issue or PR (all states) mentions try_ nesting; no active or resolved Raven finding covers it."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item R04. Golden follow-up is the separate TODO item 'Add golden cases for the confirmed HackMeridian gaps' (R04)."
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/163
+  - "fixed upstream 2026-11-02: https://github.com/stellar/stellar-dev-skill/pull/170 merged and closed #163. Live recheck of the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): skills/smart-contracts/development.md line 287 says try_foo() returns Result<Result<T, _>, Result<E, InvokeError>>, Err(Ok(e)) is the typed error, and Err(Err(_)) is an InvokeError."
 ---
 
 ## Finding

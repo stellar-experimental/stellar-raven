@@ -2,7 +2,7 @@
 id: wai-001
 service: workers-ai-provider
 status: declined-upstream
-disposition: Accept the owner's decision to freeze workers-ai-provider. Do not re-file. Raven retires this record when the demo moves to createAI from agents/models/ai-sdk (.agents/TODO.md).
+disposition: Accept the owner's decision to freeze workers-ai-provider. Do not re-file. A Raven migration to createAI from agents/models/ai-sdk (.agents/TODO.md) removes Raven's dependency but does not fix this package; closing the record then needs a reviewed lifecycle decision.
 discovered: 2026-08-06
 upstreamTitle: workers-ai-provider rejects the Unified Billing moonshotai/Kimi catalog slug before AI.run
 evidence:
@@ -29,8 +29,8 @@ recurrences:
 `moonshotai/kimi-k3` when provider plugins are configured. The 26-entry gateway
 registry omits `moonshotai`, so model construction throws
 `Unknown gateway provider "moonshotai" (from slug "moonshotai/kimi-k3")` before
-`AI.run` can dispatch it. The current npm `latest` is also 4.0.0, so this is not
-an upgrade-only issue.
+`AI.run` can dispatch it. On 2026-11-02 the npm `latest` is 4.0.1, which npm marks
+deprecated, and the trigger still reproduces there.
 
 ## Evidence
 
@@ -55,10 +55,10 @@ resolution. Raven keeps a second, providers-less instance solely for this prefix
 that sacrifices the provider-SDK normalization and gateway-delegate features for
 Kimi while the primary instance remains configured for other vendors.
 
-PR [#639](https://github.com/cloudflare/ai/pull/639) adds the proposed registry entry
-and a provider patch changeset. Its `gateway-core` package is private and source-bundled;
-it does not require a separate public package release. The PR remains a candidate fix.
-Keep the workaround until a published package passes the local reproduction and consumer tests.
+PR [#639](https://github.com/cloudflare/ai/pull/639) added the proposed registry entry.
+On 2026-10-20 a Cloudflare maintainer closed it unmerged: the package is feature frozen,
+and `createAI` from `agents/models/ai-sdk` replaces it. Raven keeps the workaround while the
+demo uses this package.
 
 ## Recommendation
 

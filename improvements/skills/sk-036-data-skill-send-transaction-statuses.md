@@ -1,7 +1,7 @@
 ---
 id: sk-036
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "Data skill's sendTransaction example handles only PENDING; DUPLICATE, TRY_AGAIN_LATER, and ERROR fall through silently"
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "Dedupe 2026-11-02: no stellar/stellar-dev-skill issue or PR (all states) mentions sendTransaction status handling. Resolved sd-003 covered the docs search index for RPC method pages, not this skill."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item R34."
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/166
+  - "fixed upstream 2026-11-02: https://github.com/stellar/stellar-dev-skill/pull/168 merged and closed #166. Live recheck of the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): skills/data/SKILL.md line 129 lists PENDING, DUPLICATE, TRY_AGAIN_LATER, and ERROR; the example retries TRY_AGAIN_LATER (line 136), throws on ERROR with response.errorResult (line 144), and polls on PENDING or DUPLICATE (line 150); the dapp example inspects response.errorResult (line 382)."
 ---
 
 ## Finding

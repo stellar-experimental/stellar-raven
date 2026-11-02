@@ -1,7 +1,7 @@
 ---
 id: sk-034
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "Resource-limits table omits the 400-entry footprint cap and labels the 200 disk-read limit as all reads"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Dedupe 2026-11-02: no stellar/stellar-dev-skill issue or PR (all states) mentions footprint entries or tx_max_footprint_entries; no Raven finding covers the skill table."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item R08."
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/164
+  - "fixed upstream 2026-11-02: https://github.com/stellar/stellar-dev-skill/pull/171 merged and closed #164. Live recheck of the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): skills/smart-contracts/development.md line 399 adds 'Footprint entries (read-only + read-write) | 400', and line 400 reads 'Disk-read entries / written entries | 200 / 200'."
 ---
 
 ## Finding

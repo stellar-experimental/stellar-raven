@@ -291,6 +291,14 @@
       "repo": "stellar/stellar-docs",
       "reason": "docs/build/building-with-ai.mdx, for-agents.js, and the agent-cli architecture page are source content owned by stellar/stellar-docs."
     },
+    "sd-080": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/build/smart-contracts/example-contracts/fuzzing.mdx is source content owned by stellar/stellar-docs."
+    },
+    "sd-081": {
+      "repo": "stellar/stellar-docs",
+      "reason": "restore-contract-js.mdx and state-archival.mdx are source content owned by stellar/stellar-docs."
+    },
     "cs-009": {
       "repo": "Inferara/soroban-security-portal",
       "reason": "Inferara/soroban-security-portal is the public, issue-enabled repository for stellarsecurityportal.com (its GitHub homepage). The portal owns the audit-report dataset that Stellar Light/Scout mirrors."

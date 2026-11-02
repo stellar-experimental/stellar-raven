@@ -47,9 +47,12 @@ page read, and the change is measured on the retrieval A/B. Remove when `sd-059`
 
 New evidence (2026-11-02, `rounds/2026-11-02-upstream-followup.md`): the site's own MCP search
 (`POST https://developers.stellar.org/mcp`, tool `search_stellar_developer_docs`, public, no key)
-returns the right result-code page first for six of the seven probe queries. Raven's Discovery API
-path (`POST /discovery/v1/search/<domain>`) returns none of them in its top 5. A third option is to
-serve `search_docs` from that backend. It needs the same gates: a general mechanism, a free
+returns a relevant result-code page first for all seven probe queries (for `op_low_reserve`, several
+operations share the code, and Set Options ranks third). In the author's production measurement,
+Raven's Discovery API path (`POST /discovery/v1/search/<domain>`, then the adapter's path scope and
+query-term guard) returned none of them in its top 5. First compare the raw Discovery candidates with
+the adapter output, to rule out Raven's own filtering. A third option is to serve `search_docs` from
+the site MCP backend. It needs the same gates: a general mechanism, a free
 retrieval A/B on the golden docs pages and the identifier probe, the routing gate, and a check of
 the backend's rate limits and terms.
 
@@ -97,6 +100,19 @@ Next check: find whether the repository was renamed, made private, or deleted, a
 evidence, or resolve or retarget the finding.
 
 Done when: `npm run improvements:lint -- --live` passes.
+
+### Bump the `stellar-dev` skill pin to serve the sk-032 to sk-036 fixes
+
+On 2026-11-02 stellar/stellar-dev-skill merged PRs #167 to #171, which fix `sk-032` to `sk-036` in
+the upstream skill text (main `9c604c2b`). Raven still serves the pin `cac64041`
+(`ecosystem-skills/MANIFEST.json`), so `codemode.skill.read` returns the old text until the pin
+moves. Run the pin update and `node scripts/check-pin-review.mjs`, the routing gate, and the exposure
+guards. Deploy only after the 2026-11-02 overnight QA run releases its remote-identity pin
+(`rounds/2026-11-02-golden-overnight.md`).
+
+Done when: production `codemode.skill.read` serves the fixed sections, for example
+`skills/smart-contracts/SKILL.md` with `soroban-sdk = "29"`.
+
 
 ## Routing
 
@@ -451,14 +467,16 @@ On 2026-10-20 Cloudflare closed cloudflare/ai#639 unmerged and froze `workers-ai
 marks 4.0.1 deprecated and names `createAI` from `agents/models/ai-sdk` as the replacement. That
 replacement accepts any `<author>/<model>` catalog id, so it can remove the second providers-less
 instance that `src/demo/chat.ts` keeps for `moonshotai/kimi-k3` (finding `wai-001`, now
-`declined-upstream`). Raven pins `agents` 0.28.1; `agents/models/ai-sdk` ships in 0.32.0. The
-`agents` upgrade also moves the MCP server runtime, so it needs `npm run test:smoke`, the
+`declined-upstream`). Raven pins `agents` 0.28.1. Both 0.28.1 and 0.32.0 export `createAI` from
+`agents/models/ai-sdk`, but in a 2026-11-02 review check only 0.32.0 accepted `moonshotai/kimi-k3`
+before a binding call, so the migration needs the upgrade. The `agents` upgrade also moves the MCP server runtime, so it needs `npm run test:smoke`, the
 single-`workerd` check above, and a Playground run of every demo model.
 
 Done when: `src/demo` and `test/demo-model-config.test.ts` no longer import
 `workers-ai-provider`, the package is out of `package.json`, and `wai-001` is closed out under the
-`improvements-pipeline` skill with the migration commit as evidence. The resolver accepts only
-`fixed-upstream` records, so that close-out needs an explicit decision on the receipt.
+`improvements-pipeline` skill. The migration removes Raven's dependency but does not fix the frozen
+package, so it is not `fixed-upstream` evidence. The resolver accepts only `fixed-upstream`
+records, so that close-out needs a reviewed lifecycle decision.
 
 ## Eval instruments
 
