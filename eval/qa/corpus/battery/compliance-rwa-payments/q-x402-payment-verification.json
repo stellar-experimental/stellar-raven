@@ -282,7 +282,7 @@
         "https://www.x402.org/facilitator/supported (observedAt 2026-11-02): the only Stellar kind is {\"x402Version\": 2, \"scheme\": \"exact\", \"network\": \"stellar:testnet\"}.",
         "gh api repos/OpenZeppelin/relayer-plugin-x402-facilitator (observedAt 2026-11-02): archived false, pushed_at 2026-10-28T11:07:33Z.",
         "Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/cli/agent-cli/guides/pay-for-apis-x402#facilitators (observedAt 2026-11-02): \"Coinbase's hosted facilitator supports Stellar on testnet only.\"",
-        "Independent verifier 2026-11-02: golden.answer modify (adds the Community Facilitators section generically, 'none' instead of 'neither'; names no community project because the page says 'Varial' in its wallet list and 'Vellar Facilitator' in its facilitator section), golden.notes and truth.sources[0].ref accept (/private/tmp/claude-501/golden-audit/verify/compliance-rwa-payments-04.json). keyFacts[3] still holds.",
+        "Independent verifier 2026-11-02: golden.answer modify (adds the Community Facilitators section generically, 'none' instead of 'neither'; names no community project because the page says 'Varial' in its wallet list and 'Vellar Facilitator' in its facilitator section), golden.notes and truth.sources[0].ref accept (.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-04.json). keyFacts[3] still holds.",
         "Sibling sweep 2026-11-02: q-defi-x402-on-stellar-what, q-soroban-x402-auth-entry-signing, q-ti-openzeppelin-relayer, q-hist-x402-stellar-announcement, q-agent-payment-standard-choice, q-smart-wallet-fee-sponsorship (grep x402.org facilitator|Coinbase facilitator|facilitator mandatory); no contradiction."
       ],
       "rootCause": [

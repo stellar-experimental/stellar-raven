@@ -115,7 +115,7 @@
         "Raven MCP execute lumenloop.find_av_passages (observedAt 2026-11-02T16:37:29.857Z) — same rows and keys; no transcript field.",
         "https://stellar.org/events/community/sdf-at-devcon-2024 — \"Wrapped: multichain day — November 12, 2024 11 am - 7 pm\" (observedAt 2026-11-02): the recording predates created_at by 16 months.",
         "catalog/manifest.json lumenloop.find_av_passages — \"created_at (upstream metadata; do not treat it as the recording date or recency evidence)\"; GET https://api.lumenloop.com/v1/tools still says \"the recording's date\" (conflict, ll-019 open).",
-        "Independent verifier accepted the answer, asOf, and reverifyBy changes: /private/tmp/claude-501/golden-audit/verify/soroban-04.json.",
+        "Independent verifier accepted the answer, asOf, and reverifyBy changes: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-04.json.",
         "Sibling sweep 2026-11-02: grep created_at over the battery → q-gap-av-offset-not-timestamp (notes only list created_at as a row field; no recording-date claim), q-ti-video-tutorials, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history; no contradiction found."
       ],
       "rootCause": [

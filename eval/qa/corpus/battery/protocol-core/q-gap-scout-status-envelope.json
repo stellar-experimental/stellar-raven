@@ -62,7 +62,7 @@
         "Live C 2026-11-02: https://stellarlight.xyz/api/status -- '{\"ok\":true,\"service\":\"Stellar Scout\",\"version\":\"scout-1.0.0\",\"apiVersion\":\"1.9.116\",\"generatedAt\":\"2026-11-02T16:00:22.243Z\",\"sources\":[{\"name\":\"projects\",\"count\":1139,\"lastUpdatedAt\":...}'",
         "Live B 2026-11-02: catalog/manifest.json#scout.getStatus -- 'the upstream payload carries its own ok health/status flag at data.ok - distinct from the envelope call-status ok.'",
         "Live B 2026-11-02: catalog/manifest.json#scout.getStatus -- 'distinct from the envelope call-status ok'",
-        "Re-verified with no gospel change; proposer matrix /private/tmp/claude-501/golden-audit/matrices/protocol-core-01.json (no proposal, so no verifier decision).",
+        "Re-verified with no gospel change; proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json (no proposal, so no verifier decision).",
         "Sibling sweep 2026-11-02: q-ti-explain-repo-payload-status, q-history-ecosystem-index-freshness-live, q-gap-scout-changelog-envelope checked; no contradiction."
       ]
     },

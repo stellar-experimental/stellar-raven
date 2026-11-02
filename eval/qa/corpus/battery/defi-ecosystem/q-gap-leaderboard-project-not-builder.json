@@ -105,7 +105,7 @@
         "Raven scout.getLeaderboard({}) 2026-11-02 (dataAsOf 2026-11-02T11:23:43.582Z): counts.returned 50, total 905; metricDefinitions.activity \"orders by github.commits90d ... summed across the project's indexed repos\".",
         "Stellar Light 2026-11-02: https://stellarlight.xyz/api/builders?limit=2 — people rows keyed by githubUsername; catalog/manifest.json#scout.getBuilders \"The Stellar PEOPLE directory\".",
         "Stellar Light 2026-11-02: https://stellarlight.xyz/api/projects/search?q=microvault — Microvault and Noir are project records; today they rank 28 and 146 on activity/30d, so the golden now dates the 2026-07-11 observation.",
-        "Independent verifier accepted the one change (date the Microvault/Noir observation): /private/tmp/claude-501/golden-audit/verify/defi-ecosystem-05.json.",
+        "Independent verifier accepted the one change (date the Microvault/Noir observation): .agents/rounds/2026-11-02-golden-audit/pass1/defi-ecosystem-05.json.",
         "Sibling sweep 2026-11-02: grep getLeaderboard|Microvault → q-tool-developer-leaderboard-live, q-tool-leaderboard-open-issues, q-eco-most-active-defi-projects; none names Microvault or Noir; no contradiction."
       ],
       "rootCause": [

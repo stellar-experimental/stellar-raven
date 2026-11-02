@@ -11,7 +11,7 @@ evidence:
   - "2026-11-02 primary source: https://raw.githubusercontent.com/stellar/freighter/master/README.md opens \"Varial (formerly Freighter) is a non-custodial wallet extension\"; the README change is commit 8186584326 (2026-10-30, \"Update the README for the Varial rebrand (#3055)\")"
   - "2026-11-02 curl https://freighter.app/ returned HTTP 301 to https://varialwallet.com/; the target page title is \"Varial | Your Everyday Stellar Wallet\""
   - "Affected golden cases: eval/qa/corpus/battery/retail-consumer/q-eco-freighter-wallet.json, eval/qa/corpus/battery/retail-consumer/q-tool-freighter-wallet.json, eval/qa/corpus/battery/defi-ecosystem/q-eco-stellar-wallets-list.json"
-  - "Intake note: this is a committed directory-record correction; the owner repo is lumenloop/stellar-ecosystem-db (intake.json per-finding override still to add)"
+  - "Intake note: this is a committed directory-record correction; the owner repo is lumenloop/stellar-ecosystem-db (intake.json per-finding override added)"
 ---
 
 ## Finding

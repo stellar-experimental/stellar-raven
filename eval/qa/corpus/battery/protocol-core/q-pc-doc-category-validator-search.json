@@ -70,7 +70,7 @@
         "Live B 2026-11-02: specs/stellar-docs.json -- 'facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix'",
         "Live B 2026-11-02: catalog/manifest.json#stellarDocs.search_docs_in_category -- 'enum: build, learn, tokens, data, tools, platforms, validators, networks, meetings'",
         "Live F 2026-11-02: npx vitest run test/adapters.test.ts -t 'URL-prefix' (worktree) -- 'Test Files 1 passed; Tests 1 passed | 95 skipped'",
-        "Re-verified with no gospel change; proposer matrix /private/tmp/claude-501/golden-audit/matrices/protocol-core-01.json (no proposal, so no verifier decision).",
+        "Re-verified with no gospel change; proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json (no proposal, so no verifier decision).",
         "Sibling sweep 2026-11-02: no topical sibling names search_docs_in_category validators; no contradiction."
       ]
     },

@@ -254,7 +254,7 @@
         "Press 2026-11-02: https://cryptobriefing.com/stellar-ranks-second-active-developers/ — SDF published the Q3 2026 report on October 19, 2026, with the same $25.1B, $496M, and $4.1B figures.",
         "Lumenloop 2026-11-02: https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 — \"$25.1 billion in stablecoin volume ... $4.1 billion in RWAs\".",
         "Arithmetic check: Q3 $25.1B at +121% QoQ implies Q2 about $11.36B, consistent with $11.4B.",
-        "Independent verifier accepted all five changes (answer as-of date, Q3/Q2 bullets, three notes edits): /private/tmp/claude-501/golden-audit/verify/defi-ecosystem-05.json.",
+        "Independent verifier accepted all five changes (answer as-of date, Q3/Q2 bullets, three notes edits): .agents/rounds/2026-11-02-golden-audit/pass1/defi-ecosystem-05.json.",
         "Sibling sweep 2026-11-02: grep RWA|Q3 2026|$4.1B|$4.3B|$25.1B → q-asset-rwa-tokenized-freshness (dated early/mid-2026 low-single-digit $B gate; Q3 $4.1B is a later point on the same trajectory); no contradiction."
       ],
       "rootCause": [

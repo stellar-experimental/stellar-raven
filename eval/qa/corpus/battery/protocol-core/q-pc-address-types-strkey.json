@@ -168,7 +168,7 @@
         "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/commits/master/ecosystem/sep-0023.md -- '2026-10-14 'SEP-23: add muxed contract strkey (W…) for CAP-84 (#2020)''",
         "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0084.md -- 'Status: Implemented ... Protocol version: 30'",
         "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- 'protocol_version=29'",
-        "Independent verifier decisions: golden.notes (accept) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Independent verifier decisions: golden.notes (accept) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
         "Sibling sweep 2026-11-02: grep strkey/SEP-0023 -> q-pc-muxed-accounts, q-soroban-contract-id-derivation, q-ti-custodial-account-generation-c-address, q-ti-secret-key-vs-mnemonic-derivation, q-pc-memos-reference, q-protocol-version-history-list; none asserts the prefix list is closed; no contradiction."
       ],
       "rootCause": [

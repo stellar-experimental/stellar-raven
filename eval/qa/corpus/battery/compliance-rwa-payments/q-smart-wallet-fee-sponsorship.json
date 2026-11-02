@@ -254,7 +254,7 @@
         "https://developers.stellar.org/docs/tokens/stellar-asset-contract (observedAt 2026-11-02): \"When the SAC transfers assets between contracts, it uses Contract Data ledger entries to store the balances for contracts. ... Stellar account balances for issued assets are always stored in trust lines\".",
         "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/fee-abstraction/README.md (observedAt 2026-11-02): FeeForwarder \"enforces that the user is charged at most `max_fee_amount`\".",
         "Raven stellarDocs.search_docs 'choose a fee sponsorship approach relayer fee-bump sponsored reserves' (observedAt 2026-11-02): top hit https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship#combining-approaches (the moved page is indexed).",
-        "Independent verifier 2026-11-02 accepted golden.notes and truth.sources[0].ref (/private/tmp/claude-501/golden-audit/verify/compliance-rwa-payments-04.json).",
+        "Independent verifier 2026-11-02 accepted golden.notes and truth.sources[0].ref (.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-04.json).",
         "Sibling sweep 2026-11-02: q-x402-payment-verification, q-pc-sponsored-reserves, q-defi-x402-on-stellar-what (grep FeeForwarder|hosted facilitator); no contradiction."
       ],
       "rootCause": [

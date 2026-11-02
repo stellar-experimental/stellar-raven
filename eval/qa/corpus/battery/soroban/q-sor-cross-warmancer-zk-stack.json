@@ -198,7 +198,7 @@
         "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0059.md, cap-0074.md, cap-0080.md — \"CAP-0059 Status: Final, Protocol version: 22; CAP-0074 Status: Final, Protocol version: 25; CAP-0080 Status: Final, Protocol version: 26\" (class B, observedAt 2026-11-02)",
         "https://developers.stellar.org/docs/build/apps/zk — \"X-Ray (Protocol 25) introduced native host functions for zero-knowledge-friendly primitives (BN254 and Poseidon/Poseidon2)\" (class A, observedAt 2026-11-02)",
         "Sibling sweep 2026-11-02: q-zk-proof-systems-stellar, q-zk-host-functions-status, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick — no contradiction; no gospel change in this case.",
-        "Independent verifier decisions: /private/tmp/claude-501/golden-audit/verify/soroban-02.json; proposer matrix: /private/tmp/claude-501/golden-audit/matrices/soroban-02.json."
+        "Independent verifier decisions: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json; proposer matrix: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json."
       ],
       "rootCause": [
         "freshness-drift"

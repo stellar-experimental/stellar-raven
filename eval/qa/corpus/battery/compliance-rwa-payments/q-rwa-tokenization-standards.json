@@ -193,7 +193,7 @@
         "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md (observedAt 2026-11-02): \"SEP: 0041 Title: Soroban Token Interface ... Updated: 2026-08-24 Version 0.5.2\".",
         "Raven stellarDocs.search_docs 'SEP-56 tokenized vault standard draft' -> https://developers.stellar.org/docs/tools/openzeppelin-contracts#audited-modules-available (observedAt 2026-11-02): \"The Fungible Token Vault extends the Fungible Token and implements SEP-56 Tokenized Vault Standard\".",
         "stellarDocs.search_docs -> https://developers.stellar.org/docs/tokens/control-asset-access#authorization-revocable-0x2 (observedAt 2026-11-02): \"This setting is useful for issuers of regulated assets\".",
-        "Independent verifier 2026-11-02 accepted the golden.notes as-of date bump (/private/tmp/claude-501/golden-audit/verify/compliance-rwa-payments-04.json).",
+        "Independent verifier 2026-11-02 accepted the golden.notes as-of date bump (.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-04.json).",
         "Sibling sweep 2026-11-02: q-rwa-stellar-vs-erc20-regulated, q-crp-oz-rwa-erc3643-trex, q-sep-41-token-interface; no contradiction (SEP-56 still Draft vault interface; SEP-41 still the token interface)."
       ],
       "rootCause": [

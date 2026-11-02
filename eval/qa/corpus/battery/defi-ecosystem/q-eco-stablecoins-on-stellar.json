@@ -295,7 +295,7 @@
         "Raven scout.getStablecoins 2026-11-02 (meta.source https://stellarlight.xyz/api/stablecoins, dataAsOf 2026-11-02T16:22:16.011Z): \"assetId USDC-GA5ZSEJY, issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN, marketCapUSD 321134258.33; counts.tracked 41\" — Circle USDC is in the live registry, so the sls-066 cached-copy caution is expired and removed.",
         "Raven scout.getStablecoins 2026-11-02: Circle EURC row assetId EURC-GDHU6WRG has peg EUR, so 'issuer-led dollars' was wrong; notes now say 'issuer-led fiat stablecoins'.",
         "Horizon 2026-11-02: https://horizon.stellar.org/assets?asset_code=TZS — ClickPesa TZS live (toml connect.clickpesa.com).",
-        "Independent verifier accepted all three changes (avoid[0], two notes edits): /private/tmp/claude-501/golden-audit/verify/defi-ecosystem-05.json.",
+        "Independent verifier accepted all three changes (avoid[0], two notes edits): .agents/rounds/2026-11-02-golden-audit/pass1/defi-ecosystem-05.json.",
         "Sibling sweep 2026-11-02: grep PYUSD|Paxos|sls-066|Circle USDC → q-eco-pyusd-stellar-freshness (avoid[0] wording aligned in this batch), q-asset-usdc-eurc-issuer; no contradiction."
       ],
       "rootCause": [

@@ -168,7 +168,7 @@
         "Live A 2026-11-02: https://developers.stellar.org/docs/learn/glossary#starlight -- 'The project is no longer maintained'",
         "Live E 2026-11-02: Raven stellarDocs.search_docs('Starlight layer 2 payment channel') -- 'glossary#starlight snippet: 'An experimental layer 2 payment channel protocol ... The project is no''",
         "Live C 2026-11-02: Scout centaurus -- 'status Inactive'",
-        "Independent verifier decisions: golden.answer (accept); golden.notes (verifier modify) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Independent verifier decisions: golden.answer (accept); golden.notes (verifier modify) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
         "Sibling sweep 2026-11-02: grep Centaurus/Starlight -> only this case names Centaurus; q-protocol-19-preconditions-cap-0021, q-mpp-discovery-and-modes, q-agent-payment-standard-choice, q-defi-streaming-payments-prior-art checked; no contradiction."
       ],
       "rootCause": [

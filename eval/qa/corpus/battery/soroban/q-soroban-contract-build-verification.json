@@ -71,7 +71,7 @@
         "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md — \"Status: Draft ... Updated: 2026-07-15 Version: 0.6.0 ... Complementary to [SEP-55] ... `bldimg` ... `bldopt` ... `bldarg` ... `source_sha256`\" (observedAt 2026-11-02).",
         "https://stellar.org/protocol/sep-58 — \"Status: Draft Created: 2026-05-01 Updated: 2026-07-15 Version: 0.6.0\" (observedAt 2026-11-02).",
         "Local stellar 28.1.0 `stellar contract info --help` — \"build  Output the contract build information, if available\" (observedAt 2026-11-02).",
-        "Independent verifier accepted the notes, asOf, and reverifyBy changes: /private/tmp/claude-501/golden-audit/verify/soroban-04.json.",
+        "Independent verifier accepted the notes, asOf, and reverifyBy changes: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-04.json.",
         "Sibling sweep 2026-11-02: grep 'SEP-55|SEP-58|sep-0058' over the battery → only this case; q-soroban-contractmeta-vs-contractevent (contractmetav0) has no SEP version claim; no contradiction."
       ],
       "rootCause": [

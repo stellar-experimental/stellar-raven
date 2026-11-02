@@ -52,15 +52,6 @@ result-code queries in `rounds/2026-11-02-mintlify-migration/identifier-probe.js
 `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search call or one hinted
 page read, and the change is measured on the retrieval A/B. Remove when `sd-059` is fixed upstream.
 
-### Fold the Mintlify QA golden points into the golden audit
-
-The 2026-11-02 QA row review found five goldens affected by the docs migration. The full golden
-audit (`rounds/2026-11-02-golden-audit.md`) owns battery edits today; two of the five are already
-fixed there and one was re-verified on main in #310. The open points (instance-storage read-side
-size check, anchor key-fact-3 grading, MPP key fact 5) are in
-`rounds/2026-11-02-mintlify-migration/golden-handoff.md`. Done when the audit lands and each open
-point is accepted, rejected with evidence, or carried into its own item.
-
 ### Retire `sd-003` after the Mintlify deploy and the golden audit
 
 `sd-003` is `fixed-upstream`. A distinct reviewer re-derived RESOLVE on 2026-11-02
@@ -69,10 +60,13 @@ https://github.com/stellar/stellar-docs/issues/2566#issuecomment-6585113964. The
 went live in production on 2026-11-02 (Worker version `358fd0f5`). One condition remains: four
 battery cases name `sd-003` (`q-ti-rpc-gettransactions-pagination-xdr`,
 `q-infra-rpc-methods-list`, `q-pc-practical-fee-setting`, `q-pc-tx-finality-failure-semantics`),
-and the 2026-11-02 golden audit owns battery edits. After the audit lands, run the resolver with the
+and the 2026-11-02 golden audit no longer holds the battery. Run the resolver with the
 command in the recheck file (section 8), reconcile those four cases with the `golden-truth` skill,
 and update the current-state lines the recheck lists (TODO, the Mintlify research note,
-`ideas/source-delivery-ranked-references.md`).
+`ideas/source-delivery-ranked-references.md`). In the same change, re-verify three cases that
+still state Algolia-era index facts: `q-gap-rpc-horizon-unindexed-reference` (its answer says the
+per-method RPC and Horizon reference pages are outside the search index),
+`q-pc-doc-category-validator-search`, and `q-edge-doc-title-zero-hits`.
 
 ## Improvements follow-up
 
@@ -460,39 +454,25 @@ control-model lane, or a reviewed change omits the field for that transport.
 
 ## Eval instruments
 
-### Re-verify the next near-due goldens before the stale gate fails CI
+### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
-`npm run eval:qa:lint -- --stale --enforce-floors` fails every PR and `main` once a battery case
-passes its `truth.reverifyBy` date. That happened on 2026-10-23 (#298 fixed it) and on 2026-11-02
-(the `rounds/2026-11-02-golden-reverify.md` batch fixed it). The next dates: 6 cases on 2026-11-12,
-1 on 11-13, 3 on 11-15, 9 on 11-19, and 11 more through 2026-11-30 (71 by 2026-12-31). The two
-SCF round cases on 11-12 are event-triggered: SCF #46 Submission closes 2026-11-09.
-List them with `grep -rl '"reverifyBy": "2026-11-1' eval/qa/corpus/battery`.
+The 2026-11-02 golden audit (`rounds/2026-11-02-golden-audit.md`) moved every other `reverifyBy`
+date into 2027. Eight cases keep earlier dates, because each one depends on a known event, and
+`npm run eval:qa:lint -- --stale --enforce-floors` fails every PR once a date passes:
 
-Re-verify each batch before its date with the `golden-truth` skill, as #298 did: live evidence from
-two or more source classes, a refreshed `truth.verified`, staggered `reverifyBy` dates, and a
-register re-sweep (`npm run eval:qa:register`, then `--review`). The `truth-maintenance` skill owns
-the drip policy; fold the batch into a round when one runs.
+- SCF #46 Submission closes 2026-11-09 and Panel Review starts 2026-11-11: `q-scf-open-rfps`
+  (2026-11-10), `q-scf-rfp-tooling` (11-11), `q-scf-current-round` and
+  `q-edge-fresh-latest-scf-round` (11-12). Also check whether the official RFP Track page has
+  published Q4 briefs, and whether Scout still lists the withdrawn Q3 briefs (`sls-096`).
+- The Bell/P30 Mainnet vote is on 2026-11-23 17:00 UTC: `q-pc-protocol-upgrade-timing`,
+  `q-protocol-version-history-list`, and `q-edge-fresh-latest-protocol-version` (11-24), and
+  `q-hist-quantum-preparedness-plan` (12-01). The `mainnet-protocol-29` source sentinel fires when
+  Mainnet activates Protocol 30. Update the register's Bell date trap in the same change.
+
+Use the `golden-truth` skill: live evidence from two or more source classes, a refreshed
+`truth.verified`, staggered 2027 dates where no new event applies, and `npm run eval:qa:register`.
 
 Done when: no battery case has a `reverifyBy` date before 2027-01-01; then delete this item.
-
-### Resolve the SCF RFP roster conflict in two goldens before 2026-11-12
-
-Found by the 2026-11-02 re-verification (`rounds/2026-11-02-golden-reverify.md`).
-`q-scf-open-rfps` (due 2026-11-12) and `q-scf-rfp-tooling` (due 2026-11-13) report two open Q3
-briefs (LayerZero DVN and x402 Facilitator with Bazaar). Their #46 deadline is already corrected to
-2026-11-09 (PR #310 review reconciliation). The official RFP Track page
-(`stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track`) now says "October 2026: New Q4
-RFPs are coming soon" and lists no open brief. Scout `GET /api/rfps?status=open` still returns the
-two Q3 briefs and the synthetic `scf-round-46` row.
-
-Next: use the `golden-truth` lane. Decide whether the two briefs are still open from a third source
-class. Encode the conflict as disputed if it persists, and file an
-`improvements/` finding against Scout if its roster lags the official page.
-
-Done when: both cases carry the 2026-11-02 or later state with provenance, and
-`npm run eval:qa:lint -- --stale --enforce-floors` passes.
-
 ### Measure the execute annotation change in isolation
 
 PR #225 and #234 set `execute` `readOnlyHint: true` and `openWorldHint: false`. Claude Code `2.1.292`
@@ -514,19 +494,6 @@ behavior. QA transcript entries now record `assistantTurn` and `assistantTurnBas
 Calls with one message ID share an ordinal across assistant events. Entries without a message ID use
 event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
 host execution.
-
-### Refresh the activity-row golden note against the live `metricDefinitions`
-
-The golden notes of `q-eco-most-active-defi-projects` say that the served `meta.metricDefinitions`
-define `sort=activity` as latest-commit recency. On 2026-10-13 the Scout leaderboard defines it as
-`github.commits90d`, with `github.lastActivityAt` as the tie-break. Judges that follow the note
-grade a correct commit-volume answer `wrong` (answer-style v1 baseline rows; v2 B2, stamp
-`2026-10-13T23-59-41`). The B2 evidence pack also lacked the definition (the C2 pack had it), so the
-evidence cannot isolate one cause; the stale note is a supported contributor. Fix the note through
-the `golden-truth` workflow, with live evidence.
-
-Done when: the golden notes match the live `metricDefinitions`, and `npm run eval:qa:lint -- --stale`
-passes.
 
 ### Close the remaining claim-support gaps of judge pack p9
 
@@ -731,39 +698,6 @@ and primary service; not a paraphrase), a contract mismatch appears, or trace ev
 prompt requests the wrong behavior. Record every recurrence with its case ID, result stamp, and
 transcript.
 
-### Add the Varial rename to the goldens that name Freighter
-
-Found by the 2026-11-02 stellarlight directory refresh. The Freighter wallet is now Varial. The
-`stellar/freighter` README says "Varial (formerly Freighter)", `www.freighter.app` redirects to
-`varialwallet.com`, and `@stellar/varial-sdk` 7.0.0 (published 2026-10-28) replaces
-`@stellar/freighter-api`. Eighteen battery cases name Freighter
-(`grep -rli freighter eval/qa/corpus/battery`). An answer that uses the new name or package can
-conflict with their key facts.
-
-Next: use the `golden-truth` lane. Accept both names in the affected cases, record the rename date
-and sources in the truth metadata, and add a grader caution so neither name is penalized.
-
-Done when: the cases accept both names with primary-source provenance and
-`npm run eval:qa:lint -- --stale --enforce-floors` passes.
-
-### Qualify the Confidential Tokens privacy claim in three goldens
-
-Found by the independent review of the 2026-10-28 stellar-dev pin. The new `zk-proofs` skill text
-says the `rs-soroban-ultrahonk` verifier accepts non-ZK proofs only and gives no witness-hiding
-guarantee. The OpenZeppelin confidential package README (commit `ddc327eb`, lines 97 to 109) and the
-Nethermind verifier README (commit `9aae9581`, lines 3 to 10) say the same; the ZK flavor is in open
-PR #38. Three active cases still require an unconditional privacy claim:
-`q-scf-confidential-tokens-preview` (key fact and corroboration), `q-sor-confidential-tokens` (key
-fact), and `q-edge-noinfo-stellar-native-privacy-default` (answer). An answer that reports the
-verifier limit can conflict with those key facts.
-
-Next: use the `golden-truth` lane. State the privacy property as the announced design, record the
-verifier limit in the grading notes and truth metadata, and keep the dated Testnet and Mainnet
-boundary. Do not claim that anyone can recover every amount.
-
-Done when: the three cases carry the qualified claim with primary-source provenance and
-`npm run eval:qa:lint -- --stale --enforce-floors` passes.
-
 ## HackMeridian 2026 review follow-ups
 
 Found by the 2026-10-26 weekend review: 58 probe questions in two rounds (22 Opus, 36 Sonnet),
@@ -953,3 +887,20 @@ The run measures the gaps before the fixes above ship, and then again after them
 
 Safe default: do not run it. Use the free probe evidence until the owner authorizes the spend in
 writing.
+### D. Decide the grading-policy questions from the 2026-11-02 golden audit
+
+The audit (`rounds/2026-11-02-golden-audit.md`, "Owner decisions") added no partial cap and removed
+expired ones, but three policy questions remain:
+
+1. Partial caps outside the ADR-0008 set. ADR-0008 accepts canonical-page caps for exactly base
+   reserve, Horizon lifecycle, and RPC pagination. Existing aggregator caps (for example
+   `q-tool-wallets-comparison`, `q-eco-stellar-wallets-list`, `q-builder-justin-rice-history`,
+   `q-edge-fresh-latest-blend-tvl`) and finding-tied canonical caps (`sd-003`, `sd-009`) stay on
+   `main`. Convert them to plain correct/wrong rules, or extend the accepted set by decision.
+2. Freshness tags. Eleven `live` and five `stable` cases carry dated example values in golden text.
+   Decide whether such a case is always `scheduled` with a `reverifyBy` date.
+3. Re-judge. The golden-truth skill asks for a re-judge of saved rows whose verdict hinged on a
+   changed golden, with the flip direction recorded. That is paid judge work.
+
+Safe default: keep the existing caps and tags, and do not re-judge until the owner authorizes the
+spend in writing.

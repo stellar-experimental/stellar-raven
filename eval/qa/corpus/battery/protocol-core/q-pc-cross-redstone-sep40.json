@@ -164,7 +164,7 @@
         "Live A 2026-11-02: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'On Stellar, RedStone delivers price feeds for XLM, BTC, ETH, USDC, EURC, PYUSD, USDT0, ... (about 30 named assets)'",
         "Live D 2026-11-02: https://www.redstone.finance/research/next-phase-rwa-stellar-2026/ -- 'In our August report, 18 of the 47 Stellar feeds were implemented with the SEP-40 standard. As of late October, that count is at 21 feeds.'",
         "Live A 2026-11-02: RedStone 2026-06-04 article -- 'RedStone has implemented the SEP-40 oracle standard on Stellar'",
-        "Independent verifier decisions: golden.answer (accept); golden.notes (accept) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Independent verifier decisions: golden.answer (accept); golden.notes (accept) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
         "Sibling sweep 2026-11-02: grep RedStone -> q-defi-reflector-oracle, q-sor-reflector-integration-code, q-eco-defi-market-map, q-scf-cross-reflector-rounds-current; none pins a RedStone asset/feed count; no contradiction."
       ],
       "rootCause": [

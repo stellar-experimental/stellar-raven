@@ -65,7 +65,7 @@
         "Live B 2026-11-02: catalog/manifest.json#scout.getChangelog -- 'Not for: the actual ecosystem data -> use the relevant search endpoint; current health / source freshness / version -> use scout.getStatus. ... payload carries its own ok flag at data.ok - distinct from the envelope call-status ok.'",
         "Live B 2026-11-02: catalog/manifest.json#scout.getChangelog -- 'Catalog note: the upstream payload carries its own ok flag at data.ok - distinct from the envelope call-status ok.'",
         "Live C 2026-11-02: https://stellarlight.xyz/api/changelog?limit=2 -- 'Curated feed of contract-affecting changes (endpoints, tools, params, descriptions).'",
-        "Re-verified with no gospel change; proposer matrix /private/tmp/claude-501/golden-audit/matrices/protocol-core-01.json (no proposal, so no verifier decision).",
+        "Re-verified with no gospel change; proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json (no proposal, so no verifier decision).",
         "Sibling sweep 2026-11-02: q-ti-scout-changelog-contract-check and q-gap-scout-status-envelope checked; no contradiction."
       ]
     },

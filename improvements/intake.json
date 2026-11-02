@@ -266,6 +266,14 @@
     "sd-077": {
       "intake": "unclear",
       "reason": "Both pages are stellar.org program pages, not developers.stellar.org content, so stellar/stellar-docs does not own them. The stellar.org page copy has no public issue tracker (checked 2026-11-02)."
+    },
+    "ll-032": {
+      "repo": "lumenloop/stellar-ecosystem-db",
+      "reason": "Committed directory-record correction to the freighter project record (Varial rename)."
+    },
+    "ll-033": {
+      "repo": "lumenloop/stellar-ecosystem-db",
+      "reason": "Committed directory-record correction to the slender project record (collateral model)."
     }
   }
 }

@@ -237,7 +237,7 @@
         "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live (observedAt 2026-11-02): \"The service is currently integrated with the Canton Network and DTCC's private Besu network, with additional blockchain networks to be added in 2027.\"",
         "https://communications.dtcc.com/rs/669-QIL-921/images/DTCC%20Tokenization%20Service%20At-a-Glance.pdf (observedAt 2026-11-02): Stellar (SEP-41) listed under \"Anticipated in 2027\".",
         "https://crypto.news/dtcc-launches-tokenization-service-with-20-major-firms/ and https://www.coindesk.com/business/2026/10/28/wall-street-backbone-dtcc-brings-usd30-trillion-securities-closer-to-blockchain-with-major-banks (observedAt 2026-11-02): Stellar integration expected in 2027 (first half of 2027).",
-        "Independent verifier 2026-11-02: golden.answer modify (5 Inactive), golden.notes accept (/private/tmp/claude-501/golden-audit/verify/compliance-rwa-payments-04.json).",
+        "Independent verifier 2026-11-02: golden.answer modify (5 Inactive), golden.notes accept (.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-04.json).",
         "Sibling sweep 2026-11-02: grep DTCC|RWA records|Spydra -> q-crp-dtcc-stellar-connection-plan (Stellar expected H1 2027; consistent), q-asset-rwa-tokenized-freshness, q-defi-rwa-scf-similar, q-defi-rwa-treasury-funding-live; no contradiction."
       ],
       "rootCause": [

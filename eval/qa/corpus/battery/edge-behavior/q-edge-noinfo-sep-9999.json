@@ -123,7 +123,7 @@
         "Live 2026-11-02 (class B): https://raw.githubusercontent.com/stellar/stellar-protocol/0da06899c02f818be0132f42cea1f45d6396e20a/ecosystem/README.md — repo master has no SEP-9999 index entry.",
         "Live 2026-11-02T16:28:34Z (class E): Raven stellarDocs.search_docs({query:'SEP-9999'}) — only adjacent anchor-platform sep6 and sep45 pages.",
         "Live 2026-11-02 (class D): Perplexity search \"SEP-9999\" Stellar Ecosystem Proposal — no SEP-9999 specification; only the generic SEP index.",
-        "Independent verifier accepted the golden.notes change; /private/tmp/claude-501/golden-audit/verify/edge-behavior-02.json.",
+        "Independent verifier accepted the golden.notes change; .agents/rounds/2026-11-02-golden-audit/pass1/edge-behavior-02.json.",
         "Sibling sweep 2026-11-02: grep 'SEP-0050|SEP-0051|SEP-9999' over eval/qa/corpus/battery → only q-edge-noinfo-sep-9999; proposer siblings q-sep-catalog-list, q-edge-deep-comprehensive-sep-audit, q-sep53-message-signing carry no catalog ceiling that contradicts SEP-0061; no contradiction."
       ],
       "rootCause": [

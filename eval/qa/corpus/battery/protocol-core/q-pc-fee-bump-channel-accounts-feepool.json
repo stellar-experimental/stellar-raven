@@ -172,7 +172,7 @@
         "Live B 2026-11-02: https://github.com/stellar/js-stellar-base/blob/master/src/transaction_builder.js -- '@param {string} baseFee - max fee willing to pay per operation'",
         "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/channel-accounts -- 'the assets will come out of the base account, and the sequence number and fees will be consumed by the channel account.'",
         "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/lumens -- 'The Fee Pool is where network fees collect. The lumens do not belong to any particular account. No one has access to the fee pool, so these lumens are non-circulating.'",
-        "Independent verifier decisions: golden.notes (verifier modify) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Independent verifier decisions: golden.notes (verifier modify) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
         "Sibling sweep 2026-11-02: grep fee pool/feePool -> q-hot-fee-pool-burn-deflation (fees go to the non-circulating fee pool, not validator rewards; consistent), q-pc-practical-fee-setting, q-ti-channel-accounts-throughput, q-ti-java-sdk-wallet-feebump, q-protocol-ledger-header-fields; no contradiction."
       ],
       "rootCause": [

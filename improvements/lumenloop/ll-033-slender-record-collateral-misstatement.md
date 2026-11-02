@@ -12,7 +12,7 @@ evidence:
   - "2026-11-02 dig slender.fi @1.1.1.1 returned status NXDOMAIN, so the live operator site cannot be read; the quote above comes only from the 2026-08-08 cached copy"
   - "Third-party corroboration (class D), https://defillama.com/protocol/slender (read 2026-11-02): \"Slender is a noncustodial overcollateralized lending protocol on Soroban (Stellar).\""
   - "Affected golden case: eval/qa/corpus/battery/defi-ecosystem/q-defi-blend-alternatives.json"
-  - "Intake note: this is a committed directory-record correction; the owner repo is lumenloop/stellar-ecosystem-db (intake.json per-finding override still to add)"
+  - "Intake note: this is a committed directory-record correction; the owner repo is lumenloop/stellar-ecosystem-db (intake.json per-finding override added)"
 ---
 
 ## Finding

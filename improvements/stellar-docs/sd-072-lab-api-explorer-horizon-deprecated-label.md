@@ -9,7 +9,7 @@ evidence:
   - stellar/stellar-docs main 7cb5e8a492706d2ae95bbb14be737fbf96100058 docs/tools/lab/api-explorer/index.mdx line 13; the file was last changed by the Mintlify migration commit 700ed32d (2026-10-22)
   - the same docs commit uses "nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs" in docs/data/apis/index.mdx line 30, docs/learn/fundamentals/stellar-stack.mdx line 37, and docs/tools/lab/api-explorer/horizon-endpoint.mdx lines 3 and 8
   - a repository grep of docs/ at the same commit finds "considered deprecated" only in api-explorer/index.mdx
-  - 2026-11-02T17:20:19Z Raven stellarDocs.search_docs "Horizon is considered deprecated" returned the api-explorer record with the pre-migration "nearing end-of-life" text (see sd-076 for the index lag)
+  - 2026-11-02T17:20:19Z Raven stellarDocs.search_docs "Horizon is considered deprecated" returned the api-explorer record with the pre-migration "nearing end-of-life" text (an Algolia-adapter read; Raven moved to the Mintlify backend later on 2026-11-02)
   - predecessor sd-017 in improvements/resolved.json (resolved 2026-07-27) unified the Horizon lifecycle label; this card is a regression from the migration
   - golden case q-infra-horizon-vs-rpc (golden audit pass 2, 2026-11-02)
 ---

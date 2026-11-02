@@ -109,7 +109,7 @@
         "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"Updated: 2026-08-24 Version 0.5.2 ... `v0.5.2` - Clarify that implementers may emit additional topics.\" This reinforces the topic-count avoid item (observedAt 2026-11-02).",
         "Raven stellarDocs.search_docs (observedAt 2026-11-02T16:38:25Z) docs/build/guides/transactions/send-and-receive-payment — \"Transfer Topics Model: an array of four topics, specified in CAP-67 ... Use Stellar RPC's getEvents method ... with a 7 day retention window\".",
         "POST https://soroban-testnet.stellar.org getEvents (observedAt 2026-11-02) — id 0023711560958480384-0000000000, contract CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC, 4 topics, last topic String \"native\".",
-        "No gospel change; independent verifier accepted the asOf and reverifyBy refresh: /private/tmp/claude-501/golden-audit/verify/soroban-04.json.",
+        "No gospel change; independent verifier accepted the asOf and reverifyBy refresh: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-04.json.",
         "Sibling sweep 2026-11-02: q-sep-41-token-interface, q-protocol-23-whisk-caps, q-soroban-token-transfer-pattern, q-ti-enumerate-holders-airdrop, q-ti-fetch-all-balances-classic-sac checked by the proposer; no contradiction."
       ]
     },

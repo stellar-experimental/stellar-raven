@@ -100,7 +100,7 @@
         "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- 'ledger 65269900 closed 2026-11-02T16:01:24Z base_reserve_in_stroops=5000000 protocol_version=29'",
         "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves -- 'a brand-new account can be created with a startingBalance of 0: wrap the CreateAccount operation in a BeginSponsoringFutureReserves/EndSponsoringFutureReserves sandwich'",
         "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md -- 'Status: Final; Protocol version: 14/15'",
-        "Re-verified with no gospel change; proposer matrix /private/tmp/claude-501/golden-audit/matrices/protocol-core-01.json (no proposal, so no verifier decision).",
+        "Re-verified with no gospel change; proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json (no proposal, so no verifier decision).",
         "Sibling sweep 2026-11-02: q-edge-1xlm-activation-fee, q-pc-sponsored-reserves, q-pc-account-merge-reclaim-reserve checked; base reserve 0.5 XLM / 1 XLM minimum consistent; no contradiction."
       ]
     },

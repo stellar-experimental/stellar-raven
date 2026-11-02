@@ -122,7 +122,7 @@
         "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge -- 'Merely being sponsored by another account is not a blocker.'",
         "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge -- 'Signers are *not* a blocker'",
         "Live E 2026-11-02: Raven stellarDocs.search_docs('account merge signers removed sub entries') -- 'snippet: '(including sponsored signers) are removed automatically during the merge''",
-        "Independent verifier decisions: golden.notes (accept) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Independent verifier decisions: golden.notes (accept) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
         "Sibling sweep 2026-11-02: grep sd-013 / AccountMerge across the battery -> q-pc-account-activation-not-found, q-pc-sponsored-reserves, q-edge-1xlm-activation-fee, q-ti-custodial-account-generation-c-address; no golden contradicts the merge semantics. q-ti-custodial-account-generation-c-address still carries its own sd-013 cached-copy caution (outside this batch)."
       ],
       "rootCause": [

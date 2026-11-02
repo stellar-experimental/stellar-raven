@@ -136,7 +136,7 @@
         "npm pack @stellar/stellar-sdk@17.4.0, lib/esm/rpc/transaction.d.ts and server.d.ts — \"export declare function assembleTransaction(...): TransactionBuilder; prepareTransaction(tx: Transaction | FeeBumpTransaction, useUpgradedAuth?: boolean): Promise<Transaction>;\" (class F, observedAt 2026-11-02)",
         "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v16.4.1/src/rpc/transaction.ts — \"): TransactionBuilder {\" (class B, observedAt 2026-11-02)",
         "Sibling sweep 2026-11-02: grep assembleTransaction|prepareTransaction|SDK 16 — q-sor-scval-conversion (batch soroban-03, refreshed concurrently) now says 'SDK 16 and 17 (npm latest 17...)' — consistent; semantics agree (builder vs built transaction).",
-        "Independent verifier decisions: /private/tmp/claude-501/golden-audit/verify/soroban-02.json; proposer matrix: /private/tmp/claude-501/golden-audit/matrices/soroban-02.json."
+        "Independent verifier decisions: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json; proposer matrix: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json."
       ],
       "rootCause": [
         "freshness-drift"

@@ -150,7 +150,7 @@
         "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x -- 'case STELLAR_VALUE_EMPTY_TX_SET: ... proposedValue'",
         "Live A 2026-11-02: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 28 (Mainnet, September 16, 2026); Protocol 29 (Mainnet, October 1, 2026)'",
         "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- 'protocol_version=29'",
-        "Independent verifier decisions: golden.notes (accept) -- /private/tmp/claude-501/golden-audit/verify/protocol-core-01.json.",
+        "Independent verifier decisions: golden.notes (accept) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
         "Sibling sweep 2026-11-02: grep CAP-0083 / Protocol 28 -> q-protocol-ledger-close-time states Protocol 28 activated on 2026-09-16 (consistent); q-protocol-ledger-header-fields and q-edge-validators-reverse-tx-fork-detection checked; no contradiction."
       ],
       "rootCause": [

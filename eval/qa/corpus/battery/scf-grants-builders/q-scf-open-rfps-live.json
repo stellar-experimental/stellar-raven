@@ -14,7 +14,7 @@
     ],
     "avoid": [
       "Do NOT claim an open brief proves application availability when no Submission phase is open.",
-      "Do NOT call Q2 2026 RFP briefs open now, or name a current SCF round without an as-of date.",
+      "Do NOT call Q2 2026 RFP briefs open now.",
       "Claims that an open brief proves the current SCF round accepts a new full proposal.",
       "Do NOT call a Scout-listed brief open now unless the answer attributes and dates that status."
     ],
@@ -152,7 +152,8 @@
         "Pass 2 sibling sweep 2026-11-02 (.agents/rounds/2026-11-02-golden-audit.md, task scf-rfp): checked q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-how-to-apply, q-scf-submission-lifecycle-deadlines, q-scf-hackathons-active, q-defi-market-making-kelp, q-scf-vs-sdf-enterprise-fund, and the other seven scf-rfp cases. No contradiction: all give the #46 deadline 2026-11-09, and the RFP cases now share the Scout-lag plain rules and the November 8 caution.",
         "Gospel change (pass 3): golden.avoid[1] is rephrased as answer-visible content (Q2 briefs called open now; a current round named without an as-of date) instead of a retrieval step the judge cannot see. Intent unchanged.",
         "Class C 2026-11-02 (generatedAt 2026-11-02T17:29:38.076Z): https://stellarlight.xyz/api/rfps?status=open - activeQuarter q3-2026, open rows scf-round-46, layerzero-dvn, x402-facilitator-bazaar; no Q2 2026 brief is open.",
-        "Class A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md - 'October 2026: New Q4 RFPs are coming soon.' with two 'Coming Soon' sections; no Q2 brief listed."
+        "Class A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md - 'October 2026: New Q4 RFPs are coming soon.' with two 'Coming Soon' sections; no Q2 brief listed.",
+        "Orchestrator reconciliation 2026-11-02 (.agents/rounds/2026-11-02-golden-audit.md, pass-3 critic): avoid[1] kept only its first predicate. The dropped clause (naming a current SCF round without an as-of date) duplicated keyFacts[1], which already grades the as-of date, so a fired avoid would have turned a missing date into a wrong verdict."
       ],
       "rootCause": [
         "freshness-drift",

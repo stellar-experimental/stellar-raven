@@ -153,7 +153,7 @@
         "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet — \"stellar keys generate alice --network testnet --fund ... stellar contract deploy --wasm target/wasm32v1-none/release/hello_world.wasm --source-account alice --network testnet --alias hello_world ... stellar contract invoke --id C... --source-account alice --network testnet -- hello --to RPC\" (observedAt 2026-11-02).",
         "Raven stellarDocs.search_docs 'stellar contract deploy source-account testnet wasm32v1-none' (observedAt 2026-11-02) — docs/build/guides/conventions/upgrading-contracts uses the same deploy form.",
         "Local stellar 28.1.0 — \"Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...] ... [alias: --source]\"; invoke --contract-id [alias: --id]; build: cargo rustc ... --target=wasm32v1-none --release (observedAt 2026-11-02). 28.x also auto-builds when --wasm is omitted in a Cargo workspace; the golden flow stays valid.",
-        "No gospel change; independent verifier accepted the asOf and reverifyBy refresh: /private/tmp/claude-501/golden-audit/verify/soroban-04.json.",
+        "No gospel change; independent verifier accepted the asOf and reverifyBy refresh: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-04.json.",
         "Sibling sweep 2026-11-02: q-sor-build-target-wasm32v1, q-tool-cli-testnet-identity-howto, q-asset-deploy-sac-cli, q-soroban-constructor-lifecycle checked by the proposer; no contradiction."
       ]
     },

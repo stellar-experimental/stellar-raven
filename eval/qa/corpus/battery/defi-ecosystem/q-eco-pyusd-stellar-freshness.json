@@ -206,7 +206,7 @@
         "Paxos Stellar TOML 2026-11-02: https://token-metadata.paxos.com/.well-known/stellar.toml — code=\"PYUSD\" issuer=\"GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5\"; ORG_DESCRIPTION still says \"Paxos Trust Company LLC\".",
         "Horizon 2026-11-02: https://horizon.stellar.org/assets?asset_code=PYUSD&asset_issuer=GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5 — mainnet asset present, contract_id CCCRWH6Q3FNP3I2I57BDLM5AFAT7O6OF6GKQOC6SSJNDAVRZ57SPHGU2.",
         "Raven scout.getStablecoins 2026-11-02 (dataAsOf 2026-11-02T16:22:16.011Z): assetId PYUSD-GDQE7IXJ, issuer GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5.",
-        "Independent verifier accepted all five changes (answer as-of date, LLC/N.A. paragraph, avoid[0], two notes edits): /private/tmp/claude-501/golden-audit/verify/defi-ecosystem-05.json.",
+        "Independent verifier accepted all five changes (answer as-of date, LLC/N.A. paragraph, avoid[0], two notes edits): .agents/rounds/2026-11-02-golden-audit/pass1/defi-ecosystem-05.json.",
         "Sibling sweep 2026-11-02: grep PYUSD|Paxos across eval/qa/corpus/battery → q-eco-pyusd-stellar-freshness, q-eco-stablecoins-on-stellar (avoid[0] aligned in this batch), q-asset-usdc-eurc-issuer (only rejects Paxos as a USDC/EURC issuer); no contradiction."
       ],
       "rootCause": [
