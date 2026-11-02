@@ -19,7 +19,7 @@ The current conviction is therefore not “Stellar.org has no value.” It is:
 > answer-quality benefit to justify its measured routing cost.
 
 Keep using `stellarDocs` for `developers.stellar.org`. Prefer improving the existing Scout research
-source family for canonical non-blog SDF pages over adding a second Raven-owned Algolia endpoint.
+source family for canonical non-blog SDF pages over adding a Raven-owned Algolia endpoint.
 
 ## Why the HOLD currently stands
 
@@ -71,7 +71,8 @@ If the trigger fires:
 
 ## Durable references
 
-- Authored dormant contract: [`specs/stellar-org.json`](../specs/stellar-org.json)
+- Authored contract: `specs/stellar-org.json`, removed on 2026-11-02 with its keys. The last
+  version is in commit `12f182e2`.
 - Resolved upstream coverage receipt: [`improvements/resolved.json`](../improvements/resolved.json)
 - Local result artifacts, which are intentionally not committed:
   `routing-2026-07-13T08-54-21-839Z.json`, `routing-2026-07-13T15-28-14-998Z.json`,

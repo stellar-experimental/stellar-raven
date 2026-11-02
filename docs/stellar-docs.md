@@ -18,7 +18,6 @@ The generated [catalog](../catalog/manifest.json) defines the exposed operations
 | Catalog emission | [scripts/build-catalog.mjs](../scripts/build-catalog.mjs) |
 | Title-derived routing vocabulary | [inventory/stellar-docs-titles.json](../inventory/stellar-docs-titles.json) |
 | Inventory refresh | [scripts/refresh-inventory.mjs](../scripts/refresh-inventory.mjs) |
-| Dormant stellar.org site search contract | [specs/stellar-org.json](../specs/stellar-org.json) |
 
 The adapter sends every request to the Mintlify discovery API.
 It does not route runtime searches through the public docs MCP server at `developers.stellar.org/mcp`.
@@ -79,11 +78,6 @@ It covers analytics exports, deploy triggers, and agent jobs.
 It is maintenance-only.
 It must never become a Worker secret or a sandbox binding.
 Store it only in a local operator `.env`.
-
-`ALGOLIA_APPLICATION_ID_SITE` and `ALGOLIA_API_KEY_SITE` belong to the stellar.org site search.
-That site is not on Mintlify.
-Its spec, [specs/stellar-org.json](../specs/stellar-org.json), is dormant and exposes no operation.
-The Algolia guardrails in this file apply to that pair.
 
 The assistant endpoint `POST /discovery/v1/assistant/{domain}/message` consumes Mintlify credits.
 Raven does not call it.
@@ -275,7 +269,6 @@ Use `get_doc_page` to read a whole page after a search hit.
 | --- | --- | --- | --- |
 | `MINTLIFY_ASSISTANT_API_KEY` | Mintlify project | Runtime search and page reads in the Worker. Local development and the refresh workflow. | Assistant messages. Printing or committing. |
 | `MINTLIFY_ADMIN_API_KEY` | Mintlify organization | Local maintenance reads: search analytics exports. | Worker secret. Sandbox binding. Deploy triggers or agent jobs without an owner decision. |
-| `ALGOLIA_APPLICATION_ID_SITE`, `ALGOLIA_API_KEY_SITE` | stellar.org site index | The dormant stellar.org spec only. | Any docs operation. Any write. |
 
 Never print or commit a key.
 Never add a maintenance key to a model-facing service interface.
@@ -292,21 +285,6 @@ Do not create a second index without a measured benefit that justifies its maint
 A docs search-mechanism change inside Raven, such as a new scope or a guard change, needs a measured win.
 Measure it with a free, read-only, retrieval-level A/B against the golden docs pages.
 The mechanism must be general, not a per-query or per-page exception.
-
-### Algolia site guardrails
-
-These rules apply to the stellar.org site index and to any future Algolia operator credential.
-[AGENTS.md](../AGENTS.md) supplies the repository's host-side authority rules.
-
-- Keep operator credentials maintenance-only, outside runtime adapters and the execute sandbox.
-- Require a measured read-only A/B win before any write.
-  The improvement must use a general mechanism, not a per-query or per-page exception.
-- Keep measurement scripts read-only.
-  They must not create indexes, rules, synonyms, analytics events, or crawler tasks.
-- Keep automated searches analytics-free with `analytics: false`.
-- Record the exact approved mutation and the prior state needed for rollback.
-  After an authorized change, verify the expected behavior and check unrelated representative queries.
-  Restore the recorded prior configuration if the acceptance checks fail.
 
 ### Verification
 

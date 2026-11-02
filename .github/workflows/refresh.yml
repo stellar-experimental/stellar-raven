@@ -55,13 +55,11 @@ jobs:
         env:
           LUMENLOOP_API_KEY: ${{ secrets.LUMENLOOP_API_KEY }}
           MINTLIFY_ASSISTANT_API_KEY: ${{ secrets.MINTLIFY_ASSISTANT_API_KEY }}
-          ALGOLIA_APPLICATION_ID_SITE: ${{ secrets.ALGOLIA_APPLICATION_ID_SITE }}
-          ALGOLIA_API_KEY_SITE: ${{ secrets.ALGOLIA_API_KEY_SITE }}
           REPOSITORY: ${{ github.repository }}
           CONFIGURED_SERVICE_URL: ${{ vars.RAVEN_SERVICE_URL }}
         run: |
           configured=true
-          for name in LUMENLOOP_API_KEY MINTLIFY_ASSISTANT_API_KEY ALGOLIA_APPLICATION_ID_SITE ALGOLIA_API_KEY_SITE; do
+          for name in LUMENLOOP_API_KEY MINTLIFY_ASSISTANT_API_KEY; do
             if [ -z "${!name}" ]; then
               if [ "$REPOSITORY" = "stellar-experimental/stellar-raven" ]; then
                 echo "::error::$name is absent. The live refresh requires this secret."
@@ -159,8 +157,6 @@ jobs:
           {
             echo "LUMENLOOP_API_KEY=${{ secrets.LUMENLOOP_API_KEY }}"
             echo "MINTLIFY_ASSISTANT_API_KEY=${{ secrets.MINTLIFY_ASSISTANT_API_KEY }}"
-            echo "ALGOLIA_APPLICATION_ID_SITE=${{ secrets.ALGOLIA_APPLICATION_ID_SITE }}"
-            echo "ALGOLIA_API_KEY_SITE=${{ secrets.ALGOLIA_API_KEY_SITE }}"
           } > .env
       - run: node scripts/refresh-inventory.mjs
       - run: node scripts/build-catalog.mjs

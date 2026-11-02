@@ -27,19 +27,9 @@ New experiments need the evaluation and authorization gates in [the evaluation m
    control plane anticipated by [`AGENTS.md` “Hard rules”](../AGENTS.md#hard-rules). No action
    until then; mirror upstream rather than inventing.
 
-5. **Docs machine corpus beyond Algolia titles** (2026-07-12 coverage review, Solo scratchpad
-   607). developers.stellar.org publishes `llms.txt`, a 4.2MB `llms-full.txt`, per-page
-   Markdown alternates, and a 934-URL sitemap; the inventory keeps only 635 deduped Algolia
-   `type:lvl1` titles, and the authored spec already documents that generated RPC/Horizon
-   reference pages are absent from the Algolia index (`specs/stellar-docs.json`). A
-   change-detectable snapshot of the official machine corpus could close that hole and feed
-   richer routing vocabulary — but it is a new retrieval-quality bet, so it takes the house
-   gate: a read-only A/B win on golden Q→A accuracy before any runtime surface. Related
-   smaller gaps recorded with it and deliberately not taken: Lumenloop's `/v1` + `/v1/docs` +
-   llms.txt discovery conventions (the adapters already implement the envelope; inventorying
-   prose conventions has no consumer) and Scout `/api/skills` detail bodies (the
-   identity-projection drift check is the intended surface; skill content bodies come from
-   the GitHub mirrors the repo already pins).
+5. **Docs recency as metadata, not a ranking boost** — keep the docs search's own ranking order.
+   Expose page modification dates to agents where the source provides them. A default recency
+   boost needs a measured read-only A/B win on golden docs pages first.
 
 ## Known deferred hardening leftovers (small, non-blocking)
 

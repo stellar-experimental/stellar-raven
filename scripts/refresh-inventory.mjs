@@ -79,7 +79,7 @@ function stableStringify(value) {
 // Env var names this script reads for auth — asserted absent from every output
 // even on an env-only run (no .env file, e.g. secrets exported into the
 // environment) where parseEnvFile below returns nothing.
-const SECRET_ENV_NAMES = ["LUMENLOOP_API_KEY", "MINTLIFY_ASSISTANT_API_KEY", "ALGOLIA_APPLICATION_ID_SITE", "ALGOLIA_API_KEY_SITE"];
+const SECRET_ENV_NAMES = ["LUMENLOOP_API_KEY", "MINTLIFY_ASSISTANT_API_KEY"];
 
 // Scrub-check values: the union of .env entries (generic — every value, as
 // before) AND process.env values for the secret key names above, so a run that
@@ -95,10 +95,10 @@ const SECRET_VALUES = (() => {
   return [...byPair.values()];
 })();
 
-// Match src/policy/redact.ts's secret names. Application IDs are public identifiers.
+// Match src/policy/redact.ts's secret names.
 // Keep this helper local so the maintenance script still runs as plain JavaScript.
 const ERROR_SECRET_ENV_NAMES = [
-  "LUMENLOOP_API_KEY", "ALGOLIA_API_KEY_SITE", "MINTLIFY_ASSISTANT_API_KEY",
+  "LUMENLOOP_API_KEY", "MINTLIFY_ASSISTANT_API_KEY",
   "MCP_SERVER_SECRET", "WORKOS_API_KEY"
 ];
 

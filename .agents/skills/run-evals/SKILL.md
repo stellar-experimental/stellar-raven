@@ -481,6 +481,6 @@ Close-out checklist:
 - Headline = QA end-to-end; when two instruments disagree, the one closer to the headline wins.
 - No per-question tuning, no foreign schemas/judge code from prior-art repos (spirit, not schema).
 - Freshness-sensitive truth is graded as behavior, never pinned values in gates.
-- Never print or commit secrets (`LUMENLOOP_API_KEY`, Mintlify keys, Algolia site keys); paid Lumenloop research
+- Never print or commit secrets (`LUMENLOOP_API_KEY`, Mintlify keys); paid Lumenloop research
   stays gated (dedup via `list_my_research`, budget cap, off by default) — eval runs use free ops.
 - Sandbox/network posture is not relaxed for eval convenience.
