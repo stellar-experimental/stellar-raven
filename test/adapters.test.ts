@@ -1089,7 +1089,7 @@ describe("stellarDocs adapter", () => {
     const pageCalls: string[] = [];
     const siteCalls: { url: string; init?: RequestInit }[] = [];
     const fetchImpl: FetchLike = async (url, init) => {
-      if (url.startsWith(ORIGIN)) {
+      if (new URL(url).origin === ORIGIN) {
         siteCalls.push({ url, init });
         const location = redirects[url.slice(ORIGIN.length)];
         return location ? new Response(null, { status: 308, headers: { location } }) : new Response("not found", { status: 404 });

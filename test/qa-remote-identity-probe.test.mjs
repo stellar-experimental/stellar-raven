@@ -215,7 +215,8 @@ describe("production remote identity Stellar Docs capture", () => {
       "https://developers.stellar.org/llms-full.txt"
     ]);
     expect(docsRequests.every(({ init }) => init.headers === undefined && init.body === undefined)).toBe(true);
-    expect(requests.some(({ url }) => new URL(url).hostname.endsWith("mintlify.com"))).toBe(false);
+    const isMintlifyHost = (hostname) => hostname === "mintlify.com" || hostname.endsWith(".mintlify.com");
+    expect(requests.some(({ url }) => isMintlifyHost(new URL(url).hostname))).toBe(false);
     expect(vector.services.stellarDocs).toEqual({
       llmsTxtSha256: sha256Hex(LLMS_TXT),
       llmsTxtBytes: Buffer.byteLength(LLMS_TXT),
