@@ -31,7 +31,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-28",
-    "reverifyBy": "2026-11-05",
+    "reverifyBy": "2027-02-05",
     "sources": [
       {
         "class": "A",
@@ -47,6 +47,10 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-cli",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits"
       }
     ],
     "corroboration": [
@@ -76,23 +80,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus author re-check, Claude Opus 5.5)",
       "evidence": [
-        "Production stellar-raven: stellarDocs.search_protocol_concepts_docs({query:'contract_max_size_bytes contract_data_entry_size_bytes network settings resource limits',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/learn/fundamentals/fees-resource-limits-metering',includeContent:true}) — resource settings pages returned.",
-        "Empirical free reads: stellar 27.0.0 network settings --no-cache -n mainnet|testnet --output json-formatted both returned contract_max_size_bytes=131072 and contract_data_entry_size_bytes=65536.",
-        "Empirical CLI surface: stellar contract build --help reports --optimize default true; stellar contract optimize --help reports 'Deprecated, use build --optimize.'",
-        "Sibling sweep: q-soroban-wasm-language and q-soroban-deploy-cli distinguish wasm32v1-none/current build behavior and do not retain a 64 KiB Wasm cap.",
-        "Todo 1253 Lane B review (2026-07-28, F1): the grader notes still instructed the rubric to gate on '~64 KB ledger-entry cap' as the contract-code cap, which this case's own avoid clause and the sibling q-soroban-wasm-language forbid; the sentence now states the two distinct settings the verified answer asserts. Internal-consistency repair — no new external source consulted.",
-        "Structural re-form (negative-predicate): split one compound taxonomy fact into two atomic positive facts; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — current documentation still reports a 128 KB Mainnet contract-code cap as a network setting",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — stellar 27.1.0 --no-cache reads still returned data-entry cap 65536 bytes apart from code cap 131072 bytes on Mainnet and Testnet",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — stellar contract build still optimizes by default and the standalone optimize command remains deprecated",
-        "Sibling sweep 2026-08-27: grep contract_max_size_bytes|contract_data_entry_size_bytes|contract optimize|wasm32v1-none → q-soroban-wasm-language, q-soroban-deploy-cli, q-sor-build-target-wasm32v1; no contradiction"
-      ],
-      "rootCause": [
-        "freshness-recheck",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-11-02. The dated 2026-07-28 values still hold under Protocol 29.",
+        "Live F 2026-11-02: RPC getLedgerEntries CONFIG_SETTING on https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org decodes to contract_max_size_bytes 131072 and contract_data_entry_size_bytes 65536; `stellar network settings` (stellar 28.1.0) agrees on both networks.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits lists 'Max contract Wasm size | 131,072 B (128 KiB)' and 'Max contract-data entry size | 65,536 B (64 KiB)'.",
+        "Live B/F 2026-11-02: stellar-cli v28.1.0 build.rs and `stellar contract build --help` say optimization is 'Enabled by default; pass --optimize=false to disable'; `stellar contract optimize --help` says 'Deprecated, use build --optimize'.",
+        "Sibling sweep 2026-11-02: q-soroban-wasm-language and q-sor-persistent-unbounded-collection-cap state the same caps; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-wasm-size-limit"
