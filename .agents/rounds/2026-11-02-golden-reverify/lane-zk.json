@@ -1,0 +1,764 @@
+{
+ "lane": "lane-zk",
+ "asOf": "2026-11-02",
+ "by": "read-only verification lane (Claude Opus 5.5), 2026-11-02",
+ "cases": [
+  {
+   "id": "q-zk-host-functions-status",
+   "truthChanged": false,
+   "proposedChanges": "No gospel-truth reversal: the question is framed 'as of July 2026' and every dated claim stays true for that frame. Recommended freshness edits (gospel-touching, needs truth.verified + rootCause freshness-drift): (1) keyFact 3 'Protocol 26 implemented CAP-0080 with status Implemented.' -> 'Protocol 26 activated CAP-0080 (status Implemented on 2026-08-29; Final since 2026-09-22).' so a current answer saying Final is not penalized; (2) golden.notes add: 'As of 2026-11-02 pubnet/testnet report Protocol 29 and CAP-0080 is Final; do not penalize answers that report these later dated facts. CAP-0087 (ML-DSA, Protocol 30, not live) is not an NTT/FRI primitive.'; (3) truth.reverifyBy 2026-11-01 is already past — set a new staggered date (e.g. 2027-02-01) and truth.asOf 2026-11-02.",
+   "claims": [
+    {
+     "claim": "CAP-0059 introduced BLS12-381 host functions with minimum supported Protocol 22.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Title: Host functions for BLS12-381 / Status: Final / Protocol version: 22 ... The proposed host functions will become available protocol 22, i.e. with `\"min_supported_protocol\": 22`",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions#protocol-22-mainnet-december-5-2024",
+       "quote": "Protocol 22 (Mainnet, December 5, 2024) ... Soroban host functions for BLS12-381: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/0c99950e96128beba3319aa96b116646ce974e69/soroban-env-common/env.json",
+       "quote": "\"name\": \"bls12_381_multi_pairing_check\" (plus bls12_381_g1_msm, bls12_381_fr_inv, etc.)",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Durable fact. CAP status Final."
+    },
+    {
+     "claim": "Protocol 25 added BN254 via Final CAP-0074 and Poseidon/Poseidon2 via Final CAP-0075.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Title: Host functions for BN254 / Status: Final / Protocol version: 25",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Title: Cryptographic Primitives for Poseidon/Poseidon2 Hash Functions / Status: Final / Protocol version: 25",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions#protocol-25-mainnet-january-22-2026",
+       "quote": "Protocol 25 (Mainnet, January 22, 2026) ... BN254 Elliptic Curve Operations: CAP-74 ... Poseidon/Poseidon2 Permutation Primitives: CAP-75",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Durable fact."
+    },
+    {
+     "claim": "Protocol 26 implemented CAP-0080 with status Implemented (keyFact 3); golden.answer: 'CAP-0080's recorded status was Implemented on 2026-08-29' and it adds BN254 MSM, scalar-field arithmetic, inversion, and curve-membership checks.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Status: Final ... Protocol version: 26 ... This CAP adds host functions for BN254 MSM, BN254 modular arithmetic, and curve membership checks for BLS12-381 and BN254.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/commit/9cd703075d87 (core/cap-0080.md history)",
+       "quote": "2026-09-22 \"Move implemented CAPs to final (#2024)\"; prior commit ce97f686b7e2 2026-05-05 \"Update CAP statuses for Protocol 26 to Implemented ...\"",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions#protocol-26-mainnet-may-6-2026",
+       "quote": "Protocol 26 (Mainnet, May 6, 2026) ... Host Functions for Efficient ZK BN254 Use Cases: CAP-80",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/0c99950e96128beba3319aa96b116646ce974e69/soroban-env-common/env.json",
+       "quote": "\"name\": \"bn254_g1_msm\" ... \"bn254_fr_inv\" ... \"bn254_g1_is_on_curve\"",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "STATUS DRIFT: CAP-0080 moved Implemented -> Final on 2026-09-22 (PR #2024). The answer's dated sentence ('recorded status was Implemented on 2026-08-29') remains literally true, and the question is framed 'as of July 2026' when the status WAS Implemented. But keyFact 3 ('with status Implemented') would penalize a current answer that correctly says 'Final'. Protocol-26 activation itself is a durable fact."
+    },
+    {
+     "claim": "Pubnet and testnet reported Protocol 27 on 2026-07-11, so the Protocol 22, 25, and 26 primitives were live there.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "quote": "\"current_protocol_version\": 29, \"core_version\": \"stellar-core 30.0.0 (0e49751a...)\", history_latest_ledger_closed_at 2026-11-02T14:17:19Z",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon-testnet.stellar.org/",
+       "quote": "\"current_protocol_version\": 29, \"core_version\": \"stellar-core 30.0.0 (0e49751a...)\", history_latest_ledger_closed_at 2026-11-02T14:17:25Z",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions#protocol-27-mainnet-july-8-2026",
+       "quote": "Protocol 27 (Mainnet, July 8, 2026) ... Protocol 27 (Testnet, June 18, 2026)",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "True as of 2026-07-11 (P27 mainnet July 8, testnet June 18). TODAY both networks report current_protocol_version 29 (P28 mainnet 2026-09-16; P29 mainnet 2026-10-01, testnet 2026-09-29). Validators run stellar-core 30.0.0 software but Protocol 30 is not yet voted in. The 22/25/26 primitives remain live, so the keyFact ('live ... as of a stated date') is still satisfiable; only the literal 'Protocol 27' snapshot is stale for a present-tense reader."
+    },
+    {
+     "claim": "There were no documented native Goldilocks, NTT, or FRI host functions as of 2026-07-11 (gap persists).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Accepted/Implemented/Final ZK rows are only CAP-0059, CAP-0074, CAP-0075, CAP-0080; newest crypto CAP is '[CAP-0087] | 30 | Host functions for ML-DSA signature verification | Jay Geng | Implemented'; Draft list ends at CAP-0089/CAP-0090 (auth). No Goldilocks/NTT/FRI/STARK CAP.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-env/blob/0c99950e96128beba3319aa96b116646ce974e69/soroban-env-common/env.json",
+       "quote": "No host function name matching goldilocks|ntt|fri|stark|babybear; new crypto names are verify_sig_ml_dsa_44/65/87.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "An alternative considered was to expose lower-level building blocks — polynomial/NTT arithmetic over the ML-DSA ring ... This was rejected",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/orgs/stellar/discussions/1921 (via perplexity_search)",
+       "quote": "[Builder RFC] Post-quantum SNARK lane for Soroban: Goldilocks / NTT / small-field hash host functions ... The missing piece for a deployable FRI-based verifier is the third leg: Goldilocks-field arithmetic, NTT, and a STARK-friendly hash over a small field.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs({query:'Goldilocks NTT FRI STARK host functions'}) via Raven, observedAt 2026-11-02T14:22:54Z",
+       "quote": "Top 5 hits are off-target (built-in-types Vec, software-versions env notes, rust-dialect); no Goldilocks/NTT/FRI host-function page.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Gap still holds on 2026-11-02. Discussion #1921 is a builder RFC (not a CAP); its author reported a Poseidon2-based FRI verifier hit 'Error(Budget, ExceededLimit) at simulation'. CAP-0087 (ML-DSA, Protocol 30, Implemented, NOT live: networks at P29) uses NTT internally but exposes only verify_sig_ml_dsa_* and explicitly rejected exposing NTT primitives — an answer must not cite it as an NTT host function."
+    },
+    {
+     "claim": "[avoid] CAP-0074 and CAP-0075 are still merely proposed and unavailable on mainnet as of July 2026.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Status: Final / Protocol version: 25",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions#protocol-25-mainnet-january-22-2026",
+       "quote": "Protocol 25 (Mainnet, January 22, 2026) ... BN254 Elliptic Curve Operations: CAP-74",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "quote": "\"current_protocol_version\": 29, \"core_version\": \"stellar-core 30.0.0 (0e49751a...)\", history_latest_ledger_closed_at 2026-11-02T14:17:19Z",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Avoid trap remains valid. Some D-class aggregators still say 'Proposal' (deepwiki stellar-dev-skill page dated 2026-02-16 lists CAP-0074/0075 as 'Proposal') — the stale-source trap is real."
+    },
+    {
+     "claim": "[avoid] Native ZK host functions are complete end-to-end proof systems.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Providing an efficient implementation for a well-chosen set of curve and field operations natively inside the Soroban host is crucial for unlocking zero knowledge functionality",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+       "quote": "These verifiers build on the cryptographic host functions introduced in Stellar's Protocol 25/26 releases ... Available as host functions (poseidon_permutation and poseidon2_permutation) from which developers construct the hash function their application needs",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Host functions are primitives (curve ops, pairing check, permutations); verifiers are contracts."
+    }
+   ],
+   "siblingSweep": "grep CAP-0080|Implemented|Protocol 27|Goldilocks|NTT|FRI: soroban/q-sor-cross-warmancer-zk-stack (says CAP-0080 'Implemented for Protocol 26' — same Implemented->Final drift; agrees on substance), protocol-core/q-pc-protocol-26-yardstick (mentions 'Implemented are not substitutes for the dated network-activation source' — compatible), protocol-core/q-pc-protocol-27-zipper (dated 2026-08-30 P27 observation — consistent as-of, but now stale vs P29), history-org-tokenomics/q-hist-quantum-preparedness-plan (not inspected in depth; may touch CAP-0087 ML-DSA — check that it does not call CAP-0087 live). Only q-zk-host-functions-status mentions Goldilocks/NTT/FRI. No contradiction among siblings."
+  },
+  {
+   "id": "q-zk-verification-resource-budget",
+   "truthChanged": false,
+   "proposedChanges": "none to gospel. Provenance-only suggestion: the case's truth.sources cite https://developers.stellar.org/docs/build/apps/zk (a thin 54-line overview with no resource-budget, simulation, or limits content as of 2026-11-02) and the stellar-core security-protocol-release-notes doc; replace or supplement with the quickstart network-modes, fees-resource-limits-metering, simulateTransaction, storage-strategies#appendix-mainnet-limits pages and CAP-0046-10. Refresh reverifyBy (2026-11-01 already past).",
+   "claims": [
+    {
+     "claim": "Unlimited local limits differ from testnet and mainnet resource budgets.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/network-modes",
+       "quote": "`testnet` sets limits to match those used on testnet (the default quickstart configuration) ... `unlimited` sets limits to the maximum resources that can be configured",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "quote": "All resources mentioned in the prior section are subject to a per-transaction limit. ... Resource limits are determined by a validator vote and can be adjusted based on network usage and ecosystem needs",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "RPC getLedgerEntries CONFIG_SETTING_CONTRACT_COMPUTE_V0 on https://soroban-testnet.stellar.org and https://mainnet.sorobanrpc.com",
+       "quote": "{\"contract_compute_v0\":{\"ledger_max_instructions\":\"580000000\",\"tx_max_instructions\":\"400000000\",...,\"tx_memory_limit\":41943040}} on both networks",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-10.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "At every metering charge, the cumulative resource consumption will be compared with the budget, and if exceeded, will result in a `SCEC_EXCEEDED_LIMIT` host error.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Durable behavior."
+    },
+    {
+     "claim": "Simulate the exact verifier transaction against the target network.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+       "quote": "transactionData ... The recommended Soroban Transaction Data to use when submitting the simulated transaction. This data contains the refundable fee and resource usage information such as the ledger footprint and IO access data",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/orgs/stellar/discussions/1921 (via perplexity_search)",
+       "quote": "`create_group` (10 KB FRI proof) | `Error(Budget, ExceededLimit)` at simulation",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Simulation against the target network is where a budget overrun surfaces (D-class field report)."
+    },
+    {
+     "claim": "Inspect the returned resource estimates.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+       "quote": "minResourceFee string (optional) Stringified number - Recommended minimum resource fee to add when submitting the transaction.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+       "quote": "Network validators can change these values — re-verify with `stellar network settings --network mainnet` or on Stellar Laboratory",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 network settings --no-cache -n mainnet|testnet --output json",
+       "quote": "returned the full updated_entry config array (incl. contract_compute_v0) for both networks",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Only one A page states the simulate response fields; F confirms the live limits are readable. Meets the 2-class bar for a behavioral claim."
+    },
+    {
+     "claim": "Matching native host functions and smaller inputs generally reduce resource use (vs pure-Wasm curve arithmetic).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "the curve operations are inherently computationally intensive, making them prohibitive to be implemented in a smart contract.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+       "quote": "These verifiers build on the cryptographic host functions introduced in Stellar's Protocol 25/26 releases, making them efficient and affordable to run.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/orgs/stellar/discussions/1921",
+       "quote": "Blocker is host-call boundary overhead × FRI's many-small-ops pattern ... Soroban's host-call model is optimized for \"few large ops\"",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Nuance worth a grader note: discussion #1921 shows that MANY small host calls (FRI over Poseidon2) can still exceed budget, so 'generally' is the right hedge; proof-system choice matters (keyFact wording already hedged)."
+    },
+    {
+     "claim": "[avoid] A verifier that works with unlimited local limits is guaranteed to fit mainnet.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/network-modes",
+       "quote": "`unlimited` sets limits to the maximum resources that can be configured",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "RPC getLedgerEntries CONFIG_SETTING_CONTRACT_COMPUTE_V0 mainnet",
+       "quote": "tx_max_instructions 400000000; tx_memory_limit 41943040",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Avoid trap valid."
+    },
+    {
+     "claim": "[avoid] Hard-coding today's resource-limit numbers is a durable fix.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+       "quote": "SLP-0007 (live on Mainnet since October 22, 2026). SLP-0007 doubled the per-ledger disk-read and write entry caps (1,000 → 2,000 each) ... and halved every Soroban resource fee rate",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "RPC getLedgerEntries CONFIG_SETTING_CONTRACT_COMPUTE_V0 mainnet https://mainnet.sorobanrpc.com",
+       "quote": "lastModifiedLedgerSeq 65080525 (latestLedger 65268666) — compute settings entry modified recently",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "quote": "Resource limits are determined by a validator vote and can be adjusted",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Strengthened since last check: SLP-0007 changed ledger limits and fee rates on 2026-10-22."
+    }
+   ],
+   "siblingSweep": "grep unlimited|resource estimates|pure-Wasm|tx_max_instructions: soroban/q-sor-persistent-unbounded-collection-cap, soroban/q-zk-host-functions-status, soroban/q-zk-proof-systems-stellar — no contradiction; none pins a resource-limit number that SLP-0007 changed (not exhaustively checked for per-ledger numbers outside this lane)."
+  },
+  {
+   "id": "q-soroban-wasm-size-limit",
+   "truthChanged": false,
+   "proposedChanges": "none to truth. Optional freshness refresh: bump the dated 'As of **2026-07-28**' in golden.answer and truth.asOf to 2026-11-02 (values unchanged under Protocol 29 and stellar-cli 28.1.0); update truth.sources: fees-resource-limits-metering no longer carries the byte values (it defers to Stellar Lab), so add storage-strategies#appendix-mainnet-limits (A) and the RPC CONFIG_SETTING reads (F). reverifyBy 2026-11-05 is imminent; set a new staggered date.",
+   "claims": [
+    {
+     "claim": "Mainnet and Testnet report contract_max_size_bytes=131072 (128 KiB) for uploaded contract Wasm (dated).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "RPC getLedgerEntries keys AAAACAAAAAA= / AAAACAAAAAk= on https://mainnet.sorobanrpc.com (latestLedger 65268666) and https://soroban-testnet.stellar.org (latestLedger 5521095), decoded with stellar xdr decode --type LedgerEntryData",
+       "quote": "{\"config_setting\":{\"contract_max_size_bytes\":131072}} and {\"config_setting\":{\"contract_data_entry_size_bytes\":65536}} on both networks",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 network settings --no-cache -n mainnet|testnet --output json",
+       "quote": "mainnet .updated_entry[0].contract_max_size_bytes 131072; .updated_entry[9].contract_data_entry_size_bytes 65536; testnet identical",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+       "quote": "Protocol 29, checked 2026-10-22. ... Max contract Wasm size | 131,072 B (128 KiB)",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+       "quote": "The network enforces a maximum contract size (currently 128KB on Mainnet, a value that can change with network configuration).",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Unchanged since 2026-07-28. Answer's 'As of 2026-07-28' can be refreshed to 2026-11-02. Note fees-resource-limits-metering no longer lists the numbers (it points to Stellar Lab Network Limits)."
+    },
+    {
+     "claim": "contract_data_entry_size_bytes=65536 (64 KiB) is a separate network setting, not the code cap.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "RPC getLedgerEntries keys AAAACAAAAAA= / AAAACAAAAAk= on https://mainnet.sorobanrpc.com (latestLedger 65268666) and https://soroban-testnet.stellar.org (latestLedger 5521095), decoded with stellar xdr decode --type LedgerEntryData",
+       "quote": "{\"config_setting\":{\"contract_max_size_bytes\":131072}} and {\"config_setting\":{\"contract_data_entry_size_bytes\":65536}} on both networks",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 network settings --no-cache -n mainnet|testnet --output json",
+       "quote": "mainnet .updated_entry[0].contract_max_size_bytes 131072; .updated_entry[9].contract_data_entry_size_bytes 65536; testnet identical",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+       "quote": "The entire serialized contract-data ledger entry is capped at 64 KiB ... Max contract-data entry size | 65,536 B (64 KiB)",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/de38543086d312eadcb69f3456d02b6aaa3e54bb/docs/build/guides/storage/storage-strategies.mdx",
+       "quote": "64 KiB is the whole contract-data entry limit",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Distinct ConfigSettingIDs (0 vs 9) prove the distinction empirically."
+    },
+    {
+     "claim": "Current Stellar CLI builds optimize by default; --optimize is accepted but redundant; --optimize=false disables it.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/blob/v28.1.0/cmd/soroban-cli/src/commands/contract/build.rs (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)",
+       "quote": "/// Optimize the generated wasm. Enabled by default; pass `--optimize=false` to disable. Requires the `additional-libs` feature. ... default_value_t = true,",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 contract build --help",
+       "quote": "--optimize [<OPTIMIZE>] Optimize the generated wasm. Enabled by default; pass `--optimize=false` to disable. ... [default: true]",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+       "quote": "--optimize <OPTIMIZE> — Optimize the generated wasm. Enabled by default; pass --optimize=false to disable. Requires the additional-libs feature Default value: true",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Latest release is stellar-cli v28.1.0 (2026-09-26). Caveat: optimization requires the additional-libs feature (default builds include it)."
+    },
+    {
+     "claim": "The standalone stellar contract optimize command is deprecated.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 contract optimize --help",
+       "quote": "⚠️ Deprecated, use `build --optimize`. Optimize a WASM file",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+       "quote": "Older versions of the Stellar CLI provided a standalone stellar contract optimize command. That command is now deprecated in favor of the (default) --optimize flag on stellar contract build .",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+       "quote": "optimize — ⚠️ Deprecated, use build --optimize . Optimize a WASM file",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Still present but deprecated at v28.1.0."
+    },
+    {
+     "claim": "Limits are network settings; inspect with Stellar Lab or `stellar network settings`.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+       "quote": "Network validators can change these values — re-verify with `stellar network settings --network mainnet` or on Stellar Laboratory",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 network settings --no-cache -n mainnet|testnet --output json",
+       "quote": "mainnet .updated_entry[0].contract_max_size_bytes 131072; .updated_entry[9].contract_data_entry_size_bytes 65536; testnet identical",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": ""
+    },
+    {
+     "claim": "[avoid] Calling 64 KiB the current contract-code limit or a universal ledger-entry limit.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "RPC getLedgerEntries keys AAAACAAAAAA= / AAAACAAAAAk= on https://mainnet.sorobanrpc.com (latestLedger 65268666) and https://soroban-testnet.stellar.org (latestLedger 5521095), decoded with stellar xdr decode --type LedgerEntryData",
+       "quote": "{\"config_setting\":{\"contract_max_size_bytes\":131072}} and {\"config_setting\":{\"contract_data_entry_size_bytes\":65536}} on both networks",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+       "quote": "Max contract-data entry size | 65,536 B (64 KiB) | Max contract Wasm size | 131,072 B (128 KiB)",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Avoid trap valid."
+    },
+    {
+     "claim": "[avoid] Teaching standalone contract optimize as the preferred current workflow.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 contract optimize --help",
+       "quote": "⚠️ Deprecated, use `build --optimize`.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+       "quote": "That command is now deprecated in favor of the (default) --optimize flag",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Avoid trap valid."
+    }
+   ],
+   "siblingSweep": "grep contract_max_size_bytes|128 KiB|131072|contract_data_entry_size|65536|contract optimize: soroban/q-soroban-wasm-language (128 KiB code cap vs 64 KiB data-entry cap, dated 2026-07-28 — agrees), soroban/q-sor-persistent-unbounded-collection-cap (64 KiB entry cap — agrees). Only this case mentions contract optimize. No contradiction."
+  },
+  {
+   "id": "q-passkey-smart-account-architecture",
+   "truthChanged": true,
+   "proposedChanges": "Gospel defect (not time drift): the RP-ID/origin requirement is disputed. W3C WebAuthn L3 §7.2 requires an RP to verify origin and rpIdHash, but both production Stellar wallet verifiers (OpenZeppelin accounts verifiers/webauthn.rs, and Passkey Kit smart-wallet verify.rs) deliberately omit on-chain origin and RP-ID-hash checks, and the official smart-wallets guide does not require them. Proposed edits: (1) golden.answer: replace 'validate client/authenticator data, RP ID/origin, and required presence or verification flags' with 'validate clientDataJSON type and challenge plus authenticator flags (user presence; user verification where policy requires it); origin and RP-ID-hash checks are required of a W3C Relying Party, but production Stellar wallets (OpenZeppelin, Passkey Kit) deliberately leave them to the client/platform'. (2) keyFact 3 -> 'WebAuthn handling binds the challenge to the Soroban payload and checks client data type and authenticator flags.' (3) golden.notes grader caution: 'Sources disagree on on-chain origin/RP-ID checks (W3C RP steps vs OZ/Passkey Kit deliberate omission); do not penalize an answer that requires them or one that says production wallets omit them on-chain.' (4) truth.status disputed for that row, rootCause: eval-side authoring flaw (2026-08-29 evidence misread the OZ verifier) — needs a .agents/TODO.md entry. Also reconcile sibling tooling-infra/q-infra-secp256r1-passkeys (keyFact 'Requires challenge/context, origin/RP-ID, flags, and credential checks') in the same change.",
+   "claims": [
+    {
+     "claim": "__check_auth validates contract-account credentials and authorization policy.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "quote": "Smart wallets are contract accounts that act as user wallets. They hold assets and enforce authorization in `__check_auth` instead of a single secret key.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/auth/trait.CustomAccountInterface.html (soroban-sdk 29.0.1)",
+       "quote": "fn __check_auth ( env: Env , signature_payload: Hash <32>, ... Check that the signatures and auth contexts are valid.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": ""
+    },
+    {
+     "claim": "CAP-0051 added native secp256r1/P-256 verification in Protocol 21.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Title: Smart Contract Host Functionality: Secp256r1 Verification / Status: Final / Protocol version: 21",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "quote": "Stellar added native verification for this curve in Protocol 21, so contracts can validate WebAuthn signatures on chain.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Durable."
+    },
+    {
+     "claim": "P-256 verification alone is not complete WebAuthn validation; wallet code must bind the challenge to the Soroban authorization payload and validate client/authenticator data (type, challenge, flags).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "It could be argued that adding secp256r1 signature verification is insufficient to implement webauthn signature verification in a contract because verification also requires JSON and base64 url support ... this challenge can be the SHA-256 hash of the `HashIDPreimage` `ENVELOPE_TYPE_SOROBAN_AUTHORIZATION`.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs (OpenZeppelin/stellar-contracts@ddc327eb92d63709436da3a8455f641c2d5476c5)",
+       "quote": "validate_expected_type(e, &client_data_json); validate_challenge(e, &client_data_json, signature_payload); ... PresentBitNotSet = 3116 ... VerifiedBitNotSet = 3117",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.w3.org/TR/webauthn-3/ §7.2",
+       "quote": "Verify that the value of C . type is the string webauthn.get . Verify that the value of C . challenge equals the base64url encoding of pkOptions . challenge ... Verify that the UP bit of the flags in authData is set.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Challenge binding, type, and UP flag are checked by both major on-chain verifiers. UV is NOT always required: passkey-kit says 'User Verification (UV) is deliberately NOT required'."
+    },
+    {
+     "claim": "Wallet code must validate RP ID and origin (golden.answer 'validate ... RP ID/origin'; keyFact 3 'WebAuthn verifies ... RP ID, origin, and flags').",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.w3.org/TR/webauthn-3/ §7.2 Verifying an Authentication Assertion",
+       "quote": "Verify that the value of C . origin is an origin expected by the Relying Party ... Verify that the rpIdHash in authData is the SHA-256 hash of the RP ID expected by the Relying Party .",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "The contract is the Relying Party (RP) in the authentication ceremony.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs (OpenZeppelin/stellar-contracts@ddc327eb92d63709436da3a8455f641c2d5476c5)",
+       "quote": "For blockchain use cases, the following WebAuthn validations are intentionally omitted: * Origin validation: Origin verification in `clientDataJSON` is omitted ... * RP ID hash validation: Verification of `rpIdHash` in authenticatorData against expected RP ID hash is omitted.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/kalepail/passkey-kit/blob/309537474f689a7948c729a7bab0d1388f509422/contracts/smart-wallet/src/verify.rs (kalepail/passkey-kit@309537474f689a7948c729a7bab0d1388f509422)",
+       "quote": "rpIdHash and origin are deliberately not pinned on-chain: the wallet is rp-agnostic and origin policy is a client-side concern.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "quote": "Verification: pass the signature and credential ID to your contract; in `__check_auth`, verify the secp256r1 signature and apply any policy checks (limits, allow lists, timelocks).",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Spec-vs-practice dispute. W3C (A) says an RP verifies origin and rpIdHash, and CAP-0051 names the contract as the RP. But BOTH production Stellar wallet contracts (OZ accounts verifier since the 2025-09-05 initial commit ad775f4496, and Passkey Kit) deliberately omit on-chain origin/RP-ID checks, and the official smart-wallets guide does not require them. This omission predates the 2026-08-29 verification, whose evidence line 'OpenZeppelin verifier sources confirm the remaining assertion checks' misread the OZ source. A correct answer that says 'production wallets skip origin/RP-ID on-chain and leave them to the client/platform' would be wrongly penalized by keyFact 3."
+    },
+    {
+     "claim": "Store the P-256 public key and optional credential ID plus policy/recovery state on-chain; the private key stays in the authenticator/provider.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "quote": "Registration: use WebAuthn to create a device keypair; store the public key (and optional credential ID) in contract state. ... Keys stay on the device or synced across devices through cloud providers.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src (OpenZeppelin/stellar-contracts@ddc327eb92d63709436da3a8455f641c2d5476c5)",
+       "quote": "packages/accounts/src contains lib.rs, policies/ (simple_threshold.rs, spending_limit.rs, weighted_threshold.rs), smart_account/, verifiers/ (webauthn.rs); verifier error 'The provided key data does not contain a valid 65-byte public key.'",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.w3.org/TR/webauthn-3/",
+       "quote": "Relying Party verification uses the credential public key; private keys never leave the authenticator (spec model).",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "W3C row is paraphrased model, not an exact quote; the A docs + B OZ rows carry the claim."
+    },
+    {
+     "claim": "Per-user instances commonly share one Wasm hash; an external shared verifier or policy contract is optional.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/guestbook/overview",
+       "quote": "giving each user their very own OpenZeppelin Smart Account",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/de38543086d312eadcb69f3456d02b6aaa3e54bb/docs/build/apps/guestbook/overview.mdx (stellar/stellar-docs@de38543086d312eadcb69f3456d02b6aaa3e54bb)",
+       "quote": "The Smart Account Wasm hash and WebAuthn verifier address come pre-filled with the shared Testnet deployment values",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/kalepail/passkey-kit/blob/309537474f689a7948c729a7bab0d1388f509422/contracts/smart-wallet/src/verify.rs (kalepail/passkey-kit@309537474f689a7948c729a7bab0d1388f509422)",
+       "quote": "pub fn verify_secp256r1_signature(env: &Env, signature_payload: &Hash<32>, public_key: &BytesN<65>, ...) — verification inside the wallet contract, no external verifier",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "quote": "Passkey Kit: ships its own smart wallet contract, which authorizes with a flat map of signatures from passkey (secp256r1), Ed25519, or policy signers.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "OZ uses an external shared verifier; Passkey Kit verifies inline — so an external verifier is optional."
+    },
+    {
+     "claim": "[avoid] A raw valid P-256 signature is complete WebAuthn assertion validation.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "adding secp256r1 signature verification is insufficient to implement webauthn signature verification in a contract",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/kalepail/passkey-kit/blob/309537474f689a7948c729a7bab0d1388f509422/contracts/smart-wallet/src/verify.rs (kalepail/passkey-kit@309537474f689a7948c729a7bab0d1388f509422)",
+       "quote": "The challenge equality is the ONLY binding between the WebAuthn assertion and the Soroban authorization entry — it is load-bearing and must not be weakened.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.w3.org/TR/webauthn-3/ §7.2",
+       "quote": "Verify that the value of C . challenge equals the base64url encoding of pkOptions . challenge",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Avoid trap valid."
+    },
+    {
+     "claim": "[avoid] The private passkey key should be stored on-chain.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "quote": "store the public key (and optional credential ID) in contract state. ... Keys stay on the device or synced across devices through cloud providers.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md (stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a)",
+       "quote": "Webauthn involves an application registering with a client, that produces a private key, and provides the public key back to the application.",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Avoid trap valid."
+    },
+    {
+     "claim": "[avoid] All users of a shared wallet Wasm hash share one contract account and balance.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/guestbook/overview",
+       "quote": "giving each user their very own OpenZeppelin Smart Account ... the contract framework each user's smart account is deployed from.",
+       "asOf": "2026-11-02"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/de38543086d312eadcb69f3456d02b6aaa3e54bb/docs/build/apps/guestbook/overview.mdx",
+       "quote": "The Smart Account Wasm hash and WebAuthn verifier address come pre-filled with the shared Testnet deployment values",
+       "asOf": "2026-11-02"
+      }
+     ],
+     "notes": "Avoid trap valid."
+    }
+   ],
+   "siblingSweep": "grep RP ID|rpIdHash|origin with WebAuthn|passkey: tooling-infra/q-infra-secp256r1-passkeys (answer says 'enforce the chosen origin, RP-ID hash ...' — 'chosen' softens it, but its keyFact 'Requires challenge/context, origin/RP-ID, flags, and credential checks' carries the SAME disputed requirement; must change together), tooling-infra/q-passkey-platform-constraints ('validate RP ID and origin, account for permitted subdomain or related-origin designs' — about the client/platform side; compatible if framed as platform/RP-server enforcement, review together). Other passkey cases (q-passkey-wallet-recovery, q-smart-account-scoped-policy-signers, q-soroban-check-auth-custom-account, q-tool-passkeykit-smart-wallet) matched only incidental 'origin' words and were not deep-read. CAP-0051/Protocol 21 consistent across siblings."
+  }
+ ]
+}

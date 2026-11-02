@@ -33,7 +33,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2026-11-01",
+    "reverifyBy": "2027-02-05",
     "sources": [
       {
         "class": "A",
@@ -42,6 +42,14 @@
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-core/blob/master/docs/software/security-protocol-release-notes.md"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/quickstart/network-modes"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering"
       }
     ],
     "corroboration": [
@@ -127,20 +135,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus author re-check, Claude Opus 5.5)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/apps/zk",
-        "https://github.com/stellar/stellar-core/blob/master/docs/software/security-protocol-release-notes.md",
-        "Structural re-form (long-fact): shortened the network-budget and native-function facts and split simulation from estimate inspection; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — public smart-contract transactions have validator-set per-transaction resource limits.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — the target RPC simulates the submitted transaction against its network ledger state.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — the response returns CPU, memory, transaction-data, and fee estimates.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — native host operations replace otherwise prohibitive guest computation, with input-sized costs recorded by metering.",
-        "Sibling sweep 2026-08-29: grep unlimited local|verification transaction|pure-Wasm|resource estimates → q-sor-persistent-unbounded-collection-cap, q-zk-host-functions-status, q-zk-proof-systems-stellar, and q-zk-verification-resource-budget; no contradiction."
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verified unchanged 2026-11-02; the answer pins no constant.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tools/quickstart/network-modes says '`unlimited` sets limits to the maximum resources that can be configured', so local success does not prove a public-network fit.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering says 'Resource limits are determined by a validator vote and can be adjusted'; the storage-strategies appendix records SLP-0007 (live on Mainnet since 2026-10-22) changing per-ledger caps, which supports the no-pinned-constants guidance.",
+        "Live F 2026-11-02: RPC getLedgerEntries CONFIG_SETTING_CONTRACT_COMPUTE_V0 on mainnet reports tx_max_instructions 400000000 and tx_memory_limit 41943040 (entry modified recently).",
+        "Sibling sweep 2026-11-02: q-zk-host-functions-status, q-zk-proof-systems-stellar, and q-sor-persistent-unbounded-collection-cap; no contradiction."
       ]
     },
     "origin": "kaan zk-verification-resource-budget"
