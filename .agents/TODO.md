@@ -678,6 +678,21 @@ still leak. The pin moves with the Scout absorb.
 Done when: the stellar-light pin is absorbed together with, or after, the Scout operations it
 describes, with no exposure leak.
 
+### Add the Varial rename to the goldens that name Freighter
+
+Found by the 2026-11-02 stellarlight directory refresh. The Freighter wallet is now Varial. The
+`stellar/freighter` README says "Varial (formerly Freighter)", `www.freighter.app` redirects to
+`varialwallet.com`, and `@stellar/varial-sdk` 7.0.0 (published 2026-10-28) replaces
+`@stellar/freighter-api`. Eighteen battery cases name Freighter
+(`grep -rli freighter eval/qa/corpus/battery`). An answer that uses the new name or package can
+conflict with their key facts.
+
+Next: use the `golden-truth` lane. Accept both names in the affected cases, record the rename date
+and sources in the truth metadata, and add a grader caution so neither name is penalized.
+
+Done when: the cases accept both names with primary-source provenance and
+`npm run eval:qa:lint -- --stale --enforce-floors` passes.
+
 ### Qualify the Confidential Tokens privacy claim in three goldens
 
 Found by the independent review of the 2026-10-28 stellar-dev pin. The new `zk-proofs` skill text
