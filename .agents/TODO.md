@@ -411,9 +411,11 @@ control-model lane, or a reviewed change omits the field for that transport.
 ### Re-verify the next near-due goldens before the stale gate fails CI
 
 `npm run eval:qa:lint -- --stale --enforce-floors` fails every PR and `main` once a battery case
-passes its `truth.reverifyBy` date. That happened on 2026-10-23, and #298 fixed it. The next dates:
-5 cases on 2026-11-01, 1 on 11-03, 5 on 11-05, and 31 more through 2026-11-30 (83 by 2026-12-31).
-List them with `grep -rl '"reverifyBy": "2026-11-0' eval/qa/corpus/battery`.
+passes its `truth.reverifyBy` date. That happened on 2026-10-23 (#298 fixed it) and on 2026-11-02
+(the `rounds/2026-11-02-golden-reverify.md` batch fixed it). The next dates: 6 cases on 2026-11-12,
+1 on 11-13, 3 on 11-15, 9 on 11-19, and 11 more through 2026-11-30 (71 by 2026-12-31). The two
+SCF round cases on 11-12 are event-triggered: SCF #46 Submission closes 2026-11-09.
+List them with `grep -rl '"reverifyBy": "2026-11-1' eval/qa/corpus/battery`.
 
 Re-verify each batch before its date with the `golden-truth` skill, as #298 did: live evidence from
 two or more source classes, a refreshed `truth.verified`, staggered `reverifyBy` dates, and a
@@ -421,6 +423,23 @@ register re-sweep (`npm run eval:qa:register`, then `--review`). The `truth-main
 the drip policy; fold the batch into a round when one runs.
 
 Done when: no battery case has a `reverifyBy` date before 2027-01-01; then delete this item.
+
+### Resolve the SCF RFP roster conflict in two goldens before 2026-11-12
+
+Found by the 2026-11-02 re-verification (`rounds/2026-11-02-golden-reverify.md`).
+`q-scf-open-rfps` (due 2026-11-12) and `q-scf-rfp-tooling` (due 2026-11-13) report two open Q3
+briefs (LayerZero DVN and x402 Facilitator with Bazaar) and the SCF #46 deadline 2026-11-08. The
+official deadline is now 2026-11-09. The official RFP Track page
+(`stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track`) now says "October 2026: New Q4
+RFPs are coming soon" and lists no open brief. Scout `GET /api/rfps?status=open` still returns the
+two Q3 briefs and the synthetic `scf-round-46` row.
+
+Next: use the `golden-truth` lane. Decide whether the two briefs are still open from a third source
+class. Encode the conflict as disputed if it persists, correct the deadline, and file an
+`improvements/` finding against Scout if its roster lags the official page.
+
+Done when: both cases carry the 2026-11-02 or later state with provenance, and
+`npm run eval:qa:lint -- --stale --enforce-floors` passes.
 
 ### Measure the execute annotation change in isolation
 

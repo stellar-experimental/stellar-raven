@@ -35,7 +35,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2026-11-05",
+    "reverifyBy": "2027-02-15",
     "sources": [
       {
         "class": "B",
@@ -54,8 +54,8 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets/liquidity-pools",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools#trustlines",
+        "note": "Moved from /docs/learn/fundamentals/stellar-data-structures/assets/liquidity-pools (404 after the 2026-10-22 Mintlify migration). Observed 2026-11-02: 'A pool share trustline requires 2 base reserves instead of 1.'"
       },
       {
         "class": "A",
@@ -81,6 +81,11 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
         "note": "'The pool share trust line should count as two subentries (and therefore require two base reserves).'"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+        "note": "Observed 2026-11-02: ledger 65268657, base_reserve_in_stroops 5000000, protocol_version 29."
       }
     ],
     "corroboration": [
@@ -99,6 +104,18 @@
             "ref": "https://github.com/stellar/stellar-core/blob/7e64393b61808fd498ae13317e0cf9cdc0a0c018/src/transactions/TransactionUtils.cpp",
             "observedAt": "2026-09-08",
             "note": "getMinBalance excludes liabilities; getAvailableBalance subtracts selling liabilities after minimum balance from protocol V10."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+            "observedAt": "2026-11-02",
+            "note": "'(2 + `numSubEntries` + `numSponsoring` - `numSponsored`) * `baseReserve`'; 'Selling liabilities are not part of the minimum balance.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionUtils.cpp#L903-L906",
+            "observedAt": "2026-11-02",
+            "note": "'int64_t effEntries = 2LL; effEntries += numSubentries; effEntries += numSponsoring; effEntries -= numSponsored;' Lines 611-613 compare against getSellingLiabilities separately."
           }
         ]
       },
@@ -129,6 +146,18 @@
             "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
             "observedAt": "2026-08-30",
             "note": "Ledger 64193982 (proposer) and 64193767 (blind lane): base_reserve_in_stroops 5000000."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-11-02",
+            "note": "Ledger 65268657 (closed 2026-11-02T14:17:49Z): base_reserve_in_stroops 5000000, protocol_version 29. Testnet ledger 5521086 also reports 5000000. The dated 2026-07-11 value still holds."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+            "observedAt": "2026-11-02",
+            "note": "'One base reserve is currently 0.5 XLM.'; 'a sponsored account can even be created with a starting balance of `0`'; 'Smart contract data does not require any base reserves ... every smart contract entry must pay rent instead.'"
           }
         ]
       },
@@ -165,22 +194,44 @@
             "ref": ".agents/rounds/2026-09-29-truth-maintenance/docs-independent-review.md",
             "observedAt": "2026-09-29",
             "note": "Independent indexed-section reads returned complete corrected content on both pages."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools#trustlines",
+            "observedAt": "2026-11-02",
+            "note": "'A pool share trustline requires 2 base reserves instead of 1.' This is the moved Liquidity Pools page."
+          }
+        ]
+      },
+      {
+        "claim": "When sponsorship ends, the reserve obligation shifts back to the owner, which must meet the balance requirement.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/0da06899c02f818be0132f42cea1f45d6396e20a/core/cap-0033.md",
+            "observedAt": "2026-11-02",
+            "note": "'Else if wasSponsored and !willBeSponsored ... If getAvailableBalance(owner) < mult * baseReserve Fail with REVOKE_SPONSORSHIP_LOW_RESERVE'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#revoke-sponsorship",
+            "observedAt": "2026-11-02",
+            "note": "'Allows the sponsoring account to remove or transfer sponsorships of existing ledgerEntries and signers.'"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-09-29",
-      "by": "Truth-maintenance author with independent GPT-6 Sol high source verification",
+      "date": "2026-11-02",
+      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
       "evidence": [
-        ".agents/rounds/2026-09-29-truth-maintenance/docs-independent-review.md",
-        ".agents/rounds/2026-09-29-truth-maintenance/sd-046-live.json",
-        "Docs PR https://github.com/stellar/stellar-docs/pull/2844 merged as efd7b4a47192a8ee2e1c84559cf1bd7c7ef5da3d; fresh rendered and indexed reads passed.",
-        "The expired sd-046 caution was removed; the answer, key facts, avoid rules, dated base-reserve observation, and scheduled reverification date remain unchanged.",
-        "Sibling sweep: q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics, and register members retain the same reserve-unit and sponsorship rules."
-      ],
-      "rootCause": [
-        "Resolved finding sd-046 at Raven commit 8ab7b88f95177022cd24c0d0acb6e619b19ea23c"
+        "No gospel change 2026-11-02: question, answer, keyFacts, avoid, notes, tags, and truth.asOf (2026-07-11, the dated ledger in the answer) are unchanged. This event refreshes judge-blind provenance and reverifyBy only.",
+        "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 ledger 65268657 reports base_reserve_in_stroops 5000000 on protocol 29; https://horizon-testnet.stellar.org/ledgers?order=desc&limit=1 ledger 5521086 reports 5000000.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/lumens ('One base reserve is currently 0.5 XLM'; two base reserves, currently 1 XLM; sponsored zero starting balance; contract data pays rent) and https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance (sponsorship-aware formula; selling liabilities separate).",
+        "Live B 2026-11-02: stellar-core@b8c4f12d6f1159d67be8743c87a3c7df839ae7f4 src/transactions/TransactionUtils.cpp lines 903-906 and 611-613; stellar-xdr Stellar-ledger.x LEDGER_UPGRADE_BASE_RESERVE; CAP-0033 REVOKE_SPONSORSHIP_LOW_RESERVE; CAP-0038 two base reserves for a pool-share trustline; CAP-0046-07 rent fee.",
+        "Source repair 2026-11-02: the Liquidity Pools URL moved to https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools after the 2026-10-22 Mintlify migration; the old path returns 404.",
+        "Sibling sweep 2026-11-02: grep 'base reserve|baseReserve|minimum balance' (23 cases), spot-checked q-edge-1xlm-activation-fee, q-asset-trustline-basics, q-asset-amm-fee-reserve, q-pc-sponsored-reserves, and q-pc-account-merge-reclaim-reserve; no contradiction."
       ]
     },
     "origin": "raven-next q-protocol-base-reserve-min-balance"

@@ -11,7 +11,7 @@
     "keyFacts": [
       "CAP-0059 introduced BLS12-381 host functions with minimum supported Protocol 22.",
       "Protocol 25 added BN254 via Final CAP-0074 and Poseidon/Poseidon2 via Final CAP-0075.",
-      "Protocol 26 implemented CAP-0080 with status Implemented.",
+      "Protocol 26 activated CAP-0080 (Implemented, later Final).",
       "Marks Protocol 22, 25, and 26 primitives live on pubnet and testnet as of a stated date.",
       "Dates the native Goldilocks/NTT/FRI host-function gap to an observation date."
     ],
@@ -19,7 +19,7 @@
       "CAP-0074 and CAP-0075 are still merely proposed and unavailable on mainnet as of July 2026.",
       "Native ZK host functions are complete end-to-end proof systems."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence."
+    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence. As of 2026-11-02, pubnet and testnet report Protocol 29 and CAP-0080 is Final (moved 2026-09-22); do not penalize an answer that reports these later dated facts. CAP-0087 (ML-DSA, Protocol 30, not live) is not an NTT/FRI primitive for STARK verification."
   },
   "tags": {
     "category": "soroban",
@@ -34,7 +34,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2026-11-01",
+    "reverifyBy": "2027-02-01",
     "sources": [
       {
         "class": "A",
@@ -354,35 +354,50 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, pubnet and testnet report Protocol 29, CAP-0080 is Final, and no native Goldilocks, NTT, or FRI host function exists",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-02",
+            "note": "\"current_protocol_version\": 29; testnet (https://horizon-testnet.stellar.org/) also reports 29."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-02",
+            "note": "'Protocol 29 (Mainnet, October 1, 2026)'; Protocol 26 lists 'Host Functions for Efficient ZK BN254 Use Cases: CAP-80'."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/0da06899c02f818be0132f42cea1f45d6396e20a/core/cap-0080.md",
+            "observedAt": "2026-11-02",
+            "note": "'Status: Final'; history commit 9cd703075d87 (2026-09-22) 'Move implemented CAPs to final (#2024)'."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-env/blob/0c99950e96128beba3319aa96b116646ce974e69/soroban-env-common/env.json",
+            "observedAt": "2026-11-02",
+            "note": "No host function name matches goldilocks|ntt|fri|stark|babybear; the newest crypto names are verify_sig_ml_dsa_44/65/87."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus author re-check, Claude Opus 5.5)",
       "evidence": [
-        "https://developers.stellar.org/docs/networks/software-versions",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
-        "https://horizon.stellar.org/",
-        "https://horizon-testnet.stellar.org/",
-        "Structural re-form (snapshot-date): Replaced two literal snapshot dates and split protocol observation from primitive availability; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — reported Protocol 27 for pubnet and testnet.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — showed Protocol 22, 25, and 26 ZK host-function releases.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — listed BLS12-381, BN254, Poseidon, and CAP-0080 ZK functions without native Goldilocks, NTT, or FRI entries.",
-        "Sibling sweep 2026-08-27: grep CAP-0059|CAP-0074|CAP-0075|CAP-0080|Goldilocks|NTT|FRI → q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-zk-proof-systems-stellar; no contradiction",
-        "Owner correction 2026-08-27: the protocol-version key fact gates a dated observation, not the number 27, so a later protocol does not fail a truthful answer; Protocol 22/25/26 primitives stay a durable fact.",
-        "Owner correction 2026-08-27: merged the dated protocol-version fact and the live-primitives fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
-        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged.",
-        "Conflict resolution 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md says `Status: Implemented` and `Protocol version: 26`.",
-        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/networks/software-versions lists CAP-80 under Protocol 26 for mainnet and testnet.",
-        "Sibling sweep 2026-08-29: grep CAP-0080|Final CAP-0080|Implemented CAP-0080 → q-zk-host-functions-status, q-pc-protocol-26-yardstick, q-sor-cross-warmancer-zk-stack; no sibling contradiction after correction."
+        "The question is framed 'as of July 2026', and every dated claim stays true for that frame. keyFact 3 now accepts the later Final status so a current answer is not penalized; the notes record the 2026-11-02 state.",
+        "Live F 2026-11-02: Horizon pubnet and testnet report current_protocol_version 29.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/networks/software-versions lists Protocol 29 (Mainnet, October 1, 2026) and CAP-80 under Protocol 26.",
+        "Live B 2026-11-02: stellar-protocol@0da06899 marks CAP-0059, CAP-0074, CAP-0075, and CAP-0080 Final; rs-soroban-env@0c99950e has no Goldilocks, NTT, or FRI host function.",
+        "Sibling sweep 2026-11-02: grep CAP-0080|Goldilocks|NTT|FRI finds q-sor-cross-warmancer-zk-stack ('Implemented for Protocol 26', same substance), q-pc-protocol-26-yardstick, and q-pc-protocol-27-zipper (dated as-of); no contradiction."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-        "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "kaan zk-host-functions-cap-roadmap"

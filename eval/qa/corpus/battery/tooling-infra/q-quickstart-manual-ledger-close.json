@@ -16,11 +16,11 @@
     ],
     "avoid": [
       "A Quickstart manual-close endpoint can accelerate testnet or pubnet ledgers.",
-      "Use obsolete --core-manual-close or ENABLE_* syntax for the current image.",
+      "Use the obsolete --core-manual-close flag for the current image.",
       "Manual close is enabled by default whenever Quickstart uses --local.",
       "manualclose accepts a current count parameter or sets any arbitrary timestamp."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence."
+    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence. Do not penalize an answer that sets ENABLE_CORE_MANUAL_CLOSE=true as a container environment variable: the current start script still reads it as the default for --enable-core-manual-close, although the docs show only the flag. Standalone Core with RUN_STANDALONE=true accepts ledgerSeq and closeTime parameters on manualclose (closeTime must still be later than the last close). Quickstart does not set RUN_STANDALONE, so an answer that scopes those parameters to standalone Core is correct; claiming them for Quickstart is not."
   },
   "tags": {
     "category": "tooling-infra",
@@ -34,12 +34,16 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-11-01",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-17",
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing"
+        "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes#manual-close-mode"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/quickstart"
       },
       {
         "class": "B",
@@ -47,10 +51,14 @@
       },
       {
         "class": "B",
+        "ref": "https://github.com/stellar/stellar-core"
+      },
+      {
+        "class": "B",
         "ref": "https://github.com/stellar/stellar-core/issues/4040"
       },
       {
-        "class": "F",
+        "class": "A",
         "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html"
       }
     ],
@@ -61,23 +69,21 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+            "observedAt": "2026-11-02",
+            "note": "'By default, ledgers close automatically. (In local network mode, that's once every second.)' and 'The flag sets the `MANUAL_CLOSE` setting ... and defaults to `false` when not specified.'"
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/local/core/etc/stellar-core.cfg",
+            "observedAt": "2026-11-02",
+            "note": "'ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING=true' and 'MANUAL_CLOSE=__MANUAL_CLOSE__'."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "F",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+            "observedAt": "2026-11-02",
+            "note": "'--enable-core-manual-close) ENABLE_CORE_MANUAL_CLOSE=true', then the __MANUAL_CLOSE__ placeholder is replaced with $ENABLE_CORE_MANUAL_CLOSE."
           }
         ]
       },
@@ -87,23 +93,21 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+            "observedAt": "2026-11-02",
+            "note": "'Each `manualclose` invocation advances the ledger by one.'"
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-11-02",
+            "note": "gh api: state open, title 'Support manual closing N ledgers', updated_at 2026-07-09."
           },
           {
-            "class": "F",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/CommandHandler.cpp",
+            "observedAt": "2026-11-02",
+            "note": "Parses only optional 'ledgerSeq' and 'closeTime'; no count parameter exists at core master."
           }
         ]
       },
@@ -113,75 +117,87 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+            "observedAt": "2026-11-02",
+            "note": "'Each `manualclose` invocation advances the ledger by one.'"
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp",
+            "observedAt": "2026-11-02",
+            "note": "Without RUN_STANDALONE: '// These may only be specified if RUN_STANDALONE is configured.' followed by releaseAssert(!manualCloseTime) and releaseAssert(!manualLedgerSeq)."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/local/core/etc/stellar-core.cfg",
+            "observedAt": "2026-11-02",
+            "note": "The Quickstart local Core config has no RUN_STANDALONE line."
+          }
+        ]
+      },
+      {
+        "claim": "Standalone Core with RUN_STANDALONE=true accepts ledgerSeq and closeTime on manualclose; Quickstart does not set RUN_STANDALONE.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/CommandHandler.cpp",
+            "observedAt": "2026-11-02",
+            "note": "'The 'manualclose' command accepts parameters only if the configuration includes RUN_STANDALONE=true.'"
           },
           {
-            "class": "F",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp",
+            "observedAt": "2026-11-02",
+            "note": "'if (mConfig.RUN_STANDALONE) { setManualCloseVirtualTime(manualCloseTime); advanceToLedgerBeforeManualCloseTarget(targetLedgerSeq);' and rejects a close time that is 'too early'. Present since at least v15.0.0."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/local/core/etc/stellar-core.cfg",
+            "observedAt": "2026-11-02",
+            "note": "No RUN_STANDALONE line in the Quickstart local Core config."
           }
         ]
       },
       {
         "claim": "Use soroban-sdk test utilities for direct unit-test ledger mutation and Quickstart for Core/RPC/TTL/archive integration.",
-        "verdict": "confirmed-as-of",
+        "verdict": "confirmed",
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "F",
             "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-11-02",
+            "note": "soroban-sdk 29.0.1 testutils::Ledger has 'fn set_sequence_number(&self, sequence_number: u32);' and 'fn set_timestamp(&self, timestamp: u64);'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/quickstart",
+            "observedAt": "2026-11-02",
+            "note": "'Quickstart runs a local version of Stellar Core, Horizon, RPC, and everything else needed to replicate the public network.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/README.md",
+            "observedAt": "2026-11-02",
+            "note": "'History Archive: `http://localhost:8000/archive` (available with `--local` only)'."
           }
         ]
       },
       {
         "claim": "Changed startup flags or services may require a fresh persistent volume or explicit supervisor/service reconfiguration.",
-        "verdict": "confirmed-as-of",
+        "verdict": "confirmed",
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+            "observedAt": "2026-11-02",
+            "note": "'The core configuration is only generated the first time a container initializes. ... To pick up the change, start a fresh ephemeral container or clear the mounted volume.'"
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "F",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+            "observedAt": "2026-11-02",
+            "note": "'if [ -f $COREHOME/.quickstart-initialized ]; then echo \"core: already initialized\"'."
           }
         ]
       },
@@ -191,49 +207,63 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+            "observedAt": "2026-11-02",
+            "note": "'Manual close is only usable in local network mode. Stellar Core requires `NODE_IS_VALIDATOR=true` to service a manual close request, and the local network is the only Quickstart configuration that sets it.'"
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp",
+            "observedAt": "2026-11-02",
+            "note": "'Issuing a manual ledger close requires NODE_IS_VALIDATOR to be set to true.'"
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "F",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/testnet/core/etc/stellar-core.cfg",
+            "observedAt": "2026-11-02",
+            "note": "No NODE_IS_VALIDATOR line; the pubnet config is the same."
           }
         ]
       },
       {
-        "claim": "Use obsolete --core-manual-close or ENABLE_* syntax for the current image.",
+        "claim": "Use the obsolete --core-manual-close flag for the current image.",
         "verdict": "contradicted",
         "evidence": [
           {
+            "class": "B",
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+            "observedAt": "2026-11-02",
+            "note": "Unrecognized container args hit '*) echo \"Unknown container arg $ARG\" >&2; exit 1'."
+          },
+          {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/run-command-examples",
+            "observedAt": "2026-11-02",
+            "note": "Examples use '--local --enable-core-manual-close'."
+          }
+        ]
+      },
+      {
+        "claim": "The current Quickstart start script still reads ENABLE_CORE_MANUAL_CLOSE from the container environment.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+            "observedAt": "2026-11-02",
+            "note": "': \"${ENABLE_CORE_MANUAL_CLOSE:=false}\"' keeps a value passed with docker run -e. Source read only; the image was not run because the local Docker daemon was unavailable."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/Dockerfile",
+            "observedAt": "2026-11-02",
+            "note": "'ENTRYPOINT [\"/start\"]'."
           },
           {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "F",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+            "observedAt": "2026-11-02",
+            "note": "The docs document only the --enable-core-manual-close flag, not the environment form."
           }
         ]
       },
@@ -243,23 +273,15 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+            "observedAt": "2026-11-02",
+            "note": "'defaults to `false` when not specified.'"
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "F",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start",
+            "observedAt": "2026-11-02",
+            "note": "': \"${ENABLE_CORE_MANUAL_CLOSE:=false}\"'."
           }
         ]
       },
@@ -268,47 +290,41 @@
         "verdict": "contradicted",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/testing",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/quickstart",
-            "observedAt": "2026-07-11"
-          },
-          {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-core/issues/4040",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-11-02",
+            "note": "Open: 'Expand the capabilities of the `manualclose` http endpoint so that it accepts a parameter `count`'."
           },
           {
-            "class": "F",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/CommandHandler.cpp",
+            "observedAt": "2026-11-02",
+            "note": "'The 'manualclose' command accepts parameters only if the configuration includes RUN_STANDALONE=true.' Even in standalone Core, closeTime must be at least the next close time and at most year 2200."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+            "observedAt": "2026-11-02",
+            "note": "'Each `manualclose` invocation advances the ledger by one.'"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/smart-contracts/testing",
-        "https://github.com/stellar/quickstart",
-        "https://github.com/stellar/stellar-core/issues/4040",
-        "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
-        "Structural re-form (negative-predicate): Shortened five long facts in place and removed the adjective-triggered comparison; truth unchanged",
-        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/quickstart/main/local/core/etc/stellar-core.cfg — local mode enabled testing acceleration and mapped MANUAL_CLOSE from the startup placeholder.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-core/issues/4040 — issue #4040 still requested a count parameter whose default would preserve one-ledger behavior.",
-        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-core/master/docs/stellar-core_example.cfg — Core documented manual close independently from arbitrary close-time testing configuration.",
-        "Live re-check 2026-08-27: https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html — testutils exposed direct sequence-number and timestamp setters.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/quickstart — Quickstart bundled local Core and RPC services for integration testing.",
-        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/quickstart/main/start — persistent initialization reused existing configuration and service files.",
-        "Sibling sweep 2026-08-27: grep manualclose|enable-core-manual-close|MANUAL_CLOSE|ARTIFICIALLY_ACCELERATE → q-sor-force-fast-archival-localnet, q-quickstart-manual-ledger-close; no contradiction"
+        "avoid[1] trapped both '--core-manual-close' and 'ENABLE_* syntax'. Only the flag half is false: the start script exits 1 on an unknown container arg. The ENABLE_* half was true, so the trap is narrowed to the flag and golden.notes now tells the grader not to penalize ENABLE_CORE_MANUAL_CLOSE.",
+        "Live B 2026-11-02: https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/start still has ': \"${ENABLE_CORE_MANUAL_CLOSE:=false}\"' and the '--enable-core-manual-close' case. Source read only; Docker was not run because the local daemon was unavailable, so there is no F evidence.",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/CommandHandler.cpp and https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/main/ApplicationImpl.cpp accept ledgerSeq and closeTime only with RUN_STANDALONE=true; https://github.com/stellar/quickstart/blob/beb4f2faf5269d26ae1fab919a9f7062c6490604/local/core/etc/stellar-core.cfg has no RUN_STANDALONE line. golden.notes adds this standalone-Core grader caution.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes#manual-close-mode states the one-second local close, the opt-in flag that defaults to false, one ledger per manualclose call, local-mode-only use, and the first-init configuration reuse. It replaces the dead https://developers.stellar.org/docs/build/smart-contracts/testing (HTTP 404).",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-core/issues/4040 is still open ('Support manual closing N ledgers', updated 2026-07-09), so the count keyFact holds.",
+        "Live A 2026-11-02: https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html (soroban-sdk 29.0.1) has set_sequence_number and set_timestamp. The source is reclassified from F to A because it is generated reference docs, not an execution.",
+        "Corroboration rows now carry per-claim evidence instead of one shared four-source block.",
+        "Sibling sweep 2026-11-02: grep manualclose|enable-core-manual-close|MANUAL_CLOSE|ENABLE_CORE|RUN_STANDALONE|ARTIFICIALLY_ACCELERATE|issues/4040 finds only q-sor-force-fast-archival-localnet. It says ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING is a Core config key, not a Quickstart environment variable; no contradiction."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Eval-side authoring flaw: avoid[1] bundled a false claim (--core-manual-close) with a true one (ENABLE_* environment variables still read by the Quickstart start script), so the trap could punish a correct answer."
       ]
     },
     "origin": "kaan local-fast-ledger-testing"

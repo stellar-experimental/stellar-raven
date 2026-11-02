@@ -1,0 +1,144 @@
+{
+  "lane": "events (read-only verification, 2026-11-02)",
+  "worktree": "/private/tmp/claude-501/raven-goldens-1102",
+  "cases": [
+    {
+      "id": "q-hist-meridian-2026-corrected-venue",
+      "truthChanged": true,
+      "proposedChanges": "The event passed, so the 'scheduled / still upcoming' framing is now false-by-tense; venue and dates are unchanged and now historical. (1) question: change 'Where and when is Meridian 2026 scheduled, given that older announcements named Abu Dhabi?' to 'Where and when was Meridian 2026 held, given that older announcements named Abu Dhabi?' (the present-tense 'is ... scheduled' presupposes a future event; a lighter option is to keep the wording and let the answer correct the tense, but that leaves a false presupposition in the prompt). (2) golden.answer: 'Meridian 2026 took place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal. HackMeridian ran October 25–26, 2026 at ONE16 in Lisbon. Older sources saying October 21–22 at Yas Marina in Abu Dhabi reflect the original announcement. SDF announced the move to Lisbon and the new dates on April 1, 2026. As of 2026-11-02, the official site thanks attendees and points to Meridian 2027.' (3) keyFacts[0] -> 'Meridian 2026 was held October 28–29, 2026 at Convento do Beato, Lisbon.'; keyFacts[1] -> 'HackMeridian ran October 25–26, 2026 in Lisbon.'; keyFacts[2] unchanged. (4) avoid[0] -> 'Do NOT claim Meridian 2026 took place in Abu Dhabi/Yas Marina or on October 21–22.' avoid[1] ('Do NOT state the Lisbon schedule without an as-of qualifier while the event remains upcoming') is an expired date-contingent trap: delete it, or replace with 'Do NOT describe Meridian 2026 as still upcoming.' (5) golden.notes: 'Corrected-fact, now-historical case. The stale CoinDesk sponsored recap and leftover listings (yard.global, cryptobrowser.io) show the superseded Abu Dhabi schedule; they must not override the official SDF sources.' (6) tags.freshness 'scheduled' -> 'stable' (valid enum: stable|live|scheduled); remove truth.reverifyBy or leave it unset (compile only requires it for 'scheduled'). (7) truth.asOf -> 2026-11-02; corroboration[0] claim reworded to held-on-dates with the evidence below; truth.verified with rootCause ['freshness-drift']. (8) consistency-register.json dateContingentTraps entry '2026-11-03 post-event check after Meridian 2026' -> close it (disposition reviewed: held in Lisbon Oct 28–29; HackMeridian Oct 25–26), then run npm run eval:qa:register. Also fix a pre-existing internal inconsistency: the current answer says 'As of July 11, 2026' while truth.asOf is 2026-10-06.",
+      "claims": [
+        {
+          "claim": "Meridian 2026 took place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal.",
+          "verdict": "confirmed",
+          "sources": [
+            {"class": "A", "ref": "https://meridian.stellar.org/", "quote": "Thank you for another amazing Meridian! Check back for details on 2027 soon.", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://meridian.stellar.org/event-details", "quote": "Meridian 2026 is a two-day in-person conference taking place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal.", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://x.com/StellarOrg/status/2115364704331964682", "quote": "Bookmark the #Meridian2026 day 1 agenda at a glance (posted Wed Oct 28 08:47:01 +0000 2026, read via api.fxtwitter.com)", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://x.com/StellarOrg/status/2115767666442960897", "quote": "Now live: @CurveFinance. ... -@DenelleDixon #Meridian2026 (posted Thu Oct 29 11:28:15 +0000 2026)", "asOf": "2026-11-02"},
+            {"class": "D", "ref": "https://www.coindesk.com/business/2026/10/28/securitize-adds-stellar-blockchain-as-institutional-tokenization-gathers-steam", "quote": "the firms said at Meridian 2026, the Stellar Development Foundation’s annual conference in Lisbon ... Disclaimer: Stellar paid for the reporter’s trip to Portugal to cover the conference.", "asOf": "2026-11-02"},
+            {"class": "D", "ref": "https://tearsheet.co/blockchain-crypto/at-meridian-stellar-makes-the-case-that-utility-should-drive-the-network/", "quote": "Stellar’s Meridian 2026 opened in Lisbon on Wednesday, the first of two days of sessions", "asOf": "2026-11-02"},
+            {"class": "D", "ref": "https://www.h-x.technology/news/stellar-meridian-2026-web3-ai-security-results", "quote": "On October 28–29, the H-X Technologies team attended Stellar Meridian 2026 ... This year it took place in Lisbon, at the historic Convento do Beato.", "asOf": "2026-11-02"},
+            {"class": "D", "ref": "https://cryptobriefing.com/stellar-meridian-2026-lisbon-conference/", "quote": "The Stellar Development Foundation’s Meridian 2026 conference kicked off in Lisbon on Wednesday", "asOf": "2026-11-02"}
+          ],
+          "notes": "Tearsheet, H-X and Crypto Briefing were fetched directly with curl (HTTP 200). CoinDesk returned HTTP 429 to curl; its quote comes from a Parallel web_search excerpt (date 2026-10-28). The D sources came from two providers (Parallel, Perplexity), but they count as ONE class. The official homepage no longer states the dates or the venue; the dates and venue come from /event-details, which still shows the pre-event FAQ. Tearsheet 'Wednesday' + date October 28, 2026 = Oct 28. The H-X post is a first-hand attendee report."
+        },
+        {
+          "claim": "HackMeridian ran October 25–26, 2026 in Lisbon (ONE16).",
+          "verdict": "confirmed",
+          "sources": [
+            {"class": "A", "ref": "https://www.hackmeridian.com/", "quote": "25–26 October 2026 · ONE16, Lisbon (JSON-LD startDate 2026-10-25T09:00:00+01:00, endDate 2026-10-26T16:00:00+01:00; countdown at 00 Days 00 Hours)", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://meridian.stellar.org/event-details", "quote": "HackMeridian is the annual Meridian hackathon, running October 25–26, 2026, the two days before the main Meridian conference.", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://x.com/BuildOnStellar/status/2115869981640429959", "quote": "Your #HackMeridian2026 Winners 🎉 Congratulations to Nest and Alloy for taking home first place across the Scale and Genesis tracks! (posted Thu Oct 29 18:14:49 +0000 2026)", "asOf": "2026-11-02"},
+            {"class": "D", "ref": "https://www.reddit.com/r/Stellar/comments/1xfjyc2/meridian_2026_megathread/", "quote": "HackMeridian (Sun, Oct 25 to Mon, Oct 26) The hacking competition concluded on Monday, with finalists presenting live at Meridian and winners announced on Thursday.", "asOf": "2026-11-02"},
+            {"class": "D", "ref": "https://www.hackathonradar.com/database/hackathon/hackmeridian-2026", "quote": "Past Sunday, October 25, 2026 to Monday, October 26, 2026", "asOf": "2026-11-02"},
+            {"class": "C", "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026", "quote": "HackMeridian 2026 wrapped in Lisbon on October 26", "asOf": "2026-11-02"}
+          ],
+          "notes": "The case surface is Lumenloop. The Lumenloop roundup is therefore listed for context only. It is not independent corroboration of what the case expects the agent to find. The A + D classes alone meet the bar. The winners X post (A) shows that the event took place, not only that it was scheduled."
+        },
+        {
+          "claim": "SDF publicly announced the move to Lisbon and the new dates on April 1, 2026.",
+          "verdict": "confirmed-as-of",
+          "sources": [
+            {"class": "A", "ref": "https://x.com/StellarOrg/status/2039405316803031315", "quote": "New city. New dates. Same mission. Meridian is headed to Lisbon. October 28–29. More details to come. (created_at Wed Apr 01 18:11:32 +0000 2026, read via api.fxtwitter.com)", "asOf": "2026-11-02"}
+          ],
+          "notes": "The only evidence is the primary post's own timestamp. The Perplexity sweep found no independent dated report of the April 1 announcement, and it found no contradiction. This is unchanged from the 2026-10-06 verification. Strictly, this is a single-class date claim. A reviewer can keep it, because the primary record is self-dating, or soften it to 'SDF announced the move in April 2026'."
+        },
+        {
+          "claim": "Older sources gave Meridian 2026 as October 21–22, 2026 at Yas Marina (Circuit) in Abu Dhabi (the original announcement).",
+          "verdict": "confirmed",
+          "sources": [
+            {"class": "D", "ref": "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference", "quote": "Stellar has already announced that Meridian 2026 will take place in Abu Dhabi, UAE, on October 21 and 22, with HackMeridian scheduled for October 19 and 20.", "asOf": "2026-11-02"},
+            {"class": "D", "ref": "https://www.yard.global/event/meridian-2026/", "quote": "WedOctober 21→22, 2026 Yas Marina Circuit ... Abu Dhabi (United Arab Emirates) This is a past event.", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://x.com/StellarOrg/status/2039405316803031315", "quote": "New city. New dates.", "asOf": "2026-11-02"}
+          ],
+          "notes": "The CoinDesk piece is SDF-sponsored content from 2025 and reflects SDF's announcement at the time. The SDF post 'New city. New dates.' confirms that an earlier city and earlier dates existed, but it does not name them. Stale aggregators still carry the Abu Dhabi data: yard.global, cryptobrowser.io, and luminik.io, which even mixes 'Yas Marina Circuit, Lisbon'. This shows why the avoid trap is useful."
+        },
+        {
+          "claim": "AVOID: Abu Dhabi/Yas Marina October 21–22 is (or was) the Meridian 2026 schedule actually used.",
+          "verdict": "contradicted",
+          "sources": [
+            {"class": "A", "ref": "https://meridian.stellar.org/event-details", "quote": "taking place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal", "asOf": "2026-11-02"},
+            {"class": "D", "ref": "https://www.h-x.technology/news/stellar-meridian-2026-web3-ai-security-results", "quote": "This year it took place in Lisbon, at the historic Convento do Beato.", "asOf": "2026-11-02"}
+          ],
+          "notes": "avoid[0] stays valid. Reword it to past tense. The case's notes treat the CoinDesk sponsored recap as evidence of the PRIOR schedule only, and they say it must not override the official site. The truth.sources list keeps CoinDesk as class D. Keep that framing."
+        },
+        {
+          "claim": "AVOID (date-contingent): stating the Lisbon schedule without an as-of qualifier while the event remains upcoming.",
+          "verdict": "unverifiable",
+          "sources": [
+            {"class": "A", "ref": "https://meridian.stellar.org/", "quote": "Thank you for another amazing Meridian! Check back for details on 2027 soon.", "asOf": "2026-11-02"}
+          ],
+          "notes": "The trap's trigger condition ('while the event remains upcoming') expired on 2026-10-29. Under the hard rule on date-contingent traps, an expired trap must be removed or re-formed. A plain historical statement now needs no as-of qualifier. Do not penalize it."
+        }
+      ],
+      "siblingSweep": "I grepped eval/qa/corpus/battery/** for 'Meridian 2026|HackMeridian|Convento do Beato|Yas Marina|Abu Dhabi'. Hits: q-scf-hackathons-active (only in truth.verified evidence; its golden is a dated 2026-07-11 example about Real-World ZK; freshness 'live'; no contradiction, but its dated example is old). q-builder-justin-rice-history (truth evidence cites the Meridian 2026 schedule speaker card; no date or venue claim; consistent). q-cctp-v2-usdc-stellar, q-sor-cross-socketfi-auth, q-infra-rpc-methods-list, q-ti-scaffold-stellar, and q-org-sdf-mandate-buckets mention only 'HackMeridian review CI unblock' in truth.verified.by. No gospel claim. No sibling contradicts Lisbon Oct 28–29 or HackMeridian Oct 25–26. The register dateContingentTraps entry ('2026-11-03 post-event check after Meridian 2026', disposition 'open') needs to close in the same change."
+    },
+    {
+      "id": "q-scf-current-round",
+      "truthChanged": true,
+      "proposedChanges": "Two facts moved since the 2026-10-01 dated example. (a) The official SCF #46 submission deadline is now November 9, 2026, not November 8: the official awards page and its embedded data show it, and Scout agrees. A Wayback snapshot from 2026-10-18 still showed 'November 8, 2026', so the change happened between 2026-10-18 and 2026-11-02. (b) SCF #45 is now 'Ended', so #45, not #44, is the last concluded round. Field changes: golden.answer -> 'A grounded answer checks the live official awards state and Scout round metadata. It dates every volatile claim. As of 2026-11-02, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-09. SCF #45 has ended and is the last concluded round. SCF #44 is also concluded.\\n\\nThe dated example is illustrative. A later answer must report the state supported at its observation time.' keyFacts[3] -> 'Reports 2026-11-09 as SCF #46's submission deadline.' keyFacts[4] -> 'Places #45 as the last concluded round (Ended) and does not treat #44 as current.' avoid[0] is still valid as written ('Do NOT call #45 current, say no round is in Submission, or treat #44 as current.'). avoid[1] is still valid. Note: the official #46 detail page now publishes Panel Review November 11–18 and Community Vote November 23–December 3, 2026, so a cited panel or vote date is not 'invented'. Keep avoid[1] limited to the deadline time, the timezone, the notification date (still 'TBD - TBD'), and the submission count. golden.notes -> 'Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-11-02, #46 is in Submission through 2026-11-09. #45 has ended. The official deadline moved from 2026-11-08 (observed 2026-10-01 and in a 2026-10-18 Wayback snapshot) to 2026-11-09. Third-party posts (Lumenloop, Tellus, r/Stellar) still say November 8. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong. The fixed #43 result remains separate.' truth.asOf -> 2026-11-02; truth.reverifyBy -> 2026-11-12 (Submission closes 2026-11-09; Panel Review opens 2026-11-11, which is the next phase change); add a corroboration row for the 2026-11-02 state; truth.verified rootCause ['freshness-drift'].",
+      "claims": [
+        {
+          "claim": "As of 2026-11-02, SCF #46 is the current round and is in the Submission phase.",
+          "verdict": "confirmed-as-of",
+          "sources": [
+            {"class": "A", "ref": "https://communityfund.stellar.org/awards", "quote": "SCF #46 Submission Deadline to submit: November 9, 2026 (embedded data: \"name\":\"SCF #46\",\"type\":\"Build Award Round\",\"phase\":\"Submission\")", "asOf": "2026-11-02"},
+            {"class": "C", "ref": "https://stellarlight.xyz/api/rfps?status=open", "quote": "\"currentRound\": 46, \"currentPhase\": \"Submission\" (meta.generatedAt 2026-11-02T14:18:06.597Z)", "asOf": "2026-11-02"}
+          ],
+          "notes": "Scout lists verifyAt https://communityfund.stellar.org/awards, so class C here is not fully independent of class A. The D sweep (r/Stellar weekly thread, Nov 1–7, 2026: 'SCF #46 submissions are due by Nov 8.') agrees that #46 is open."
+        },
+        {
+          "claim": "SCF #46's submission deadline is 2026-11-09 (the case currently pins 2026-11-08).",
+          "verdict": "confirmed-as-of",
+          "sources": [
+            {"class": "A", "ref": "https://communityfund.stellar.org/awards", "quote": "Deadline to submit: November 9, 2026 (embedded \"awardSubmission\":{\"open\":\"\",\"close\":\"2026-11-09\"})", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg", "quote": "Phase Dates Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and Award Distribution TBD - TBD", "asOf": "2026-11-02"},
+            {"class": "C", "ref": "https://stellarlight.xyz/api/rfps?status=open", "quote": "\"submissionWindow\": {\"opens\": null, \"closes\": \"2026-11-09\"}; row title 'SCF Round #46: submissions OPEN until 2026-11-09'", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards", "quote": "Deadline to submit: November 8, 2026 (Wayback snapshot 2026-10-18; prior value)", "asOf": "2026-10-18"},
+            {"class": "D", "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/", "quote": "SCF #46 submissions are due by Nov 8.", "asOf": "2026-11-01"},
+            {"class": "D", "ref": "https://x.com/lumenloop/status/2112203379225321685", "quote": "Full submission: Nov 8", "asOf": "2026-10-19"}
+          ],
+          "notes": "The official source changed the date by one day between 2026-10-18 and 2026-11-02. I found no announcement of the change; this could be an extension or a correction. Secondary sources (D: Reddit, Lumenloop X, Tellus blog) still say November 8. They were written before the change, so they are stale. They do not dispute the current official value. Under canonical-page conflict grading, pin the official 2026-11-09 with an as-of date. Grade a November 8 answer with stale attribution as at most partial. Do not grade it as a fabrication. The Lumenloop X post and lumenloop.com Oct 30 roundup still say November 8; that is a candidate improvements/ corpus-lag finding for the Lumenloop surface."
+        },
+        {
+          "claim": "SCF #45 is Ended and is the last concluded round (the case currently says Notification & Award Distribution, with #44 as last concluded).",
+          "verdict": "confirmed-as-of",
+          "sources": [
+            {"class": "A", "ref": "https://communityfund.stellar.org/awards", "quote": "SCF #45 Ended Deadline to submit: August 16, 2026 (embedded: \"name\":\"SCF #45\",...\"phase\":\"Ended\",...\"description\":\"SCF #45 has ended. We will post a recap soon.\")", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo", "quote": "SCF #45 Build Award Round Ended Awarded Submissions", "asOf": "2026-11-02"},
+            {"class": "C", "ref": "https://stellarlight.xyz/api/rfps?status=open", "quote": "\"lastConfirmedRound\": 45, \"lastConfirmedRoundNote\": \"In progress: SCF #46 (Submission, submission deadline 2026-11-09). SCF #45 is the last concluded round.\"", "asOf": "2026-11-02"},
+            {"class": "A", "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards", "quote": "\"name\":\"SCF #45\",\"type\":\"Build Award Round\",\"phase\":\"Notification & Award Distribution\" (prior state, 2026-10-18)", "asOf": "2026-10-18"}
+          ],
+          "notes": "#45 moved from Notification & Award Distribution to Ended between 2026-10-18 and 2026-11-02. No official #45 recap is posted yet ('We will post a recap soon.')."
+        },
+        {
+          "claim": "SCF #44 is concluded (Ended) and is not current.",
+          "verdict": "confirmed-as-of",
+          "sources": [
+            {"class": "A", "ref": "https://communityfund.stellar.org/awards", "quote": "SCF #44 Ended Deadline to submit: June 14, 2026 (embedded description: \"SCF #44 has ended. Find results here: https://medium.com/stellar-community/scf-44-round-recap-...\")", "asOf": "2026-11-02"},
+            {"class": "C", "ref": "https://stellarlight.xyz/api/rfps?status=open", "quote": "\"roundsInProgress\": [{\"round\": 46, \"phase\": \"Submission\", \"submissionDeadline\": \"2026-11-09\"}]", "asOf": "2026-11-02"}
+          ],
+          "notes": "#44 is still concluded. It is no longer the LAST concluded round."
+        },
+        {
+          "claim": "AVOID: calling #45 current, saying no round is in Submission, or treating #44 as current.",
+          "verdict": "contradicted",
+          "sources": [
+            {"class": "A", "ref": "https://communityfund.stellar.org/awards", "quote": "SCF #46 Submission ... SCF #45 Ended ... SCF #44 Ended", "asOf": "2026-11-02"},
+            {"class": "C", "ref": "https://stellarlight.xyz/api/rfps?status=open", "quote": "\"currentRound\": 46, \"currentPhase\": \"Submission\"", "asOf": "2026-11-02"}
+          ],
+          "notes": "avoid[0] still punishes only false claims until 2026-11-09. After the #46 deadline passes, 'no round is in Submission' can become true, unless #47 opens. This avoid item is date-contingent on the #46 deadline. Re-check it at reverifyBy."
+        },
+        {
+          "claim": "AVOID: inventing a deadline time, timezone, notification date, or submission count.",
+          "verdict": "confirmed",
+          "sources": [
+            {"class": "A", "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg", "quote": "Notification and Award Distribution TBD - TBD Awarded Submissions No submissions added yet.", "asOf": "2026-11-02"}
+          ],
+          "notes": "The official source still gives no deadline time, timezone, or notification date. The trap remains valid. Panel Review (Nov 11–18) and Community Vote (Nov 23–Dec 3) dates are now published. Do not extend the trap to them."
+        }
+      ],
+      "siblingSweep": "I grepped eval/qa/corpus/battery/** for 'SCF #4[4-7]|#4[4-7]|round 4[4-7]|2026-11-0[89]|November [89]'. These siblings now DISAGREE with live truth and must change in the same pass: (1) edge-behavior/q-edge-fresh-latest-scf-round (reverifyBy 2026-11-10): its answer, keyFacts, and notes say #46 deadline 2026-11-08, #45 Notification & Award Distribution, and #44 last concluded. All three facts are now stale. Apply the same edits. (2) scf-grants-builders/q-scf-open-rfps (reverifyBy 2026-11-12): its answer and notes say the synthetic scf-round-46 row is 'Submission window through 2026-11-08'. Live Scout now titles that row 'SCF Round #46: submissions OPEN until 2026-11-09'. The roster is still two open briefs, LayerZero DVN and x402 Facilitator with Bazaar, plus one synthetic row. That part is unchanged. (3) scf-grants-builders/q-scf-rfp-tooling (reverifyBy 2026-11-13): '#46 accepts submissions through 2026-11-08' -> 2026-11-09; its roster is otherwise unchanged. q-scf-open-rfps-live mentions #45 only in an avoid item ('Claims that an open brief proves SCF #45 still accepts a new full proposal') and stays valid. q-scf-passkey-rfps-live, q-scf-contract-verification-rfp-live, and q-edge-scf-v7-centralization-myths matched on truth or other text only and have no #44–#47 phase or deadline claim in their gospel. The consistency-register dateContingentTraps entry 'Publication or state change for SCF #46/#45/#44 ...' carries the disposition 'as of 2026-10-01, #46 ... through 2026-11-08, #45 ... Notification & Award Distribution, #44 is last concluded'. Update it, then run npm run eval:qa:register."
+    }
+  ]
+}
