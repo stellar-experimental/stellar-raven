@@ -33,7 +33,8 @@ Mintlify organization.
   `/docs/build/guides/{tokens,rpc,dapps,freighter}`, `/docs/tools/cli/agent-cli`, and the
   `/docs/learn/fundamentals/{anchors,stellar-ecosystem-proposals}` pages.
 - The RPC method reference pages are now pages (`/docs/data/apis/rpc/api-reference/methods/getEvents`
-  and others). The Algolia index never held them (`sd-003`). Re-probe `sd-003` after the cutover.
+  and others). The Algolia index never held them (`sd-003`). Mintlify indexes them; `sd-003` was resolved on
+  2026-11-02 (see `improvements/resolved.json`).
 
 ## Mintlify API surface
 
@@ -117,7 +118,7 @@ the adapter needs one timeout with a bounded retry on `5xx`, network failure, an
   rule `raven-promote-stellar-cli-install` existed only because Algolia lost that page from the top
   5. The rule canary has no Mintlify counterpart to guard.
 - `getTransactions limit parameter maximum` ranks the RPC method page
-  `docs/data/apis/rpc/api-reference/methods/getTransactions` first. This is the `sd-003` gap.
+  `docs/data/apis/rpc/api-reference/methods/getTransactions` first. This closed the `sd-003` gap.
 - `Protocol 24` still returns software versions, audits, and SEP-24 pages first (`sd-001`
   persists in a different form).
 

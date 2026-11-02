@@ -44,6 +44,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/a4954b6a38f66de5ce4b28fc33535464df0818fb/improvements/stellar-docs/sd-002-operation-vocabulary-underranked.md"
     },
     {
+      "id": "sd-003",
+      "title": "The Algolia docs index excludes the auto-generated RPC-method and Horizon-endpoint API-reference pages, so authoritative per-method limits…",
+      "service": "stellar-docs",
+      "discovered": "2026-07-03",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2566",
+        "https://github.com/stellar/stellar-docs/pull/2572"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2941"
+      ],
+      "liveRecheck": "2026-11-02T20:02Z production raven.stellar.org (Worker 499f58ba, Mintlify backend): stellarDocs.search_docs 'getTransactions API reference limit' ranks /docs/data/apis/rpc/api-reference/methods/getTransactions #1; get_doc_page returns 'can range from 1 to 200 ... defaults to 50'; getFeeStats, getTransaction, getHealth, and Horizon list-all-transactions reference pages rank #1 for name queries; source stellar/stellar-docs@700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (PR #2941)",
+      "reviewEvidence": "Claude Fable 5.1 independent recheck 2026-11-02: .agents/rounds/2026-11-02-mintlify-migration/sd003-recheck.md (RESOLVE); golden reconciliation independently re-derived in .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md",
+      "sourceCommit": "5d7a4f880b77cc8cb0f26cad26b56e5ac85a6dbd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/5d7a4f880b77cc8cb0f26cad26b56e5ac85a6dbd/improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md"
+    },
+    {
       "id": "sd-006",
       "title": "The Algolia crawler for developers.stellar.org strips code blocks, so the index carries the prose around commands but never the commands.…",
       "service": "stellar-docs",

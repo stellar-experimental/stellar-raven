@@ -498,9 +498,9 @@ the ship reason, and a battery-only gain with a flat locator gate is a stop sign
   `src/catalog/search.ts` (`MAX_SEARCH_LIMIT = 50`), `src/catalog/types.ts`
   (`CATALOG_SERVICES`), `src/adapters/index.ts` (dispatcher), `eval/gates.json` (routing floors
   and holdout contract)
-- Active findings: `sd-003`, `sd-004`, and `sd-044` under
-  [`improvements/stellar-docs/`](../improvements/stellar-docs/). Resolved finding `sd-043` is in
-  [`improvements/resolved.json`](../improvements/resolved.json).
+- Active findings: `sd-004` and `sd-044` under
+  [`improvements/stellar-docs/`](../improvements/stellar-docs/). Resolved findings `sd-003` and
+  `sd-043` are in [`improvements/resolved.json`](../improvements/resolved.json).
 - Neighboring held source lanes for format precedent:
   [`partner-doc-live-sources.md`](./partner-doc-live-sources.md),
   [`stellar-org-source-lane.md`](./stellar-org-source-lane.md)
