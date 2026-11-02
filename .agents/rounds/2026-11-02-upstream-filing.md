@@ -84,3 +84,32 @@ is on the owner's issue: https://github.com/stellar/stellar-docs/issues/2974#iss
 Follow-up outside this finding: the reviewer saw `docs/build/smart-contracts/.../fuzzing.mdx` line
 197 name the old `soroban contract build` CLI. That is a separate stale-name defect for the next
 filing batch.
+
+## HackMeridian findings (2026-11-02)
+
+Source: `.agents/TODO.md` "File the HackMeridian upstream findings". Author: Claude Opus high
+(lanes hm-f and hm-fix). Independent review: Grok 4.7 high,
+[hackmeridian-review.md](2026-11-02-upstream-filing/hackmeridian-review.md), FILE-WITH-FIXES. Every
+fix is applied. Live checks ran between 21:23Z and 22:05Z.
+
+| Item | Outcome |
+|---|---|
+| stellar-dev-skill R04, R07+Q1, R08, R30, R34 (`sendTransaction`) | new `sk-033`, `sk-032`, `sk-034`, `sk-035`, `sk-036` |
+| stellar-dev-skill R34 (`getTransaction`) | rejected: `data/SKILL.md` already lists the three values |
+| Scout R31 issuer and asset class | new `sls-107` (AUDD and C1USD only; MGUSD matches its `ORG_NAME`) |
+| Scout R10, R15 "Live" network | dropped: `unknown` is a declared state; `sls-024` keeps its residual |
+| Scout R17, R23 audits | new `cs-009` against `Inferara/soroban-security-portal`; Scout mirrors the portal |
+| Scout R36 partner SEPs | merged into `sls-098` (title broadened; no source shows Bitso SEP-24) |
+| Scout R16, R18 repo ranking | new `sls-109` |
+| Scout R24 rubric | new `sls-110` (weights only) |
+| Scout R26, R27 descriptions and tracks | rejected: null descriptions are honest; all six 2025 tracks are set |
+| Scout R28 SCF #45 | new `sls-111` |
+| Scout Q2, Q18 MetaMask and Chainlink rows | new `sls-112` |
+| Scout Q6 DEX sub-types | new `sls-113` |
+| stellar-docs state-archival `+ 4095` | merged into `sd-063` (stellar/stellar-docs#3000, open) |
+| stellar-docs "Building with AI" alias host | new `sd-079` |
+| stellar-docs `llms.txt` alias host | not reproduced; `sd-079` fixes the source page |
+| Lumenloop R21 weekend roundup | not recorded: the semantic search needs a live keyed call to re-run |
+
+`sls-108` is an unused id: the portal finding moved to `canonical-source` before any commit. The
+upstream issue links are in each finding file.
