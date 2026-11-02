@@ -34,16 +34,21 @@ below is to derive the truth from the actual diff.
 
 ## Step 1 — regenerate from live services
 
-Run the full pipeline in this order (the daily refresh workflow runs the first four). Each step
-feeds the next:
+Run the full pipeline in this order (the daily refresh workflow runs the first five). Each step
+feeds the next, except the keyless anchor capture, which is independent:
 
 ```
+npm run docs:anchors:build              # public sitemap + rendered headings → src/adapters/stellar-docs-anchors.json
 node scripts/refresh-inventory.mjs      # re-fetch live upstream → inventory/*.json
 node scripts/build-catalog.mjs          # inventory → catalog/manifest.json (+ exposure guards)
 npm run micro-map:build                  # catalog + workflow archetypes → src/mcp/micro-map.ts
 npm run spec:build                       # catalog → specs/super-spec.json (ships into sandbox)
 node eval/plan/build-op-classes.mjs     # catalog → eval/plan/op-classes.json (broad/detail/meta)
 ```
+
+When `src/adapters/stellar-docs-anchors.json` changes, read the drift summary's changed pages,
+removed pages, and ambiguous headings, then run `test/adapters.test.ts` and the two
+`test/stellar-docs-anchor*` tests. An anchor change does not touch the catalog or routing.
 
 If the drift issue also reports an `ecosystem-skills/` pin change, or if you run
 `ecosystem-skills/update.sh` while resolving the issue, rebuild the generated artifacts in the

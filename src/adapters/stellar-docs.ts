@@ -19,6 +19,7 @@
  * soft-empty. A soft-empty result never establishes corpus absence.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
+import anchorIndex from "./stellar-docs-anchors.json";
 import {
   errResult,
   okResult,
@@ -283,6 +284,17 @@ function firstHeading(content: string): string | undefined {
   return atxHeading(firstLine(content), 6);
 }
 
+/** A section alone cannot disambiguate repeated headings or predict custom IDs. */
+export function sectionAnchor(path: string, heading: string): string | undefined {
+  const pages = anchorIndex.pages as Record<string, Record<string, string[]>>;
+  if (!Object.hasOwn(pages, path)) return undefined;
+  const page = pages[path]!;
+  const text = heading.replace(/`([^`]+)`/g, "$1").replace(/\u200b/g, "").trim();
+  if (!Object.hasOwn(page, text)) return undefined;
+  const ids = page[text]!;
+  return ids.length === 1 ? ids[0] : undefined;
+}
+
 /** The first H1 anywhere in a page. */
 function pageTitle(content: string): string | undefined {
   for (const line of content.split("\n")) {
@@ -526,8 +538,9 @@ export async function callStellarDocs(
       const url = `${siteOrigin}${section.path}`;
       const content = cleanContent(section.content, linkBase(url, section.isIndex), siteOrigin);
       const heading = firstHeading(content);
+      const anchor = heading && !atxHeading(firstLine(content), 1) ? sectionAnchor(section.path, heading) : undefined;
       return {
-        url,
+        url: anchor ? `${url}#${encodeURIComponent(anchor)}` : url,
         path: section.path,
         title: section.title || section.path.split("/").at(-1) || section.path,
         ...(heading ? { section: heading } : {}),

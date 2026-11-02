@@ -22,6 +22,7 @@ The launcher forwards arguments, including `--json`, to the report.
 | `npm run site:globes` | `src/demo/globe.ts`, `src/consent-globe.ts` | yes |
 | `npm run site:fonts` | `src/fonts.ts` | operator generated; fetches unpinned Google Fonts CSS and font bytes; not CI-gated |
 | `npm run site:og` | `src/og.ts` | operator generated; downloads unpinned GitHub fonts; requires ImageMagick; not CI-gated |
+| `npm run docs:anchors:build` | `src/adapters/stellar-docs-anchors.json` | daily live-drift check; reads public sitemap and rendered headings |
 | `node eval/corpus/raven-next/research/golden/_meta/compile.mjs` | `eval/corpus/raven-next/research/golden/compiled/golden.json` | yes |
 | `node eval/compile-routing.mjs` | `eval/routing-cases.json` | yes |
 | `node eval/qa/compile-qa.mjs` | `eval/qa/cases.json`, `eval/qa/sample.json`, `eval/qa/lifecycle-registry.json` | yes |

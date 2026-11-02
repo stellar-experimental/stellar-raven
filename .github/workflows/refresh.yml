@@ -2,7 +2,7 @@ name: Refresh (live drift check)
 
 # Re-fetches the live service surfaces (Lumenloop /v1/tools + /v1/me union,
 # Stellar Light /api/openapi.json, Stellar Docs Mintlify backend and llms.txt
-# page index) and rebuilds the derived
+# page index and rendered section anchors) and rebuilds the derived
 # artifacts. Any diff = upstream drift → an issue is opened/updated and the run
 # fails so drift is impossible to miss. Diffing op-id sets is the signal —
 # info.version is NOT (Scout has shipped new ops without bumping it).
@@ -150,6 +150,18 @@ jobs:
           else
             echo "state=error" >> "$GITHUB_OUTPUT"
           fi
+      - name: refresh docs section anchors without credentials
+        id: anchors
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ec=0
+          npm run docs:anchors:build 2>&1 | tee docs-anchors.txt || ec=$?
+          case "$ec" in
+            0) echo "state=ok" >> "$GITHUB_OUTPUT" ;;
+            *) echo "state=error" >> "$GITHUB_OUTPUT" ;;
+          esac
+          exit "$ec"
       # refresh-inventory.mjs reads .env at the repo root; the runner is
       # ephemeral and .env is never uploaded anywhere.
       - name: materialize .env from repo secrets
@@ -186,7 +198,7 @@ jobs:
         run: |
           rm .env
           inventory_drift=false
-          git diff --quiet -- inventory catalog specs || inventory_drift=true
+          git diff --quiet -- inventory catalog specs src/adapters/stellar-docs-anchors.json || inventory_drift=true
           # ENUM check (closes the old fail-open): only the literal strings
           # 'true' and 'false' are valid; anything else — including 'error' and
           # EMPTY (step didn't write the output) — is a check error. The error
@@ -214,19 +226,20 @@ jobs:
           canary_state='${{ steps.canary.outputs.state }}'
           canary_error=false
           case "$canary_state" in clean|failing|stale) ;; *) canary_error=true; canary_state=error ;; esac
+          anchors_state='${{ steps.anchors.outputs.state }}'
+          case "$anchors_state" in ok) ;; *) anchors_state=error ;; esac
           {
             echo "skills_error=$skills_error"
             echo "pins_error=$pins_error"
             echo "gospel_error=$gospel_error"
             echo "canary_error=$canary_error"
           } >> "$GITHUB_OUTPUT"
-          # DOMAIN states only. A check error must not open a drift issue: it
-          # has no section to contribute, so it would file a body that is just a
-          # header — and the dedicated fail-on-*-check-error steps below already
-          # make the job red without asserting something untrue.
+          # Domain states and anchor capture errors have report sections.
+          # Other checker errors fail in dedicated steps below.
           if [ "$inventory_drift" = "false" ] && [ "$skills_drift" != "true" ] \
              && [ "$pins_state" != "unresolvable" ] \
-             && [ "$gospel_state" != "stale" ] && [ "$canary_state" = "clean" ]; then
+             && [ "$gospel_state" != "stale" ] && [ "$canary_state" = "clean" ] \
+             && [ "$anchors_state" = "ok" ]; then
             echo "drift=false" >> "$GITHUB_OUTPUT"
           else
             echo "drift=true" >> "$GITHUB_OUTPUT"
@@ -236,6 +249,17 @@ jobs:
               echo '### Live service drift detected'
               echo
               echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              if [ "$anchors_state" = "error" ]; then
+                echo
+                echo '#### Docs section anchor capture failed'
+                echo
+                echo 'The public-site capture failed. Other service refresh checks continued.'
+                echo 'The committed anchor index stays in place.'
+                echo 'Headings without an indexed match use page URLs.'
+                echo
+                echo 'Remediation: re-run `npm run docs:anchors:build` and review the captured heading changes.'
+                echo 'See the anchor capture step log for failed URLs.'
+              fi
               if [ "$canary_state" = "stale" ]; then
                 echo
                 echo '#### Skill-retrieval detector is STALE — current state unknown'
@@ -373,11 +397,11 @@ jobs:
       - name: fail on drift
         if: steps.drift.outputs.drift == 'true'
         run: |
-          echo "::error::live services drifted from the committed inventory and/or skills mirror — see the drift issue"
+          echo "::error::live refresh detected drift or an anchor capture error — see the drift issue"
           exit 1
       # Crash guard for GENUINELY UNCLASSIFIED failures only. Every drift class
       # with a documented owner — unresolvable pin, stale gospel, inventory,
-      # skills-HEAD — is captured as an enum above and reported in
+      # skills-HEAD, anchor capture error — is captured as an enum above and reported in
       # the drift issue with its own remediation, so it never lands here. What
       # remains is a real script fault (refresh-inventory / build-catalog /
       # micro-map / spec:build) that died before drift detection completed, which
@@ -397,7 +421,7 @@ jobs:
             echo
             echo 'Every known drift class is captured as an enum and reported in the drift issue'
             echo 'with its own remediation — an unresolvable skill pin, stale QA gospel, inventory'
-            echo 'drift, and skills-HEAD drift all land there, not here. If one of those is the'
+            echo 'drift, skills-HEAD drift, and anchor capture errors all land there, not here. If one is the'
             echo 'real cause, this workflow has a routing bug as well.'
             echo
             echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

@@ -1,0 +1,2528 @@
+[
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+    "heading": "Ledger entries",
+    "anchor": "ledger-entries",
+    "capturedAt": "2026-11-02T21:23:39.561Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+    "heading": "Access Control",
+    "anchor": "access-control",
+    "capturedAt": "2026-11-02T21:23:39.561Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+    "heading": "Granularity",
+    "anchor": "granularity",
+    "capturedAt": "2026-11-02T21:23:39.561Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+    "heading": "Footprints and parallel contention",
+    "anchor": "footprints-and-parallel-contention",
+    "capturedAt": "2026-11-02T21:23:39.561Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+    "heading": "Contract Data Best Practices",
+    "anchor": "contract-data-best-practices",
+    "capturedAt": "2026-11-02T21:23:39.561Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+    "heading": "Account State vs. Shared State",
+    "anchor": "account-state-vs-shared-state",
+    "capturedAt": "2026-11-02T21:23:39.561Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+    "heading": "Owned Contracts vs. Autonomous Contracts",
+    "anchor": "owned-contracts-vs-autonomous-contracts",
+    "capturedAt": "2026-11-02T21:23:39.561Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+    "heading": "Best Practices",
+    "anchor": "best-practices",
+    "capturedAt": "2026-11-02T21:23:39.561Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+    "heading": "No floating point",
+    "anchor": "no-floating-point",
+    "capturedAt": "2026-11-02T21:23:39.538Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+    "heading": "Limited (ideally zero) dynamic memory allocation",
+    "anchor": "limited-ideally-zero-dynamic-memory-allocation",
+    "capturedAt": "2026-11-02T21:23:39.538Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+    "heading": "Non-standard I/O",
+    "anchor": "non-standard-io",
+    "capturedAt": "2026-11-02T21:23:39.538Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+    "heading": "No multithreading",
+    "anchor": "no-multithreading",
+    "capturedAt": "2026-11-02T21:23:39.538Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+    "heading": "Immediate panic",
+    "anchor": "immediate-panic",
+    "capturedAt": "2026-11-02T21:23:39.538Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+    "heading": "Pure-functional collections",
+    "anchor": "pure-functional-collections",
+    "capturedAt": "2026-11-02T21:23:39.538Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+    "heading": "Limited WebAssembly features",
+    "anchor": "limited-webassembly-features",
+    "capturedAt": "2026-11-02T21:23:39.538Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Create account",
+    "anchor": "create-account",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Payment",
+    "anchor": "payment",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Path payment strict send",
+    "anchor": "path-payment-strict-send",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Path payment strict receive",
+    "anchor": "path-payment-strict-receive",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Manage buy offer",
+    "anchor": "manage-buy-offer",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Manage sell offer",
+    "anchor": "manage-sell-offer",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Create passive sell offer",
+    "anchor": "create-passive-sell-offer",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Set options",
+    "anchor": "set-options",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Change trust",
+    "anchor": "change-trust",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Allow trust",
+    "anchor": "allow-trust",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Account merge",
+    "anchor": "account-merge",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Manage data",
+    "anchor": "manage-data",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Bump sequence",
+    "anchor": "bump-sequence",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Create claimable balance",
+    "anchor": "create-claimable-balance",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Claim claimable balance",
+    "anchor": "claim-claimable-balance",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Begin sponsoring future reserves",
+    "anchor": "begin-sponsoring-future-reserves",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "End sponsoring future reserves",
+    "anchor": "end-sponsoring-future-reserves",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Revoke sponsorship",
+    "anchor": "revoke-sponsorship",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Clawback",
+    "anchor": "clawback",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Clawback claimable balance",
+    "anchor": "clawback-claimable-balance",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Set trustline flags",
+    "anchor": "set-trustline-flags",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Liquidity pool deposit",
+    "anchor": "liquidity-pool-deposit",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Liquidity pool withdraw",
+    "anchor": "liquidity-pool-withdraw",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Invoke Host Function",
+    "anchor": "invoke-host-function",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Extend Footprint TTL",
+    "anchor": "extend-footprint-ttl",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "heading": "Restore Footprint",
+    "anchor": "restore-footprint",
+    "capturedAt": "2026-11-02T21:23:39.609Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Fees overview",
+    "anchor": "fees-overview",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Resource fee",
+    "anchor": "resource-fee",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Refundable and non-refundable resource fees",
+    "anchor": "refundable-and-non-refundable-resource-fees",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Find a transaction’s resource fee",
+    "anchor": "find-a-transactions-resource-fee",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Resource limitations",
+    "anchor": "resource-limitations",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Inclusion fee",
+    "anchor": "inclusion-fee",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Surge and dynamic pricing",
+    "anchor": "surge-and-dynamic-pricing",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Surge pricing",
+    "anchor": "surge-pricing",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Dynamic pricing for storage",
+    "anchor": "dynamic-pricing-for-storage",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Metering",
+    "anchor": "metering",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Methodology",
+    "anchor": "methodology",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Cost types",
+    "anchor": "cost-types",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Cost parameters",
+    "anchor": "cost-parameters",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Metering process",
+    "anchor": "metering-process",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Inclusion fee pricing strategies",
+    "anchor": "inclusion-fee-pricing-strategies",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Set the highest fee you’re comfortable paying​",
+    "anchor": "set-the-highest-fee-youre-comfortable-paying",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+    "heading": "Fee-bumps on past transactions​",
+    "anchor": "fee-bumps-on-past-transactions",
+    "capturedAt": "2026-11-02T21:23:39.420Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Soroban Authorization Framework",
+    "anchor": "soroban-authorization-framework",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Contract-Specific Authorization",
+    "anchor": "contract-specific-authorization",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Contract storage",
+    "anchor": "contract-storage",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Address",
+    "anchor": "address",
+    "capturedAt": "2026-11-02T21:23:39.571Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Authorizing Sub-contract Calls",
+    "anchor": "authorizing-sub-contract-calls",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "When to require_auth",
+    "anchor": "when-to-require_auth",
+    "capturedAt": "2026-11-02T21:23:39.571Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Authorizing Multiple Addresses",
+    "anchor": "authorizing-multiple-addresses",
+    "capturedAt": "2026-11-02T21:23:39.571Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Account Abstraction",
+    "anchor": "account-abstraction",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Types of Account Implementations",
+    "anchor": "types-of-account-implementations",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Stellar Account",
+    "anchor": "stellar-account",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Transaction Invoker",
+    "anchor": "transaction-invoker",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Contract Invoker",
+    "anchor": "contract-invoker",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Contract Account",
+    "anchor": "contract-account",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Secp256r1, passkeys and contract accounts",
+    "anchor": "secp256r1-passkeys-and-contract-accounts",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Advanced Concepts",
+    "anchor": "advanced-concepts",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "require_auth implementation details",
+    "anchor": "require_auth-implementation-details",
+    "capturedAt": "2026-11-02T21:23:39.571Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Matching Authorized Invocation Trees",
+    "anchor": "matching-authorized-invocation-trees",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+    "heading": "Duplicate Addresses",
+    "anchor": "duplicate-addresses",
+    "capturedAt": "2026-11-02T21:23:39.571Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+    "heading": "Params (5)",
+    "anchor": "params-5",
+    "capturedAt": "2026-11-02T21:23:39.452Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+    "heading": "Result",
+    "anchor": "result",
+    "capturedAt": "2026-11-02T21:23:39.452Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+    "heading": "Examples",
+    "anchor": "examples",
+    "capturedAt": "2026-11-02T21:23:39.452Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+    "heading": "Event ordering",
+    "anchor": "event-ordering",
+    "capturedAt": "2026-11-02T21:23:39.452Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+    "heading": "Using the Lab",
+    "anchor": "using-the-lab",
+    "capturedAt": "2026-11-02T21:23:39.452Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 29 (Mainnet, October 1, 2026)",
+    "anchor": "protocol-29-mainnet-october-1-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 29 (Testnet, September 29, 2026)",
+    "anchor": "protocol-29-testnet-september-29-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 28 (Mainnet, September 16, 2026)",
+    "anchor": "protocol-28-mainnet-september-16-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 28 (Testnet, August 27, 2026)",
+    "anchor": "protocol-28-testnet-august-27-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 27 (Mainnet, July 8, 2026)",
+    "anchor": "protocol-27-mainnet-july-8-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-5",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-5",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 27 (Testnet, June 18, 2026)",
+    "anchor": "protocol-27-testnet-june-18-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-6",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-6",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 26 (Mainnet, May 6, 2026)",
+    "anchor": "protocol-26-mainnet-may-6-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-7",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-7",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 26 (Testnet, April 16, 2026)",
+    "anchor": "protocol-26-testnet-april-16-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-8",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-8",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 25 (Mainnet, January 22, 2026)",
+    "anchor": "protocol-25-mainnet-january-22-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-9",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-9",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 25 (Testnet, January 7, 2026)",
+    "anchor": "protocol-25-testnet-january-7-2026",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-10",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-10",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 24 (Mainnet, October 22, 2025)",
+    "anchor": "protocol-24-mainnet-october-22-2025",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-11",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-11",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 24 (Testnet, October 21, 2025)",
+    "anchor": "protocol-24-testnet-october-21-2025",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-12",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-12",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Whisk, Protocol 23 (Mainnet, September 3, 2025)",
+    "anchor": "whisk-protocol-23-mainnet-september-3-2025",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-13",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-13",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 23 (Testnet, August 14, 2025)",
+    "anchor": "protocol-23-testnet-august-14-2025",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-14",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-14",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Whisk, Protocol 23 Release Candidate (Testnet only, July 17, 2025)",
+    "anchor": "whisk-protocol-23-release-candidate-testnet-only-july-17-2025",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-15",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-15",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 22 (Mainnet, December 5, 2024)",
+    "anchor": "protocol-22-mainnet-december-5-2024",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-16",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-16",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Core",
+    "anchor": "core",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Stellar CLI (Previously Soroban CLI)",
+    "anchor": "stellar-cli-previously-soroban-cli",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 21 (Mainnet, June 18, 2024)",
+    "anchor": "protocol-21-mainnet-june-18-2024",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-17",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-17",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Core",
+    "anchor": "core-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Stellar CLI (Previously Soroban CLI)",
+    "anchor": "stellar-cli-previously-soroban-cli-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 21 (Testnet only, May 20, 2024)",
+    "anchor": "protocol-21-testnet-only-may-20-2024",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-18",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-18",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Core",
+    "anchor": "core-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 21: Preview 1 (Testnet only, April 12, 2024)",
+    "anchor": "protocol-21-preview-1-testnet-only-april-12-2024",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-19",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Release notes",
+    "anchor": "release-notes-19",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Core",
+    "anchor": "core-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 20: Soroban Phase 2 (March 19, 2024)",
+    "anchor": "protocol-20-soroban-phase-2-march-19-2024",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-20",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Core",
+    "anchor": "core-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 20: Soroban Phase 1 (February 27, 2024)",
+    "anchor": "protocol-20-soroban-phase-1-february-27-2024",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-21",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)",
+    "anchor": "protocol-20-soroban-phase-0-mainnet-february-20-2024",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-22",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-5",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Stable v20.1.0 (January 11, 2024)",
+    "anchor": "stable-v2010-january-11-2024",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-23",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-6",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Stable v20.0.0 (December 18, 2023)",
+    "anchor": "stable-v2000-december-18-2023",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-24",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-7",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 11 (September 11, 2023): Testnet and Futurenet Edition",
+    "anchor": "preview-11-september-11-2023-testnet-and-futurenet-edition",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-25",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-5",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-2",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-8",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 10 (July 13, 2023)",
+    "anchor": "preview-10-july-13-2023",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-26",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-6",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-3",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-9",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 9 (May 24th, 2023)",
+    "anchor": "preview-9-may-24th-2023",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-27",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-7",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-4",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-10",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-5",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-5",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 8 (April 4th, 2023)",
+    "anchor": "preview-8-april-4th-2023",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-28",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Breaking changes note",
+    "anchor": "breaking-changes-note",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-8",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr-5",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-5",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-11",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-6",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-6",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 7 (February 16th, 2023)",
+    "anchor": "preview-7-february-16th-2023",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-29",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Breaking changes note",
+    "anchor": "breaking-changes-note-1",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-9",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr-6",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-6",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-12",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-7",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-7",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 6 (January 9th, 2023)",
+    "anchor": "preview-6-january-9th-2023",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-30",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-10",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-7",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-13",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-8",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-8",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 5 (December 8th, 2022)",
+    "anchor": "preview-5-december-8th-2022",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-31",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-11",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr-7",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-8",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-14",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-9",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-9",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 4 (November 15th, 2022)",
+    "anchor": "preview-4-november-15th-2022",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-32",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-12",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "XDR",
+    "anchor": "xdr-8",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Environment",
+    "anchor": "soroban-environment-9",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban Rust SDK",
+    "anchor": "soroban-rust-sdk-15",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban RPC",
+    "anchor": "soroban-rpc-10",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Soroban CLI",
+    "anchor": "soroban-cli-10",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 3 (October 11th, 2022)",
+    "anchor": "preview-3-october-11th-2022",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Software",
+    "anchor": "software-33",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Changelog",
+    "anchor": "changelog-13",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 2 (September 13th, 2022)",
+    "anchor": "preview-2-september-13th-2022",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "heading": "Preview 1 (August 1st, 2022)",
+    "anchor": "preview-1-august-1st-2022",
+    "capturedAt": "2026-11-02T21:23:39.498Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Account",
+    "anchor": "account",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Account ID",
+    "anchor": "account-id",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Anchor",
+    "anchor": "anchor",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Application (app)",
+    "anchor": "app",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Asset",
+    "anchor": "asset",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Atomic Swap",
+    "anchor": "atomic-swap",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Balance",
+    "anchor": "balance",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "BalanceID",
+    "anchor": "balanceid",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Base Fee",
+    "anchor": "base-fee",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Base Reserve",
+    "anchor": "base-reserve",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Burn",
+    "anchor": "burn",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Claim Predicate",
+    "anchor": "claim-predicate",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "ClaimableBalanceID",
+    "anchor": "claimablebalanceid",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Claimant",
+    "anchor": "claimant",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Clawback",
+    "anchor": "clawback",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Composable Data Platform",
+    "anchor": "cdp",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Contract Account",
+    "anchor": "contract-account",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Contract Token",
+    "anchor": "contract-token",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Core Advancement Proposals (CAPs)",
+    "anchor": "caps",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Create account operation",
+    "anchor": "create-account-operation",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Cross-Asset Payments",
+    "anchor": "cross-asset-payments",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Custom Token",
+    "anchor": "custom-token",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Decentralized Exchange",
+    "anchor": "decentralized-exchange",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "External Data Representation (XDR)",
+    "anchor": "external-data-representation-xdr",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Federation",
+    "anchor": "federation",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Flags",
+    "anchor": "flags",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Fuzzing",
+    "anchor": "fuzzing",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "GitHub",
+    "anchor": "github",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Home Domain",
+    "anchor": "home-domain",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Inflation",
+    "anchor": "inflation",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "JSON",
+    "anchor": "json",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Keypair",
+    "anchor": "keypair",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Keystore",
+    "anchor": "keystore",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Ledger",
+    "anchor": "ledger",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "LedgerKey",
+    "anchor": "ledgerkey",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Liability",
+    "anchor": "liability",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Lumen (XLM)",
+    "anchor": "lumen",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Mainnet or Pubnet",
+    "anchor": "mainnet-or-pubnet",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Master key",
+    "anchor": "master-key",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Minimum balance",
+    "anchor": "minimum-balance",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Network capacity",
+    "anchor": "network-capacity",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Number of subentries",
+    "anchor": "number-of-subentries",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Operation",
+    "anchor": "operation",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "OperationID",
+    "anchor": "operationid",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Order",
+    "anchor": "order",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Orderbook",
+    "anchor": "orderbook",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Passive Order",
+    "anchor": "passive-order",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Passphrase",
+    "anchor": "passphrase",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Pathfinding",
+    "anchor": "pathfinding",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Payment Channel",
+    "anchor": "payment-channel",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Precondition",
+    "anchor": "precondition",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Price",
+    "anchor": "price",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Public Key",
+    "anchor": "public-key",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Secret (private) key",
+    "anchor": "secret-private-key",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Sequence Number",
+    "anchor": "sequence-number",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Signer",
+    "anchor": "signer",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Smart Contract",
+    "anchor": "smart-contract",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Soroban",
+    "anchor": "soroban",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Source Account",
+    "anchor": "source-account",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "SPEEDEX",
+    "anchor": "speedex",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Starlight",
+    "anchor": "starlight",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stellar",
+    "anchor": "stellar",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stellar Consensus Protocol (SCP)",
+    "anchor": "scp",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stellar Core",
+    "anchor": "stellar-core",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stellar Decentralized Exchange (SDEX)",
+    "anchor": "sdex",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stellar Development Foundation (SDF)",
+    "anchor": "sdf",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stellar Ecosystem Proposals (SEPs)",
+    "anchor": "seps",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stellar RPC",
+    "anchor": "stellar-rpc",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stellar.toml",
+    "anchor": "stellar-toml",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Stroop",
+    "anchor": "stroop",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Testnet",
+    "anchor": "testnet",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Threshold",
+    "anchor": "threshold",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Time Bounds",
+    "anchor": "time-bounds",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Transaction",
+    "anchor": "transaction",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Transaction Envelope",
+    "anchor": "transaction-envelope",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Transaction Fee",
+    "anchor": "transaction-fee",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Trustline",
+    "anchor": "trustline",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "TTL (Time To Live)",
+    "anchor": "ttl",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Type",
+    "anchor": "type",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "UNIX Timestamp",
+    "anchor": "unix-timestamp",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Validator",
+    "anchor": "validator",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "Wallet",
+    "anchor": "wallet",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/glossary",
+    "heading": "XLM (lumens)",
+    "anchor": "xlm-lumens",
+    "capturedAt": "2026-11-02T21:23:39.744Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Contract Data Type Descriptions",
+    "anchor": "contract-data-type-descriptions",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Temporary",
+    "anchor": "temporary",
+    "capturedAt": "2026-11-02T21:23:39.552Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Instance",
+    "anchor": "instance",
+    "capturedAt": "2026-11-02T21:23:39.552Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Persistent",
+    "anchor": "persistent",
+    "capturedAt": "2026-11-02T21:23:39.552Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Contract Data Automatic Restoration",
+    "anchor": "contract-data-automatic-restoration",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Contract Data Best Practices",
+    "anchor": "contract-data-best-practices",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Contract Code and Contract Instance lifetimes",
+    "anchor": "contract-code-and-contract-instance-lifetimes",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Behavior of transactions that try to access an archived Persistent entry",
+    "anchor": "behavior-of-transactions-that-try-to-access-an-archived-persistent-entry",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Terms and Semantics",
+    "anchor": "terms-and-semantics",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Live Until Ledger",
+    "anchor": "live-until-ledger",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "TTL",
+    "anchor": "ttl",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Minimum TTL",
+    "anchor": "minimum-ttl",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Maximum TTL",
+    "anchor": "maximum-ttl",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Operations",
+    "anchor": "operations",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "ExtendFootprintTTLOp",
+    "anchor": "extendfootprintttlop",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Semantics",
+    "anchor": "semantics",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Transaction resources",
+    "anchor": "transaction-resources",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "RestoreFootprintOp",
+    "anchor": "restorefootprintop",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Transaction resources",
+    "anchor": "transaction-resources-1",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Examples",
+    "anchor": "examples",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Overview",
+    "anchor": "overview",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Preparation",
+    "anchor": "preparation",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Example: My data is archived!",
+    "anchor": "example-my-data-is-archived",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+    "heading": "Example: My contract is archived!",
+    "anchor": "example-my-contract-is-archived",
+    "capturedAt": "2026-11-02T21:23:39.552Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Why storage is the hard part",
+    "anchor": "why-storage-is-the-hard-part",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "The three storage tiers",
+    "anchor": "the-three-storage-tiers",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 1: Singleton config in instance storage",
+    "anchor": "strategy-1-singleton-config-in-instance-storage",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 2: One entry per entity — keyed by a DataKey enum",
+    "anchor": "strategy-2-one-entry-per-entity--keyed-by-a-datakey-enum",
+    "capturedAt": "2026-11-02T21:31:07.227Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 3: Composite keys — multi-dimensional lookups",
+    "anchor": "strategy-3-composite-keys--multi-dimensional-lookups",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 4: Temporary storage for data with a deadline",
+    "anchor": "strategy-4-temporary-storage-for-data-with-a-deadline",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 5: TTL management — bump-on-access",
+    "anchor": "strategy-5-ttl-management--bump-on-access",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 6: Bounded collections — a capped Vec or Map in one entry",
+    "anchor": "strategy-6-bounded-collections--a-capped-vec-or-map-in-one-entry",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 7: Pack vs. split — group state by access pattern",
+    "anchor": "strategy-7-pack-vs-split--group-state-by-access-pattern",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 8: Enumeration — build the index yourself",
+    "anchor": "strategy-8-enumeration--build-the-index-yourself",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 9: Pull, don’t push — lazy settlement for unbounded holders",
+    "anchor": "strategy-9-pull-dont-push--lazy-settlement-for-unbounded-holders",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 10: Checkpoints — read state as of a past ledger",
+    "anchor": "strategy-10-checkpoints--read-state-as-of-a-past-ledger",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 11: Merkle roots and derived state — replace storage with verification",
+    "anchor": "strategy-11-merkle-roots-and-derived-state--replace-storage-with-verification",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Strategy 12: Scale out — contract-per-entity via factory",
+    "anchor": "strategy-12-scale-out--contract-per-entity-via-factory",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Decision path: composing strategies",
+    "anchor": "decision-path-composing-strategies",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Cheatsheet",
+    "anchor": "cheatsheet",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Tier picker",
+    "anchor": "tier-picker",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Pattern → complexity",
+    "anchor": "pattern--complexity",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "🚩 Red flags in review",
+    "anchor": "-red-flags-in-review",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Appendix: Mainnet limits",
+    "anchor": "appendix-mainnet-limits",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+    "heading": "Repositories reviewed",
+    "anchor": "repositories-reviewed",
+    "capturedAt": "2026-11-02T21:31:07.227Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "How to optimize smart contract cost:",
+    "anchor": "how-to-optimize-smart-contract-cost",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "1. Efficient loop and storage calls usage",
+    "anchor": "1-efficient-loop-and-storage-calls-usage",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Not Optimal Contract ❎",
+    "anchor": "not-optimal-contract-",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Optimal Contract ✅",
+    "anchor": "optimal-contract-",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "2. Proper use of batch operations",
+    "anchor": "2-proper-use-of-batch-operations",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Not Optimal Contract ❎",
+    "anchor": "not-optimal-contract--1",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Optimal Contract ✅",
+    "anchor": "optimal-contract--1",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "3. Use of events over storage",
+    "anchor": "3-use-of-events-over-storage",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Default Contract",
+    "anchor": "default-contract",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Optimized Using Events",
+    "anchor": "optimized-using-events",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Trade-offs:",
+    "anchor": "trade-offs",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Current Approach (Using Events)",
+    "anchor": "current-approach-using-events",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Storing Latest Move in Persistent Storage and History in Temporary Storage",
+    "anchor": "storing-latest-move-in-persistent-storage-and-history-in-temporary-storage",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "4. Use of efficient data structures",
+    "anchor": "4-use-of-efficient-data-structures",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Example (Heap Allocated Array) ❎",
+    "anchor": "example-heap-allocated-array-",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Example (Fixed-Sized Array) ✅",
+    "anchor": "example-fixed-sized-array-",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Example (Inefficient Data Storage) ❎",
+    "anchor": "example-inefficient-data-storage-",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Alternative: using keyed vecs ✅",
+    "anchor": "alternative-using-keyed-vecs-",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Use of appropriate env.storage mechanisms",
+    "anchor": "5-use-of-appropriate-envstorage-mechanisms",
+    "capturedAt": "2026-11-02T21:31:07.130Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "env.storage().persistent()",
+    "anchor": "envstoragepersistent",
+    "capturedAt": "2026-11-02T21:31:07.130Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Use cases",
+    "anchor": "use-cases",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Cost",
+    "anchor": "cost",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Lifetime",
+    "anchor": "lifetime",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "env.storage().temporary()",
+    "anchor": "envstoragetemporary",
+    "capturedAt": "2026-11-02T21:31:07.130Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Use cases",
+    "anchor": "use-cases-1",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Cost",
+    "anchor": "cost-1",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Lifetime",
+    "anchor": "lifetime-1",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "env.storage().instance()",
+    "anchor": "envstorageinstance",
+    "capturedAt": "2026-11-02T21:31:07.130Z",
+    "hasCodeSpan": true
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Use cases",
+    "anchor": "use-cases-2",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Cost",
+    "anchor": "cost-2",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Lifetime",
+    "anchor": "lifetime-2",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "6. Contract size",
+    "anchor": "6-contract-size",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Other tips to optimize smart contract cost:",
+    "anchor": "other-tips-to-optimize-smart-contract-cost",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "1. Use of built-in tools",
+    "anchor": "1-use-of-built-in-tools",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "2. Manual code review",
+    "anchor": "2-manual-code-review",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "3. Unit testing with gas measurements",
+    "anchor": "3-unit-testing-with-gas-measurements",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "4. Static analysis tools",
+    "anchor": "4-static-analysis-tools",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "5. Reconsidering storage locations",
+    "anchor": "5-reconsidering-storage-locations",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "State Variables",
+    "anchor": "state-variables",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Event Logs",
+    "anchor": "event-logs",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "External Data Sources",
+    "anchor": "external-data-sources",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Immutable Data and Constants",
+    "anchor": "immutable-data-and-constants",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  },
+  {
+    "url": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost",
+    "heading": "Off-Chain Storage and IPFS",
+    "anchor": "off-chain-storage-and-ipfs",
+    "capturedAt": "2026-11-02T21:31:07.130Z"
+  }
+]

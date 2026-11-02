@@ -194,7 +194,15 @@ A search hit has this shape:
 { url, path, title, section?, snippet, content? }
 ```
 
-`url` is the site URL of the page.
+`url` is the site URL, with a section anchor when the captured page has one matching heading.
+The adapter reads `src/adapters/stellar-docs-anchors.json`; searches make no additional network requests.
+The index records rendered heading text and IDs, including custom IDs.
+The adapter uses these IDs only when the section starts with an ATX heading.
+The adapter removes inline code delimiters before matching a section heading.
+
+Repeated headings, unknown headings, and unknown pages keep the page URL without an anchor.
+Other unsupported heading formatting also keeps the page URL.
+
 `path` is the site-relative page path with a leading slash and no `/index` suffix.
 `title` is the page title from the search metadata, or the final path segment.
 `section` is the first heading of the section when the section starts with one.
@@ -287,6 +295,20 @@ Measure it with a free, read-only, retrieval-level A/B against the golden docs p
 The mechanism must be general, not a per-query or per-page exception.
 
 ### Verification
+
+Run `npm run docs:anchors:build` to refresh the section anchor index after a docs site update.
+This keyless command reads the public sitemap and rendered docs and meeting pages.
+It records rendered section heading IDs and preserves duplicate headings.
+It replaces the index only after every page succeeds.
+An unchanged capture preserves the file and its capture time.
+The index is a snapshot; headings can change before the next refresh.
+
+The committed fixture pins rendered heading pairs from eleven pages.
+The daily refresh workflow updates the index before it creates `.env`.
+Its drift report includes anchor changes.
+The refresh also supports manual runs and does not run during a Worker build.
+The index judges uniqueness against headings in the server response.
+Other headings can share a recorded heading's text.
 
 Refresh scripts own generated inventory files.
 The authored spec owns operation mappings; the runtime adapter consumes those mappings.
