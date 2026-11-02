@@ -2310,12 +2310,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Upstream filing round 2026-11-02: q-sor-build-target-wasm32v1 golden.notes now records that stellar/stellar-docs#2991 fixed the Hello World cargo-build sentence (sd-075 fixed-upstream). The build facts (stellar contract build, wasm32v1-none, the soroban-sdk 28 plain-cargo failure) are unchanged, so the members still agree.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "sd-075 resolver pass 2026-11-02 (.agents/rounds/2026-11-02-upstream-filing.md): q-sor-build-target-wasm32v1 golden.notes now points at the resolved receipt instead of the deleted finding file. The build facts (stellar contract build, wasm32v1-none, the soroban-sdk 28 plain-cargo failure) are unchanged, so the members still agree."
         },
         "note": "Current target is wasm32v1-none. Local Wasm supplies the spec for bindings; generated deploy requires installed wasmHash; SDK helper return types are version-sensitive. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-scaffold-stellar joins because it asserts where this flow's boundary lies — Scaffold Stellar is a separately installed plugin (cargo install stellar-scaffold-cli, stellar scaffold init) that generates contracts, TypeScript clients/bindings, frontend, and environment config, and is NOT bundled with a core Stellar CLI install nor equivalent to 'stellar contract init'. Verified 2026-07-28 against q-soroban-cli-bindings, q-sor-build-target-wasm32v1, and q-soroban-deploy-cli: no case conflates the plugin with the core CLI, and no case claims the plugin replaces 'stellar contract bindings'. Alternative considered and rejected: a standalone scaffold-versus-core-CLI cluster, which would duplicate this one's membership without adding a distinct claim.",
         "memberContentSha256": {
-          "q-sor-build-target-wasm32v1": "8a80f1a36e7969695c787f5350a4d65b6c96d0e94e7a892b7d6c175c486d473e",
+          "q-sor-build-target-wasm32v1": "1563846d3a312dc7ae701c986d9b5a86248535ba38dc7a19a6c321c6f1e5ca63",
           "q-sor-deploy-invoke-from-js-sdk": "94430e4cb9af1b5393f4b9447236b4e233384b1b6b5fa8ac9208bb356eadc04d",
           "q-soroban-cli-bindings": "0ebb945bb04599f9e88a8a3af74f43640a798b9a94f222887b8455e5e4ef8fac",
           "q-ti-scaffold-stellar": "045054751ad11ba5166513234fe9d6f718b826f9a562f4755debd0f8c690ec63"
@@ -3071,12 +3071,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Upstream filing round 2026-11-02: q-sor-build-target-wasm32v1 golden.notes now records that stellar/stellar-docs#2991 fixed the Hello World cargo-build sentence (sd-075 fixed-upstream). The build facts are unchanged, so the members still agree.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "sd-075 resolver pass 2026-11-02 (.agents/rounds/2026-11-02-upstream-filing.md): q-sor-build-target-wasm32v1 golden.notes now points at the resolved receipt instead of the deleted finding file. The build facts (stellar contract build, wasm32v1-none, the soroban-sdk 28 plain-cargo failure) are unchanged, so the members still agree."
         },
         "note": "Substantial greenfield architecture requests make one bounded repos/projects pass alongside authoritative skills/docs, label candidate roles, and leave unsupported license/audit/deployment/compatibility claims unknown. A scoped build/debug question stays on current official mechanics without an ecosystem landscape detour.",
         "memberContentSha256": {
-          "q-sor-build-target-wasm32v1": "8a80f1a36e7969695c787f5350a4d65b6c96d0e94e7a892b7d6c175c486d473e",
+          "q-sor-build-target-wasm32v1": "1563846d3a312dc7ae701c986d9b5a86248535ba38dc7a19a6c321c6f1e5ca63",
           "q-soroban-greenfield-escrow-prior-art-preflight": "1ebb55c27532126ec54c171e3feb9eec81147fa24ded843b5b255a791c126fe2",
           "q-tool-greenfield-indexer-prior-art-preflight": "f56ab34305b68e3b9ebb4e47cbcedad20fa0e3a78eb488ed703794d176ee2bcb"
         }

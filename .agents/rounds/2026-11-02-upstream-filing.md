@@ -69,3 +69,18 @@ verdict RETIRE, no residual. The resolution comment is
 https://github.com/stellar/stellar-docs/issues/2907#issuecomment-6588462663. This closes the handoff
 issue #316. `sd-075` stays `fixed-upstream`: a golden `rootCause` cites it, and its evidence names
 `TEMPLATE.mdx` line 135 as a possible residual. Review both before it retires.
+
+## Resolver pass: sd-075
+
+On 2026-11-02 `sd-075` moved to `improvements/resolved.json`. stellar/stellar-docs#2991 is deployed,
+and the live Hello World page no longer calls `stellar contract build` a shortcut for plain
+`cargo build`. Grok 4.7 at high re-derived the fix as the distinct reviewer:
+[`sd-075-retire-review.md`](2026-11-02-upstream-filing/sd-075-retire-review.md), verdict RETIRE.
+`TEMPLATE.mdx` is a draft page (404 on the site) and now uses `stellar contract build`, so it is no
+residual. The golden `q-sor-build-target-wasm32v1` now points at the resolved receipt (truth
+unchanged; clusters 095 and 129 re-swept). Raven did not file this finding; the resolution comment
+is on the owner's issue: https://github.com/stellar/stellar-docs/issues/2974#issuecomment-6589044826.
+
+Follow-up outside this finding: the reviewer saw `docs/build/smart-contracts/.../fuzzing.mdx` line
+197 name the old `soroban contract build` CLI. That is a separate stale-name defect for the next
+filing batch.
