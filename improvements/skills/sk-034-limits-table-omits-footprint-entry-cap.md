@@ -1,7 +1,7 @@
 ---
 id: sk-034
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Resource-limits table omits the 400-entry footprint cap and labels the 200 disk-read limit as all reads"
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "The setting name tx_max_disk_read_entries shows that 200 limits disk reads only, not every read-only footprint entry."
   - "Dedupe 2026-11-02: no stellar/stellar-dev-skill issue or PR (all states) mentions footprint entries or tx_max_footprint_entries; no Raven finding covers the skill table."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item R08."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/164
 ---
 
 ## Finding

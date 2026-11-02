@@ -1,7 +1,7 @@
 ---
 id: sd-079
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Building with AI page and the For agents card name raven.stellar.buzz; the canonical Raven host is raven.stellar.org"
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "Canonical host: the Raven README (stellar-experimental/stellar-raven) gives 'Add `https://raven.stellar.org/mcp`'. 2026-11-02 GET https://raven.stellar.org/.well-known/oauth-authorization-server issuer https://raven.stellar.org; the same path on raven.stellar.buzz returns issuer https://raven.stellar.buzz. Both /health return 200. Each host has its own OAuth issuer, so a client configured on the alias holds a different authorization."
   - "Dedupe 2026-11-02: gh search issues and prs on stellar/stellar-docs for raven and raven.stellar.org found only closed #2832 ('Add MCP server card and AI catalog for agent discovery'); no open report of the host."
   - ".agents/TODO.md 'File the HackMeridian upstream findings', stellar-docs bullet ('Building with AI' and llms.txt)."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3019
 ---
 
 ## Finding

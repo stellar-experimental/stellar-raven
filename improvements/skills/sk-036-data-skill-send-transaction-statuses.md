@@ -1,7 +1,7 @@
 ---
 id: sk-036
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Data skill's sendTransaction example handles only PENDING; DUPLICATE, TRY_AGAIN_LATER, and ERROR fall through silently"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Field name, 2026-11-02T22:03:43Z: the sendTransaction docs page names the JSON field 'errorResultXdr' and its JavaScript sample logs 'result.errorResultXdr'. js-stellar-sdk v17.4.0 src/rpc/api.ts: the parsed SendTransactionResponse has 'errorResult?: TransactionResult' (line 519); RawSendTransactionResponse has 'errorResultXdr?: string' (line 530). skills/dapp/SKILL.md line 423 uses 'response.errorResult', which matches the parsed SDK type."
   - "Dedupe 2026-11-02: no stellar/stellar-dev-skill issue or PR (all states) mentions sendTransaction status handling. Resolved sd-003 covered the docs search index for RPC method pages, not this skill."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item R34."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/166
 ---
 
 ## Finding

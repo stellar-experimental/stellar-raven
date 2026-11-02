@@ -1,7 +1,7 @@
 ---
 id: sls-109
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Repo search ranks low-score forks above canonical repos for 'scaffold stellar' and 'stellar lab'"
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "OpenAPI 1.9.116 Repo.canonical: 'True when surfaced as a curated canonical SDF answer for an infra/protocol query... Floated to the top'. canonical true appears only on stellar/stellar-core, stellar/anchor-platform, stellar/stellar-rpc, stellar/stellar-horizon, and stellar/go-stellar-sdk in these probes; stellar/rs-soroban-sdk, stellar/stellar-cli, and stellar/js-stellar-sdk rank first without it."
   - "Dedupe 2026-11-02: gh issue search 'canonical repo' and 'scaffold' on Stellar-Light/stellarlight found only #843 (rename-twin read-back) and #436 (weekly retrieval tracker); neither names this ranking case. No active or resolved Raven finding covers repo ranking."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' items R16 and R18."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1901
 ---
 
 ## Finding

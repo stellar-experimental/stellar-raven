@@ -1,7 +1,7 @@
 ---
 id: sls-113
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "venueRole is null on 31 of 38 Live DEX rows, and project search cannot filter by it"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Related: active sls-085 (Soroswap contract role) and sls-099 (Soroswap aggregator venue list) cover single records, not taxonomy coverage."
   - "Dedupe 2026-11-02: no Stellar-Light/stellarlight issue names venueRole coverage."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item Q6."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1905
 ---
 
 ## Finding

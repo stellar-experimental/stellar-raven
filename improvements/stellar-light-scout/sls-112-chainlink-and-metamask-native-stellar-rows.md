@@ -1,7 +1,7 @@
 ---
 id: sls-112
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Directory has no record for Chainlink Data Feeds on Stellar or for MetaMask's native Stellar support"
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "Related: active sls-029 (oracle product and network evidence) names Chainlink Data Streams as unverified on 2026-07-10. It does not cover a missing provider record. Active sls-033 covers wallet enumeration semantics, not a missing wallet record."
   - "Dedupe 2026-11-02: gh issue search 'chainlink' and 'metamask' on Stellar-Light/stellarlight found closed #514 (oracle evidence) and #519 (wallet semantics) only; open #562 is a generic coverage watch."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' items Q2 and Q18. Golden follow-up: TODO item 'Add golden cases for the confirmed HackMeridian gaps' (Q18 testnet oracle addresses)."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1904
 ---
 
 ## Finding

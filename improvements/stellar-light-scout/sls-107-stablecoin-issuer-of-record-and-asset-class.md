@@ -1,7 +1,7 @@
 ---
 id: sls-107
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Stablecoin rows give a brand as company instead of the stellar.toml issuer, and yield products cannot be filtered out"
 evidence:
@@ -15,6 +15,7 @@ evidence:
   - "2026-11-02 GET https://stellarlight.xyz/api/stablecoins?assetType=Yield%20Stablecoin returned HTTP 400 'Unknown query param 'assetType'.' with validParams ['peg','sort','limit']. OpenAPI 1.9.116 Stablecoin.assetType: 'Qualifier where the asset is not a pure peg, e.g. 'Yield Stablecoin' for Ondo's USDY. Null = a plain peg.' Stablecoin.company has no description."
   - "Dedupe 2026-11-02: resolved sls-034 (Stellar-Light/stellarlight#518, closed) added asset-level typing and the USDY record; resolved sls-066 covered USDC omission. Neither covers issuer of record or a class filter. gh issue search 'stablecoin' on Stellar-Light/stellarlight found no open report."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item R31. Golden follow-up: TODO item 'Add golden cases for the confirmed HackMeridian gaps' (R31)."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1900
 ---
 
 ## Finding

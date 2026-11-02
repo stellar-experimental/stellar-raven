@@ -1,7 +1,7 @@
 ---
 id: sk-032
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Smart Contracts skill pins soroban-sdk 27 and uses the deprecated update_current_contract_wasm; Mainnet runs Protocol 29"
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "Predecessor: resolved sk-021 (receipt in improvements/resolved.json) and closed upstream issue stellar/stellar-dev-skill#124 corrected the same Mainnet-protocol sentence from 26 to 27 (PR #127). The sentence went stale again after the Protocol 29 upgrade."
   - "Dedupe 2026-11-02: gh issue list and gh pr list on stellar/stellar-dev-skill (all states) show no open report of Protocol 29, SDK 28/29, or update_current_contract_wasm. No active Raven finding names update_current_contract_wasm."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' items Q1 and R07."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/162
 ---
 
 ## Finding

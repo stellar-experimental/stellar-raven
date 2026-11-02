@@ -1,7 +1,7 @@
 ---
 id: cs-009
 service: canonical-source
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Portal lists 2 of 8 published OpenZeppelin Stellar Contracts audits; v0.2.0 and v0.5.0 to v0.8.0 are missing"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Owner: 2026-11-02T22:03:17Z gh api repos/Inferara/soroban-security-portal: public, not archived, has_issues true. Its description is 'Unified knowledge base of Soroban common vulnerabilities and best practices', and its homepage is https://stellarsecurityportal.com."
   - "Dedupe 2026-11-02T22:03:17Z: gh issue list -R Inferara/soroban-security-portal --state all for 'OpenZeppelin' and 'stellar contracts' found per-report vulnerability-entry tasks for other vendors (#103 to #111) and no request for the OpenZeppelin Stellar Contracts reports. Stellar-Light/stellarlight open #562 is a generic coverage watch. Resolved sls-003, sls-064, sls-070, and sls-074 cover Scout audit corpus quality, engagement metadata, and exact IDs, not portal coverage."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' items R17 and R23. Golden follow-up: TODO item 'Add golden cases for the confirmed HackMeridian gaps' (R23)."
+  - upstream issue filed 2026-11-02: https://github.com/Inferara/soroban-security-portal/issues/256
 ---
 
 ## Finding

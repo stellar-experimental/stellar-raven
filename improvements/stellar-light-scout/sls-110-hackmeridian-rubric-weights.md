@@ -1,7 +1,7 @@
 ---
 id: sls-110
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "HackMeridian records omit the published rubric weights"
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "Review rv-hm 2026-11-02T21:51:31Z: hackmeridian-2026 still has qualitative rules.judgingCriteria only (source https://hackmeridian.com, checkedOn 2026-10-20). 21:55:42Z https://www.hackmeridian.com/build: 'One rubric scores every project. Each criterion is scored 1–5.'"
   - "Dedupe 2026-11-02: resolved sls-001, sls-016, and sls-092 covered placement fields, award amounts, and per-event counts; active sls-106 covers feed coverage. None covers rubric weights."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' items R24, R26, and R27."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1902
 ---
 
 ## Finding

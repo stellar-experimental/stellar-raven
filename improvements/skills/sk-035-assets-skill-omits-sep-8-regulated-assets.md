@@ -1,7 +1,7 @@
 ---
 id: sk-035
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Assets and Standards skills claim regulated-asset coverage but never mention SEP-8 or an approval server"
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - "Review rv-hm 2026-11-02T21:50Z: a grep of every skills/**/*.md file on main for 'SEP-8', 'SEP-0008', and 'approval server' found zero matches."
   - "Dedupe 2026-11-02: no stellar/stellar-dev-skill issue or PR (all states) mentions SEP-8 or regulated assets; no Raven finding covers it."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item R30."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/165
 ---
 
 ## Finding

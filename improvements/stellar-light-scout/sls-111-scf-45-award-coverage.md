@@ -1,7 +1,7 @@
 ---
 id: sls-111
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Directory marks 24 SCF #45 awards; the SCF site lists at least 40, and Liqvid's record omits rounds 30, 44, and 45"
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "Predecessor: resolved sls-058 (receipt in improvements/resolved.json) fixed structured SCF funding fields against the official submission records. This is a later coverage gap for round 45, so it gets a new id and does not reopen sls-058."
   - "Dedupe 2026-11-02: no open Stellar-Light/stellarlight issue names SCF #45 or round-45 coverage."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item R28."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1903
 ---
 
 ## Finding
