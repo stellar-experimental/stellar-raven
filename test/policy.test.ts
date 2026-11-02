@@ -140,7 +140,7 @@ describe("redaction", () => {
 
     // Bindings that are deliberately NOT secrets: public identifiers that
     // appear in legitimate results, and a local-dev flag. Redacting these would
-    // scrub real content (see the SECRET_ENV_NAMES doc comment).
+    // scrub real content.
     const NOT_SECRETS = new Set([
       "WORKOS_CLIENT_ID",
       "DEV_ALLOW_UNAUTHENTICATED",

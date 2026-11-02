@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-10-09",
+  "updated": "2026-11-02",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
-    "developers.stellar.org runs on Mintlify, and the docs team owns both its content and its search; content and search findings file in stellar/stellar-docs."
+    "Verified 2026-11-02 (sd-059 filed as stellar/stellar-docs#2995). developers.stellar.org runs on Mintlify, and the docs team owns both its content and its search; content and search findings file in stellar/stellar-docs."
   ],
   "services": {
     "skills": {

@@ -106,8 +106,8 @@ Record the exact issue URL in the finding's `evidence` list.
     and research-corpus findings.
   - <https://github.com/Stellar-Light/scout-mcp> — their MCP server surface.
 - `stellar-docs/` content and content-structure findings go to
-  <https://github.com/stellar/stellar-docs>. Mintlify search findings also go there: the docs team owns the
-  Mintlify project (for example `sd-059`, filed as stellar/stellar-docs#2995).
+  <https://github.com/stellar/stellar-docs>. Mintlify search findings also go there, because the
+  docs team owns the Mintlify project (for example `sd-059`, filed as stellar/stellar-docs#2995).
 - `lumenloop/` API and content findings go to <https://github.com/lumenloop/lumenloop-backend>
   (authenticated issue access). Directory-record corrections go to
   <https://github.com/lumenloop/stellar-ecosystem-db>. Skill-content findings go to

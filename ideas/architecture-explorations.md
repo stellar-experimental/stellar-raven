@@ -27,6 +27,10 @@ New experiments need the evaluation and authorization gates in [the evaluation m
    control plane anticipated by [`AGENTS.md` “Hard rules”](../AGENTS.md#hard-rules). No action
    until then; mirror upstream rather than inventing.
 
+5. **Docs recency as metadata, not a ranking boost** — keep the docs search's own ranking order.
+   Expose page modification dates to agents where the source provides them. A default recency
+   boost needs a measured read-only A/B win on golden docs pages first.
+
 ## Known deferred hardening leftovers (small, non-blocking)
 
 - Judge-regression replay gate from real adjudicated rows — deferred: conflicts with the
