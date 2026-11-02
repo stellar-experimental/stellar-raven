@@ -126,6 +126,9 @@ describe("skill-body operation exposure scrub", () => {
   it("treats a line that ends in an abbreviation as part of the next sentence", () => {
     const text = ["Call e.g.", "/api/hackathons/analyze now.", "Keep this."].join("\n");
     expect(scrubExcludedScoutOperationRefs(text, "abbreviation")).toBe("Keep this.");
+    expect(
+      scrubExcludedScoutOperationRefs("Call (e.g.) /api/hackathons/analyze for counts. Keep this.", "paren abbreviation")
+    ).toBe("Keep this.");
   });
 
   it("matches a templated excluded path with a concrete value and a percent-encoded path", () => {

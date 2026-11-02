@@ -160,7 +160,7 @@ function splitSentences(text: string): string[] {
       }
       if (closedDepth !== 0 || !/\s/.test(text[end] ?? "")) continue;
       const sentence = text.slice(start, end);
-      if (ABBREVIATION_END_RE.test(sentence)) continue;
+      if (ABBREVIATION_END_RE.test(sentence.replace(/[*_"')\]]+$/, ""))) continue;
       sentences.push(sentence.trim());
       start = end;
       depth = 0;

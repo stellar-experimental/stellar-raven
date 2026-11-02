@@ -63,3 +63,8 @@ bytes.
 
 After the fixes, all eight upstream files (held and new) scrub to the same bytes as commit
 5816ed4f. The served text does not change.
+
+Fix verification: the reviewer re-ran the fuzz cases on 6cb34133 and confirmed findings 1-6, 8,
+and 9 as resolved and the finding 7 rationale as valid. Verdict: approve. It found one low regression:
+an abbreviation followed by a closing mark, as in "(e.g.)", counted as a sentence end and could
+leave a fragment. Fixed: the abbreviation test ignores trailing closing marks; test added.
