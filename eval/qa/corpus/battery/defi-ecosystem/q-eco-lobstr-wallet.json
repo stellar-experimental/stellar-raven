@@ -28,7 +28,7 @@
   "tags": {
     "category": "defi-ecosystem",
     "service": "lumenloop",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -37,7 +37,7 @@
     },
     "domain": "mixed",
     "status": "mixed",
-    "asOf": "2026-09-17",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -123,7 +123,7 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "Ultra Stellar operates LOBSTR [confirmed] — A: https://play.google.com/store/apps/details?id=com.lobstr.client — \"developer Ultra Stellar OU\" (observedAt 2026-11-02)",
         "Ultra Stellar operates LOBSTR [confirmed] — C: https://stellarlight.xyz/api/projects/search?q=lobstr — \"Lobstr | Live | Wallet; Ultra Stellar | Live\" (observedAt 2026-11-02)",
@@ -133,9 +133,14 @@
         "LOBSTR is non-custodial [confirmed] — C: Stellar Light Lobstr shortDescription — \"a widely used non-custodial Stellar wallet\" (observedAt 2026-11-02)",
         "SCF record reports totalAwarded and totalPaid separately [confirmed] — A: https://communityfund.stellar.org/project/lobstr-gcn (inherited) — \"separate project totalAwarded and totalPaid fields\" (observedAt 2026-09-17)",
         "SCF record reports totalAwarded and totalPaid separately [confirmed] — C: lumenloop get_scf_submissions {name:LOBSTR} — \"3 submissions incl. recLPGmYh7sNVjRz7\" (observedAt 2026-11-02)",
-        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-stellar-wallets-list, q-edge-ambig-best-wallet; no contradiction recorded."
+        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-stellar-wallets-list, q-edge-ambig-best-wallet; no contradiction recorded.",
+        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-19. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+      ],
+      "rootCause": [
+        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
-    "origin": "raven-next q-eco-lobstr-wallet"
+    "origin": "raven-next q-eco-lobstr-wallet",
+    "reverifyBy": "2027-01-19"
   }
 }

@@ -125,6 +125,8 @@ held that number was renumbered and then withdrawn. No upstream issue was opened
 
 ## Owner decisions
 
+The owner decided all three on 2026-11-02. The record is `2026-11-02-grading-policy.md`.
+
 1. Partial caps outside the ADR-0008 set. ADR-0008 accepts canonical-page caps for exactly three
    cases (base reserve, Horizon lifecycle, RPC pagination). This round added no new slot. It put a
    new trigger on the accepted Horizon-lifecycle slot: `q-infra-horizon-vs-rpc` cites the Lab API
@@ -160,7 +162,7 @@ taste work). The author and orchestrator were Opus 5.5, so the tier was eligible
 
 | finding | severity | reconciliation |
 |---|---|---|
-| F1 saved rows not re-judged | major | Deferred to the owner (paid). The case list is in `rejudge-set.json`; owner decision D in `.agents/TODO.md` points to it. |
+| F1 saved rows not re-judged | major | The owner approved it on 2026-11-02. The 41 overlapping saved rows were re-judged in a paired run (`2026-11-02-grading-policy.md`, D3; `rejudge-summary.json`): 2 up, 5 down, inside a 6-of-41 noise band. |
 | F2 marketing-grant criterion is page data, not rendered text | major | Confirmed by curl. `q-scf-sdf-marketing-grant` answer and notes now attribute the wording to the page data and the 2022-08-02 SDF blog; status stays `mixed`. `sd-077` names the unrendered description. |
 | F3 new trigger on the Horizon-lifecycle slot | minor | Recorded under owner decision 1 with its `sd-072` expiry. No case change. |
 | F4 undated xBull store-absence avoid | minor | The avoid item now carries "as of 2026-11-02", with the reviewer store lookups as evidence. |

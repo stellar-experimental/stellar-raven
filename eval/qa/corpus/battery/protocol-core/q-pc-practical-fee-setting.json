@@ -22,7 +22,7 @@
   "tags": {
     "category": "protocol-core",
     "service": "stellarDocs",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -117,7 +117,7 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
+      "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event; grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "Gospel change 2026-11-02: removed the sd-003 partial cap and re-dated the sd-003 note in golden.notes.",
         "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
@@ -129,13 +129,16 @@
         "https://horizon.stellar.org/fee_stats — last_ledger_base_fee 100 (ledger 65269952); RPC getFeeStats on https://mainnet.sorobanrpc.com — inclusionFee min 100, p50 100 (observedAt 2026-11-02).",
         "stellar fees --help (stellar 28.1.0) — 'Commands: stats  Fetch the feestats from the network' (observedAt 2026-11-02).",
         "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment — 'networking layer API for Stellar RPC methods as well as the Horizon API (nearing end-of-life)' (observedAt 2026-11-02); the golden's dated 2026-09-08 wording still holds.",
-        "Sibling sweep 2026-11-02: q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement rule; consistent); no contradiction."
+        "Sibling sweep 2026-11-02: q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement rule; consistent); no contradiction.",
+        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-30, because the golden pins dated fee-floor and Horizon-lifecycle statements and the Horizon lifecycle label changed twice in 2026. The 2026-11-02 evidence above confirms the fee floor live; no other judge-facing field changed in this event."
       ],
       "rootCause": [
-        "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
+        "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)",
+        "Eval-side authoring flaw: the golden carries dated point-in-time values but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
     "origin": "raven-next q-pc-practical-fee-setting",
-    "asOf": "2026-11-02"
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-01-30"
   }
 }

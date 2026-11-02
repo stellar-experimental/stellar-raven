@@ -20,7 +20,7 @@
   "tags": {
     "category": "defi-ecosystem",
     "service": "scout",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -92,7 +92,7 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — A: https://litemint.com/ — \"Litemint Market Buy, Sell, and Collect Digital Creations on Stellar, Cyberbrawl items included\" (observedAt 2026-10-20)",
         "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — F: https://market.litemint.com/ — \"HTTP 200\" (observedAt 2026-11-02)",
@@ -100,9 +100,14 @@
         "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — A: https://communityfund.stellar.org/submissions/recRfE25wZkOThcrq — \"\"title\":\"Rarible.com X Stellar NFT Experience\",\"status\":\"Awarded\",\"roundName\":\"SCF #30\",\"budget\":150000; project \"totalAwarded\":150000,\"totalPaid\":50000\" (observedAt 2026-11-02)",
         "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — A: https://docs.rarible.org/docs/supported-chains — \"Currently supported chains table: no Stellar row (0 occurrences of 'stellar' in the fetched page)\" (observedAt 2026-11-02)",
         "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — C: https://stellarlight.xyz/api/projects/search?q=rarible — \"lifecycle.note: public Stellar marketplace support was not verifiable on Rarible's live API/UI as of 2026-07-11, so supportedNetworks lists verified deployments only (evm).\" (observedAt 2026-11-02)",
-        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-defi-market-map, q-defi-nft-standards-projects; no contradiction recorded."
+        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-defi-market-map, q-defi-nft-standards-projects; no contradiction recorded.",
+        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-25. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+      ],
+      "rootCause": [
+        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
-    "origin": "raven-next q-eco-nft-marketplace-whitespace"
+    "origin": "raven-next q-eco-nft-marketplace-whitespace",
+    "reverifyBy": "2027-01-25"
   }
 }

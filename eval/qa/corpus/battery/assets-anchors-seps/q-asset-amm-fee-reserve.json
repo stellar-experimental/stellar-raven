@@ -15,7 +15,7 @@
     "avoid": [
       "Do NOT state a wrong fee (0.03%, 0.25%, 1%) or a wrong reserve count (one base reserve)."
     ],
-    "notes": "Precise-number factual. Dossier §3.3. Verified on developers.stellar.org liquidity-pools page: fee = 30 bps (0.30%); pool-share trustline = 2 base reserves (1.0 XLM at the 0.5 XLM Mainnet base reserve as of 2026-09-30; the XLM figure is a network setting, the count is protocol); constant-product invariant A*B=k. Do not penalize an answer that gives the reserve in base-reserve units without an XLM figure, or that dates the XLM figure.\nAlso good if the answer: Notes the pool enforces a constant-product (x*y=k) invariant and fees accrue to LPs.\nGolden cites: The Stellar liquidity-pools page on developers.stellar.org."
+    "notes": "Precise-number factual. Dossier §3.3. Verified on developers.stellar.org liquidity-pools page: fee = 30 bps (0.30%); pool-share trustline = 2 base reserves (1.0 XLM at the current 0.5 XLM Mainnet base reserve; the XLM figure is a network setting, the count is protocol); constant-product invariant A*B=k. Do not penalize an answer that gives the reserve in base-reserve units without an XLM figure, or that dates the XLM figure.\nAlso good if the answer: Notes the pool enforces a constant-product (x*y=k) invariant and fees accrue to LPs.\nGolden cites: The Stellar liquidity-pools page on developers.stellar.org."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -38,14 +38,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02); grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the network fees.\" (claim: golden.keyFacts[0] confirmed: AMM swap fee is 30 bps (0.30%))",
         "2026-11-02 [B] https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — \"LIQUIDITY_POOL_FEE_V18 = 30 (prior verification row; SDK constant LiquidityPoolFeeV18 shown on the docs page)\" (claim: golden.keyFacts[0] confirmed: AMM swap fee is 30 bps (0.30%))",
         "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"A pool share trustline requires 2 base reserves instead of 1.\" (claim: golden.keyFacts[1] confirmed: Pool-share trustline consumes two base reserves)",
         "2026-11-02 [F] https://horizon.stellar.org/ledgers?order=desc&limit=5 — \"ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart\" (claim: golden.keyFacts[1] confirmed: Pool-share trustline consumes two base reserves)",
         "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"Pool shares are similar to other assets on Stellar but they cannot be transferred ... Stellar enforces a constant product invariant\" (claim: golden.answer confirmed: Pool shares are not transferable; constant-product invariant)",
-        "Sibling sweep 2026-11-02: proposer checked q-asset-sdex-vs-amm, q-asset-trustline-basics, q-asset-path-payment-ops, q-edge-1xlm-activation-fee; no gospel change in this case, so no sibling contradiction can arise from this event."
+        "Sibling sweep 2026-11-02: proposer checked q-asset-sdex-vs-amm, q-asset-trustline-basics, q-asset-path-payment-ops, q-edge-1xlm-activation-fee; no gospel change in this case, so no sibling contradiction can arise from this event.",
+        "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md, independent review F4/F6): golden.notes \"(1.0 XLM at the 0.5 XLM Mainnet base reserve as of 2026-09-30; the XLM figure\" -> \"(1.0 XLM at the current 0.5 XLM Mainnet base reserve; the XLM figure\". The value is unchanged; Horizon ledger 65269774 (2026-11-02T15:50:54Z) reported base_reserve_in_stroops 5000000."
+      ],
+      "rootCause": [
+        "Eval-side authoring flaw: judge-facing text pinned or required a dated base-reserve value in a stable case; the base reserve is a validator-voted network parameter, so the text now states the current value with that caveat (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
     "origin": "raven-next q-asset-amm-fee-reserve",

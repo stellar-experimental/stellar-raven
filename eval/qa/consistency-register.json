@@ -114,12 +114,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-eco-stellar-wallets-list now dates the 191/72/32 roster and adds the Freighter-to-Varial rename caution; q-eco-lobstr-wallet is unchanged and pins no figure the list contradicts. The 2026-11-02 reSwept text and the note match the current members.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-eco-lobstr-wallet moved stable -> scheduled (LOBSTR operator, networks, and scale claims unchanged). No stated value changed, so the other members of \"q-eco-lobstr-wallet + q-eco-stellar-wallets-list\" still agree."
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
-          "q-eco-lobstr-wallet": "4d7eca93c7f7493ab4aea709fb6bd6ad98672a290b07b1e2c0a3545475d71938",
+          "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
           "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb"
         }
       },
@@ -354,8 +354,8 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Repeated figures still match: Soroswap $346,750 (q-defi-soroswap-what-is notes, q-scf-history-soroswap), Phoenix $394.5K (one member), Hana $132,000 = #22 $50K + #25 $82K (one member); changed members (Aquarius, Blend alternatives, Reflector, RWA-similar Lend #45 dated figure) pin no amount that conflicts. The note, including the 2026-11-02 OrbitCDP source-conflict text, stays true.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-reflector-oracle moved stable -> scheduled (the Reflector feed roster and 4-of-7 admin signer set unchanged). No stated value changed, so the other members of \"per-project SCF award totals (Scout directory reconstructions)\" still agree."
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster. Updated 2026-11-02: OrbitCDP's SCF total is source-conflicted (Scout scfTotalAwardedUSD 280000; Lumenloop awarded_total 330000), so no member pins it; Scout labels OrbitCDP Inactive, and members keep its lifecycle label source-relative.",
         "memberContentSha256": {
@@ -363,7 +363,7 @@
           "q-defi-blend-alternatives": "8555d5f9b8321ce8893f4846262a2a72d84534f03326b5ef1f2993a4888f0ec1",
           "q-defi-blend-what-is": "46b5e0dda07645c25aa18712c6f8c81bc17230de4d2d246e128fd9a26f19b7d2",
           "q-defi-phoenix-what-is": "bfa879565a31c1685278a69dace666e34acfd92d72842d079f80c7d3117f66d4",
-          "q-defi-reflector-oracle": "a1c4ce4a49073ecf921e1e9a4ba85eec593afa54a7dfa3aa91eb1087815d171d",
+          "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-defi-rwa-scf-similar": "dd8afe398d360f67a490d6ce135d0e9d7deb31b6e8d4b6ca368021ff5a0cc0a8",
           "q-defi-soroswap-what-is": "e67fcf0c855159dccaf0c34029d6e396618eaa8cf78b0fd163a9a5312f8f4c5d",
           "q-defi-x402-on-stellar-what": "75bb51ff5ed93a0549bd61144f28683fce0987e655e0d39223583460592ab46a",
@@ -388,15 +388,15 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Compared the 14,000-USDC separate-borrow framing, Script3 ~$10M (2026-02-22) / ~$10.5M (2026-03-04) attribution, rekt.news $10.97M, quarantine-not-recovery, and app-not-protocol framing across q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, and the four incident-mentioning siblings; all now match the note's 2026-11-02 correction. The other members' changes (security-program map, OrbitCDP status, Reflector Beam/Flare naming, oracle-defense notes) do not touch the incident figures.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-reflector-oracle moved stable -> scheduled (the Reflector feed roster and 4-of-7 admin signer set unchanged). No stated value changed, so the other members of \"YieldBlox/Blend V2 oracle-manipulation incident (Feb 2026)\" still agree."
         },
         "note": "The cases consistently separate the 61,249,278.31-XLM and 1,000,196.70-USDC exploit transfers from source-specific combined USD valuations around $10M-$10.86M and from Blockaid's separately attributed 48,069,094-XLM quarantine. Corrected 2026-11-02: the roughly 14,000-USDC liability in the PoC's decoded pre-state came from a separate earlier attacker borrow (tx 01c2ba75…, 00:20:50 UTC, per Script3's 2026-03-04 post-mortem and Horizon), so about 1.01M USDC was borrowed across two transactions, never one 1,014,196.70-USDC transaction. Script3's dated figures (about $10M on 2026-02-22; about $10.5M net loss on 2026-03-04) are confirmed when attributed; rekt.news's $10.97M is not a Script3 figure. Quarantine is not recovery. Date, USTRY/Reflector vector, and app-level-not-protocol-level framing remain compatible. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes no longer assert Script3 depositor compensation as settled; remediation-vs-recovery discipline is now uniform with the answer and siblings. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append. Added 2026-07-28 (todo 1253 Lane B, G8): q-hist-yieldblox-v2-2026-exploit joins as the primary bearer of this cluster's claims. Without it, an edit to the corpus's main incident case reopened cluster-126 and the YieldBlox numericInvariant but never this cluster, leaving the date, USTRY/Reflector vector, and app-level-not-protocol-level framing claims with no reopen path. Verified 2026-07-28: its transfer figures, quarantine-is-not-recovery discipline, and combined-USD-valuation framing matched this cluster's note; its 14,000-USDC and Script3 framing was corrected on 2026-11-02 (see above). cluster-126 is now a strict membership subset: kept deliberately — 126 states the quantity invariant, this cluster states the incident framing.",
         "memberContentSha256": {
           "q-comp-security-disclosure-programs": "c71094fbb1347b0fa6861413bc4cbd9d4b128d2c07edf9290282391d30c38820",
           "q-comp-yieldblox-oracle-incident": "16fd59965584675e5235d5092149738b84c45a20f38f973e8eca7f6f87ee680f",
           "q-defi-etherfuse-stablebonds": "4e2c682064162ec3b20594b8e83314bb6e098fd17f29c3afbb5dc225bdcf8284",
-          "q-defi-reflector-oracle": "a1c4ce4a49073ecf921e1e9a4ba85eec593afa54a7dfa3aa91eb1087815d171d",
+          "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-hist-yieldblox-v2-2026-exploit": "54afc85df57dc11ba79756fc62a862ba10861cc5d3b9d91f8b2f6f7d0a63ad95",
           "q-soroban-oracle-defensive-consumption": "1caab40de8ebdd857b3c3a0158fee38e49d1277c0cf9fb556c21406e50f3f74b"
         }
@@ -445,8 +445,8 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The members agree: q-rwa-projects-tokenizing-stellar now says DTCC's DTS 'went live on 2026-10-28 on the Canton Network and DTCC's private Besu network' while Stellar 'remains planned', and Scout lists DTCC as Development. The note's bare 'DTCC DTC service planned H1 2027 NOT live' is now misleading, so the edit scopes it to Stellar. The PYUSD LLC->N.A. change, the Ondo issuer note, the MyKobo EURC boundary, and the CCTP re-dating all agree with the rest of the note.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-wisdomtree-crdt moved stable -> scheduled (the CRDT issuer and launch facts unchanged). No stated value changed, so the other members of \"2025-2026 RWA/stablecoin launch dates and issuers\" still agree."
         },
         "note": "CRDT=WisdomTree Sep 12 2025, USDY=Ondo Sep 17 2025, and PYUSD=PayPal-branded/Paxos-issued Sep 18 2025; Templar is another verified Nov 5 2025 launch. The set is illustrative, not exhaustive, and the old Meridian 'inflection point' narrative is not a truth gate. Announced, approved, technically integrated, listed, and publicly live remain distinct states. Circle recorded CCTP Stellar mainnet support on 2026-05-18 and SDF/Circle publicly announced live on 2026-05-19; the prior 2026-02-24 launch attribution is unverified. EURC=Circle 2023-09-26; BENJI=Franklin Templeton since 2021; Figure YLDS live 2026-05-05; DTCC's tokenization service on Stellar is planned for H1 2027 and NOT live on Stellar; as of 2026-11-02 the DTCC Tokenization Service went live on 2026-10-28 on the Canton Network and DTCC's private Besu network only, so that launch is not Stellar-live evidence. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration now carry the two-milestone CCTP wording instead of the collapsed 2026-05-19 slogan. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
@@ -455,7 +455,7 @@
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
           "q-defi-named-newer-protocols": "70507fa1ad44f098cac0c94209ebf9127c63b224c6376f26cee2cbfa0bdbfca9",
           "q-defi-ondo-usdy": "a1ef2492a81597b50ebcc3c123708a72723bfdd5f79a9eb56eb063a3bc7055f9",
-          "q-defi-wisdomtree-crdt": "b8f584caffe469cb69ed1424aa43f4bf6282417cefe1c9d4d41ace80a10cd622",
+          "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7",
           "q-eco-pyusd-stellar-freshness": "55d8c1e95c428ead511a88910da029af3fa21da01f9ddaf44306d0a322942fac",
           "q-eco-stablecoins-on-stellar": "6adbd10339a3adc62db3f2fcb0a87493869de125b9d2cf4c180737bb5096c1a0",
           "q-rwa-projects-tokenizing-stellar": "377ef9d3289fa6c8ea2d3bd042bf5bdad86cb2a8578f4b801fcb53c3d17a4850",
@@ -511,20 +511,20 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "sd-003 retirement re-sweep (independent reviewer): the only member that changed is q-pc-practical-fee-setting, whose diff removes the sd-003 partial cap and re-dates the sd-003 note in golden.notes; its answer still gives the dated 100-stroop floor. Re-read the constants across members: base reserve 0.5 XLM (q-asset-trustline-basics, q-edge-1xlm-activation-fee, q-pc-account-activation-not-found, q-protocol-base-reserve-min-balance), empty unsponsored minimum 1 XLM, pool-share trustline 2 base reserves, fees separate. No constant moved.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-asset-amm-fee-reserve replaced the as-of base-reserve date in notes with durable wording (the 1.0 XLM pool-share trustline reserve unchanged); q-asset-trustline-basics replaced the as-of base-reserve date with durable wording (the 0.5 XLM base reserve unchanged); q-edge-1xlm-activation-fee replaced the as-of base-reserve date with durable wording (the 0.5 XLM base reserve and 1 XLM minimum unchanged); q-pc-account-activation-not-found replaced the as-of date and the \"dated\" key fact with durable wording (the 1 XLM unsponsored minimum unchanged); q-pc-practical-fee-setting moved stable -> scheduled (the 100-stroop fee floor and the Horizon lifecycle label unchanged). No stated value changed, so the other members of \"network constants: fees, reserves, close time, supply, monetary history\" still agree."
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-asset-amm-fee-reserve": "788b873228b0c09ba062b83501c926f08e0776db4257eda6c80c1c6a29a99ce1",
+          "q-asset-amm-fee-reserve": "b97034d24ed541057359418d10b89804a9cf8c88f2ee3be318bbbafdbfe87014",
           "q-asset-path-payment-ops": "a57dfde823c42b6250cc8849b85eadd58ba46b96dd01992ee4b0b024f0268df1",
           "q-asset-sdex-vs-amm": "d8227204dfaa1146a9a9cb7eaea525e1fbe511088dea5f81dbe4e5b9301e6606",
-          "q-asset-trustline-basics": "2c207a75d61dcc09e323cba7a98c768566e4948736da4e1b970a6dc4726e0af8",
-          "q-edge-1xlm-activation-fee": "40d06ba06d770cb99b51d90a46847572c5c30dfb11b885408b213f33975f8ab4",
+          "q-asset-trustline-basics": "9ad2ed91f2559b7dae886593d48f72a74e2878ee75d52de8676b77767e8d53fe",
+          "q-edge-1xlm-activation-fee": "95be5544df23c2bdfc8a0b7c7feb708814e33899c17d992517c9b229a272ec50",
           "q-edge-noinfo-stellar-pos-staking-rewards": "673d822b4a7ec68b10fd98dd9841b63e01cc86f6ce5cb38acffdf073605e0f72",
           "q-hot-fee-pool-burn-deflation": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
-          "q-pc-account-activation-not-found": "68114c0be44781e8dbcdd94d5d4e16c55087b5f65f76c0aa7b66d6b32744bdcd",
-          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd",
+          "q-pc-account-activation-not-found": "9f6221e40bcace23cf481e555e1c41652ed3d14796a0bcdecbbb5bddc92eefa3",
+          "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615",
           "q-pc-sponsored-reserves": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
           "q-protocol-ledger-close-time": "b6d6438972116ef0e6c1935e2cd66370c87da8543911166ef1bee7187c5a9b7e",
@@ -585,12 +585,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-defi-reflector-oracle's new Pulse/Beam/Flare note keeps the no-dominance and source-relative alternative-provider framing. q-scf-verified-members' tier-role edit carries no oracle claim, so the note holds as written.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-reflector-oracle moved stable -> scheduled (the Reflector feed roster and 4-of-7 admin signer set unchanged). No stated value changed, so the other members of \"oracles: Reflector is not the sole provider\" still agree."
         },
         "note": "The members agree only that Reflector is NOT the sole Stellar oracle. q-eco-defi-market-map names alternative providers (Band, RedStone, DIA, Lightecho, Orally) and does not reward an oracle dominance or most-integrated ranking without a dated, stated metric. q-defi-reflector-oracle rejects unsupported dominance and integration rankings and treats alternative-provider status as source-relative, requiring dated provider evidence (reconciled 2026-10-15). q-scf-verified-members covers SCF governance tiers and carries no oracle claim.",
         "memberContentSha256": {
-          "q-defi-reflector-oracle": "a1c4ce4a49073ecf921e1e9a4ba85eec593afa54a7dfa3aa91eb1087815d171d",
+          "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-eco-defi-market-map": "f6ebcdba13c215b3e0149990045abeadac8235c95ee54bef69d41645c2a01c8e",
           "q-scf-verified-members": "d8d38abd545459080f53ccbc15d30e4fea65819e7481bc900effe854348f1ba8"
         }
@@ -664,14 +664,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The members agree, but the note is stale on two points. q-tool-passkeykit-smart-wallet now says the README and SECURITY.md (2026-11-02) state the kit 'ha[s] not received an independent third-party security audit', so 'unaudited' is current and only 'legacy/demo' is drift. q-eco-stellar-wallets-list and q-defi-aquarius-what-is now note the 2026-10-29 Freighter-to-Varial rename. The Sushi addition in q-eco-dex-saturation fits 'do not pin a three-player count'.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-eco-dex-saturation moved stable -> scheduled (the DEX venue list unchanged); q-eco-lobstr-wallet moved stable -> scheduled (LOBSTR operator, networks, and scale claims unchanged). No stated value changed, so the other members of \"wallets and Ultra Stellar product family\" still agree."
         },
         "note": "Freighter = SDF-maintained (SDF renamed it Varial on 2026-10-29; as of 2026-11-02 members accept either name); LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed; SCF amounts are optional, and cited totals must name their source, date, and awarded-versus-paid basis. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift; as of 2026-11-02 the Passkey Kit README and SECURITY.md label it unaudited software, so a no-third-party-audit statement is accurate. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
         "memberContentSha256": {
           "q-defi-soroswap-vs-stellarx": "d33080e232c2dd63e051474130b2ebb208b463e40d6a5d247d79c9ff05fe65f4",
-          "q-eco-dex-saturation": "dd4255c32e70260320b193018742ea3f3124966c5798ef5b2f8a08fa70ab25e5",
-          "q-eco-lobstr-wallet": "4d7eca93c7f7493ab4aea709fb6bd6ad98672a290b07b1e2c0a3545475d71938",
+          "q-eco-dex-saturation": "355d94a51cca4d34d16e92cad769d0975622c6d40352bd98e3342698c4a25929",
+          "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
           "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb",
           "q-tool-passkeykit-smart-wallet": "f3537b5974fc42b122b99f55549f750db5443a4734588844b586ce2cc80e3fba",
           "q-tool-smart-wallet-repos-discovery": "cc0eae47c65bc9b4fbb0480e614c20e833e810c8e395be538bd6fc291a7a1805"
@@ -858,13 +858,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-open-rfps (official page lists no open brief as of 2026-11-02, Scout lag flagged), q-scf-funding-by-category (dated Scout aggregate, either labeled basis), q-defi-phoenix-what-is (dated SCF page total), and q-defi-reflector-oracle (dated Pulse/Beam/Flare re-check) all keep source, as-of date, and basis labels. The corpus-relative encoding note still holds. The #46 deadline 2026-11-09 matches q-scf-current-round.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-reflector-oracle moved stable -> scheduled (the Reflector feed roster and 4-of-7 admin signer set unchanged). No stated value changed, so the other members of \"q-defi-phoenix-what-is + q-defi-reflector-oracle + q-scf-funding-by-category + q-scf-open-rfps\" still agree."
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
         "memberContentSha256": {
           "q-defi-phoenix-what-is": "bfa879565a31c1685278a69dace666e34acfd92d72842d079f80c7d3117f66d4",
-          "q-defi-reflector-oracle": "a1c4ce4a49073ecf921e1e9a4ba85eec593afa54a7dfa3aa91eb1087815d171d",
+          "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
           "q-scf-open-rfps": "b984d262cc6823406dd1daa23adac1388a2d895e638f50c272deefe4a199e8ae"
         }
@@ -882,13 +882,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Only q-crp-anchors-by-corridor changed a judge-facing field. Its new 2026-11-02 Stellar Light roster (eight partners) and dated, attributed MoneyGram legacy-path and 15/1 USDC minimum observations are source-scoped. q-eco-lobstr-wallet, q-sep-8-regulated-assets, and q-sep-catalog-list have no judge-facing change. The rule (retain grader caution, accept accurately dated or source-scoped answers) holds.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-eco-lobstr-wallet moved stable -> scheduled (LOBSTR operator, networks, and scale claims unchanged). No stated value changed, so the other members of \"q-eco-lobstr-wallet + q-crp-anchors-by-corridor + q-sep-catalog-list + q-sep-8-regulated-assets\" still agree."
         },
         "note": "retain grader caution and accept accurately dated/source-scoped answers",
         "memberContentSha256": {
           "q-crp-anchors-by-corridor": "f938892a2f1761b29ac792fa7238df687c4bf1c30eba483454b4c74bf8beab5b",
-          "q-eco-lobstr-wallet": "4d7eca93c7f7493ab4aea709fb6bd6ad98672a290b07b1e2c0a3545475d71938",
+          "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
           "q-sep-8-regulated-assets": "98a0f218b032550a663626af28946a9d216f20d83e3eddeb70beffd186ce4982",
           "q-sep-catalog-list": "089d2603b1311217534a2f6b0cf551a95eb4bfe7be852f34cd9eb0aa7bed76e6"
         }
@@ -1146,13 +1146,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes (sd-003 cap removed) and still makes no monetary-supply claim. q-hot-fee-pool-burn-deflation is unchanged: fee pool inside totalCoins, sequestration not burn, CAP-26 2019-10-28 and the SDF burn 2019-11-04 separate, fees not validator rewards.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-pc-practical-fee-setting moved stable -> scheduled (the 100-stroop fee floor and the Horizon lifecycle label unchanged). No stated value changed, so the other members of \"Fee pool, inflation removal, and 2019 SDF burn\" still agree."
         },
         "note": "Core accounts transaction/resource fees in an inaccessible fee pool that remains inside totalCoins conservation; this is non-circulating sequestration, not automatic supply burn. CAP-26 ended inflation on 2019-10-28; SDF's ~55.44B treasury burn on 2019-11-04 was separate. Fees are not validator rewards.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
-          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd"
+          "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615"
         }
       },
       {
@@ -1169,13 +1169,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-hist-soroban-launch-protocol20 (Feb 20 / Feb 27 / Mar 19 phased rollout vs the 2022 fund), q-defi-wisdomtree-crdt (2025-09-12 Ethereum+Stellar launch), q-defi-benji-franklin-templeton, q-hist-remittance-corridors (live/historical/announced rows), and q-hist-unhcr-stellar-aid-assist (separately attributed snapshots) all keep launch, capability, and current-deployment distinct. The note remains true.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-wisdomtree-crdt moved stable -> scheduled (the CRDT issuer and launch facts unchanged). No stated value changed, so the other members of \"Historical launch/deployment and metric-unit discipline\" still agree."
         },
         "note": "Announcements, capabilities, historic routes, phased activation, GA, and current deployment are distinct. Aid individuals/households/countries/windows and RWA chain/suite/fund values remain source-scoped. Current rosters and chain support never overwrite dated launch history or imply sole-chain deployment.",
         "memberContentSha256": {
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
-          "q-defi-wisdomtree-crdt": "b8f584caffe469cb69ed1424aa43f4bf6282417cefe1c9d4d41ace80a10cd622",
+          "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7",
           "q-hist-remittance-corridors": "c72a0668b41afe59f05732b42e183e762f1eb26bbad6aaae81bfc1100308224c",
           "q-hist-soroban-launch-protocol20": "607c8d4ef8e2605f5cab2bb3de04338029e4e3d1409ab42dac4f21d7742d294b",
           "q-hist-unhcr-stellar-aid-assist": "2e9c12da5710a3be4e4e39e60865eb6ab095587ae48592ec4ca794ed0590a486"
@@ -1420,13 +1420,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Only q-pc-account-merge-reclaim-reserve changed judge-facing text (an expired sd-013 caution was removed from notes); all four members still say a keypair is not an account, the 1 XLM minimum is the dated unsponsored path, sponsored CreateAccount may use startingBalance=0, and merge removes remaining signers.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-edge-1xlm-activation-fee replaced the as-of base-reserve date with durable wording (the 0.5 XLM base reserve and 1 XLM minimum unchanged); q-pc-account-activation-not-found replaced the as-of date and the \"dated\" key fact with durable wording (the 1 XLM unsponsored minimum unchanged). No stated value changed, so the other members of \"Account creation, reserve sponsorship, and AccountMerge lifecycle\" still agree."
         },
-        "note": "A keypair is not an account and Payment does not create one. The dated 1 XLM empty-account minimum is the unsponsored path; CAP-0033 sponsored CreateAccount may use startingBalance=0. AccountMerge requires non-signer blockers and provided-sponsorship obligations to be resolved, but current Core removes remaining signers during deletion.",
+        "note": "A keypair is not an account and Payment does not create one. The current 1 XLM empty-account minimum (two base reserves) is the unsponsored path; CAP-0033 sponsored CreateAccount may use startingBalance=0. AccountMerge requires non-signer blockers and provided-sponsorship obligations to be resolved, but current Core removes remaining signers during deletion.",
         "memberContentSha256": {
-          "q-edge-1xlm-activation-fee": "40d06ba06d770cb99b51d90a46847572c5c30dfb11b885408b213f33975f8ab4",
-          "q-pc-account-activation-not-found": "68114c0be44781e8dbcdd94d5d4e16c55087b5f65f76c0aa7b66d6b32744bdcd",
+          "q-edge-1xlm-activation-fee": "95be5544df23c2bdfc8a0b7c7feb708814e33899c17d992517c9b229a272ec50",
+          "q-pc-account-activation-not-found": "9f6221e40bcace23cf481e555e1c41652ed3d14796a0bcdecbbb5bddc92eefa3",
           "q-pc-account-merge-reclaim-reserve": "f9662f6deee38366c09f6ab21015942e4c3880da0e911c8fbbf62ce670397ba2",
           "q-pc-sponsored-reserves": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666"
         }
@@ -1467,14 +1467,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes and still leads with RPC getFeeStats / stellar fees stats, keeps Horizon GET /fee_stats available, and calls Hubble historical analytics. q-pc-fee-bump-channel-accounts-feepool still says the fee source is charged once and channel sources consume their own sequences; q-hot-fee-pool-burn-deflation still says fees are not validator rewards. The live getFeeStats method page is readable through get_doc_page (8,691 chars, 2026-11-02).",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-pc-practical-fee-setting moved stable -> scheduled (the 100-stroop fee floor and the Horizon lifecycle label unchanged). No stated value changed, so the other members of \"Fee-bump charging, channel sequences, and practical fee estimation\" still agree."
         },
         "note": "Fee source pays the outer charged fee once; inner/outer visible fee fields are not additive charges. Channel transaction sources consume their own sequences. Live estimates should use RPC getFeeStats/current CLI or Horizon /fee_stats; Horizon is legacy/no-new-features but not formally deprecated, and Hubble is historical analytics. Fees are not validator rewards. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
           "q-pc-fee-bump-channel-accounts-feepool": "fb4fe26225f8af7edf19847dcda611b77a3791813c28b13b07fcb1083ee10bac",
-          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd",
+          "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615",
           "q-pc-sequence-numbers-ordering-replace": "abd89e306d57a25f792ddc204ccfdc393212444d4881163e7f4543325b04e827",
           "q-ti-channel-accounts-throughput": "c5be78125563837ffad9576a6f201947f573009c68848c0ee48f5b7fa4dfc927"
         }
@@ -1572,13 +1572,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes and keeps its dated 2026-09-08 nearing-end-of-life label and the endpoint-specific Horizon/RPC boundary; q-infra-horizon-vs-rpc is unchanged and carries the dated sd-072 Lab API Explorer caution. The note's two-page split still describes both members.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-pc-practical-fee-setting moved stable -> scheduled (the 100-stroop fee floor and the Horizon lifecycle label unchanged). No stated value changed, so the other members of \"q-infra-horizon-vs-rpc + q-pc-practical-fee-setting\" still agree."
         },
         "note": "As of 2026-09-09, the rendered Horizon pages and indexed EVM record agreed on nearing-end-of-life wording, and the sd-042 occurrence was fixed. As of 2026-11-02, the Lab API Explorer page says 'Horizon is considered deprecated.' (sd-072) while the APIs overview still says nearing end-of-life; q-infra-horizon-vs-rpc carries a dated caution for that page, and q-pc-practical-fee-setting keeps its dated 2026-09-08 nearing-end-of-life label. Both cases retain the endpoint-specific Horizon/RPC boundary rather than claiming complete replacement.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "03a774cd7fafcbc2c45ded06c5e0e0d041b2be4413184e350f986b31a8680796",
-          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd"
+          "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615"
         }
       },
       {
@@ -1612,13 +1612,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "sd-003 retirement re-sweep (independent reviewer): both members keep the dated 100-stroop floor, getFeeStats-first estimation, Horizon /fee_stats availability, and Hubble-as-historical role. q-pc-practical-fee-setting's only diff is the sd-003 note in golden.notes; q-infra-horizon-vs-rpc is unchanged.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-pc-practical-fee-setting moved stable -> scheduled (the 100-stroop fee floor and the Horizon lifecycle label unchanged). No stated value changed, so the other members of \"Fees and Horizon/RPC estimator roles\" still agree."
         },
         "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. As of 2026-09-09, the rendered Horizon pages and indexed EVM record agreed on nearing-end-of-life wording; as of 2026-11-02, the Lab API Explorer page instead says 'Horizon is considered deprecated.' (sd-072), and q-infra-horizon-vs-rpc carries a dated caution for it.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "03a774cd7fafcbc2c45ded06c5e0e0d041b2be4413184e350f986b31a8680796",
-          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd"
+          "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615"
         }
       },
       {
@@ -1761,12 +1761,12 @@
         "note": "corrected; ll-003",
         "memberContentSha256": {
           "q-builder-lumenloop-regions-vocab": "2a13dfa441dff43c202cd4c3ed5e8051a6485a5f872e73db6270d4ffa96aba23",
-          "q-defi-lumenloop-categories-vocab": "9a3333a769a2c52ed4e102cec70c0301cff571bf88b2133eee1001280e6f56cf"
+          "q-defi-lumenloop-categories-vocab": "47f96dc08d3e70591a6be7ec64f6cac7454b166c521f2baf4f99a1fc3ccf0dbf"
         },
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The regions case treats get_regions as dated variant-prone free text (ll-003). The categories case enumerates the five controlled Lumenloop categories, which differ from Scout's taxonomy. The two cases do not conflict, and the note 'corrected; ll-003' still holds.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-lumenloop-categories-vocab moved stable -> scheduled (the five Lumenloop category values unchanged). No stated value changed, so the other members of \"q-builder-lumenloop-regions-vocab + q-defi-lumenloop-categories-vocab\" still agree."
         }
       },
       {
@@ -1828,15 +1828,15 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-builder-content-by-person still says the exact LumenLoop person lane is empty and that semantic candidates need exact-name validation. Its 2026-11-02 edits replace the 404 author index with the seven bylined pages. The BENJI, USDY, and CRDT entity cases remain entity-grounded, with distinct issuer and product facts, so the note stands.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-wisdomtree-crdt moved stable -> scheduled (the CRDT issuer and launch facts unchanged). No stated value changed, so the other members of \"Person content versus project/entity content\" still agree."
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
         "memberContentSha256": {
           "q-builder-content-by-person": "c1c8871b8c00332d1200da4d8eaa32d0210594431059f32f65a4711afb113680",
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
           "q-defi-ondo-usdy": "a1ef2492a81597b50ebcc3c123708a72723bfdd5f79a9eb56eb063a3bc7055f9",
-          "q-defi-wisdomtree-crdt": "b8f584caffe469cb69ed1424aa43f4bf6282417cefe1c9d4d41ace80a10cd622"
+          "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7"
         }
       },
       {
@@ -2434,12 +2434,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-eco-nft-marketplace-whitespace has no judge-facing change. q-soroban-oz-token only dates its token-package list to release v0.8.0 (2026-10-20). Neither case touches the SEP-39/SEP-50 status or the classic/Soroban distinction in the note.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-eco-nft-marketplace-whitespace moved stable -> scheduled (Litemint and Rarible deployment state unchanged). No stated value changed, so the other members of \"NFT paths\" still agree."
         },
         "note": "SEP-39 and SEP-50 are Draft. Classic uniqueness and Soroban programmable mint/access/payment/royalty behavior remain distinct. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-eco-nft-marketplace-whitespace": "7ced44b3cdf075c9a25870e0c3d2a7b163160396aadfdb70efb4ad9813c1d1df",
+          "q-eco-nft-marketplace-whitespace": "2e62e1012fe8734bcdd313ca4b760d6ee7bd9544c98a23e3943a03832641f170",
           "q-soroban-oz-token": "29eff6570011afb5aeca21a5b6eb7d1202b72718851d620404e6522c664c5ff1"
         }
       },
@@ -2714,13 +2714,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All four members give the same sponsorship-aware formula (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve, a 0.5 XLM base reserve with a 1 XLM unsponsored minimum (each with its own date), a pool-share trustline cost of two reserves, and CAP-0033 zero-balance sponsored creation. The changes were judge-blind provenance only, and the note stays true.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-asset-amm-fee-reserve replaced the as-of base-reserve date in notes with durable wording (the 1.0 XLM pool-share trustline reserve unchanged); q-pc-account-activation-not-found replaced the as-of date and the \"dated\" key fact with durable wording (the 1 XLM unsponsored minimum unchanged). No stated value changed, so the other members of \"q-protocol-base-reserve-min-balance + q-pc-sponsored-reserves + q-pc-account-activation-not-found + q-asset-amm-fee-reserve\" still agree."
         },
         "note": "target corrected; later GT-29/32 siblings retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-asset-amm-fee-reserve": "788b873228b0c09ba062b83501c926f08e0776db4257eda6c80c1c6a29a99ce1",
-          "q-pc-account-activation-not-found": "68114c0be44781e8dbcdd94d5d4e16c55087b5f65f76c0aa7b66d6b32744bdcd",
+          "q-asset-amm-fee-reserve": "b97034d24ed541057359418d10b89804a9cf8c88f2ee3be318bbbafdbfe87014",
+          "q-pc-account-activation-not-found": "9f6221e40bcace23cf481e555e1c41652ed3d14796a0bcdecbbb5bddc92eefa3",
           "q-pc-sponsored-reserves": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086"
         }
@@ -2758,13 +2758,13 @@
         "lastChecked": "2026-11-02",
         "note": "Protocol 18/CAP-0038 native constant-product path-routing liquidity pools remain protocol ledger primitives, not Soroban contracts; target retained unchanged.",
         "memberContentSha256": {
-          "q-asset-amm-fee-reserve": "788b873228b0c09ba062b83501c926f08e0776db4257eda6c80c1c6a29a99ce1",
+          "q-asset-amm-fee-reserve": "b97034d24ed541057359418d10b89804a9cf8c88f2ee3be318bbbafdbfe87014",
           "q-protocol-amm-cap-0038": "86e626e8ca19a27f40a8f1fa9987e064d7175aaf3dec9ca6f774d8f85472607f"
         },
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-asset-amm-fee-reserve (30 bps fee, two reserves for a pool-share trustline, A*B=k) and q-protocol-amm-cap-0038 (P18/CAP-0038 on 2021-11-03, a protocol ledger primitive and not a smart contract) changed only judge-blind provenance. The note stays true.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-asset-amm-fee-reserve replaced the as-of base-reserve date in notes with durable wording (the 1.0 XLM pool-share trustline reserve unchanged). No stated value changed, so the other members of \"Native AMM identity\" still agree."
         }
       },
       {
@@ -2924,15 +2924,15 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All six members give 0.5 XLM per base reserve (dated or as a network setting), a 1 XLM unsponsored empty-account minimum (two reserves), one reserve per ordinary trustline or subentry, and two per pool-share trustline. q-raph-low-xlm-transfer-fail does not pin a number. The note still holds.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-asset-amm-fee-reserve replaced the as-of base-reserve date in notes with durable wording (the 1.0 XLM pool-share trustline reserve unchanged); q-asset-trustline-basics replaced the as-of base-reserve date with durable wording (the 0.5 XLM base reserve unchanged); q-edge-1xlm-activation-fee replaced the as-of base-reserve date with durable wording (the 0.5 XLM base reserve and 1 XLM minimum unchanged); q-pc-account-activation-not-found replaced the as-of date and the \"dated\" key fact with durable wording (the 1 XLM unsponsored minimum unchanged). No stated value changed, so the other members of \"Base reserve, account minimum, trustline, and pool-share reserve facts\" still agree."
         },
         "note": "At the checked network setting, one base reserve is 0.5 XLM; an empty unsponsored account needs two reserves (1 XLM), ordinary subentries add one reserve, and a pool-share trustline adds two. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-asset-amm-fee-reserve": "788b873228b0c09ba062b83501c926f08e0776db4257eda6c80c1c6a29a99ce1",
-          "q-asset-trustline-basics": "2c207a75d61dcc09e323cba7a98c768566e4948736da4e1b970a6dc4726e0af8",
-          "q-edge-1xlm-activation-fee": "40d06ba06d770cb99b51d90a46847572c5c30dfb11b885408b213f33975f8ab4",
-          "q-pc-account-activation-not-found": "68114c0be44781e8dbcdd94d5d4e16c55087b5f65f76c0aa7b66d6b32744bdcd",
+          "q-asset-amm-fee-reserve": "b97034d24ed541057359418d10b89804a9cf8c88f2ee3be318bbbafdbfe87014",
+          "q-asset-trustline-basics": "9ad2ed91f2559b7dae886593d48f72a74e2878ee75d52de8676b77767e8d53fe",
+          "q-edge-1xlm-activation-fee": "95be5544df23c2bdfc8a0b7c7feb708814e33899c17d992517c9b229a272ec50",
+          "q-pc-account-activation-not-found": "9f6221e40bcace23cf481e555e1c41652ed3d14796a0bcdecbbb5bddc92eefa3",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
           "q-raph-low-xlm-transfer-fail": "565b3e8b89dc5d757a90ca1567b30fac87736e142c7fb5299e905feaaabc18ba"
         }
@@ -3357,8 +3357,8 @@
           "q-raph-low-xlm-transfer-fail"
         ],
         "memberContentSha256": {
-          "q-asset-trustline-basics": "2c207a75d61dcc09e323cba7a98c768566e4948736da4e1b970a6dc4726e0af8",
-          "q-edge-1xlm-activation-fee": "40d06ba06d770cb99b51d90a46847572c5c30dfb11b885408b213f33975f8ab4",
+          "q-asset-trustline-basics": "9ad2ed91f2559b7dae886593d48f72a74e2878ee75d52de8676b77767e8d53fe",
+          "q-edge-1xlm-activation-fee": "95be5544df23c2bdfc8a0b7c7feb708814e33899c17d992517c9b229a272ec50",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
           "q-raph-low-xlm-transfer-fail": "565b3e8b89dc5d757a90ca1567b30fac87736e142c7fb5299e905feaaabc18ba"
         },
@@ -3366,7 +3366,7 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Only q-raph-low-xlm-transfer-fail changed judge text, and only its failed-transaction fee sentence; it still avoids a fixed reserve number. q-edge-1xlm-activation-fee, q-protocol-base-reserve-min-balance, and q-asset-trustline-basics still say 0.5 XLM per reserve, a 1 XLM minimum for an empty account, and the sponsorship-aware formula, which matches the rule.",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-asset-trustline-basics and q-edge-1xlm-activation-fee replaced an as-of date with durable wording; every member still states the 0.5 XLM base reserve.",
           "verdict": "consistent"
         }
       },
@@ -3699,13 +3699,13 @@
           "q-pc-practical-fee-setting"
         ],
         "memberContentSha256": {
-          "q-edge-1xlm-activation-fee": "40d06ba06d770cb99b51d90a46847572c5c30dfb11b885408b213f33975f8ab4",
-          "q-pc-practical-fee-setting": "a06c7c0c17a2abbfeb79e3b101879198286101321cbcd7f75cd593d712199cdd"
+          "q-edge-1xlm-activation-fee": "95be5544df23c2bdfc8a0b7c7feb708814e33899c17d992517c9b229a272ec50",
+          "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615"
         },
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes (sd-003 cap removed); its answer still states the dated 100 stroops per operation floor with surge-pricing qualification. q-edge-1xlm-activation-fee is unchanged and still says the current minimum effective fee is 100 stroops per operation. The rule holds.",
+          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-pc-practical-fee-setting moved stable -> scheduled and q-edge-1xlm-activation-fee replaced an as-of base-reserve date with durable wording; every member still states the 100-stroop fee floor.",
           "verdict": "consistent"
         },
         "lastChecked": "2026-11-02"

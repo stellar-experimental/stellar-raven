@@ -20,7 +20,7 @@
   "tags": {
     "category": "defi-ecosystem",
     "service": "scout",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -170,7 +170,7 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task defi-protocols)",
+      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
       "evidence": [
         "A: https://docs.sushi.com/sdk/reference/stellar/config — \"The Stellar config module exports native address constants, SushiSwap V3 contract constants ... SUSHISWAP_V3_FACTORY_ADDRESS\" (observedAt 2026-11-02)",
         "A: https://www.sushi.com/blog/swap-anything (latest-articles list) — \"Sushi is Live on the Stellar Network 10 Feb 2026\" (observedAt 2026-11-02)",
@@ -186,12 +186,16 @@
         "2026-11-02 [A] https://docs.soroswap.finance/api/sdex.md — \"An SDEX quote has platform sdex and decimal amounts in rawTrade, executes as a classic path payment from a G... account, and cannot pay a C... address.\" (pass-2 verifier accept on truth.corroboration[1].evidence[2].note)",
         "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"Soroban routes can split one trade across several venues, hop by hop, and execute in a single atomic transaction through [Aggregator v3](...). SDEX is quoted alongside as a separate classic path.\" (pass-2 verifier accept on truth.sources[+])",
         "Pass 2 change (truth only): corroboration[1].evidence[2].note records the soroswap/docs HTTP 404 and live replacements; truth.sources adds https://docs.soroswap.finance/aggregator/supported-amms.md as the live class-A source for the Soroban-route versus classic-SDEX layer split in golden.notes. Question, answer, keyFacts, avoid, and notes unchanged. Observation only: the notes call Comet a reference implementation while Soroswap's 2026-11-02 venue list includes Comet weighted pools; q-defi-comet-what-is does not claim a major standalone DEX, so no contradiction and no change.",
-        "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-vs-stellarx (same annotation), q-defi-comet-what-is, q-eco-defi-market-map; no contradiction."
+        "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-vs-stellarx (same annotation), q-defi-comet-what-is, q-eco-defi-market-map; no contradiction.",
+        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-16. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
       ],
       "rootCause": [
-        "Eval-side authoring flaw (recorded in .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04): a pre-GT-19 grader note that pinned three serious players survived the GT-19 correction and contradicted avoid[0]."
+        "Eval-side authoring flaw (recorded in .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04): a pre-GT-19 grader note that pinned three serious players survived the GT-19 correction and contradicted avoid[0].",
+        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
       ]
     },
-    "origin": "raven-next q-eco-dex-saturation"
+    "origin": "raven-next q-eco-dex-saturation",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-01-16"
   }
 }

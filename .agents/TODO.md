@@ -23,6 +23,21 @@ Binding spend rules: no paid method runs without its own written authorization, 
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
 `run-evals` skill for the measurement sequence.
 
+## Golden partial caps
+
+### Convert or back the partial caps that the `cap-finding` lane flags
+
+The ADR-0008 amendment of 2026-11-02 accepts a partial cap only while it names an active
+`improvements/` finding. On 2026-11-02 the QA lint lane `cap-finding` warned on 39 cap sentences
+in 35 cases: 33 name no finding, and 6 name a finding that is resolved or missing. The case list is
+in [the grading-policy record](rounds/2026-11-02-grading-policy.md), "Cap backlog".
+
+Next: for each cap, use the `golden-truth` lane. Either name a verified active finding (file one if
+the source defect is real), or convert the cap to a plain correct or wrong rule. When the backlog is
+empty, raise the lane from warn to error.
+
+Done when: `npm run eval:qa:lint` reports no `cap-finding` warning, and the lane is an error.
+
 ## Stellar Docs migration to Mintlify
 
 ### Derive section anchors for Mintlify search hits
@@ -872,21 +887,3 @@ The run measures the gaps before the fixes above ship, and then again after them
 
 Safe default: do not run it. Use the free probe evidence until the owner authorizes the spend in
 writing.
-### D. Decide the grading-policy questions from the 2026-11-02 golden audit
-
-The audit (`rounds/2026-11-02-golden-audit.md`, "Owner decisions") added no new partial-cap slot and removed
-expired caps, but three policy questions remain:
-
-1. Partial caps outside the ADR-0008 set. ADR-0008 accepts canonical-page caps for exactly base
-   reserve, Horizon lifecycle, and RPC pagination. Existing aggregator caps (for example
-   `q-tool-wallets-comparison`, `q-eco-stellar-wallets-list`, `q-builder-justin-rice-history`,
-   `q-edge-fresh-latest-blend-tvl`) and the finding-tied canonical cap (`sd-009`) stay on
-   `main`. Convert them to plain correct/wrong rules, or extend the accepted set by decision.
-2. Freshness tags. Eleven `live` and five `stable` cases carry dated example values in golden text.
-   Decide whether such a case is always `scheduled` with a `reverifyBy` date.
-3. Re-judge. The golden-truth skill asks for a re-judge of saved rows whose verdict hinged on a
-   changed golden, with the flip direction recorded. That is paid judge work. The case list is
-   `rounds/2026-11-02-golden-audit/rejudge-set.json` (214 gospel changes, 55 priority).
-
-Safe default: keep the existing caps and tags, and do not re-judge until the owner authorizes the
-spend in writing.

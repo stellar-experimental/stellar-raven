@@ -54,8 +54,8 @@ fact or for using the owner's accurate operational phrasing without claiming a s
 
 ### Canonical-page conflict grading
 
-When a canonical page conflicts with stronger applicable authority, verify both claims and keep the
-truth domain explicit. A reconciled answer may receive `correct`. An attributed but unresolved
+When a canonical page or an aggregator conflicts with stronger applicable authority, verify both
+claims and keep the truth domain explicit. A reconciled answer may receive `correct`. An attributed but unresolved
 canonical-page claim may receive at most `partial`. The same false claim without attribution remains
 `wrong`. Put the caution in the affected case's `golden.notes`; do not create a global judge
 exception.
@@ -64,9 +64,12 @@ Every caution names the conflicting page, its finding or root cause, and its exp
 through this workflow when the finding reaches `fixed-upstream` and the live page no longer carries
 the wording. A `declined-upstream` finding makes the caution durable until a later owner decision.
 Use the lint-canonical form: name the canonical, official, or upstream page or source; state that an
-attributed quote is not a wrong claim; and state the partial cap or grade. ADR-0008 fixes the
-accepted boundary at three cases. Expansion needs this evidence bar, independent review, and a
-later owner decision.
+attributed quote is not a wrong claim; and state the partial cap or grade. ADR-0008, as amended,
+accepts a cap only while it names an active `improvements/` finding (`verified`,
+`reported-upstream`, or `declined-upstream`). A cap without one is a plain rule; the `cap-finding`
+lint lane flags it. File the backing finding upstream once its live re-check passes
+(`improvements-pipeline`). When a finding moves to `fixed-upstream`, remove its caps in the same
+change.
 
 ## Step 2 — know your source classes (independence is between CLASSES)
 
@@ -170,7 +173,8 @@ re-walk: URLs, ledger paths), and — whenever the event changed gospel — `roo
 `improvements/` paths for upstream defects, `.agents/TODO.md` entries for eval-side authoring flaws, or
 the explicit value `freshness-drift`. The lint rejects rootCause lists that are only
 score/result rationales — "the judge failed this case" is never a reason to change truth.
-Refresh `truth.asOf` for volatile facts and set a new staggered, quarter-granular
+When a re-check confirms an unchanged value, `truth.asOf` may lead the date in the golden text;
+refresh the in-text date at the next judge-facing edit or `reverifyBy` re-check. Refresh `truth.asOf` for volatile facts and set a new staggered, quarter-granular
 `truth.reverifyBy` on `scheduled` cases so the stale queue drips instead of cliffing.
 
 **Source sentinels.** When `truth.asOf` moves on a case that has an entry in
