@@ -118,3 +118,31 @@ Adopted, and they replace the matching v1 text:
   manifest only.
 - G15 a unit test changes only when it asserts an old score for a token the G5 trace removed; never
   the `getRfps` schema-admission witness or the RWA tests.
+
+---
+
+## Amendment 2 (2026-11-02, after round 1; adopted before round 2 was built)
+
+Timing record: Amendment 1 has SHA-256 657ca2ed…494b. Round 1 (lanes rt-a and rt-b) measured six
+designs, and none passed. rt-b reported three internal conflicts of the rule. Each change below
+rests on a property of the rule or of the baseline that holds without any candidate number. No
+floor, threshold, or loss rule is relaxed.
+
+- H1 check 4 becomes a diagnostic. Its positive (the account-merge query keeps
+  `search_docs_in_category`) holds on the unchanged scorer only because the stopword `i` matches the
+  prefix of `in` in that entry's id and name. The 2026-10-09 TODO history already recorded this.
+  G10 forbids that evidence, so check 4 and G10 cannot both hold for a scorer without new evidence.
+  G2 and G3 still count the graded rows of that query.
+- H2 G10 scope: G10 forbids (i) a query token of length 1–2 or a stopword that matches by prefix or
+  substring, and (ii) a prefix or substring pair that is not a morphological variant (`in`/
+  `integration`, `1`/`lvl1`, `with`/`without`, `has`/`phase`, `approach`/`app`). A plural fold or a
+  prefix pair that the existing `tokensOverlap` rule accepts (shorter ≥ 4 characters, ratio ≥ 0.75)
+  is morphology, not this defect. `type`/`types` is therefore out of G10's scope. The gates note
+  that cites `type` names a source-text item (a Returns field name inside a description).
+- H3 check 5 stays required as a whole. Its `has`/`phase` half is the substring defect. Its
+  `status phase value` half is schema-only admission. A design must fix both.
+- H4 an admission rule for open-world retrieval entries (full-text, semantic, research, or speech
+  search) is allowed only when it keys on a manifest property that applies to every entry of that
+  class, and `ARCHITECTURE.md` describes it. An operation-id list is an A6 exception. G7 and G11
+  apply to such a rule unchanged.
+- H5 every other rule of v1 and Amendment 1 is unchanged, including G2, G3, G4, G5, G7, and G13.
