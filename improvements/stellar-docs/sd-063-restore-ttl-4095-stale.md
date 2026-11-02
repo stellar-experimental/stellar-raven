@@ -15,6 +15,7 @@ evidence:
   - 2026-11-02 stellar-core master b8c4f12d6f src/transactions/RestoreFootprintOpFrame.cpp lines 126-127 compute restoredLiveUntilLedger = ledgerSeq + archivalSettings.minPersistentTTL - 1
   - 2026-11-02 grep of stellar/stellar-docs main 5142b219 docs/ for 4095, 4096, and 4,096 finds no other prose that gives an initial TTL constant
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3000
+  - "2026-11-02T21:37:49Z HackMeridian lane re-check: the live state-archival page line 176 still says 'current_ledger_number + 4095' for persistent entries; issue #3000 is open. The HackMeridian stellar-docs 4095 bullet merges here; no new finding."
 ---
 
 ## Finding

@@ -266,6 +266,34 @@
     "ll-033": {
       "repo": "lumenloop/stellar-ecosystem-db",
       "reason": "Committed directory-record correction to the slender project record (collateral model)."
+    },
+    "sk-032": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The Smart Contracts skill version pins and Upgradeability example are owned by stellar/stellar-dev-skill."
+    },
+    "sk-033": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "skills/smart-contracts/development.md is owned by stellar/stellar-dev-skill."
+    },
+    "sk-034": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "skills/smart-contracts/development.md is owned by stellar/stellar-dev-skill."
+    },
+    "sk-035": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The assets and standards skills are owned by stellar/stellar-dev-skill."
+    },
+    "sk-036": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The data and dapp skills are owned by stellar/stellar-dev-skill."
+    },
+    "sd-079": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/build/building-with-ai.mdx, for-agents.js, and the agent-cli architecture page are source content owned by stellar/stellar-docs."
+    },
+    "cs-009": {
+      "repo": "Inferara/soroban-security-portal",
+      "reason": "Inferara/soroban-security-portal is the public, issue-enabled repository for stellarsecurityportal.com (its GitHub homepage). The portal owns the audit-report dataset that Stellar Light/Scout mirrors."
     }
   }
 }
