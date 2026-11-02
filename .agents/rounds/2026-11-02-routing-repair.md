@@ -50,7 +50,8 @@ Findings:
 - The `skills.stellar-dev.dapp` description override is no longer load-bearing on main (G12: zero
   graded change without it).
 - Tooling: `eval:routing --manifest` checks the default checkout fingerprint, not the selected
-  manifest's (rt-a).
+  manifest's (rt-a). Fixed on 2026-11-02: the gate evidence check now hashes the selected
+  manifest, so a variant manifest cannot pass `--gate`.
 
 rt-b found three conflicts inside the rule. Amendment 2 in the contract resolves them (H1–H5).
 
