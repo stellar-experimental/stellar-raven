@@ -146,3 +146,17 @@ link present):
 | `sls-104` | Stellar-Light/stellarlight#1915 |
 | `sls-105` | Stellar-Light/stellarlight#1916 |
 | `sls-106` | Stellar-Light/stellarlight#1917 |
+
+## Usage archive health alarm (observation)
+
+From about 07:26Z on 2026-11-02, the hourly "Usage archive health" job fails with
+`Possible missing responses: failed_invocations detected in the last 24 hours`. A
+`cloudflare-observability-review` pass found the cause. Workers Logs at 2026-11-02T23:30Z were
+grouped by `$workers.outcome` in four 6-hour windows. They show exactly one non-`ok`, non-`canceled`
+invocation: Ray `a5415aa68b4517f3`, `POST /mcp` at 07:16:35Z, user agent `python-httpx2/2.7.0`,
+HTTP 503, wall 6109 ms, CPU 0 ms, version `ea5c6e90`. Its only app log line is `Worker exceeded memory
+limit.` The window held about 30 requests, so the request load was light. No `mcp_request` summary
+exists for the request, so its tool call is unknown. No failed invocation occurred in the next 16
+hours, across the three later deployments. The alarm clears near 2026-11-03T07:17Z, at the end of
+the 24-hour window, unless the failure recurs. A recurrence with an app-level cause is the trigger
+for an own-repo investigation.
