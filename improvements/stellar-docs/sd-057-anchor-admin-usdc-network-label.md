@@ -1,7 +1,7 @@
 ---
 id: sd-057
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-10-09
 upstreamTitle: Label the Circle USDC issuer example as Stellar Testnet in the Anchor admin guide
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - 2026-10-09 Circle USDC contract-address table; https://developers.circle.com/stablecoins/usdc-contract-addresses
   - 2026-10-09 repeated issuer scan; 51 occurrences across the current docs source
   - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2908
+  - "fixed upstream 2026-11-02: https://github.com/stellar/stellar-docs/pull/2929 merged as 93f05612f490d4a35aa0b2d8ba906793934af6ee and closed #2908 at 18:20:36Z. Live recheck 2026-11-02T22:24Z GET https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/assets-and-client-wallets.md (HTTP 200) line 52: the example now 'represents Circle's [USDC on Testnet](https://developers.circle.com/stablecoins/usdc-contract-addresses)'. The verified defect (missing network scope) is fixed. The PR review dropped the optional sentence that issuers differ between networks; the linked Circle table lists the Mainnet issuer, so no residual is recorded."
 ---
 
 ## Finding

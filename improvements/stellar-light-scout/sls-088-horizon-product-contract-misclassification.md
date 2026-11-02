@@ -1,7 +1,7 @@
 ---
 id: sls-088
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-29
 upstreamTitle: Horizon API repository is marked as a deployable Soroban contract product
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - Live OpenAPI 1.9.54 defines Repo.codeVerified.isDeployableContract as the repository product, not vendored runtime or fixture crates. Its description explicitly excludes platform, SDK, and tooling repositories with such crates.
   - Dedupe 2026-09-29 found no Horizon contract-classification issue. Retired sls-046 covered the same classification error for stellar/stellar-core and remains in improvements/resolved.json.
   - upstream issue filed 2026-09-29: https://github.com/Stellar-Light/stellarlight/issues/1739
+  - "fixed upstream: https://github.com/Stellar-Light/stellarlight/pull/1806 (spec 1.9.72) closed #1739 on 2026-10-08. Live recheck 2026-11-02T22:26:43Z GET https://stellarlight.xyz/api/repos/explain?repo=stellar/stellar-horizon&q=<original question> (HTTP 200, OpenAPI 1.9.116, response sha256 7210f4fa611c69d8ec82d13f585621008bf20e9b32645ed72a20c0969f30523a): repoMeta.kind platform, kindBasis knownPlatform, codeVerified.isDeployableContract false, scannedRef 597544b60c20f8536d532d32abca8462394874f3."
 ---
 
 ## Finding

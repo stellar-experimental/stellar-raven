@@ -1,7 +1,8 @@
 ---
 id: wai-001
 service: workers-ai-provider
-status: reported-upstream
+status: declined-upstream
+disposition: Accept the owner's decision to freeze workers-ai-provider. Do not re-file. Raven retires this record when the demo moves to createAI from agents/models/ai-sdk (.agents/TODO.md).
 discovered: 2026-08-06
 upstreamTitle: workers-ai-provider rejects the Unified Billing moonshotai/Kimi catalog slug before AI.run
 evidence:
@@ -12,7 +13,10 @@ evidence:
   - consumer impact: src/demo/model-config.ts:148-164 and src/demo/chat.ts:315-360 need a separate providers-less createWorkersAI instance to use the binding run path
   - upstream issue filed 2026-08-07: https://github.com/cloudflare/ai/issues/634
   - candidate fix https://github.com/cloudflare/ai/pull/639 remains open at head b57a507cd4a4e0eb8b2330196b75477c8eddfc64 (verified 2026-09-09); review is required and no checks are reported
+  - "maintainer decline 2026-10-20: https://github.com/cloudflare/ai/pull/639#issuecomment-6295163611 (mattzcarey closed PR 639 unmerged): workers-ai-provider is deprecated and feature frozen in favor of createAI from agents/models/ai-sdk, which accepts any <author>/<model> catalog id. npm marks workers-ai-provider deprecated ('Use createAI from agents/models/ai-sdk, or ai-search-provider for AI Search'); latest is 4.0.1."
 recurrences:
+  - date: 2026-11-02
+    evidence: "workers-ai-provider 4.0.1 (npm latest, deprecated) with @ai-sdk/openai 4.0.91: the minimal reproduction still throws GatewayDelegateError Unknown gateway provider \"moonshotai\" (from slug \"moonshotai/kimi-k3\") with 0 mocked binding calls. Issue https://github.com/cloudflare/ai/issues/634 is still open."
   - date: 2026-08-11
     evidence: npm latest remains workers-ai-provider 4.0.0. The local minimal reproduction still throws Unknown gateway provider "moonshotai" before the mock binding run method is called; calls remains 0.
   - date: 2026-09-09

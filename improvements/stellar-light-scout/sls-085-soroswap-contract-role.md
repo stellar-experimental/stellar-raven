@@ -1,7 +1,7 @@
 ---
 id: sls-085
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-17
 upstreamTitle: Soroswap onchain contract label calls the AMM router an aggregator router
 evidence:
@@ -16,6 +16,7 @@ evidence:
   - "Independent coordinator reproduction at 2026-09-17T02:36Z, ledger 64465357: Scout repeats the aggregator-router label; the AMM router exposes get_factory, and the aggregator exposes get_adapters with that AMM router under protocol 0. Both on-chain WASM hashes match the owner deployment records."
   - "Raw evidence: research/audits/2026-09-17-routing-audit/soroswap-contract-role.md."
   - upstream issue filed 2026-09-17: https://github.com/Stellar-Light/stellarlight/issues/1673
+  - "fixed upstream: https://github.com/Stellar-Light/stellarlight/pull/1805 closed #1673 on 2026-10-08. Live recheck 2026-11-02T22:26:43Z GET https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3 (HTTP 200, OpenAPI 1.9.116, response sha256 9351d4fec1b3f8a8fa9b28449c997885c2539514f5e72549b72877516af19ed9): onchain.contracts lists CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH label 'amm router' and CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO label 'aggregator'."
 recurrences:
   - date: 2026-09-29
     evidence: The Soroswap response still labels the verified address as aggregator router. The original contract-label distinction remains unresolved. Live response snapshot is .agents/rounds/2026-09-29-truth-maintenance/scout-rechecks.json.

@@ -45,6 +45,14 @@ result-code queries in `rounds/2026-11-02-mintlify-migration/identifier-probe.js
 `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search call or one hinted
 page read, and the change is measured on the retrieval A/B. Remove when `sd-059` is fixed upstream.
 
+New evidence (2026-11-02, `rounds/2026-11-02-upstream-followup.md`): the site's own MCP search
+(`POST https://developers.stellar.org/mcp`, tool `search_stellar_developer_docs`, public, no key)
+returns the right result-code page first for six of the seven probe queries. Raven's Discovery API
+path (`POST /discovery/v1/search/<domain>`) returns none of them in its top 5. A third option is to
+serve `search_docs` from that backend. It needs the same gates: a general mechanism, a free
+retrieval A/B on the golden docs pages and the identifier probe, the routing gate, and a check of
+the backend's rate limits and terms.
+
 ## Improvements follow-up
 
 ### Monitor the Horizon protocol-ceiling note behind the rejected recovery experiment
@@ -436,6 +444,21 @@ acceptance is unverified. The measured release verdict is in
 
 Done when: the model gauntlet shows that `xai/grok-4.6` accepts the request before the next
 control-model lane, or a reviewed change omits the field for that transport.
+
+### Move the demo off the deprecated `workers-ai-provider`
+
+On 2026-10-20 Cloudflare closed cloudflare/ai#639 unmerged and froze `workers-ai-provider`. npm
+marks 4.0.1 deprecated and names `createAI` from `agents/models/ai-sdk` as the replacement. That
+replacement accepts any `<author>/<model>` catalog id, so it can remove the second providers-less
+instance that `src/demo/chat.ts` keeps for `moonshotai/kimi-k3` (finding `wai-001`, now
+`declined-upstream`). Raven pins `agents` 0.28.1; `agents/models/ai-sdk` ships in 0.32.0. The
+`agents` upgrade also moves the MCP server runtime, so it needs `npm run test:smoke`, the
+single-`workerd` check above, and a Playground run of every demo model.
+
+Done when: `src/demo` and `test/demo-model-config.test.ts` no longer import
+`workers-ai-provider`, the package is out of `package.json`, and `wai-001` is closed out under the
+`improvements-pipeline` skill with the migration commit as evidence. The resolver accepts only
+`fixed-upstream` records, so that close-out needs an explicit decision on the receipt.
 
 ## Eval instruments
 

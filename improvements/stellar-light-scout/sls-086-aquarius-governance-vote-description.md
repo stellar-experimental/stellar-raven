@@ -1,7 +1,7 @@
 ---
 id: sls-086
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-17
 upstreamTitle: Aquarius project description credits reward direction to ICE governance votes
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - "Dedupe 2026-09-17: no active or resolved Raven finding covers this description; resolved sls-026 concerns Aquarius SCF totals. GitHub search repo:Stellar-Light/stellarlight for \"aquarius ICE\", governICE, and upvoteICE returned 0 results."
   - "Raw evidence: research/audits/2026-09-17-routing-audit/aquarius-description-roles.md."
   - upstream issue filed 2026-09-17: https://github.com/Stellar-Light/stellarlight/issues/1674
+  - "fixed upstream: https://github.com/Stellar-Light/stellarlight/pull/1805 closed #1674 on 2026-10-08. Live recheck 2026-11-02T22:26:43Z GET https://stellarlight.xyz/api/projects/search?q=aquarius&limit=3 (HTTP 200, OpenAPI 1.9.116, response sha256 064da0f9c358f8a2e080e9304b683fbee341cf77e146b09f4b292243b2beeb58): the aquarius shortDescription now ends 'Locking AQUA mints ICE; upvoteICE votes direct AQUA rewards to markets, and governICE votes on governance proposals without rewards.'"
 recurrences:
   - date: 2026-09-29
     evidence: The Aquarius shortDescription still claims on-chain DAO governance votes directing rewards. The original product-description conflict remains unresolved. Live response snapshot is .agents/rounds/2026-09-29-truth-maintenance/scout-rechecks.json.

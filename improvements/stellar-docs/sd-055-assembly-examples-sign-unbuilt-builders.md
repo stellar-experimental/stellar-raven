@@ -1,7 +1,7 @@
 ---
 id: sd-055
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-10-09
 upstreamTitle: Build assembled transactions before signing in the archival and simulation examples
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - 2026-10-09 repeated-example scan
   - 2026-10-09 multi-party reproduction
   - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2906
+  - "fixed upstream 2026-11-02: https://github.com/stellar/stellar-docs/pull/2933 merged as 50531cb5ed71e72c01d9de748f24031cc5ef93ff and closed #2906 at 18:27:46Z. Live recheck 2026-11-02T22:24Z of the deployed Markdown (GET https://developers.stellar.org/<path>.md, HTTP 200): restore-data-js line 62 and state-archival line 259 now call assembleTransaction(tx, sim).build() before sign; both import Operation and set .setTimeout(30) on the restoreFootprint builder; submit-transaction-wait-js returns or throws finalStatus; transaction-simulation uses new Server(...), await s.getAccount(...), BASE_FEE, nativeToScVal, named invokeContractFunction arguments, setTimeout(30), await s.prepareTransaction(tx) in Example 1, await s.simulateTransaction(tx), Promise.all over auth entries with simResult.latestLedger + 12, and assembleTransaction(tx, simResult).build() before sign in Example 2."
 recurrences:
   - date: 2026-11-02
     evidence: golden audit pass 2 live recheck 2026-11-02 - stellar/stellar-docs main 7cb5e8a4 docs/build/guides/archival/restore-data-js.mdx line 62 still assigns prepTx = assembleTransaction(tx, sim) and line 63 still calls prepTx.sign(signer). Issue #2906 is open; PR #2933 is open, unmerged, mergeable_state blocked. The golden audit batch soroban-02 reported this recurrence.
