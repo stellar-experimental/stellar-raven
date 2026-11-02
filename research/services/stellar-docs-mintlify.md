@@ -4,6 +4,10 @@ _Measured 2026-11-02. Evidence comes from the public Mintlify API reference, liv
 `developers.stellar.org`, its keyless public MCP server, and keyed REST probes with the assistant
 key. Items still marked **open** need a later probe._
 
+_Status, 2026-11-02 19:04 UTC: production reads Mintlify (PR #309, Worker version `358fd0f5`). The
+`ALGOLIA_*_DOCS` Worker and GitHub secrets are deleted. Record:
+[the migration ledger](../../.agents/rounds/2026-11-02-mintlify-migration.md#production-switch-over)._
+
 ## Trigger
 
 On 2026-10-22 the Stellar docs team moved `developers.stellar.org` to Mintlify. They also stopped

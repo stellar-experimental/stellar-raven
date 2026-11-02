@@ -12,12 +12,10 @@ Open owner decisions are at the end of this file. Each one is listed once.
 
 ## Priorities
 
-1. Migrate the `stellarDocs` operations to Mintlify (below). The Algolia docs index stopped
-   updating on 2026-10-22, so docs answers drift stale until the cutover.
-2. Resolve the general routing and source-authority work from the
+1. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-3. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
+2. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
    authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
    #281, and #270 are merged and deployed; the section guard does not ship.
 
@@ -26,31 +24,6 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 `run-evals` skill for the measurement sequence.
 
 ## Stellar Docs migration to Mintlify
-
-### Move the `stellarDocs` operations from Algolia to the Mintlify API
-
-On 2026-10-22 `developers.stellar.org` moved to Mintlify and the Algolia crawler stopped. The
-DocSearch index still answers, but it no longer updates, so every `stellarDocs.*` answer drifts
-stale. Research, the operation mapping, and the list of affected files are in
-[the Mintlify research note](../research/services/stellar-docs-mintlify.md).
-
-2026-11-02: the adapter, spec, inventory refresh, tests, and docs are rewritten on branch
-`feat/mintlify-docs-migration`; the Algolia docs scripts, rule canary, and comparison harness are
-retired; the free retrieval A/B favors Mintlify (mean golden-page recall 0.614 → 0.787, soft-empty
-80 → 6); the routing gate is re-baselined with per-case evidence. `get_doc_page` returns whole
-pages, so the HackMeridian table-row loss (Q18, R22, R32) and the soft-empty `/meetings` pages (Q9)
-no longer reproduce. Ledger: [2026-11-02 Mintlify migration](rounds/2026-11-02-mintlify-migration.md).
-
-Later on 2026-11-02: the independent review (Claude Fable, APPROVE WITH CHANGES) is reconciled in
-`a3ecf688`. The paid QA diagnostic ran 30 IDs on Algolia and 26 on Mintlify; the Mintlify arm
-stopped when the docs site deployed; its 4 missing rows were re-run. On all 30 rows half-credit
-is 56.7 % in both arms; two gains and one loss trace to the backend. The loss is `sd-059`.
-
-Remaining steps: the production cut-over (set the `MINTLIFY_ASSISTANT_API_KEY` Worker secret before
-deploy, then delete the `ALGOLIA_*_DOCS` Worker and GitHub secrets).
-
-Done when: production `stellarDocs.*` reads only Mintlify, the A/B shows no docs-answer regression,
-and no `ALGOLIA_*_DOCS` reference remains outside dated records.
 
 ### Derive section anchors for Mintlify search hits
 
@@ -92,11 +65,11 @@ point is accepted, rejected with evidence, or carried into its own item.
 
 `sd-003` is `fixed-upstream`. A distinct reviewer re-derived RESOLVE on 2026-11-02
 (`rounds/2026-11-02-mintlify-migration/sd003-recheck.md`), and the resolution comment is posted:
-https://github.com/stellar/stellar-docs/issues/2566#issuecomment-6585113964. Two conditions remain.
-First, the Mintlify adapter must be live in production; the Algolia adapter still reproduces the
-gap. Second, four battery cases name `sd-003` (`q-ti-rpc-gettransactions-pagination-xdr`,
+https://github.com/stellar/stellar-docs/issues/2566#issuecomment-6585113964. The Mintlify adapter
+went live in production on 2026-11-02 (Worker version `358fd0f5`). One condition remains: four
+battery cases name `sd-003` (`q-ti-rpc-gettransactions-pagination-xdr`,
 `q-infra-rpc-methods-list`, `q-pc-practical-fee-setting`, `q-pc-tx-finality-failure-semantics`),
-and the 2026-11-02 golden audit owns battery edits. After both land, run the resolver with the
+and the 2026-11-02 golden audit owns battery edits. After the audit lands, run the resolver with the
 command in the recheck file (section 8), reconcile those four cases with the `golden-truth` skill,
 and update the current-state lines the recheck lists (TODO, the Mintlify research note,
 `ideas/source-delivery-ranked-references.md`).
@@ -238,6 +211,9 @@ proposals"). Keep `inventory/stellar-light.json`
 at 1.9.61 until check 12 passes. A separate absorb on the unchanged scorer was measured and
 declined on 2026-10-29 (ledger `rounds/2026-10-28-routing-repair.md`, "Owner decision D"). The daily
 drift report keeps #223 open meanwhile. (PR #303 closed it in error on 2026-10-28; it was reopened.)
+The same hold keeps `inventory/stellar-docs-titles.json` at its Algolia-era bytes, so its
+`source.authEnv` still names the deleted `ALGOLIA_*_DOCS` secrets. Nothing reads them; the next
+refresh after the hold ends rewrites the file keyless.
 
 2026-10-08 authorized repair attempt (Codex frontier; Claude Fable review): no general policy passes.
 Ten policies were tested on all 544 rows against current and fresh sources (Scout 1.9.72, 674 Docs
@@ -787,19 +763,6 @@ boundary. Do not claim that anyone can recover every amount.
 
 Done when: the three cases carry the qualified claim with primary-source provenance and
 `npm run eval:qa:lint -- --stale --enforce-floors` passes.
-
-### Monitor the Stellar Docs title-set size against the remote identity probe ceiling
-
-The remote identity probe `eval/qa/probe-remote-identities.mjs` enumerates the public Docs `lvl1`
-title set through Algolia. The public key clamps pages to 100 records, the index limits pagination
-to 1,000 records, and the probe fails closed above ten pages. Found in
-`.agents/rounds/2026-09-03-truth-maintenance/remote-identity-guard-review-opus.md` (item R4).
-
-During each drift round, record the current title count from `inventory/stellar-docs-titles.json`.
-Open a design item for a different enumeration strategy before the count reaches 1,000. A larger
-page size cannot help because the index limit is the same.
-
-Done when: a reviewed enumeration change removes the ceiling, or the owner retires the guard.
 
 ## HackMeridian 2026 review follow-ups
 

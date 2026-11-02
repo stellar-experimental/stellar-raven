@@ -253,7 +253,35 @@ Herdr session is running. Commit reviewed: `dfccf526`. Verdict: APPROVE WITH CHA
 The review also confirmed the red `eval:qa:lint -- --stale --enforce-floors` lane predates this
 branch (five `reverifyBy` dates expired on 2026-11-01).
 
+## Production switch-over
+
+On 2026-11-02 the owner approved the switch-over. The steps ran in this order:
+
+1. The `MINTLIFY_ASSISTANT_API_KEY` GitHub secret was set at 18:23 UTC. The Worker secret was set
+   earlier the same day.
+2. CodeQL flagged two `js/incomplete-url-substring-sanitization` alerts in test stubs. Commit
+   `e5357463` changed both checks to exact host matches. All PR checks passed.
+3. PR #309 was squash-merged as `5d7a4f88`.
+4. The deploy ran from a clean detached worktree at `5d7a4f88`. The preflight passed. The rollback
+   target was version `50fd8784-b76d-4faa-9fc0-f95dd5e8471b`. The new version is
+   `358fd0f5-5263-4a0c-87d1-a909c8aff100`. The usage tail and retention checks passed.
+5. Live checks on `https://raven.stellar.org`:
+   - The landing page and `GET /health` returned `200`. An unauthenticated `POST /mcp` returned
+     `401` with `resource_metadata`.
+   - All 12 `stellarDocs.*` operations returned `ok` through the production `execute` tool. Search
+     results carry the Mintlify `candidates` field.
+   - `get_doc_page` returned whole pages (Setup, 8,368 characters; Fee-bump transactions, 9,695).
+   - A missing page and a nonsense query each returned `soft-empty`.
+6. No runtime, CI, or refresh code reads `ALGOLIA_*_DOCS`. The secrets were deleted from the
+   Worker (19:03 UTC; this created version `66cd90da-b96a-4789-9266-adcb16407d5d`) and from the
+   GitHub repository. The checks in step 5 passed again after the delete.
+7. The `ALGOLIA_*_SITE` pair stays. It belongs to the dormant `stellarOrg` spec.
+
+One reference to the deleted names remains: `source.authEnv` in the held
+`inventory/stellar-docs-titles.json` (see "Title snapshot held"). Nothing reads it. The first
+refresh after the #223 hold ends rewrites the file without a key.
+
 ## Open items
 
-- Production cut-over: `MINTLIFY_ASSISTANT_API_KEY` Worker secret, then delete the `ALGOLIA_*_DOCS`
-  secrets after deploy.
+- None for the switch-over. Follow-ups are in `.agents/TODO.md`: section anchors, `sd-059`, the
+  golden-audit hand-off, and the `sd-003` retirement.
