@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "437f9f4a5c0aa8c656ecc20a81e29f13f1e71cadd5beb4f1fcfb74e55459ea70",
+  "corpusContentSha256": "b3d00087dc93105e3142a1b3696f392231110faa85cacbc2a066302a75b7064f",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -3371,7 +3371,7 @@
         "avoid": [
           "Do NOT call extendTo an absolute ledger, require restorePreamble/separate retry for normal P23, restore Temporary data, or mix event retention into state TTL."
         ],
-        "notes": "Phase 3 tightened auto-restore wording against current Stellar docs: archived entries are restored before host execution only when included in the transaction restore list, usually populated by RPC simulation.\nAlso good if the answer: Gives the three-step restore/extend flow: identify entries, build footprint operation, simulate/fill fees, submit and retry the original action. | Mentions SDK `extend_ttl(min_ttl, extend_to)` / persistent `extend_ttl(&key, min_ttl, extend_to)` for proactive extension.\nGolden cites: Official state archival docs for Protocol 23 auto-restore and restore/extend workflow. | Official Soroban storage docs or SDK docs for temporary vs persistent/instance TTL behavior.\nGT-42 blind corrected the primary addendum: current normal auto-restore uses archivedSorobanEntries with restorePreamble nil.\nNumeric TTL settings are dated examples; grade the restore and extendTo formulas, the max-minus-one bound, and the re-query behavior, not one figure.\nAccurately quoting the official Stellar documentation on `restorePreamble` as the normal P23 path is not a wrong claim while a cached or older copy still shows that pre-2026-07-27 path; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+        "notes": "Phase 3 tightened auto-restore wording against current Stellar docs: archived entries are restored before host execution only when included in the transaction restore list, usually populated by RPC simulation.\nAlso good if the answer: Gives the three-step restore/extend flow: identify entries, build footprint operation, simulate/fill fees, submit and retry the original action. | Mentions SDK `extend_ttl(min_ttl, extend_to)` / persistent `extend_ttl(&key, min_ttl, extend_to)` for proactive extension.\nGolden cites: Official state archival docs for Protocol 23 auto-restore and restore/extend workflow. | Official Soroban storage docs or SDK docs for temporary vs persistent/instance TTL behavior.\nGT-42 blind corrected the primary addendum: current normal auto-restore uses archivedSorobanEntries with restorePreamble nil.\nNumeric TTL settings are dated examples; grade the restore and extendTo formulas, the max-minus-one bound, and the re-query behavior, not one figure.\nAccurately quoting the official Stellar docs page for the simulateTransaction deep-dive guide (https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive), which still says an archived entry must be restored before submission as signaled by `restorePreamble`, is not a wrong claim while sd-078 is active; grade caps at partial for that claim unless the answer independently contradicts the golden fact. A cached or older copy of the state-archival page earns no cap, because that page has described same-transaction P23 restoration since 2026-07-27."
       },
       "tags": {
         "category": "soroban",
@@ -3479,18 +3479,21 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02)",
+          "by": "golden cap backlog 2026-11-02 (caps-2)",
           "evidence": [
-            "POST https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org getLedgerEntries key AAAACAAAAAo= (CONFIG_SETTING_STATE_ARCHIVAL) — \"Mainnet ledger 65270335: maxEntryTTL 3110400, minTemporaryTTL 17280, minPersistentTTL 2073600; Testnet ledger 5522764: maxEntryTTL 3110400, minTemporaryTTL 720, minPersistentTTL 120960\" (class F, observedAt 2026-11-02)",
-            "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits — \"Max entry TTL | 3,110,400 ledgers ≈ 180 d; Min TTL: persistent/instance create or restore | 2,073,600 ledgers ≈ 120 d\" (class A, observedAt 2026-11-02)",
-            "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/ExtendFootprintTTLOpFrame.cpp, RestoreFootprintOpFrame.cpp, src/ledger/NetworkConfig.h — \"getLedgerSeq() + mOpFrame.mExtendFootprintTTLOp.extendTo; if (extendTo > maxEntryTTL - 1) ...; ledgerSeq + archivalSettings.minPersistentTTL - 1; MAXIMUM_ENTRY_LIFETIME = 1'054'080; MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4'096\" (class B, observedAt 2026-11-02)",
-            "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — \"In practice, this list is usually populated by the contract invocation simulation ... When the resulting InvokeHostFunction operation executes, those entries are restored first, and then the host function runs; ... The restored entry will have its live until ledger extended to ... current_ledger_number + 4095 for persistent entries.\" (class A, observedAt 2026-11-02)",
-            "Sibling sweep 2026-11-02: q-sor-ttl-defaults-extend (batch soroban-03) dates Mainnet 2,073,600/3,110,400 as of 2026-07-10, consistent with the new text; q-sor-force-fast-archival-localnet — no contradiction.",
-            "Independent verifier decisions: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json; proposer matrix: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json."
+            "A 2026-11-02T21:26:10Z: GET https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md HTTP 200 — \"When a ledger entry is archived, it needs to be restored before the transaction can be submitted. This is indicated in the `restorePreamble` field of the result.\" No Protocol 23 qualifier, no automatic-restoration or archivedSorobanEntries mention on the page.",
+            "B 2026-11-02: stellar/stellar-docs main 85d2d1b8 docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx line 171 carries the same sentence; last commits 70b9fa42 (#2979, 2026-11-02) and 700ed32d (#2941, 2026-10-22) did not change it.",
+            "E 2026-11-02T21:26:00Z: Raven stellarDocs.search_docs 'restorePreamble restore then retry archived entry Protocol 23' — hit 3 is the deep-dive page with the snippet 'When a ledger entry is archived, it needs to be restored before the transaction can be submitted.'",
+            "A 2026-11-02T21:24:12Z: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md — \"`RestoreFootprintOp` is, for the most part, no longer needed starting in Protocol 23, as archived entries included in a transaction's restore list (usually populated during transaction simulation) are automatically restored when the `InvokeHostFunctionOp` executes.\" The page fixed under sd-007 (improvements/resolved.json, resolved 2026-07-27) is correct, so a cached or older copy of it no longer backs a cap.",
+            "B 2026-11-02: stellar/stellar-rpc main c436cd7ddf simulate_transaction_test.go — manual restore test skips with \"Protocols > 22 support autorestore and generally don't require manual restoring\"; TestSimulateTransactionAutoRestore asserts require.Nil(t, response.RestorePreamble) and NotEmpty ArchivedSorobanEntries.",
+            "Outcome: the cap's old basis (a cached pre-2026-07-27 state-archival copy) ended with sd-007; a live official page (the deep-dive guide) still carries the stale flow and no active finding covers it, so the cap now names that page and finding sd-078 (shared by q-sor-p23-auto-restore-extendto, q-sor-force-fast-archival-localnet, q-sor-ttl-defaults-extend, q-soroban-storage-types).",
+            "Sibling sweep 2026-11-02: grep of eval/qa/corpus/battery for restorePreamble, Deep-Dive, and sd-007 — q-soroban-simulate-resource-fee and q-infra-simulate-transaction-howto say to handle any restorePreamble, which agrees with a fallback reading; the four cap cases above now share one wording; no contradiction.",
+            "Prior verification event: Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02) (2026-11-02); see git history."
           ],
           "rootCause": [
-            "Eval-side authoring flaw (eval-authoring): the golden labeled Core's initial-config TTL constants (4096, 1,054,080) as current values, mirroring the state-archival docs sentence 'current_ledger_number + 4095'; live Mainnet config is 2,073,600 / 3,110,400.",
-            "freshness-drift"
+            ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: partial caps follow open upstream findings)",
+            "improvements/stellar-docs/sd-078-simulate-deep-dive-restore-before-submit.md: the simulateTransaction deep-dive guide still says archived entries must be restored before submission through restorePreamble, with no Protocol 23 qualifier",
+            "improvements/resolved.json entry sd-007 (resolved 2026-07-27; the cached-copy basis of the old cap ended)"
           ]
         },
         "origin": "raven-next q-sor-p23-auto-restore-extendto"

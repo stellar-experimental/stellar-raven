@@ -23,7 +23,7 @@
       "Do NOT hide Windows Rust/rustup, MSVC Build Tools, WSL, or PATH prerequisites behind generic Stellar/npm troubleshooting.",
       "Do NOT create a duplicate CLI identity/network alias after alias already exists; inspect/reuse/remove it."
     ],
-    "notes": "Official docs verify Rust/target and Lab/CLI direction. Several quoted error strings are environment-specific and should be empirically reproduced by Phase 3 on Windows/WSL if exact remediation commands are required.\nAlso good if the answer: Cites official setup, CLI, Lab, and RPC/provider docs; uses dated source for current versions where possible.\nGolden cites: Official Stellar setup docs for Rust/target requirements. | Official Stellar CLI/Lab docs for current command and network/provider behavior.\nGT-51 PRECISION CORRECTION 2026-07-11: prefer prebuilt/Winget, require wasm32v1-none and explicit MSVC prerequisites, and keep environment-specific errors source-qualified.\nAccurately quoting the canonical smart-contract skill documentation without error-keyed rows for missing WASM, `link.exe`, identity or alias collisions, or funding is not a wrong claim while a cached or older copy still lacks the rows added by the 2026-08-14 fix; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source.\nRECHECK 2026-11-02: `stellar token balance` first appears in Stellar CLI v28.0.0 (2026-08-26). An answer for an older pinned CLI that routes balances through `stellar contract invoke ... -- balance`, Horizon, RPC, or Lab is also correct."
+    "notes": "Official docs verify Rust/target and Lab/CLI direction. Several quoted error strings are environment-specific and should be empirically reproduced by Phase 3 on Windows/WSL if exact remediation commands are required.\nAlso good if the answer: Cites official setup, CLI, Lab, and RPC/provider docs; uses dated source for current versions where possible.\nGolden cites: Official Stellar setup docs for Rust/target requirements. | Official Stellar CLI/Lab docs for current command and network/provider behavior.\nGT-51 PRECISION CORRECTION 2026-07-11: prefer prebuilt/Winget, require wasm32v1-none and explicit MSVC prerequisites, and keep environment-specific errors source-qualified.\nSince the sk-006 fix (stellar-dev-skill PR 93, merged 2026-08-13), the smart-contracts skill `development.md` carries error-keyed rows for missing WASM, `link.exe`, identity and alias collisions, and failed funding. Grade those remediation claims on their merits against the golden; an older skill copy without those rows does not excuse a wrong remediation.\nRECHECK 2026-11-02: `stellar token balance` first appears in Stellar CLI v28.0.0 (2026-08-26). An answer for an older pinned CLI that routes balances through `stellar contract invoke ... -- balance`, Horizon, RPC, or Lab is also correct."
   },
   "tags": {
     "category": "tooling-infra",
@@ -154,18 +154,17 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
+      "by": "golden cap backlog 2026-11-02 (caps-2)",
       "evidence": [
-        "Live B 2026-11-02: https://github.com/stellar/stellar-cli/releases/tag/v28.0.0 published 2026-08-26T18:52:07Z; FULL_HELP_DOCS.md at v28.0.0 and v28.1.0 has '`stellar token balance` Read the token balance of an account or contract'; v27.0.0 does not.",
-        "Live F 2026-11-02: local stellar 28.1.0 (c0f4d0da) — `stellar token balance --id native --account GAIH3ULLFQ4DGSECF2AR555KZ4KNDGEKN4AFI4SU2M7B43MGK3QJZNSR --network testnet --output json` returned a JSON balance; `stellar account --help` returned \"error: unrecognized subcommand 'account'\".",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/tools/cli/agent-cli/guides/check-balances-and-metadata — 'Read balances and token metadata with `stellar token balance` ...'; https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets still documents the SAC balance invoke.",
-        "Live E 2026-11-02: Raven stellarDocs.search_docs 'stellar token balance command' — 'stellar token balance --id native --account <ADDRESS> --output json answers'.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — 'Rust toolchain `v1.84.0` or higher, as the `wasm32v1-none` target is only available in recent versions'; Friendbot is not available on Mainnet (https://developers.stellar.org/docs/networks).",
-        "Verifier modification: the negative claim about `stellar account` is date-scoped to CLI v28.1.0, and keyFacts[5] keeps the SAC invoke route so a true older-CLI answer is not punished.",
-        "Sibling sweep 2026-11-02: q-ti-fetch-all-balances-classic-sac and q-ti-custodial-account-generation-c-address use SAC/Horizon balance routes; no contradiction."
+        "Cap ended 2026-11-02: sk-006 is resolved (improvements/resolved.json, resolved 2026-08-28; stellar/stellar-dev-skill#53, PR #93 merged 2026-08-13T17:54:41Z at 677a6aaf) and the live skill carries the rows, so the partial cap became a plain rule.",
+        "B 2026-11-02T21:24:12Z: GET https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/smart-contracts/development.md HTTP 200 — rows for \"reading file target/wasm32v1-none/release/my_contract.wasm: No such file or directory (os error 2)\", \"linker `link.exe` not found\", \"Failed to find config identity for alice\", \"An identity with the name 'alice' already exists\", \"alias 'x' is already referencing contract\", and \"Unable to fund account alice on …\".",
+        "C 2026-11-02T21:27Z: Raven codemode.skill.read('skills.stellar-dev.smart-contracts', { sections: ['file:development.md'] }) pinned https://raw.githubusercontent.com/stellar/stellar-dev-skill/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/smart-contracts/development.md — link.exe, No such file, alias, identity, and funding rows all present.",
+        "Sibling sweep 2026-11-02: grep of the battery for link.exe and sk-006 finds only this case; no contradiction.",
+        "Prior verification event: Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02) (2026-11-02); see git history."
       ],
       "rootCause": [
-        "freshness-drift: Stellar CLI v28.0.0 (2026-08-26) added `stellar token balance` after the golden said there was no CLI balance shortcut."
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: partial caps follow open upstream findings)",
+        "improvements/resolved.json entry sk-006 (resolved 2026-08-28; the cap it backed ended)"
       ]
     },
     "origin": "raven-next q-ti-cli-rust-windows-troubleshooting"

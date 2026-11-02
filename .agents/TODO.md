@@ -15,28 +15,13 @@ Open owner decisions are at the end of this file. Each one is listed once.
 1. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
-   authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
+2. Run owner decision A (the supervised paired subset) when the owner picks a window, under its
+   own spend authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
    #281, and #270 are merged and deployed; the section guard does not ship.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
 `run-evals` skill for the measurement sequence.
-
-## Golden partial caps
-
-### Convert or back the partial caps that the `cap-finding` lane flags
-
-The ADR-0008 amendment of 2026-11-02 accepts a partial cap only while it names an active
-`improvements/` finding. On 2026-11-02 the QA lint lane `cap-finding` warned on 39 cap sentences
-in 35 cases: 33 name no finding, and 6 name a finding that is resolved or missing. The case list is
-in [the grading-policy record](rounds/2026-11-02-grading-policy.md), "Cap backlog".
-
-Next: for each cap, use the `golden-truth` lane. Either name a verified active finding (file one if
-the source defect is real), or convert the cap to a plain correct or wrong rule. When the backlog is
-empty, raise the lane from warn to error.
-
-Done when: `npm run eval:qa:lint` reports no `cap-finding` warning, and the lane is an error.
 
 ## Stellar Docs migration to Mintlify
 
@@ -778,7 +763,9 @@ Done when: each item is filed, merged into an existing finding, or rejected with
 
 Use the `golden-truth` skill. First cases: R04 (`try_` nesting), R20 (testnet reset, December 16,
 2026), R23 (OZ stellar-contracts version and audits), R31 (stablecoin issuers), and Q18 (testnet
-oracle addresses). Writing the cases is free; running the QA battery on them is owner decision C.
+oracle addresses). Writing the cases is free. The owner decided on 2026-11-02 not to run a
+dedicated paid battery for them ("We don't need to overfit for any single case or instance"); they
+are graded in the next authorized QA round with the rest of the battery.
 
 Done when: the cases pass `npm run eval:qa:lint -- --stale --enforce-floors` and are merged.
 
@@ -858,9 +845,11 @@ call. See the run sheet's "2026-10-12 amendment" for these limits.
 Codex `gpt-6-astra` at high reviewed the change (RA to RA4, final APPROVE). A free live check ran
 the baseline source under the candidate's Wrangler and matched the surface pin.
 
-Next step (paid; needs a weekend spend authorization): a fresh assembled and signed plan. A full
-collection needs about 2.5 hours of baseline uptime. Run on a quiet machine, and leave the DocSearch
-key idle for at least one hour before the capacity check.
+Next step (paid; needs its own spend authorization): a fresh assembled and signed plan. A full
+collection needs about 2.5 hours of baseline uptime. Run on a quiet machine. On 2026-11-02 the owner
+set no date: the run may happen overnight on a work day, not only on a weekend. The DocSearch key
+that limited attempt 1 is retired (#320); the Stellar Docs adapter now calls Mintlify, so re-check
+the Mintlify request limit against the run sheet capacity check before collection.
 
 The launch tooling stays in the round folder until the next attempt ends or the owner retires the
 method. Then either promote it into `eval/qa/` with its test, or delete the round's launch scripts,
@@ -869,21 +858,12 @@ method. Then either promote it into `eval/qa/` with its test, or delete the roun
 
 Assemble the plan again before you sign its hash. The dated hashes in the run sheet are history.
 
-### B. Choose how the routing repair treats the Groth16 holdout loss
+### B. Routing repair acceptance (delegated 2026-11-02)
 
-Routing step 2 showed that any rank-only keyword change drops the Groth16 ZK skill from holdout
-rank 3 to 4. A stronger Docs entry fills the short page above it on its own evidence. The holdout
-top3 floor (26) then fails. See "Preserve structured routing intent…" and its step 2 evidence.
-
-Option 1: lower the holdout top3 floor to 25 for a repair that passes every other check. Option 2:
-require a skill-evidence change before the keyword step. Safe default: keep the floor, and do not start the
-next routing attempt.
-
-### C. Authorize a paid QA battery run on the HackMeridian golden cases
-
-The 2026-10-26 weekend review asked for this step and did not run it, because the QA battery costs
-money. It needs the golden cases from "Add golden cases for the confirmed HackMeridian gaps" first.
-The run measures the gaps before the fixes above ship, and then again after them.
-
-Safe default: do not run it. Use the free probe evidence until the owner authorizes the spend in
-writing.
+The owner delegated this decision to the orchestrator on 2026-11-02. The orchestrator replaced the
+Groth16 question with a pre-registered acceptance contract for a general scoring repair:
+[contract](rounds/2026-11-02-routing-repair/contract.md), amended once after an independent
+assumption attack ([attack](rounds/2026-11-02-routing-repair/attack-g.md)). The round ledger is
+[2026-11-02-routing-repair.md](rounds/2026-11-02-routing-repair.md). Floors stay unchanged: the
+contract withdraws any floor move, and the only room is the slack already in `eval/gates.json`.
+Delete this entry when the round closes.

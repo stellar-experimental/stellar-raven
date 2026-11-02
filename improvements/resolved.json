@@ -896,6 +896,26 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/4274b6da355a62eb371a95f8082df3ed57b605bd/improvements/stellar-docs/sd-056-ledger-header-fee-units-and-extension.md"
     },
     {
+      "id": "sd-075",
+      "title": "The Hello World tutorial says that stellar contract build is \"a small wrapper around cargo build\". It says the CLI is \"a shortcut for\"…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2974",
+        "https://github.com/stellar/stellar-docs/pull/2991"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2974",
+        "https://github.com/stellar/stellar-docs/pull/2991"
+      ],
+      "liveRecheck": "2026-11-02T21:23:41Z https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world: no 'shortcut for' text; the page says a direct cargo build --target wasm32v1-none --release fails under soroban-sdk 28 or later with 'soroban-sdk requires stellar-cli v25.2.0+ to build a contract'",
+      "reviewEvidence": "Grok 4.7 high distinct review 2026-11-02 (.agents/rounds/2026-11-02-upstream-filing/sd-075-retire-review.md); author Claude Opus 5.5; trigger repeated live, rs-soroban-sdk build.rs checked, TEMPLATE.mdx is a draft and now uses stellar contract build, no successor; resolution comment https://github.com/stellar/stellar-docs/issues/2974#issuecomment-6589044826",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-075-hello-world-build-wrapper-claim.md"
+    },
+    {
       "id": "sk-001",
       "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145,…",
       "service": "skills",

@@ -15,7 +15,7 @@
     "avoid": [
       "Do NOT cite an unversioned finding ID, convert hypothetical impact into a live exploit, or call it reentrancy."
     ],
-    "notes": "Added from theboycoder/StellarLight data-layer intake. Primary-source recheck on 2026-08-25 confirmed the versioned identifier history and the counted-versus-labeled distinction. V2 already contains the invalid-disposition analysis. V2.1 relocates that analysis to Appendix A.2.2. Both reports label the investigated item Critical, while their valid-vulnerability summaries count zero Critical issues. Scout now retrieves the real V-SOR-APP-VUL-003 identifier without `meta.exactMiss`. The absent control V-SOR-APP-VUL-999 still returns an exact-miss warning.\nAlso good if the answer connects the finding to Soroban's contract-auth model instead of generic EVM reentrancy.\nGT-44 independently reconciled the V2/V2.1 renumbering.\nAccurately quoting a cached copy of the canonical Scout source from before the 2026-08-25 fix is not a wrong claim. Grade caps at partial for that historical quote unless the answer presents the miss as current."
+    "notes": "Added from theboycoder/StellarLight data-layer intake. Primary-source recheck on 2026-08-25 confirmed the versioned identifier history and the counted-versus-labeled distinction. V2 already contains the invalid-disposition analysis. V2.1 relocates that analysis to Appendix A.2.2. Both reports label the investigated item Critical, while their valid-vulnerability summaries count zero Critical issues. Scout now retrieves the real V-SOR-APP-VUL-003 identifier without `meta.exactMiss`. The absent control V-SOR-APP-VUL-999 still returns an exact-miss warning.\nAlso good if the answer connects the finding to Soroban's contract-auth model instead of generic EVM reentrancy.\nGT-44 independently reconciled the V2/V2.1 renumbering.\nScout research has returned the Veridise V-SOR-APP-VUL-003 record first with `exactKeys` and no `meta.exactMiss` since the ingest fix was confirmed live on 2026-08-28 (sls-071 and sls-074, resolved; re-checked live 2026-11-02). An answer that labels the earlier exact miss as historical is correct; an answer that presents the miss as current is wrong."
   },
   "tags": {
     "category": "soroban",
@@ -99,14 +99,21 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
+      "by": "golden cap backlog 2026-11-02 (orchestrator, after independent review rv-caps, Codex gpt-6-astra high)",
       "evidence": [
-        "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf — \"A.2.2 V-SOR-APP-VUL-003: Denial of Service During Authorization Severity Critical Commit 2674d86 Type Denial of Service Status Investigated\"; \"V-SOR-VUL-002 Incorrect Metering When Adding Trackers Low Open\" (observedAt 2026-11-02).",
-        "https://stellarsecurityportal.com/api/v1/reports/28 — V2 lists \"V-SOR-VUL-002 Denial of Service During Authorization Critical Investigated\" while \"Table 2.3: Vulnerability Summary. Critical-Severity Issues 0 0\" (observedAt 2026-11-02).",
-        "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 — first row \"Stellar Soroban Core: Veridise\" https://stellarsecurityportal.com/report/42 (observedAt 2026-11-02).",
-        "https://github.com/stellar/rs-soroban-env/blob/v30.0.0/soroban-env-host/src/auth.rs — \"we don't allow using tracker to verify auth for itself ... Thus we simply skip the trackers that have already been borrowed.\" (observedAt 2026-11-02).",
-        "No gospel change; no proposal (verifier noProposalCases).",
-        "Sibling sweep 2026-11-02: q-tool-soroban-auth-audit-live; no contradiction."
+        "[C] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003 → rank 1 \"Stellar Soroban Core: Veridise\" (source audit, 2025-09-26, id 6a1516bc975750ee958a3bac) with exactKeys [\"V-SOR-APP-VUL-003\"]; meta has no exactMiss. GET ...?q=V-SOR-APP-VUL-999 → meta.exactMiss.identifiers [\"V-SOR-APP-VUL-999\"] with the note \"No document in the searched scope carries V-SOR-APP-VUL-999 verbatim\".",
+        "[C] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven scout.searchResearch({ q: \"V-SOR-APP-VUL-003\", limit: 3 }) → meta.exactMiss null, top row \"Stellar Soroban Core: Veridise\" publishedAt 2025-09-26 exactKeys [\"V-SOR-APP-VUL-003\"]; the V-SOR-APP-VUL-999 control → exactMiss [\"V-SOR-APP-VUL-999\"].",
+        "[A] 2026-11-02T21:24:44Z to 21:24:54Z https://stellarlight.xyz/api/openapi.json apiVersion 1.9.116 (the fix landed in 1.8.x per resolved entries sls-071 2026-08-25 and sls-074 2026-08-28, both in improvements/resolved.json).",
+        "Finding: sls-071 (resolved 2026-08-25) and sls-074 (resolved 2026-08-28) are in improvements/resolved.json; no active finding backs the cap, the live surface carries the fix, so the cap ends (ADR-0008 amendment 2026-11-02).",
+        "Change: only the cap sentences in golden.notes were replaced by a plain rule; answer, keyFacts, and avoid are unchanged.",
+        "Sibling sweep 2026-11-02: grep 'V-SOR-APP-VUL-003|2026-08-25 fix' over eval/qa/corpus/battery → q-tool-soroban-auth-audit-live (edited in this lane with the same rule); no contradiction.",
+        "[B] 2026-11-02T21:48:06Z https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4: 'this fixes the INGEST' and 'the live exact-miss persists until then' (a separate re-ingest was required).",
+        "[A] https://github.com/Stellar-Light/stellarlight/issues/1031#issuecomment-5455030587 dates the independent live confirmation to 2026-08-28; the note now uses that date instead of the 2026-08-25 commit date (review rv-caps finding 3)."
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: a partial cap needs an active improvements finding; this cap's finding is resolved, so the cap ends)",
+        "improvements/resolved.json entry sls-071 (resolved 2026-08-25; live fix re-confirmed 2026-11-02)",
+        "improvements/resolved.json entry sls-074 (resolved 2026-08-28; live fix re-confirmed 2026-11-02)"
       ]
     },
     "origin": "raven-next q-soroban-auth-recursion-dos-audit"

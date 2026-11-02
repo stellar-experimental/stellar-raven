@@ -1066,7 +1066,7 @@ const PROMPT_SHA256_FIXTURES = new Map([
   ["q-edge-send-me-free-xlm", "474637b74bf866068a473baa0e83e0c30d27469eed4511a517b1c89e688e0945"],
   ["q-edge-xlm-price-investment-advice", "9f903bf48c19a598c8aad1a97791c31061ba5c2abc2d8168c637f64abcc30c4e"],
   ["q-scf-total-distributed", "5812324719206ceca04a5b1d3ac232cbc9af2a843bead4dd3e93eaa8faa290dd"],
-  ["q-soroban-storage-types", "8c17e48660627e5565d8b1ded43854d4eb0097abc819f537db6f86501227b61f"],
+  ["q-soroban-storage-types", "2c291e2feb25bdb7b7f476b9d4ad0f3d376006717f61566dd8c57ff189490ffb"],
   ["q-ti-bindings-to-nextjs-integration", "c8093089a5e95afe23910fee4187f1baf7a5162f2f9939d08bfc5cb2dbaa5340"]
 ]);
 
