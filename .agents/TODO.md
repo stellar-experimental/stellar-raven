@@ -40,13 +40,6 @@ Done when: `npm run eval:qa:lint` reports no `cap-finding` warning, and the lane
 
 ## Stellar Docs migration to Mintlify
 
-### Derive section anchors for Mintlify search hits
-
-Algolia hits linked to the matched section (`#anchor`); Mintlify sections carry only the page path.
-A hit's `section` heading could yield the anchor if the adapter applies the site's heading-slug
-rule. Found in the 2026-11-02 migration A/B. Done when a test pins the slug rule against live
-heading anchors on at least five pages, including headings with code spans and punctuation.
-
 ### Repair or retire stale golden docs references
 
 The 2026-11-02 page-coverage check (`rounds/2026-11-02-mintlify-migration/page-coverage.json`)

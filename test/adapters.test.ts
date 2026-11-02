@@ -475,6 +475,68 @@ describe("stellarDocs adapter", () => {
   }
   const searchStub = (chunks: Chunk[]) => mintlifyStub(() => Response.json(chunks));
 
+  it("keeps a raw HTML heading as a page hit without a section or anchor", async () => {
+    const path = "/docs/learn/glossary";
+    const { fetchImpl, calls } = searchStub([
+      chunk(path, '<h3 id="app">Application (app)</h3>\nStorage details.')
+    ]);
+    const result = await callStellarDocs(entry("stellarDocs.search_docs"), { query: "storage" }, docsEnv, fetchImpl);
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const hit = (result.data as SearchData).hits[0];
+    expect(hit?.url).toBe(`${ORIGIN}${path}`);
+    expect(hit).not.toHaveProperty("section");
+    expect(calls).toHaveLength(1);
+  });
+
+  it("percent-encodes hash marks and non-ASCII characters in section IDs", async () => {
+    const path = "/docs/tools/cli/agent-cli/reference/output-and-errors";
+    const { fetchImpl } = searchStub([
+      chunk(path, '## Telling `#13` from `#6`\nStorage details.'),
+      chunk(path, '## The token family’s error envelope\nStorage details.')
+    ]);
+    const result = await callStellarDocs(entry("stellarDocs.search_docs"), { query: "storage" }, docsEnv, fetchImpl);
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect((result.data as SearchData).hits.map((hit) => hit.url)).toEqual([
+      `${ORIGIN}${path}#telling-%2313-from-%236`,
+      `${ORIGIN}${path}#the-token-family%E2%80%99s-error-envelope`
+    ]);
+  });
+
+  it("adds verified section anchors without additional requests or output fields", async () => {
+    const authorization = "/docs/learn/fundamentals/contract-development/authorization";
+    const glossary = "/docs/learn/glossary";
+    const versions = "/docs/networks/software-versions";
+    const { fetchImpl, calls } = searchStub([
+      chunk(authorization, "## When to `require_auth`\nStorage details."),
+      chunk(glossary, "## Application (app)\nStorage details."),
+      chunk(versions, "### Software\nStorage details."),
+      chunk(glossary, "## Unknown new heading\nStorage details."),
+      chunk(authorization, "# When to `require_auth`\nStorage details.")
+    ]);
+    const result = await callStellarDocs(entry("stellarDocs.search_docs"), { query: "storage", includeContent: true }, docsEnv, fetchImpl);
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const hits = (result.data as SearchData).hits;
+    expect(hits.map((hit) => hit.url)).toEqual([
+      `${ORIGIN}${authorization}#when-to-require_auth`,
+      `${ORIGIN}${glossary}#app`,
+      `${ORIGIN}${versions}`,
+      `${ORIGIN}${glossary}`,
+      `${ORIGIN}${authorization}`
+    ]);
+    expect(hits[0]).toEqual({
+      url: `${ORIGIN}${authorization}#when-to-require_auth`,
+      path: authorization,
+      title: "Example page",
+      section: "When to `require_auth`",
+      snippet: "Storage details.",
+      content: "## When to `require_auth`\nStorage details."
+    });
+    expect(calls).toHaveLength(1);
+  });
+
   function withTransport(base: CatalogEntry, patch: Record<string, unknown>): CatalogEntry {
     return { ...base, transport: { ...base.transport!, ...patch } } as CatalogEntry;
   }

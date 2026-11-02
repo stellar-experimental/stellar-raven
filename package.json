@@ -56,7 +56,8 @@
     "site:globes": "node scripts/gen-globes.mjs",
     "test:usage-report": "npm --prefix usage/report-site test && npm --prefix usage/report-site run check",
     "build:usage-report": "npm --prefix usage/report-site run build && wrangler deploy --config usage/report-site/cloudflare/wrangler.jsonc --dry-run",
-    "postdeploy": "node scripts/check-usage-deployment.mjs"
+    "postdeploy": "node scripts/check-usage-deployment.mjs",
+    "docs:anchors:build": "node scripts/build-stellar-docs-anchors.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.78",

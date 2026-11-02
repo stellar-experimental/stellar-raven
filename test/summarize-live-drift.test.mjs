@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyDocsBackend, classifyOpenapiOperations, diffDocsTitles } from "../scripts/summarize-live-drift.mjs";
+import { classifyDocsBackend, classifyOpenapiOperations, diffDocsTitles, summarizeDocsAnchors } from "../scripts/summarize-live-drift.mjs";
 
 const spec = (operation) => ({ paths: { "/api/example": { get: operation } } });
 
@@ -49,6 +49,17 @@ const docsInventory = (overrides = {}) => ({
 });
 
 describe("live drift Stellar Docs classification", () => {
+  it("reports changed pages, removed pages, and ambiguous anchor headings", () => {
+    const oldIndex = { pages: { "/docs/a": { A: ["a"] }, "/docs/removed": {}, "/docs/held": {} } };
+    const nextIndex = { pages: { "/docs/a": { A: ["a", "a-1"] }, "/docs/added": {}, "/docs/held": {} } };
+    expect(summarizeDocsAnchors(oldIndex, nextIndex)).toEqual([
+      "- src/adapters/stellar-docs-anchors.json: section anchor index changed.",
+      "  - changed pages: 2",
+      "  - removed pages: 1",
+      "  - ambiguous headings: 1"
+    ]);
+  });
+
   it("reports only page-index churn when identity and contract hold", () => {
     const next = docsInventory({
       pageIndex: { pageCount: 3, indexFiles: [{ path: "/llms.txt", pageCount: 3, sha256: "b" }] }

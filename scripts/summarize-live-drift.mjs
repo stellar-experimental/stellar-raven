@@ -13,6 +13,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { RUNNERS } from "../src/skills/runners/index.ts";
+import { summarizeAnchorChanges } from "./build-stellar-docs-anchors.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const HTTP_METHODS = ["get", "post", "put", "patch", "delete", "head", "options"];
@@ -302,6 +303,16 @@ export function diffDocsTitles(oldInv, nextInv) {
   };
 }
 
+export function summarizeDocsAnchors(oldIndex, nextIndex) {
+  const summary = summarizeAnchorChanges(oldIndex, nextIndex);
+  return [
+    "- src/adapters/stellar-docs-anchors.json: section anchor index changed.",
+    `  - changed pages: ${summary.changedPages}`,
+    `  - removed pages: ${summary.removedPages}`,
+    `  - ambiguous headings: ${summary.ambiguousHeadings}`
+  ];
+}
+
 function summarizeDocsInventory(path) {
   if (!changedFiles([path]).includes(path)) return [];
   const oldInv = readHeadJson(path);
@@ -341,8 +352,10 @@ function runnerIntersections(touchedCatalogIds) {
 }
 
 function main() {
-  const generatedChanged = changedFiles(["inventory", "catalog", "specs"]);
-  const stat = diffStat(["inventory", "catalog", "specs"]);
+  const anchorPath = "src/adapters/stellar-docs-anchors.json";
+  const generatedPaths = ["inventory", "catalog", "specs", anchorPath];
+  const generatedChanged = changedFiles(generatedPaths);
+  const stat = diffStat(generatedPaths);
   const touchedCatalogIds = new Set();
   const classificationLines = [];
 
@@ -378,6 +391,9 @@ function main() {
 
   classificationLines.push(...summarizeDocsInventory("inventory/stellar-docs.json"));
   classificationLines.push(...summarizeDocsInventory("inventory/stellar-docs-titles.json"));
+  if (generatedChanged.includes(anchorPath)) {
+    classificationLines.push(...summarizeDocsAnchors(readHeadJson(anchorPath), readJson(anchorPath)));
+  }
 
   const runnerHits = runnerIntersections(touchedCatalogIds);
 
