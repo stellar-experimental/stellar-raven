@@ -35,6 +35,7 @@
     "eval:qa:runtime-adapter": "node eval/qa/exact-old-runtime-adapter.mjs",
     "eval:qa:selftest": "node eval/qa/run-p6-judge-self-test.mjs",
     "eval:qa:lint": "node eval/qa/lint-corpus.mjs",
+    "eval:qa:sentinels": "node eval/qa/source-sentinels.mjs",
     "eval:qa:register": "node eval/qa/register-helper.mjs",
     "eval:qa:paired": "node eval/qa/paired-verdict.mjs",
     "eval:qa:paired:capacity": "node eval/qa/check-paired-capacity.mjs",

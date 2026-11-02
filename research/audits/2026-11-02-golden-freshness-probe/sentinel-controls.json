@@ -1,0 +1,57 @@
+{
+ "schema": "qa-source-sentinels-v1",
+ "sentinels": [
+  {
+   "id": "control-scf-45-phase",
+   "caseId": "q-scf-current-round",
+   "caseAsOf": "2026-11-02",
+   "url": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+   "check": {
+    "kind": "present",
+    "pattern": "SCF #45 is currently in the Notification and Award Distribution phase"
+   }
+  },
+  {
+   "id": "control-scf-46-deadline",
+   "caseId": "q-edge-fresh-latest-scf-round",
+   "caseAsOf": "2026-11-02",
+   "url": "https://communityfund.stellar.org/awards",
+   "check": {
+    "kind": "present",
+    "pattern": "SCF #46 Submission Deadline to submit: November 8, 2026"
+   }
+  },
+  {
+   "id": "control-meridian-upcoming",
+   "caseId": "q-hist-meridian-2026-corrected-venue",
+   "caseAsOf": "2026-11-02",
+   "url": "https://meridian.stellar.org/event-details",
+   "check": {
+    "kind": "present",
+    "pattern": "Meridian 2026 is a two-day in-person conference taking place"
+   }
+  },
+  {
+   "id": "control-rpc-archive-rows",
+   "caseId": "q-infra-rpc-provider-archive-tier",
+   "caseAsOf": "2026-11-02",
+   "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
+   "check": {
+    "kind": "count",
+    "pattern": "\\| \\[[^\\]]+\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} ✅ \\|",
+    "count": 7
+   }
+  },
+  {
+   "id": "control-zenex-testnet",
+   "caseId": "q-defi-perps-whitespace",
+   "caseAsOf": "2026-10-15",
+   "url": "https://docs.zenex.trade/faq",
+   "check": {
+    "kind": "present",
+    "pattern": "current deployment[^.]{0,80}testnet",
+    "flags": "i"
+   }
+  }
+ ]
+}
