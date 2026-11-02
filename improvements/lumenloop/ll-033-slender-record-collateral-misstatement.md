@@ -5,7 +5,7 @@ status: verified
 discovered: 2026-11-02
 upstreamTitle: The Slender directory description incorrectly says ordinary borrowing requires no collateral
 evidence:
-  - 2026-11-02T22:36:13Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/get_project {"slug":"slender"} returned HTTP 200. The description still says "lend and borrow assets without collateral". Raw response: tmp/fl-lk/ll-recheck/ll033-get.json.
+  - 2026-11-02T22:36:13Z Raven recheck (read-only): POST https://api.lumenloop.com/v1/tools/get_project {"slug":"slender"} returned HTTP 200. The description still says "lend and borrow assets without collateral".
   - 2026-11-02 public recheck: curl -sS -L https://www.certora.com/reports/slender returned HTTP 200. The 2024-05-22 audit describes ordinary loans as over-collateralized and describes flash loans separately. GET projects/slender.yaml on lumenloop/stellar-ecosystem-db main returned HTTP 200 with the incorrect sentence.
   - 2026-11-02 timeline check: gh api repos/lumenloop/stellar-ecosystem-db/commits?path=projects/slender.yaml&per_page=100, followed by raw file reads at all 11 commits. The first incorrect committed wording appears at 3a4b5b05a8fd6216843d3c9de00f69ca1b5a15b8 (2026-03-18T07:08:16Z). The preceding record at 4ca0449cd77396e82ad9ab3c8db4d6f415ff5b23 (2026-02-08T21:30:47Z) lacks that sentence. These dates describe exported files, not the live API introduction.
   - 2026-11-02 adjacent check: rg -n -i "without collateral|slender" over the current directory archive found the incorrect Slender description once. projects/lendoor.yaml also advertises uncollateralized credit, but it describes a different product. No Slender evidence supports changing Lendoor.
@@ -22,7 +22,7 @@ The description can cause callers to misstate the protocol's borrowing requireme
 
 ## Evidence
 
-The orchestrator repeated `POST /v1/tools/get_project` with `{"slug":"slender"}` on 2026-11-02T22:36:13Z.
+Raven repeated `POST /v1/tools/get_project` with `{"slug":"slender"}` on 2026-11-02T22:36:13Z.
 The request returned HTTP 200 with this description fragment:
 
 ```text

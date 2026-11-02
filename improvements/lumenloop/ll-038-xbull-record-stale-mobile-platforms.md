@@ -5,7 +5,7 @@ status: verified
 discovered: 2026-11-02
 upstreamTitle: The xBull directory description advertises mobile platforms with unavailable store listings
 evidence:
-  - 2026-11-02T22:36:14Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/get_project {"slug":"xbull"} returned HTTP 200. The description still lists "web browsers, Android, and iOS devices". Raw response: tmp/fl-lk/ll-recheck/ll038-get.json.
+  - 2026-11-02T22:36:14Z Raven recheck (read-only): POST https://api.lumenloop.com/v1/tools/get_project {"slug":"xbull"} returned HTTP 200. The description still lists "web browsers, Android, and iOS devices".
   - 2026-11-02 independent public recheck: curl -sS -L https://apps.apple.com/us/app/xbull-wallet/id6705122563 returned HTTP 404. GET https://itunes.apple.com/lookup?id=6705122563 returned HTTP 200 with resultCount=0. Google Play package pages app.xbull.wallet and app.xbull.mobile each returned HTTP 404. These checks concern the named listings and the US Apple storefront.
   - 2026-11-02 public source check: GET https://xbull.app/ returned HTTP 200 with web-wallet and Chrome-extension links. GET https://raw.githubusercontent.com/lumenloop/stellar-ecosystem-db/main/projects/xbull.yaml returned HTTP 200 with the Android/iOS sentence. The latest source commit does not date store withdrawal.
   - 2026-11-02 adjacent check: rg -n -i "xbull|Android|iOS" around the directory record found the mobile platform claim in projects/xbull.yaml. The record has no store links. projects/soroban-academy.yaml and contracts/xbull.yaml name xBull but do not repeat that mobile distribution claim.
@@ -23,7 +23,7 @@ Callers can therefore recommend mobile installation through store listings that 
 
 ## Evidence
 
-The orchestrator repeated `POST /v1/tools/get_project` with `{"slug":"xbull"}` on 2026-11-02T22:36:14Z.
+Raven repeated `POST /v1/tools/get_project` with `{"slug":"xbull"}` on 2026-11-02T22:36:14Z.
 The request returned HTTP 200 and retained this description fragment:
 
 ```text

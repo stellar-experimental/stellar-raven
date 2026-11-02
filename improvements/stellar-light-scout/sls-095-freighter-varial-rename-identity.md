@@ -1,7 +1,7 @@
 ---
 id: sls-095
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Scout cannot resolve Varial because the freighter project still uses its former name"
 probe:
@@ -24,6 +24,7 @@ evidence:
   - "2026-11-02 dedupe correction: gh search issues varial and gh search prs varial, each with --repo Stellar-Light/stellarlight and --state open/closed, found merged PR #1889. gh api repos/Stellar-Light/stellarlight/pulls/1889 confirms the same defect and pending owner data actions. Hold a duplicate filing. rg -n -i 'Varial|varial|Freighter' improvements/ found no other active Scout record for this rename. ll-032 and sk-030 concern different owners; resolved sls-050 and sls-094 concern other identity behavior."
   - "2026-11-02 calibration: upstream tree 1388bdd79b3151208d2be3ce0117316c0bc9694b includes REBRANDS.freighter in scripts/data/curation-maps.ts and IDENTITY_FIX.freighter in scripts/data/curate-projects.ts. The correction already exists in source. Six live descriptions still name Freighter. No dependency-bound broken snippet is alleged."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
+  - "2026-11-02T23:18:39Z recheck after merged https://github.com/Stellar-Light/stellarlight/pull/1889 (2026-10-31): resolve?q=varial still returns found false, and search?q=freighter returns name Freighter with website https://freighter.app/. Raven posted that result on the PR instead of a duplicate issue: https://github.com/Stellar-Light/stellarlight/pull/1889#issuecomment-6590972277 (independent filing review: Grok grok-4.7 high, verdict HOLD)."
 ---
 
 ## Finding

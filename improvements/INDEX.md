@@ -30,7 +30,7 @@ Total findings: 114
 | sls-029 | Oracle discovery collapses provider identity, product family, network, and evidence tier into a project-level status. This makes…           | reported-upstream | 2026-07-10 | 6           |
 | sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 8           |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
-| sls-095 | Scout cannot resolve Varial because the freighter project record still uses the former name, Freighter. GET /api/projects/resolve?q=varial… | verified          | 2026-11-02 | 0           |
+| sls-095 | Scout cannot resolve Varial because the freighter project record still uses the former name, Freighter. GET /api/projects/resolve?q=varial… | reported-upstream | 2026-11-02 | 0           |
 | sls-096 | GET /api/rfps?status=open returns two Q3 2026 briefs that the official SCF page removed. The rows are layerzero-dvn and…                    | verified          | 2026-11-02 | 0           |
 | sls-097 | POST /api/partners/match returns HTTP 502, but OpenAPI does not describe that response. OpenAPI 1.9.116 lists only 200, 429, and 503. The…  | verified          | 2026-11-02 | 0           |
 | sls-098 | The Bitso and Honey Coin partner pages label curated capabilities as verified from stellar.toml without a recorded fetch. Both pages…       | verified          | 2026-11-02 | 0           |

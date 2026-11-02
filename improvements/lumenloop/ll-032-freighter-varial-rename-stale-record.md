@@ -5,8 +5,8 @@ status: verified
 discovered: 2026-11-02
 upstreamTitle: The freighter directory record omits the Varial name and current website
 evidence:
-  - 2026-11-02T22:36:13Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/get_project {"slug":"freighter"} returned HTTP 200. title="Freighter", other_names=[], links.website=["freighter.app"]. Raw response: tmp/fl-lk/ll-recheck/ll032-get.json; command receipt: tmp/fl-lk/ll-recheck/INDEX.txt.
-  - 2026-11-02T22:36:13Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/search_directory {"query":"varial"} returned HTTP 200. count=20, match_mode="semantic"; no freighter row appeared. Raw response: tmp/fl-lk/ll-recheck/ll032-search.json.
+  - 2026-11-02T22:36:13Z Raven recheck (read-only): POST https://api.lumenloop.com/v1/tools/get_project {"slug":"freighter"} returned HTTP 200. title="Freighter", other_names=[], links.website=["freighter.app"].
+  - 2026-11-02T22:36:13Z Raven recheck (read-only): POST https://api.lumenloop.com/v1/tools/search_directory {"query":"varial"} returned HTTP 200. count=20, match_mode="semantic"; no freighter row appeared.
   - 2026-11-02 public recheck: curl -sS -L -D headers https://freighter.app/ returned HTTP 301, then HTTP 200 at https://varialwallet.com/. GET https://raw.githubusercontent.com/lumenloop/stellar-ecosystem-db/main/projects/freighter.yaml returned HTTP 200 with the stale title and website. The stellar/freighter release 5.50.0 announcement dates the public rename to 2026-10-29; this is not a claimed first source-change date.
   - 2026-11-02 adjacent check: rg -n -i "freighter|varial" over the current stellar-ecosystem-db archive found three other descriptions naming Freighter. They are projects/lumenswap.yaml, projects/latch.yaml, and projects/aha-labs.yaml. Historical repository URLs and image paths need no rename.
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among four issues and eight PRs in lumenloop/stellar-ecosystem-db. The active sk-030 concerns separate skill files. sls-095 concerns the separate Scout directory.
@@ -26,7 +26,7 @@ Users who search by the current name cannot find the wallet through a direct nam
 
 ## Evidence
 
-The orchestrator repeated these read-only requests on 2026-11-02T22:36:13Z.
+Raven repeated these read-only requests on 2026-11-02T22:36:13Z.
 Both requests returned HTTP 200.
 
 | Request | Decisive values |

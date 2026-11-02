@@ -5,7 +5,7 @@ status: verified
 discovered: 2026-11-02
 upstreamTitle: search_directory omits the exact Blend match when limit is 1
 evidence:
-  - 2026-11-02T22:36:13Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/search_directory {"query":"Blend"} returned HTTP 200. count=20; first slugs account-demolisher, backyard, bexo, blend. The blend row has title "Blend Capital". With {"query":"Blend","limit":1}, HTTP 200 returned only account-demolisher. Raw responses: tmp/fl-lk/ll-recheck/ll034-blend.json and ll034-blend1.json.
+  - 2026-11-02T22:36:13Z Raven recheck (read-only): POST https://api.lumenloop.com/v1/tools/search_directory {"query":"Blend"} returned HTTP 200. count=20; first slugs account-demolisher, backyard, bexo, blend. The blend row has title "Blend Capital". With {"query":"Blend","limit":1}, HTTP 200 returned only account-demolisher.
   - 2026-11-02 source calibration: gh api repos/lumenloop/lumenloop-backend/contents/lumenloop-mcp/src/tools/directory.ts at main acba0387f14acd35d875719b2cc268509616a184 returned the source. search_directory uses ORDER BY title before LIMIT $2. The observed slug order does not prove ORDER BY slug. The title and recommendation now target exact-match priority.
   - 2026-11-02 adjacent check: inspected both search_directory branches in directory.ts. The substring branch uses alphabetical title ordering; the semantic fallback uses embedding distance. The request concerns exact-name priority in substring results, not a claim about every retrieval branch.
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 30 issues and 17 PRs in lumenloop/lumenloop-backend. Existing issue 29 and ll-012 concern broad RWA discovery and deployment state, not exact-slug priority.
@@ -21,7 +21,7 @@ Alphabetical ordering therefore prevents a small result limit from returning the
 
 ## Evidence
 
-The orchestrator repeated these read-only requests on 2026-11-02T22:36:13Z.
+Raven repeated these read-only requests on 2026-11-02T22:36:13Z.
 Both requests returned HTTP 200.
 
 | Body | Result |
