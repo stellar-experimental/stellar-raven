@@ -1,55 +1,53 @@
 ---
 id: ll-036
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
-upstreamTitle: Seven Aquarius proposal rows carry an HTML-injection title and no longer exist at the source
+upstreamTitle: Seven indexed Aquarius proposals contain an HTML payload title and have missing source pages
 evidence:
-  - "2026-11-02T17:19:01Z authenticated POST https://api.lumenloop.com/v1/tools/list_documents with {\"collection\":\"proposals\",\"search\":\"onerror\",\"limit\":20}: pagination.total 7; ids 192-198 all have title \"<img src=x onerror=alert(1)> w50c\", status processed, created_at 2026-09-30T01:27:07Z, urls https://aqua.network/governance/proposal/693/ through /699/"
-  - "2026-11-02T17:19:01Z POST /v1/tools/search_content_semantic with {\"query\":\"img src onerror alert w50c\",\"types\":[\"proposals\"],\"limit\":20}: returns the same seven rows; each summary describes a different asset-registry proposal (for example id 195 USDY, id 196 Bitcoin, id 193 XRP)"
-  - "2026-11-02T17:19:30Z GET https://governance-api.aqua.network/api/proposal/{693..699}/: HTTP 404 {\"detail\":\"No Proposal matches the given query.\"} for each id; GET /api/proposal/677/ returns HTTP 200; the list endpoint reports count 94 and highest id 677"
-  - "2026-11-02T17:21:52Z POST /v1/tools/get_related_projects with {\"content_id\":198,\"content_type\":\"proposal\"}: success true, 1 project (aquarius)"
-  - "Affected golden case: eval/qa/corpus/battery/defi-ecosystem/q-gap-semantic-similar-projects.json (the answering lane met these rows in search_content_semantic proposal results)"
+  - 2026-11-02T22:36:31Z Raven recheck (read-only): POST https://api.lumenloop.com/v1/tools/list_documents {"collection":"proposals","search":"onerror","limit":20} returned HTTP 200. pagination.total=7; ids 192-198 each retain title "<img src=x onerror=alert(1)> w50c" and status="processed". Their source proposal ids are 693-699.
+  - 2026-11-02 independent public recheck: curl -sS -L https://governance-api.aqua.network/api/proposal/{693..699}/ returned HTTP 404 for all seven ids. Each body says "No Proposal matches the given query." The control /api/proposal/677/ returned HTTP 200. This check does not establish when the proposals disappeared.
+  - 2026-11-02 adjacent check: all seven onerror rows share the title and processed status. Their created_at values span 2026-09-30T01:27:07.541Z to 2026-09-30T01:27:07.570Z. Those timestamps do not establish the first public exposure date. No rendering exploit was executed or established.
+  - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 30 issues and 17 PRs in lumenloop/lumenloop-backend. PR 17 concerns rediscovery after local deletion and explicitly exempts proposals. It does not correct these proposal rows.
+  - Affected golden case: eval/qa/corpus/battery/defi-ecosystem/q-gap-semantic-similar-projects.json (the answering lane met these rows in search_content_semantic proposal results)
+  - 2026-11-02T17:19:01Z earlier verification: search_content_semantic returned the same seven rows with different asset-registry summaries. Example summary subjects: id 195 USDY, id 196 Bitcoin, id 193 XRP.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/50
 ---
 
 ## Finding
 
-Seven Lumenloop proposal rows have the same title:
-`<img src=x onerror=alert(1)> w50c`. This string is an HTML-injection test
-payload. It is not a proposal title. The rows are ids 192 through 198.
+Seven indexed Aquarius proposal rows contain the title `<img src=x onerror=alert(1)> w50c` and reference unavailable source proposals.
+The rows have ids 192 through 198 and retain `status: "processed"`.
+All seven source proposal requests return HTTP 404.
+Callers can therefore cite processed records whose current sources do not exist.
 
-Each row links to an Aquarius proposal page from 693 to 699. The Aquarius
-governance API returns HTTP 404 for each of those proposal ids. The current
-highest proposal id at the source is 677. The source does not serve those
-seven proposals today.
-
-Each row has a generated summary of a different asset-registry proposal. The
-title and the summary do not agree. The rows are still `processed` and the
-search and related-project tools return them.
-
-A client that renders the title as HTML can run the payload. An agent can cite
-a proposal that the source does not serve.
+The stored title contains an HTML event-handler payload.
+The evidence establishes contaminated source text, without a demonstrated rendering exploit.
 
 ## Evidence
 
-All calls ran on 2026-11-02 with read-only requests.
+Raven repeated this request on 2026-11-02T22:36:31Z:
 
-| Request | Result |
-|---|---|
-| `list_documents` `{"collection":"proposals","search":"onerror"}` | 7 rows, ids 192-198, one shared title |
-| `search_content_semantic` proposals query | Same 7 rows with 7 different summaries |
-| `GET governance-api.aqua.network/api/proposal/693/` through `699/` | HTTP 404 for each id |
-| `GET governance-api.aqua.network/api/proposal/677/` | HTTP 200 |
-| `get_related_projects` `{"content_id":198,"content_type":"proposal"}` | 1 project, `aquarius` |
+```text
+POST /v1/tools/list_documents
+{"collection":"proposals","search":"onerror","limit":20}
+```
 
-All seven rows have `created_at` between `2026-09-30T01:27:07.541Z` and
-`2026-09-30T01:27:07.570Z`.
+The response returned HTTP 200, `pagination.total: 7`, and the same payload title on every row.
+The rows link to proposal ids 693 through 699 at Aquarius.
+Fresh public requests to `https://governance-api.aqua.network/api/proposal/{id}/` returned HTTP 404 for all seven ids.
+Each error body contained `No Proposal matches the given query.`
+The control request for proposal 677 returned HTTP 200.
+
+The rows have creation timestamps on 2026-09-30, within a 29-millisecond interval.
+These timestamps do not establish when Aquarius removed the proposals.
+Earlier same-day semantic results also supplied unrelated asset-registry summaries for these rows.
 
 ## Recommendation
 
-Remove or tombstone proposal rows whose source proposal returns HTTP 404.
-Re-check proposal sources on a schedule so that deleted proposals leave the
-index.
+Remove or mark rows 192 through 198 unavailable after confirming their missing sources.
+Prevent search results from presenting these rows as valid processed proposals.
+Check related generated summaries before restoring any row.
 
-Treat titles as plain text. Reject or flag a title that contains HTML markup.
-Do not publish a generated summary when it does not describe the stored title.
+Treat titles as plain text and flag unexpected HTML markup during ingestion.
+Add source-availability checks for indexed proposals.
