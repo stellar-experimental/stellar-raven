@@ -45,6 +45,17 @@ result-code queries in `rounds/2026-11-02-mintlify-migration/identifier-probe.js
 `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search call or one hinted
 page read, and the change is measured on the retrieval A/B. Remove when `sd-059` is fixed upstream.
 
+New evidence (2026-11-02, `rounds/2026-11-02-upstream-followup.md`): the site's own MCP search
+(`POST https://developers.stellar.org/mcp`, tool `search_stellar_developer_docs`, public, no key)
+returns a relevant result-code page first for all seven probe queries (for `op_low_reserve`, several
+operations share the code, and Set Options ranks third). In the author's production measurement,
+Raven's Discovery API path (`POST /discovery/v1/search/<domain>`, then the adapter's path scope and
+query-term guard) returned none of them in its top 5. First compare the raw Discovery candidates with
+the adapter output, to rule out Raven's own filtering. A third option is to serve `search_docs` from
+the site MCP backend. It needs the same gates: a general mechanism, a free
+retrieval A/B on the golden docs pages and the identifier probe, the routing gate, and a check of
+the backend's rate limits and terms.
+
 ## Improvements follow-up
 
 ### Monitor the Horizon protocol-ceiling note behind the rejected recovery experiment
@@ -78,17 +89,21 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
 
-### Repair the `cs-002` owner after `soroswap/docs` disappeared
+### Bump the `stellar-dev` skill pin to serve the sk-032 to sk-036 fixes
 
-On 2026-10-27, `gh api repos/soroswap/docs` and the recorded issue `soroswap/docs#47` return HTTP
-404, so `npm run improvements:lint -- --live` fails on `cs-002` and its `intake.json` override. The
-round ledger `rounds/2026-10-27-issue-batch.md` records the failure.
+On 2026-11-02 stellar/stellar-dev-skill merged PRs #167 to #171, which fix `sk-032` to `sk-036` in
+the upstream skill text (main `9c604c2b`). Raven still serves the pin `cac64041`
+(`ecosystem-skills/MANIFEST.json`), so `codemode.skill.read` returns the old text until the pin
+moves. Follow the full update sequence in `ecosystem-skills/README.md`: run `./update.sh`, read the
+skill diffs, and review the selection of the new `assets/regulated-assets.md` companion. Then run
+`node scripts/check-pin-review.mjs`, the routing gate, and the exposure guards. A hand-edited commit
+SHA is not enough, because `update.sh` discovers the selected files. Deploy only after the overnight
+golden QA run of 2026-11-02 ends. That run belongs to another session, pins the remote server
+identity, and does not authorize a deploy. Its owner releases the pin.
 
-Next check: find whether the repository was renamed, made private, or deleted, and whether
-`docs.soroswap.finance` still shows the stale adapter status. Then update the `cs-002` owner and
-evidence, or resolve or retarget the finding.
+Done when: production `codemode.skill.read` serves the fixed sections, for example
+`skills/smart-contracts/SKILL.md` with `soroban-sdk = "29"`.
 
-Done when: `npm run improvements:lint -- --live` passes.
 
 ## Routing
 
@@ -436,6 +451,23 @@ acceptance is unverified. The measured release verdict is in
 
 Done when: the model gauntlet shows that `xai/grok-4.6` accepts the request before the next
 control-model lane, or a reviewed change omits the field for that transport.
+
+### Move the demo off the deprecated `workers-ai-provider`
+
+On 2026-10-20 Cloudflare closed cloudflare/ai#639 unmerged and froze `workers-ai-provider`. npm
+marks 4.0.1 deprecated and names `createAI` from `agents/models/ai-sdk` as the replacement. That
+replacement accepts any `<author>/<model>` catalog id, so it can remove the second providers-less
+instance that `src/demo/chat.ts` keeps for `moonshotai/kimi-k3` (finding `wai-001`, now
+`declined-upstream`). Raven pins `agents` 0.28.1. Both 0.28.1 and 0.32.0 export `createAI` from
+`agents/models/ai-sdk`, but in a 2026-11-02 review check only 0.32.0 accepted `moonshotai/kimi-k3`
+before a binding call, so the migration needs the upgrade. The `agents` upgrade also moves the MCP server runtime, so it needs `npm run test:smoke`, the
+single-`workerd` check above, and a Playground run of every demo model.
+
+Done when: `src/demo` and `test/demo-model-config.test.ts` no longer import
+`workers-ai-provider`, the package is out of `package.json`, and `wai-001` is closed out under the
+`improvements-pipeline` skill. The migration removes Raven's dependency but does not fix the frozen
+package, so it is not `fixed-upstream` evidence. The resolver accepts only `fixed-upstream`
+records, so that close-out needs a reviewed lifecycle decision.
 
 ## Eval instruments
 

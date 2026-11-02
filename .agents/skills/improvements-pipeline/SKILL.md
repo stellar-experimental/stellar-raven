@@ -269,7 +269,10 @@ npm run improvements:resolve -- --file improvements/<collection>/<finding>.md \
 ```
 
    Omit `--dry-run` only after the printed upstream comment is posted. Use
-   `--upstream-comment-na` only when the finding was never filed. Pass each resolving issue/PR with
+   `--upstream-comment-na` only when the finding was never filed. Pass `--upstream-ref-gone <url>`
+   for a recorded ref that GitHub now answers with HTTP 404 (a deleted or private repository or
+   issue). The resolver confirms the 404, records the ref in the receipt's `upstreamRefsGone`, and
+   still requires `--upstream-commented` for every other ref. Pass each resolving issue/PR with
    `--resolving-ref`. The resolver appends `improvements/resolved.json`, removes any per-finding
    intake override, deletes the active file, and regenerates `INDEX.md`.
 

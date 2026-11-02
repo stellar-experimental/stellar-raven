@@ -112,4 +112,4 @@ awarded-versus-paid ambiguity. **No finding.**
 
 The coordinator repeated the unsigned checks at ledger 64465357. Fable repeated them at ledgers 64465425 and 64465426.
 All checks matched the owner deployment roles. No transaction was signed or submitted.
-The complete SDK 17.1.0 reproduction is in [sls-085](../../../improvements/stellar-light-scout/sls-085-soroswap-contract-role.md).
+The complete SDK 17.1.0 reproduction is in [sls-085](https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-light-scout/sls-085-soroswap-contract-role.md) (resolved 2026-11-02; receipt in `improvements/resolved.json`).

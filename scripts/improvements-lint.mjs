@@ -155,6 +155,13 @@ function validateResolvedLedger(findings) {
         errors.push(`${label}: ${key} entries must be GitHub issue or PR URLs`);
       }
     }
+    if (entry.upstreamRefsGone !== undefined) {
+      if (!Array.isArray(entry.upstreamRefsGone) || entry.upstreamRefsGone.length === 0) {
+        errors.push(`${label}: upstreamRefsGone must be a non-empty array when present`);
+      } else if (entry.upstreamRefsGone.some((ref) => !(entry.upstreamRefs ?? []).includes(ref))) {
+        errors.push(`${label}: upstreamRefsGone entries must also be in upstreamRefs`);
+      }
+    }
     if (!/^[0-9a-f]{40}$/.test(entry.sourceCommit ?? "")) {
       errors.push(`${label}: sourceCommit must be a full git SHA`);
     }
