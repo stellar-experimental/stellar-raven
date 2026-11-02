@@ -191,8 +191,10 @@ identifiers, all Horizon string codes, never appear in the 50 candidates (`ident
 Follow-ups:
 
 - Upstream: `sd-059` (verified; not filed — filing needs owner approval).
-- Own repo: `.agents/TODO.md` → "Point agents at the page when a docs hit has no body", and
-  "Re-verify five goldens that the docs migration made stale".
+- Own repo: `.agents/TODO.md` → "Point agents at the page when a docs hit has no body".
+- Goldens: the full golden audit (`2026-11-02-golden-audit.md`) owns battery edits, so this branch
+  edits none. The five affected cases and their open points are in `golden-handoff.md`; the row
+  reviews are `qa-rows-lane-1.md` to `qa-rows-lane-3.md`.
 - Mintlify-side ask added to the research note: index `<ResponseField>` text.
 - Judge tiering note: a single-judge `correct` is never re-checked, while a single-judge `partial`
   escalates to a panel (`q-anchor-endpoint-discovery`). Recorded here only; no change proposed from

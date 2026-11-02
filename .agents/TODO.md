@@ -79,25 +79,14 @@ result-code queries in `rounds/2026-11-02-mintlify-migration/identifier-probe.js
 `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search call or one hinted
 page read, and the change is measured on the retrieval A/B. Remove when `sd-059` is fixed upstream.
 
-### Re-verify five goldens that the docs migration made stale
+### Fold the Mintlify QA golden points into the golden audit
 
-The 2026-11-02 QA row review (`rounds/2026-11-02-mintlify-migration.md`, "Paid QA diagnostic")
-found these goldens out of date with live sources. Use the `golden-truth` skill for each:
-
-- `q-sor-confidential-tokens`: the privacy page now says the OpenZeppelin v0.8.0 audit covers the
-  confidential token contracts (stellar/stellar-docs #2915, 2026-10-21). Key fact 2 and avoid 1 say
-  "not audited".
-- `q-builder-content-by-person`: the `/meetings/authors` index was removed in the migration; seven
-  live meeting pages carry the byline instead.
-- `q-mpp-discovery-and-modes`: two GitHub sources return 404, one docs URL moved, and mpp.dev now
-  documents one `mppx` endpoint serving both MPP and x402 (key fact 5). Its `reverifyBy` passed.
-- `q-soroban-instance-storage-dos`: stellar-core validates entry size on reads, so a later-lowered
-  `contract_data_entry_size_bytes` makes an oversized instance entry unreadable. Key fact 3 and
-  avoid 1 need that qualifier.
-- `q-anchor-endpoint-discovery`: state in `notes` whether deriving endpoints only from the live
-  `stellar.toml` satisfies key fact 3; one arm's single judge said yes, the other arm's panel no.
-
-Done when each case has a refreshed `truth.verified` and `eval:qa:lint -- --stale` passes for it.
+The 2026-11-02 QA row review found five goldens affected by the docs migration. The full golden
+audit (`rounds/2026-11-02-golden-audit.md`) owns battery edits today; two of the five are already
+fixed there and one was re-verified on main in #310. The open points (instance-storage read-side
+size check, anchor key-fact-3 grading, MPP key fact 5) are in
+`rounds/2026-11-02-mintlify-migration/golden-handoff.md`. Done when the audit lands and each open
+point is accepted, rejected with evidence, or carried into its own item.
 
 ### Resolve `sd-003` after its upstream comment
 
