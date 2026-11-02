@@ -1,7 +1,7 @@
 ---
 id: sd-059
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Make ResponseField text findable in the docs search
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - "2026-11-02 identifier probe: 8 of 25 Stellar result-code and config identifiers never appear in any of the 50 candidates, including op_bad_signer, op_low_reserve, op_too_many_signers, op_line_full, op_cross_self, op_over_source_max, op_under_dest_min, and tx_bad_auth_extra. Identifiers that also appear in prose (op_underfunded, tx_bad_seq, SET_OPTIONS_BAD_SIGNER) rank first. Data: .agents/rounds/2026-11-02-mintlify-migration/identifier-probe.json"
   - "2026-11-02 the Set Options result-code page body chunk exists in the index (1,975 characters, contains op_bad_signer) and is returned for its opening sentence, but not for op_bad_signer, SET_OPTIONS_BAD_SIGNER op_bad_signer, or the verbatim sentence 'Any additional signers added to the account cannot be the master key'. The retired Algolia index ranked that page first for 'op_bad_signer set options result codes'."
   - "2026-11-02 paid QA diagnostic, row q-ti-classic-submission-errors: the Mintlify arm searched for the code three times, never saw the op_bad_signer to SET_OPTIONS_BAD_SIGNER mapping, and mapped 'bad signer' onto op_bad_auth (verdict wrong); the Algolia arm saw the mapping (verdict partial). Ledger: .agents/rounds/2026-11-02-mintlify-migration.md"
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/2995
 ---
 
 ## Finding

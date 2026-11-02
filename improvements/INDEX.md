@@ -51,7 +51,7 @@ Total findings: 67
 | sd-056 | The Ledgers page says the ledger-header fee pool uses lumens rather than stroops. The XDR field feePool holds an integer amount in…         | reported-upstream | 2026-10-09 | 0           |
 | sd-057 | The Anchor Platform admin guide uses Circle's Testnet USDC issuer without a network label. Its asset-ID explanation says the example…       | reported-upstream | 2026-10-09 | 0           |
 | sd-058 | The fee-payer signing example calls removed XDR getter methods with the current JavaScript SDK. It throws TypeError: txEnvelope.v1 is not…  | reported-upstream | 2026-10-09 | 0           |
-| sd-059 | The Stellar Docs search does not find text inside <ResponseField> components. The page store and the rendered site hold the text, but a…    | verified          | 2026-11-02 | 0           |
+| sd-059 | The Stellar Docs search does not find text inside <ResponseField> components. The page store and the rendered site hold the text, but a…    | reported-upstream | 2026-11-02 | 0           |
 
 ## lumenloop
 
