@@ -54,8 +54,34 @@ Findings:
 
 rt-b found three conflicts inside the rule. Amendment 2 in the contract resolves them (H1–H5).
 
-## Round 2
+## Round 2 results (2026-11-02)
 
-One lane measures the combined design that round 1 points to: a1's schema rule, b2's `short` or
-`morph` token rule, and a general admission rule for open-world retrieval entries (H4). The
-results go here.
+Lane rt-c (Codex `gpt-6-astra` high) measured design c at `35fa569f` under Amendment 2
+(SHA-256 `4185c6c6…`, pushed in `d4743806` before the lane started):
+[report-rt-c.md](2026-11-02-routing-repair/report-rt-c.md). No variant passes.
+
+| Variant | legacy | skills | holdout t1/t3/t5 | G10 (H2) | Failing rules |
+|---|---|---|---|---|---|
+| baseline main | 218/294/327/113 | 17/23/23/23 | 12/27/30 | 12/42 | — |
+| c.3 admission only | 216/290/327/105 | 15/19/19/19 | 10/21/24 | 12/42 | G2, G3, G7, check 2 |
+| c.1+c.2 short+c.3 | 239/300/328/117 | 9/17/19/19 | 9/17/19 | 39/42 | G2, G3, G10, check 2 |
+| c.1+c.2 morph+c.3 | 241/298/328/116 | 9/17/19/19 | 9/17/18 | 42/42 | G2, G3, check 2 |
+
+- The `morph` variant fixes the short-token class (G10 42/42) and schema-only admission (check 5),
+  and it raises legacy top1 by 23. The skills and holdout lanes collapse.
+- The open-world admission rule (keyed on the existing `retrievalProfile.lane` property) causes
+  59–80 loss rows per run. It admits retrieval entries above skills, and it admits
+  `scout.searchResearch` for `walk through` (check 2). 21–26 promotions per run have no whole
+  content-token witness, so G5(b) fails.
+
+## Decision (2026-11-02)
+
+Keep the current scorer. Nine designs over two rounds fail the pre-registered contract, and no
+floor moves. Each defect class has a measured fix: `morph` token boundaries plus a1's schema rule.
+The blocker is the recall that broad retrieval entries and skills now get from spurious evidence. A
+later repair must restore that recall with legitimate evidence before it removes the spurious
+kind. Dense evidence restores it (W − L +20 main, +21 fresh), but a query embedding is a paid
+model call on the search path. That needs an owner decision; see `.agents/TODO.md`.
+
+Independent review of this decision: not run. No candidate ships, so there is no change to review.
+The contract, its amendments, and every lane report are in this folder.
