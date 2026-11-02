@@ -1,0 +1,234 @@
+[
+ {
+  "path": "sds-preview",
+  "skip": "no-page"
+ },
+ {
+  "path": "snippets/anchor-platform/request",
+  "skip": "no-page"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getEvents",
+  "rfRank": 6,
+  "proseRank": 6,
+  "rfQ": "A list of topic filters. Each filter is itself an array of one to four `SegmentM",
+  "prQ": "The [ScVal](https://github.com/stellar/stellar-xdr/blob/v22.0/Stellar-contract.x"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/queryEvents",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "The Base64-encoded XDR `ScVal` that the second event topic must match.",
+  "prQ": "The event topics, each represented as a Base64-encoded XDR `ScVal`."
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getLedgers",
+  "rfRank": -1,
+  "proseRank": 18,
+  "rfQ": "An opaque string which acts as a paging token. To obtain the next page of result",
+  "prQ": "The unix timestamp of the close time of the latest ledger known to Stellar RPC a"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+  "rfRank": 22,
+  "proseRank": -1,
+  "rfQ": "Allow this many extra instructions when budgeting resources.",
+  "prQ": "Indicates if the entry was created, updated, or deleted"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_refund",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "The total amount refunded in units of amount\\_in\\_asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_refund_sent",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_onchain_funds",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_refund_pending",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_offchain_funds",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "The asset to be sent by anchor to user at end of transaction",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_amounts_updated",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/structure/pagination/page-arguments",
+  "rfRank": 27,
+  "proseRank": 27,
+  "rfQ": "A designation of the order in which records should appear. Options include `asc`",
+  "prQ": "A designation of the order in which records should appear. Options include `asc`"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_onchain_funds_received",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_received",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_trust",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "The total amount refunded in units of amount\\_in\\_asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_interactive_flow_completed",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "The asset to be sent by anchor to user at end of transaction",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_trust_set",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getTransaction",
+  "rfRank": -1,
+  "proseRank": 17,
+  "rfQ": "Lets the user choose the format in which the response should be returned - eithe",
+  "prQ": "An array of base64-encoded [xdr.TransactionEvent](https://github.com/stellar/ste"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "Lets the user choose the format in which the response should be returned - eithe",
+  "prQ": "A trustline is a balance entry for any non-native asset (such as [Circle's USDC]"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_sent",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/sendTransaction",
+  "rfRank": 23,
+  "proseRank": 0,
+  "rfQ": "The signed transaction to broadcast for inclusion in a ledger.",
+  "prQ": "Submitting a valid transaction using the `sendTransaction` method, resulting in "
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_customer_info_updated",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_pending",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "The unique identifier of this transaction on the external network.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getTransactions",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "An opaque string which acts as a paging token. To obtain the next page of result",
+  "prQ": "The sequence number of the ledger which included the transaction."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_available",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "The unique identifier of this transaction on the external network.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/get_transactions",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "The number of records to return in each page.",
+  "prQ": "The memo type of the transaction in the Stellar network. Should be present if me"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_onchain_funds_sent",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_on_hold",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_payment",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_error",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_expired",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_recovery",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "Human readable explanation of transaction status.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/get_transaction",
+  "rfRank": 5,
+  "proseRank": -1,
+  "rfQ": "The unique identifier of this transaction.",
+  "prQ": "The memo type of the transaction in the Stellar network. Should be present if me"
+ }
+]

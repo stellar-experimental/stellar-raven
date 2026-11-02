@@ -187,6 +187,24 @@ live sources. Two goldens are stale because of the 2026-10-21/22 docs changes. A
 docs calls for the unrun `q-ti-enumerate-holders-airdrop` shows Mintlify returning the
 `list-all-accounts` and Hubble snapshot pages that Algolia missed.
 
+Re-run of the 4 missing rows (owner-authorized, cap $6): server and runner `4388932b` (review fixes
+plus the main merge); the surface hash is unchanged (`bb19653b…`). A new stable remote vector was
+needed because the docs kept deploying: the first try changed between captures, the second was
+stable at 18:47Z (`c1543062…`). All 4 rows ran, guards matched, $2.13.
+
+| Row | A (Algolia) | B (Mintlify) |
+|---|---|---|
+| `q-ti-compute-token-lp-market-data` | partial | partial |
+| `q-ti-enumerate-holders-airdrop` | wrong | partial |
+| `q-ti-testnet-usdc-faucet` | partial | partial |
+| `q-zk-verification-resource-budget` | correct | correct |
+
+The enumerate-holders gain is the one the lane 3 replay predicted: B's answer cites the
+`list-all-accounts` and Hubble snapshot pages that Algolia never returned.
+
+All 30 rows: A 10 correct, 14 partial, 6 wrong; B 9 correct, 16 partial, 5 wrong. Half-credit is
+56.7 % in both arms. Total paid spend: $31.47.
+
 Reading: answer quality is flat within single-sample noise. Retrieval gains reach some answers
 (instance storage, and better pages on two more rows without a grade change). The one regression
 mechanism is general: Mintlify search rarely returns text inside `<ResponseField>` components. On
@@ -196,7 +214,16 @@ identifiers, all Horizon string codes, never appear in the 50 candidates (`ident
 
 Follow-ups:
 
-- Upstream: `sd-059` (verified; not filed — filing needs owner approval).
+- Upstream: `sd-059` (the owner approved filing). `sd-059` stays scoped to `<ResponseField>`. The
+  `sd-003` reviewer saw the `getTransactions` limit text inside `<ParamField>` rank poorly, so the
+  same sweep ran on the 34 files that use `<ParamField>` (`paramfield-rank.json`). Prose
+  sentences on those pages also miss the top 50 (26 of 32), so the weakness there is page-level,
+  not component-level. It is not the `sd-059` mechanism, and the pages are still found by
+  method-named queries.
+- `sd-003`: a distinct reviewer re-derived RESOLVE (`sd003-recheck.md`). The resolution comment is
+  posted (`sd003-comment.md`;
+  https://github.com/stellar/stellar-docs/issues/2566#issuecomment-6585113964). The resolver runs
+  after the Mintlify deploy and the golden audit; see `.agents/TODO.md`.
 - Own repo: `.agents/TODO.md` → "Point agents at the page when a docs hit has no body".
 - Goldens: the full golden audit (`2026-11-02-golden-audit.md`) owns battery edits, so this branch
   edits none. The five affected cases and their open points are in `golden-handoff.md`; the row
@@ -228,6 +255,5 @@ branch (five `reverifyBy` dates expired on 2026-11-01).
 
 ## Open items
 
-- The 4 arm B rows that did not run need a new bounded authorization (about $2–3).
 - Production cut-over: `MINTLIFY_ASSISTANT_API_KEY` Worker secret, then delete the `ALGOLIA_*_DOCS`
   secrets after deploy.

@@ -43,8 +43,8 @@ no longer reproduce. Ledger: [2026-11-02 Mintlify migration](rounds/2026-11-02-m
 
 Later on 2026-11-02: the independent review (Claude Fable, APPROVE WITH CHANGES) is reconciled in
 `a3ecf688`. The paid QA diagnostic ran 30 IDs on Algolia and 26 on Mintlify; the Mintlify arm
-stopped when the docs site deployed. On the 26 paired rows, verdicts were flat (8 changed, 4 each
-way); one gain and one loss trace to the backend. The loss is `sd-059`.
+stopped when the docs site deployed; its 4 missing rows were re-run. On all 30 rows half-credit
+is 56.7 % in both arms; two gains and one loss trace to the backend. The loss is `sd-059`.
 
 Remaining steps: the production cut-over (set the `MINTLIFY_ASSISTANT_API_KEY` Worker secret before
 deploy, then delete the `ALGOLIA_*_DOCS` Worker and GitHub secrets).
@@ -88,13 +88,18 @@ size check, anchor key-fact-3 grading, MPP key fact 5) are in
 `rounds/2026-11-02-mintlify-migration/golden-handoff.md`. Done when the audit lands and each open
 point is accepted, rejected with evidence, or carried into its own item.
 
-### Resolve `sd-003` after its upstream comment
+### Retire `sd-003` after the Mintlify deploy and the golden audit
 
-`sd-003` is `fixed-upstream`: the Mintlify search indexes the generated RPC method pages. Deletion
-needs a distinct reviewer's fresh live recheck and a resolution comment on
-https://github.com/stellar/stellar-docs/issues/2566, which needs owner approval to post. Then run
-`npm run improvements:resolve` and reconcile the `sd-003` reference in
-`eval/qa/corpus/battery/tooling-infra/q-ti-rpc-gettransactions-pagination-xdr.json`.
+`sd-003` is `fixed-upstream`. A distinct reviewer re-derived RESOLVE on 2026-11-02
+(`rounds/2026-11-02-mintlify-migration/sd003-recheck.md`), and the resolution comment is posted:
+https://github.com/stellar/stellar-docs/issues/2566#issuecomment-6585113964. Two conditions remain.
+First, the Mintlify adapter must be live in production; the Algolia adapter still reproduces the
+gap. Second, four battery cases name `sd-003` (`q-ti-rpc-gettransactions-pagination-xdr`,
+`q-infra-rpc-methods-list`, `q-pc-practical-fee-setting`, `q-pc-tx-finality-failure-semantics`),
+and the 2026-11-02 golden audit owns battery edits. After both land, run the resolver with the
+command in the recheck file (section 8), reconcile those four cases with the `golden-truth` skill,
+and update the current-state lines the recheck lists (TODO, the Mintlify research note,
+`ideas/source-delivery-ranked-references.md`).
 
 ## Improvements follow-up
 
