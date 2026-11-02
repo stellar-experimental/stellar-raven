@@ -23,15 +23,17 @@ function vector() {
         canonicalInventorySha256: "2".repeat(64)
       },
       stellarDocs: {
-        indexSettingsSha256: "3".repeat(64),
-        canonicalTitleSetSha256: "4".repeat(64)
+        llmsTxtSha256: "3".repeat(64),
+        llmsTxtBytes: 55_668,
+        llmsFullTxtSha256: "4".repeat(64),
+        llmsFullTxtBytes: 5_810_884
       }
     }
   };
 }
 
 // Serves the public sources that the committed probe reads.
-function upstreamResponse(url, init) {
+function upstreamResponse(url) {
   if (url.endsWith("/api/openapi.json")) return { info: { version: "1.9.30" }, paths: {} };
   if (url.endsWith("/v1/openapi.json")) return { info: { version: "1.0.0" }, paths: {} };
   if (url.endsWith("/v1/tools")) {
@@ -46,17 +48,17 @@ function upstreamResponse(url, init) {
       data: { count: 1, archives: {}, note: "public skills", versions: {}, skills: [{ name: "skill-a" }] }
     };
   }
-  if (url.endsWith("/settings")) return { searchableAttributes: ["title"] };
-  const hits = Array.from({ length: 150 }, (_, index) => ({
-    hierarchy: { lvl1: `Title ${index}` },
-    url_without_anchor: `https://developers.stellar.org/docs/page-${index}`
-  }));
-  return {
-    results: JSON.parse(init.body).requests.map((request) => {
-      const page = Number(new URLSearchParams(request.params).get("page"));
-      return { page, nbPages: 2, nbHits: hits.length, hits: hits.slice(page * 100, page * 100 + 100) };
-    })
-  };
+  throw new Error(`unexpected JSON source ${url}`);
+}
+
+function upstreamFetch(url) {
+  if (url === "https://developers.stellar.org/llms.txt") {
+    return new Response("# Stellar Developer Docs\n", { status: 200 });
+  }
+  if (url === "https://developers.stellar.org/llms-full.txt") {
+    return new Response("# Agentic Payments\nSource: https://developers.stellar.org/docs\n", { status: 200 });
+  }
+  return Response.json(upstreamResponse(url));
 }
 
 afterEach(() => {
@@ -67,10 +69,14 @@ describe("paired capacity check", () => {
   it("classifies only the three public service hosts", () => {
     expect(classifyService("https://stellarlight.xyz/api/openapi.json")).toBe("scout");
     expect(classifyService("https://api.lumenloop.com/v1/tools")).toBe("lumenloop");
-    expect(classifyService("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x")).toBe("stellarDocs");
-    expect(() => classifyService("https://example.com/data")).toThrow(
-      "unrecognized public capacity-check host"
-    );
+    expect(classifyService("https://developers.stellar.org/llms.txt")).toBe("stellarDocs");
+    for (const retiredOrKeyed of [
+      "https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x",
+      "https://api.mintlify.com/discovery/v1/search/stellardevelopmentfoundation",
+      "https://example.com/data"
+    ]) {
+      expect(() => classifyService(retiredOrKeyed)).toThrow("unrecognized public capacity-check host");
+    }
   });
 
   it("summarizes response latency and service failures", () => {
@@ -110,7 +116,7 @@ describe("paired capacity check", () => {
   });
 
   it("releases two committed probe captures together and records matching vectors", async () => {
-    vi.stubGlobal("fetch", vi.fn(async (url, init = {}) => Response.json(upstreamResponse(url, init))));
+    vi.stubGlobal("fetch", vi.fn(async (url) => upstreamFetch(url)));
 
     const report = await runPairedCapacityCheck();
 
@@ -149,7 +155,8 @@ describe("paired capacity check", () => {
       await Promise.all([
         fetchImpl("https://stellarlight.xyz/api/openapi.json"),
         ...Array.from({ length: 3 }, () => fetchImpl("https://api.lumenloop.com/v1/tools")),
-        ...Array.from({ length: 2 }, () => fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x"))
+        fetchImpl("https://developers.stellar.org/llms.txt"),
+        fetchImpl("https://developers.stellar.org/llms-full.txt")
       ]);
       return vector();
     };

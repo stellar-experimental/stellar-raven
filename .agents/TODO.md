@@ -20,8 +20,6 @@ Open owner decisions are at the end of this file. Each one is listed once.
 3. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
    authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
    #281, and #270 are merged and deployed; the section guard does not ship.
-4. Fix the table-row loss in `stellarDocs.get_doc_page_sections` (HackMeridian 2026 review
-   follow-ups below). It is small, and it blocks address and version answers on every docs page.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -36,14 +34,42 @@ DocSearch index still answers, but it no longer updates, so every `stellarDocs.*
 stale. Research, the operation mapping, and the list of affected files are in
 [the Mintlify research note](../research/services/stellar-docs-mintlify.md).
 
-Steps: create the assistant key and store it as a host secret; confirm the open API facts with
-keyed probes; rewrite the adapter, spec, and inventory refresh; run an Algolia-versus-Mintlify A/B
-over the docs goldens; pass the routing gate; cut over; then retire the Algolia docs secrets, rule
-canary, and comparison harness. This item also resolves the `get_doc_page_sections` table-row
-loss below if the page endpoint replaces the section query.
+2026-11-02: the adapter, spec, inventory refresh, tests, and docs are rewritten on branch
+`feat/mintlify-docs-migration`; the Algolia docs scripts, rule canary, and comparison harness are
+retired; the free retrieval A/B favors Mintlify (mean golden-page recall 0.614 → 0.787, soft-empty
+80 → 6); the routing gate is re-baselined with per-case evidence. `get_doc_page` returns whole
+pages, so the HackMeridian table-row loss (Q18, R22, R32) and the soft-empty `/meetings` pages (Q9)
+no longer reproduce. Ledger: [2026-11-02 Mintlify migration](rounds/2026-11-02-mintlify-migration.md).
+
+Remaining steps: the paid QA paired A/B on the docs cases; an independent review of the branch;
+the production cut-over (set the `MINTLIFY_ASSISTANT_API_KEY` Worker secret before deploy, then
+delete the `ALGOLIA_*_DOCS` Worker and GitHub secrets).
 
 Done when: production `stellarDocs.*` reads only Mintlify, the A/B shows no docs-answer regression,
 and no `ALGOLIA_*_DOCS` reference remains outside dated records.
+
+### Derive section anchors for Mintlify search hits
+
+Algolia hits linked to the matched section (`#anchor`); Mintlify sections carry only the page path.
+A hit's `section` heading could yield the anchor if the adapter applies the site's heading-slug
+rule. Found in the 2026-11-02 migration A/B. Done when a test pins the slug rule against live
+heading anchors on at least five pages, including headings with code spans and punctuation.
+
+### Repair or retire stale golden docs references
+
+The 2026-11-02 page-coverage check (`rounds/2026-11-02-mintlify-migration/page-coverage.json`)
+found 21 golden source URLs that no longer resolve: 11 site 308 redirects and 10 404s, all also
+absent from the retired Algolia index. `get_doc_page` follows the redirects, but the goldens should
+cite the canonical paths. Use the `golden-truth` skill. Done when the page-coverage check reports
+zero 404s and zero redirects for active cases.
+
+### Resolve `sd-003` after its upstream comment
+
+`sd-003` is `fixed-upstream`: the Mintlify search indexes the generated RPC method pages. Deletion
+needs a distinct reviewer's fresh live recheck and a resolution comment on
+https://github.com/stellar/stellar-docs/issues/2566, which needs owner approval to post. Then run
+`npm run improvements:resolve` and reconcile the `sd-003` reference in
+`eval/qa/corpus/battery/tooling-infra/q-ti-rpc-gettransactions-pagination-xdr.json`.
 
 ## Improvements follow-up
 
@@ -736,20 +762,6 @@ four questions repeated on Sonnet and Haiku, and independent Fable grades agains
 Probe ids below are `Q<n>` (round 1) and `R<nn>` (round 2). The report, the probe answers, and the
 grades are in the owner's private evidence snapshot `2026-10-26-hackmeridian` (see
 `usage/README.md`); that copy also holds the production figures, which stay out of this repo.
-
-### Return every table row from `stellarDocs.get_doc_page_sections`
-
-`sortAndDedupeSections` (`src/adapters/stellar-docs.ts`) keeps one Algolia record for each section
-URL. Every row of a docs table shares its heading's URL, so only the first row survives. Q18 (the
-oracle testnet addresses) lost its answer this way. R22 (the software-versions sections came back
-empty) and R32 (a chunk cut the `getEvents` limits table) are related table losses; confirm their
-cause in the same pass. The same pass should normalize `path` (strip the
-`https://developers.stellar.org` origin and any `#anchor` before the `^/(docs|meetings)/` guard)
-and fix or document the soft-empty `/meetings` pages (Q9). A Markdown page reader over the docs'
-`<page>.md` text is the broader fix for tables and admonitions; weigh it against a dedupe fix.
-
-Done when: a test shows that the oracle page's testnet table and the software-versions table come
-back complete, and Q18 and R22 pass when run again.
 
 ### Add a release and package-version source
 

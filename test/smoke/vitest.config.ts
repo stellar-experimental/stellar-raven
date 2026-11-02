@@ -67,13 +67,12 @@ export default defineConfig({
           // Fake key so the lumenloop adapter passes its config guard; the
           // only "upstream" it can reach is a test-local fetch stub.
           LUMENLOOP_API_KEY: "smoke-test-lumenloop-key",
-          // Same for the docs adapter's config guard: without these the
+          // Same for the docs adapter's config guard: without it the
           // stellarDocs ops fail before dispatch, which silently changed
           // recovery-hint assertions depending on whether a local .dev.vars
           // happened to exist. Fakes keep the lane .dev.vars-independent, as
           // its docstring promises (outbound is stubbed per test anyway).
-          ALGOLIA_APPLICATION_ID_DOCS: "SMOKETESTAPPID",
-          ALGOLIA_API_KEY_DOCS: "smoke-test-algolia-key",
+          MINTLIFY_ASSISTANT_API_KEY: "smoke-test-mintlify-key",
           // Set so server.test.ts can assert the bypass's hostname second
           // factor AT THE ASSEMBLY LEVEL: honored on localhost, inert on the
           // public hostname (gate.ts logic itself is unit-tested).

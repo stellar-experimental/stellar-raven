@@ -148,7 +148,7 @@ export const RETRIEVAL_PROFILES = {
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
     { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE }
   ] },
-  "stellarDocs.get_doc_page_sections": { lane: "detail", emptyScope: "operation", recoverWith: [
+  "stellarDocs.get_doc_page": { lane: "detail", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
   ] },

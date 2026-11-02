@@ -3,19 +3,19 @@ import { createHash } from "node:crypto";
 import { accessSync, constants, readFileSync, realpathSync, statSync } from "node:fs";
 import path from "node:path";
 
-export const REMOTE_IDENTITY_VECTOR_SCHEMA = "qa-remote-identity-vector-v1";
+export const REMOTE_IDENTITY_VECTOR_SCHEMA = "qa-remote-identity-vector-v2";
 export const REMOTE_IDENTITY_GUARD_SCHEMA = "qa-remote-identity-guard-v3";
 export const REMOTE_IDENTITY_SERVICES = ["scout", "lumenloop", "stellarDocs"];
 export const REMOTE_IDENTITY_REQUEST_TIMEOUT_MS = 20_000;
 export const REMOTE_IDENTITY_RETRY_DELAYS_MS = Object.freeze([250, 1_000]);
 export const REMOTE_IDENTITY_MAX_RETRY_AFTER_MS = 5_000;
-// The probe sends its Algolia requests in one concurrent phase.
-const REMOTE_IDENTITY_DOCS_QUERY_PHASES = 1;
+// The probe sends all of its requests in one concurrent phase.
+const REMOTE_IDENTITY_REQUEST_PHASES = 1;
 const REMOTE_IDENTITY_MAX_RETRY_DELAY_MS = Math.max(
   REMOTE_IDENTITY_MAX_RETRY_AFTER_MS,
   ...REMOTE_IDENTITY_RETRY_DELAYS_MS
 );
-export const REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS = REMOTE_IDENTITY_DOCS_QUERY_PHASES * (
+export const REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS = REMOTE_IDENTITY_REQUEST_PHASES * (
   (REMOTE_IDENTITY_RETRY_DELAYS_MS.length + 1) * REMOTE_IDENTITY_REQUEST_TIMEOUT_MS +
   REMOTE_IDENTITY_RETRY_DELAYS_MS.length * REMOTE_IDENTITY_MAX_RETRY_DELAY_MS
 );
@@ -37,14 +37,15 @@ export const REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS =
 const SERVICE_FIELDS = {
   scout: ["openapiVersion", "canonicalOpenapiSha256"],
   lumenloop: ["advertisedContractIdentity", "canonicalInventorySha256"],
-  stellarDocs: ["indexSettingsSha256", "canonicalTitleSetSha256"]
+  stellarDocs: ["llmsTxtSha256", "llmsTxtBytes", "llmsFullTxtSha256", "llmsFullTxtBytes"]
 };
 const HASH_FIELDS = new Set([
   "canonicalOpenapiSha256",
   "canonicalInventorySha256",
-  "indexSettingsSha256",
-  "canonicalTitleSetSha256"
+  "llmsTxtSha256",
+  "llmsFullTxtSha256"
 ]);
+const BYTE_COUNT_FIELDS = new Set(["llmsTxtBytes", "llmsFullTxtBytes"]);
 const SAFE_IDENTITY = /^[A-Za-z0-9][A-Za-z0-9._:+/-]{0,127}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
 const PROBE_LINE_PREFIX = "remote-identity-probe: ";
@@ -97,6 +98,10 @@ export function parseRemoteIdentityVector(value) {
         if (typeof fieldValue !== "string" || !SHA256.test(fieldValue)) {
           throw new Error(`remote identity ${service}.${field} must be a lowercase SHA-256`);
         }
+      } else if (BYTE_COUNT_FIELDS.has(field)) {
+        if (!Number.isSafeInteger(fieldValue) || fieldValue < 1) {
+          throw new Error(`remote identity ${service}.${field} must be a positive byte count`);
+        }
       } else if (typeof fieldValue !== "string" || !SAFE_IDENTITY.test(fieldValue)) {
         throw new Error(`remote identity ${service}.${field} must be a safe identity token`);
       }
@@ -134,8 +139,8 @@ const PROBE_REQUEST_LABELS = [
   "Lumenloop OpenAPI",
   "Lumenloop public tools",
   "Lumenloop public skills",
-  "Stellar Docs settings",
-  "Stellar Docs title pages"
+  "Stellar Docs llms.txt",
+  "Stellar Docs llms-full.txt"
 ];
 const PROBE_SHAPE_LABELS = [
   "Scout OpenAPI",
@@ -150,9 +155,7 @@ const PROBE_SHAPE_LABELS = [
   "Lumenloop skills data",
   "Lumenloop skill archives",
   "Lumenloop skill note",
-  "Lumenloop skill versions",
-  "Stellar Docs settings",
-  "Stellar Docs title response"
+  "Lumenloop skill versions"
 ];
 const alternatives = (values) => values.map((value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
 const PROBE_REQUEST_LABEL = `(?:${alternatives(PROBE_REQUEST_LABELS)})`;
@@ -172,11 +175,8 @@ const PROBE_FIXED_MESSAGES = new Set([
   "Lumenloop tools response is incomplete",
   "Lumenloop tools response count does not match its tools",
   "Lumenloop skills response is incomplete",
-  "Stellar Docs title response is incomplete",
-  "Stellar Docs title response is truncated",
-  "Stellar Docs title pages are incomplete",
-  "Stellar Docs title page count is invalid",
-  "Stellar Docs title pagination changed during capture",
+  "Stellar Docs llms.txt is not a UTF-8 Markdown document",
+  "Stellar Docs llms-full.txt is not a UTF-8 Markdown document",
   "remote identity vector must be an object",
   `remote identity vector schema must be ${REMOTE_IDENTITY_VECTOR_SCHEMA}`,
   "remote identity vector must contain exactly: schema, services",
@@ -187,7 +187,9 @@ const PROBE_FIXED_MESSAGES = new Set([
     `remote identity service ${service} must contain exactly: ${[...fields].sort().join(", ")}`,
     ...fields.map((field) => HASH_FIELDS.has(field)
       ? `remote identity ${service}.${field} must be a lowercase SHA-256`
-      : `remote identity ${service}.${field} must be a safe identity token`)
+      : BYTE_COUNT_FIELDS.has(field)
+        ? `remote identity ${service}.${field} must be a positive byte count`
+        : `remote identity ${service}.${field} must be a safe identity token`)
   ])
 ]);
 

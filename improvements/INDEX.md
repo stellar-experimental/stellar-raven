@@ -36,10 +36,10 @@ Total findings: 66
 
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
-| sd-003 | The Algolia docs index excludes the auto-generated RPC-method and Horizon-endpoint API-reference pages, so authoritative per-method limits… | reported-upstream | 2026-07-03 | 5           |
+| sd-003 | The Algolia docs index excludes the auto-generated RPC-method and Horizon-endpoint API-reference pages, so authoritative per-method limits… | fixed-upstream    | 2026-07-03 | 5           |
 | sd-004 | The RPC method reference pages describe pagination limits as "hardcoded in Stellar-RPC for performance reasons" (getTransactions and…       | declined-upstream | 2026-07-03 | 2           |
-| sd-005 | The docs' agentic-payments coverage documents x402 and MPP mechanics in depth but contains zero positioning against the wider…              | reported-upstream | 2026-07-06 | 4           |
-| sd-009 | The docs omit SEP-6's canonical interactive-component deprecation status                                                                    | declined-upstream | 2026-07-09 | 3           |
+| sd-005 | The docs' agentic-payments coverage documents x402 and MPP mechanics in depth but contains zero positioning against the wider…              | reported-upstream | 2026-07-06 | 5           |
+| sd-009 | The docs omit SEP-6's canonical interactive-component deprecation status                                                                    | declined-upstream | 2026-07-09 | 4           |
 | sd-014 | Official documentation exposes bucketListHash, txSetHash, txSetResultHash, LedgerCloseMeta, SCP envelopes, and archive retrieval in…        | reported-upstream | 2026-07-10 | 1           |
 | sd-032 | The current Flutter Wallet SDK tutorial pins this pair:                                                                                     | reported-upstream | 2026-07-11 | 1           |
 | sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial installs…                  | reported-upstream | 2026-07-11 | 1           |

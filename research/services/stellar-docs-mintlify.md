@@ -159,3 +159,25 @@ The public MCP server needs no key and exposes a richer filesystem tool. Raven s
 API: `docs/stellar-docs.md` forbids runtime routing through an external MCP server, the REST API
 has a documented contract and rate limit, and the host keeps a credentialed, attributable
 transport. The public MCP server stays a research and comparison instrument.
+
+## Retrieval A/B and Mintlify-side asks (2026-11-02)
+
+The adapter-level A/B over 255 golden cases and 1,498 queries favors Mintlify. Mean golden-page
+recall rose from 0.614 to 0.787, and soft-empty results fell from 80 to 6. The numbers, method,
+and per-case rows are in
+[the round ledger](../../.agents/rounds/2026-11-02-mintlify-migration.md).
+
+These Mintlify API limits cost Raven quality. They are requests for the Mintlify project owner,
+not docs-content defects, so they are not `improvements/` findings:
+
+- **Section anchors.** A search chunk has a page path but no heading anchor. Agents cannot cite the
+  matched section.
+- **A relevance signal.** The search returns no score, and `scoreThreshold` changes nothing. The
+  adapter must infer "no match" from query terms.
+- **Tail latency.** Over the A/B, p50 was 493 ms, p95 1,735 ms, and p99 3,717 ms. Four of 1,498
+  requests exceeded 8,000 ms on the first attempt. Algolia's p99 was 320 ms.
+- **Server-side scoping.** `filter.version`, `filter.language`, and `filter.tag` have no effect.
+  Path filtering happens after a 50-section window, so narrow operations can lose matches that
+  rank below the window.
+- **Redirects.** The page endpoint returns 404 for a moved page. The site serves a 308. The
+  adapter now follows one same-origin redirect itself.

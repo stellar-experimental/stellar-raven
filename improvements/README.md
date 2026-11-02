@@ -169,37 +169,25 @@ fixed. `fixed-upstream` without an issue URL is valid when its evidence records 
 recheck. Add an existing resolving issue or pull request when you can find one. Do not invent a
 ceremonial report.
 
-## Resolution paths (stellar-docs: upstream vs. direct Algolia)
+## Resolution paths (stellar-docs)
 
-Filing upstream is the default. `stellar-docs` findings divide by root cause:
+Filing upstream is the default. The docs site runs on Mintlify, and Raven has no write path to its
+content or search configuration. `stellar-docs` findings divide by root cause:
 
 - **Content gaps.** A page is stale, wrong, ambiguous, or missing (for example `sd-004`). These
-  findings stay upstream with the content owner, usually `stellar/stellar-docs`. Do not rewrite index records
-  to correct them. The crawler overwrites such a change, and the shared corpus then differs from
-  its source.
-- **Search-mechanism gaps.** The cause is ranking, tokenization, synonyms or vocabulary, or
-  crawler configuration (`sd-003`; `sd-001` and `sd-006` are resolved precedents). The operator
-  can correct these directly with the maintenance Algolia credentials in `.env`. Possible changes
-  are a general rule or synonym, an index-settings change, or a crawler-configuration fix with a
-  reindex.
+  findings stay upstream with the content owner, usually `stellar/stellar-docs`.
+- **Search-mechanism gaps.** The Mintlify search ranks or chunks a page badly, or omits it. File
+  these upstream with the query, the expected page, and the observed hits.
 
-A direct Algolia change must meet the bar in
-[`docs/stellar-docs.md`](../docs/stellar-docs.md#binding-write-guardrails). Read "Operator risk
-ladder" and "Binding write guardrails" there. Measure the read-only A/B result with
-`npm run eval:algolia-raven` before the change.
+A gap in Raven's own docs scoping (path scopes, the candidate window, or the query-term guard) is
+an own-repo fix, not a finding. It goes to `.agents/TODO.md` and needs a general mechanism and a
+read-only retrieval-level A/B win before it ships. `docs/stellar-docs.md` defines the scoping
+contract.
 
-Record a direct Algolia remediation in the finding's `evidence`, exactly as for an upstream fix.
-Give the change, the A/B result before and after, and the live re-check. Keep the GitHub reference
-too when the cause is also a content or crawler problem that the docs owner must know about.
-
-The `sd-001` crawler fix and the resolved `sd-006` precedent keep separate canaries. The `sd-001`
-canary reports drift. The load-bearing `sd-006` rule canary fails on drift.
-
-**Analytics as evidence.** The Search Analytics and usage keys give aggregated top-query and
-no-result-query reports. They are a low-risk evidence source. Use them to measure how common a
-finding is. That measure is stronger than the approximation from the eval corpus. Use them also
-to find content and vocabulary gaps that the evals do not show. Cite the analytics query and
-window in `evidence`.
+**Analytics as evidence.** `MINTLIFY_ADMIN_API_KEY` reads the docs project's analytics. It is a
+maintenance-only key and is never a Worker or sandbox binding. Aggregated query reports measure
+how common a finding is better than the eval corpus does. Cite the analytics query and window in
+`evidence`.
 
 ## When findings get filed
 

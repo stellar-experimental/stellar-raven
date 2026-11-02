@@ -41,7 +41,7 @@ The host owns service traffic, authentication, argument validation, and secrets.
 | Service snapshots | `inventory/` and `scripts/refresh-inventory.mjs` |
 | Skill pins | `ecosystem-skills/MANIFEST.json` and `ecosystem-skills/update.sh` |
 | Generated catalog and sandbox specification | `catalog/manifest.json`, `specs/super-spec.json` |
-| Stellar Docs search contract and Algolia guardrails | [docs/stellar-docs.md](docs/stellar-docs.md) |
+| Stellar Docs search contract and credential guardrails | [docs/stellar-docs.md](docs/stellar-docs.md) |
 | Worker bindings and compatibility flags | `wrangler.jsonc` |
 | Dependency versions | `package.json` and `package-lock.json` |
 | Generated-file ownership | [scripts/README.md](scripts/README.md) |

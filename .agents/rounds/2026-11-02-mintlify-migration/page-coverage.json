@@ -1,0 +1,2609 @@
+{
+ "summary": {
+  "paths": 194,
+  "pageOk": 173,
+  "pageMissing": 21,
+  "site": {
+   "200": 173,
+   "308": 11,
+   "404": 10
+  }
+ },
+ "rows": [
+  {
+   "path": "/docs/tokens/control-asset-access",
+   "cases": [
+    "q-aas-burn-clawback-redemption-mechanics",
+    "q-aas-issuer-fees-supply-cap-freeze",
+    "q-ass-cross-etherfuse-cetes-controls",
+    "q-asset-issue-asset-howto",
+    "q-asset-two-account-issuer",
+    "q-comp-auth-flags-overview",
+    "q-comp-clawback-holder-risk",
+    "q-comp-sep8-regulated-assets-approval-server",
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-crp-tokenize-personal-rwa",
+    "q-rwa-stellar-vs-erc20-regulated"
+   ],
+   "page": "ok",
+   "chars": 14858,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/stellar-data-structures/assets",
+   "cases": [
+    "q-aas-burn-clawback-redemption-mechanics",
+    "q-aas-issuer-fees-supply-cap-freeze",
+    "q-aas-trustline-limit-lifecycle"
+   ],
+   "page": "ok",
+   "chars": 6356,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/lumens",
+   "cases": [
+    "q-aas-claimable-predicates-expiry-reserves",
+    "q-aas-trustline-limit-lifecycle",
+    "q-asset-trustline-basics",
+    "q-edge-1xlm-activation-fee",
+    "q-edge-metamask-evm-mental-model",
+    "q-edge-retail-everyday-use-eli5",
+    "q-hot-fee-pool-burn-deflation",
+    "q-pc-sponsored-reserves",
+    "q-protocol-base-reserve-min-balance",
+    "q-token-initial-supply-distribution"
+   ],
+   "page": "ok",
+   "chars": 11664,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/list-all-claimable-balances",
+   "cases": [
+    "q-aas-claim-received-claimable-balances"
+   ],
+   "page": "ok",
+   "chars": 3711,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/example-application-tutorial/anchor-integration/sep1",
+   "cases": [
+    "q-aas-list-token-on-exchanges-aggregators"
+   ],
+   "page": "ok",
+   "chars": 2272,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tokens/stellar-asset-contract",
+   "cases": [
+    "q-aas-burn-clawback-redemption-mechanics",
+    "q-aas-issuer-fees-supply-cap-freeze",
+    "q-ass-cross-bando-stablebonds-sac",
+    "q-asset-deploy-sac-cli",
+    "q-asset-trustline-vs-sac",
+    "q-comp-sac-inherits-flags",
+    "q-crp-tokenize-personal-rwa",
+    "q-defi-etherfuse-stablebonds",
+    "q-edge-ambig-stellar-token-meaning",
+    "q-edge-metamask-evm-mental-model",
+    "q-sep-41-token-interface",
+    "q-smart-wallet-fee-sponsorship",
+    "q-sor-contract-as-claimable-arbiter",
+    "q-sor-contract-trustlines-c-address",
+    "q-sor-sac-introspection",
+    "q-soroban-token-transfer-pattern",
+    "q-ti-custodial-account-generation-c-address",
+    "q-ti-enumerate-holders-airdrop",
+    "q-ti-fetch-all-balances-classic-sac",
+    "q-ti-testnet-usdc-faucet",
+    "q-tool-cctp-stellar-integration"
+   ],
+   "page": "ok",
+   "chars": 22795,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/transactions/list-of-operations",
+   "cases": [
+    "q-aas-claim-received-claimable-balances",
+    "q-aas-claimable-predicates-expiry-reserves",
+    "q-aas-trustline-limit-lifecycle",
+    "q-pc-account-merge-reclaim-reserve",
+    "q-pc-multisig-setup-lifecycle",
+    "q-pc-sponsored-reserves",
+    "q-protocol-operation-types-list",
+    "q-raph-low-xlm-transfer-fail",
+    "q-raph-remove-scam-token",
+    "q-sor-doc-timestamping-manage-data"
+   ],
+   "page": "ok",
+   "chars": 105394,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/claimable-balances",
+   "cases": [
+    "q-aas-claim-received-claimable-balances",
+    "q-aas-claimable-predicates-expiry-reserves",
+    "q-asset-claimable-balance",
+    "q-raph-claimable-balance-safety",
+    "q-raph-phishing-pending-claim",
+    "q-raph-scam-spam-tokens",
+    "q-raph-unsolicited-airdrop"
+   ],
+   "page": "ok",
+   "chars": 25476,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust",
+   "cases": [
+    "q-aas-trustline-limit-lifecycle"
+   ],
+   "page": "ok",
+   "chars": 1512,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/anchors",
+   "cases": [
+    "q-anchor-list-builders-discovery",
+    "q-comp-anchor-compliance-stack",
+    "q-comp-cross-bitso-sep31",
+    "q-comp-cross-moneygram-partnership-sep24",
+    "q-crp-anchors-by-corridor",
+    "q-crp-become-an-anchor-licensing",
+    "q-crp-remittance-founder-advisory",
+    "q-scf-cross-decaf-sep24",
+    "q-sep-interactive-deposit-withdraw"
+   ],
+   "page": "ok",
+   "chars": 5654,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/wallet/sep30",
+   "cases": [
+    "q-aas-sep30-recoverable-wallets",
+    "q-tool-passkey-wallet-recovery"
+   ],
+   "page": "ok",
+   "chars": 21418,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/platforms/stellar-disbursement-platform",
+   "cases": [
+    "q-anchor-sdp-vs-anchor-platform",
+    "q-anchor-sdp-what",
+    "q-crp-sdp-operation",
+    "q-pay-sdp-disbursement"
+   ],
+   "page": "ok",
+   "chars": 1294,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/platforms/anchor-platform",
+   "cases": [
+    "q-anchor-platform-what",
+    "q-anchor-sdp-vs-anchor-platform",
+    "q-comp-anchor-compliance-stack",
+    "q-crp-become-an-anchor-licensing"
+   ],
+   "page": "ok",
+   "chars": 3499,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/wallet",
+   "cases": [
+    "q-aas-sep30-recoverable-wallets"
+   ],
+   "page": "ok",
+   "chars": 2329,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/example-application-tutorial/anchor-integration",
+   "cases": [
+    "q-anchor-endpoint-discovery"
+   ],
+   "page": "ok",
+   "chars": 1676,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tokens/how-to-issue-an-asset",
+   "cases": [
+    "q-asset-issue-asset-howto",
+    "q-edge-ambig-stellar-token-meaning"
+   ],
+   "page": "ok",
+   "chars": 31736,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/basics/verify-trustlines",
+   "cases": [
+    "q-asset-trustline-basics"
+   ],
+   "page": "ok",
+   "chars": 15628,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/wallet/intro",
+   "cases": [
+    "q-asset-wallet-sdk-seps",
+    "q-sep-wallet-seps-list",
+    "q-tool-flutter-mobile-sdk"
+   ],
+   "page": "ok",
+   "chars": 13545,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/meetings/2024/06/13",
+   "cases": [
+    "q-builder-content-by-person"
+   ],
+   "page": "ok",
+   "chars": 1702,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/cli/deploy-stellar-asset-contract",
+   "cases": [
+    "q-asset-deploy-sac-cli"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/tools/cli/cookbook/deploy-stellar-asset-contract"
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/clawbacks",
+   "cases": [
+    "q-comp-auth-flags-overview",
+    "q-comp-clawback-cap0035",
+    "q-comp-clawback-holder-risk",
+    "q-sep-clawback-prereq-flag"
+   ],
+   "page": "ok",
+   "chars": 35117,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/platforms/anchor-platform/sep-guide/sep31/integration",
+   "cases": [
+    "q-comp-cross-bitso-sep31"
+   ],
+   "page": "ok",
+   "chars": 26509,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tokens/anatomy-of-an-asset",
+   "cases": [
+    "q-comp-sac-inherits-flags",
+    "q-defi-build-staking-for-own-token",
+    "q-edge-ambig-stellar-token-meaning",
+    "q-sor-evm-to-soroban-porting"
+   ],
+   "page": "ok",
+   "chars": 27930,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/meetings/authors/kalepail",
+   "cases": [
+    "q-builder-content-by-person"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/tokens/custom-sac-admin",
+   "cases": [
+    "q-comp-sac-inherits-flags",
+    "q-sor-contract-trustlines-c-address"
+   ],
+   "page": "ok",
+   "chars": 9506,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/overview",
+   "cases": [
+    "q-crp-custodial-vs-noncustodial-wallets"
+   ],
+   "page": "ok",
+   "chars": 3116,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/moneygram-access-integration-guide",
+   "cases": [
+    "q-anchor-moneygram-ramps",
+    "q-crp-custodial-vs-noncustodial-wallets",
+    "q-crp-remittance-founder-advisory"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps"
+   }
+  },
+  {
+   "path": "/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+   "cases": [
+    "q-crp-sdp-operation",
+    "q-pay-sdp-disbursement"
+   ],
+   "page": "ok",
+   "chars": 8717,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods/getTransactions",
+   "cases": [
+    "q-crp-export-tx-history-taxes",
+    "q-ti-parse-raw-ledger-data",
+    "q-ti-rpc-gettransactions-pagination-xdr"
+   ],
+   "page": "ok",
+   "chars": 68052,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/indexers/hubble",
+   "cases": [
+    "q-crp-export-tx-history-taxes"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/agentic-payments",
+   "cases": [
+    "q-defi-agentic-payment-standards-compare"
+   ],
+   "page": "ok",
+   "chars": 1242,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/galexie",
+   "cases": [
+    "q-crp-export-tx-history-taxes"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/data/indexers/build-your-own/galexie/"
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+   "cases": [
+    "q-asset-amm-fee-reserve",
+    "q-asset-path-payment-ops",
+    "q-asset-sdex-vs-amm",
+    "q-asset-usdc-eurc-path-fx",
+    "q-defi-arbitrage-pathpayment-bots",
+    "q-defi-market-making-kelp",
+    "q-defi-provide-liquidity-impermanent-loss",
+    "q-defi-sdex-offer-lifecycle",
+    "q-eco-dex-saturation",
+    "q-sor-classic-dex-from-contract",
+    "q-ti-compute-token-lp-market-data"
+   ],
+   "page": "ok",
+   "chars": 32168,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/path-payments",
+   "cases": [
+    "q-defi-arbitrage-pathpayment-bots",
+    "q-raph-remittance-path-payment"
+   ],
+   "page": "ok",
+   "chars": 4558,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon",
+   "cases": [
+    "q-crp-export-tx-history-taxes",
+    "q-infra-horizon-vs-rpc"
+   ],
+   "page": "ok",
+   "chars": 3669,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/agentic-payments/x402",
+   "cases": [
+    "q-defi-agentic-payment-standards-compare",
+    "q-defi-x402-on-stellar-what",
+    "q-hist-x402-stellar-announcement",
+    "q-soroban-x402-auth-entry-signing"
+   ],
+   "page": "ok",
+   "chars": 10651,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/path-payment-strict-send",
+   "cases": [
+    "q-defi-arbitrage-pathpayment-bots"
+   ],
+   "page": "ok",
+   "chars": 2740,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/stellar-consensus-protocol",
+   "cases": [
+    "q-defi-build-staking-for-own-token",
+    "q-defi-liquid-staking-whitespace",
+    "q-edge-noinfo-stellar-pos-staking-rewards",
+    "q-edge-scf-v7-centralization-myths",
+    "q-protocol-cap-process",
+    "q-protocol-quorum-slice-vs-quorum",
+    "q-protocol-scp-consensus-algorithm",
+    "q-raph-xlm-staking"
+   ],
+   "page": "ok",
+   "chars": 6410,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/oracles/oracle-providers",
+   "cases": [
+    "q-defi-reflector-oracle",
+    "q-pc-cross-redstone-sep40"
+   ],
+   "page": "ok",
+   "chars": 19708,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/path-payment-strict-receive",
+   "cases": [
+    "q-defi-arbitrage-pathpayment-bots"
+   ],
+   "page": "ok",
+   "chars": 2780,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/meetings/2026/04/16",
+   "cases": [
+    "q-defi-perps-whitespace"
+   ],
+   "page": "ok",
+   "chars": 10824,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/overview",
+   "cases": [
+    "q-defi-build-staking-for-own-token",
+    "q-sor-classic-dex-from-contract",
+    "q-sor-contract-as-claimable-arbiter"
+   ],
+   "page": "ok",
+   "chars": 7070,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/developer-tools/wallets",
+   "cases": [
+    "q-eco-stellar-wallets-list",
+    "q-tool-wallets-comparison"
+   ],
+   "page": "ok",
+   "chars": 5587,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/create-account",
+   "cases": [
+    "q-edge-1xlm-activation-fee",
+    "q-pc-account-activation-not-found",
+    "q-ti-custodial-account-generation-c-address",
+    "q-ti-find-export-secret-key"
+   ],
+   "page": "ok",
+   "chars": 28041,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/encyclopedia/transactions-specialized/path-payments",
+   "cases": [
+    "q-asset-path-payment-ops"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/build/guides/transactions/path-payments"
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/fees-resource-limits-metering",
+   "cases": [
+    "q-edge-1xlm-activation-fee",
+    "q-pc-practical-fee-setting",
+    "q-pc-sequence-numbers-ordering-replace",
+    "q-pc-surge-griefing-threat-model",
+    "q-protocol-base-reserve-min-balance",
+    "q-protocol-max-tx-set-size",
+    "q-soroban-resource-limits",
+    "q-soroban-vuln-classes",
+    "q-soroban-wasm-language",
+    "q-soroban-wasm-size-limit",
+    "q-ti-bindings-to-nextjs-integration"
+   ],
+   "page": "ok",
+   "chars": 21805,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/transactions/operations-and-transactions",
+   "cases": [
+    "q-edge-exchange-memo-lost-funds",
+    "q-pc-memos-reference",
+    "q-pc-quantum-preparedness-dormant",
+    "q-protocol-operations-vs-transactions",
+    "q-sor-classic-dex-from-contract",
+    "q-sor-doc-timestamping-manage-data",
+    "q-ti-tx-too-late-resubmit"
+   ],
+   "page": "ok",
+   "chars": 11477,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/resources/list-all-trades-for-a-given-offer",
+   "cases": [
+    "q-defi-sdex-offer-lifecycle"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/lab/account",
+   "cases": [
+    "q-edge-jailbreak-generate-secret-keys",
+    "q-n3-generate-secret-key-refusal"
+   ],
+   "page": "ok",
+   "chars": 6007,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/freighter",
+   "cases": [
+    "q-eco-freighter-wallet",
+    "q-raph-hardware-wallet",
+    "q-raph-restore-wallet",
+    "q-tool-freighter-wallet"
+   ],
+   "page": "ok",
+   "chars": 255,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+   "cases": [
+    "q-edge-exchange-memo-lost-funds",
+    "q-jutsu-what-is-a-memo",
+    "q-pc-address-types-strkey",
+    "q-pc-memos-reference",
+    "q-pc-muxed-accounts",
+    "q-raph-buy-xlm-safely",
+    "q-raph-exchange-memo",
+    "q-raph-missing-exchange-memo",
+    "q-raph-withdraw-exchange-self-custody"
+   ],
+   "page": "ok",
+   "chars": 21527,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/platforms/anchor-platform/sep-guide/sep45",
+   "cases": [
+    "q-edge-inject-ignore-instructions",
+    "q-sep-12-kyc"
+   ],
+   "page": "ok",
+   "chars": 9411,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli/cookbook/payments-and-assets",
+   "cases": [
+    "q-edge-jailbreak-generate-secret-keys"
+   ],
+   "page": "ok",
+   "chars": 1182,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/zk",
+   "cases": [
+    "q-edge-noinfo-stellar-native-privacy-default",
+    "q-sor-confidential-tokens",
+    "q-sor-cross-warmancer-zk-stack",
+    "q-zk-circuit-setup",
+    "q-zk-poseidon-input-encoding",
+    "q-zk-proof-systems-stellar",
+    "q-zk-verification-resource-budget"
+   ],
+   "page": "ok",
+   "chars": 4838,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/privacy",
+   "cases": [
+    "q-edge-noinfo-stellar-native-privacy-default",
+    "q-sor-confidential-tokens"
+   ],
+   "page": "ok",
+   "chars": 10848,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/transactions/transaction-lifecycle",
+   "cases": [
+    "q-edge-validators-reverse-tx-fork-detection",
+    "q-pc-sequence-numbers-ordering-replace",
+    "q-pc-tx-finality-failure-semantics",
+    "q-raph-stolen-wallet-recovery",
+    "q-ti-tx-too-late-resubmit"
+   ],
+   "page": "ok",
+   "chars": 4926,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/networks",
+   "cases": [
+    "q-edge-send-me-free-xlm",
+    "q-infra-testnet-vs-futurenet",
+    "q-protocol-network-passphrases-list",
+    "q-ti-friendbot-ratelimit-alternatives",
+    "q-ti-testnet-usdc-faucet"
+   ],
+   "page": "ok",
+   "chars": 20371,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/migrate-from-horizon-to-rpc",
+   "cases": [
+    "q-infra-horizon-vs-rpc",
+    "q-ti-compute-token-lp-market-data"
+   ],
+   "page": "ok",
+   "chars": 37434,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/validators/admin-guide/publishing-history-archives",
+   "cases": [
+    "q-edge-validators-reverse-tx-fork-detection"
+   ],
+   "page": "ok",
+   "chars": 19199,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/stellar-data-structures/assets/lumens",
+   "cases": [
+    "q-edge-noinfo-stellar-pos-staking-rewards"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/quickstart",
+   "cases": [
+    "q-edge-send-me-free-xlm",
+    "q-infra-quickstart-local-network",
+    "q-ti-stellar-lab-usage-and-new-ui"
+   ],
+   "page": "ok",
+   "chars": 1755,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc",
+   "cases": [
+    "q-infra-horizon-vs-rpc"
+   ],
+   "page": "ok",
+   "chars": 2879,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis",
+   "cases": [
+    "q-infra-horizon-vs-rpc"
+   ],
+   "page": "ok",
+   "chars": 2049,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/analytics/hubble/developer-guide/backfill/data-import",
+   "cases": [
+    "q-infra-hubble-bigquery"
+   ],
+   "page": "ok",
+   "chars": 2643,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/validators/admin-guide/monitoring",
+   "cases": [
+    "q-edge-validators-reverse-tx-fork-detection"
+   ],
+   "page": "ok",
+   "chars": 35993,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/quickstart/faucet",
+   "cases": [
+    "q-infra-quickstart-local-network",
+    "q-ti-friendbot-ratelimit-alternatives"
+   ],
+   "page": "ok",
+   "chars": 608,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/admin-guide/data-lake-integration",
+   "cases": [
+    "q-infra-rpc-methods-list",
+    "q-ti-self-host-retention-backfill"
+   ],
+   "page": "ok",
+   "chars": 4357,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/analytics/hubble",
+   "cases": [
+    "q-infra-hubble-bigquery",
+    "q-ti-compute-token-lp-market-data"
+   ],
+   "page": "ok",
+   "chars": 3041,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/analytics/hubble/developer-guide/connecting-to-bigquery",
+   "cases": [
+    "q-infra-hubble-bigquery"
+   ],
+   "page": "ok",
+   "chars": 5248,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/providers",
+   "cases": [
+    "q-infra-rpc-provider-archive-tier",
+    "q-infra-testnet-vs-futurenet"
+   ],
+   "page": "ok",
+   "chars": 5819,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods",
+   "cases": [
+    "q-infra-rpc-methods-list"
+   ],
+   "page": "ok",
+   "chars": 6350,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods/getLedgers",
+   "cases": [
+    "q-infra-rpc-provider-archive-tier",
+    "q-ti-parse-raw-ledger-data"
+   ],
+   "page": "ok",
+   "chars": 16781,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/contract-accounts/smart-wallets",
+   "cases": [
+    "q-infra-secp256r1-passkeys",
+    "q-soroban-add-signer-smart-wallet-howto",
+    "q-tool-passkey-wallet-recovery",
+    "q-tool-wallets-comparison"
+   ],
+   "page": "ok",
+   "chars": 4912,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/retrieve-an-account",
+   "cases": [
+    "q-jutsu-check-account-history"
+   ],
+   "page": "ok",
+   "chars": 7421,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/indexers",
+   "cases": [
+    "q-infra-which-indexer",
+    "q-ti-compute-token-lp-market-data",
+    "q-tool-greenfield-indexer-prior-art-preflight",
+    "q-tool-indexer-repos-discovery"
+   ],
+   "page": "ok",
+   "chars": 10541,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/payment",
+   "cases": [
+    "q-pc-account-activation-not-found",
+    "q-ti-classic-submission-errors"
+   ],
+   "page": "ok",
+   "chars": 2049,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli/cookbook/contract-invoke-arguments",
+   "cases": [
+    "q-pc-address-types-strkey"
+   ],
+   "page": "ok",
+   "chars": 5950,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/stellar-data-structures/ledgers",
+   "cases": [
+    "q-pc-bucketlist-vs-merkle-inclusion-proof",
+    "q-pc-surge-griefing-threat-model",
+    "q-protocol-ledger-close-time",
+    "q-protocol-ledger-header-fields",
+    "q-sor-doc-timestamping-manage-data"
+   ],
+   "page": "ok",
+   "chars": 6194,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/agentic-payments/mpp",
+   "cases": [
+    "q-mpp-discovery-and-modes"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/fee-bump-transactions",
+   "cases": [
+    "q-pc-fee-bump-channel-accounts-feepool",
+    "q-pc-practical-fee-setting",
+    "q-pc-surge-griefing-threat-model",
+    "q-ti-channel-accounts-throughput",
+    "q-ti-java-sdk-wallet-feebump"
+   ],
+   "page": "ok",
+   "chars": 9695,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/channel-accounts",
+   "cases": [
+    "q-pc-fee-bump-channel-accounts-feepool"
+   ],
+   "page": "ok",
+   "chars": 3360,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/indexers/build-your-own/ingest-sdk/developer_guide/ledgerbackends",
+   "cases": [
+    "q-pc-bucketlist-vs-merkle-inclusion-proof"
+   ],
+   "page": "ok",
+   "chars": 1876,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods/getFeeStats",
+   "cases": [
+    "q-pc-practical-fee-setting"
+   ],
+   "page": "ok",
+   "chars": 8691,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/networks/software-versions",
+   "cases": [
+    "q-pc-protocol-27-zipper",
+    "q-sor-cross-warmancer-zk-stack",
+    "q-zk-host-functions-status"
+   ],
+   "page": "ok",
+   "chars": 147348,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/validators/admin-guide/network-upgrades",
+   "cases": [
+    "q-pc-protocol-upgrade-timing",
+    "q-protocol-cap-process"
+   ],
+   "page": "ok",
+   "chars": 4700,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+   "cases": [
+    "q-infra-simulate-transaction-howto",
+    "q-soroban-simulate-resource-fee"
+   ],
+   "page": "ok",
+   "chars": 17907,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/errors/result-codes/transactions",
+   "cases": [
+    "q-pc-sequence-numbers-ordering-replace",
+    "q-ti-channel-accounts-throughput",
+    "q-ti-classic-submission-errors",
+    "q-ti-tx-too-late-resubmit"
+   ],
+   "page": "ok",
+   "chars": 2744,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+   "cases": [
+    "q-pc-slp-0004-0006-status",
+    "q-ti-enumerate-all-contracts",
+    "q-ti-fetch-all-balances-classic-sac"
+   ],
+   "page": "ok",
+   "chars": 34697,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/sponsored-reserves",
+   "cases": [
+    "q-pc-sponsored-reserves",
+    "q-protocol-base-reserve-min-balance"
+   ],
+   "page": "ok",
+   "chars": 23463,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods/getTransaction",
+   "cases": [
+    "q-pc-tx-finality-failure-semantics"
+   ],
+   "page": "ok",
+   "chars": 36349,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/wallet/stellar",
+   "cases": [
+    "q-pc-surge-griefing-threat-model"
+   ],
+   "page": "ok",
+   "chars": 51552,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/platforms/anchor-platform/admin-guide/architecture",
+   "cases": [
+    "q-production-anchor-architecture"
+   ],
+   "page": "ok",
+   "chars": 7805,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/stellar-data-structures/assets/liquidity-pools",
+   "cases": [
+    "q-protocol-base-reserve-min-balance"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/stellar-data-structures/accounts",
+   "cases": [
+    "q-protocol-base-reserve-min-balance",
+    "q-raph-low-xlm-transfer-fail",
+    "q-raph-remove-scam-token",
+    "q-raph-scam-spam-tokens",
+    "q-raph-usdc-onto-stellar",
+    "q-raph-xlm-network-role",
+    "q-raph-xlm-simple",
+    "q-sor-doc-timestamping-manage-data"
+   ],
+   "page": "ok",
+   "chars": 4333,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/stellar-stack",
+   "cases": [
+    "q-protocol-ledger-close-time"
+   ],
+   "page": "ok",
+   "chars": 6002,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge",
+   "cases": [
+    "q-pc-account-merge-reclaim-reserve"
+   ],
+   "page": "ok",
+   "chars": 2180,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods/sendTransaction",
+   "cases": [
+    "q-pc-tx-finality-failure-semantics"
+   ],
+   "page": "ok",
+   "chars": 23446,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/simulateTransaction-Deep-Dive",
+   "cases": [
+    "q-infra-simulate-transaction-howto"
+   ],
+   "page": "ok",
+   "chars": 18740,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/guestbook",
+   "cases": [
+    "q-passkey-smart-account-architecture"
+   ],
+   "page": "ok",
+   "chars": 1959,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/networks",
+   "cases": [
+    "q-protocol-network-passphrases-list"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/networks"
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/storage/state-archival",
+   "cases": [
+    "q-protocol-state-archival-ttl",
+    "q-sor-force-fast-archival-localnet",
+    "q-sor-p23-auto-restore-extendto",
+    "q-sor-recurring-escrow-patterns",
+    "q-sor-ttl-defaults-extend",
+    "q-soroban-instance-storage-dos",
+    "q-soroban-storage-types",
+    "q-soroban-vuln-classes"
+   ],
+   "page": "ok",
+   "chars": 22827,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/validators/tier-1-orgs",
+   "cases": [
+    "q-protocol-tier1-requirements"
+   ],
+   "page": "ok",
+   "chars": 18903,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/transactions/signatures-multisig",
+   "cases": [
+    "q-pc-multisig-setup-lifecycle",
+    "q-protocol-accounts-signers-thresholds",
+    "q-raph-secret-key-hash-recovery"
+   ],
+   "page": "ok",
+   "chars": 10168,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/smart-wallets/recovery",
+   "cases": [
+    "q-passkey-wallet-recovery"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/build/guides/contract-accounts/recovery"
+   }
+  },
+  {
+   "path": "/docs/learn/encyclopedia/contract-development/contract-interactions/stellar-ecosystem-proposals",
+   "cases": [
+    "q-protocol-cap-vs-sep"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/learn/fundamentals/contract-development/contract-interactions/stellar-ecosystem-proposals"
+   }
+  },
+  {
+   "path": "/meetings/2026/04/23",
+   "cases": [
+    "q-scf-current-hackathons-compare-live"
+   ],
+   "page": "ok",
+   "chars": 12606,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/stellar-ecosystem-proposals",
+   "cases": [
+    "q-sep-catalog-list",
+    "q-sep-wallet-seps-list"
+   ],
+   "page": "ok",
+   "chars": 14758,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tokens/token-interface",
+   "cases": [
+    "q-sep-41-token-interface",
+    "q-sor-sep41-transfer-vs-transferfrom",
+    "q-tool-sep41-status-live"
+   ],
+   "page": "ok",
+   "chars": 17484,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/validators/admin-guide",
+   "cases": [
+    "q-protocol-validator-upgrade-vote"
+   ],
+   "page": "ok",
+   "chars": 3460,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/contract-accounts/advanced-patterns",
+   "cases": [
+    "q-smart-account-scoped-policy-signers",
+    "q-stellar-recurring-payments"
+   ],
+   "page": "ok",
+   "chars": 3404,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/getting-started/hello-world",
+   "cases": [
+    "q-sor-build-target-wasm32v1",
+    "q-soroban-deploy-cli"
+   ],
+   "page": "ok",
+   "chars": 12376,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/rust-dialect",
+   "cases": [
+    "q-sor-build-target-wasm32v1",
+    "q-soroban-deploy-cli",
+    "q-soroban-no-std-constraints",
+    "q-soroban-wasm-language"
+   ],
+   "page": "ok",
+   "chars": 10438,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/testing",
+   "cases": [
+    "q-quickstart-manual-ledger-close"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/getting-started/setup",
+   "cases": [
+    "q-sor-build-target-wasm32v1",
+    "q-ti-cli-rust-windows-troubleshooting",
+    "q-tool-cli-testnet-identity-howto"
+   ],
+   "page": "ok",
+   "chars": 8368,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/encyclopedia/sponsored-reserves",
+   "cases": [
+    "q-smart-wallet-fee-sponsorship"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/build/guides/transactions/sponsored-reserves"
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/authorization",
+   "cases": [
+    "q-sor-contract-as-claimable-arbiter",
+    "q-sor-recurring-escrow-patterns",
+    "q-sor-require-auth-propagation",
+    "q-soroban-check-auth-custom-account",
+    "q-soroban-cross-contract-call",
+    "q-soroban-reentrancy",
+    "q-soroban-require-auth",
+    "q-soroban-token-transfer-pattern",
+    "q-soroban-unit-testing"
+   ],
+   "page": "ok",
+   "chars": 17239,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+   "cases": [
+    "q-sor-classic-dex-from-contract",
+    "q-sor-contract-as-claimable-arbiter",
+    "q-soroban-contract-id-derivation"
+   ],
+   "page": "ok",
+   "chars": 29539,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/send-and-receive-c-accounts",
+   "cases": [
+    "q-sor-contract-trustlines-c-address",
+    "q-ti-custodial-account-generation-c-address"
+   ],
+   "page": "ok",
+   "chars": 15066,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/tokens/stellar-asset-contract",
+   "cases": [
+    "q-sor-contract-trustlines-c-address"
+   ],
+   "page": "ok",
+   "chars": 4805,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors",
+   "cases": [
+    "q-sor-decode-hosterror-codes",
+    "q-ti-channel-accounts-throughput"
+   ],
+   "page": "ok",
+   "chars": 35804,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/conventions/error-enum",
+   "cases": [
+    "q-sor-decode-hosterror-codes"
+   ],
+   "page": "ok",
+   "chars": 2425,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/testing/differential-tests",
+   "cases": [
+    "q-sor-decode-hosterror-codes"
+   ],
+   "page": "ok",
+   "chars": 4768,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/testing/integration-tests",
+   "cases": [
+    "q-sor-decode-hosterror-codes"
+   ],
+   "page": "ok",
+   "chars": 3115,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/contract-accounts",
+   "cases": [
+    "q-sor-contract-trustlines-c-address",
+    "q-sor-cross-socketfi-auth",
+    "q-ti-custodial-account-generation-c-address"
+   ],
+   "page": "ok",
+   "chars": 1548,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/example-contracts/errors",
+   "cases": [
+    "q-sor-decode-hosterror-codes"
+   ],
+   "page": "ok",
+   "chars": 12844,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/invoke-contract-tx-sdk",
+   "cases": [
+    "q-sor-deploy-invoke-from-js-sdk"
+   ],
+   "page": "ok",
+   "chars": 20074,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/transactions/signing-soroban-invocations",
+   "cases": [
+    "q-sor-deploy-invoke-from-js-sdk",
+    "q-ti-custodial-account-generation-c-address"
+   ],
+   "page": "ok",
+   "chars": 22313,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/migrate/evm/solidity-and-rust-advanced-concepts",
+   "cases": [
+    "q-sor-evm-to-soroban-porting"
+   ],
+   "page": "ok",
+   "chars": 36588,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/openzeppelin-contracts",
+   "cases": [
+    "q-sor-evm-to-soroban-porting"
+   ],
+   "page": "ok",
+   "chars": 8640,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/archival/test-ttl-extension",
+   "cases": [
+    "q-sor-force-fast-archival-localnet"
+   ],
+   "page": "ok",
+   "chars": 8711,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/storage/persisting-data",
+   "cases": [
+    "q-sor-persistent-unbounded-collection-cap"
+   ],
+   "page": "ok",
+   "chars": 9053,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/types/fully-typed-contracts",
+   "cases": [
+    "q-sor-scval-conversion",
+    "q-sor-stale-spec-after-upgrade",
+    "q-soroban-cli-bindings"
+   ],
+   "page": "ok",
+   "chars": 6274,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/storage/storage-strategies",
+   "cases": [
+    "q-sor-persistent-unbounded-collection-cap"
+   ],
+   "page": "ok",
+   "chars": 136733,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/auth/contract-authorization",
+   "cases": [
+    "q-sor-require-auth-propagation",
+    "q-soroban-unit-testing"
+   ],
+   "page": "ok",
+   "chars": 20968,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/example-contracts/events",
+   "cases": [
+    "q-sor-test-event-assertion-ordering",
+    "q-soroban-contractmeta-vs-contractevent",
+    "q-soroban-publish-events"
+   ],
+   "page": "ok",
+   "chars": 11546,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/auth/check-auth-tutorials",
+   "cases": [
+    "q-soroban-check-auth-custom-account"
+   ],
+   "page": "ok",
+   "chars": 51331,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli/cookbook/deploy-contract",
+   "cases": [
+    "q-soroban-deploy-cli"
+   ],
+   "page": "ok",
+   "chars": 682,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli/stellar-cli",
+   "cases": [
+    "q-soroban-cli-bindings",
+    "q-soroban-wasm-size-limit",
+    "q-ti-scaffold-stellar",
+    "q-tool-cli-testnet-identity-howto"
+   ],
+   "page": "ok",
+   "chars": 309934,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli/cookbook/stellar-keys",
+   "cases": [
+    "q-soroban-deploy-cli",
+    "q-ti-find-export-secret-key"
+   ],
+   "page": "ok",
+   "chars": 2307,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/contract-interactions/cross-contract",
+   "cases": [
+    "q-soroban-cross-contract-call"
+   ],
+   "page": "ok",
+   "chars": 1891,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/methods/getEvents",
+   "cases": [
+    "q-soroban-event-indexing-design",
+    "q-soroban-publish-events"
+   ],
+   "page": "ok",
+   "chars": 21986,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/example-contracts/deployer",
+   "cases": [
+    "q-soroban-factory-pattern"
+   ],
+   "page": "ok",
+   "chars": 14494,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/meetings/2024/12/05",
+   "cases": [
+    "q-soroban-greenfield-escrow-prior-art-preflight"
+   ],
+   "page": "ok",
+   "chars": 757,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/example-contracts/fuzzing",
+   "cases": [
+    "q-soroban-fuzz-testing"
+   ],
+   "page": "ok",
+   "chars": 40673,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli/cookbook/tx-new-create-claimable-balance",
+   "cases": [
+    "q-soroban-greenfield-escrow-prior-art-preflight"
+   ],
+   "page": "ok",
+   "chars": 6808,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/storage/choosing-the-right-storage",
+   "cases": [
+    "q-soroban-instance-storage-dos",
+    "q-soroban-storage-types"
+   ],
+   "page": "ok",
+   "chars": 12137,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/conventions/upgrading-contracts",
+   "cases": [
+    "q-soroban-oz-upgradeable-macro",
+    "q-soroban-upgradeable-storage-compat"
+   ],
+   "page": "ok",
+   "chars": 11523,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/example-contracts/auth",
+   "cases": [
+    "q-soroban-require-auth"
+   ],
+   "page": "ok",
+   "chars": 17152,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/storage/migrate-contract-storage",
+   "cases": [
+    "q-soroban-storage-migration"
+   ],
+   "page": "ok",
+   "chars": 14173,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/testing/test-contract-auth",
+   "cases": [
+    "q-soroban-unit-testing"
+   ],
+   "page": "ok",
+   "chars": 2924,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/guestbook/bindings",
+   "cases": [
+    "q-ti-bindings-to-nextjs-integration"
+   ],
+   "page": "ok",
+   "chars": 10135,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/lab/transaction-dashboard",
+   "cases": [
+    "q-ti-block-explorer-basics"
+   ],
+   "page": "ok",
+   "chars": 21222,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/developer-tools/block-explorers",
+   "cases": [
+    "q-ti-block-explorer-basics"
+   ],
+   "page": "ok",
+   "chars": 1751,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/lab/smart-contracts/contract-explorer",
+   "cases": [
+    "q-ti-block-explorer-basics"
+   ],
+   "page": "ok",
+   "chars": 20494,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/set-options",
+   "cases": [
+    "q-ti-classic-submission-errors"
+   ],
+   "page": "ok",
+   "chars": 2131,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli/install-cli",
+   "cases": [
+    "q-ti-cli-rust-windows-troubleshooting"
+   ],
+   "page": "ok",
+   "chars": 2485,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/errors/error-handling",
+   "cases": [
+    "q-ti-channel-accounts-throughput",
+    "q-ti-classic-submission-errors",
+    "q-ti-tx-too-late-resubmit"
+   ],
+   "page": "ok",
+   "chars": 18082,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/guide",
+   "cases": [
+    "q-soroban-simulate-resource-fee"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli",
+   "cases": [
+    "q-ti-cli-rust-windows-troubleshooting",
+    "q-ti-secret-key-vs-mnemonic-derivation"
+   ],
+   "page": "ok",
+   "chars": 1027,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/dapps/frontend-guide",
+   "cases": [
+    "q-ti-connect-wallet-button-code",
+    "q-ti-freighter-localhost-not-detected"
+   ],
+   "page": "ok",
+   "chars": 35763,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/indexers/build-your-own/ingest-sdk/developer_guide/ledgerreaders",
+   "cases": [
+    "q-ti-enumerate-all-contracts",
+    "q-ti-historical-pointintime-balances"
+   ],
+   "page": "ok",
+   "chars": 1204,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/analytics/hubble/analyst-guide/history-vs-state-tables",
+   "cases": [
+    "q-ti-enumerate-all-contracts",
+    "q-ti-historical-pointintime-balances"
+   ],
+   "page": "ok",
+   "chars": 4962,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/list-all-accounts",
+   "cases": [
+    "q-ti-enumerate-holders-airdrop"
+   ],
+   "page": "ok",
+   "chars": 8319,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/encyclopedia/storage/state-archival",
+   "cases": [
+    "q-ti-enumerate-all-contracts"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/learn/fundamentals/contract-development/storage/state-archival"
+   }
+  },
+  {
+   "path": "/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data",
+   "cases": [
+    "q-ti-enumerate-holders-airdrop",
+    "q-ti-fetch-all-balances-classic-sac",
+    "q-ti-historical-pointintime-balances"
+   ],
+   "page": "ok",
+   "chars": 28565,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/lab",
+   "cases": [
+    "q-ti-cli-rust-windows-troubleshooting",
+    "q-ti-stellar-lab-usage-and-new-ui",
+    "q-ti-video-tutorials",
+    "q-tool-lab-what-is"
+   ],
+   "page": "ok",
+   "chars": 5396,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/resources/accounts",
+   "cases": [
+    "q-ti-fetch-all-balances-classic-sac"
+   ],
+   "page": "ok",
+   "chars": 2141,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/accounts",
+   "cases": [
+    "q-ti-historical-pointintime-balances"
+   ],
+   "page": "ok",
+   "chars": 35642,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/trustlines",
+   "cases": [
+    "q-ti-historical-pointintime-balances"
+   ],
+   "page": "ok",
+   "chars": 16362,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/structure/data-format",
+   "cases": [
+    "q-ti-parse-raw-ledger-data",
+    "q-ti-rpc-gettransactions-pagination-xdr"
+   ],
+   "page": "ok",
+   "chars": 3362,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/scaffold-stellar",
+   "cases": [
+    "q-ti-scaffold-stellar",
+    "q-ti-video-tutorials"
+   ],
+   "page": "ok",
+   "chars": 7338,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/api-reference/structure/pagination",
+   "cases": [
+    "q-ti-enumerate-holders-airdrop"
+   ],
+   "page": "ok",
+   "chars": 10151,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/lab/saved/keypairs",
+   "cases": [
+    "q-ti-secret-key-vs-mnemonic-derivation",
+    "q-ti-stellar-lab-usage-and-new-ui"
+   ],
+   "page": "ok",
+   "chars": 9002,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/admin-guide/configuring",
+   "cases": [
+    "q-ti-self-host-retention-backfill"
+   ],
+   "page": "ok",
+   "chars": 13181,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/horizon/admin-guide/ingestion",
+   "cases": [
+    "q-ti-self-host-retention-backfill"
+   ],
+   "page": "ok",
+   "chars": 8681,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/data/apis/rpc/api-reference/structure/pagination",
+   "cases": [
+    "q-ti-rpc-gettransactions-pagination-xdr"
+   ],
+   "page": "ok",
+   "chars": 1498,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+   "cases": [
+    "q-ti-stellar-lab-usage-and-new-ui"
+   ],
+   "page": "ok",
+   "chars": 2328,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tokens/cross-chain-transfers",
+   "cases": [
+    "q-tool-cctp-stellar-integration"
+   ],
+   "page": "ok",
+   "chars": 615,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/getting-started",
+   "cases": [
+    "q-ti-video-tutorials"
+   ],
+   "page": "ok",
+   "chars": 2404,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/sdks/client-sdks",
+   "cases": [
+    "q-tool-flutter-mobile-sdk",
+    "q-tool-go-sdk-ingest",
+    "q-tool-js-sdk-package",
+    "q-tool-sdk-repos-discovery",
+    "q-tool-which-sdk-comparison"
+   ],
+   "page": "ok",
+   "chars": 7708,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/ingest-sdk/overview",
+   "cases": [
+    "q-tool-go-sdk-ingest"
+   ],
+   "page": "ok",
+   "chars": 8329,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/tools/sdks/contract-sdks",
+   "cases": [
+    "q-tool-rust-soroban-sdk",
+    "q-tool-sdk-repos-discovery",
+    "q-tool-which-sdk-comparison"
+   ],
+   "page": "ok",
+   "chars": 4342,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/events/ingest",
+   "cases": [
+    "q-tool-greenfield-indexer-prior-art-preflight",
+    "q-tool-indexer-repos-discovery"
+   ],
+   "page": "ok",
+   "chars": 10688,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/building-with-ai",
+   "cases": [
+    "q-tool-skill-detail-install"
+   ],
+   "page": "ok",
+   "chars": 13705,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/wallet/overview",
+   "cases": [
+    "q-tool-wallets-comparison"
+   ],
+   "page": "ok",
+   "chars": 3183,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/smart-contracts/getting-started/storing-data",
+   "cases": [
+    "q-zk-nullifier-storage"
+   ],
+   "page": "ok",
+   "chars": 8317,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/agentic-payments/x402",
+   "cases": [
+    "q-x402-payment-verification"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/learn/fundamentals/contract-development/storage-state-archival",
+   "cases": [
+    "q-zk-nullifier-storage"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 404,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/guides/testing/unit-tests",
+   "cases": [
+    "q-soroban-unit-testing"
+   ],
+   "page": "ok",
+   "chars": 2975,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/anchoring-assets/anchor-platform",
+   "cases": [
+    "q-sep6-sep24-sep31-choice"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/learn/fundamentals/anchors"
+   }
+  },
+  {
+   "path": "/docs/tools/openzeppelin-relayer",
+   "cases": [
+    "q-ti-openzeppelin-relayer"
+   ],
+   "page": "ok",
+   "chars": 23896,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/validators",
+   "cases": [
+    "q-protocol-ledger-close-time",
+    "q-protocol-validator-node-roles"
+   ],
+   "page": "ok",
+   "chars": 8354,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  },
+  {
+   "path": "/docs/build/apps/smart-wallets/fee-sponsorship",
+   "cases": [
+    "q-smart-wallet-fee-sponsorship"
+   ],
+   "page": "soft-empty",
+   "chars": 0,
+   "site": {
+    "status": 308,
+    "location": "/docs/build/guides/contract-accounts/fee-sponsorship"
+   }
+  },
+  {
+   "path": "/docs/tools/sdks",
+   "cases": [
+    "q-tool-which-sdk-comparison"
+   ],
+   "page": "ok",
+   "chars": 1330,
+   "site": {
+    "status": 200,
+    "location": null
+   }
+  }
+ ]
+}

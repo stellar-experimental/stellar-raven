@@ -1,0 +1,2075 @@
+{
+ "generatedAt": "2026-11-02T14:50:37.770Z",
+ "arms": {
+  "a": "Algolia adapter at 03c863a3",
+  "b": "Mintlify adapter on feat/mintlify-docs-migration"
+ },
+ "jobs": 1498,
+ "summary": {
+  "all": {
+   "cases": 255,
+   "queries": 1498,
+   "caseAnyHit": {
+    "a": 191,
+    "b": 225
+   },
+   "meanCaseRecall": {
+    "a": 0.614,
+    "b": 0.787
+   },
+   "caseRecallWinsLossesTies": {
+    "bBetter": 75,
+    "aBetter": 8,
+    "tie": 172
+   },
+   "queryGoldenHit": {
+    "a": 603,
+    "b": 865
+   },
+   "softEmpty": {
+    "a": 80,
+    "b": 6
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   },
+   "medianMs": {
+    "a": 107,
+    "b": 493
+   },
+   "p95Ms": {
+    "a": 265,
+    "b": 1735
+   }
+  },
+  "transcriptQueries": {
+   "cases": 237,
+   "queries": 1243,
+   "caseAnyHit": {
+    "a": 181,
+    "b": 207
+   },
+   "meanCaseRecall": {
+    "a": 0.617,
+    "b": 0.751
+   },
+   "caseRecallWinsLossesTies": {
+    "bBetter": 60,
+    "aBetter": 8,
+    "tie": 169
+   },
+   "queryGoldenHit": {
+    "a": 518,
+    "b": 687
+   },
+   "softEmpty": {
+    "a": 80,
+    "b": 6
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   },
+   "medianMs": {
+    "a": 105,
+    "b": 488
+   },
+   "p95Ms": {
+    "a": 279,
+    "b": 1609
+   }
+  },
+  "questionText": {
+   "cases": 255,
+   "queries": 255,
+   "caseAnyHit": {
+    "a": 85,
+    "b": 178
+   },
+   "meanCaseRecall": {
+    "a": 0.236,
+    "b": 0.552
+   },
+   "caseRecallWinsLossesTies": {
+    "bBetter": 116,
+    "aBetter": 7,
+    "tie": 132
+   },
+   "queryGoldenHit": {
+    "a": 85,
+    "b": 178
+   },
+   "softEmpty": {
+    "a": 0,
+    "b": 0
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   },
+   "medianMs": {
+    "a": 114,
+    "b": 517
+   },
+   "p95Ms": {
+    "a": 161,
+    "b": 2180
+   }
+  }
+ },
+ "byOp": {
+  "search_docs": {
+   "queries": 462,
+   "queryGoldenHit": {
+    "a": 196,
+    "b": 262
+   },
+   "softEmpty": {
+    "a": 2,
+    "b": 2
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_protocol_concepts_docs": {
+   "queries": 171,
+   "queryGoldenHit": {
+    "a": 89,
+    "b": 99
+   },
+   "softEmpty": {
+    "a": 20,
+    "b": 1
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_asset_token_docs": {
+   "queries": 89,
+   "queryGoldenHit": {
+    "a": 42,
+    "b": 61
+   },
+   "softEmpty": {
+    "a": 10,
+    "b": 0
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_rpc_horizon_data_docs": {
+   "queries": 64,
+   "queryGoldenHit": {
+    "a": 29,
+    "b": 42
+   },
+   "softEmpty": {
+    "a": 10,
+    "b": 0
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_doc_titles": {
+   "queries": 48,
+   "queryGoldenHit": {
+    "a": 27,
+    "b": 32
+   },
+   "softEmpty": {
+    "a": 1,
+    "b": 0
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_sdk_cli_tools_docs": {
+   "queries": 53,
+   "queryGoldenHit": {
+    "a": 13,
+    "b": 25
+   },
+   "softEmpty": {
+    "a": 11,
+    "b": 0
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_docs_in_category": {
+   "queries": 53,
+   "queryGoldenHit": {
+    "a": 23,
+    "b": 29
+   },
+   "softEmpty": {
+    "a": 9,
+    "b": 1
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_anchor_sep_docs": {
+   "queries": 96,
+   "queryGoldenHit": {
+    "a": 24,
+    "b": 35
+   },
+   "softEmpty": {
+    "a": 10,
+    "b": 1
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_wallet_dapp_docs": {
+   "queries": 62,
+   "queryGoldenHit": {
+    "a": 20,
+    "b": 32
+   },
+   "softEmpty": {
+    "a": 5,
+    "b": 0
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_meeting_notes": {
+   "queries": 16,
+   "queryGoldenHit": {
+    "a": 2,
+    "b": 2
+   },
+   "softEmpty": {
+    "a": 0,
+    "b": 0
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  },
+  "search_soroban_contract_docs": {
+   "queries": 129,
+   "queryGoldenHit": {
+    "a": 53,
+    "b": 68
+   },
+   "softEmpty": {
+    "a": 2,
+    "b": 1
+   },
+   "errors": {
+    "a": 0,
+    "b": 0
+   }
+  }
+ },
+ "perCase": [
+  {
+   "id": "q-aas-burn-clawback-redemption-mechanics",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-aas-claim-received-claimable-balances",
+   "golden": 3,
+   "queries": 8,
+   "recallA": 0.667,
+   "recallB": 1
+  },
+  {
+   "id": "q-aas-claimable-predicates-expiry-reserves",
+   "golden": 3,
+   "queries": 5,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-aas-issuer-fees-supply-cap-freeze",
+   "golden": 3,
+   "queries": 8,
+   "recallA": 0.667,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-aas-list-token-on-exchanges-aggregators",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-aas-sep30-recoverable-wallets",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-aas-trustline-limit-lifecycle",
+   "golden": 4,
+   "queries": 4,
+   "recallA": 0.25,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-anchor-endpoint-discovery",
+   "golden": 1,
+   "queries": 8,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-anchor-moneygram-ramps",
+   "golden": 1,
+   "queries": 8,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-anchor-list-builders-discovery",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-anchor-platform-what",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-anchor-sdp-vs-anchor-platform",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-anchor-sdp-what",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ass-cross-bando-stablebonds-sac",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ass-cross-etherfuse-cetes-controls",
+   "golden": 1,
+   "queries": 6,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-amm-fee-reserve",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-claimable-balance",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-deploy-sac-cli",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-asset-issue-asset-howto",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-path-payment-ops",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-asset-sdex-vs-amm",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-trustline-basics",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-trustline-vs-sac",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-two-account-issuer",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-usdc-eurc-path-fx",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-asset-wallet-sdk-seps",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-builder-content-by-person",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-comp-anchor-compliance-stack",
+   "golden": 2,
+   "queries": 6,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-comp-auth-flags-overview",
+   "golden": 2,
+   "queries": 8,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-comp-clawback-cap0035",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-comp-clawback-holder-risk",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-comp-cross-bitso-sep31",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-comp-cross-moneygram-partnership-sep24",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-comp-sac-inherits-flags",
+   "golden": 3,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-comp-sep8-regulated-assets-approval-server",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-crp-anchors-by-corridor",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-crp-become-an-anchor-licensing",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-crp-custodial-vs-noncustodial-wallets",
+   "golden": 2,
+   "queries": 7,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-crp-export-tx-history-taxes",
+   "golden": 4,
+   "queries": 6,
+   "recallA": 0,
+   "recallB": 0.25
+  },
+  {
+   "id": "q-crp-oz-rwa-erc3643-trex",
+   "golden": 1,
+   "queries": 7,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-crp-remittance-founder-advisory",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-crp-sdp-operation",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-crp-tokenize-personal-rwa",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-defi-agentic-payment-standards-compare",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-defi-arbitrage-pathpayment-bots",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 0.75
+  },
+  {
+   "id": "q-defi-build-staking-for-own-token",
+   "golden": 3,
+   "queries": 4,
+   "recallA": 0.333,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-defi-etherfuse-stablebonds",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-defi-liquid-staking-whitespace",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-defi-market-making-kelp",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-defi-provide-liquidity-impermanent-loss",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-defi-reflector-oracle",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-defi-perps-whitespace",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-defi-sdex-offer-lifecycle",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-defi-x402-on-stellar-what",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-eco-dex-saturation",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-eco-freighter-wallet",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-edge-1xlm-activation-fee",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 0.667,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-eco-stellar-wallets-list",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-edge-ambig-stellar-token-meaning",
+   "golden": 3,
+   "queries": 3,
+   "recallA": 0.667,
+   "recallB": 1
+  },
+  {
+   "id": "q-edge-exchange-memo-lost-funds",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-edge-inject-ignore-instructions",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-edge-metamask-evm-mental-model",
+   "golden": 2,
+   "queries": 5,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-edge-jailbreak-generate-secret-keys",
+   "golden": 2,
+   "queries": 1,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-edge-noinfo-stellar-native-privacy-default",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-edge-retail-everyday-use-eli5",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-edge-validators-reverse-tx-fork-detection",
+   "golden": 3,
+   "queries": 6,
+   "recallA": 0.333,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-edge-scf-v7-centralization-myths",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-hist-x402-stellar-announcement",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-edge-send-me-free-xlm",
+   "golden": 2,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-hot-fee-pool-burn-deflation",
+   "golden": 1,
+   "queries": 5,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-infra-horizon-vs-rpc",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 0.75,
+   "recallB": 1
+  },
+  {
+   "id": "q-infra-hubble-bigquery",
+   "golden": 3,
+   "queries": 3,
+   "recallA": 0.333,
+   "recallB": 1
+  },
+  {
+   "id": "q-infra-quickstart-local-network",
+   "golden": 2,
+   "queries": 5,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-infra-rpc-methods-list",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-infra-rpc-provider-archive-tier",
+   "golden": 2,
+   "queries": 7,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-infra-secp256r1-passkeys",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-infra-simulate-transaction-howto",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-infra-testnet-vs-futurenet",
+   "golden": 2,
+   "queries": 2,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-infra-which-indexer",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-jutsu-check-account-history",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-jutsu-what-is-a-memo",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-mpp-discovery-and-modes",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-n3-generate-secret-key-refusal",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-passkey-smart-account-architecture",
+   "golden": 1,
+   "queries": 8,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-passkey-wallet-recovery",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-pay-sdp-disbursement",
+   "golden": 2,
+   "queries": 2,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-account-activation-not-found",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-account-merge-reclaim-reserve",
+   "golden": 2,
+   "queries": 7,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-address-types-strkey",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-fee-bump-channel-accounts-feepool",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-cross-redstone-sep40",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-memos-reference",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-multisig-setup-lifecycle",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-muxed-accounts",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-practical-fee-setting",
+   "golden": 3,
+   "queries": 6,
+   "recallA": 0.667,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-protocol-27-zipper",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-protocol-upgrade-timing",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-quantum-preparedness-dormant",
+   "golden": 1,
+   "queries": 6,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-pc-sequence-numbers-ordering-replace",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 0.667,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-pc-slp-0004-0006-status",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-pc-sponsored-reserves",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-pc-surge-griefing-threat-model",
+   "golden": 4,
+   "queries": 7,
+   "recallA": 0.25,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-pc-tx-finality-failure-semantics",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 0.333,
+   "recallB": 1
+  },
+  {
+   "id": "q-production-anchor-architecture",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-accounts-signers-thresholds",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-base-reserve-min-balance",
+   "golden": 5,
+   "queries": 9,
+   "recallA": 0.6,
+   "recallB": 0.6
+  },
+  {
+   "id": "q-protocol-cap-process",
+   "golden": 2,
+   "queries": 5,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-cap-vs-sep",
+   "golden": 1,
+   "queries": 5,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-protocol-ledger-close-time",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 0.333
+  },
+  {
+   "id": "q-protocol-ledger-header-fields",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-max-tx-set-size",
+   "golden": 1,
+   "queries": 8,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-network-passphrases-list",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-protocol-operation-types-list",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-operations-vs-transactions",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-quorum-slice-vs-quorum",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-scp-consensus-algorithm",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-state-archival-ttl",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-tier1-requirements",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-validator-node-roles",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-protocol-validator-upgrade-vote",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-quickstart-manual-ledger-close",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-raph-claimable-balance-safety",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-exchange-memo",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-hardware-wallet",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-buy-xlm-safely",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-raph-low-xlm-transfer-fail",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-missing-exchange-memo",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-phishing-pending-claim",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-raph-remittance-path-payment",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-raph-remove-scam-token",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-raph-restore-wallet",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-raph-scam-spam-tokens",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-secret-key-hash-recovery",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-stolen-wallet-recovery",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-unsolicited-airdrop",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-usdc-onto-stellar",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-raph-withdraw-exchange-self-custody",
+   "golden": 1,
+   "queries": 6,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-raph-xlm-network-role",
+   "golden": 1,
+   "queries": 8,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-xlm-simple",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-raph-xlm-staking",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-rwa-stellar-vs-erc20-regulated",
+   "golden": 1,
+   "queries": 5,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-scf-cross-decaf-sep24",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-sep-12-kyc",
+   "golden": 1,
+   "queries": 6,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-scf-current-hackathons-compare-live",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-sep-41-token-interface",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-sep-catalog-list",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sep-clawback-prereq-flag",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sep-interactive-deposit-withdraw",
+   "golden": 1,
+   "queries": 7,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sep-wallet-seps-list",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-sep6-sep24-sep31-choice",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-smart-account-scoped-policy-signers",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-smart-wallet-fee-sponsorship",
+   "golden": 3,
+   "queries": 5,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-sor-build-target-wasm32v1",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-classic-dex-from-contract",
+   "golden": 4,
+   "queries": 8,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-confidential-tokens",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-contract-as-claimable-arbiter",
+   "golden": 4,
+   "queries": 6,
+   "recallA": 0.75,
+   "recallB": 0.75
+  },
+  {
+   "id": "q-sor-contract-trustlines-c-address",
+   "golden": 5,
+   "queries": 4,
+   "recallA": 0.2,
+   "recallB": 0.8
+  },
+  {
+   "id": "q-sor-cross-socketfi-auth",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-cross-warmancer-zk-stack",
+   "golden": 2,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-sor-decode-hosterror-codes",
+   "golden": 5,
+   "queries": 9,
+   "recallA": 0.6,
+   "recallB": 0.6
+  },
+  {
+   "id": "q-sor-deploy-invoke-from-js-sdk",
+   "golden": 2,
+   "queries": 6,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-doc-timestamping-manage-data",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-evm-to-soroban-porting",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-force-fast-archival-localnet",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-p23-auto-restore-extendto",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-persistent-unbounded-collection-cap",
+   "golden": 2,
+   "queries": 1,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-recurring-escrow-patterns",
+   "golden": 2,
+   "queries": 7,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-sor-require-auth-propagation",
+   "golden": 2,
+   "queries": 5,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-sac-introspection",
+   "golden": 1,
+   "queries": 6,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-scval-conversion",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-sep41-transfer-vs-transferfrom",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-stale-spec-after-upgrade",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-sor-test-event-assertion-ordering",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-sor-ttl-defaults-extend",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-add-signer-smart-wallet-howto",
+   "golden": 1,
+   "queries": 5,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-check-auth-custom-account",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-cli-bindings",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-contract-id-derivation",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-contractmeta-vs-contractevent",
+   "golden": 1,
+   "queries": 7,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-cross-contract-call",
+   "golden": 2,
+   "queries": 6,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-soroban-deploy-cli",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 0.25,
+   "recallB": 0
+  },
+  {
+   "id": "q-soroban-event-indexing-design",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-factory-pattern",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-fuzz-testing",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-soroban-instance-storage-dos",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-no-std-constraints",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-oz-upgradeable-macro",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-publish-events",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-soroban-reentrancy",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-require-auth",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-resource-limits",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-simulate-resource-fee",
+   "golden": 2,
+   "queries": 7,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-soroban-storage-migration",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-storage-types",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-token-transfer-pattern",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-unit-testing",
+   "golden": 4,
+   "queries": 3,
+   "recallA": 0.75,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-upgradeable-storage-compat",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-vuln-classes",
+   "golden": 2,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-soroban-wasm-language",
+   "golden": 2,
+   "queries": 2,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-soroban-wasm-size-limit",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-soroban-x402-auth-entry-signing",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-stellar-recurring-payments",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-ti-bindings-to-nextjs-integration",
+   "golden": 2,
+   "queries": 8,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-block-explorer-basics",
+   "golden": 3,
+   "queries": 2,
+   "recallA": 0.333,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-ti-channel-accounts-throughput",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 0.25
+  },
+  {
+   "id": "q-ti-classic-submission-errors",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 0.75
+  },
+  {
+   "id": "q-ti-cli-rust-windows-troubleshooting",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 0.75
+  },
+  {
+   "id": "q-ti-compute-token-lp-market-data",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 0.75,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-ti-connect-wallet-button-code",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-custodial-account-generation-c-address",
+   "golden": 5,
+   "queries": 9,
+   "recallA": 0.6,
+   "recallB": 0.8
+  },
+  {
+   "id": "q-ti-enumerate-all-contracts",
+   "golden": 4,
+   "queries": 5,
+   "recallA": 0.25,
+   "recallB": 0.25
+  },
+  {
+   "id": "q-ti-enumerate-holders-airdrop",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 0.25
+  },
+  {
+   "id": "q-ti-fetch-all-balances-classic-sac",
+   "golden": 4,
+   "queries": 3,
+   "recallA": 0.5,
+   "recallB": 0.75
+  },
+  {
+   "id": "q-ti-find-export-secret-key",
+   "golden": 2,
+   "queries": 6,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-freighter-localhost-not-detected",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-friendbot-ratelimit-alternatives",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-historical-pointintime-balances",
+   "golden": 5,
+   "queries": 6,
+   "recallA": 0.4,
+   "recallB": 0.4
+  },
+  {
+   "id": "q-ti-java-sdk-wallet-feebump",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-openzeppelin-relayer",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-parse-raw-ledger-data",
+   "golden": 3,
+   "queries": 6,
+   "recallA": 0.333,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-ti-rpc-gettransactions-pagination-xdr",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 0.333,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-ti-scaffold-stellar",
+   "golden": 2,
+   "queries": 7,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-secret-key-vs-mnemonic-derivation",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-ti-self-host-retention-backfill",
+   "golden": 3,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-stellar-lab-usage-and-new-ui",
+   "golden": 4,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-ti-testnet-usdc-faucet",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-tx-too-late-resubmit",
+   "golden": 4,
+   "queries": 6,
+   "recallA": 0.75,
+   "recallB": 1
+  },
+  {
+   "id": "q-ti-video-tutorials",
+   "golden": 3,
+   "queries": 3,
+   "recallA": 0.667,
+   "recallB": 0.667
+  },
+  {
+   "id": "q-token-initial-supply-distribution",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-cctp-stellar-integration",
+   "golden": 2,
+   "queries": 3,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-cli-testnet-identity-howto",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 0,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-tool-flutter-mobile-sdk",
+   "golden": 2,
+   "queries": 4,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-freighter-wallet",
+   "golden": 1,
+   "queries": 8,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-go-sdk-ingest",
+   "golden": 2,
+   "queries": 5,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-greenfield-indexer-prior-art-preflight",
+   "golden": 2,
+   "queries": 9,
+   "recallA": 0.5,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-indexer-repos-discovery",
+   "golden": 2,
+   "queries": 6,
+   "recallA": 0.5,
+   "recallB": 0.5
+  },
+  {
+   "id": "q-tool-js-sdk-package",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-lab-what-is",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-passkey-wallet-recovery",
+   "golden": 2,
+   "queries": 5,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-rust-soroban-sdk",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-sep41-status-live",
+   "golden": 1,
+   "queries": 9,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-sdk-repos-discovery",
+   "golden": 2,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-wallets-comparison",
+   "golden": 3,
+   "queries": 3,
+   "recallA": 0.333,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-skill-detail-install",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 1
+  },
+  {
+   "id": "q-tool-which-sdk-comparison",
+   "golden": 3,
+   "queries": 3,
+   "recallA": 0.667,
+   "recallB": 1
+  },
+  {
+   "id": "q-x402-payment-verification",
+   "golden": 1,
+   "queries": 1,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-zk-circuit-setup",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-zk-host-functions-status",
+   "golden": 1,
+   "queries": 3,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-zk-nullifier-storage",
+   "golden": 2,
+   "queries": 7,
+   "recallA": 0,
+   "recallB": 0
+  },
+  {
+   "id": "q-zk-poseidon-input-encoding",
+   "golden": 1,
+   "queries": 4,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-zk-proof-systems-stellar",
+   "golden": 1,
+   "queries": 7,
+   "recallA": 1,
+   "recallB": 1
+  },
+  {
+   "id": "q-zk-verification-resource-budget",
+   "golden": 1,
+   "queries": 2,
+   "recallA": 0,
+   "recallB": 1
+  }
+ ]
+}

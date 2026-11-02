@@ -10,25 +10,15 @@ import {
   remoteIdentityVectorSha256
 } from "./remote-identity-guard.mjs";
 
-const DOCS_APPLICATION_ID = "VNSJF5AWIZ";
-const DOCS_INDEX_NAME = "crawler_Stellar Docs - Docusaurus";
-// Algolia documents this search-only key for the public Stellar Docs index.
-const DOCS_SEARCH_KEY = "c932e7670879e29070e269d202fb6740";
-// The key caps each query at 100 hits, and the index caps pagination at 1,000 hits.
-const STELLAR_DOCS_MAX_TITLE_PAGES = 10;
-const STELLAR_DOCS_TITLE_PAGE_NUMBERS = Object.freeze(
-  Array.from({ length: STELLAR_DOCS_MAX_TITLE_PAGES }, (_, page) => page)
-);
-
 export const REMOTE_IDENTITY_SOURCES = Object.freeze({
   scoutOpenapi: "https://stellarlight.xyz/api/openapi.json",
   lumenloopOpenapi: "https://api.lumenloop.com/v1/openapi.json",
   lumenloopTools: "https://api.lumenloop.com/v1/tools",
   lumenloopSkills: "https://api.lumenloop.com/v1/skills",
-  stellarDocsSettings:
-    `https://${DOCS_APPLICATION_ID}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings`,
-  stellarDocsTitles:
-    `https://${DOCS_APPLICATION_ID}-dsn.algolia.net/1/indexes/*/queries`
+  // Mintlify publishes both files from the deployed docs. They need no key, so the probe does
+  // not spend the organization's API rate limit that the answering server uses.
+  stellarDocsLlmsTxt: "https://developers.stellar.org/llms.txt",
+  stellarDocsLlmsFullTxt: "https://developers.stellar.org/llms-full.txt"
 });
 
 function sha256(value) {
@@ -99,8 +89,9 @@ export function parseRetryAfterMs(value, {
   return Math.min(maximumMs, requestedMs);
 }
 
-export async function fetchJsonWithRetry(
+async function fetchWithRetry(
   { label, url, init },
+  readBody,
   {
     fetchImpl = globalThis.fetch,
     timeoutMs = REMOTE_IDENTITY_REQUEST_TIMEOUT_MS,
@@ -127,12 +118,7 @@ export async function fetchJsonWithRetry(
           })
         });
       }
-      const text = await response.text();
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw sourceError("invalid-json", `${label} returned invalid JSON`);
-      }
+      return await readBody(response, label);
     } catch (cause) {
       error = cause?.kind
         ? cause
@@ -158,6 +144,28 @@ export async function fetchJsonWithRetry(
     await sleepImpl(delayMs);
   }
   throw new Error(`${label} exhausted its retry limit`);
+}
+
+async function readJsonBody(response, label) {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw sourceError("invalid-json", `${label} returned invalid JSON`);
+  }
+}
+
+async function readBytesBody(response) {
+  return new Uint8Array(await response.arrayBuffer());
+}
+
+export function fetchJsonWithRetry(source, options) {
+  return fetchWithRetry(source, readJsonBody, options);
+}
+
+/** Return the exact decoded response body, so the identity hashes the bytes that were served. */
+export function fetchBytesWithRetry(source, options) {
+  return fetchWithRetry(source, readBytesBody, options);
 }
 
 function requireObject(value, label) {
@@ -216,28 +224,25 @@ export function normalizeLumenloopInventory(openapiValue, toolsValue, skillsValu
   };
 }
 
-function stripDocsOrigin(url) {
-  return String(url ?? "").replace(/^https?:\/\/developers\.stellar\.org/, "");
-}
+const UTF8 = new TextDecoder("utf-8", { fatal: true, ignoreBOM: false });
 
-export function normalizeStellarDocsTitles(value) {
-  const response = requireObject(value, "Stellar Docs title response");
-  if (!Array.isArray(response.hits) || !Number.isInteger(response.nbHits)) {
-    throw new Error("Stellar Docs title response is incomplete");
+/**
+ * Identify one published Mintlify text file by its exact bytes.
+ * Both files open with a Markdown heading. A 200 response with an HTML or empty body is an
+ * outage page, not an identity, so the probe rejects it.
+ */
+export function stellarDocsFileIdentity(value, label) {
+  const bytes = value instanceof Uint8Array ? value : null;
+  let text = null;
+  try {
+    text = bytes && bytes.length > 0 ? UTF8.decode(bytes) : null;
+  } catch {
+    text = null;
   }
-  if (response.nbHits !== response.hits.length) {
-    throw new Error("Stellar Docs title response is truncated");
+  if (text === null || !/^# \S/.test(text)) {
+    throw new Error(`${label} is not a UTF-8 Markdown document`);
   }
-  const unique = new Map();
-  for (const hit of response.hits) {
-    const path = stripDocsOrigin(hit.url_without_anchor);
-    const title = hit.hierarchy?.lvl1;
-    if (!path || typeof title !== "string" || title.length === 0) continue;
-    unique.set(`${path}\u0000${title}`, { path, title });
-  }
-  return [...unique.values()].sort(
-    (left, right) => left.path.localeCompare(right.path) || left.title.localeCompare(right.title)
-  );
+  return { sha256: sha256(bytes), bytes: bytes.length };
 }
 
 export function buildRemoteIdentityVector({
@@ -245,13 +250,13 @@ export function buildRemoteIdentityVector({
   lumenloopOpenapi,
   lumenloopTools,
   lumenloopSkills,
-  stellarDocsSettings,
-  stellarDocsTitles
+  stellarDocsLlmsTxt,
+  stellarDocsLlmsFullTxt
 }) {
   const scout = requireObject(scoutOpenapi, "Scout OpenAPI");
   const scoutVersion = requireString(scout.info?.version, "Scout OpenAPI version");
-  const docsSettings = requireObject(stellarDocsSettings, "Stellar Docs settings");
-  const docsTitles = normalizeStellarDocsTitles(stellarDocsTitles);
+  const llmsTxt = stellarDocsFileIdentity(stellarDocsLlmsTxt, "Stellar Docs llms.txt");
+  const llmsFullTxt = stellarDocsFileIdentity(stellarDocsLlmsFullTxt, "Stellar Docs llms-full.txt");
   return parseRemoteIdentityVector({
     schema: REMOTE_IDENTITY_VECTOR_SCHEMA,
     services: {
@@ -261,8 +266,10 @@ export function buildRemoteIdentityVector({
       },
       lumenloop: normalizeLumenloopInventory(lumenloopOpenapi, lumenloopTools, lumenloopSkills),
       stellarDocs: {
-        indexSettingsSha256: canonicalRemoteSourceSha256(docsSettings),
-        canonicalTitleSetSha256: canonicalRemoteSourceSha256(docsTitles)
+        llmsTxtSha256: llmsTxt.sha256,
+        llmsTxtBytes: llmsTxt.bytes,
+        llmsFullTxtSha256: llmsFullTxt.sha256,
+        llmsFullTxtBytes: llmsFullTxt.bytes
       }
     }
   });
@@ -270,85 +277,32 @@ export function buildRemoteIdentityVector({
 
 export async function probeRemoteIdentities(options = {}) {
   const request = (source) => fetchJsonWithRetry(source, options);
-  const docsHeaders = {
-    "x-algolia-api-key": DOCS_SEARCH_KEY,
-    "x-algolia-application-id": DOCS_APPLICATION_ID
-  };
-  const docsQueryParams = (page) => new URLSearchParams({
-    query: "",
-    filters: "type:lvl1",
-    hitsPerPage: "1000",
-    page: String(page),
-    distinct: "false",
-    attributesToRetrieve: JSON.stringify(["hierarchy", "url_without_anchor"]),
-    attributesToHighlight: "[]",
-    attributesToSnippet: "[]"
-  }).toString();
-  const docsTitleRequest = (pages, label) => ({
-    label,
-    url: REMOTE_IDENTITY_SOURCES.stellarDocsTitles,
-    init: {
-      method: "POST",
-      headers: { ...docsHeaders, "content-type": "application/json" },
-      body: JSON.stringify({
-        requests: pages.map((page) => ({
-          indexName: DOCS_INDEX_NAME,
-          params: docsQueryParams(page)
-        }))
-      })
-    }
-  });
+  const requestBytes = (source) => fetchBytesWithRetry(source, options);
   const [
     scoutOpenapi,
     lumenloopOpenapi,
     lumenloopTools,
     lumenloopSkills,
-    stellarDocsSettings,
-    stellarDocsTitleBatch
+    stellarDocsLlmsTxt,
+    stellarDocsLlmsFullTxt
   ] = await Promise.all([
     request({ label: "Scout OpenAPI", url: REMOTE_IDENTITY_SOURCES.scoutOpenapi }),
     request({ label: "Lumenloop OpenAPI", url: REMOTE_IDENTITY_SOURCES.lumenloopOpenapi }),
     request({ label: "Lumenloop public tools", url: REMOTE_IDENTITY_SOURCES.lumenloopTools }),
     request({ label: "Lumenloop public skills", url: REMOTE_IDENTITY_SOURCES.lumenloopSkills }),
-    request({
-      label: "Stellar Docs settings",
-      url: REMOTE_IDENTITY_SOURCES.stellarDocsSettings,
-      init: { headers: docsHeaders }
-    }),
-    // One multi-query request reads every page the bound allows, so the probe makes two Algolia calls.
-    request(docsTitleRequest(STELLAR_DOCS_TITLE_PAGE_NUMBERS, "Stellar Docs title pages"))
+    requestBytes({ label: "Stellar Docs llms.txt", url: REMOTE_IDENTITY_SOURCES.stellarDocsLlmsTxt }),
+    requestBytes({
+      label: "Stellar Docs llms-full.txt",
+      url: REMOTE_IDENTITY_SOURCES.stellarDocsLlmsFullTxt
+    })
   ]);
-  const titleResults = stellarDocsTitleBatch?.results;
-  if (!Array.isArray(titleResults) || titleResults.length !== STELLAR_DOCS_TITLE_PAGE_NUMBERS.length) {
-    throw new Error("Stellar Docs title pages are incomplete");
-  }
-  const { nbPages, nbHits } = titleResults[0] ?? {};
-  if (!Number.isInteger(nbPages) || nbPages < 1 || nbPages > STELLAR_DOCS_MAX_TITLE_PAGES) {
-    throw new Error("Stellar Docs title page count is invalid");
-  }
-  for (const [page, response] of titleResults.entries()) {
-    if (
-      response?.page !== page ||
-      response.nbPages !== nbPages ||
-      response.nbHits !== nbHits ||
-      !Array.isArray(response.hits) ||
-      (page >= nbPages && response.hits.length !== 0)
-    ) {
-      throw new Error("Stellar Docs title pagination changed during capture");
-    }
-  }
-  const titlePages = titleResults.slice(0, nbPages);
-  const stellarDocsTitles = {
-    nbHits,
-    hits: titlePages.flatMap((page) => page.hits)
-  };
   return buildRemoteIdentityVector({
     scoutOpenapi,
     lumenloopOpenapi,
     lumenloopTools,
     lumenloopSkills,
-    stellarDocsSettings,
-    stellarDocsTitles
+    stellarDocsLlmsTxt,
+    stellarDocsLlmsFullTxt
   });
 }
 

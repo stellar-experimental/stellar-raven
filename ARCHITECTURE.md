@@ -12,7 +12,7 @@ Read [PLAN.md](PLAN.md) for scope and [README.md](README.md) for connection deta
 | Sandbox execution and host providers | [src/executor/run.ts](src/executor/run.ts), [providers.ts](src/executor/providers.ts) |
 | Service calls and envelopes | [src/adapters/](src/adapters/index.ts) |
 | Skill reads and first-party runners | [src/skills/](src/skills/README.md) |
-| Stellar Docs mappings and write guardrails | [docs/stellar-docs.md](docs/stellar-docs.md) |
+| Stellar Docs mappings, scoping, and credential guardrails | [docs/stellar-docs.md](docs/stellar-docs.md) |
 | Operational usage collection | [usage/README.md](usage/README.md) |
 
 ## 1. A `search` call, end to end
@@ -363,8 +363,10 @@ The manifest defines the exposed surface under [ADR-0003](research/decisions/000
 
 The catalog builder fetches exposed pinned skill files and verifies both digests.
 Its gitignored file cache supports repeated builds.
-`inventory/stellar-docs.json` supplies settings drift evidence, not catalog entries.
 `inventory/stellar-docs-titles.json` supplies routing vocabulary and contributes its timestamp to catalog generation time.
+The builder scopes those titles by each docs operation's `mintlify.include` prefixes.
+Stellar Docs operations come from the authored spec, not from a fetched descriptor.
+[docs/stellar-docs.md](docs/stellar-docs.md) defines the docs transport, scoping, and soft-empty contract.
 Sorted entries, stable keys, and input-derived timestamps make catalog generation deterministic.
 
 `src/policy/scout-exposure.ts` owns excluded Scout operations.
@@ -388,9 +390,8 @@ Build-time pinned-file retrieval can require network access.
 [refresh.yml](.github/workflows/refresh.yml) checks live inventories, skill pins, mirror availability, and the Worker canary.
 It reports drift through an issue and fails the workflow.
 Operation-ID sets define surface drift; a version string alone does not.
-The search-only Algolia rule canary compares rules-on and rules-off results with analytics disabled.
-Assertion drift and check errors remain different failure classes.
-Local runs without credentials are inconclusive; CI requires credentials.
+Docs title drift comes from the refreshed title inventory.
+Drift and check errors remain different failure classes.
 
 ## 9. Observability
 

@@ -47,7 +47,7 @@ const jsonSchemaShape = z.record(z.string(), z.unknown());
 /**
  * How the host adapter reaches the surface. `type` discriminates:
  *  - "http"   → method + path (+ base) against a service origin
- *  - "algolia"→ Algolia REST query (hosts carry an app-id placeholder)
+ *  - "mintlify" → Mintlify discovery API search or page request
  *  - "file"   → a pinned upstream markdown file: `url` (raw.githubusercontent
  *               at the commit pinned in ecosystem-skills/MANIFEST.json),
  *               `sha` (git blob hash — provenance) and `sha256` (security
@@ -71,7 +71,7 @@ const HEX40_RE = /^[0-9a-f]{40}$/;
 const HEX64_RE = /^[0-9a-f]{64}$/;
 export const transportSchema = z
   .object({
-    type: z.enum(["http", "algolia", "file"]),
+    type: z.enum(["http", "mintlify", "file"]),
     method: z.string().optional(),
     path: z.string().optional(),
     base: z.string().optional(),

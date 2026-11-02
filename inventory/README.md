@@ -4,7 +4,7 @@ This directory holds generated snapshots of the three upstream services. Catalog
 drift detection use them.
 
 `scripts/build-catalog.mjs` reads the Lumenloop and Stellar Light snapshots and the Stellar Docs
-title snapshot. The Algolia settings snapshot is drift evidence only. The builder also reads the
+title snapshot. The Mintlify backend snapshot is drift evidence only. The builder also reads the
 authored `specs/stellar-docs.json`, the skills manifest, the pinned skill files, and the
 runnable-skill registry. It reads pinned skill files through the hash-verified cache, and a cache
 miss fetches the pinned upstream file. See [the scripts guide](../scripts/README.md).
@@ -15,21 +15,20 @@ miss fetches the pinned upstream file. See [the scripts guide](../scripts/README
 node scripts/refresh-inventory.mjs
 ```
 
-The script needs Node 24 (`.nvmrc`) and no dependencies. It reads `LUMENLOOP_API_KEY` and the
-Algolia pairs `ALGOLIA_{APPLICATION_ID,API_KEY}_{DOCS,SITE}` from `.env` at the repository root.
+The script needs Node 24 (`.nvmrc`) and no dependencies. It reads `LUMENLOOP_API_KEY` and
+`MINTLIFY_ASSISTANT_API_KEY` from `.env` at the repository root.
 
 - **Idempotent.** The script rewrites a file only when its content changes. It ignores
   `fetchedAt` in that comparison, so two runs in a row produce no diff.
 - **Deterministic.** It sorts keys recursively and sorts tool and skill arrays by name. A diff is
   therefore a real upstream contract change.
-- **No secrets in output.** It refuses to write an output that contains a `.env` value. Algolia
-  hostnames use the placeholders `{ALGOLIA_APPLICATION_ID_DOCS}` and `{ALGOLIA_APPLICATION_ID_SITE}`.
+- **No secrets in output.** It refuses to write an output that contains a `.env` value.
 
 ### Daily refresh in CI
 
 The daily `refresh.yml` workflow runs the same refresh. It opens or updates a drift issue when a snapshot
-changes. It requires these repository secrets: `LUMENLOOP_API_KEY`, `ALGOLIA_APPLICATION_ID_DOCS`,
-`ALGOLIA_API_KEY_DOCS`, `ALGOLIA_APPLICATION_ID_SITE`, and `ALGOLIA_API_KEY_SITE`.
+changes. It requires these repository secrets: `LUMENLOOP_API_KEY`, `MINTLIFY_ASSISTANT_API_KEY`,
+`ALGOLIA_APPLICATION_ID_SITE`, and `ALGOLIA_API_KEY_SITE`.
 Missing required secrets fail the workflow in stellar-experimental/stellar-raven. Other repositories
 skip with a notice.
 
@@ -47,8 +46,8 @@ On a fork, also set two repository variables:
 | --- | --- | --- |
 | `lumenloop.json` | Lumenloop tool names, skill names, `/v1/me` tier data, and the public OpenAPI spec. See the details below. | `changelogCursor` = latest `GET /v1/changelog` entry (date/title/breaking); `openapiVersion` |
 | `stellar-light.json` | The full keyless `GET /api/openapi.json` spec under `openapi`, plus a `GET /api/status` snapshot with volatile fields (`generatedAt`, `usage`) stripped. The snapshot owns its operation count. | `changelogLatest` = latest `GET /api/changelog` entry; `openapiVersion` |
-| `stellar-docs.json` | Live settings for Algolia index `crawler_Stellar Docs - Docusaurus` (the facet/ranking/distinct contract). Stellar Docs operation definitions are authored separately in `specs/stellar-docs.json`. | diff of `settings` (facets, distinct, replicas, searchable attrs) |
-| `stellar-docs-titles.json` | Deduplicated `type:lvl1` page titles and paths from the live Algolia index. The catalog builder scopes these titles by each Docs operation's URL prefixes and distills them into routing keywords. | page-title/path additions, removals, and rewords |
+| `stellar-docs.json` | The Mintlify backend identity (API base, search and page paths, project subdomain, auth env name), the response shapes of one search and one page probe, and a fingerprint of the keyless `llms.txt` page index (page count, plus the SHA-256 and page count of each index file). Stellar Docs operation definitions are authored separately in `specs/stellar-docs.json`. | `source` (backend identity), `contract` (response shapes), `pageIndex` (page-index content) |
+| `stellar-docs-titles.json` | Deduplicated page titles and paths from `llms.txt` and every nested `/_llms/*.txt` index it links. The catalog builder scopes these titles by each Docs operation's path prefixes and distills them into routing keywords. | page-title/path additions, removals, and rewords |
 
 ### `lumenloop.json` details
 

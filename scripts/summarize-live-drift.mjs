@@ -250,21 +250,83 @@ function summarizeLumenloop(path) {
   return { touchedCatalogIds, lines };
 }
 
+/**
+ * Classify a change to inventory/stellar-docs.json (the Mintlify backend
+ * snapshot). Backend identity and contract-shape changes can break the adapter;
+ * page-index changes are content churn that the titles snapshot classifies.
+ */
+export function classifyDocsBackend(oldInv, nextInv) {
+  const lines = [];
+  if (!sameJson(oldInv?.source, nextInv?.source)) {
+    lines.push(
+      "  - backend identity changed (API base, search/page path, subdomain, origin, or auth env).",
+      "  - Reconcile specs/stellar-docs.json `backend` and src/adapters/stellar-docs.ts before closing."
+    );
+  }
+  if (!sameJson(oldInv?.contract, nextInv?.contract)) {
+    lines.push(
+      "  - search or page response shape changed.",
+      "  - Run the adapter tests and a live smoke of stellarDocs.search_docs and stellarDocs.get_doc_page."
+    );
+  }
+  const oldIndex = oldInv?.pageIndex;
+  const nextIndex = nextInv?.pageIndex;
+  if (!sameJson(oldIndex, nextIndex)) {
+    const oldFiles = new Map((oldIndex?.indexFiles ?? []).map((file) => [file.path, file]));
+    const nextFiles = new Map((nextIndex?.indexFiles ?? []).map((file) => [file.path, file]));
+    const changed = [];
+    for (const [path, next] of nextFiles) {
+      const old = oldFiles.get(path);
+      if (!old) changed.push(`${path}: added (${next.pageCount} pages)`);
+      else if (old.sha256 !== next.sha256) changed.push(`${path}: ${old.pageCount} -> ${next.pageCount} pages, content changed`);
+    }
+    for (const [path, old] of oldFiles) {
+      if (!nextFiles.has(path)) changed.push(`${path}: removed (${old.pageCount} pages)`);
+    }
+    lines.push(
+      `  - llms.txt page index changed (${oldIndex?.pageCount ?? "unknown"} -> ${nextIndex?.pageCount ?? "unknown"} pages).`,
+      bulletList(changed)
+    );
+  }
+  return lines;
+}
+
+/** Added and removed `path title` pairs between two titles snapshots. */
+export function diffDocsTitles(oldInv, nextInv) {
+  const key = (entry) => `${entry.path} ${entry.title}`;
+  const oldKeys = new Set((oldInv?.titles ?? []).map(key));
+  const nextKeys = new Set((nextInv?.titles ?? []).map(key));
+  return {
+    added: [...nextKeys].filter((entry) => !oldKeys.has(entry)),
+    removed: [...oldKeys].filter((entry) => !nextKeys.has(entry))
+  };
+}
+
 function summarizeDocsInventory(path) {
   if (!changedFiles([path]).includes(path)) return [];
+  const oldInv = readHeadJson(path);
+  const nextInv = readJson(path);
+  if (!oldInv) return [`- ${path}: new inventory file; classify manually.`];
+  if (sameJson({ ...oldInv, fetchedAt: nextInv.fetchedAt }, nextInv)) {
+    return [`- ${path}: unchanged ignoring fetchedAt.`];
+  }
   if (path.endsWith("stellar-docs-titles.json")) {
-    const oldInv = readHeadJson(path);
-    const nextInv = readJson(path);
-    const oldTotal = oldInv?.total ?? oldInv?.titles?.length ?? "unknown";
+    const oldTotal = oldInv.total ?? oldInv.titles?.length ?? "unknown";
     const nextTotal = nextInv.total ?? nextInv.titles?.length ?? "unknown";
+    const { added, removed } = diffDocsTitles(oldInv, nextInv);
     return [
       `- ${path}: docs page-title vocabulary changed (${oldTotal} -> ${nextTotal}).`,
-      "  - This feeds catalog keywords; treat as routing-relevant until the routing gate proves it safe."
+      "  - This feeds catalog keywords; treat as routing-relevant until the routing gate proves it safe.",
+      `  - path/title pairs added: ${added.length}`,
+      bulletList(added),
+      `  - path/title pairs removed: ${removed.length}`,
+      bulletList(removed)
     ];
   }
+  const lines = classifyDocsBackend(oldInv, nextInv);
   return [
-    `- ${path}: Algolia index settings changed.`,
-    "  - Review facets/ranking/distinct/searchable attributes; this can affect search behavior even without operation surface drift."
+    `- ${path}: Mintlify backend snapshot changed.`,
+    ...(lines.length > 0 ? lines : ["  - only fields outside source, contract, and pageIndex changed; classify manually."])
   ];
 }
 

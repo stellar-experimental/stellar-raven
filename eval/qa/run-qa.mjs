@@ -76,7 +76,7 @@
  *                      or judge call.
  *   --remote-identity-probe path
  *                      required executable that prints one exact
- *                      qa-remote-identity-vector-v1 JSON object.
+ *                      qa-remote-identity-vector-v2 JSON object.
  *   --expect-remote-identity-probe-sha256
  *                      required SHA-256 of the remote identity probe bytes.
  *   --expect-remote-identity-sha256

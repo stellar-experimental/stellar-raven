@@ -1,95 +1,61 @@
 {
-  "fetchedAt": "2026-07-13T21:32:50.808Z",
-  "index": "crawler_Stellar Docs - Docusaurus",
-  "service": "stellar-docs",
-  "settings": {
-    "advancedSyntax": true,
-    "allowTyposOnNumericTokens": false,
-    "alternativesAsExact": [
-      "ignorePlurals",
-      "singleWordSynonym"
-    ],
-    "attributeCriteriaComputedByMinProximity": true,
-    "attributeForDistinct": "url",
-    "attributesForFaceting": [
-      "type",
-      "lang",
-      "language",
-      "version",
-      "docusaurus_tag"
-    ],
-    "attributesToHighlight": [
-      "hierarchy",
-      "content"
-    ],
-    "attributesToRetrieve": [
-      "hierarchy",
-      "content",
-      "anchor",
-      "url",
-      "url_without_anchor",
-      "type"
-    ],
-    "attributesToSnippet": [
-      "content:10"
-    ],
-    "camelCaseAttributes": [
-      "hierarchy",
-      "content"
-    ],
-    "customRanking": [
-      "desc(weight.pageRank)",
-      "desc(weight.level)",
-      "asc(weight.position)"
-    ],
-    "distinct": true,
-    "exactOnSingleWordQuery": "attribute",
-    "highlightPostTag": "</span>",
-    "highlightPreTag": "<span class=\"algolia-docsearch-suggestion--highlight\">",
-    "hitsPerPage": 20,
-    "ignorePlurals": true,
-    "maxValuesPerFacet": 100,
-    "minProximity": 1,
-    "minWordSizefor1Typo": 3,
-    "minWordSizefor2Typos": 7,
-    "numericAttributesToIndex": null,
-    "optionalWords": null,
-    "paginationLimitedTo": 1000,
-    "queryType": "prefixLast",
-    "ranking": [
-      "proximity",
-      "exact",
-      "words",
-      "filters",
-      "typo",
-      "attribute",
-      "custom"
-    ],
-    "removeWordsIfNoResults": "allOptional",
-    "replicas": [
-      "docs_replica_agent"
-    ],
-    "searchableAttributes": [
-      "unordered(hierarchy.lvl0)",
-      "unordered(hierarchy.lvl1)",
-      "unordered(hierarchy.lvl2)",
-      "unordered(hierarchy.lvl3)",
-      "unordered(hierarchy.lvl4)",
-      "unordered(hierarchy.lvl5)",
-      "unordered(hierarchy.lvl6)",
-      "content"
-    ],
-    "separatorsToIndex": "",
-    "snippetEllipsisText": "",
-    "unretrievableAttributes": null,
-    "version": 1
+  "contract": {
+    "pageProbe": {
+      "resultShape": {
+        "content": "string",
+        "path": "string"
+      }
+    },
+    "searchProbe": {
+      "body": {
+        "pageSize": 1,
+        "query": "glossary"
+      },
+      "resultShape": {
+        "content": "string",
+        "metadata": {
+          "title": "string"
+        },
+        "path": "string"
+      }
+    }
   },
-  "source": {
-    "authEnv": [
-      "ALGOLIA_APPLICATION_ID_DOCS",
-      "ALGOLIA_API_KEY_DOCS"
+  "fetchedAt": "2026-11-02T14:59:12.066Z",
+  "pageIndex": {
+    "indexFiles": [
+      {
+        "pageCount": 193,
+        "path": "/_llms/build.txt",
+        "sha256": "3a455d171ef9cc093c385f259858dd4ef7ba7174875ee2e4f9acf41a6e79e3d2"
+      },
+      {
+        "pageCount": 305,
+        "path": "/_llms/data.txt",
+        "sha256": "0c065216569c5ba6bec6f1816c3f19b1a9c88a8cadf7d0f00d3678f9521d739d"
+      },
+      {
+        "pageCount": 189,
+        "path": "/_llms/platforms.txt",
+        "sha256": "40d039963944b27929546a19ecd0d395928471d50f173decbdcf7d5e4bf67264"
+      },
+      {
+        "pageCount": 286,
+        "path": "/llms.txt",
+        "sha256": "5044b83f93e330b59deb6c424d5ab8c03ab8d7da2806dfbe6738e25d2f4a1bc1"
+      }
     ],
-    "research": "research/services/stellar-docs-algolia.md",
-    "settings": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings"
+    "pageCount": 973
+  },
+  "service": "stellar-docs",
+  "source": {
+    "apiBase": "https://api.mintlify.com",
+    "authEnv": "MINTLIFY_ASSISTANT_API_KEY",
+    "backend": "mintlify",
+    "llmsTxt": "https://developers.stellar.org/llms.txt",
+    "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+    "research": "research/services/stellar-docs-mintlify.md",
+    "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+    "siteOrigin": "https://developers.stellar.org",
+    "subdomain": "stellardevelopmentfoundation"
   }
 }

@@ -625,21 +625,10 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
           meta: { tool: "find_similar_projects_semantic", format: "json" }
         });
       }
-      if (url.pathname.includes("/1/indexes/")) {
-        return Response.json({
-          hits: [
-            {
-              objectID: "doc-1",
-              url: "https://developers.stellar.org/docs/example",
-              hierarchy: { lvl0: "Docs", lvl1: "Example" },
-              _snippetResult: { content: { value: "Exact official wording" } }
-            }
-          ],
-          nbHits: 1,
-          page: 0,
-          nbPages: 1,
-          hitsPerPage: 1
-        });
+      if (url.pathname.includes("/discovery/v1/search/")) {
+        return Response.json([
+          { path: "docs/example", content: "## Example\nExact official wording", metadata: { title: "Example" } }
+        ]);
       }
       return Response.json({ error: `unexpected ${url.pathname}` }, { status: 500 });
     });

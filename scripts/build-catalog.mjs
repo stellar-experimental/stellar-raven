@@ -303,8 +303,8 @@ function validateAliasReceipt(receipt) {
 
 /**
  * Per-operation page-title bodies for stellarDocs: titles from
- * inventory/stellar-docs-titles.json scoped by each op's clientFilter URL
- * prefixes. Each matching path belongs to its longest prefix only. Whole-corpus
+ * inventory/stellar-docs-titles.json scoped by each op's `mintlify.include`
+ * path prefixes. Each matching path belongs to its longest prefix only. Whole-corpus
  * ops get none. Drop namespace words and repeated cross-service prose, while
  * preserving named topics and vocabulary in the owning service's descriptions.
  */
@@ -340,8 +340,10 @@ export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) 
   }
   const ownerByPrefix = new Map();
   for (const entry of entries) {
-    for (const prefix of entry.transport?.algolia?.clientFilter?.prefixesAnyOf ?? []) {
-      const path = prefix.replace(/^https?:\/\/[^/]+/, "").replace(/\/$/, "");
+    for (const prefix of entry.transport?.mintlify?.include ?? []) {
+      // Meeting-note titles are dates and author pages; they carry no topic vocabulary.
+      if (!prefix.startsWith("/docs/")) continue;
+      const path = prefix.replace(/\/$/, "");
       const owner = ownerByPrefix.get(path);
       if (owner && owner !== entry.id) throw new Error(`ambiguous title prefix ${path}: ${owner}, ${entry.id}`);
       ownerByPrefix.set(path, entry.id);
@@ -840,8 +842,8 @@ export function buildScout(inv) {
 }
 
 // ---------------------------------------------------------------------------
-// Stellar Docs (Algolia) — 12 authored operations from specs/stellar-docs.json
-// docs/stellar-docs.md defines the authored query mappings.
+// Stellar Docs (Mintlify) — 12 authored operations from specs/stellar-docs.json
+// docs/stellar-docs.md defines the authored request mappings.
 // ---------------------------------------------------------------------------
 
 function buildStellarDocs(spec) {
@@ -853,26 +855,27 @@ function buildStellarDocs(spec) {
     description: op.returns ? `${op.description}\n\nReturns: ${op.returns}` : op.description,
     inputSchema: op.params, // spec params are already a JSON Schema object
     outputSchema: op.outputSchema ?? null,
-    // Transport = shared backend block + this op's exact Algolia query mapping.
-    // The adapter consumes `algolia` (paramMap/fixedParams/
-    // conditionalParams/clientFilter/derivedQuery) as-is.
+    // Transport = shared backend block + this op's exact request mapping.
+    // The adapter consumes `mintlify` (endpoint/include/exclude/conditional/
+    // groupBy) as-is.
     transport: {
-      type: "algolia",
-      index: backend.index,
-      endpoint: backend.endpoint,
-      hosts: backend.hosts,
-      applicationIdEnv: backend.applicationIdEnv,
+      type: "mintlify",
+      apiBase: backend.apiBase,
+      searchPath: backend.searchPath,
+      pagePath: backend.pagePath,
+      siteOrigin: backend.siteOrigin,
       apiKeyEnv: backend.apiKeyEnv,
+      candidateWindow: backend.candidateWindow,
+      attemptTimeoutsMs: backend.attemptTimeoutsMs,
       retry: backend.retry,
-      baseParams: backend.baseParams,
       constraints: backend.constraints,
-      algolia: op.algolia
+      mintlify: op.mintlify
     },
     provenance: {
       source: catalogHints.provenanceSource,
       fetchedAt: spec.authoredAt,
       spec: "specs/stellar-docs.json",
-      note: "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor"
+      note: "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor"
     }
   }));
 }

@@ -5,16 +5,15 @@
 //   node scripts/refresh-inventory.mjs --service stellar-light
 //
 // Plain Node 20+ (global fetch, node:fs only — no deps). Reads .env at the repo
-// root for LUMENLOOP_API_KEY / ALGOLIA_{APPLICATION_ID,API_KEY}_{DOCS,SITE}.
+// root for LUMENLOOP_API_KEY / MINTLIFY_ASSISTANT_API_KEY.
 //
 // Guarantees:
 //   - Deterministic output: object keys sorted recursively, tool/skill arrays
 //     sorted by name, so diffs are meaningful.
 //   - Idempotent: a file is rewritten only if its content (ignoring the
 //     top-level `fetchedAt`) actually changed; back-to-back runs produce zero diff.
-//   - No key material in outputs: every .env value (including the Algolia app id,
-//     which would otherwise appear in hostnames) is asserted absent from every
-//     output before writing; URLs use `{ALGOLIA_APPLICATION_ID_DOCS}` placeholders.
+//   - No key material in outputs: every .env value is asserted absent from
+//     every output before writing.
 //
 // LUMENLOOP_PARTNER_TOOLS supplies names hidden by GET /v1/tools.
 // The union count must match GET /v1/me tools.available. See ARCHITECTURE.md.
@@ -27,6 +26,7 @@
 // Partner-tier detail must never be committed to this public repo; the names
 // alone keep the union guards and drift diffs working.
 
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -44,9 +44,20 @@ const LUMENLOOP_BASE = "https://api.lumenloop.com/v1";
 const LUMENLOOP_PARTNER_TOOLS = ["list_my_research", "request_research", "research_result"];
 
 // ---------------------------------------------------------------------------
-// Stellar Docs (Algolia) — index name for the settings drift probe. See docs/stellar-docs.md.
+// Stellar Docs (Mintlify) — backend identity mirrors specs/stellar-docs.json `backend`.
 // ---------------------------------------------------------------------------
-const STELLAR_DOCS_INDEX = "crawler_Stellar Docs - Docusaurus";
+const STELLAR_DOCS_ORIGIN = "https://developers.stellar.org";
+const MINTLIFY_API_BASE = "https://api.mintlify.com";
+const MINTLIFY_SUBDOMAIN = "stellardevelopmentfoundation";
+const MINTLIFY_SEARCH_PATH = `/discovery/v1/search/${MINTLIFY_SUBDOMAIN}`;
+const MINTLIFY_PAGE_PATH = `/discovery/v1/page/${MINTLIFY_SUBDOMAIN}`;
+const MINTLIFY_AUTH_ENV = "MINTLIFY_ASSISTANT_API_KEY";
+// Fixed probe query: it only proves the search contract answers; its hits are
+// not recorded, so ranking churn cannot produce drift.
+const MINTLIFY_PROBE_QUERY = "glossary";
+// Bound for the recursive /_llms/ index walk; reaching it means a cycle or a
+// layout change, so the refresh fails instead of recording a partial corpus.
+const MAX_LLMS_INDEX_FILES = 50;
 
 // .env parser + JSON fetch + deep key sort live in scripts/lib/shared.mjs
 // (shared with scripts/check-skills-drift.mjs; this file's behavior is canonical).
@@ -68,7 +79,7 @@ function stableStringify(value) {
 // Env var names this script reads for auth — asserted absent from every output
 // even on an env-only run (no .env file, e.g. secrets exported into the
 // environment) where parseEnvFile below returns nothing.
-const SECRET_ENV_NAMES = ["LUMENLOOP_API_KEY", "ALGOLIA_APPLICATION_ID_DOCS", "ALGOLIA_API_KEY_DOCS", "ALGOLIA_APPLICATION_ID_SITE", "ALGOLIA_API_KEY_SITE"];
+const SECRET_ENV_NAMES = ["LUMENLOOP_API_KEY", "MINTLIFY_ASSISTANT_API_KEY", "ALGOLIA_APPLICATION_ID_SITE", "ALGOLIA_API_KEY_SITE"];
 
 // Scrub-check values: the union of .env entries (generic — every value, as
 // before) AND process.env values for the secret key names above, so a run that
@@ -87,7 +98,7 @@ const SECRET_VALUES = (() => {
 // Match src/policy/redact.ts's secret names. Application IDs are public identifiers.
 // Keep this helper local so the maintenance script still runs as plain JavaScript.
 const ERROR_SECRET_ENV_NAMES = [
-  "LUMENLOOP_API_KEY", "ALGOLIA_API_KEY_DOCS", "ALGOLIA_API_KEY_SITE",
+  "LUMENLOOP_API_KEY", "ALGOLIA_API_KEY_SITE", "MINTLIFY_ASSISTANT_API_KEY",
   "MCP_SERVER_SECRET", "WORKOS_API_KEY"
 ];
 
@@ -346,117 +357,183 @@ export function normalizeScoutStatus(status) {
 }
 
 // ---------------------------------------------------------------------------
-// Stellar Docs (Algolia) — docs/stellar-docs.md defines the endpoint and credential boundaries.
+// Stellar Docs (Mintlify) — docs/stellar-docs.md defines the endpoint and credential boundaries.
 // ---------------------------------------------------------------------------
-async function refreshStellarDocs() {
-  const appId = requireEnv("ALGOLIA_APPLICATION_ID_DOCS");
-  const apiKey = requireEnv("ALGOLIA_API_KEY_DOCS");
-  const settingsPath = `/1/indexes/${encodeURIComponent(STELLAR_DOCS_INDEX)}/settings`;
-
-  const settings = await fetchJson(`https://${appId}-dsn.algolia.net${settingsPath}`, {
-    headers: {
-      "X-Algolia-Application-Id": appId,
-      "X-Algolia-API-Key": apiKey,
-    },
-    label: "algolia index settings",
-  });
-
-  writeInventory("stellar-docs.json", {
-    service: "stellar-docs",
-    fetchedAt: new Date().toISOString(),
-    source: {
-      // Hostname templated so the output never contains the .env app-id value.
-      settings: `https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net${settingsPath}`,
-      authEnv: ["ALGOLIA_APPLICATION_ID_DOCS", "ALGOLIA_API_KEY_DOCS"],
-      research: "research/services/stellar-docs-algolia.md",
-    },
-    index: STELLAR_DOCS_INDEX,
-    settings,
-  });
-
-  // Page-title snapshot: every type:lvl1 record is one
-  // docs page title — the specific concept vocabulary ("Muxed Accounts",
-  // "Sponsored Reserves") that neither the op descriptions nor the coarse
-  // taxonomy topic slugs carry. build-catalog.mjs scopes these per docs
-  // operation by URL prefix and distills them into the low-weight `keywords`
-  // field the scorer blends in.
-  const REQUESTED_HITS_PER_PAGE = 1000;
-  const queryPath = `/1/indexes/${encodeURIComponent(STELLAR_DOCS_INDEX)}/query`;
-  const titlesRes = await fetchJson(`https://${appId}-dsn.algolia.net${queryPath}`, {
-    method: "POST",
-    headers: {
-      "X-Algolia-Application-Id": appId,
-      "X-Algolia-API-Key": apiKey,
-      "Content-Type": "application/json",
-    },
-    body: {
-      query: "",
-      filters: "type:lvl1",
-      hitsPerPage: REQUESTED_HITS_PER_PAGE,
-      distinct: false,
-      attributesToRetrieve: ["hierarchy", "url_without_anchor"],
-      attributesToHighlight: [],
-      attributesToSnippet: [],
-    },
-    label: "algolia lvl1 page titles",
-  });
-  // One page, no pagination. That is fine while the filtered index fits inside
-  // it, and silently wrong the moment it does not: the snapshot would turn page
-  // one into "the complete corpus", record a false `total`, and stop producing
-  // drift for anything past the cut. Fail loudly instead of guessing — the
-  // remedy (paginate, or raise the cap) is a deliberate change, not a default.
-  // Fail closed on a MISSING count too, not just an exceeded one. Accepting an
-  // absent or malformed nbHits would silently restore the exact failure this
-  // guard exists to prevent: an unverifiable page one recorded as the whole
-  // corpus. paginationLimitedTo is an index SETTING and is not echoed in a
-  // query response, so the honest thing to print is what we asked for.
-  const returned = Array.isArray(titlesRes.hits) ? titlesRes.hits.length : null;
-  const nbHits = titlesRes.nbHits;
-  if (returned === null || !Number.isInteger(nbHits) || nbHits < 0) {
-    throw new Error(
-      `algolia lvl1 page titles: cannot verify completeness — hits=${
-        returned === null ? "not an array" : returned
-      }, nbHits=${JSON.stringify(nbHits)}. Refusing to record a corpus total that may be a ` +
-        `truncated first page.`,
-    );
+async function fetchText(url, label = url) {
+  const attempts = 3;
+  for (let attempt = 1; ; attempt += 1) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(30_000) });
+      if (res.status >= 500 && attempt < attempts) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw Object.assign(new Error(`${label}: HTTP ${res.status}`), { final: true });
+      return await res.text();
+    } catch (err) {
+      if (err.final || attempt >= attempts) {
+        throw new Error(`${label}: ${err.message}${err.cause ? ` (${err.cause.code ?? err.cause.message ?? err.cause})` : ""}`);
+      }
+      await new Promise((r) => setTimeout(r, 500 * attempt));
+    }
   }
-  if (nbHits > returned) {
-    throw new Error(
-      `algolia lvl1 page titles truncated: index reports ${nbHits} matching records but only ` +
-        `${returned} were returned (requested hitsPerPage ${REQUESTED_HITS_PER_PAGE}; the index's ` +
-        `own paginationLimitedTo is recorded in inventory/stellar-docs.json). The title snapshot ` +
-        `would claim a complete corpus it does not have — paginate this query before re-running.`,
-    );
+}
+
+function sha256(text) {
+  return createHash("sha256").update(text).digest("hex");
+}
+
+/**
+ * Map a same-origin llms.txt link to the catalog's page-path form: no origin,
+ * no `.md`, no trailing `/index` (`/docs/build/index.md` -> `/docs/build`).
+ * Returns null for any other origin.
+ */
+export function docsPathFromLlmsUrl(url, origin = STELLAR_DOCS_ORIGIN) {
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
   }
+  if (parsed.origin !== origin) return null;
+  const path = parsed.pathname.replace(/\.md$/, "").replace(/\/index$/, "").replace(/\/+$/, "");
+  return path === "" ? "/" : path;
+}
+
+/**
+ * Parse one llms.txt index file. A list item that links a same-origin `.md`
+ * file is a page; one that links a same-origin `/_llms/*.txt` file is a nested
+ * index the caller must follow. Inline links in descriptions are ignored.
+ */
+export function parseLlmsIndex(text, origin = STELLAR_DOCS_ORIGIN) {
+  const pages = [];
+  const indexes = [];
+  for (const line of text.split("\n")) {
+    const match = /^- \[(.+?)\]\((\S+?)\)(?::\s|$)/.exec(line.trim());
+    if (!match) continue;
+    const [, title, url] = match;
+    let parsed;
+    try {
+      parsed = new URL(url);
+    } catch {
+      continue;
+    }
+    if (parsed.origin !== origin) continue;
+    if (/^\/_llms\/.+\.txt$/.test(parsed.pathname)) {
+      indexes.push(`${origin}${parsed.pathname}`);
+    } else if (parsed.pathname.endsWith(".md")) {
+      pages.push({ path: docsPathFromLlmsUrl(url, origin), title: title.trim() });
+    }
+  }
+  return { pages, indexes };
+}
+
+/** Deduplicate on path + title and sort by path, then title. */
+export function normalizeTitles(pages) {
   const seen = new Set();
   const titles = [];
-  for (const hit of titlesRes.hits ?? []) {
-    const title = hit.hierarchy?.lvl1;
-    const url = hit.url_without_anchor ?? "";
-    const path = url.replace(/^https?:\/\/[^/]+/, "");
-    if (!title || !path) continue;
+  for (const { path, title } of pages) {
+    if (!path || !title) continue;
     const key = `${path} ${title}`;
     if (seen.has(key)) continue;
     seen.add(key);
     titles.push({ path, title });
   }
-  titles.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : a.title.localeCompare(b.title)));
+  return titles.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : a.title.localeCompare(b.title)));
+}
 
+function shapeOf(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return typeof value;
+  return Object.fromEntries(Object.keys(value).sort().map((key) => [key, shapeOf(value[key])]));
+}
+
+async function mintlifyPost(path, apiKey, body, label) {
+  return fetchJson(`${MINTLIFY_API_BASE}${path}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body,
+    label,
+  });
+}
+
+async function refreshStellarDocs() {
+  const apiKey = requireEnv(MINTLIFY_AUTH_ENV);
+
+  // Page index: keyless llms.txt plus every nested /_llms/ index it links.
+  const rootUrl = `${STELLAR_DOCS_ORIGIN}/llms.txt`;
+  const queue = [rootUrl];
+  const visited = new Set();
+  const indexFiles = [];
+  const pages = [];
+  while (queue.length > 0) {
+    const url = queue.shift();
+    if (visited.has(url)) continue;
+    if (visited.size >= MAX_LLMS_INDEX_FILES) {
+      throw new Error(`llms.txt index walk exceeded ${MAX_LLMS_INDEX_FILES} files; refusing to record a partial page index`);
+    }
+    visited.add(url);
+    const text = await fetchText(url, `stellar docs ${new URL(url).pathname}`);
+    const parsed = parseLlmsIndex(text);
+    indexFiles.push({ path: new URL(url).pathname, pageCount: parsed.pages.length, sha256: sha256(text) });
+    pages.push(...parsed.pages);
+    queue.push(...parsed.indexes);
+  }
+  const titles = normalizeTitles(pages);
+  if (titles.length === 0) {
+    throw new Error("stellar docs llms.txt: no page entries parsed; refusing to record an empty page index");
+  }
+  indexFiles.sort((a, b) => a.path.localeCompare(b.path));
+
+  // Authenticated contract probes. Only the response shape is recorded.
+  const searchRes = await mintlifyPost(MINTLIFY_SEARCH_PATH, apiKey, { query: MINTLIFY_PROBE_QUERY, pageSize: 1 }, "mintlify search");
+  if (!Array.isArray(searchRes) || searchRes.length === 0 || typeof searchRes[0]?.path !== "string") {
+    throw new Error("mintlify search: expected a non-empty array of { path, content, metadata }");
+  }
+  const pageRes = await mintlifyPost(MINTLIFY_PAGE_PATH, apiKey, { path: searchRes[0].path }, "mintlify page");
+  if (typeof pageRes?.content !== "string") {
+    throw new Error("mintlify page: expected { path, content }");
+  }
+
+  writeInventory("stellar-docs.json", {
+    service: "stellar-docs",
+    fetchedAt: new Date().toISOString(),
+    source: {
+      backend: "mintlify",
+      apiBase: MINTLIFY_API_BASE,
+      searchPath: MINTLIFY_SEARCH_PATH,
+      pagePath: MINTLIFY_PAGE_PATH,
+      subdomain: MINTLIFY_SUBDOMAIN,
+      siteOrigin: STELLAR_DOCS_ORIGIN,
+      authEnv: MINTLIFY_AUTH_ENV,
+      llmsTxt: rootUrl,
+      research: "research/services/stellar-docs-mintlify.md",
+    },
+    contract: {
+      searchProbe: { body: { pageSize: 1, query: MINTLIFY_PROBE_QUERY }, resultShape: shapeOf(searchRes[0]) },
+      pageProbe: { resultShape: shapeOf(pageRes) },
+    },
+    pageIndex: {
+      pageCount: titles.length,
+      indexFiles,
+    },
+  });
+
+  // Page-title snapshot from the llms.txt page index: the specific concept
+  // vocabulary ("Muxed Accounts", "Sponsored Reserves") that neither the op
+  // descriptions nor the coarse taxonomy topic slugs carry. build-catalog.mjs
+  // scopes these per docs operation by path prefix and distills them into the
+  // low-weight `keywords` field the scorer blends in.
   writeInventory("stellar-docs-titles.json", {
     service: "stellar-docs",
     fetchedAt: new Date().toISOString(),
     source: {
-      query: `https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net${queryPath}`,
-      authEnv: ["ALGOLIA_APPLICATION_ID_DOCS", "ALGOLIA_API_KEY_DOCS"],
+      llmsTxt: rootUrl,
+      auth: "none (keyless)",
       method:
-        "empty-query POST filtered to type:lvl1 (one record per page title); title = hierarchy.lvl1, path = url_without_anchor without origin; deduped, sorted by path then title",
+        "llms.txt plus every nested /_llms/*.txt index; one list item per page; title = link text, path = same-origin URL without origin, .md, or trailing /index; deduped, sorted by path then title",
     },
-    index: STELLAR_DOCS_INDEX,
     total: titles.length,
     titles,
   });
 
-  return { pageTitleCount: titles.length };
+  return { pageTitleCount: titles.length, indexFileCount: indexFiles.length };
 }
 
 // ---------------------------------------------------------------------------
@@ -485,7 +562,7 @@ async function main() {
     console.log(`done: stellar-light ${result.operationCount} ops`);
   } else if (service === "stellar-docs") {
     const result = await refreshStellarDocs();
-    console.log(`done: stellar-docs index settings + ${result.pageTitleCount} page titles`);
+    console.log(`done: stellar-docs Mintlify contract + ${result.pageTitleCount} page titles from ${result.indexFileCount} llms.txt files`);
   } else {
     const [lumenloop, stellarLight, stellarDocs] = await Promise.all([
       refreshLumenloop(),
@@ -494,7 +571,7 @@ async function main() {
     ]);
     console.log(
       `done: lumenloop ${lumenloop.toolCount} tools (${lumenloop.partnerToolCount} partner, hidden from /v1/tools) + ${lumenloop.skillCount} skills + openapi (${lumenloop.openapiOperationCount} ops); ` +
-        `stellar-light ${stellarLight.operationCount} ops; stellar-docs index settings + ${stellarDocs.pageTitleCount} page titles`,
+        `stellar-light ${stellarLight.operationCount} ops; stellar-docs Mintlify contract + ${stellarDocs.pageTitleCount} page titles`,
     );
   }
 }

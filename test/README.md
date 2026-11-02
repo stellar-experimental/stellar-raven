@@ -42,7 +42,7 @@ These tests check failure recovery without changing tracked generated files.
 | `agentic-capture*`, `analyze-composition*`, `compare-architecture-ab*` | Transcript capture, operation composition, and comparison measurements |
 | `discovery-paid-run-guards*`, `exact-old-runtime-adapter*`, `p6-judge-self-test*`, `partner-docs-eval*`, `plain-operation-harness*` | Evaluation command controls and local substitutes for model and service calls |
 | `check-*`, `build-index*`, `diff-pins*`, `refresh-inventory*`, `scripts-shared*`, `summarize-*`, `classify-canary*` | Maintenance commands, pin review, atomic writes, health classification, and issue summaries |
-| `algolia-rule-canary*`, `deploy-preflight*`, `scan-secrets*`, `private-usage-guard*`, `emitted-text-guard*` | Deployment, search-rule, secret-scanning, private-data, and exposure guards |
+| `deploy-preflight*`, `scan-secrets*`, `private-usage-guard*`, `emitted-text-guard*` | Deployment, secret-scanning, private-data, and exposure guards |
 | `usage*` | Usage collection, health checks, and report runtime behavior |
 | [usage/report-site/test](../usage/report-site/test/) | Separate report-site authentication, aggregation, and output tests |
 | [live-cases.test.mjs](live-cases.test.mjs) | Offline checks of the manual live scripts |

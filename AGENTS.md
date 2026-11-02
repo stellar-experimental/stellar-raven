@@ -8,7 +8,7 @@ linked docs and skills instead of accumulating them here. Human contributors sta
 ## Project and source-of-truth map
 
 This is a Cloudflare Workers MCP server exposing `search` and `execute` over Lumenloop, Stellar
-Light/Scout, Stellar Docs (Algolia), and selected ecosystem skills. Model-authored JavaScript runs
+Light/Scout, Stellar Docs (Mintlify), and selected ecosystem skills. Model-authored JavaScript runs
 in a networkless Dynamic Worker; host adapters own all service traffic, policy, and secrets.
 
 - Read `PLAN.md` for current product scope and status, then `ARCHITECTURE.md` for the implemented
@@ -127,9 +127,9 @@ Choose the independent reviewer under "Coordination" by tier, not by a fixed mod
   sync remains keyless.
 - Any paid or side-effecting model operation requires host-side request-context approval,
   elicitation, and budget enforcement before it can ship.
-- Algolia operator credentials are maintenance-only and never a runtime/sandbox surface. Any write
-  needs a read-only A/B win, a general mechanism rather than per-query hacks, and the guardrails in
-  [`docs/stellar-docs.md`](docs/stellar-docs.md).
+- Mintlify admin and Algolia operator credentials are maintenance-only and never a runtime/sandbox
+  surface. Any write needs a read-only A/B win, a general mechanism rather than per-query hacks,
+  and the guardrails in [`docs/stellar-docs.md`](docs/stellar-docs.md).
 - Evals produce evidence-backed upstream findings in `improvements/`; scores are instruments, not
   the final product.
 - Solo, a retired task tracker, is not a live path. Never add a `solo://` reference, a Solo todo,

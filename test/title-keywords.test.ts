@@ -6,7 +6,7 @@ const docs = {
   service: "docs",
   kind: "operation",
   description: "Search guides",
-  transport: { algolia: { clientFilter: { prefixesAnyOf: ["https://example.org/guides/"] } } }
+  transport: { mintlify: { endpoint: "search", include: ["/docs/guides/"] } }
 };
 const directory = {
   id: "directory.list_widgets",
@@ -30,7 +30,7 @@ const repeatedEntries = [
 
 function titleTokens(title: string, entries: Record<string, unknown>[] = repeatedEntries): string[] {
   const extras = stellarDocsTitleExtras([docs], {
-    titles: [{ path: "/guides/example", title }]
+    titles: [{ path: "/docs/guides/example", title }]
   }, entries);
   return (extras.get(docs.id)?.[0] ?? "").split(" ").filter(Boolean);
 }
@@ -86,8 +86,8 @@ describe("page-title keyword distinctiveness", () => {
     const broad = { ...docs, id: "docs.search_everything", transport: null };
     const extras = stellarDocsTitleExtras([docs, broad], {
       titles: [
-        { path: "/guides/example", title: "Quasar" },
-        { path: "/elsewhere/example", title: "Nebula" }
+        { path: "/docs/guides/example", title: "Quasar" },
+        { path: "/docs/elsewhere/example", title: "Nebula" }
       ]
     }, [docs, directory, skills, broad]);
     expect(extras.get(docs.id)).toEqual(["quasar"]);
@@ -96,23 +96,35 @@ describe("page-title keyword distinctiveness", () => {
 
   it("assigns overlapping title paths only to their longest matching prefix", () => {
     const nested = { ...docs, id: "docs.search_nested", transport: {
-      algolia: { clientFilter: { prefixesAnyOf: ["https://example.org/guides/topic/"] } }
+      mintlify: { endpoint: "search", include: ["/docs/guides/topic/"] }
     } };
     const extras = stellarDocsTitleExtras([docs, nested], { titles: [
-      { path: "/guides/topic", title: "Quasar" },
-      { path: "/guides/topic/child", title: "Nebula" },
-      { path: "/guides/topic-other", title: "Pulsar" }
+      { path: "/docs/guides/topic", title: "Quasar" },
+      { path: "/docs/guides/topic/child", title: "Nebula" },
+      { path: "/docs/guides/topic-other", title: "Pulsar" }
     ] }, [docs, nested]);
     expect(extras.get(nested.id)).toEqual(["quasar nebula"]);
     expect(extras.get(docs.id)).toEqual(["pulsar"]);
     expect(stellarDocsTitleExtras([nested, docs], { titles: [
-      { path: "/guides/topic/child", title: "Nebula" }
+      { path: "/docs/guides/topic/child", title: "Nebula" }
     ] }, [docs, nested])).toEqual(new Map([[nested.id, ["nebula"]]]));
+  });
+
+  it("gives meeting-note include prefixes no title keywords", () => {
+    const meetings = { ...docs, id: "docs.search_meetings", transport: {
+      mintlify: { endpoint: "search", include: ["/meetings/"] }
+    } };
+    const extras = stellarDocsTitleExtras([docs, meetings], { titles: [
+      { path: "/meetings/2026/01/15", title: "Quasar" },
+      { path: "/docs/guides/example", title: "Nebula" }
+    ] }, [docs, meetings]);
+    expect(extras.has(meetings.id)).toBe(false);
+    expect(extras.get(docs.id)).toEqual(["nebula"]);
   });
 
   it("rejects equally specific ownership instead of choosing an operation by ID", () => {
     expect(() => stellarDocsTitleExtras([docs, { ...docs, id: "docs.other" }], {
-      titles: [{ path: "/guides/child", title: "Quasar" }]
+      titles: [{ path: "/docs/guides/child", title: "Quasar" }]
     }, [docs])).toThrow("ambiguous title prefix");
   });
 });

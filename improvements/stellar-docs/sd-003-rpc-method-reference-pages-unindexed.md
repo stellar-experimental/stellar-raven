@@ -1,7 +1,7 @@
 ---
 id: sd-003
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-03
 evidence:
   - eval/qa/results/2026-07-03T16-06-45-variantA.json (q-ti-rpc-gettransactions-pagination-xdr)
@@ -14,6 +14,7 @@ evidence:
   - upstream PR https://github.com/stellar/stellar-docs/pull/2572 merged 2026-07-10 at final head fb4e8ecbb50218b52313c434a9d0d4e8571fdb3a; it added a per-method limits/defaults table to the indexed Pagination page after reverting the intermediate configurable-per-instance wording
   - independent Docs-team audit 2026-07-14 confirmed generated method pages remain unindexed and #2566 is the only crawler-inclusion tracker; close only after the Algolia-dashboard owner has a durable replacement task: https://gist.githubusercontent.com/ElliotFriend/3b3641b929b4408a834b85bcb4e75449/raw/0183ead04f484e7b870499d9f12129d1673f1a3f/raven-issues-audit.md
   - scope/disposition correction posted and read back 2026-07-15: https://github.com/stellar/stellar-docs/issues/2566#issuecomment-4981955612
+  - live re-check 2026-11-02 after developers.stellar.org moved to Mintlify on 2026-10-22: the Mintlify search API (Raven `stellarDocs.search_docs`, query `getTransactions API reference limit`) ranks `/docs/data/apis/rpc/api-reference/methods/getTransactions` first, and `stellarDocs.get_doc_page` on that path returns its content including "The limit for getTransactions can range from 1 to 200 - an upper limit that is hardcoded in Stellar-RPC"; `search_rpc_horizon_data_docs` `getLedgerEntries` also ranks the generated method page first. The fix is the platform migration, not a crawler change. Evidence: .agents/rounds/2026-11-02-mintlify-migration.md
 recurrences:
   - date: 2026-08-11
     evidence: live recheck — get_doc_page_sections for the generated getTransactions path remains soft-empty; `getTransactions API reference limit 200 default 50` ranks the configuring page first, but the generated method page remains unindexed. Issue #2566 remains open; its latest maintainer comment is ElliotFriend's 2026-07-21 partial-fix note, while the latest comment is Raven's 2026-07-27 reply. PR #2572 remains merged with all recorded checks successful and ElliotFriend approval.

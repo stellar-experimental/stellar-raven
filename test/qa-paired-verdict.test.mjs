@@ -50,8 +50,10 @@ function remoteVector() {
         canonicalInventorySha256: "2".repeat(64)
       },
       stellarDocs: {
-        indexSettingsSha256: "3".repeat(64),
-        canonicalTitleSetSha256: "4".repeat(64)
+        llmsTxtSha256: "3".repeat(64),
+        llmsTxtBytes: 55_668,
+        llmsFullTxtSha256: "4".repeat(64),
+        llmsFullTxtBytes: 5_810_884
       }
     }
   };

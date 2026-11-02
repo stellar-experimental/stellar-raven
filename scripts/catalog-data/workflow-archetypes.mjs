@@ -86,7 +86,7 @@ export const WORKFLOW_ARCHETYPES = [
       "stellarDocs.search_protocol_concepts_docs",
       "stellarDocs.search_sdk_cli_tools_docs",
       "stellarDocs.search_docs",
-      "stellarDocs.get_doc_page_sections"
+      "stellarDocs.get_doc_page"
     ]
   },
   {
@@ -197,7 +197,7 @@ export const WORKFLOW_ARCHETYPES = [
     steps: [
       "stellarDocs.search_rpc_horizon_data_docs",
       "skills.stellar-dev.data",
-      "stellarDocs.get_doc_page_sections"
+      "stellarDocs.get_doc_page"
     ]
   },
   {

@@ -1,0 +1,137 @@
+# 2026-11-02 — Stellar Docs migration from Algolia to Mintlify
+
+Branch `feat/mintlify-docs-migration`. Research: `research/services/stellar-docs-mintlify.md`.
+TODO: `.agents/TODO.md` → "Move the `stellarDocs` operations from Algolia to the Mintlify API".
+Evidence files: `.agents/rounds/2026-11-02-mintlify-migration/`.
+
+## Decisions
+
+1. **Query-term relevance guard.** Mintlify search always returns its nearest sections. The adapter
+   reports soft-empty when the search returns nothing, when no candidate is under the operation's
+   paths, or when no in-scope section contains a query term. It is a general rule, not a
+   per-query list.
+2. **`search_doc_titles` is page-level.** One hit per page, ranked by query words in the title (2),
+   then in the path (1), then by search rank.
+3. **`get_doc_page_sections` → `get_doc_page`.** Returns `{url, path, title, content}`, the whole
+   page as Markdown. It retries `<path>/index`, then follows one same-origin site redirect
+   (`redirect: "manual"`, no credentials) to a `/docs/` or `/meetings/` path.
+4. **Scope matching uses whole path segments.** `/docs/tokens` no longer keeps
+   `/docs/tokens-legacy/...`.
+5. **Snippets shrink MDX component tags to their attribute values.** `content` is unchanged.
+6. **Descriptions stay routing-neutral where possible.** Only the backend facts changed: the
+   returns field lists, the soft-empty sentence, the title-search contract, the meetings selector,
+   and the RPC reference-page note.
+
+## Retrieval A/B (free, adapter level)
+
+Harness: `retrieval-ab.mts`. Arm A is the Algolia adapter at `03c863a3`. Arm B is this branch.
+Jobs: each golden case question sent to `search_docs`, plus up to 8 docs calls per case replayed from
+stored QA transcripts. 255 cases with developers.stellar.org golden sources, 1,498 queries.
+Results: `retrieval-ab-results.json`.
+
+| Metric | Algolia (A) | Mintlify (B) |
+|---|---|---|
+| Cases with any golden page hit | 191 | 225 |
+| Mean case recall of golden pages | 0.614 | 0.787 |
+| Case recall: B better / A better / tie | — | 75 / 8 / 172 |
+| Queries that hit a golden page | 603 | 865 |
+| Soft-empty results | 80 | 6 |
+| Errors | 0 | 0 |
+| Latency p50 / p95 / p99 | 107 / 265 / 320 ms | 493 / 1,735 / 3,717 ms |
+
+Transcript replays alone: mean recall 0.617 → 0.751. Question text alone: 0.236 → 0.552.
+Every per-operation lane improved except `search_meeting_notes` (2 → 2 golden hits on 16 queries).
+
+Four of 1,498 Mintlify requests exceeded the 8,000 ms first attempt and passed on the retry.
+
+The 8 A-better cases have small deltas. Most come from query wording where Algolia matched an exact
+keyword page. `q-builder-content-by-person` lost `/meetings/authors/kalepail`, an author page that
+no longer exists on the site.
+
+## Golden page coverage
+
+`page-coverage.json`: 194 golden developers.stellar.org paths. 173 resolve through the page API.
+11 are site 308 redirects and 10 are 404s. Both groups were already absent from Algolia, so they
+are stale golden references, not migration losses. `get_doc_page` now follows the 308 group.
+The 404 group is an eval-side authoring item in `.agents/TODO.md`.
+
+## Routing gate
+
+The legacy lane moved: top-1 219 → 218, top-3 298 → 294, top-5 326 → 327, cardHit5 112 → 113.
+Holdout improved: top-3 26 → 27, top-5 29 → 30, passed 24 → 25. Skills is unchanged (17/23/23).
+Protocol-history top-1 went 7/8 → 6/8: `ph-yieldblox-oracle-incident` now ranks
+`stellarDocs.search_docs_in_category` first.
+
+Per-case cause (token coverage traced with the vendor scorer). The removed Algolia field names in
+every docs `Returns:` line supplied incidental tokens to the 60 % coverage gate:
+`url_without_anchor` matched "with", `type` matched "types", `lvl1` matched "1", and the old RPC
+note supplied "in" (a prefix of "integration"). Losses:
+
+- `q-protocol-ledger-entry-types`: `search_doc_titles` lost "types" (11 → 10 of 16).
+- `q-soroban-sac-balance-storage`: `search_docs_in_category` and `search_docs` lost "types".
+- `q-sep-catalog-list`: `search_protocol_concepts_docs` lost "with".
+- `q-protocol-tier1-org-list`: `search_docs` lost "1".
+- `q-infra-horizon-deprecated`: `search_rpc_horizon_data_docs` lost "integration" (top-1 only).
+- `q-defi-perps-whitespace`: displaced by `search_doc_titles`.
+
+Gains of the same kind: `q-defi-etherfuse-stablebonds`, `q-infra-hubble-vs-rpc-layer`,
+`q-protocol-parallel-execution`, `q-protocol-passkeys-secp256r1`, `q-defi-soroswap-vs-stellarx`,
+and the holdout `q-holdout-a-16-current-protocol`.
+
+Decision: re-baseline `eval/gates.json` in the same commit. The output fields must change because
+the backend changed, and restoring the lost tokens would be a per-query hack. The root defect is the
+vendor scorer's substring and prefix matching on short tokens. It is the general routing repair
+already tracked under #223. Zero hit-to-miss regressions is the usual standard. This re-baseline
+departs from it on purpose: the old backend no longer updates, so holding is not an option.
+
+### Title snapshot held
+
+The new inventory refresh reads page titles from `llms.txt` (666 → 973 titles: +341 path/title
+pairs, −34; most additions are API-reference pages Algolia never indexed). A trial rebuild with the
+new snapshot changed `keywords` on 7 of 12 docs operations. Against the re-baselined tree it added
+two graded losses (`q-infra-hubble-vs-rpc-layer` top-1; holdout `q-holdout-a-05-groth16-soroban`
+top-3) and 47 top-five order changes, with no graded gain. The snapshot stays at its Algolia-era
+bytes until the general routing repair (#223) lands, the same hold as the 2026-10-08 title
+snapshot. The daily refresh will report it as drift.
+
+Final gate: `GATE PASS` with `eval/gates.json` re-baselined to legacy 218/294/327 and the
+manifest fingerprint `04065deb…`; local trace `routing-2026-11-02T15-05-00-448Z.json`.
+
+## Golden corpus (golden-truth)
+
+Changed gospel, verified by adapter source (B), spec (B), and live adapter execution (F):
+
+- `q-edge-doc-page-sections-soft-empty`: question, surface, answer, key facts, and avoid now
+  describe `get_doc_page` and its 404 soft-empty.
+- `q-sor-doc-page-sections-followup`: surface and answer describe full-page Markdown.
+- `q-sor-doc-title-discovery`: answer describes page-level hits and `get_doc_page`.
+
+Sibling sweep: five other cases carry only dated evidence strings that name
+`get_doc_page_sections` or Algolia. Those are records of past probes and stay unchanged.
+`eval:qa:lint -- --stale --since 03c863a3`: the only errors are five pre-existing `reverifyBy`
+dates that expired on 2026-11-01 (`q-mpp-discovery-and-modes`, `q-quickstart-manual-ledger-close`,
+`q-sor-reflector-integration-code`, `q-zk-host-functions-status`, `q-zk-verification-resource-budget`).
+
+## Improvements
+
+- `sd-003` → `fixed-upstream`. The generated `getTransactions` method page ranks first for the
+  original trigger, and its content carries the 1–200 limit. Deletion needs a distinct reviewer and
+  a resolution comment on stellar/stellar-docs#2566. Not posted; it needs owner approval.
+- `sd-005` and `sd-009`: still reproduce on Mintlify. They are content gaps. Local recurrences only.
+- No new upstream finding. Mintlify-side asks are recorded in the research note instead: section
+  anchors in search results, a relevance score or threshold, and lower tail latency.
+
+## Whole-page reads close the HackMeridian table-row item
+
+`get_doc_page` returns the whole page, so the oracle-providers testnet table (Q18), the
+software-versions table (R22), and the `getEvents` tables (R32) come back complete. A `/meetings`
+page reads normally (Q9). The `.agents/TODO.md` item is removed. The software-versions page is
+147 KB, so answers rely on host truncation and artifacts for it.
+
+## Open items
+
+- Paid QA paired A/B on the docs cases (pre-spend review by a different tier, budget cap, identity
+  guard on the Mintlify docs identity).
+- Independent review of the branch.
+- Production cut-over: `MINTLIFY_ASSISTANT_API_KEY` Worker secret, then delete the `ALGOLIA_*_DOCS`
+  secrets after deploy.

@@ -22,11 +22,12 @@ import {
   buildRemoteIdentityVector,
   canonicalRemoteSourceSha256,
   captureStablePreArmIdentity,
+  fetchBytesWithRetry,
   fetchJsonWithRetry,
   normalizeLumenloopInventory,
-  normalizeStellarDocsTitles,
   parseRetryAfterMs,
-  probeRemoteIdentities
+  probeRemoteIdentities,
+  stellarDocsFileIdentity
 } from "../eval/qa/probe-remote-identities.mjs";
 
 function vector() {
@@ -42,12 +43,19 @@ function vector() {
         canonicalInventorySha256: "2".repeat(64)
       },
       stellarDocs: {
-        indexSettingsSha256: "3".repeat(64),
-        canonicalTitleSetSha256: "4".repeat(64)
+        llmsTxtSha256: "3".repeat(64),
+        llmsTxtBytes: 55_668,
+        llmsFullTxtSha256: "4".repeat(64),
+        llmsFullTxtBytes: 5_810_884
       }
     }
   };
 }
+
+const LLMS_TXT = "# Stellar Developer Docs\n\n- [Glossary](https://developers.stellar.org/docs/learn/glossary.md)\n";
+const LLMS_FULL_TXT = "# Agentic Payments\nSource: https://developers.stellar.org/docs/build/agentic-payments/index\n";
+const bytes = (text) => new TextEncoder().encode(text);
+const sha256Hex = (text) => createHash("sha256").update(text).digest("hex");
 
 function writeProbe(root, body) {
   const command = path.join(root, "probe");
@@ -105,20 +113,25 @@ describe("production remote identity canonicalization", () => {
     );
   });
 
-  it("normalizes, deduplicates, and sorts the complete Stellar Docs title set", () => {
-    const response = {
-      nbHits: 3,
-      hits: [
-        { hierarchy: { lvl1: "B" }, url_without_anchor: "https://developers.stellar.org/b" },
-        { hierarchy: { lvl1: "A" }, url_without_anchor: "https://developers.stellar.org/a" },
-        { hierarchy: { lvl1: "A" }, url_without_anchor: "https://developers.stellar.org/a" }
-      ]
-    };
-    expect(normalizeStellarDocsTitles(response)).toEqual([
-      { path: "/a", title: "A" },
-      { path: "/b", title: "B" }
-    ]);
-    expect(() => normalizeStellarDocsTitles({ ...response, nbHits: 4 })).toThrow(/truncated/);
+  it("identifies a Stellar Docs file by the SHA-256 and length of its exact bytes", () => {
+    const text = "# Title\n\nCaf\u00e9 \u2014 docs\n";
+    expect(stellarDocsFileIdentity(bytes(text), "Stellar Docs llms.txt")).toEqual({
+      sha256: sha256Hex(text),
+      bytes: Buffer.byteLength(text)
+    });
+    expect(stellarDocsFileIdentity(bytes(`${text} `), "Stellar Docs llms.txt").sha256)
+      .not.toBe(sha256Hex(text));
+  });
+
+  it.each([
+    ["an empty body", new Uint8Array()],
+    ["an HTML outage page", bytes("<!DOCTYPE html><html>Service unavailable</html>")],
+    ["text without a leading heading", bytes("Stellar Developer Docs\n")],
+    ["invalid UTF-8", Uint8Array.of(0x23, 0x20, 0x41, 0xff)],
+    ["a non-byte value", "# Title\n"]
+  ])("rejects %s as a Stellar Docs file", (_label, value) => {
+    expect(() => stellarDocsFileIdentity(value, "Stellar Docs llms-full.txt"))
+      .toThrow("Stellar Docs llms-full.txt is not a UTF-8 Markdown document");
   });
 
   it("builds the exact three-service vector without volatile fields", () => {
@@ -139,19 +152,19 @@ describe("production remote identity canonicalization", () => {
           skills: [{ name: "skill-a" }]
         }
       },
-      stellarDocsSettings: { searchableAttributes: ["title"] },
-      stellarDocsTitles: {
-        nbHits: 1,
-        hits: [{ hierarchy: { lvl1: "A" }, url_without_anchor: "https://developers.stellar.org/a" }]
-      }
+      stellarDocsLlmsTxt: bytes(LLMS_TXT),
+      stellarDocsLlmsFullTxt: bytes(LLMS_FULL_TXT)
     });
     expect(Object.keys(built.services)).toEqual(["scout", "lumenloop", "stellarDocs"]);
+    expect(built.services.stellarDocs).toEqual({
+      llmsTxtSha256: sha256Hex(LLMS_TXT),
+      llmsTxtBytes: Buffer.byteLength(LLMS_TXT),
+      llmsFullTxtSha256: sha256Hex(LLMS_FULL_TXT),
+      llmsFullTxtBytes: Buffer.byteLength(LLMS_FULL_TXT)
+    });
     expect(JSON.stringify(built)).not.toMatch(/captured|timestamp|generatedAt/);
   });
 });
-
-const DOCS_PAGE_SIZE = 100;
-const DOCS_PAGE_BOUND = 10;
 
 function upstreamSource(url) {
   if (url.endsWith("/api/openapi.json")) return { info: { version: "1.9.30" }, paths: {} };
@@ -168,143 +181,93 @@ function upstreamSource(url) {
       data: { count: 1, archives: {}, note: "public skills", versions: {}, skills: [{ name: "skill-a" }] }
     };
   }
-  if (url.endsWith("/settings")) return { searchableAttributes: ["title"] };
   return null;
 }
 
-function docsTitleHits(nbHits) {
-  return Array.from({ length: nbHits }, (_, index) => ({
-    hierarchy: { lvl1: `Title ${index % 3 === 0 ? index - 1 : index}` },
-    url_without_anchor: `https://developers.stellar.org/docs/page-${(nbHits - index) % 97}`
-  }));
-}
-
-// Serves each title query by its own page, as Algolia does with a 100-hit key cap.
-function docsTitlePage(page, { nbHits, hits = docsTitleHits(nbHits) }) {
-  const nbPages = Math.min(DOCS_PAGE_BOUND, Math.ceil(nbHits / DOCS_PAGE_SIZE));
-  return {
-    page,
-    nbPages,
-    nbHits,
-    hitsPerPage: DOCS_PAGE_SIZE,
-    hits: hits.slice(page * DOCS_PAGE_SIZE, (page + 1) * DOCS_PAGE_SIZE)
-  };
-}
-
-function upstream(state, { mutateResults = (results) => results } = {}) {
+// Serves the six public sources. The docs files are served as raw bytes, as Mintlify serves them.
+function upstream({ llmsTxt = LLMS_TXT, llmsFullTxt = LLMS_FULL_TXT } = {}) {
   const requests = [];
-  const titleBatches = [];
   const fetchImpl = async (url, init = {}) => {
-    requests.push(url);
-    const response = (value) => ({ ok: true, status: 200, text: async () => JSON.stringify(value) });
+    requests.push({ url, init });
     const source = upstreamSource(url);
-    if (source) return response(source);
-    const pages = JSON.parse(init.body).requests.map((request) => {
-      const params = new URLSearchParams(request.params);
-      expect(params.get("hitsPerPage")).toBe("1000");
-      expect(params.get("filters")).toBe("type:lvl1");
-      return Number(params.get("page"));
-    });
-    titleBatches.push(pages);
-    return response({ results: mutateResults(pages.map((page) => docsTitlePage(page, state))) });
+    const body = source
+      ? JSON.stringify(source)
+      : url === "https://developers.stellar.org/llms.txt"
+        ? llmsTxt
+        : url === "https://developers.stellar.org/llms-full.txt"
+          ? llmsFullTxt
+          : null;
+    if (body === null) return { ok: false, status: 404, headers: { get: () => null } };
+    return new Response(body, { status: 200 });
   };
-  return { fetchImpl, requests, titleBatches };
+  return { fetchImpl, requests };
 }
 
-function expectedVector(state) {
-  const hits = state.hits ?? docsTitleHits(state.nbHits);
-  return buildRemoteIdentityVector({
-    scoutOpenapi: upstreamSource("/api/openapi.json"),
-    lumenloopOpenapi: upstreamSource("/v1/openapi.json"),
-    lumenloopTools: upstreamSource("/v1/tools"),
-    lumenloopSkills: upstreamSource("/v1/skills"),
-    stellarDocsSettings: upstreamSource("/settings"),
-    stellarDocsTitles: { nbHits: state.nbHits, hits }
-  });
-}
-
-describe("production remote identity Stellar Docs title capture", () => {
-  it("makes two Algolia calls and reads every bounded title page in one request", async () => {
-    const { fetchImpl, requests, titleBatches } = upstream({ nbHits: 650 });
-    await probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] });
+describe("production remote identity Stellar Docs capture", () => {
+  it("reads both public Mintlify files without a key and makes no Mintlify API call", async () => {
+    const { fetchImpl, requests } = upstream();
+    const vector = await probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] });
 
     expect(requests).toHaveLength(6);
-    expect(requests.filter((url) => new URL(url).hostname.endsWith(".algolia.net"))).toHaveLength(2);
-    expect(titleBatches).toEqual([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]);
-  });
-
-  it.each([
-    ["one page", 1],
-    ["one full page", 100],
-    ["seven pages", 650],
-    ["the ten-page bound", 1_000]
-  ])("builds the vector from the complete title set for %s", async (_label, nbHits) => {
-    const { fetchImpl } = upstream({ nbHits });
-    const vector = await probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] });
-    // The previous probe passed exactly these hits, in page order, to the same builder.
-    expect(JSON.stringify(vector)).toBe(JSON.stringify(expectedVector({ nbHits })));
-  });
-
-  it("changes the title hash when one title changes", async () => {
-    const hits = docsTitleHits(650);
-    const changed = structuredClone(hits);
-    changed[640].hierarchy.lvl1 = "Changed title";
-    const original = await probeRemoteIdentities({ fetchImpl: upstream({ nbHits: 650, hits }).fetchImpl, retryDelaysMs: [] });
-    const updated = await probeRemoteIdentities({
-      fetchImpl: upstream({ nbHits: 650, hits: changed }).fetchImpl,
-      retryDelaysMs: []
+    const docsRequests = requests.filter(({ url }) => new URL(url).hostname === "developers.stellar.org");
+    expect(docsRequests.map(({ url }) => url)).toEqual([
+      "https://developers.stellar.org/llms.txt",
+      "https://developers.stellar.org/llms-full.txt"
+    ]);
+    expect(docsRequests.every(({ init }) => init.headers === undefined && init.body === undefined)).toBe(true);
+    expect(requests.some(({ url }) => new URL(url).hostname.endsWith("mintlify.com"))).toBe(false);
+    expect(vector.services.stellarDocs).toEqual({
+      llmsTxtSha256: sha256Hex(LLMS_TXT),
+      llmsTxtBytes: Buffer.byteLength(LLMS_TXT),
+      llmsFullTxtSha256: sha256Hex(LLMS_FULL_TXT),
+      llmsFullTxtBytes: Buffer.byteLength(LLMS_FULL_TXT)
     });
-    expect(updated.services.stellarDocs.canonicalTitleSetSha256)
-      .not.toBe(original.services.stellarDocs.canonicalTitleSetSha256);
+  });
+
+  it("returns the same vector for two captures of unchanged sources", async () => {
+    const first = await probeRemoteIdentities({ fetchImpl: upstream().fetchImpl, retryDelaysMs: [] });
+    const second = await probeRemoteIdentities({ fetchImpl: upstream().fetchImpl, retryDelaysMs: [] });
+    expect(JSON.stringify(second)).toBe(JSON.stringify(first));
   });
 
   it.each([
-    ["a missing page result", (results) => results.slice(1), /title pages are incomplete/],
-    ["an extra page result", (results) => [...results, results[0]], /title pages are incomplete/],
-    ["a zero page count", (results) => results.map((result) => ({ ...result, nbPages: 0 })), /page count is invalid/],
-    [
-      "a page count over the bound",
-      (results) => results.map((result) => ({ ...result, nbPages: 11 })),
-      /page count is invalid/
-    ],
-    [
-      "a wrong page number",
-      (results) => results.map((result, index) => index === 3 ? { ...result, page: 4 } : result),
-      /pagination changed/
-    ],
-    [
-      "a different page count on one page",
-      (results) => results.map((result, index) => index === 2 ? { ...result, nbPages: 6 } : result),
-      /pagination changed/
-    ],
-    [
-      "a different hit count on an unused page",
-      (results) => results.map((result, index) => index === 9 ? { ...result, nbHits: 651 } : result),
-      /pagination changed/
-    ],
-    [
-      "hits on a page past the reported page count",
-      (results) => results.map((result, index) => index === 7 ? { ...result, hits: results[0].hits } : result),
-      /pagination changed/
-    ],
-    [
-      "a missing hit list",
-      (results) => results.map((result, index) => index === 1 ? { ...result, hits: undefined } : result),
-      /pagination changed/
-    ],
-    [
-      "a short used page",
-      (results) => results.map((result, index) => index === 4 ? { ...result, hits: result.hits.slice(1) } : result),
-      /title response is truncated/
-    ]
-  ])("rejects %s", async (_label, mutateResults, message) => {
-    const { fetchImpl } = upstream({ nbHits: 650 }, { mutateResults });
-    await expect(probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] })).rejects.toThrow(message);
+    ["the page index", { llmsTxt: `${LLMS_TXT}- [New page](https://developers.stellar.org/docs/new.md)\n` }, "llmsTxtSha256"],
+    ["one character of page content", { llmsFullTxt: LLMS_FULL_TXT.replace("Agentic", "Agentlc") }, "llmsFullTxtSha256"]
+  ])("changes the docs identity when %s changes", async (_label, change, field) => {
+    const original = await probeRemoteIdentities({ fetchImpl: upstream().fetchImpl, retryDelaysMs: [] });
+    const updated = await probeRemoteIdentities({ fetchImpl: upstream(change).fetchImpl, retryDelaysMs: [] });
+    expect(updated.services.stellarDocs[field]).not.toBe(original.services.stellarDocs[field]);
+    expect(updated.services.scout).toEqual(original.services.scout);
+    expect(updated.services.lumenloop).toEqual(original.services.lumenloop);
   });
 
-  it("rejects a title set that the pagination bound truncates", async () => {
-    const { fetchImpl } = upstream({ nbHits: 1_001 });
-    await expect(probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] })).rejects.toThrow(/truncated/);
+  it.each([
+    ["llms.txt", { llmsTxt: "<html>maintenance</html>" }, "Stellar Docs llms.txt is not a UTF-8 Markdown document"],
+    ["llms-full.txt", { llmsFullTxt: "" }, "Stellar Docs llms-full.txt is not a UTF-8 Markdown document"]
+  ])("rejects a successful response whose %s body is not the docs file", async (_label, change, message) => {
+    await expect(probeRemoteIdentities({ fetchImpl: upstream(change).fetchImpl, retryDelaysMs: [] }))
+      .rejects.toThrow(message);
+  });
+
+  it("retries a docs file with the shared bounded retry policy", async () => {
+    let attempts = 0;
+    const retries = [];
+    const value = await fetchBytesWithRetry(
+      { label: "Stellar Docs llms-full.txt", url: "https://developers.stellar.org/llms-full.txt" },
+      {
+        fetchImpl: async () => {
+          attempts += 1;
+          return attempts === 1
+            ? { ok: false, status: 503, headers: { get: () => null } }
+            : new Response(LLMS_FULL_TXT, { status: 200 });
+        },
+        retryDelaysMs: [0],
+        sleepImpl: async () => {},
+        onRetry: (entry) => retries.push(entry)
+      }
+    );
+    expect(Buffer.from(value).toString("utf8")).toBe(LLMS_FULL_TXT);
+    expect(retries).toEqual([expect.objectContaining({ label: "Stellar Docs llms-full.txt", reason: "HTTP 503" })]);
   });
 });
 

@@ -51,8 +51,8 @@ For a web-surface finding, classify the failing surface before choosing a collec
 
 - `docs-content` — canonical developer documentation is wrong, stale, contradictory, or omits a
   fact its existing page actually undertakes to explain;
-- `docs-search` — the Docs Algolia/crawler/ranking layer fails even though suitable canonical
-  content exists;
+- `docs-search` — the Docs search/ranking layer (the Mintlify search backend, or Raven's docs
+  scoping over it) fails even though suitable canonical content exists;
 - `site-content` — a broader `stellar.org` page makes a stale or incorrect claim, or an existing
   site section has a clear reader-facing omission;
 - `site-search` — the broader site's Algolia/search layer fails over suitable site content; and
@@ -150,28 +150,28 @@ npm run improvements:lint
 
 Use `npm run improvements:lint -- --live` when intake repos were added, renamed, or questioned.
 
-## Direct Algolia remediation (stellar-docs search-mechanism findings)
+## Docs search-mechanism findings (stellar-docs)
 
 `stellar-docs` findings split into content gaps and search-mechanism gaps. Content gaps (a page is
-stale/wrong/missing) stay upstream on the docs repo. Search-mechanism gaps (ranking, tokenization,
-synonym/vocabulary, crawler config) are directly remediable with the operator Algolia
-credentials in `.env` — write, crawler, and analytics tiers and their guardrails are documented
-in `docs/stellar-docs.md`. Reach for the direct lever only when it clears the bar:
+stale/wrong/missing) stay upstream on the docs repo. Search-mechanism gaps split again by owner:
 
-- **General mechanism only.** No per-page/per-query rules or synonyms — the same anti-overfitting
-  rule the eval loop enforces. The single load-bearing rule (`raven-promote-stellar-cli-install`) is
-  the ceiling of an acceptable single-target mechanism, not a template.
-- **Measured win first.** Prove it on the read-only A/B harness (`npm run eval:algolia-raven`,
-  `scripts/eval-algolia-raven.mjs`) before landing. A change that only helps its own case does not ship.
-- **Lowest-risk rung.** Analytics read < rule/settings write < crawler/index write; the corpus also
-  serves the real DocSearch frontend, so prefer reads and coordinate content-shaped changes upstream.
+- **Upstream ranking.** The Mintlify search backend ranks or chunks a page badly. Raven holds no
+  write path to the docs project's content or search configuration, so this goes upstream to the
+  docs owner with the query, the expected page, and the observed hits.
+- **Raven scoping.** The adapter's path scopes, candidate window, or query-term guard hide a page
+  the backend did return. This is remediable in the spec or adapter, under the same bar as any
+  routing fix: a **general mechanism only** (no per-page or per-query exception) and a **measured
+  win first** on a free, read-only, retrieval-level A/B against the golden docs pages. A change that
+  only helps its own case does not ship. `docs/stellar-docs.md` defines the scoping contract.
 - **Record it like a fix.** Put the change, the A/B before/after, and the live re-check in the
-  finding's `evidence`; keep any GitHub ref when a content/crawler cause also concerns the docs owner.
-- **Never print or commit an Algolia key**, and never wire the operator keys into the `execute`
-  sandbox — a model-invokable write is a gated side-effecting op, not a maintenance lever.
+  finding's `evidence`; keep any GitHub ref when an upstream cause also concerns the docs owner.
+- **Never print or commit a Mintlify key.** `MINTLIFY_ADMIN_API_KEY` is maintenance-only and never
+  a Worker or sandbox binding; a model-invokable write is a gated side-effecting op, not a
+  maintenance lever.
 
-Analytics/usage keys are also a low-risk **evidence** source: real user query and no-result streams
-quantify a finding's prevalence better than the eval corpus. Cite the analytics query and window.
+Search analytics read with the maintenance key are a low-risk **evidence** source: real user query
+and no-result streams quantify a finding's prevalence better than the eval corpus. Cite the
+analytics query and window.
 
 ## Upstream issue and PR follow-up
 
@@ -248,8 +248,8 @@ or when a user asks whether previous improvements were resolved.
    - confirming the change is deployed, not merely merged or closed;
    - freshly executing the original trigger rather than accepting the author's transcript;
    - scanning adjacent behavior for residuals and creating a self-contained successor when needed;
-   - running `rg -n "<finding-id>" .` and reconciling golden, register, research, Algolia-rule,
-     intake, and other persistent references;
+   - running `rg -n "<finding-id>" .` and reconciling golden, register, research, intake, and
+     other persistent references;
    - verifying cleanup removes the file, its probe and intake override, regenerates the index, and
      appends a complete resolved receipt;
    - confirming a resolution comment with the live result and commit-pinned source was posted on

@@ -945,7 +945,7 @@ const SAMPLE_CODE = `async () => {
   ]);
   return {
     sections: skill.ok ? skill.data.sections : skill.error,
-    docs: docs.ok ? docs.data.hits.map(h => ({ url: h.url, breadcrumb: h.breadcrumb })) : docs.error
+    docs: docs.ok ? docs.data.hits.map(h => ({ url: h.url, section: h.section })) : docs.error
   };
 }`;
 
@@ -959,15 +959,15 @@ const SAMPLE_RESULT = `{
   "docs": [
     {
       "url": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet",
-      "breadcrumb": "Getting Started > 2. Deploy to Testnet"
+      "section": "2. Deploy to Testnet"
     },
     {
-      "url": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet#configure-a-source-account",
-      "breadcrumb": "Getting Started > 2. Deploy to Testnet > Configure a Source Account"
+      "url": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet",
+      "section": "Configure a Source Account"
     },
     {
-      "url": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet#deploy",
-      "breadcrumb": "Getting Started > 2. Deploy to Testnet > Deploy"
+      "url": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet",
+      "section": "Deploy"
     }
   ]
 }`;

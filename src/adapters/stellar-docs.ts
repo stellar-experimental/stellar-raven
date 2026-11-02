@@ -1,24 +1,22 @@
 /**
- * Stellar Docs adapter — hand-rolled Algolia REST client
- * (docs/stellar-docs.md: ordered hosts, escalating timeouts, and retries
- * for network/5xx failures; terminal 4xx and 429 responses do not retry).
+ * Stellar Docs adapter — Mintlify discovery API client
+ * (docs/stellar-docs.md describes the contract).
  *
- * Each stellarDocs catalog entry carries its execute mapping in
- * `transport.algolia` (authored in specs/stellar-docs.json):
- *  - paramMap           — model arg → Algolia param (exact names).
- *  - fixedParams        — op-pinned params (facetFilters, overfetch, …).
- *  - conditionalParams  — "arg=value" → param overrides (null deletes);
- *    may also disable the clientFilter (category=meetings).
- *  - clientFilter       — hierarchy.lvl0 is NOT facetable, so category ops
- *    overfetch (hitsPerPage 100) and keep hits whose url_without_anchor
- *    matches a URL prefix (placeholders {category}/{path} filled from args).
- *  - derivedQuery       — get_doc_page_sections has no query arg: the query
- *    is derived from the path's last segment (hyphens split), with a
- *    two-segment fallback when the page yields no records.
+ * Each stellarDocs catalog entry carries its request mapping in
+ * `transport.mintlify` (authored in specs/stellar-docs.json):
+ *  - endpoint    — "search" (POST /discovery/v1/search/<domain>) or
+ *                  "page" (POST /discovery/v1/page/<domain>).
+ *  - include     — site-relative path prefixes a hit must start with
+ *                  ({category} placeholders filled from args).
+ *  - exclude     — path prefixes a hit must not start with.
+ *  - conditional — "arg=value" → include/exclude overrides (null clears).
+ *  - groupBy     — "page": one row per page, ranked by query words in the
+ *                  page title and path (search_doc_titles).
  *
- * `analytics:false` rides in baseParams on every entry (polite-tenant rule).
- * No usable hits produce kind "soft-empty". A filtered candidate window
- * cannot establish absence from the whole index or the wider ecosystem.
+ * The search service has no facets, scores, or counts, and it always returns
+ * its nearest sections. Path scoping therefore happens here over a fixed
+ * candidate window, and a result whose kept sections contain no query term is
+ * soft-empty. A soft-empty result never establishes corpus absence.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import {
@@ -31,120 +29,82 @@ import {
 } from "./types.ts";
 
 const SERVICE = "stellarDocs";
+const MAX_ERROR_BODY_CHARS = 1024;
+const SNIPPET_CHARS = 300;
 
-type AlgoliaHit = {
-  objectID?: string;
-  url?: string;
-  url_without_anchor?: string;
-  anchor?: string;
-  type?: string;
-  hierarchy?: Record<string, string | null>;
-  content?: string;
-  weight?: { position?: number };
-  _snippetResult?: { content?: { value?: string } };
-  [k: string]: unknown;
-};
+type PathScope = { include?: string[] | null; exclude?: string[] | null };
 
-type AlgoliaResponse = {
-  hits: AlgoliaHit[];
-  nbHits: number;
-  page: number;
-  nbPages: number;
-  hitsPerPage: number;
-  exhaustive?: { nbHits?: boolean };
-  exhaustiveNbHits?: boolean;
-  processingTimeMS?: number;
-  message?: string;
-  status?: number;
-};
-
-type ClientFilter = {
-  field: string;
-  prefixesAnyOf?: string[];
-  equals?: string;
-};
-
-type AlgoliaMapping = {
-  paramMap?: Record<string, string>;
-  fixedParams?: Record<string, unknown>;
-  conditionalParams?: Record<string, Record<string, unknown>>;
-  clientFilter?: ClientFilter | null;
-  derivedQuery?: string;
-  fallback?: string;
+type MintlifyMapping = PathScope & {
+  endpoint: "search" | "page";
+  conditional?: Record<string, PathScope>;
+  groupBy?: "page";
 };
 
 type DocsTransport = {
-  index?: string;
-  hosts?: string[];
-  applicationIdEnv?: string;
+  type?: string;
   apiKeyEnv?: string;
-  baseParams?: Record<string, unknown>;
-  algolia?: AlgoliaMapping;
+  apiBase?: string;
+  searchPath?: string;
+  pagePath?: string;
+  siteOrigin?: string;
+  candidateWindow?: number;
+  attemptTimeoutsMs?: number[];
+  mintlify?: MintlifyMapping;
 };
 
-type AlgoliaAttempt =
+type SearchChunk = { path?: unknown; content?: unknown; metadata?: { title?: unknown } | null };
+
+type Section = { path: string; title: string; content: string; rank: number; isIndex: boolean };
+
+type Attempt =
   | { kind: "success"; data: unknown }
   | { kind: "retryable"; cause: string }
-  | { kind: "terminal"; status: number; bodyText: string };
+  | { kind: "terminal"; status: number; message: string };
 
-const MAX_ERROR_BODY_CHARS = 1024;
-
-/** Fill `{name}` placeholders from args (category prefixes, page path). */
-function fillPlaceholders(template: string, args: Record<string, unknown>): string {
-  return template.replace(/\{([^}]+)\}/g, (_m, name: string) => String(args[name] ?? ""));
-}
+/** Small stopword set: words that carry no topic in a docs query. */
+const STOPWORDS = new Set([
+  "the", "and", "for", "with", "how", "what", "why", "when", "which", "who", "does", "doc", "docs",
+  "are", "was", "were", "from", "that", "this", "these", "those", "into", "use", "using", "about",
+  "can", "you", "your", "there", "their", "its", "not", "but", "has", "have", "any", "all", "out",
+  "via", "between", "difference", "guide", "page", "example", "examples", "documentation"
+]);
 
 function errorMessageFromBody(bodyText: string, status: number): string {
   try {
-    const body = JSON.parse(bodyText) as { message?: unknown };
-    if (typeof body.message === "string" && body.message.length > 0) {
-      return body.message.slice(0, MAX_ERROR_BODY_CHARS);
+    const body = JSON.parse(bodyText) as { message?: unknown; error?: unknown };
+    for (const value of [body.message, body.error]) {
+      if (typeof value === "string" && value.length > 0) return value.slice(0, MAX_ERROR_BODY_CHARS);
     }
   } catch {
     // Use the bounded response text below.
   }
-  return bodyText.trim() || `algolia HTTP ${status}`;
+  return bodyText.trim().slice(0, MAX_ERROR_BODY_CHARS) || `mintlify HTTP ${status}`;
 }
 
-async function classifyAlgoliaAttempt(
+async function attempt(
   url: string,
-  headers: Record<string, string>,
-  params: Record<string, unknown>,
+  apiKey: string,
+  body: Record<string, unknown>,
   timeoutMs: number,
   fetchImpl: FetchLike
-): Promise<AlgoliaAttempt> {
+): Promise<Attempt> {
   try {
     const res = await fetchImpl(url, {
       method: "POST",
-      headers,
-      body: JSON.stringify(params),
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
       signal: AbortSignal.timeout(timeoutMs)
     });
-
-    if (res.status >= 500) {
-      const bodyText = (await res.text().catch(() => "")).slice(0, MAX_ERROR_BODY_CHARS);
-      return { kind: "retryable", cause: errorMessageFromBody(bodyText, res.status) };
-    }
-
-    if (!res.ok) {
-      const bodyText = (await res.text().catch(() => "")).slice(0, MAX_ERROR_BODY_CHARS);
-      return { kind: "terminal", status: res.status, bodyText };
-    }
-
-    let bodyText: string;
-    try {
-      bodyText = await res.text();
-    } catch (e) {
-      return { kind: "retryable", cause: e instanceof Error ? e.message : String(e) };
-    }
-
+    const bodyText = await res.text();
+    if (res.status >= 500) return { kind: "retryable", cause: errorMessageFromBody(bodyText, res.status) };
+    if (!res.ok) return { kind: "terminal", status: res.status, message: errorMessageFromBody(bodyText, res.status) };
     try {
       return { kind: "success", data: JSON.parse(bodyText) };
     } catch {
       return {
         kind: "terminal",
         status: res.status,
-        bodyText: bodyText.slice(0, MAX_ERROR_BODY_CHARS)
+        message: `mintlify HTTP ${res.status} returned malformed JSON: ${bodyText.slice(0, MAX_ERROR_BODY_CHARS)}`
       };
     }
   } catch (e) {
@@ -152,173 +112,205 @@ async function classifyAlgoliaAttempt(
   }
 }
 
-/**
- * Raw Algolia read request with the documented retry ladder: try each host in order,
- * timeout 2s x attempt-number, retry ONLY on network error / HTTP 5xx.
- * 4xx (and 429) surface immediately — they fail identically on every host.
- */
-async function algoliaRequest<T>(
-  hosts: string[],
-  path: string,
-  headers: Record<string, string>,
-  params: Record<string, unknown>,
+/** One host: try each configured attempt timeout in order; retry only network, timeout, and 5xx failures. */
+async function mintlifyRequest(
+  url: string,
+  apiKey: string,
+  body: Record<string, unknown>,
+  timeouts: number[],
   fetchImpl: FetchLike
-): Promise<{ ok: true; body: T } | { ok: false; message: string; status?: number }> {
-  let lastError = "no algolia hosts configured";
-  for (let attempt = 0; attempt < hosts.length; attempt++) {
-    const result = await classifyAlgoliaAttempt(
-      `https://${hosts[attempt]}${path}`,
-      headers,
-      params,
-      2000 * (attempt + 1),
-      fetchImpl
-    );
-    if (result.kind === "success") {
-      return { ok: true, body: result.data as T };
-    }
-    if (result.kind === "terminal") {
-      const message =
-        result.status >= 200 && result.status < 300
-          ? `algolia HTTP ${result.status} returned malformed JSON${result.bodyText ? `: ${result.bodyText}` : ""}`
-          : errorMessageFromBody(result.bodyText, result.status);
-      return { ok: false, message, status: result.status };
-    }
+): Promise<{ ok: true; body: unknown } | { ok: false; message: string; status?: number }> {
+  let lastError = "no attempts configured";
+  for (const timeoutMs of timeouts) {
+    const result = await attempt(url, apiKey, body, timeoutMs, fetchImpl);
+    if (result.kind === "success") return { ok: true, body: result.data };
+    if (result.kind === "terminal") return { ok: false, message: result.message, status: result.status };
     lastError = result.cause;
   }
-  return { ok: false, message: `all algolia hosts failed: ${lastError}` };
+  return { ok: false, message: `mintlify request failed after ${timeouts.length} attempts: ${lastError}` };
 }
 
-function algoliaQuery(
-  hosts: string[],
-  index: string,
-  headers: Record<string, string>,
-  params: Record<string, unknown>,
-  fetchImpl: FetchLike
-) {
-  return algoliaRequest<AlgoliaResponse>(
-    hosts,
-    `/1/indexes/${encodeURIComponent(index)}/query`,
-    headers,
-    params,
-    fetchImpl
-  );
+/**
+ * The live site redirects moved pages; the page store does not. Ask the site once, without
+ * following, and return the same-origin docs or meetings path it redirects to.
+ */
+async function siteRedirectPath(siteOrigin: string, path: string, timeoutMs: number, fetchImpl: FetchLike): Promise<string | null> {
+  try {
+    const res = await fetchImpl(`${siteOrigin}/${path}`, { method: "GET", redirect: "manual", signal: AbortSignal.timeout(timeoutMs) });
+    await res.body?.cancel();
+    if (res.status < 300 || res.status >= 400) return null;
+    const location = res.headers.get("location");
+    if (!location) return null;
+    const target = new URL(location, `${siteOrigin}/${path}`);
+    if (target.origin !== new URL(siteOrigin).origin || !/^\/(docs|meetings)\//.test(target.pathname)) return null;
+    const next = normalizePagePath(target.pathname);
+    return next && next !== path ? next : null;
+  } catch {
+    return null;
+  }
 }
 
-/** Read content only for retained records; keep the search metadata and snippets. */
-async function fetchHitContent(
-  hits: AlgoliaHit[],
-  hosts: string[],
-  index: string,
-  headers: Record<string, string>,
-  fetchImpl: FetchLike
-): Promise<{ ok: true; hits: AlgoliaHit[] } | { ok: false; message: string; status?: number }> {
-  const objectIDs = hits.map((hit) => hit.objectID);
-  if (objectIDs.some((id) => typeof id !== "string" || id.length === 0)) {
-    return { ok: false, message: "Algolia search hits lack record IDs for content retrieval" };
+/** Lowercase, punctuation-to-space form used for term matching. */
+function normalizeText(text: string): string {
+  return ` ${text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()} `;
+}
+
+/**
+ * Topic terms of a query: words of 3+ characters (or any word with a digit),
+ * minus stopwords. Hyphenated and snake_case identifiers stay whole as well as
+ * split, so "SEP-10" matches "SEP-10" and "SEP 10".
+ */
+export function queryTerms(query: string): string[] {
+  const terms = new Set<string>();
+  for (const raw of query.split(/\s+/)) {
+    const word = raw.replace(/^[^A-Za-z0-9_]+|[^A-Za-z0-9_]+$/g, "");
+    if (!word) continue;
+    const parts = normalizeText(word).trim().split(" ").filter(Boolean);
+    const joined = parts.join(" ");
+    const candidates = parts.length > 1 ? [joined, ...parts] : parts;
+    for (const part of candidates) {
+      if (STOPWORDS.has(part)) continue;
+      if (part.length >= 3 || /\d/.test(part)) terms.add(part);
+    }
   }
-  const res = await algoliaRequest<{ results: (AlgoliaHit | null)[] }>(
-    hosts,
-    "/1/indexes/*/objects",
-    headers,
-    {
-      requests: [...new Set(objectIDs)].map((objectID) => ({
-        indexName: index,
-        objectID,
-        attributesToRetrieve: ["objectID", "content"]
-      }))
-    },
-    fetchImpl
-  );
-  if (!res.ok) {
-    return res;
+  return [...terms];
+}
+
+function containsTerm(haystack: string, term: string): boolean {
+  return haystack.includes(` ${term}`);
+}
+
+function isIndexPath(path: string): boolean {
+  return /(^|\/)index$/.test(path.replace(/\/+$/, ""));
+}
+
+/** Relative links in an index page resolve against its directory. */
+function linkBase(url: string, isIndex: boolean): string {
+  return isIndex ? `${url}/` : url;
+}
+
+/** Site-relative canonical path: leading slash, no trailing `/index` (the site serves both forms). */
+function siteRelative(path: string): string {
+  return `/${path.replace(/^\/+/, "")}`.replace(/\/index$/, "") || "/";
+}
+
+function fillPlaceholders(template: string, args: Record<string, unknown>): string {
+  return template.replace(/\{([^}]+)\}/g, (_m, name: string) => String(args[name] ?? ""));
+}
+
+/** Drop Mintlify's code-fence theme metadata and make relative Markdown links absolute. */
+export function cleanContent(content: string, pageUrl: string, siteOrigin: string): string {
+  const unthemed = content.replace(/^(\s*```[^\s`]*)[ \t]+theme=\{.*\}[ \t]*$/gm, "$1");
+  return unthemed.replace(/\]\(([^)\s]+)\)/g, (match, target: string) => {
+    if (/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(target)) return match;
+    try {
+      const base = target.startsWith("/") ? siteOrigin : pageUrl;
+      const resolved = new URL(target, base);
+      resolved.pathname = resolved.pathname.replace(/\.mdx?$/, "").replace(/\/index$/, "");
+      return `](${resolved.toString()})`;
+    } catch {
+      return match;
+    }
+  });
+}
+
+function firstHeading(content: string): string | undefined {
+  // An ATX closing sequence needs a space before it, so `## Using C#` keeps its `#`.
+  const match = content.match(/^\s*#{1,6}\s+(.+?)(?:\s+#+)?\s*$/m);
+  if (!match || content.trimStart().indexOf(match[0].trim()) !== 0) return undefined;
+  return match[1];
+}
+
+/** A window of the section text centered on the first query term it contains. */
+/** MDX component tags (`<Tab title="x">`, `</CodeGroup>`) shrink to their attribute values. */
+const MDX_TAG = /<\/?[A-Z][A-Za-z0-9.]*((?:\s+[A-Za-z_:][\w:.-]*(?:=(?:"[^"]*"|'[^']*'|\{[^}]*\}))?)*)\s*\/?>/g;
+
+function snippetOf(content: string, terms: string[]): string {
+  const body = content
+    .replace(/^\s*#{1,6}\s+[^\n]*/, "")
+    .replace(MDX_TAG, (_tag, attrs: string) => {
+      const values = [...attrs.matchAll(/=(?:"([^"]*)"|'([^']*)')/g)].map((m) => m[1] ?? m[2]).filter(Boolean);
+      return values.length > 0 ? ` ${values.join(" ")} ` : " ";
+    })
+    .replace(/```[^\n]*\n/g, "")
+    .replace(/```/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (body.length <= SNIPPET_CHARS) return body;
+  const lower = body.toLowerCase();
+  let at = -1;
+  for (const term of terms) {
+    const index = lower.indexOf(term.split(" ")[0]!);
+    if (index >= 0 && (at < 0 || index < at)) at = index;
   }
-  const records = res.body?.results;
-  if (!Array.isArray(records) || records.some((record) => !record || typeof record.objectID !== "string")) {
-    return { ok: false, message: "Algolia content retrieval returned missing or invalid records" };
-  }
-  const byID = new Map(records.map((record) => [record!.objectID, record!]));
-  if (objectIDs.some((id) => !byID.has(id))) {
-    return { ok: false, message: "Algolia content retrieval omitted a requested record" };
+  const start = at < 0 ? 0 : Math.max(0, at - Math.floor(SNIPPET_CHARS / 3));
+  const end = Math.min(body.length, start + SNIPPET_CHARS);
+  return `${start > 0 ? "…" : ""}${body.slice(start, end).trim()}${end < body.length ? "…" : ""}`;
+}
+
+/** Prefix match on whole path segments: `/docs/tokens` keeps `/docs/tokens/x`, not `/docs/tokens-legacy`. */
+function underPrefix(path: string, prefix: string): boolean {
+  const base = prefix.replace(/\/+$/, "");
+  return path === base || path.startsWith(`${base}/`);
+}
+
+function matchesScope(path: string, include: string[] | null, exclude: string[] | null): boolean {
+  if (exclude?.some((prefix) => underPrefix(path, prefix))) return false;
+  if (include && include.length > 0) return include.some((prefix) => underPrefix(path, prefix));
+  return true;
+}
+
+function resolveScope(mapping: MintlifyMapping, args: Record<string, unknown>) {
+  let include = mapping.include ?? null;
+  let exclude = mapping.exclude ?? null;
+  for (const [condition, overrides] of Object.entries(mapping.conditional ?? {})) {
+    const eq = condition.indexOf("=");
+    if (eq < 0 || String(args[condition.slice(0, eq)]) !== condition.slice(eq + 1)) continue;
+    if ("include" in overrides) include = overrides.include ?? null;
+    if ("exclude" in overrides) exclude = overrides.exclude ?? null;
   }
   return {
-    ok: true,
-    hits: hits.map((hit) => {
-      const content = byID.get(hit.objectID)?.content;
-      return typeof content === "string" ? { ...hit, content } : hit;
-    })
+    include: include?.map((prefix) => fillPlaceholders(prefix, args)) ?? null,
+    exclude: exclude?.map((prefix) => fillPlaceholders(prefix, args)) ?? null
   };
 }
 
-/** Flatten hierarchy lvl0..lvl6 into a " > " breadcrumb. */
-function breadcrumb(hierarchy: Record<string, string | null> | undefined): string {
-  if (!hierarchy) return "";
-  const parts: string[] = [];
-  for (let i = 0; i <= 6; i++) {
-    const v = hierarchy[`lvl${i}`];
-    if (typeof v === "string" && v.length > 0) parts.push(v);
+function sectionsOf(body: unknown): Section[] | null {
+  if (!Array.isArray(body)) return null;
+  const sections: Section[] = [];
+  for (const [rank, chunk] of (body as SearchChunk[]).entries()) {
+    if (!chunk || typeof chunk.path !== "string" || typeof chunk.content !== "string") return null;
+    const title = typeof chunk.metadata?.title === "string" ? chunk.metadata.title : "";
+    sections.push({ path: siteRelative(chunk.path), title, content: chunk.content, rank, isIndex: isIndexPath(chunk.path) });
   }
-  return parts.join(" > ");
+  return sections;
 }
 
-function shapeHit(hit: AlgoliaHit): Record<string, unknown> {
-  const shaped: Record<string, unknown> = {
-    url: hit.url,
-    url_without_anchor: hit.url_without_anchor,
-    anchor: hit.anchor,
-    type: hit.type,
-    breadcrumb: breadcrumb(hit.hierarchy)
+/** Rank distinct pages: query words in the title, then in the path, then search rank. */
+function groupPages(sections: Section[], terms: string[]): Section[] {
+  const byPath = new Map<string, Section>();
+  for (const section of sections) if (!byPath.has(section.path)) byPath.set(section.path, section);
+  const score = (section: Section) => {
+    const title = normalizeText(section.title);
+    const path = normalizeText(section.path);
+    return terms.reduce(
+      (total, term) => total + (containsTerm(title, term) ? 2 : 0) + (containsTerm(path, term) ? 1 : 0),
+      0
+    );
   };
-  const snippet = hit._snippetResult?.content?.value;
-  if (snippet) shaped.snippet = snippet;
-  if (typeof hit.content === "string") shaped.content = hit.content;
-  return shaped;
+  return [...byPath.values()]
+    .map((section) => ({ section, score: score(section) }))
+    .sort((a, b) => b.score - a.score || a.section.rank - b.section.rank)
+    .map(({ section }) => section);
 }
 
-function pageTitleOf(hit: AlgoliaHit): { attribute: string; title: string } | null {
-  const hierarchy = hit.hierarchy;
-  if (!hierarchy) return null;
-  const levels = [1, 0, 2, 3, 4, 5, 6];
-  for (const level of levels) {
-    const title = hierarchy[`lvl${level}`];
-    if (typeof title === "string" && title.length > 0) {
-      return { attribute: `hierarchy.lvl${level}`, title };
-    }
-  }
-  return null;
-}
-
-function sortAndDedupeSections(records: AlgoliaHit[]): AlgoliaHit[] {
-  const byUrl = new Map<string, AlgoliaHit>();
-  for (const record of records) {
-    const key = typeof record.url === "string" ? record.url : String(record.anchor ?? "");
-    const existing = byUrl.get(key);
-    if (
-      !existing ||
-      (typeof existing.content !== "string" && typeof record.content === "string")
-    ) {
-      byUrl.set(key, record);
-    }
-  }
-  return [...byUrl.values()].sort(
-    (a, b) => (a.weight?.position ?? 0) - (b.weight?.position ?? 0)
-  );
-}
-
-/** Merge one conditionalParams override block; `null` deletes the param. */
-function applyOverrides(
-  params: Record<string, unknown>,
-  overrides: Record<string, unknown>
-): { clientFilterDisabled: boolean } {
-  let clientFilterDisabled = false;
-  for (const [k, v] of Object.entries(overrides)) {
-    if (k === "clientFilter") {
-      if (v === null) clientFilterDisabled = true;
-      continue;
-    }
-    if (v === null) delete params[k];
-    else params[k] = v;
-  }
-  return { clientFilterDisabled };
+function normalizePagePath(raw: string): string {
+  return raw
+    .replace(/^https?:\/\/[^/]+/, "")
+    .replace(/[#?].*$/, "")
+    .replace(/\/+$/, "")
+    .replace(/\.mdx?$/, "")
+    .replace(/^\/+/, "");
 }
 
 export async function callStellarDocs(
@@ -328,278 +320,141 @@ export async function callStellarDocs(
   fetchImpl: FetchLike = fetch
 ): Promise<AdapterResult> {
   const transport = (entry.transport ?? {}) as DocsTransport;
-  const mapping = transport.algolia;
-  if (entry.transport?.type !== "algolia" || !mapping || !transport.index || !transport.hosts) {
+  const mapping = transport.mintlify;
+  if (
+    transport.type !== "mintlify" ||
+    !mapping ||
+    !transport.apiBase ||
+    !transport.searchPath ||
+    !transport.pagePath ||
+    !transport.siteOrigin
+  ) {
     return errResult({
       service: SERVICE,
       kind: "error",
-      message: `catalog entry ${entry.id} has no algolia transport mapping — cannot call it`
+      message: `catalog entry ${entry.id} has no mintlify transport mapping — cannot call it`
     });
   }
 
-  // Env names come from the authored spec's transport (per-property pairs:
-  // _DOCS for developers.stellar.org, _SITE for stellar.org). No generic
-  // fallback — a transport that names no env vars is a build defect.
-  const appIdEnvName = transport.applicationIdEnv as keyof AdapterEnv | undefined;
   const apiKeyEnvName = transport.apiKeyEnv as keyof AdapterEnv | undefined;
-  const appId = appIdEnvName ? env[appIdEnvName] : undefined;
   const apiKey = apiKeyEnvName ? env[apiKeyEnvName] : undefined;
-  if (!appId || !apiKey) {
+  if (!apiKey) {
     return errResult({
       service: SERVICE,
       kind: "error",
-      message: `${transport.applicationIdEnv ?? "applicationIdEnv"} / ${transport.apiKeyEnv ?? "apiKeyEnv"} are not configured on the host — search is unavailable`
+      message: `${transport.apiKeyEnv ?? "apiKeyEnv"} is not configured on the host — docs search is unavailable`
     });
   }
-
-  const hosts = transport.hosts.map((h) => h.replace(`{${transport.applicationIdEnv}}`, appId));
-  const headers = {
-    "X-Algolia-Application-Id": appId,
-    "X-Algolia-API-Key": apiKey,
-    "Content-Type": "application/json"
-  };
-
-  const requestedHits = typeof args.hitsPerPage === "number" ? args.hitsPerPage : 5; // schema default
-
-  // --- assemble params: baseParams → fixedParams → mapped args → conditionals
-  const params: Record<string, unknown> = {
-    ...(transport.baseParams ?? {}),
-    ...(mapping.fixedParams ?? {})
-  };
-  for (const [argName, paramName] of Object.entries(mapping.paramMap ?? {})) {
-    const v = argName === "hitsPerPage" ? requestedHits : args[argName];
-    if (v !== undefined && v !== null) params[paramName] = v;
-  }
-
-  let clientFilter: ClientFilter | null = mapping.clientFilter ?? null;
-  for (const [condition, overrides] of Object.entries(mapping.conditionalParams ?? {})) {
-    const eq = condition.indexOf("=");
-    if (eq < 0) continue;
-    const argName = condition.slice(0, eq);
-    const expected = condition.slice(eq + 1);
-    if (String(args[argName]) !== expected) continue;
-    const { clientFilterDisabled } = applyOverrides(params, overrides);
-    if (clientFilterDisabled) clientFilter = null;
-  }
-
-  // --- get_doc_page_sections: derived query + exact-URL client filter
-  const isPageSections = typeof mapping.derivedQuery === "string" && typeof args.path === "string";
-  let derivedQueries: string[] = [];
-  if (isPageSections) {
-    const segments = String(args.path).split("/").filter(Boolean);
-    const last = segments[segments.length - 1] ?? "";
-    const lastTwo = segments.slice(-2).join(" ");
-    const tokens = (s: string) => s.split(/[-_]/).filter(Boolean).join(" ");
-    derivedQueries = [tokens(last)];
-    const fb = tokens(lastTwo);
-    if (fb !== derivedQueries[0]) derivedQueries.push(fb); // documented fallback
-    // Sections are sorted by weight.position — make sure it's retrieved.
-    const retrieve = params.attributesToRetrieve;
-    if (Array.isArray(retrieve) && !retrieve.includes("weight")) {
-      params.attributesToRetrieve = [...retrieve, "weight"];
-    }
-    if (args.includeContent === false && Array.isArray(params.attributesToRetrieve)) {
-      params.attributesToRetrieve = (params.attributesToRetrieve as string[]).filter(
-        (a) => a !== "content"
-      );
-    }
-  }
-
-  const overFetches =
-    typeof mapping.fixedParams?.hitsPerPage === "number" && !("hitsPerPage" in (mapping.paramMap ?? {}));
-  const retrieveContentAfterFilter = !isPageSections && overFetches &&
-    Array.isArray(params.attributesToRetrieve) && params.attributesToRetrieve.includes("content");
-  if (retrieveContentAfterFilter) {
-    params.attributesToRetrieve = [...new Set([
-      ...(params.attributesToRetrieve as string[]).filter((attribute) => attribute !== "content"),
-      "objectID"
-    ])];
-  }
+  const timeouts = transport.attemptTimeoutsMs?.length ? transport.attemptTimeoutsMs : [8000, 12000];
+  const siteOrigin = transport.siteOrigin;
 
   try {
-    if (isPageSections) {
-      const target = clientFilter?.equals
-        ? fillPlaceholders(clientFilter.equals, args)
-        : `https://developers.stellar.org${String(args.path)}`;
-      const field = clientFilter?.field ?? "url_without_anchor";
-      let usedFallback = false;
-      for (let qi = 0; qi < derivedQueries.length; qi++) {
-        const res = await algoliaQuery(
-          hosts,
-          transport.index,
-          headers,
-          { ...params, query: derivedQueries[qi] },
-          fetchImpl
-        );
-        if (!res.ok) {
+    if (mapping.endpoint === "page") {
+      const path = normalizePagePath(String(args.path ?? ""));
+      const pageUrl = `${transport.apiBase}${transport.pagePath}`;
+      const fetchPage = async (pagePath: string) => {
+        const first = await mintlifyRequest(pageUrl, apiKey, { path: pagePath }, timeouts, fetchImpl);
+        // Index pages exist only as `<dir>/index` in the page store.
+        if (!first.ok && first.status === 404 && !pagePath.endsWith("/index")) {
+          return mintlifyRequest(pageUrl, apiKey, { path: `${pagePath}/index` }, timeouts, fetchImpl);
+        }
+        return first;
+      };
+      let res = await fetchPage(path);
+      if (!res.ok && res.status === 404) {
+        const moved = await siteRedirectPath(siteOrigin, path, timeouts[0]!, fetchImpl);
+        if (moved) res = await fetchPage(moved);
+      }
+      if (!res.ok) {
+        if (res.status === 404) {
           return errResult({
             service: SERVICE,
-            kind: "error",
-            message: res.message,
-            ...(res.status !== undefined ? { status: res.status } : {})
+            kind: "soft-empty",
+            message: `No docs page exists at /${path}. Use \`path\` from a search hit.`,
+            status: 404,
+            hint: "Search with stellarDocs.search_doc_titles or stellarDocs.search_docs to find the page path. A missing path does not mean the topic is undocumented."
           });
         }
-        const seedRecords = res.body.hits.filter((h) => h[field] === target);
-        if (seedRecords.length > 0) {
-          const pageTitle = pageTitleOf(seedRecords[0]!);
-          if (!pageTitle) {
-            const records = sortAndDedupeSections(seedRecords);
-            return okResult({
-              page: target,
-              sections: records.map(shapeHit),
-              nbSections: records.length,
-              complete: false,
-              truncated: true,
-              truncationReason: "the index record has no hierarchy title for a complete page query",
-              ...(usedFallback ? { usedFallbackQuery: derivedQueries[qi] } : {})
-            });
-          }
-
-          const titleParams = {
-            ...params,
-            query: JSON.stringify(pageTitle.title),
-            restrictSearchableAttributes: [pageTitle.attribute],
-            removeWordsIfNoResults: "none",
-            typoTolerance: false,
-            queryType: "prefixNone",
-            page: 0
-          };
-          const firstPage = await algoliaQuery(
-            hosts,
-            transport.index,
-            headers,
-            titleParams,
-            fetchImpl
-          );
-          if (!firstPage.ok) {
-            return errResult({
-              service: SERVICE,
-              kind: "error",
-              message: firstPage.message,
-              ...(firstPage.status !== undefined ? { status: firstPage.status } : {})
-            });
-          }
-
-          const titleQueryRecords = [...firstPage.body.hits];
-          const hitsPerPage = Math.max(1, firstPage.body.hitsPerPage);
-          const maxPages = Math.ceil(1000 / hitsPerPage);
-          const pagesToFetch = Math.min(firstPage.body.nbPages, maxPages);
-          for (let page = 1; page < pagesToFetch; page++) {
-            const nextPage = await algoliaQuery(
-              hosts,
-              transport.index,
-              headers,
-              { ...titleParams, page },
-              fetchImpl
-            );
-            if (!nextPage.ok) {
-              return errResult({
-                service: SERVICE,
-                kind: "error",
-                message: nextPage.message,
-                ...(nextPage.status !== undefined ? { status: nextPage.status } : {})
-              });
-            }
-            titleQueryRecords.push(...nextPage.body.hits);
-          }
-
-          const exactRecords = titleQueryRecords.filter((hit) => hit[field] === target);
-          const records = sortAndDedupeSections(exactRecords.length > 0 ? exactRecords : seedRecords);
-          const truncated =
-            firstPage.body.exhaustiveNbHits === false ||
-            firstPage.body.exhaustive?.nbHits === false ||
-            firstPage.body.nbPages > maxPages ||
-            exactRecords.length === 0;
-          return okResult({
-            page: target,
-            sections: records.map(shapeHit),
-            nbSections: records.length,
-            complete: !truncated,
-            truncated,
-            ...(truncated
-              ? {
-                  truncationReason:
-                    exactRecords.length === 0
-                      ? "the exact page-title query returned no target records"
-                      : "the Algolia title query was not exhaustive within its pagination limit"
-                }
-              : {}),
-            ...(usedFallback ? { usedFallbackQuery: derivedQueries[qi] } : {})
-          });
-        }
-        usedFallback = true;
+        return errResult({ service: SERVICE, kind: "error", message: res.message, ...(res.status !== undefined ? { status: res.status } : {}) });
       }
+      const page = res.body as { path?: unknown; content?: unknown } | null;
+      if (!page || typeof page.content !== "string") {
+        return errResult({ service: SERVICE, kind: "error", message: "Mintlify page response has no content" });
+      }
+      const rawPath = typeof page.path === "string" ? page.path : path;
+      const relative = siteRelative(rawPath);
+      const url = `${siteOrigin}${relative}`;
+      const title = page.content.match(/^\s*#\s+(.+?)\s*$/m)?.[1] ?? relative.split("/").at(-1) ?? relative;
+      return okResult({ url, path: relative, title, content: cleanContent(page.content, linkBase(url, isIndexPath(rawPath)), siteOrigin) });
+    }
+
+    const query = String(args.query ?? "");
+    const requested = typeof args.hitsPerPage === "number" ? args.hitsPerPage : 5;
+    const res = await mintlifyRequest(
+      `${transport.apiBase}${transport.searchPath}`,
+      apiKey,
+      { query, pageSize: transport.candidateWindow ?? 50 },
+      timeouts,
+      fetchImpl
+    );
+    if (!res.ok && res.status !== 404) {
+      return errResult({ service: SERVICE, kind: "error", message: res.message, ...(res.status !== undefined ? { status: res.status } : {}) });
+    }
+    const sections = res.ok ? sectionsOf(res.body) : [];
+    if (!sections) {
+      return errResult({ service: SERVICE, kind: "error", message: "Mintlify search response is not an array of sections" });
+    }
+
+    const { include, exclude } = resolveScope(mapping, args);
+    const pathFiltered = Boolean(include && include.length > 0);
+    const scoped = sections.filter((section) => matchesScope(section.path, include, exclude));
+    const terms = queryTerms(query);
+    const termMatched = (section: Section) =>
+      terms.some((term) => containsTerm(normalizeText(`${section.title} ${section.path} ${section.content}`), term));
+
+    if (sections.length === 0) {
       return errResult({
         service: SERVICE,
         kind: "soft-empty",
-        message: `The page-section queries returned no matching records for ${String(args.path)} within their candidate windows. Check url_without_anchor from a search hit.`,
-        hint:
-          "This is a docs-index result only. For an open-world ecosystem identity or history question, corroborate with the broad Lumenloop or Scout families before drawing a wider negative conclusion."
+        message: "The docs search returned no sections for this query.",
+        status: res.ok ? 200 : 404,
+        hint: "Rephrase with the terms the docs would use. An empty search result does not prove the docs lack the topic."
       });
     }
-
-    // --- ordinary search ops (with optional URL-prefix client filter)
-    const res = await algoliaQuery(hosts, transport.index, headers, params, fetchImpl);
-    if (!res.ok) {
-      return errResult({
-        service: SERVICE,
-        kind: "error",
-        message: res.message,
-        ...(res.status !== undefined ? { status: res.status } : {})
-      });
-    }
-    const body = res.body;
-
-    let hits = body.hits;
-    let clientFiltered = false;
-    if (clientFilter?.prefixesAnyOf) {
-      const prefixes = clientFilter.prefixesAnyOf.map((p) => fillPlaceholders(p, args));
-      const field = clientFilter.field;
-      hits = hits.filter((h) => {
-        const v = h[field];
-        return typeof v === "string" && prefixes.some((p) => v.startsWith(p));
-      });
-      clientFiltered = true;
-    }
-    // Apply the caller's hit limit even when a conditional disables the filter.
-    // The operation's over-fetch window must not become its returned page size.
-    if (clientFiltered || overFetches) hits = hits.slice(0, requestedHits);
-
-    if (hits.length === 0) {
+    if (scoped.length === 0 || (terms.length > 0 && !scoped.some(termMatched))) {
+      const windowOnly = scoped.length === 0;
       return errResult({
         service: SERVICE,
         kind: "soft-empty",
-        message:
-          body.nbHits === 0
-            ? "This query returned no hits in the docs index with the operation filters."
-            : "The returned candidate window contains no hits for this operation. Try stellarDocs.search_docs for a broader search.",
+        message: windowOnly
+          ? `None of the ${sections.length} candidate sections the docs search returned is under this operation's paths.`
+          : `None of the ${scoped.length} candidate sections the docs search returned contains a query term (${terms.join(", ")}).`,
         status: 200,
-        hint:
-          body.nbHits === 0
-            ? "Scope the negative to this docs index. For an open-world ecosystem identity or history question, corroborate with the broad Lumenloop or Scout families."
-            : "Broaden once with stellarDocs.search_docs; if the question is about ecosystem identity or history rather than official technical wording, also consult a broad Lumenloop or Scout family."
+        hint: windowOnly
+          ? "Broaden once with stellarDocs.search_docs. This is a candidate-window result, not evidence that the docs lack the topic."
+          : "The docs search returns nearest sections even for unmatched topics. Rephrase with the terms the docs would use, or corroborate an ecosystem identity or history question with a broad Lumenloop or Scout family."
       });
     }
 
-    if (retrieveContentAfterFilter) {
-      const contentResult = await fetchHitContent(hits, hosts, transport.index, headers, fetchImpl);
-      if (!contentResult.ok) {
-        return errResult({
-          service: SERVICE,
-          kind: "error",
-          message: contentResult.message,
-          ...(contentResult.status !== undefined ? { status: contentResult.status } : {})
-        });
-      }
-      hits = contentResult.hits;
-    }
+    const ordered = mapping.groupBy === "page" ? groupPages(scoped, terms) : scoped;
+    const hits = ordered.slice(0, requested).map((section) => {
+      const url = `${siteOrigin}${section.path}`;
+      const content = cleanContent(section.content, linkBase(url, section.isIndex), siteOrigin);
+      const heading = firstHeading(content);
+      return {
+        url,
+        path: section.path,
+        title: section.title || section.path.split("/").at(-1) || section.path,
+        ...(heading ? { section: heading } : {}),
+        snippet: snippetOf(content, terms),
+        ...(args.includeContent === true && mapping.groupBy !== "page" ? { content } : {})
+      };
+    });
 
     return okResult({
-      hits: hits.map(shapeHit),
-      nbHits: body.nbHits,
-      nbPages: body.nbPages,
-      page: body.page,
-      ...(clientFiltered ? { clientFiltered: true } : {})
+      hits,
+      candidates: sections.length,
+      ...(pathFiltered ? { pathFiltered: true } : {})
     });
   } catch (e) {
     return caughtResult(SERVICE, e);

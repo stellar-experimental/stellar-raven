@@ -35,8 +35,7 @@ const catalog: Catalog = loadManifest(
 
 const env = {
   LUMENLOOP_API_KEY: "test-key-not-real-1234",
-  ALGOLIA_APPLICATION_ID_DOCS: "TESTAPPID",
-  ALGOLIA_API_KEY_DOCS: "test-algolia-key-1234"
+  MINTLIFY_ASSISTANT_API_KEY: "test-key-not-real-5678"
 };
 
 function artifactInput(overrides: Partial<ArtifactPutInput> = {}): ArtifactPutInput {
@@ -552,8 +551,8 @@ describe("dispatch behavior (error-as-data, exposure, parallelism)", () => {
       maxInFlight = Math.max(maxInFlight, inFlight);
       await new Promise((r) => setTimeout(r, 20));
       inFlight -= 1;
-      const body = url.includes("algolia")
-        ? JSON.stringify({ hits: [{ url: "https://developers.stellar.org/docs/x", hierarchy: {} }], nbHits: 1, page: 0, nbPages: 1, hitsPerPage: 5 })
+      const body = url.includes("mintlify")
+        ? JSON.stringify([{ path: "docs/learn/fundamentals/fees", content: "## Fees\nEvery transaction pays fees.", metadata: { title: "Fees" } }])
         : JSON.stringify({ success: true, data: { count: 0, projects: [] }, error: null, meta: { format: "json" } });
       return new Response(body, { status: 200, headers: { "content-type": "application/json" } });
     };
@@ -663,18 +662,13 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
 
   it("object payload: direct object and nested array access stay unchanged", async () => {
     const docsFetch: FetchLike = async () =>
-      Response.json({
-        hits: [
-          {
-            url: "https://developers.stellar.org/docs/learn/fundamentals/fees",
-            hierarchy: { lvl0: "Learn", lvl1: "Fees" }
-          }
-        ],
-        nbHits: 1,
-        page: 0,
-        nbPages: 1,
-        hitsPerPage: 5
-      });
+      Response.json([
+        {
+          path: "docs/learn/fundamentals/fees",
+          content: "## Fees\nEvery transaction pays fees.",
+          metadata: { title: "Fees" }
+        }
+      ]);
     const ns = guardedNamespaces(docsFetch);
     const r = (await ns.stellarDocs!.search_docs!({ query: "fees" })) as {
       data: Record<string, unknown> & { hits: Array<{ url: string }> };
@@ -683,7 +677,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(r.data.hits.map((hit) => hit.url)).toEqual([
       "https://developers.stellar.org/docs/learn/fundamentals/fees"
     ]);
-    expect(r.data.nbHits).toBe(1);
+    expect(r.data.candidates).toBe(1);
   });
 
   it("array payload: map, filter, length, and iteration stay unchanged", async () => {

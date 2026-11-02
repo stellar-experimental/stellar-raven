@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "c8fb74953a2da79d688adea472c4cdc4bf2c6d86831d1cd991f2231407c43e91",
+  "corpusContentSha256": "08fe0365e0d4841d4500b3951c3411b00cb9f2e7a911df2fef71ab9a0d7b7374",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -15848,21 +15848,21 @@
     },
     {
       "id": "q-edge-doc-page-sections-soft-empty",
-      "question": "How should get_doc_page_sections behave for a valid-looking /docs path that is not present in the Stellar docs index?",
+      "question": "How should get_doc_page behave for a valid-looking /docs path that does not exist on the Stellar developer docs site?",
       "surface": [
-        "stellarDocs.get_doc_page_sections"
+        "stellarDocs.get_doc_page"
       ],
       "golden": {
-        "answer": "Return and preserve a soft-empty path-not-indexed outcome. Do not fabricate sections and do not call it a network failure. Recover by using a path copied from url_without_anchor in a real search hit; remember that some auto-generated API-reference pages are intentionally not indexed.",
+        "answer": "Return and preserve a soft-empty page-not-found outcome (status 404). Do not fabricate page content and do not call it a network failure. Recover by searching with search_doc_titles or search_docs and passing the path from a real hit; one missing path does not mean the topic is undocumented.",
         "keyFacts": [
-          "Treats an absent indexed path as soft-empty rather than data or transport error.",
-          "Recovers with url_without_anchor from a real docs search hit."
+          "Treats a missing page path as soft-empty rather than data or transport error.",
+          "Recovers with the path from a real docs search hit."
         ],
         "avoid": [
-          "Do NOT invent page sections for an unindexed path.",
-          "Do NOT claim every developer-site URL must exist in the Algolia index."
+          "Do NOT invent page content for a missing path.",
+          "Do NOT conclude the topic is undocumented from one missing page path."
         ],
-        "notes": "NEG / soft-empty docs-index contract."
+        "notes": "NEG / soft-empty docs-page contract."
       },
       "tags": {
         "category": "edge-behavior",
@@ -15876,30 +15876,35 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-11-02",
         "sources": [
           {
             "class": "B",
-            "ref": "specs/stellar-docs.json",
-            "note": "Fetch-verified local path exists and defines the exercised contract/workflow."
+            "ref": "src/adapters/stellar-docs.ts",
+            "note": "Mintlify adapter: page endpoint, /index retry, 404 soft-empty, page-level title grouping."
           },
           {
-            "class": "C",
-            "ref": "http://localhost:8787/mcp",
-            "note": "Live localhost search→execute probe."
+            "class": "B",
+            "ref": "specs/stellar-docs.json",
+            "note": "Operation contract (params, returns, outputSchema) for the Mintlify backend."
+          },
+          {
+            "class": "F",
+            "ref": ".agents/rounds/2026-11-02-mintlify-migration/retrieval-ab.mts",
+            "note": "Live adapter execution against the Mintlify API, 2026-11-02."
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 coverage-closure lane (Solo process 3427)",
+          "date": "2026-11-02",
+          "by": "Mintlify migration round (.agents/rounds/2026-11-02-mintlify-migration.md)",
           "evidence": [
-            "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; an unindexed path returned envelope ok=false with kind soft-empty and a path-not-in-index message.",
-            "specs/stellar-docs.json exists and supports the behavioral golden.",
-            "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "2026-11-02 live adapter probe: get_doc_page {path:'/docs/build/smart-contracts/getting-started/no-such-page'} → ok=false, kind soft-empty, status 404, message 'No docs page exists at …', hint names search_doc_titles/search_docs and says a missing path does not mean the topic is undocumented (after one <path>/index retry).",
+            "src/adapters/stellar-docs.ts page branch and test/adapters.test.ts 'maps a missing page (after the /index retry) to soft-empty with status 404 and recovery hints'.",
+            "Gospel change: the operation was renamed from get_doc_page_sections and reads Mintlify's page store instead of an Algolia index, so 'unindexed path' and the Algolia avoid clause no longer describe the system.",
+            "Sibling sweep 2026-11-02: git grep get_doc_page_sections|url_without_anchor|Algolia over eval/qa/corpus/battery → q-edge-doc-page-sections-soft-empty, q-sor-doc-page-sections-followup, q-sor-doc-title-discovery (changed); q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-compute-token-lp-market-data, q-ti-rpc-gettransactions-pagination-xdr carry only dated evidence strings (unchanged records); no contradiction."
           ],
           "rootCause": [
-            "eval-authoring"
+            ".agents/TODO.md — Move the `stellarDocs` operations from Algolia to the Mintlify API"
           ]
         },
         "origin": "authored 2026-07 (coverage)"
@@ -43496,19 +43501,19 @@
       "id": "q-sor-doc-page-sections-followup",
       "question": "After docs search gives me a Stellar developer-docs page path, how do I read that whole page in section order rather than rely on one snippet?",
       "surface": [
-        "stellarDocs.get_doc_page_sections"
+        "stellarDocs.get_doc_page"
       ],
       "golden": {
-        "answer": "Pass the exact url_without_anchor path from the search hit to get_doc_page_sections. Keep includeContent enabled when reading the page, then consume the returned headings, breadcrumbs, anchors, and content in on-page order. This is a page-follow-up operation; it is not a corpus-wide search.",
+        "answer": "Pass the exact path from the search hit (a /docs or /meetings path, no domain or anchor) to get_doc_page. It returns the page url, path, title and the whole page as Markdown in on-page order, including headings, tables and code blocks. This is a page-follow-up operation; it is not a corpus-wide search.",
         "keyFacts": [
           "Uses the exact path from a prior docs hit, without the domain or anchor.",
-          "Reads section headings and content in page order."
+          "Reads the whole page content, headings included, in page order."
         ],
         "avoid": [
           "Do NOT pass a full external URL or fragment where the operation requires a /docs or /meetings path.",
           "Do NOT treat one snippet as the complete page."
         ],
-        "notes": "Live docs-index behavioral case."
+        "notes": "Live docs page-reading behavioral case."
       },
       "tags": {
         "category": "soroban",
@@ -43522,34 +43527,35 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-11-02",
         "sources": [
           {
             "class": "B",
-            "ref": "specs/stellar-docs.json",
-            "note": "Fetch-verified local path exists and defines the exercised contract/workflow."
+            "ref": "src/adapters/stellar-docs.ts",
+            "note": "Mintlify adapter: page endpoint, /index retry, 404 soft-empty, page-level title grouping."
           },
           {
-            "class": "C",
-            "ref": "http://localhost:8787/mcp",
-            "note": "Live localhost search→execute probe."
+            "class": "B",
+            "ref": "specs/stellar-docs.json",
+            "note": "Operation contract (params, returns, outputSchema) for the Mintlify backend."
+          },
+          {
+            "class": "F",
+            "ref": ".agents/rounds/2026-11-02-mintlify-migration/retrieval-ab.mts",
+            "note": "Live adapter execution against the Mintlify API, 2026-11-02."
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-11-02",
+          "by": "Mintlify migration round (.agents/rounds/2026-11-02-mintlify-migration.md)",
           "evidence": [
-            "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; get_doc_page_sections returned envelope ok=true for the storing-data path with ordered headings and content.",
-            "specs/stellar-docs.json exists and supports the behavioral golden.",
-            "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Structural re-form (long-fact): Shortened one long page-reading fact; truth unchanged.",
-            "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/specs/stellar-docs.json — the source contract returns all page sections with headings and full content in on-page order.",
-            "Sibling sweep 2026-08-29: grep get_doc_page_sections|ordered section|one search snippet|url_without_anchor → q-edge-doc-page-sections-soft-empty, q-sor-doc-page-sections-followup, q-sor-doc-title-discovery, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-compute-token-lp-market-data, q-ti-scaffold-stellar; no contradiction."
+            "2026-11-02 live adapter probe: get_doc_page {path:'/docs/build/smart-contracts/getting-started/storing-data'} → ok=true {url, path, title '3. Storing Data', content: the whole page as Markdown starting '# 3. Storing Data'} (8,317 characters).",
+            "specs/stellar-docs.json get_doc_page params: path only, pattern ^/(docs|meetings)/; returns { url, path, title, content }.",
+            "Gospel change: get_doc_page_sections (Algolia sections with anchors and breadcrumbs, includeContent) was replaced by get_doc_page (full-page Markdown) in the Mintlify migration.",
+            "Sibling sweep 2026-11-02: git grep get_doc_page_sections|url_without_anchor|Algolia over eval/qa/corpus/battery → q-edge-doc-page-sections-soft-empty, q-sor-doc-page-sections-followup, q-sor-doc-title-discovery (changed); q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-compute-token-lp-market-data, q-ti-rpc-gettransactions-pagination-xdr carry only dated evidence strings (unchanged records); no contradiction."
           ],
           "rootCause": [
-            "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Move the `stellarDocs` operations from Algolia to the Mintlify API"
           ]
         },
         "origin": "authored 2026-07 (coverage)"
@@ -43672,14 +43678,14 @@
         "stellarDocs.search_doc_titles"
       ],
       "golden": {
-        "answer": "Use search_doc_titles with the expected page or section title words. Inspect the returned breadcrumb and url_without_anchor to choose the canonical page, then follow with get_doc_page_sections or a content-bearing docs search. Title search is deliberately heading-focused and should not be treated as full-body research.",
+        "answer": "Use search_doc_titles with the expected page title words. It returns one hit per page, ranked by query words in the page title and URL path. Check each hit's title and path to choose the canonical page, then read it with get_doc_page or a content-bearing docs search. Title search is page-level discovery and should not be treated as full-body research.",
         "keyFacts": [
-          "Uses title-only search to locate pages or headings by their expected name.",
-          "Follows the selected url_without_anchor with a page-reading operation."
+          "Uses page-level title search to locate pages by their expected name.",
+          "Follows the selected hit's path with a page-reading operation."
         ],
         "avoid": [
           "Do NOT claim title hits contain the complete page body.",
-          "Do NOT choose a result solely from a highlighted word without checking its breadcrumb and path."
+          "Do NOT choose a result solely from a snippet word without checking its title and path."
         ],
         "notes": "Live docs title-discovery behavior; exact hit ordering may drift."
       },
@@ -43695,30 +43701,35 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-11-02",
         "sources": [
           {
             "class": "B",
-            "ref": "specs/stellar-docs.json",
-            "note": "Fetch-verified local path exists and defines the exercised contract/workflow."
+            "ref": "src/adapters/stellar-docs.ts",
+            "note": "Mintlify adapter: page endpoint, /index retry, 404 soft-empty, page-level title grouping."
           },
           {
-            "class": "C",
-            "ref": "http://localhost:8787/mcp",
-            "note": "Live localhost search→execute probe."
+            "class": "B",
+            "ref": "specs/stellar-docs.json",
+            "note": "Operation contract (params, returns, outputSchema) for the Mintlify backend."
+          },
+          {
+            "class": "F",
+            "ref": ".agents/rounds/2026-11-02-mintlify-migration/retrieval-ab.mts",
+            "note": "Live adapter execution against the Mintlify API, 2026-11-02."
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 coverage-closure lane (Solo process 3427)",
+          "date": "2026-11-02",
+          "by": "Mintlify migration round (.agents/rounds/2026-11-02-mintlify-migration.md)",
           "evidence": [
-            "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; search_doc_titles returned envelope ok=true with title/heading hits for State Archival.",
-            "specs/stellar-docs.json exists and supports the behavioral golden.",
-            "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "2026-11-02 live adapter probe: search_doc_titles {query:'State Archival',hitsPerPage:5} → one hit per page; first /docs/learn/fundamentals/contract-development/storage/state-archival (title 'State Archival'), then /docs/build/guides/dapps/state-archival and /docs/build/guides/archival.",
+            "src/adapters/stellar-docs.ts groupPages: distinct pages ranked by title match (2), path match (1), then search rank; test/adapters.test.ts pins the ranking.",
+            "Gospel change: hits no longer carry breadcrumb or url_without_anchor, and the follow-up operation is get_doc_page.",
+            "Sibling sweep 2026-11-02: git grep get_doc_page_sections|url_without_anchor|Algolia over eval/qa/corpus/battery → q-edge-doc-page-sections-soft-empty, q-sor-doc-page-sections-followup, q-sor-doc-title-discovery (changed); q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-compute-token-lp-market-data, q-ti-rpc-gettransactions-pagination-xdr carry only dated evidence strings (unchanged records); no contradiction."
           ],
           "rootCause": [
-            "eval-authoring"
+            ".agents/TODO.md — Move the `stellarDocs` operations from Algolia to the Mintlify API"
           ]
         },
         "origin": "authored 2026-07 (coverage)"

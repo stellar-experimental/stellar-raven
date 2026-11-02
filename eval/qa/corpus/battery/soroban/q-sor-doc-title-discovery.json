@@ -5,14 +5,14 @@
     "stellarDocs.search_doc_titles"
   ],
   "golden": {
-    "answer": "Use search_doc_titles with the expected page or section title words. Inspect the returned breadcrumb and url_without_anchor to choose the canonical page, then follow with get_doc_page_sections or a content-bearing docs search. Title search is deliberately heading-focused and should not be treated as full-body research.",
+    "answer": "Use search_doc_titles with the expected page title words. It returns one hit per page, ranked by query words in the page title and URL path. Check each hit's title and path to choose the canonical page, then read it with get_doc_page or a content-bearing docs search. Title search is page-level discovery and should not be treated as full-body research.",
     "keyFacts": [
-      "Uses title-only search to locate pages or headings by their expected name.",
-      "Follows the selected url_without_anchor with a page-reading operation."
+      "Uses page-level title search to locate pages by their expected name.",
+      "Follows the selected hit's path with a page-reading operation."
     ],
     "avoid": [
       "Do NOT claim title hits contain the complete page body.",
-      "Do NOT choose a result solely from a highlighted word without checking its breadcrumb and path."
+      "Do NOT choose a result solely from a snippet word without checking its title and path."
     ],
     "notes": "Live docs title-discovery behavior; exact hit ordering may drift."
   },
@@ -28,30 +28,35 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
-        "ref": "specs/stellar-docs.json",
-        "note": "Fetch-verified local path exists and defines the exercised contract/workflow."
+        "ref": "src/adapters/stellar-docs.ts",
+        "note": "Mintlify adapter: page endpoint, /index retry, 404 soft-empty, page-level title grouping."
       },
       {
-        "class": "C",
-        "ref": "http://localhost:8787/mcp",
-        "note": "Live localhost search→execute probe."
+        "class": "B",
+        "ref": "specs/stellar-docs.json",
+        "note": "Operation contract (params, returns, outputSchema) for the Mintlify backend."
+      },
+      {
+        "class": "F",
+        "ref": ".agents/rounds/2026-11-02-mintlify-migration/retrieval-ab.mts",
+        "note": "Live adapter execution against the Mintlify API, 2026-11-02."
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-11-02",
+      "by": "Mintlify migration round (.agents/rounds/2026-11-02-mintlify-migration.md)",
       "evidence": [
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; search_doc_titles returned envelope ok=true with title/heading hits for State Archival.",
-        "specs/stellar-docs.json exists and supports the behavioral golden.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "2026-11-02 live adapter probe: search_doc_titles {query:'State Archival',hitsPerPage:5} → one hit per page; first /docs/learn/fundamentals/contract-development/storage/state-archival (title 'State Archival'), then /docs/build/guides/dapps/state-archival and /docs/build/guides/archival.",
+        "src/adapters/stellar-docs.ts groupPages: distinct pages ranked by title match (2), path match (1), then search rank; test/adapters.test.ts pins the ranking.",
+        "Gospel change: hits no longer carry breadcrumb or url_without_anchor, and the follow-up operation is get_doc_page.",
+        "Sibling sweep 2026-11-02: git grep get_doc_page_sections|url_without_anchor|Algolia over eval/qa/corpus/battery → q-edge-doc-page-sections-soft-empty, q-sor-doc-page-sections-followup, q-sor-doc-title-discovery (changed); q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-compute-token-lp-market-data, q-ti-rpc-gettransactions-pagination-xdr carry only dated evidence strings (unchanged records); no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        ".agents/TODO.md — Move the `stellarDocs` operations from Algolia to the Mintlify API"
       ]
     },
     "origin": "authored 2026-07 (coverage)"
