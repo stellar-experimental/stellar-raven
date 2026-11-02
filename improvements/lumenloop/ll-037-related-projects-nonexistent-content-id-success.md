@@ -3,46 +3,50 @@ id: ll-037
 service: lumenloop
 status: verified
 discovered: 2026-11-02
-upstreamTitle: get_related_projects returns success with an empty list for a content ID that does not exist
+upstreamTitle: get_related_projects reports a successful empty result for an unavailable content item
 evidence:
-  - "2026-11-02T18:33:49Z authenticated POST https://api.lumenloop.com/v1/tools/get_related_projects with {\"content_id\":99999999,\"content_type\":\"article\"}: HTTP 200, {\"success\":true,\"data\":[],\"error\":null}. The same body with content_id 1 and with content_type event gave the same response"
-  - "2026-11-02T18:33:49Z POST https://api.lumenloop.com/v1/tools/get_document with {\"id\":99999999,\"collection\":\"articles\"}: HTTP 200, data.text \"No document found with ID 99999999 in articles\". The golden audit pass 1 call with id 1 returned \"No document found with ID 1 in articles\""
-  - "2026-11-02T18:33:49Z POST get_related_projects with {\"content_id\":690,\"content_type\":\"article\"}: HTTP 200, data.content text \"4 project(s) mentioned by article 690\". Articles 680 to 695 (except 690) each returned between 1 and 7 projects, and get_document returned a title for each"
-  - "Related records: ll-029 records the two payload shapes of this tool (top-level [] against a content object) and its 2026-11-02 recurrence notes the same not-found gap. ll-035 records that unknown arguments are accepted silently. This finding covers only the not-found semantics"
-  - "Affected golden case: eval/qa/corpus/battery/assets-anchors-seps/q-gap-related-projects-empty.json (truth.verified 2026-11-02). The golden credits an answer that treats the empty result as inconclusive"
+  - 2026-11-02T22:36:14Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/get_related_projects {"content_id":99999999,"content_type":"article"} returned HTTP 200 with {"success":true,"data":[],"error":null}. Raw response: tmp/fl-lk/ll-recheck/ll037-a.json.
+  - 2026-11-02 source calibration: lumenloop-mcp/src/tools/directory.ts at main acba0387f14acd35d875719b2cc268509616a184 checks source availability before looking up mentions. An unavailable source returns the text "[]". The same gate covers missing and unpublished content. The recommendation preserves that non-disclosure boundary.
+  - 2026-11-02 adjacent check: inspected the source gate and successful mentions branch in directory.ts. Existing source rows reach the mentions lookup. A generic unavailable response can distinguish that case without exposing whether hidden content exists.
+  - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 30 issues and 17 PRs in lumenloop/lumenloop-backend. ll-029 records the same observation as a recurrence but requests output-schema corrections. This finding requests a generic source-unavailable result and preserves unpublished-source non-disclosure.
+  - Affected golden case: eval/qa/corpus/battery/assets-anchors-seps/q-gap-related-projects-empty.json (truth.verified 2026-11-02). The golden credits an answer that treats the empty result as inconclusive
+  - 2026-11-02T18:33:49Z earlier controls: get_document {"id":99999999,"collection":"articles"} returned HTTP 200 with a document-not-found message. get_related_projects {"content_id":690,"content_type":"article"} returned HTTP 200 and four project mentions.
 ---
 
 ## Finding
 
-`get_related_projects` returns `success: true` and `data: []` when the content
-ID does not exist. The response has no not-found error and no message.
-
-The caller cannot tell from the response whether the content item exists. An
-agent can read the empty list as "this item mentions no directory projects".
-That reading is wrong when the ID is wrong.
-
-`get_document` handles the same missing ID differently. It returns the text "No
-document found with ID 99999999 in articles". The two tools therefore report a
-missing item in two different ways.
+`get_related_projects` returns a successful empty result for the unavailable article id `99999999`.
+The response contains `success: true`, `data: []`, and `error: null`.
+Callers cannot distinguish an unavailable source from an existing source with no project mentions.
 
 ## Evidence
 
-All calls ran on 2026-11-02 with read-only requests to
-`POST /v1/tools/get_related_projects` and `POST /v1/tools/get_document`.
+The orchestrator repeated this request on 2026-11-02T22:36:14Z:
 
-| Call | Response |
-|---|---|
-| `get_related_projects` `{"content_id":99999999,"content_type":"article"}` | `{"success":true,"data":[]}` |
-| `get_related_projects` `{"content_id":1,"content_type":"article"}` | `{"success":true,"data":[]}` |
-| `get_related_projects` `{"content_id":99999999,"content_type":"event"}` | `{"success":true,"data":[]}` |
-| `get_document` `{"id":99999999,"collection":"articles"}` | `No document found with ID 99999999 in articles` |
-| `get_related_projects` `{"content_id":690,"content_type":"article"}` | `4 project(s) mentioned by article 690` |
+```text
+POST /v1/tools/get_related_projects
+{"content_id":99999999,"content_type":"article"}
+```
+
+The response returned HTTP 200:
+
+```json
+{"success":true,"data":[],"error":null}
+```
+
+An earlier same-day `get_document` request for that article id returned a document-not-found message.
+An earlier control for article 690 returned four project mentions.
+
+The source checks the public availability of the content before it looks up project mentions.
+When that check returns no row, the handler returns the text `[]`.
+This gate also protects unpublished content.
+The correction must preserve that protection.
 
 ## Recommendation
 
-Check that the content item exists before the tool looks up mentions. When the
-item does not exist, return `success: false` with a not-found error code. Name
-the `content_id` and `content_type` in the error message.
+Return a generic unavailable-source error when the existing source gate returns no row.
+Use the same response for missing and unpublished content.
+Do not expose whether unpublished content exists.
 
-When the item exists and mentions no projects, return the normal content shape
-with a count of zero. For example: "0 project(s) mentioned by article 690".
+Reserve a successful zero-mentions result for a source that passes the availability check.
+The separate output-schema correction does not resolve this missing-source distinction.

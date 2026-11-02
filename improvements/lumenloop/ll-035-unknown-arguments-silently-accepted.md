@@ -3,58 +3,51 @@ id: ll-035
 service: lumenloop
 status: verified
 discovered: 2026-11-02
-upstreamTitle: Tools accept unknown argument names although their input schemas set additionalProperties false
+upstreamTitle: list_documents silently ignores unknown argument names despite additionalProperties false
 evidence:
-  - "2026-11-02T17:18:02Z authenticated POST https://api.lumenloop.com/v1/tools/list_documents with {\"collection\":\"events\",\"time_period\":\"upcoming\",\"limit\":1}: HTTP 200, success true, pagination.total 1192"
-  - "2026-11-02T17:18:02Z same tool with {\"collection\":\"events\",\"period\":\"upcoming\",\"limit\":1}: HTTP 200, pagination.total 14"
-  - "2026-11-02T17:18:02Z-17:18:03Z same tool with no filter, and with {\"bogus_arg\":\"x\"}: HTTP 200, pagination.total 1192 for both"
-  - "2026-11-02T17:18:13Z search_directory with {\"query\":\"Blend\",\"limit\":1,\"bogus_arg\":\"x\"} and get_project with {\"slug\":\"blend\",\"bogus_arg\":\"x\"}: HTTP 200, success true, no warning"
-  - "2026-11-02 GET https://api.lumenloop.com/v1/tools/list_documents and /v1/tools/search_directory: each input_schema sets \"additionalProperties\": false"
-  - "Contrast 2026-11-02: the same validator rejects a wrong type (get_related_projects content_id string, HTTP 400 invalid_arguments) and a missing required field (find_similar_projects_semantic without slug, HTTP 400)"
-  - "Related, distinct: ll-028 tracks an unknown value of the known sort argument"
-  - "Affected golden case: eval/qa/corpus/battery/tooling-infra/q-gap-lumen-documents-browse.json"
+  - 2026-11-02T22:36:14Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/list_documents returned HTTP 200 and success=true for all three bodies. {"collection":"events","time_period":"upcoming","limit":1} returned pagination.total=1192. The period="upcoming" control returned total=13. The bogus_arg="x" control returned total=1192. Raw responses: tmp/fl-lk/ll-recheck/ll035-a.json, ll035-b.json, ll035-c.json. The earlier count of 14 upcoming events changed to 13.
+  - 2026-11-02 source calibration: lumenloop/lumenloop-backend main acba0387f14acd35d875719b2cc268509616a184, lumenloop-mcp/src/api/router.ts. Schema publication uses z.object(tool.schema ?? {}); request validation uses the same object without .strict(). package.json declares zod ^3.24.0.
+  - 2026-11-02 executable calibration: node tmp/fl-lk/check-validator.mjs with downloaded zod 3.24.0. z.object(...).safeParse accepted time_period and removed it from parsed data. Adding .strict() rejected time_period with code unrecognized_keys.
+  - 2026-11-02 adjacent check: rg -n "safeParse|z.object|additionalProperties" in router.ts and registry.ts found one shared request-validation point. The correction can cover the tool registry without separate checks for each tool.
+  - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 30 issues and 17 PRs in lumenloop/lumenloop-backend. Existing issue 43 and ll-028 concern invalid sort values; unknown key names require the shared object-validation correction.
+  - Affected golden case: eval/qa/corpus/battery/tooling-infra/q-gap-lumen-documents-browse.json
+  - 2026-11-02T17:18:13Z earlier verification: search_directory and get_project accepted bogus_arg="x" with HTTP 200 and no warning. The no-filter list_documents control returned total=1192. Published list_documents and search_directory schemas set additionalProperties=false.
 ---
 
 ## Finding
 
-Lumenloop tools accept argument names that are not in their input schemas. The
-call returns `success: true` with no error and no warning. The service ignores
-the unknown argument.
+`list_documents` silently ignores unknown argument names, although its published schema sets `additionalProperties: false`.
+A request with `time_period: "upcoming"` returns all 1192 events.
+The correct argument, `period: "upcoming"`, returns 13 events.
+Both requests return HTTP 200 with `success: true`.
 
-Each published input schema sets `"additionalProperties": false`. The live
-validator does not apply that rule. It does reject a wrong type and a missing
-required field.
-
-The result is a silent filter loss. A caller that sends `time_period` instead
-of `period` to `list_documents` gets all 1192 events, not the 14 upcoming
-events. The caller then treats past events as upcoming events.
-
-`ll-028` tracks an unknown value of the known `sort` argument. This finding
-covers unknown argument names on several tools.
+The response does not warn callers that it discarded their filter.
+Earlier checks also accepted `bogus_arg` on `search_directory` and `get_project`.
 
 ## Evidence
 
-All calls ran on 2026-11-02 with read-only requests to
-`POST https://api.lumenloop.com/v1/tools/{tool}`.
+The orchestrator repeated these read-only requests on 2026-11-02T22:36:14Z.
+Each request used `POST /v1/tools/list_documents` and returned HTTP 200.
 
-| Tool | Body | HTTP | Result |
-|---|---|---:|---|
-| `list_documents` | `{"collection":"events","time_period":"upcoming","limit":1}` | 200 | `total: 1192` |
-| `list_documents` | `{"collection":"events","period":"upcoming","limit":1}` | 200 | `total: 14` |
-| `list_documents` | `{"collection":"events","limit":1}` | 200 | `total: 1192` |
-| `list_documents` | `{"collection":"events","bogus_arg":"x","limit":1}` | 200 | `total: 1192` |
-| `search_directory` | `{"query":"Blend","limit":1,"bogus_arg":"x"}` | 200 | one row, no warning |
-| `get_project` | `{"slug":"blend","bogus_arg":"x"}` | 200 | full record, no warning |
+| Body | `pagination.total` |
+|---|---:|
+| `{"collection":"events","time_period":"upcoming","limit":1}` | 1192 |
+| `{"collection":"events","period":"upcoming","limit":1}` | 13 |
+| `{"collection":"events","bogus_arg":"x","limit":1}` | 1192 |
 
-The same validator returns HTTP 400 `invalid_arguments` for
-`get_related_projects` with a string `content_id`. It also returns HTTP 400
-for `find_similar_projects_semantic` without `slug`.
+The upcoming count changed from 14 in the earlier check to 13 in this check.
+The defect still reproduces.
+
+The source publishes a JSON Schema from `z.object(tool.schema ?? {})`.
+The request path validates through `z.object(tool.schema ?? {}).safeParse(req.body ?? {})`.
+With `zod 3.24.0`, within the declared `^3.24.0` range, this object schema accepts and removes unknown keys.
+A dependency-matched local check confirmed that `.strict()` rejects `time_period` with `unrecognized_keys`.
 
 ## Recommendation
 
-Apply `additionalProperties: false` in the live validator. Return HTTP 400
-`invalid_arguments` for an unknown argument name. Name the unknown argument and
-list the accepted names in `details`.
+Reject unknown keys at the shared request-validation point.
+For the current Zod object schema, add `.strict()` before `.safeParse()`.
+Return HTTP 400 `invalid_arguments` and name the unknown argument in the error.
+Add a contract check that sends an unknown argument to each tool.
 
-Apply the rule to every tool. Add a contract test that sends one unknown
-argument to each tool and expects HTTP 400.
+Unknown values for a recognized argument require a separate value-validation correction.

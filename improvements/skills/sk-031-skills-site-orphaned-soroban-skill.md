@@ -3,44 +3,49 @@ id: sk-031
 service: skills
 status: verified
 discovered: 2026-11-02
-upstreamTitle: skills.stellar.org still serves the removed soroban skill, with the stale wasm32-unknown-unknown build target
+upstreamTitle: skills.stellar.org still publishes the deleted soroban skill with obsolete build guidance
 evidence:
-  - "2026-11-02T17:18:43Z F: https://skills.stellar.org/skills/soroban/SKILL.md returned HTTP 200 (71331 bytes; frontmatter 'name: soroban'). The file has 12 lines with wasm32-unknown-unknown, for example line 151 '--wasm target/wasm32-unknown-unknown/release/my_contract.wasm'. https://skills.stellar.org/skills/smart-contracts/SKILL.md returned 200 with 4 wasm32v1-none lines and 0 wasm32-unknown-unknown lines."
-  - "2026-11-02 F: the https://skills.stellar.org/ index links skills/smart-contracts/SKILL.md and does not link skills/soroban/SKILL.md."
-  - "2026-11-02 B: stellar/stellar-dev-skill main has no skills/soroban directory; its skills/ entries are agentic-payments, assets, cross-chain, dapp, data, smart-contracts, standards, zk-proofs. Commit 5907afc601 (2026-06-29, 'Split soroban skill, rebrand prose, add concrete ZK toolchain walkthroughs (#32)') is the last commit on skills/soroban."
-  - "2026-11-02 B: the gh-pages branch (GitHub Pages source, cname skills.stellar.org) still contains skills/soroban/SKILL.md. Its last gh-pages commit is 5c6c26a24c (2026-06-11T15:57:47Z, 'deploy: main @ 6956c5f30384424723678ce77f6255f76ec00080'). The gh-pages head is c8f8523429 (2026-10-31)."
-  - "2026-11-02 B: .github/workflows/deploy-pages.yml publishes with peaceiris/actions-gh-pages and 'keep_files: true', with the comment 'Don't wipe pr/<N>/ subdirectories owned by preview-pr.yml.' keep_files also keeps files that main no longer builds, so the removed skill stays published."
-  - "Resolved predecessor sk-001 (receipt in improvements/resolved.json, stellar/stellar-dev-skill issue 44 and PR 45) replaced wasm32-unknown-unknown with wasm32v1-none in the live skill. The orphaned file predates that fix and still serves the old target."
-  - "Consumer path: the Stellar-Light/stellar-scout skill at 9f77b3f9433be8b57b2b78a7c14b94855779f4fe names 'soroban' as an SDF skill and builds install URLs as https://skills.stellar.org/skills/{name}/SKILL.md (sk-027, references/api-reference.md line 203). An agent that follows it gets HTTP 200 and the stale skill instead of a 404. Golden case q-tool-skill-detail-install (golden audit 2026-11-02, batch tooling-infra-06) records this file."
-  - "Dedupe 2026-11-02: no active or resolved finding covers the orphaned file; sk-027 recorded it only as context for the Scout skill. A search of stellar/stellar-dev-skill issues and PRs for soroban, gh-pages, legacy, and orphan found no report."
+  - 2026-11-02 public recheck: curl -sS -L https://skills.stellar.org/skills/soroban/SKILL.md returned HTTP 200, 71331 bytes. The file contains 12 wasm32-unknown-unknown lines and zero wasm32v1-none lines. GET /skills/smart-contracts/SKILL.md returned HTTP 200 with four wasm32v1-none lines and zero wasm32-unknown-unknown lines. The index has no exact skills/soroban/SKILL.md link.
+  - 2026-11-02 timeline calibration: gh api repos/stellar/stellar-dev-skill/commits/5907afc601 confirms source removal on 2026-06-29T13:56:20Z. The first following main deployment was gh-pages commit 4f56f67ffeae71dec79a2a8fc8fe168aa6cf082a at 2026-06-29T13:57:14Z. gh api repos/stellar/stellar-dev-skill/contents/skills/soroban/SKILL.md?ref=4f56f67ffeae71dec79a2a8fc8fe168aa6cf082a still returns blob 3c98cb8194d0921ddae7b5a9e1ed895511e968e2. The current live file has that same git blob hash. This establishes the first orphaning deployment.
+  - 2026-11-02 adjacent check: rg -n "skills/soroban|wasm32-unknown-unknown" over current source skills and deployment workflows found no legacy skill or old target in current skills. The main publish workflow still sets keep_files: true and preserves pr/<N>/ previews. The current gh-pages file and live orphan are byte-identical.
+  - 2026-11-02 calibration scope: this finding concerns continued publication after source deletion. The target comparison establishes obsolete guidance, not a dependency-specific compilation failure. No failing Rust snippet is alleged or added.
+  - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 43 issues and 125 PRs in stellar/stellar-dev-skill. Resolved sk-001 corrected current build guidance; sk-027 concerns Scout references. Issue 21 concerns earlier content defects. This finding owns stale deployment retention.
+  - Resolved predecessor sk-001 corrected current smart-contracts build guidance. Its receipt names stellar/stellar-dev-skill issue 44 and PR 45. The stale published soroban file escaped that correction.
+  - The consumer reference remains active in sk-027. Stellar-Light/stellar-scout references/api-reference.md builds https://skills.stellar.org/skills/{name}/SKILL.md and names soroban. This finding targets publication retention at stellar/stellar-dev-skill.
 ---
 
 ## Finding
 
-`https://skills.stellar.org/skills/soroban/SKILL.md` returns HTTP 200.
-The source repository removed the `soroban` skill on 2026-06-29 and replaced it with `smart-contracts`.
-The site index does not list `soroban`.
-The orphaned file is the 2026-06-11 deploy, and it teaches the old build target
-`wasm32-unknown-unknown` on 12 lines.
-The current `smart-contracts` skill uses `wasm32v1-none`.
+`skills.stellar.org/skills/soroban/SKILL.md` still returns the deleted `soroban` skill with obsolete build guidance.
+The source repository removed the skill on 2026-06-29.
+The live file still contains 12 `wasm32-unknown-unknown` lines.
+The current `smart-contracts` skill uses `wasm32v1-none` instead.
 
-An agent or a user that requests the old slug gets the stale skill and no error.
-The Scout skill still names `soroban` and builds this exact URL, so the path is live.
+Callers that request the old file receive HTTP 200 and the stale content.
+The current site index does not link to that exact file.
 
 ## Evidence
 
-On 2026-11-02 the `gh-pages` branch of `stellar/stellar-dev-skill` still holds `skills/soroban/SKILL.md`.
-The `main` branch has no `skills/soroban` directory.
-The deploy workflow `.github/workflows/deploy-pages.yml` publishes with
-`peaceiris/actions-gh-pages` and `keep_files: true`.
-That setting keeps PR preview folders, but it also keeps every file that `main` no longer builds.
+Fresh public requests on 2026-11-02 returned these results:
 
-Line 151 of the orphaned file reads `--wasm target/wasm32-unknown-unknown/release/my_contract.wasm`.
-The live `smart-contracts` skill has 4 `wasm32v1-none` lines and no `wasm32-unknown-unknown` line.
+| URL | Result |
+|---|---|
+| `https://skills.stellar.org/skills/soroban/SKILL.md` | HTTP 200; 71331 bytes; 12 old-target lines |
+| `https://skills.stellar.org/skills/smart-contracts/SKILL.md` | HTTP 200; four `wasm32v1-none` lines; zero old-target lines |
+
+Commit `5907afc60100650305355e74632cb5254e1b90bb` removed the source file at 2026-06-29T13:56:20Z.
+The next main deployment, `4f56f67ffeae71dec79a2a8fc8fe168aa6cf082a`, ran at 2026-06-29T13:57:14Z.
+That deployment still contained the deleted file.
+Its blob hash, `3c98cb8194d0921ddae7b5a9e1ed895511e968e2`, matches the live file today.
+
+The current `.github/workflows/deploy-pages.yml` sets `keep_files: true` for `peaceiris/actions-gh-pages`.
+That setting preserves PR preview folders and files that the main build no longer produces.
+The old file last changed on 2026-06-11.
+The defect began with the later deployment that failed to remove it.
 
 ## Recommendation
 
 Delete `skills/soroban/` from the `gh-pages` branch.
-Alternatively, publish a short `skills/soroban/SKILL.md` that points to `skills/smart-contracts/SKILL.md`.
-To stop the same drift for later removals, make the main deploy remove files outside `pr/`.
-One way is to restore `pr/` into `site/out` before the publish step and set `keep_files: false`.
+Make the main deployment remove files that the main build no longer produces.
+Preserve the `pr/` preview folders during that cleanup.
+Add a deployment check that rejects published skill paths absent from the current source.

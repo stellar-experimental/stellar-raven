@@ -3,52 +3,47 @@ id: ll-032
 service: lumenloop
 status: verified
 discovered: 2026-11-02
-upstreamTitle: The freighter directory record does not reflect the Varial rename
+upstreamTitle: The freighter directory record omits the Varial name and current website
 evidence:
-  - "2026-11-02T17:17:22Z authenticated POST https://api.lumenloop.com/v1/tools/get_project with {\"slug\":\"freighter\"}: success true; title \"Freighter\"; other_names []; links.website [\"freighter.app\"]; the description names Freighter only"
-  - "2026-11-02T17:18:49Z POST https://api.lumenloop.com/v1/tools/search_directory with {\"query\":\"varial\"}: no substring match; match_mode \"semantic\" fallback"
-  - "2026-11-02 committed record https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/freighter.yaml (blob c9fc9dcc28, last commit 187dd86d44 on 2026-06-09): title Freighter, other_names null, website freighter.app"
-  - "2026-11-02 primary source: https://raw.githubusercontent.com/stellar/freighter/master/README.md opens \"Varial (formerly Freighter) is a non-custodial wallet extension\"; the README change is commit 8186584326 (2026-10-30, \"Update the README for the Varial rebrand (#3055)\")"
-  - "2026-11-02 curl https://freighter.app/ returned HTTP 301 to https://varialwallet.com/; the target page title is \"Varial | Your Everyday Stellar Wallet\""
-  - "Affected golden cases: eval/qa/corpus/battery/retail-consumer/q-eco-freighter-wallet.json, eval/qa/corpus/battery/retail-consumer/q-tool-freighter-wallet.json, eval/qa/corpus/battery/defi-ecosystem/q-eco-stellar-wallets-list.json"
-  - "Intake note: this is a committed directory-record correction; the owner repo is lumenloop/stellar-ecosystem-db (intake.json per-finding override added)"
+  - 2026-11-02T22:36:13Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/get_project {"slug":"freighter"} returned HTTP 200. title="Freighter", other_names=[], links.website=["freighter.app"]. Raw response: tmp/fl-lk/ll-recheck/ll032-get.json; command receipt: tmp/fl-lk/ll-recheck/INDEX.txt.
+  - 2026-11-02T22:36:13Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/search_directory {"query":"varial"} returned HTTP 200. count=20, match_mode="semantic"; no freighter row appeared. Raw response: tmp/fl-lk/ll-recheck/ll032-search.json.
+  - 2026-11-02 public recheck: curl -sS -L -D headers https://freighter.app/ returned HTTP 301, then HTTP 200 at https://varialwallet.com/. GET https://raw.githubusercontent.com/lumenloop/stellar-ecosystem-db/main/projects/freighter.yaml returned HTTP 200 with the stale title and website. The stellar/freighter release 5.50.0 announcement dates the public rename to 2026-10-29; this is not a claimed first source-change date.
+  - 2026-11-02 adjacent check: rg -n -i "freighter|varial" over the current stellar-ecosystem-db archive found three other descriptions naming Freighter. They are projects/lumenswap.yaml, projects/latch.yaml, and projects/aha-labs.yaml. Historical repository URLs and image paths need no rename.
+  - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among four issues and eight PRs in lumenloop/stellar-ecosystem-db. The active sk-030 concerns separate skill files. sls-095 concerns the separate Scout directory.
+  - Affected golden cases: eval/qa/corpus/battery/retail-consumer/q-eco-freighter-wallet.json, eval/qa/corpus/battery/retail-consumer/q-tool-freighter-wallet.json, eval/qa/corpus/battery/defi-ecosystem/q-eco-stellar-wallets-list.json
+  - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/freighter.yaml. The latest file change dates to 2026-06-09, before the public rename.
 ---
 
 ## Finding
 
-The Lumenloop directory record `freighter` does not reflect the Varial rename.
-The record title is `Freighter`. The `other_names` field is empty. The website
-is `freighter.app`. The description names Freighter only.
+The `freighter` directory record omits the wallet's current name, Varial, and its current website.
+Its title is `Freighter`, its `other_names` field is empty, and its website is `freighter.app`.
+A search for `varial` falls back to semantic results and does not return this record.
 
-The wallet owner renamed the product to Varial. The `stellar/freighter` README
-now says "Varial (formerly Freighter)". The `freighter.app` domain now redirects
-to `varialwallet.com`.
-
-A directory search for `varial` finds no substring match. A user who knows only
-the new name cannot find the wallet by name. An agent that reads the record
-reports a stale product name and a redirecting website.
+SDF announced the Varial name on 2026-10-29.
+The wallet README uses the current name, and the old website redirects to `varialwallet.com`.
+Users who search by the current name cannot find the wallet through a direct name match.
 
 ## Evidence
 
-All calls ran on 2026-11-02 with read-only requests.
+The orchestrator repeated these read-only requests on 2026-11-02T22:36:13Z.
+Both requests returned HTTP 200.
 
-| Request | Result |
+| Request | Decisive values |
 |---|---|
 | `POST /v1/tools/get_project` `{"slug":"freighter"}` | `title: "Freighter"`, `other_names: []`, `links.website: ["freighter.app"]` |
-| `POST /v1/tools/search_directory` `{"query":"varial"}` | No substring match; `match_mode: "semantic"` |
-| `GET https://freighter.app/` | HTTP 301 to `https://varialwallet.com/` |
-| `stellar/freighter` README, commit `8186584326` (2026-10-30) | "Varial (formerly Freighter) is a non-custodial wallet extension" |
+| `POST /v1/tools/search_directory` `{"query":"varial"}` | `count: 20`, `match_mode: "semantic"`, no `freighter` row |
 
-The committed source record is `projects/freighter.yaml` in
-`lumenloop/stellar-ecosystem-db`. Its last change is commit `187dd86d44` on
-2026-06-09. That change is earlier than the rename.
+A fresh public read of `projects/freighter.yaml` returned the same stale fields.
+The [wallet README](https://raw.githubusercontent.com/stellar/freighter/master/README.md) names Varial and identifies Freighter as its previous name.
+The [SDF announcement](https://stellar.org/blog/foundation-news/freighter-is-now-varial) confirms the rename.
+A fresh `GET https://freighter.app/` returned HTTP 301 to `https://varialwallet.com/`.
 
 ## Recommendation
 
-Update `projects/freighter.yaml`. Set the title to `Varial`. Add `Freighter` to
-`other_names`. Set the website to `varialwallet.com`. State in the description
-that Varial is the new name of Freighter.
+Update `projects/freighter.yaml` with the title `Varial` and the website `varialwallet.com`.
+Add `Freighter` to `other_names` and explain the rename in the description.
+Confirm that a substring search for `varial` returns the record.
 
-Keep the existing slug, or add a redirect from the old slug. Either choice must
-keep `get_project` with slug `freighter` working. Make sure that a substring
-search for `varial` returns the record.
+Check the current wallet name in `projects/lumenswap.yaml`, `projects/latch.yaml`, and `projects/aha-labs.yaml`.
+Keep historical repository URLs and image paths when they still identify the correct resource.

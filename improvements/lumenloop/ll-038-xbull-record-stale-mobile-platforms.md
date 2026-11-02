@@ -3,52 +3,50 @@ id: ll-038
 service: lumenloop
 status: verified
 discovered: 2026-11-02
-upstreamTitle: The xbull directory record lists Android and iOS apps that are no longer available
+upstreamTitle: The xBull directory description advertises mobile platforms with unavailable store listings
 evidence:
-  - "2026-11-02T18:33:49Z authenticated POST https://api.lumenloop.com/v1/tools/get_project with {\"slug\":\"xbull\"}: description \"... It supports multiple platforms, including web browsers, Android, and iOS devices, enabling users to send, receive, and swap assets seamlessly.\""
-  - "2026-11-02T18:34:09Z committed record https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/xbull.yaml (blob 0e8729b720, last commit 461a4a40df on 2026-06-29) carries the same sentence on line 4"
-  - "2026-11-02T18:34:09Z https://apps.apple.com/us/app/xbull-wallet/id6705122563 returned HTTP 404, and https://itunes.apple.com/lookup?id=6705122563 returned resultCount 0. https://play.google.com/store/apps/details?id=app.xbull.wallet and id=app.xbull.mobile each returned HTTP 404"
-  - "2026-11-02 operator site https://xbull.app/ (HTTP 200) offers the web wallet and the Chrome extension. It says \"Passkeys and a new interface are coming with xBull Wallet v2\" and has no App Store or Google Play link"
-  - "2026-11-02T18:34:09Z GET https://stellarlight.xyz/api/projects/search?q=xbull (class C aggregator, not independent proof): \"Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13).\""
-  - "Affected golden case: eval/qa/corpus/battery/retail-consumer/q-eco-xbull-wallet.json (truth.verified 2026-11-02). Its notes say that the Lumenloop Android and iOS platform claim is stale"
+  - 2026-11-02T22:36:14Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/get_project {"slug":"xbull"} returned HTTP 200. The description still lists "web browsers, Android, and iOS devices". Raw response: tmp/fl-lk/ll-recheck/ll038-get.json.
+  - 2026-11-02 independent public recheck: curl -sS -L https://apps.apple.com/us/app/xbull-wallet/id6705122563 returned HTTP 404. GET https://itunes.apple.com/lookup?id=6705122563 returned HTTP 200 with resultCount=0. Google Play package pages app.xbull.wallet and app.xbull.mobile each returned HTTP 404. These checks concern the named listings and the US Apple storefront.
+  - 2026-11-02 public source check: GET https://xbull.app/ returned HTTP 200 with web-wallet and Chrome-extension links. GET https://raw.githubusercontent.com/lumenloop/stellar-ecosystem-db/main/projects/xbull.yaml returned HTTP 200 with the Android/iOS sentence. The latest source commit does not date store withdrawal.
+  - 2026-11-02 adjacent check: rg -n -i "xbull|Android|iOS" around the directory record found the mobile platform claim in projects/xbull.yaml. The record has no store links. projects/soroban-academy.yaml and contracts/xbull.yaml name xBull but do not repeat that mobile distribution claim.
+  - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among four issues and eight PRs in lumenloop/stellar-ecosystem-db. sls-033 concerns Scout wallet availability metadata, not this Lumenloop record. No active or resolved record owns this directory correction.
+  - Affected golden case: eval/qa/corpus/battery/retail-consumer/q-eco-xbull-wallet.json (truth.verified 2026-11-02). Its notes say that the Lumenloop Android and iOS platform claim is stale
+  - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/xbull.yaml. The 2026-06-29 file timestamp does not date mobile store withdrawal.
 ---
 
 ## Finding
 
-The Lumenloop directory record `xbull` says that xBull Wallet supports "web
-browsers, Android, and iOS devices". The Android and iOS apps are no longer
-available.
-
-The App Store listing returns HTTP 404. The iTunes lookup for the same app ID
-returns no result. Both Google Play package pages return HTTP 404. The operator
-site offers only the web wallet and the Chrome extension.
-
-An agent that reads the record can tell a user to install xBull from a phone
-app store. That instruction fails.
+The `xbull` directory description lists Android and iOS support without qualifying the unavailable mobile store listings.
+The checked Apple and Google Play listings return HTTP 404.
+The current operator site links to the web wallet and Chrome extension.
+Callers can therefore recommend mobile installation through store listings that no longer work.
 
 ## Evidence
 
-The live call ran on 2026-11-02 with a read-only request.
-`POST /v1/tools/get_project` with `{"slug":"xbull"}` returned this text:
+The orchestrator repeated `POST /v1/tools/get_project` with `{"slug":"xbull"}` on 2026-11-02T22:36:14Z.
+The request returned HTTP 200 and retained this description fragment:
 
 ```text
-It supports multiple platforms, including web browsers, Android, and iOS
-devices, enabling users to send, receive, and swap assets seamlessly.
+web browsers, Android, and iOS devices
 ```
 
-The committed source is `projects/xbull.yaml` in
-`lumenloop/stellar-ecosystem-db`. It carries the same sentence.
+A fresh public read of `projects/xbull.yaml` returned the same sentence.
+These public checks also ran on 2026-11-02:
 
-| Store URL | Result on 2026-11-02 |
+| URL | Result |
 |---|---|
 | `https://apps.apple.com/us/app/xbull-wallet/id6705122563` | HTTP 404 |
-| `https://itunes.apple.com/lookup?id=6705122563` | `resultCount` 0 |
+| `https://itunes.apple.com/lookup?id=6705122563` | HTTP 200, `resultCount: 0` |
 | `https://play.google.com/store/apps/details?id=app.xbull.wallet` | HTTP 404 |
 | `https://play.google.com/store/apps/details?id=app.xbull.mobile` | HTTP 404 |
+| `https://xbull.app/` | HTTP 200; web-wallet and Chrome-extension links |
+
+The Apple checks concern the US storefront and the named app id.
+The checks do not establish whether previously installed mobile clients still work.
+They also do not establish the withdrawal date.
 
 ## Recommendation
 
-Change the description in `projects/xbull.yaml`. Name the web wallet and the
-browser extension as the current platforms. Remove Android and iOS.
-
-Add the store apps back when a live store listing exists again.
+Update `projects/xbull.yaml` to name the current web wallet and browser extension.
+Qualify the Android and iOS claim with the unavailable store listings, or remove that claim.
+Only recommend mobile installation when a current distribution link supports it.

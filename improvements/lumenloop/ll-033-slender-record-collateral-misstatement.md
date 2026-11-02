@@ -3,58 +3,43 @@ id: ll-033
 service: lumenloop
 status: verified
 discovered: 2026-11-02
-upstreamTitle: The slender directory record says Slender lends without collateral
+upstreamTitle: The Slender directory description incorrectly says ordinary borrowing requires no collateral
 evidence:
-  - "2026-11-02T17:17:23Z authenticated POST https://api.lumenloop.com/v1/tools/get_project with {\"slug\":\"slender\"}: description \"Slender is a decentralized lending protocol built on the Stellar blockchain, enabling users to lend and borrow assets without collateral.\""
-  - "2026-11-02 committed record https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/slender.yaml (blob b00d19533e, last commit 43ba5dcd9f on 2026-06-29) carries the same sentence"
-  - "Primary audit (class B), Certora Slender report 2024-05-22, https://www.certora.com/reports/slender: \"Users are able to borrow assets from the protocol via an over-collateralized loan which issues them a dToken (debt token).\""
-  - "Operator site https://slender.fi/, dated cached copy (class D, Parallel web_fetch cache, acquired 2026-08-08; read 2026-11-02): \"Flash loans — Borrow and repay in the same block with no collateral\"; the no-collateral wording applies to flash loans only"
-  - "2026-11-02 dig slender.fi @1.1.1.1 returned status NXDOMAIN, so the live operator site cannot be read; the quote above comes only from the 2026-08-08 cached copy"
-  - "Third-party corroboration (class D), https://defillama.com/protocol/slender (read 2026-11-02): \"Slender is a noncustodial overcollateralized lending protocol on Soroban (Stellar).\""
-  - "Affected golden case: eval/qa/corpus/battery/defi-ecosystem/q-defi-blend-alternatives.json"
-  - "Intake note: this is a committed directory-record correction; the owner repo is lumenloop/stellar-ecosystem-db (intake.json per-finding override added)"
+  - 2026-11-02T22:36:13Z orchestrator recheck: POST https://api.lumenloop.com/v1/tools/get_project {"slug":"slender"} returned HTTP 200. The description still says "lend and borrow assets without collateral". Raw response: tmp/fl-lk/ll-recheck/ll033-get.json.
+  - 2026-11-02 public recheck: curl -sS -L https://www.certora.com/reports/slender returned HTTP 200. The 2024-05-22 audit describes ordinary loans as over-collateralized and describes flash loans separately. GET projects/slender.yaml on lumenloop/stellar-ecosystem-db main returned HTTP 200 with the incorrect sentence.
+  - 2026-11-02 timeline check: gh api repos/lumenloop/stellar-ecosystem-db/commits?path=projects/slender.yaml&per_page=100, followed by raw file reads at all 11 commits. The first incorrect committed wording appears at 3a4b5b05a8fd6216843d3c9de00f69ca1b5a15b8 (2026-03-18T07:08:16Z). The preceding record at 4ca0449cd77396e82ad9ab3c8db4d6f415ff5b23 (2026-02-08T21:30:47Z) lacks that sentence. These dates describe exported files, not the live API introduction.
+  - 2026-11-02 adjacent check: rg -n -i "without collateral|slender" over the current directory archive found the incorrect Slender description once. projects/lendoor.yaml also advertises uncollateralized credit, but it describes a different product. No Slender evidence supports changing Lendoor.
+  - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among four issues and eight PRs in lumenloop/stellar-ecosystem-db. No active or resolved record owns this Slender wording correction.
+  - Affected golden case: eval/qa/corpus/battery/defi-ecosystem/q-defi-blend-alternatives.json
+  - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/slender.yaml. Audit: https://www.certora.com/reports/slender (2024-05-22).
 ---
 
 ## Finding
 
-The Lumenloop directory record `slender` says that Slender lets users "lend
-and borrow assets without collateral". This statement is incorrect for normal
-borrowing.
-
-Slender's audit report describes "an over-collateralized loan". A cached copy
-of the Slender site (2026-08-08) uses "no collateral" only for flash loans. A
-flash loan is borrowed and repaid in the same block.
-
-An agent that reads the record can describe Slender as an uncollateralized
-credit protocol. That description misstates the risk model of the protocol.
+The `slender` directory description incorrectly says users can borrow assets without collateral.
+Slender's audit describes ordinary loans as overcollateralized.
+The description can cause callers to misstate the protocol's borrowing requirements.
 
 ## Evidence
 
-The live call ran on 2026-11-02 with a read-only request.
-`POST /v1/tools/get_project` with `{"slug":"slender"}` returned this text:
+The orchestrator repeated `POST /v1/tools/get_project` with `{"slug":"slender"}` on 2026-11-02T22:36:13Z.
+The request returned HTTP 200 with this description fragment:
 
 ```text
-Slender is a decentralized lending protocol built on the Stellar blockchain,
-enabling users to lend and borrow assets without collateral.
+lend and borrow assets without collateral
 ```
 
-The committed source is `projects/slender.yaml` in
-`lumenloop/stellar-ecosystem-db`. It carries the same sentence.
+A fresh public read of `projects/slender.yaml` returned the same sentence.
+The [Certora audit overview](https://www.certora.com/reports/slender) describes ordinary borrowing through an overcollateralized loan.
+It describes flash loans separately.
+The audit dates to 2024-05-22 and predates the incorrect directory wording.
 
-The Certora audit report (2024-05-22) states: "Users are able to borrow assets
-from the protocol via an over-collateralized loan". The report also describes
-liquidation of positions whose debt exceeds the collateral value.
-
-A cached copy of the Slender site (2026-08-08) lists "Flash loans" with the
-text "Borrow and repay in the same block with no collateral". The `slender.fi`
-domain did not resolve on 2026-11-02. DefiLlama describes Slender as "a
-noncustodial overcollateralized lending protocol".
+The exported record first contains the incorrect sentence at commit `3a4b5b05a8fd6216843d3c9de00f69ca1b5a15b8` on 2026-03-18.
+The preceding file revision does not contain that sentence.
+The file's latest change on 2026-06-29 did not introduce the incorrect sentence.
 
 ## Recommendation
 
-Change the description in `projects/slender.yaml`. State that Slender is an
-overcollateralized lending protocol. State that flash loans are the only
-product that needs no collateral.
-
-Check other lending records for the same flash-loan wording. Apply the same
-correction where a record generalizes flash-loan terms to all borrowing.
+Change `projects/slender.yaml` to state that ordinary borrowing requires collateral.
+If the description mentions flash loans, explain their separate repayment condition.
+The current evidence does not support changes to other protocols' collateral requirements.
