@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "bf24847510a6ded68c87c28c7dae1edca94a0d1aa97b02e00cccd44993d235fd",
+  "corpusContentSha256": "4005557471c8786e197b0da14c16d6a07d8069dc3276f0c1d6f363187ee12405",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -1850,8 +1850,8 @@
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/java-stellar-anchor-sdk",
-            "note": "Anchor Platform source; carries SEP-45 request and JWT classes as of 2026-11-02."
+            "ref": "https://github.com/stellar/anchor-platform",
+            "note": "Anchor Platform source (the old java-stellar-anchor-sdk name redirects here); its source tree carries SEP-45 modules as of 2026-11-02. The docs page https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 documents SEP45_ENABLED."
           }
         ],
         "corroboration": [
@@ -2004,7 +2004,8 @@
             "Live A/B 2026-11-02: https://developers.stellar.org/docs/platforms/anchor-platform lists SEP-1/6/10/12/24/31/38/45; java-stellar-anchor-sdk@2a4b58c3c90d3ca79a7216bd09b92143b2248616 has SEP-45 classes. The notes now allow SEP-45, so the misnumbering trap does not punish a true claim. keyFacts are unchanged.",
             "Live A/B 2026-11-02: https://developers.stellar.org/docs/build/apps/wallet/intro and @stellar/typescript-wallet-sdk src/walletSdk/Anchor/index.ts on main still expose SEP-1/6/10/12/24/38 and no SEP-31 client.",
             "Live B 2026-11-02: the SDP backend README confirms native SEP-10/24 and no required external Anchor Platform.",
-            "Sibling sweep 2026-11-02: corrected together with q-anchor-sdp-what, which had the same false text. q-pay-sdp-disbursement, q-crp-sdp-operation, and q-anchor-platform-what agree and do not mention 10,000. Register cluster-135's note repeats the old wording and needs a re-sweep."
+            "Sibling sweep 2026-11-02: corrected together with q-anchor-sdp-what, which had the same false text. q-pay-sdp-disbursement, q-crp-sdp-operation, and q-anchor-platform-what agree and do not mention 10,000. Register cluster-135's note repeats the old wording and needs a re-sweep.",
+            "Review reconciliation 2026-11-02 (PR #310 review finding 5): the class-B source now names the canonical stellar/anchor-platform repository."
           ],
           "rootCause": [
             "Eval-side authoring flaw: the 2026-08-05 rescope read only the stellar.org product page and the Docs. It did not read the SDP backend source constant, so avoid[1] and the notes called a source-enforced per-disbursement cap mere product positioning.",
@@ -16665,13 +16666,13 @@
           "Makes the as-of date visible for each changeable status or deadline.",
           "Reports SCF #46 in Submission in the dated example.",
           "Reports 2026-11-09 as SCF #46's submission deadline.",
-          "Places #45 as the last concluded round and does not treat #44 as current."
+          "Places #45 as the last concluded round."
         ],
         "avoid": [
           "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
           "Do NOT invent a deadline time, timezone, notification date, or submission count."
         ],
-        "notes": "GT-23 refreshed 2026-11-02. Require a dated round, phase, and deadline. As of 2026-11-02, #46 is in Submission through 2026-11-09. #45 has ended. The official deadline moved from 2026-11-08 (observed 2026-10-01 and in a 2026-10-18 Wayback snapshot) to 2026-11-09. Third-party posts still say November 8. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong."
+        "notes": "GT-23 refreshed 2026-11-02. Require a dated round, phase, and deadline. As of 2026-11-02, #46 is in Submission through 2026-11-09. #45 has ended. The official deadline moved from 2026-11-08 (observed 2026-10-01 and in a 2026-10-18 Wayback snapshot) to 2026-11-09. Third-party posts (r/Stellar, @lumenloop) still say November 8. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong."
       },
       "tags": {
         "category": "edge-behavior",
@@ -16702,6 +16703,16 @@
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
             "note": "Live Scout result observed 2026-10-01; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, submission deadline 2026-11-08, and round 45 in Notification & Award Distribution."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+            "note": "Third-party post observed 2026-11-02: 'SCF #46 submissions are due by Nov 8.' Evidence of the stale date in circulation, not of the deadline."
+          },
+          {
+            "class": "D",
+            "ref": "https://x.com/lumenloop/status/2112203379225321685",
+            "note": "Third-party post observed 2026-11-02: 'Full submission: Nov 8'. Evidence of the stale date in circulation, not of the deadline."
           }
         ],
         "corroboration": [
@@ -16787,7 +16798,8 @@
             "Live C 2026-11-02: https://stellarlight.xyz/api/rfps?status=open titles the synthetic row 'SCF Round #46: submissions OPEN until 2026-11-09'.",
             "The official deadline moved from 2026-11-08 to 2026-11-09 between the 2026-10-18 Wayback snapshot and 2026-11-02. #45 moved from Notification & Award Distribution to Ended.",
             "Sibling sweep 2026-11-02: q-scf-current-round and q-edge-fresh-latest-scf-round changed together. q-scf-open-rfps and q-scf-rfp-tooling also name 2026-11-08; they are due 2026-11-12/13 and need a separate roster decision (the official RFP page now says 'New Q4 RFPs are coming soon' while Scout still lists two open Q3 briefs), recorded in .agents/TODO.md.",
-            "reverifyBy 2026-11-12 is event-triggered: Submission closes 2026-11-09 and Panel Review opens 2026-11-11."
+            "reverifyBy 2026-11-12 is event-triggered: Submission closes 2026-11-09 and Panel Review opens 2026-11-11.",
+            "Review reconciliation 2026-11-02 (PR #310 review findings 4 and 6): the third-party November 8 posts are now named in the notes and in truth.sources (Reddit r/Stellar weekly thread, @lumenloop status 2112203379225321685). keyFact 5 keeps one predicate; avoid[0] already traps treating #44 as current."
           ],
           "rootCause": [
             "freshness-drift"
@@ -20874,7 +20886,8 @@
           },
           {
             "class": "A",
-            "ref": "https://www.hackmeridian.com/"
+            "ref": "https://www.hackmeridian.com/",
+            "note": "Still shows a countdown and future-tense copy on 2026-11-02; it proves the dates and venue only. Post-event proof comes from the @BuildOnStellar winners post and the meridian.stellar.org thank-you page."
           },
           {
             "class": "A",
@@ -20966,7 +20979,8 @@
             "Live A 2026-11-02: https://www.hackmeridian.com/ shows '25–26 October 2026 · ONE16, Lisbon'; @BuildOnStellar posted the HackMeridian 2026 winners on 2026-10-29.",
             "Live D 2026-11-02: on-site coverage (h-x.technology, tearsheet.co, cryptobriefing.com, CoinDesk 2026-10-28) places the event in Lisbon on October 28–29.",
             "The expired avoid item (an as-of qualifier while the event was upcoming) became a trap against calling the event upcoming. freshness moved from scheduled to stable; reverifyBy is removed.",
-            "Sibling sweep 2026-11-02: grep Meridian 2026|HackMeridian|Convento do Beato|Yas Marina|Abu Dhabi finds q-scf-hackathons-active and q-builder-justin-rice-history (truth evidence only); no contradiction."
+            "Sibling sweep 2026-11-02: grep Meridian 2026|HackMeridian|Convento do Beato|Yas Marina|Abu Dhabi finds q-scf-hackathons-active and q-builder-justin-rice-history (truth evidence only); no contradiction.",
+            "Review reconciliation 2026-11-02 (PR #310 review finding 7): the hackmeridian.com source row notes its stale countdown."
           ],
           "rootCause": [
             "freshness-drift"
@@ -23142,7 +23156,7 @@
           "Do NOT claim origin, RP-ID, flags, counters, or replay are automatically enforced by the host primitive.",
           "Do NOT confuse P-256 with secp256k1, Classic Ed25519 signer semantics, or fee sponsorship."
         ],
-        "notes": "Verified against the smart-wallets guide: registration stores a WebAuthn (secp256r1/P-256/ES256) public key in contract state; in __check_auth the contract verifies the secp256r1 signature and applies policy checks. secp256r1 vs secp256k1 vs Ed25519 mix-up is the defining trap.\nAlso good if the answer: A smart-wallet contract account checks the signature in `__check_auth`/`check_auth`; signers can be secp256r1 (passkey), Ed25519, or policy signers.\nGolden cites: developers.stellar.org smart-wallets / contract-accounts guide.\nGT-50 SECURITY CORRECTION 2026-07-11: grade the layered WebAuthn ceremony → application/RP validation → __check_auth policy → CAP-0051 primitive model. The versioned OZ example is evidence of deliberate policy boundaries, not a universal verifier contract."
+        "notes": "Verified against the smart-wallets guide: registration stores a WebAuthn (secp256r1/P-256/ES256) public key in contract state; in __check_auth the contract verifies the secp256r1 signature and applies policy checks. secp256r1 vs secp256k1 vs Ed25519 mix-up is the defining trap.\nAlso good if the answer: A smart-wallet contract account checks the signature in `__check_auth`/`check_auth`; signers can be secp256r1 (passkey), Ed25519, or policy signers.\nGolden cites: developers.stellar.org smart-wallets / contract-accounts guide.\nGT-50 SECURITY CORRECTION 2026-07-11: grade the layered WebAuthn ceremony → application/RP validation → __check_auth policy → CAP-0051 primitive model. The versioned OZ example is evidence of deliberate policy boundaries, not a universal verifier contract.\nOrigin and RP-ID checks: W3C WebAuthn requires them of the Relying Party, while the OpenZeppelin and Passkey Kit verifiers deliberately omit them on-chain. Do not penalize an answer that requires them in the overall flow, or one that says production Stellar wallet contracts leave them to the client and platform."
       },
       "tags": {
         "category": "tooling-infra",
@@ -23223,21 +23237,16 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-11-02",
+          "by": "Reconciliation of the PR #310 independent review (Claude Fable 5.1 high; .agents/rounds/2026-11-02-golden-reverify.md, review section); author Claude Opus 5.5",
           "evidence": [
-            "Solo scratchpad 575 GT-50 primary process 3349 confirmed the most-versus-all correction; blind process 3361 independently required the fuller WebAuthn/host/__check_auth separation.",
-            "Sibling sweep checked q-protocol-passkeys-secp256r1, q-soroban-check-auth-custom-account, q-tool-passkeykit-smart-wallet, q-tool-passkey-wallet-recovery, and q-soroban-add-signer-smart-wallet-howto.",
-            "Structural re-form (negative-predicate): Shortened the CAP fact, split WebAuthn checks into atomic facts, and stated the account-role taxonomy positively; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md — showed Final CAP-0051, Protocol 21, and the secp256r1 verification host interface.",
-            "Live re-check 2026-08-27: https://www.w3.org/TR/webauthn-3/ — showed challenge, origin, credential-algorithm, and authenticator verification requirements.",
-            "Live re-check 2026-08-27: https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.7.2/packages/accounts/src/verifiers/webauthn.rs — showed WebAuthn flag checks and explicit relying-party policy omissions beyond signature verification.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — showed C-account authorization in __check_auth and a relayer handling submission and fees.",
-            "Sibling sweep 2026-08-27: grep CAP-0051|secp256r1|WebAuthn|relayer → q-infra-secp256r1-passkeys, q-passkey-platform-constraints, q-protocol-accounts-signers-thresholds, q-soroban-check-auth-custom-account, q-tool-passkey-wallet-recovery, q-tool-passkeykit-smart-wallet; no contradiction"
+            "Review reconciliation 2026-11-02 (PR #310 review finding 2): the notes gain the symmetric origin/RP-ID caution from q-passkey-smart-account-architecture. The key facts stay; they are true for the Relying Party as a whole.",
+            "Live A 2026-11-02: https://www.w3.org/TR/webauthn-3/#sctn-verifying-assertion assigns the origin and rpIdHash checks to the Relying Party.",
+            "Live B 2026-11-02: https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs lines 7-15 say origin and RP ID hash validation are 'intentionally omitted'; https://github.com/kalepail/passkey-kit/blob/309537474f689a7948c729a7bab0d1388f509422/contracts/smart-wallet/src/verify.rs says 'rpIdHash and origin are deliberately not pinned on-chain'.",
+            "Sibling sweep 2026-11-02: q-passkey-smart-account-architecture, q-infra-secp256r1-passkeys, and q-passkey-platform-constraints now carry the same caution."
           ],
           "rootCause": [
-            "Eval-side security-layer collapse: WebAuthn ceremony, signature primitive, and contract authorization policy were authored as one operation.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "Eval-side authoring flaw: the key fact names origin/RP-ID checks without saying that production Stellar wallet contracts deliberately leave them to the client and platform, so a true answer could lose the fact (found by the PR #310 review)."
           ]
         },
         "origin": "raven-next q-infra-secp256r1-passkeys"
@@ -25608,7 +25617,7 @@
           "A passkey registered for one dApp domain is automatically valid for every unrelated domain.",
           "All browsers and devices synchronize every passkey in the same way."
         ],
-        "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence."
+        "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence. Origin and RP-ID checks: W3C WebAuthn requires them of the Relying Party, while the OpenZeppelin and Passkey Kit verifiers deliberately omit them on-chain. Do not penalize an answer that requires them in the overall flow, or one that says production Stellar wallet contracts leave them to the client and platform."
       },
       "tags": {
         "category": "tooling-infra",
@@ -25836,8 +25845,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "PR #81 late-review correction, independently checked against WebAuthn and passkey-kit sources",
+          "date": "2026-11-02",
+          "by": "Reconciliation of the PR #310 independent review (Claude Fable 5.1 high; .agents/rounds/2026-11-02-golden-reverify.md, review section); author Claude Opus 5.5",
           "evidence": [
             "https://github.com/stellar-experimental/stellar-raven/pull/81#discussion_r3875968524",
             "https://www.w3.org/TR/webauthn-3/",
@@ -25850,12 +25859,14 @@
             "Live re-check 2026-08-27: https://www.w3.org/TR/webauthn-3/ — the specification still defines RP ID/origin validation, related origins, and credential scoping for handoff checks.",
             "Live re-check 2026-08-27: https://developer.apple.com/passkeys/ and https://developers.google.com/identity/passkeys/supported-environments — provider-specific synchronized and device-bound passkey behavior remains documented.",
             "Live re-check 2026-08-27: https://support.mozilla.org/en-US/kb/how-do-i-set-sync-my-computer — Mozilla's current Sync data-type page still does not list passkeys.",
-            "Sibling sweep 2026-08-27: q-infra-secp256r1-passkeys, q-passkey-smart-account-architecture, q-passkey-wallet-recovery, q-soroban-check-auth-custom-account, q-soroban-add-signer-smart-wallet-howto, q-tool-passkeykit-smart-wallet, and q-tool-passkey-wallet-recovery; no contradiction"
+            "Sibling sweep 2026-08-27: q-infra-secp256r1-passkeys, q-passkey-smart-account-architecture, q-passkey-wallet-recovery, q-soroban-check-auth-custom-account, q-soroban-add-signer-smart-wallet-howto, q-tool-passkeykit-smart-wallet, and q-tool-passkey-wallet-recovery; no contradiction",
+            "Review reconciliation 2026-11-02 (PR #310 review finding 2): the notes gain the symmetric origin/RP-ID caution from q-passkey-smart-account-architecture. The key facts stay; they are true for the Relying Party as a whole.",
+            "Live A 2026-11-02: https://www.w3.org/TR/webauthn-3/#sctn-verifying-assertion assigns the origin and rpIdHash checks to the Relying Party.",
+            "Live B 2026-11-02: https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs lines 7-15 say origin and RP ID hash validation are 'intentionally omitted'; https://github.com/kalepail/passkey-kit/blob/309537474f689a7948c729a7bab0d1388f509422/contracts/smart-wallet/src/verify.rs says 'rpIdHash and origin are deliberately not pinned on-chain'.",
+            "Sibling sweep 2026-11-02: q-passkey-smart-account-architecture, q-infra-secp256r1-passkeys, and q-passkey-platform-constraints now carry the same caution."
           ],
           "rootCause": [
-            "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-            "PR #81 review found unclear grammar in a compound grading fact."
+            "Eval-side authoring flaw: the key fact names origin/RP-ID checks without saying that production Stellar wallet contracts deliberately leave them to the client and platform, so a true answer could lose the fact (found by the PR #310 review)."
           ]
         },
         "origin": "kaan passkey-wallet-constraints"
@@ -36653,13 +36664,13 @@
           "Makes the as-of date visible for each changeable status or deadline.",
           "Reports SCF #46 in Submission in the dated example.",
           "Reports 2026-11-09 as SCF #46's submission deadline.",
-          "Places #45 as the last concluded round and does not treat #44 as current."
+          "Places #45 as the last concluded round."
         ],
         "avoid": [
           "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
           "Do NOT invent a deadline time, timezone, notification date, or submission count."
         ],
-        "notes": "Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-11-02, #46 is in Submission through 2026-11-09. #45 has ended. The official deadline moved from 2026-11-08 (observed 2026-10-01 and in a 2026-10-18 Wayback snapshot) to 2026-11-09. Third-party posts still say November 8. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong."
+        "notes": "Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-11-02, #46 is in Submission through 2026-11-09. #45 has ended. The official deadline moved from 2026-11-08 (observed 2026-10-01 and in a 2026-10-18 Wayback snapshot) to 2026-11-09. Third-party posts (r/Stellar, @lumenloop) still say November 8. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -36690,6 +36701,16 @@
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
             "note": "Live Scout result observed 2026-10-01; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, submission deadline 2026-11-08, and round 45 in Notification & Award Distribution."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+            "note": "Third-party post observed 2026-11-02: 'SCF #46 submissions are due by Nov 8.' Evidence of the stale date in circulation, not of the deadline."
+          },
+          {
+            "class": "D",
+            "ref": "https://x.com/lumenloop/status/2112203379225321685",
+            "note": "Third-party post observed 2026-11-02: 'Full submission: Nov 8'. Evidence of the stale date in circulation, not of the deadline."
           }
         ],
         "corroboration": [
@@ -36774,7 +36795,8 @@
             "Live C 2026-11-02: https://stellarlight.xyz/api/rfps?status=open titles the synthetic row 'SCF Round #46: submissions OPEN until 2026-11-09'.",
             "The official deadline moved from 2026-11-08 to 2026-11-09 between the 2026-10-18 Wayback snapshot and 2026-11-02. #45 moved from Notification & Award Distribution to Ended.",
             "Sibling sweep 2026-11-02: q-scf-current-round and q-edge-fresh-latest-scf-round changed together. q-scf-open-rfps and q-scf-rfp-tooling also name 2026-11-08; they are due 2026-11-12/13 and need a separate roster decision (the official RFP page now says 'New Q4 RFPs are coming soon' while Scout still lists two open Q3 briefs), recorded in .agents/TODO.md.",
-            "reverifyBy 2026-11-12 is event-triggered: Submission closes 2026-11-09 and Panel Review opens 2026-11-11."
+            "reverifyBy 2026-11-12 is event-triggered: Submission closes 2026-11-09 and Panel Review opens 2026-11-11.",
+            "Review reconciliation 2026-11-02 (PR #310 review findings 4 and 6): the third-party November 8 posts are now named in the notes and in truth.sources (Reddit r/Stellar weekly thread, @lumenloop status 2112203379225321685). keyFact 5 keeps one predicate; avoid[0] already traps treating #44 as current."
           ],
           "rootCause": [
             "freshness-drift"
@@ -37955,7 +37977,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer derives names and status from the live Scout response and official SCF pages. As of 2026-09-03, two Q3 RFP briefs remain open: LayerZero DVN and x402 Facilitator with Bazaar. Scout also returns one synthetic `scf-round-46` row. That row represents #46's Submission window through 2026-11-08. It is not a third RFP brief.\n\nThe dated example is illustrative. A later answer must report the roster and round state supported then.",
+        "answer": "A grounded answer derives names and status from the live Scout response and official SCF pages. As of 2026-09-03, two Q3 RFP briefs remain open: LayerZero DVN and x402 Facilitator with Bazaar. Scout also returns one synthetic `scf-round-46` row. That row represents #46's Submission window, which runs through 2026-11-09 as of 2026-11-02. It is not a third RFP brief.\n\nThe dated example is illustrative. A later answer must report the roster and round state supported then.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation.",
           "Makes the as-of date visible for each changeable roster or status.",
@@ -37969,7 +37991,7 @@
           "Do NOT claim an open brief guarantees eligibility or an invitation.",
           "Do NOT claim the observed roster is permanent or complete."
         ],
-        "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two briefs remain open. Scout returns one separate #46 synthetic round row. #46 accepts submissions through 2026-11-08."
+        "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two briefs remain open. Scout returns one separate #46 synthetic round row. As of 2026-11-02, #46 accepts submissions through 2026-11-09. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -38000,6 +38022,16 @@
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
             "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+            "note": "Third-party post observed 2026-11-02: 'SCF #46 submissions are due by Nov 8.' Evidence of the stale date in circulation, not of the deadline."
+          },
+          {
+            "class": "D",
+            "ref": "https://x.com/lumenloop/status/2112203379225321685",
+            "note": "Third-party post observed 2026-11-02: 'Full submission: Nov 8'. Evidence of the stale date in circulation, not of the deadline."
           }
         ],
         "corroboration": [
@@ -38038,30 +38070,42 @@
                 "note": "Scout reported currentRound=46, currentPhase=Submission, and one separate synthetic round row."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-11-02, the official SCF #46 submission deadline is 2026-11-09",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-11-02",
+                "note": "SCF #46 card: 'Deadline to submit: November 9, 2026'."
+              },
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+                "observedAt": "2026-11-02",
+                "note": "'TBD - November 9, 2026'; Panel Review 'November 11, 2026 - November 18, 2026'."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-11-02",
+                "note": "Synthetic row title: 'SCF Round #46: submissions OPEN until 2026-11-09'."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-03",
-          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+          "date": "2026-11-02",
+          "by": "Reconciliation of the PR #310 independent review (Claude Fable 5.1 high; .agents/rounds/2026-11-02-golden-reverify.md, review section); author Claude Opus 5.5",
           "evidence": [
-            "C: https://stellarlight.xyz/api/rfps?status=open returned two open briefs and one synthetic scf-round-46 row on 2026-09-03T15:39:35.870Z.",
-            "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track confirms the two named briefs and the invitation path.",
-            "Sibling sweep 2026-09-03: q-scf-rfp-tooling and SCF roster clusters remain consistent.",
-            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
-            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
-            "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
-            "Sibling sweep covered q-scf-rfp-tooling, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-hummingbot-kelp-closed-rfp, and q-edge-scf-v7-centralization-myths; no contradictory current-round or roster claim remains.",
-            "Structural re-form (presentation-avoid): rewrote two presentational avoid items as the same concrete false-content claims; both trap targets are unchanged.",
-            "No live re-check was required because the avoid rewrites do not change the forbidden claims.",
-            "Sibling sweep 2026-08-27: grep syntheticRounds|LayerZero DVN|x402 Facilitator with Bazaar → q-scf-rfp-tooling, q-scf-open-rfps-live; no contradiction",
-            "Structural re-form (long-fact): Shortened one long sourcing fact; truth unchanged.",
-            "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track — the current official RFP page supplies source-supported roster content with dated publication context.",
-            "Sibling sweep 2026-08-29: grep open RFP briefs|syntheticRounds|currently-open RFP|Current Open RFPs → q-scf-open-rfps-live, q-scf-open-rfps, q-scf-rfp-tooling; no contradiction."
+            "Finding 1: the deadline is not disputed. https://communityfund.stellar.org/awards shows 'Deadline to submit: November 9, 2026' on 2026-11-02, and Scout titles the synthetic row 'submissions OPEN until 2026-11-09'. The answer and notes now give 2026-11-09 with an as-of date, and the notes cap an attributed November 8 at partial.",
+            "Not re-verified here: the two-brief roster. The official RFP Track page says 'October 2026: New Q4 RFPs are coming soon' while Scout still lists two Q3 briefs. That conflict stays queued in .agents/TODO.md, and reverifyBy is unchanged.",
+            "Sibling sweep 2026-11-02: q-scf-current-round and q-edge-fresh-latest-scf-round give the same deadline; no battery case still asserts 2026-11-08 as current."
           ],
           "rootCause": [
-            "freshness-drift",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-scf-open-rfps"
@@ -38668,7 +38712,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "Yes. As of 2026-09-03, two open infrastructure briefs remain published: LayerZero DVN and x402 Facilitator with Bazaar. Scout also returns one synthetic `scf-round-46` row. Applicants start with the rolling interest form. They submit a full proposal only if invited. #46 accepts submissions through 2026-11-08. An open brief does not guarantee eligibility or an invitation.\n\nThe dated example is illustrative. A later answer must report the roster and round state supported then.",
+        "answer": "Yes. As of 2026-09-03, two open infrastructure briefs remain published: LayerZero DVN and x402 Facilitator with Bazaar. Scout also returns one synthetic `scf-round-46` row. Applicants start with the rolling interest form. They submit a full proposal only if invited. As of 2026-11-02, #46 accepts submissions through 2026-11-09. An open brief does not guarantee eligibility or an invitation.\n\nThe dated example is illustrative. A later answer must report the roster and round state supported then.",
         "keyFacts": [
           "Makes the as-of date visible for each changeable roster or status.",
           "Reports two open infrastructure briefs.",
@@ -38682,7 +38726,7 @@
           "Do NOT claim each brief has a published bounty or community vote.",
           "Do NOT claim the observed roster is permanent or complete."
         ],
-        "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two tooling briefs remain open. Scout returns one separate #46 row. The rolling interest path remains invitation-gated.\nSCOPE NOTE 2026-10-01: do not gate the yes/no label or a category label. The SCF handbook defines the RFP Track as developer tooling. Scout labels the two briefs Infrastructure and Payments. Neither brief asks for a chain-data indexer; the x402 brief includes an off-chain discovery index. An answer that reports both open briefs and states that scope is correct. An answer that says no RFP is open is wrong."
+        "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two tooling briefs remain open. Scout returns one separate #46 row. The rolling interest path remains invitation-gated. As of 2026-11-02, #46 accepts submissions through 2026-11-09. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong.\nSCOPE NOTE 2026-10-01: do not gate the yes/no label or a category label. The SCF handbook defines the RFP Track as developer tooling. Scout labels the two briefs Infrastructure and Payments. Neither brief asks for a chain-data indexer; the x402 brief includes an off-chain discovery index. An answer that reports both open briefs and states that scope is correct. An answer that says no RFP is open is wrong."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -38713,6 +38757,16 @@
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
             "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+            "note": "Third-party post observed 2026-11-02: 'SCF #46 submissions are due by Nov 8.' Evidence of the stale date in circulation, not of the deadline."
+          },
+          {
+            "class": "D",
+            "ref": "https://x.com/lumenloop/status/2112203379225321685",
+            "note": "Third-party post observed 2026-11-02: 'Full submission: Nov 8'. Evidence of the stale date in circulation, not of the deadline."
           }
         ],
         "corroboration": [
@@ -38769,35 +38823,42 @@
                 "note": "generatedAt 2026-10-01T17:56:10.444Z: counts open=2, syntheticRounds=1; layerzero-dvn categoryLabel Infrastructure; x402-facilitator-bazaar categoryLabel Payments; a separate Developer Tooling category exists and neither brief carries it; scf-round-46 Submission through 2026-11-08."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-11-02, the official SCF #46 submission deadline is 2026-11-09",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-11-02",
+                "note": "SCF #46 card: 'Deadline to submit: November 9, 2026'."
+              },
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+                "observedAt": "2026-11-02",
+                "note": "'TBD - November 9, 2026'; Panel Review 'November 11, 2026 - November 18, 2026'."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-11-02",
+                "note": "Synthetic row title: 'SCF Round #46: submissions OPEN until 2026-11-09'."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-10-01",
-          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
+          "date": "2026-11-02",
+          "by": "Reconciliation of the PR #310 independent review (Claude Fable 5.1 high; .agents/rounds/2026-11-02-golden-reverify.md, review section); author Claude Opus 5.5",
           "evidence": [
-            "Owner decision C, question 1 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the scope binding follows the canonical owner. The SCF handbook defines every RFP-track brief as developer tooling; the Scout category is an aggregator label. The yes/no label is not gated. Only golden.notes changed; answer, keyFacts, avoid, and dated roster are unchanged.",
-            "Live re-check 2026-10-01: https://github.com/stellar/scf-handbook/blob/7abdddd09fe05c6de47de300a5cde73caa61cb02/scf-awards/build-award/rfp-track.md — track definition and both Q3 briefs still published.",
-            "Live re-check 2026-10-01: https://stellarlight.xyz/api/rfps?status=open — two open briefs (Infrastructure, Payments) and one synthetic scf-round-46 row; #46 Submission through 2026-11-08.",
-            "Sibling sweep 2026-10-01: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP Track → q-scf-open-rfps, q-scf-open-rfps-live, q-scf-build-tracks (says RFP funds published ecosystem tooling/service needs); none gates a tooling or indexing category label; no contradiction.",
-            "C: https://stellarlight.xyz/api/rfps?status=open returned two open briefs and one synthetic scf-round-46 row on 2026-09-03T15:39:35.870Z.",
-            "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track confirms the rolling interest-to-invitation path.",
-            "Sibling sweep 2026-09-03: q-scf-open-rfps and Build entry-flow cases remain consistent.",
-            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
-            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
-            "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
-            "Sibling sweep covered q-scf-open-rfps, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-how-to-apply, q-scf-eligibility-criteria, q-scf-submission-lifecycle-deadlines, and q-scf-hummingbot-kelp-closed-rfp; the entry path and current-round claims remain consistent.",
-            "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-            "Sibling sweep 2026-08-27: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP tooling → q-scf-rfp-tooling, q-scf-open-rfps, q-scf-open-rfps-live; no contradiction",
-            "Structural re-form (compound-predicate): Tightened the sourcing rule and merged the official/live source requirement with the no-synthetic-row datum under one predicate; truth is unchanged.",
-            "Live re-check 2026-08-27: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/rfp-track.md — showed the current official Q3 RFP roster and its dated publication context.",
-            "Live re-check 2026-08-27: https://stellarlight.xyz/api/rfps?status=open and https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — retained the live RFP source and its syntheticRounds response field; the dated zero-row receipt remains unchanged.",
-            "Sibling sweep 2026-08-27: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP → q-scf-open-rfps, q-scf-open-rfps-live, q-scf-current-round; no contradiction"
+            "Finding 1: the deadline is not disputed. https://communityfund.stellar.org/awards shows 'Deadline to submit: November 9, 2026' on 2026-11-02, and Scout titles the synthetic row 'submissions OPEN until 2026-11-09'. The answer and notes now give 2026-11-09 with an as-of date, and the notes cap an attributed November 8 at partial.",
+            "Not re-verified here: the two-brief roster. The official RFP Track page says 'October 2026: New Q4 RFPs are coming soon' while Scout still lists two Q3 briefs. That conflict stays queued in .agents/TODO.md, and reverifyBy is unchanged.",
+            "Sibling sweep 2026-11-02: q-scf-current-round and q-edge-fresh-latest-scf-round give the same deadline; no battery case still asserts 2026-11-08 as current."
           ],
           "rootCause": [
-            ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): eval-side scope ambiguity between the RFP-track definition and each brief's Scout category",
-            "freshness-drift",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-scf-rfp-tooling"
@@ -43420,7 +43481,7 @@
           "Do NOT repeat the outdated claim that Circom's default BN254 proofs remain unavailable or gated on CAP-0074.",
           "Do NOT treat native curve operations as a complete proof system or imply CAP-0080 is required for every BN254 Groth16 verifier."
         ],
-        "notes": "The question composes a project/proposal lookup with the served skill's platform-capability guidance; the exact deployed Warmancer proof system remains deliberately unpinned. Grade either curve route as correct when the answer requires a matching verifier. CAP-0080 is Implemented for Protocol 26 and extends BN254 support for proof systems that need MSM/Fr operations; it does not replace CAP-0074's Protocol-25 base operations."
+        "notes": "The question composes a project/proposal lookup with the served skill's platform-capability guidance; the exact deployed Warmancer proof system remains deliberately unpinned. Grade either curve route as correct when the answer requires a matching verifier. CAP-0080 was Implemented for Protocol 26 (Final since 2026-09-22) and extends BN254 support for proof systems that need MSM/Fr operations; it does not replace CAP-0074's Protocol-25 base operations."
       },
       "tags": {
         "category": "soroban",
@@ -43551,8 +43612,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-11-02",
+          "by": "Reconciliation of the PR #310 independent review (Claude Fable 5.1 high; .agents/rounds/2026-11-02-golden-reverify.md, review section); author Claude Opus 5.5",
           "evidence": [
             "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md",
             "https://developers.stellar.org/docs/build/apps/zk",
@@ -43568,11 +43629,11 @@
             "Live re-check 2026-08-27: https://communityfund.stellar.org/dashboard/submissions/recsJtI0JZOmnayxP — retained the 'pending technology availability' qualification.",
             "Live re-check 2026-08-27: https://github.com/stellar/stellar-dev-skill/blob/main/skills/zk-proofs/SKILL.md and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md — confirmed curve-matched native Groth16 over BLS12-381/CAP-0059/P22 or BN254/Final CAP-0074/P25.",
             "Live re-check 2026-08-27: https://github.com/stellar/stellar-dev-skill/blob/main/skills/zk-proofs/SKILL.md and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — confirmed CAP-0080's additional BN254 operations from Protocol 26.",
-            "Sibling sweep 2026-08-27: grep Warmancer|CAP-0059|CAP-0074|CAP-0080|BLS12-381|BN254 → q-zk-host-functions-status, q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59; no contradiction"
+            "Sibling sweep 2026-08-27: grep Warmancer|CAP-0059|CAP-0074|CAP-0080|BLS12-381|BN254 → q-zk-host-functions-status, q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59; no contradiction",
+            "Review reconciliation 2026-11-02 (PR #310 review finding 3): the notes accept the later Final status. https://github.com/stellar/stellar-protocol/blob/0da06899c02f818be0132f42cea1f45d6396e20a/core/cap-0080.md says 'Status: Final'; commit 9cd70307 (2026-09-22) 'Move implemented CAPs to final (#2024)'. Sibling q-zk-host-functions-status carries the same change."
           ],
           "rootCause": [
-            "freshness-drift",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "authored 2026-07 (cross-service)"

@@ -428,14 +428,14 @@ Done when: no battery case has a `reverifyBy` date before 2027-01-01; then delet
 
 Found by the 2026-11-02 re-verification (`rounds/2026-11-02-golden-reverify.md`).
 `q-scf-open-rfps` (due 2026-11-12) and `q-scf-rfp-tooling` (due 2026-11-13) report two open Q3
-briefs (LayerZero DVN and x402 Facilitator with Bazaar) and the SCF #46 deadline 2026-11-08. The
-official deadline is now 2026-11-09. The official RFP Track page
+briefs (LayerZero DVN and x402 Facilitator with Bazaar). Their #46 deadline is already corrected to
+2026-11-09 (PR #310 review reconciliation). The official RFP Track page
 (`stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track`) now says "October 2026: New Q4
 RFPs are coming soon" and lists no open brief. Scout `GET /api/rfps?status=open` still returns the
 two Q3 briefs and the synthetic `scf-round-46` row.
 
 Next: use the `golden-truth` lane. Decide whether the two briefs are still open from a third source
-class. Encode the conflict as disputed if it persists, correct the deadline, and file an
+class. Encode the conflict as disputed if it persists, and file an
 `improvements/` finding against Scout if its roster lags the official page.
 
 Done when: both cases carry the 2026-11-02 or later state with provenance, and

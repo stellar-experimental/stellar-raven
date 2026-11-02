@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "bf24847510a6ded68c87c28c7dae1edca94a0d1aa97b02e00cccd44993d235fd",
+  "corpusContentSha256": "4005557471c8786e197b0da14c16d6a07d8069dc3276f0c1d6f363187ee12405",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -1571,7 +1571,8 @@
           },
           {
             "class": "A",
-            "ref": "https://www.hackmeridian.com/"
+            "ref": "https://www.hackmeridian.com/",
+            "note": "Still shows a countdown and future-tense copy on 2026-11-02; it proves the dates and venue only. Post-event proof comes from the @BuildOnStellar winners post and the meridian.stellar.org thank-you page."
           },
           {
             "class": "A",
@@ -1663,7 +1664,8 @@
             "Live A 2026-11-02: https://www.hackmeridian.com/ shows '25–26 October 2026 · ONE16, Lisbon'; @BuildOnStellar posted the HackMeridian 2026 winners on 2026-10-29.",
             "Live D 2026-11-02: on-site coverage (h-x.technology, tearsheet.co, cryptobriefing.com, CoinDesk 2026-10-28) places the event in Lisbon on October 28–29.",
             "The expired avoid item (an as-of qualifier while the event was upcoming) became a trap against calling the event upcoming. freshness moved from scheduled to stable; reverifyBy is removed.",
-            "Sibling sweep 2026-11-02: grep Meridian 2026|HackMeridian|Convento do Beato|Yas Marina|Abu Dhabi finds q-scf-hackathons-active and q-builder-justin-rice-history (truth evidence only); no contradiction."
+            "Sibling sweep 2026-11-02: grep Meridian 2026|HackMeridian|Convento do Beato|Yas Marina|Abu Dhabi finds q-scf-hackathons-active and q-builder-justin-rice-history (truth evidence only); no contradiction.",
+            "Review reconciliation 2026-11-02 (PR #310 review finding 7): the hackmeridian.com source row notes its stale countdown."
           ],
           "rootCause": [
             "freshness-drift"

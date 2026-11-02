@@ -18,7 +18,7 @@
       "A passkey registered for one dApp domain is automatically valid for every unrelated domain.",
       "All browsers and devices synchronize every passkey in the same way."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence."
+    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence. Origin and RP-ID checks: W3C WebAuthn requires them of the Relying Party, while the OpenZeppelin and Passkey Kit verifiers deliberately omit them on-chain. Do not penalize an answer that requires them in the overall flow, or one that says production Stellar wallet contracts leave them to the client and platform."
   },
   "tags": {
     "category": "tooling-infra",
@@ -246,8 +246,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "PR #81 late-review correction, independently checked against WebAuthn and passkey-kit sources",
+      "date": "2026-11-02",
+      "by": "Reconciliation of the PR #310 independent review (Claude Fable 5.1 high; .agents/rounds/2026-11-02-golden-reverify.md, review section); author Claude Opus 5.5",
       "evidence": [
         "https://github.com/stellar-experimental/stellar-raven/pull/81#discussion_r3875968524",
         "https://www.w3.org/TR/webauthn-3/",
@@ -260,12 +260,14 @@
         "Live re-check 2026-08-27: https://www.w3.org/TR/webauthn-3/ — the specification still defines RP ID/origin validation, related origins, and credential scoping for handoff checks.",
         "Live re-check 2026-08-27: https://developer.apple.com/passkeys/ and https://developers.google.com/identity/passkeys/supported-environments — provider-specific synchronized and device-bound passkey behavior remains documented.",
         "Live re-check 2026-08-27: https://support.mozilla.org/en-US/kb/how-do-i-set-sync-my-computer — Mozilla's current Sync data-type page still does not list passkeys.",
-        "Sibling sweep 2026-08-27: q-infra-secp256r1-passkeys, q-passkey-smart-account-architecture, q-passkey-wallet-recovery, q-soroban-check-auth-custom-account, q-soroban-add-signer-smart-wallet-howto, q-tool-passkeykit-smart-wallet, and q-tool-passkey-wallet-recovery; no contradiction"
+        "Sibling sweep 2026-08-27: q-infra-secp256r1-passkeys, q-passkey-smart-account-architecture, q-passkey-wallet-recovery, q-soroban-check-auth-custom-account, q-soroban-add-signer-smart-wallet-howto, q-tool-passkeykit-smart-wallet, and q-tool-passkey-wallet-recovery; no contradiction",
+        "Review reconciliation 2026-11-02 (PR #310 review finding 2): the notes gain the symmetric origin/RP-ID caution from q-passkey-smart-account-architecture. The key facts stay; they are true for the Relying Party as a whole.",
+        "Live A 2026-11-02: https://www.w3.org/TR/webauthn-3/#sctn-verifying-assertion assigns the origin and rpIdHash checks to the Relying Party.",
+        "Live B 2026-11-02: https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs lines 7-15 say origin and RP ID hash validation are 'intentionally omitted'; https://github.com/kalepail/passkey-kit/blob/309537474f689a7948c729a7bab0d1388f509422/contracts/smart-wallet/src/verify.rs says 'rpIdHash and origin are deliberately not pinned on-chain'.",
+        "Sibling sweep 2026-11-02: q-passkey-smart-account-architecture, q-infra-secp256r1-passkeys, and q-passkey-platform-constraints now carry the same caution."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        "PR #81 review found unclear grammar in a compound grading fact."
+        "Eval-side authoring flaw: the key fact names origin/RP-ID checks without saying that production Stellar wallet contracts deliberately leave them to the client and platform, so a true answer could lose the fact (found by the PR #310 review)."
       ]
     },
     "origin": "kaan passkey-wallet-constraints"

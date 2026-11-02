@@ -145,10 +145,10 @@
           "q-tool-rust-soroban-sdk"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-01",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-01",
-          "reason": "Free-improvements cumulative sweep: q-protocol-bn254-poseidon-xray removed obsolete U32Val, Protocol 24, and sd-036 caution text. It added pinned class A and B evidence. Protocol 25 activation, CAP-0074/CAP-0075 assignments, and low-level primitive boundaries remain stable and consistent with the sibling sweep in .agents/rounds/2026-09-01-free-improvements-maintenance.md.",
+          "date": "2026-11-02",
+          "reason": "q-infra-secp256r1-passkeys gained only a grader caution about origin/RP-ID placement; its CAP-0051/Protocol 21 claim is unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -156,7 +156,7 @@
           "q-comp-clawback-cap0035": "6a1d82fe5ddbceb81f694a0509ba351e14f7e90333d0e9c228b825c42a251fdd",
           "q-edge-fresh-latest-protocol-version": "d210bd6db64d122a31a61bbafd2e137a05d7333acb1343ee681cba0a5180ec94",
           "q-hist-soroban-launch-protocol20": "b2542d4630bec071ed34425a3d14168369915a5b7f282f5ebcac453669bf3168",
-          "q-infra-secp256r1-passkeys": "059be4fb28ed3781f2d8d38d9bf2cd130893304c6e978206bb0c540c5aa0a2aa",
+          "q-infra-secp256r1-passkeys": "c65cf5e2b5e0d5408688794ca84c392e5b163147002d93f1415acbdef2feb733",
           "q-pc-protocol-upgrade-timing": "3ae362ff93313ca63e3b6aeb3563662fdfcdfd2036e2892607ff5b6c3d15b996",
           "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-24-whisk-incident": "d7f7a2b6242e9006ce23ae014068cc5c6009a96430481b46115edcf3b79258db",
@@ -191,10 +191,10 @@
           "q-ti-rpc-gettransactions-pagination-xdr"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed the Soroswap and RPC evidence corrections; shared protocol and RPC facts remain consistent.",
+          "date": "2026-11-02",
+          "reason": "q-infra-secp256r1-passkeys gained only a grader caution; CAP-0051 status and protocol are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Implemented/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
@@ -202,7 +202,7 @@
           "q-comp-clawback-cap0035": "6a1d82fe5ddbceb81f694a0509ba351e14f7e90333d0e9c228b825c42a251fdd",
           "q-comp-clawback-holder-risk": "26e14436b95f7669729cc3abb4fbdcb0fd26b2d3674ad0524cded4e6741a4b86",
           "q-edge-factcheck-soroswap-first-amm": "97a8b7d6968e18a7292c4b3cb68ae612ca2cad1ec5e84ca2ea888c996f503ee7",
-          "q-infra-secp256r1-passkeys": "059be4fb28ed3781f2d8d38d9bf2cd130893304c6e978206bb0c540c5aa0a2aa",
+          "q-infra-secp256r1-passkeys": "c65cf5e2b5e0d5408688794ca84c392e5b163147002d93f1415acbdef2feb733",
           "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
           "q-protocol-bls12-381-cap59": "44d0fe2d916103f6bd48edee871cf348b91a0707ceca03eaffdf662367d23022",
@@ -309,7 +309,7 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Re-verification 2026-11-02: q-scf-current-round now reports the dated 2026-11-02 round state (#46 deadline 2026-11-09; #45 ended). Program mechanics, caps, tiers, and totals in the other members are unchanged. q-scf-open-rfps and q-scf-rfp-tooling still name 2026-11-08; their RFP roster conflicts with the official RFP page and is queued in .agents/TODO.md before their 2026-11-12/13 due dates. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "q-scf-open-rfps and q-scf-rfp-tooling now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
@@ -319,14 +319,14 @@
           "q-scf-ambassador-program": "fd296d5bc36350b62b2734dd07cfcf995ce36e837c4d14ad12db296fb9e66977",
           "q-scf-audit-bank": "527e1d0f43a47d3ee620cd1042d92755911cd7acabd7807268fc7a88e5cacaba",
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
-          "q-scf-current-round": "1e8786bdd2493359dd45e778e5cbfde36e2f9ff12644d6e4d5d81458825075e1",
+          "q-scf-current-round": "8dde5da4f1707871c336d60f6073a72c6bf5df558a2ee9dd609b5d0a00f0bb0f",
           "q-scf-hackathons-active": "98f4eaa3afa6d75cf02c353e104f3a33d0127e20d10450756ac18bfc6db291da",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
           "q-scf-instawards": "53a993c5870b2fb1d4bede4aaa7dd46fc75c18192e950532b35f6841d1f37490",
           "q-scf-nqg-voting": "8e9b68d360c007878136a2b17f1e5c083d2c0ac8e864d6526093603dce7c4127",
-          "q-scf-open-rfps": "88264560ff4bdd1b9cb65b014a8b434dadd8c19f0eeb2ee057bb2513a89283b0",
+          "q-scf-open-rfps": "73030f2e87a723e7f5cd830cdf4e751e59254a89c104a027d940b83b4458f013",
           "q-scf-regional-india": "8e195179b72086eefb0ec4b9a5ff8c4422e9028099cd3a04ab1d1e80046ba4e1",
-          "q-scf-rfp-tooling": "0238b41899740bae996ed89462f93d71a1979a6944bf47965e6ce1393026f0d7",
+          "q-scf-rfp-tooling": "0408da2ba3516388f1f3777f74f16b8375fefbeaa34ccbdd679ce5652a2aee91",
           "q-scf-sdf-marketing-grant": "94d9532c0448790e374ba7c3daa927956b48e0f647fd56f7a22a06d66388ab06",
           "q-scf-total-distributed": "81d48ee2531968b95b2689af391f2fb723bebdd9179c16405409396fdf46ab68",
           "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd",
@@ -793,11 +793,11 @@
         "note": "Current-round facts stay in q-scf-current-round; the v7 centralization case now contains only payment-term and network-authority claims.",
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "44d5ea813f8779d2366853bd20a103662f5becf3e6d75dc51d855f40db15d879",
-          "q-scf-current-round": "1e8786bdd2493359dd45e778e5cbfde36e2f9ff12644d6e4d5d81458825075e1"
+          "q-scf-current-round": "8dde5da4f1707871c336d60f6073a72c6bf5df558a2ee9dd609b5d0a00f0bb0f"
         },
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-current-round changed only its dated round state; q-edge-scf-v7-centralization-myths carries no round claim. The split stands. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "q-scf-current-round changed only keyFact 5 wording (one predicate) and a sourced third-party note; the split stands. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         }
       },
@@ -855,10 +855,10 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-11-02",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Rechecked the dated open-RFP roster and corpus-relative funding boundaries; no contradiction.",
+          "date": "2026-11-02",
+          "reason": "q-scf-open-rfps and q-scf-rfp-tooling now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. The corpus-relative encoding of the roster is unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
@@ -866,7 +866,7 @@
           "q-defi-phoenix-what-is": "f7c95f962aca218baa03abb8685ae2522eeefae10075761f12b953dc73059ec5",
           "q-defi-reflector-oracle": "5eb4dfa4a848691882f5a39d889a86613e347c7c3dd18281c5c990de05bb0651",
           "q-scf-funding-by-category": "7929f3bc2bff0cd171d1602155ef7c17ae4e706059ee283469a63f0caf6d932c",
-          "q-scf-open-rfps": "88264560ff4bdd1b9cb65b014a8b434dadd8c19f0eeb2ee057bb2513a89283b0"
+          "q-scf-open-rfps": "73030f2e87a723e7f5cd830cdf4e751e59254a89c104a027d940b83b4458f013"
         }
       },
       {
@@ -929,13 +929,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-current-round now gives the 2026-11-09 deadline; the program maximum, Soroswap award, and Build cap distinctions are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "q-scf-current-round changed only keyFact 5 wording and a sourced note; the award distinctions are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "Program maximum ($100K in XLM via $50K Base plus optional $50K Supplemental), individual Soroswap award, general Build cap, and current-round deadline are explicitly distinguished.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
-          "q-scf-current-round": "1e8786bdd2493359dd45e778e5cbfde36e2f9ff12644d6e4d5d81458825075e1",
+          "q-scf-current-round": "8dde5da4f1707871c336d60f6073a72c6bf5df558a2ee9dd609b5d0a00f0bb0f",
           "q-scf-history-soroswap": "f06b47f25de8eda43c207d88f6db3f466f321ac74427d5e46343a45056031a58"
         }
       },
@@ -1099,14 +1099,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-current-round and q-edge-fresh-latest-scf-round moved to the 2026-11-02 round state; tranche and authority claims are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "q-scf-current-round, q-edge-fresh-latest-scf-round, and q-scf-rfp-tooling changed only round-state wording; tranche and authority claims are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "The dated Build schedule is 10/20/30/40 with current 90-day completion-form/unpaid-tranche terms. Grant administration and normative fairness are distinct from protocol authority. Current round/phase/deadline facts stay in the dedicated round cases rather than standing in for award terms.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "c9fdb0eec3af5abe38cdd77fcc150c250720f12acbb165516bb0a610dec85ac6",
+          "q-edge-fresh-latest-scf-round": "89ba1eff07a79f913b15de02019b5e7019efc5e6407ac099742d337dced45d5e",
           "q-edge-scf-v7-centralization-myths": "44d5ea813f8779d2366853bd20a103662f5becf3e6d75dc51d855f40db15d879",
-          "q-scf-current-round": "1e8786bdd2493359dd45e778e5cbfde36e2f9ff12644d6e4d5d81458825075e1",
+          "q-scf-current-round": "8dde5da4f1707871c336d60f6073a72c6bf5df558a2ee9dd609b5d0a00f0bb0f",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
           "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd"
         }
@@ -2003,15 +2003,15 @@
           "q-scf-rfp-tooling"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-01",
-        "note": "As of 2026-09-03, the official Q3 page and live feed support two open briefs. The live response has syntheticRounds=1, #46 is in Submission, and #45 is in Panel Review.",
+        "lastChecked": "2026-11-02",
+        "note": "As of 2026-09-03, the official Q3 page and live feed support two open briefs. The live response has syntheticRounds=1, #46 is in Submission, and #45 is in Panel Review. As of 2026-11-02, both cases give the #46 deadline 2026-11-09. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates.",
         "memberContentSha256": {
-          "q-scf-open-rfps": "88264560ff4bdd1b9cb65b014a8b434dadd8c19f0eeb2ee057bb2513a89283b0",
-          "q-scf-rfp-tooling": "0238b41899740bae996ed89462f93d71a1979a6944bf47965e6ce1393026f0d7"
+          "q-scf-open-rfps": "73030f2e87a723e7f5cd830cdf4e751e59254a89c104a027d940b83b4458f013",
+          "q-scf-rfp-tooling": "0408da2ba3516388f1f3777f74f16b8375fefbeaa34ccbdd679ce5652a2aee91"
         },
         "reSwept": {
-          "date": "2026-10-01",
-          "reason": "Owner decision C (2026-10-01): q-scf-rfp-tooling gained a grader scope note only. Live re-check 2026-10-01: the handbook page and https://stellarlight.xyz/api/rfps?status=open still show two open briefs and one synthetic scf-round-46 row; #46 is in Submission through 2026-11-08. Neither member asserts a #45 phase. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md. Re-stamped after the ledger moved into the round folder; no member content changed beyond that provenance path.",
+          "date": "2026-11-02",
+          "reason": "q-scf-open-rfps and q-scf-rfp-tooling now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         }
       },
@@ -2091,15 +2091,15 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-11-02",
         "note": "The Q1-2026 Hummingbot/Kelp-replacement brief is closed and absent from the two current Q3 briefs. No unverified later #41 submission, official merge, or fulfillment claim was added.",
         "memberContentSha256": {
           "q-scf-hummingbot-kelp-closed-rfp": "28ede0071c36f61f28f122e07a80256b0f4256170e7aca21154ddf3d514cc7d7",
-          "q-scf-open-rfps": "88264560ff4bdd1b9cb65b014a8b434dadd8c19f0eeb2ee057bb2513a89283b0"
+          "q-scf-open-rfps": "73030f2e87a723e7f5cd830cdf4e751e59254a89c104a027d940b83b4458f013"
         },
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "The closed Hummingbot brief remains separate from the two current briefs; no contradiction.",
+          "date": "2026-11-02",
+          "reason": "q-scf-open-rfps changed only the #46 deadline; the closed Hummingbot brief claims are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         }
       },
@@ -2175,17 +2175,17 @@
           "q-scf-submission-lifecycle-deadlines"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-01",
+        "lastChecked": "2026-11-02",
         "note": "Rolling interest precedes eligibility/referral and invitation to a full proposal. Only Open uses project-level community voting; Integration/RFP are panel-led.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "d14e338a5a1e4a4351cb13b5444f58cdb14ae18000dfb58ed0d2553a424a79a7",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
-          "q-scf-rfp-tooling": "0238b41899740bae996ed89462f93d71a1979a6944bf47965e6ce1393026f0d7",
+          "q-scf-rfp-tooling": "0408da2ba3516388f1f3777f74f16b8375fefbeaa34ccbdd679ce5652a2aee91",
           "q-scf-submission-lifecycle-deadlines": "4b6bd0ce01c257d13e665babfd34df8b94cfd6cc79240440d1d10b85364d02c7"
         },
         "reSwept": {
-          "date": "2026-10-01",
-          "reason": "Owner decision C (2026-10-01): q-scf-rfp-tooling gained a grader scope note only. The rolling interest-to-invitation path and the panel-led RFP review are unchanged in every member. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md. Re-stamped after the ledger moved into the round folder; no member content changed beyond that provenance path.",
+          "date": "2026-11-02",
+          "reason": "q-scf-rfp-tooling changed only the #46 deadline; the interest-to-invitation flow is unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         }
       },
@@ -2874,7 +2874,7 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-current-round changed only its dated round state; the $150,000 Build cap distinction is unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "q-scf-current-round changed only keyFact 5 wording and a sourced note; the Build cap distinction is unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "All cases distinguish the current SCF Build cap of $150,000 worth of XLM from project-history amounts and other SDF programs.",
@@ -2882,7 +2882,7 @@
           "q-edge-scf-v7-centralization-myths": "44d5ea813f8779d2366853bd20a103662f5becf3e6d75dc51d855f40db15d879",
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
           "q-scf-build-tracks": "5fa791dca7d40fe769531d3b2ea6573c89f666d6de4b67cf8d82866f01f3fd29",
-          "q-scf-current-round": "1e8786bdd2493359dd45e778e5cbfde36e2f9ff12644d6e4d5d81458825075e1",
+          "q-scf-current-round": "8dde5da4f1707871c336d60f6073a72c6bf5df558a2ee9dd609b5d0a00f0bb0f",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
           "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         }
@@ -2899,12 +2899,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-scf-current-round now reports #45 as the last concluded round; q-scf-round-43-results and q-scf-total-distributed carry no #44/#45 phase claim. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "q-scf-current-round changed only keyFact 5 wording and a sourced note; the #43 result and round state are unchanged. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "SCF #43 keeps its fixed 29-project and $3,139,069 result. As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded.",
         "memberContentSha256": {
-          "q-scf-current-round": "1e8786bdd2493359dd45e778e5cbfde36e2f9ff12644d6e4d5d81458825075e1",
+          "q-scf-current-round": "8dde5da4f1707871c336d60f6073a72c6bf5df558a2ee9dd609b5d0a00f0bb0f",
           "q-scf-round-43-results": "55b27c37bcce1e58e728e605abb644e76f91053d971b0603774867c67ec4c2d2",
           "q-scf-total-distributed": "81d48ee2531968b95b2689af391f2fb723bebdd9179c16405409396fdf46ab68"
         }
@@ -3216,12 +3216,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "q-anchor-sdp-what and q-anchor-sdp-vs-anchor-platform now treat the 10,000 cap as a source-enforced SDP limit (disbursement_handler.go:865) and not a protocol limit. q-crp-sdp-operation and q-pay-sdp-disbursement make no conflicting claim. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "q-anchor-sdp-vs-anchor-platform changed only a truth.sources URL (canonical stellar/anchor-platform). Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "note": "All four cases agree that current SDP is a bulk-disbursement application whose Core implements native SEP-10/24 and does not universally require an external Anchor Platform; downstream wallet, cash-out, or anchor rails are optional deployment choices. The 10,000-instruction per-disbursement cap is source-enforced by SDP (`MaxInstructionsPerDisbursement`, checked 2026-11-02) and matches the product page's 'up to 10,000 payments'; it is an SDP application limit, not a Stellar protocol invariant, and is not required by the two Docs-only questions after the exact-phrase Lumenloop probe returned no exact primary-linked evidence.",
         "memberContentSha256": {
-          "q-anchor-sdp-vs-anchor-platform": "92ce51a4b4ac5aac70141fe9b3261b26c54b8dc2a47f0c2da32aa9154baeee1d",
+          "q-anchor-sdp-vs-anchor-platform": "981826e426553f2b217290fecccbea1cd948a406ba9f8465096f27f982daba68",
           "q-anchor-sdp-what": "c80a2b2d30c7b5809e73cea2c3f80bbb50eb3af9998349a01c62d78f8651c167",
           "q-crp-sdp-operation": "1e51065490499daac595a360f3570108732c2d75a080a47cccc350cc18bddf96",
           "q-pay-sdp-disbursement": "bede1c516bbca080cdf683068c0e647bca7ba8cefe185f9f507d4c67dcaf8570"
@@ -3605,13 +3605,13 @@
           "q-scf-current-round"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "c9fdb0eec3af5abe38cdd77fcc150c250720f12acbb165516bb0a610dec85ac6",
-          "q-scf-current-round": "1e8786bdd2493359dd45e778e5cbfde36e2f9ff12644d6e4d5d81458825075e1"
+          "q-edge-fresh-latest-scf-round": "89ba1eff07a79f913b15de02019b5e7019efc5e6407ac099742d337dced45d5e",
+          "q-scf-current-round": "8dde5da4f1707871c336d60f6073a72c6bf5df558a2ee9dd609b5d0a00f0bb0f"
         },
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Official deadline moved to 2026-11-09 and #45 ended. q-scf-open-rfps and q-scf-rfp-tooling still name 2026-11-08; their RFP roster conflicts with the official RFP page and is queued in .agents/TODO.md before their 2026-11-12/13 due dates. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "All SCF members now give the 2026-11-09 deadline. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "lastChecked": "2026-11-02"
@@ -3716,7 +3716,7 @@
       {
         "triggerDateEvent": "Publication or state change for SCF #46/#45/#44 after the fixed SCF #43 recap",
         "requiredRecheck": "Keep SCF #43's fixed result separate. Refresh current-round and open-RFP cases after each official phase change.",
-        "disposition": "reviewed — As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded. #43 remains fixed historical truth. q-scf-open-rfps and q-scf-rfp-tooling still name 2026-11-08; their RFP roster conflicts with the official RFP page and is queued in .agents/TODO.md before their 2026-11-12/13 due dates.",
+        "disposition": "reviewed — As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded. #43 remains fixed historical truth. q-scf-open-rfps and q-scf-rfp-tooling now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates.agents/TODO.md before their 2026-11-12/13 due dates.",
         "caseIds": [
           "q-edge-fresh-latest-scf-round",
           "q-scf-round-43-results",
@@ -3726,17 +3726,17 @@
           "q-scf-total-distributed"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "c9fdb0eec3af5abe38cdd77fcc150c250720f12acbb165516bb0a610dec85ac6",
-          "q-scf-current-round": "1e8786bdd2493359dd45e778e5cbfde36e2f9ff12644d6e4d5d81458825075e1",
-          "q-scf-open-rfps": "88264560ff4bdd1b9cb65b014a8b434dadd8c19f0eeb2ee057bb2513a89283b0",
-          "q-scf-rfp-tooling": "0238b41899740bae996ed89462f93d71a1979a6944bf47965e6ce1393026f0d7",
+          "q-edge-fresh-latest-scf-round": "89ba1eff07a79f913b15de02019b5e7019efc5e6407ac099742d337dced45d5e",
+          "q-scf-current-round": "8dde5da4f1707871c336d60f6073a72c6bf5df558a2ee9dd609b5d0a00f0bb0f",
+          "q-scf-open-rfps": "73030f2e87a723e7f5cd830cdf4e751e59254a89c104a027d940b83b4458f013",
+          "q-scf-rfp-tooling": "0408da2ba3516388f1f3777f74f16b8375fefbeaa34ccbdd679ce5652a2aee91",
           "q-scf-round-43-results": "55b27c37bcce1e58e728e605abb644e76f91053d971b0603774867c67ec4c2d2",
           "q-scf-total-distributed": "81d48ee2531968b95b2689af391f2fb723bebdd9179c16405409396fdf46ab68"
         },
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Reviewed the fired SCF phase-change trap. q-scf-current-round and q-edge-fresh-latest-scf-round report the 2026-11-02 state. The next known triggers are the #46 deadline on 2026-11-09 and Panel Review on 2026-11-11. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "Re-reviewed after the deadline fix in the two RFP cases. The next known triggers are the #46 deadline on 2026-11-09 and Panel Review on 2026-11-11. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         },
         "lastChecked": "2026-11-02"
@@ -3793,13 +3793,13 @@
           "q-hist-meridian-2026-corrected-venue"
         ],
         "memberContentSha256": {
-          "q-hist-meridian-2026-corrected-venue": "2b4dde019c8cc5e2d7aa6e37c82ce147d0e5c945bb8b2ccf8f211bbcc0f91165"
+          "q-hist-meridian-2026-corrected-venue": "3838ea742be972614443047b9a546986bdf5c65a5633b74211a3312fe45efbb9"
         },
         "verdict": "consistent",
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Post-event check: the official site thanks attendees and points to 2027; on-site coverage confirms Lisbon on October 28–29. The case moved to past tense and freshness stable. Ledger: .agents/rounds/2026-11-02-golden-reverify.md.",
+          "reason": "q-hist-meridian-2026-corrected-venue changed only a truth.sources note (the hackmeridian.com countdown is stale). The trap stays closed. Ledger: .agents/rounds/2026-11-02-golden-reverify.md (PR #310 review reconciliation).",
           "verdict": "consistent"
         }
       },

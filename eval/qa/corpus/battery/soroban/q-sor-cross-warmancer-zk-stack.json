@@ -20,7 +20,7 @@
       "Do NOT repeat the outdated claim that Circom's default BN254 proofs remain unavailable or gated on CAP-0074.",
       "Do NOT treat native curve operations as a complete proof system or imply CAP-0080 is required for every BN254 Groth16 verifier."
     ],
-    "notes": "The question composes a project/proposal lookup with the served skill's platform-capability guidance; the exact deployed Warmancer proof system remains deliberately unpinned. Grade either curve route as correct when the answer requires a matching verifier. CAP-0080 is Implemented for Protocol 26 and extends BN254 support for proof systems that need MSM/Fr operations; it does not replace CAP-0074's Protocol-25 base operations."
+    "notes": "The question composes a project/proposal lookup with the served skill's platform-capability guidance; the exact deployed Warmancer proof system remains deliberately unpinned. Grade either curve route as correct when the answer requires a matching verifier. CAP-0080 was Implemented for Protocol 26 (Final since 2026-09-22) and extends BN254 support for proof systems that need MSM/Fr operations; it does not replace CAP-0074's Protocol-25 base operations."
   },
   "tags": {
     "category": "soroban",
@@ -151,8 +151,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Reconciliation of the PR #310 independent review (Claude Fable 5.1 high; .agents/rounds/2026-11-02-golden-reverify.md, review section); author Claude Opus 5.5",
       "evidence": [
         "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md",
         "https://developers.stellar.org/docs/build/apps/zk",
@@ -168,11 +168,11 @@
         "Live re-check 2026-08-27: https://communityfund.stellar.org/dashboard/submissions/recsJtI0JZOmnayxP — retained the 'pending technology availability' qualification.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-dev-skill/blob/main/skills/zk-proofs/SKILL.md and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md — confirmed curve-matched native Groth16 over BLS12-381/CAP-0059/P22 or BN254/Final CAP-0074/P25.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-dev-skill/blob/main/skills/zk-proofs/SKILL.md and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — confirmed CAP-0080's additional BN254 operations from Protocol 26.",
-        "Sibling sweep 2026-08-27: grep Warmancer|CAP-0059|CAP-0074|CAP-0080|BLS12-381|BN254 → q-zk-host-functions-status, q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59; no contradiction"
+        "Sibling sweep 2026-08-27: grep Warmancer|CAP-0059|CAP-0074|CAP-0080|BLS12-381|BN254 → q-zk-host-functions-status, q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59; no contradiction",
+        "Review reconciliation 2026-11-02 (PR #310 review finding 3): the notes accept the later Final status. https://github.com/stellar/stellar-protocol/blob/0da06899c02f818be0132f42cea1f45d6396e20a/core/cap-0080.md says 'Status: Final'; commit 9cd70307 (2026-09-22) 'Move implemented CAPs to final (#2024)'. Sibling q-zk-host-functions-status carries the same change."
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "authored 2026-07 (cross-service)"
