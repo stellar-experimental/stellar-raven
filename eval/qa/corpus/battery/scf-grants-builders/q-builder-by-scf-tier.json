@@ -17,7 +17,7 @@
       "Do NOT conflate Verified-Member governance roles with project awards.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "GT-35 CORRECTION 2026-07-15: Scout removed the unpopulated scfTier field and now rejects the retired builder filter. Grade an honest limitation plus the governance-role/project-award/person-attribution distinction; no named advisor roster is required. Project award records remain a separate, dated signal and must not be promoted into person-level tier or advisor claims.\nAccurately quoting the canonical Scout documentation on the retired `scfTier` builder filter is not a wrong claim while a cached or older copy still shows it after the 2026-07-15 fix; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "GT-35 CORRECTION 2026-07-15: Scout removed the unpopulated scfTier field and now rejects the retired builder filter. Grade an honest limitation plus the governance-role/project-award/person-attribution distinction; no named advisor roster is required. Project award records remain a separate, dated signal and must not be promoted into person-level tier or advisor claims.\nScout removed the never-populated `scfTier` builder field and filter in 1.7.19 (sls-040, resolved 2026-07-15; re-checked live 2026-11-02, when the filter still returned HTTP 400). An answer that labels the retired filter as historical is correct; an answer that presents an `scfTier` builder filter or field as current is wrong."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -77,13 +77,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-01)",
+      "by": "golden cap backlog 2026-11-02 (caps-1)",
       "evidence": [
-        "F 2026-11-02: https://stellarlight.xyz/api/builders?scfTier=top → HTTP 400 'Unsupported query parameter(s): scfTier. This endpoint does not filter by them (no SCF-tier/award data exists on builder profiles: a project's award history lives on /api/projects/search rows...'.",
-        "A 2026-11-02: https://stellarlight.xyz/api/openapi.json (1.9.116): 'the never-populated `scfTier` response field was removed in 1.7.19'; B: catalog/manifest.json#scout.getBuilders 'Profiles carry NO populated SCF-tier/award data.'",
-        "C 2026-11-02: https://stellarlight.xyz/api/projects/search?scfAwarded=true&limit=20 → counts {returned: 20, total: 613}; first rows Lobstr, xBull, Reflector. The golden's 402 figure is explicitly dated 2026-07-11 and labeled illustrative.",
-        "No judge-facing field changed.",
-        "Sibling sweep 2026-11-02: q-builder-by-region-latam and q-builder-rust-soroban-devs agree that builder rows carry no SCF-tier data; no contradiction."
+        "[F] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/builders?scfTier=top → HTTP 400 \"Unsupported query parameter(s): scfTier. This endpoint does not filter by them (no SCF-tier/award data exists on builder profiles: a project's award history lives on /api/projects/search rows).\" supportedParams [q, skill, tech, location, limit, offset, fields].",
+        "[A] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/openapi.json → apiVersion 1.9.116; /api/builders parameters q, location, skill (no scfTier).",
+        "[C] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven scout.getBuilders({ scfTier: \"top\" }) → { ok: false, error: { kind: \"error\", status: 400, message: \"Unsupported query parameter(s): scfTier ...\" } } (consumer path agrees with the direct read; same witness class).",
+        "Finding: sls-040 is in improvements/resolved.json (resolved 2026-07-15; refs Stellar-Light/stellarlight#521, PR #528, PR #540). No active finding backs the cap, and the live surface carries the fix, so the cap ends (ADR-0008 amendment 2026-11-02).",
+        "Change: only the cap sentence in golden.notes was replaced by a plain rule; answer, keyFacts, and avoid are unchanged.",
+        "Sibling sweep 2026-11-02: grep 'scfTier' over eval/qa/corpus/battery → q-builder-by-region-latam and q-builder-rust-soroban-devs (both edited in this lane with the same rule); no contradiction."
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: a partial cap needs an active improvements finding; this cap's finding is resolved, so the cap ends)",
+        "improvements/resolved.json entry sls-040 (resolved 2026-07-15; live fix re-confirmed 2026-11-02)"
       ]
     },
     "origin": "raven-next q-builder-by-scf-tier"

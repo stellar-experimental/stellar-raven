@@ -545,7 +545,12 @@ export function lintGoldenAuthoring(cases) {
   return findings;
 }
 
-const CAP_SENTENCE_RE = /not a wrong claim|\bcaps? at partial\b|\bcapped at partial\b/i;
+// A partial cap either states the partial grade, or calls an attributed quote of a canonical,
+// official, or upstream source "not a wrong claim" (ADR-0008 lint-canonical form). A plain
+// leniency line ("naming X is not a wrong claim") with neither element is not a cap.
+const PARTIAL_CAP_RE = /\b(?:caps?|capped)\b[^.!?]{0,80}?\bat partial\b|\bat most partial\b/i;
+const NOT_WRONG_RE = /not a wrong claim/i;
+const SOURCE_ATTRIBUTION_RE = /\b(?:canonical|official|upstream)\b/i;
 const FINDING_ID_RE = /\b(?:sls|ll|sd|sk|cs|wai)-\d{3}\b/g;
 const ACTIVE_FINDING_STATUSES = new Set(["verified", "reported-upstream", "declined-upstream"]);
 
@@ -571,14 +576,25 @@ export function lintCapFindings(cases, findingStatuses) {
   const findings = [];
   if (!findingStatuses) return findings;
   for (const kase of cases) {
-    const sentences = String(kase.golden?.notes ?? "").split(/(?<=[.!?])\s+/).filter((sentence) => CAP_SENTENCE_RE.test(sentence));
+    const all = String(kase.golden?.notes ?? "").split(/(?<=[.!?])\s+/);
+    const sentences = [];
+    for (let i = 0; i < all.length; i += 1) {
+      const next = all[i + 1] ?? "";
+      // Join a split attribution + grade pair only; two complete caps expire independently.
+      if (NOT_WRONG_RE.test(all[i]) && !PARTIAL_CAP_RE.test(all[i]) && PARTIAL_CAP_RE.test(next) && !NOT_WRONG_RE.test(next)) {
+        sentences.push(`${all[i]} ${next}`);
+        i += 1;
+      } else if (PARTIAL_CAP_RE.test(all[i]) || (NOT_WRONG_RE.test(all[i]) && SOURCE_ATTRIBUTION_RE.test(all[i]))) {
+        sentences.push(all[i]);
+      }
+    }
     for (const sentence of sentences) {
       const ids = [...new Set(sentence.match(FINDING_ID_RE) ?? [])];
       if (ids.length === 0) {
-        findings.push(finding("warn", "cap-finding", kase.id, `partial cap names no improvements finding: ${sentence.slice(0, 140)}`));
+        findings.push(finding("error", "cap-finding", kase.id, `partial cap names no improvements finding: ${sentence.slice(0, 140)}`));
       } else if (!ids.some((id) => ACTIVE_FINDING_STATUSES.has(findingStatuses.get(id)))) {
         const states = ids.map((id) => `${id}=${findingStatuses.get(id) ?? "not active (resolved or missing)"}`).join(", ");
-        findings.push(finding("warn", "cap-finding", kase.id, `partial cap names no active finding (${states})`));
+        findings.push(finding("error", "cap-finding", kase.id, `partial cap names no active finding (${states})`));
       }
     }
   }

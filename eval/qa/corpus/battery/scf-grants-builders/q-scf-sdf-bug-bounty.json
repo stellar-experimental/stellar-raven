@@ -18,7 +18,7 @@
       "Do NOT send new general SDF reports to deprecated Immunefi or merge OpenZeppelin's policy into SDF's.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Dossier §5.4. Trap: swapping the $250K-XLM / $50K-USD tiers, or confusing with Audit Bank.\nAlso good if the answer: The Bug Bounty is an SDF-direct program (stellar.org/grants-and-funding), separate from the SCF.\nGolden cites: stellar.org/grants-and-funding bug-bounty section.\nGT-40 blind reversed the primary top-line after following the cited controlling policy. Policy and intake are volatile; accept dated, scope-aware figures only.\nAccurately quoting the canonical Scout source on the pre-fix security-program roster that omitted the 2026-05-07 HackerOne migration is not a wrong claim while a cached or older copy still shows the roster fixed on 2026-07-15 by sls-020; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Dossier §5.4. Trap: swapping the $250K-XLM / $50K-USD tiers, or confusing with Audit Bank.\nAlso good if the answer: The Bug Bounty is an SDF-direct program (stellar.org/grants-and-funding), separate from the SCF.\nGolden cites: stellar.org/grants-and-funding bug-bounty section.\nGT-40 blind reversed the primary top-line after following the cited controlling policy. Policy and intake are volatile; accept dated, scope-aware figures only.\nScout research has surfaced the 2026-05-07 SDF security-program migration to the consolidated HackerOne program since 2026-07-15 (sls-020, resolved; re-checked live 2026-11-02, when the security-program record ranked first). An answer that labels the pre-fix roster as historical is correct; an answer that presents a security-program roster without the HackerOne migration as current is wrong."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -89,16 +89,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-04)",
+      "by": "golden cap backlog 2026-11-02 (caps-1)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer re-derived the claims from two or more source classes (no change proposed, so no verifier pass).",
-        "Live A 2026-10-31: https://hackerone.com/stellar?view_policy=true — 'Effective 7 MAY 2026, SDF has consolidated its bug bounty programs into this single HackerOne program. The Stellar ImmuneFi program at immunefi.com/bug-bounty/stellar is deprecated.' (claim: HackerOne consolidation effective 2026-05-07; general Immunefi deprecated; verdict confirmed)",
-        "Live A 2026-11-01: https://stellar.org/grants-and-funding/bug-bounty — 'The Stellar Development Foundation has partnered with HackerOne ... refer to the HackerOne program policy for the reward scale' (claim: HackerOne consolidation effective 2026-05-07; general Immunefi deprecated; verdict confirmed)",
-        "Live F 2026-11-02: https://immunefi.com/bug-bounty/stellar/information/ — 'HTTP 404' (claim: HackerOne consolidation effective 2026-05-07; general Immunefi deprecated; verdict confirmed)",
-        "Live D 2026-11-02: Perplexity ask — 'SDF consolidated its bounty programs into HackerOne effective May 7, 2026.' (claim: HackerOne consolidation effective 2026-05-07; general Immunefi deprecated; verdict confirmed)",
-        "Live D 2026-11-02: Perplexity ask (cites hackerone.com/stellar) — '25,000 points for Critical, 15,000 for High, and 10,000 for Medium ... critical-bug payout can reach 250,000 points' (claim: Standard maxima 25K/15K/10K/2K/500 points; 1 point = $1 paid in XLM; carveout critical 10% of affected funds capped at 250K points for stel…; verdict confirmed)",
-        "Live A 2026-10-25: https://immunefi.com/bug-bounty/openzeppelin-stellar/information/ — 'Total maximum payout for this bug bounty contest is $250,000. Maximum single bounty payout is capped at $25,000.' (claim: OpenZeppelin Stellar Immunefi: $25K max single payout, $250K total; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-comp-security-disclosure-programs, q-scf-audit-bank checked by the proposer; no contradiction (no gospel change)."
+        "[C] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/research?q=Stellar%20Development%20Foundation%20security%20program%20HackerOne%20migration → rank 1 \"Stellar Bug Bounty Program — SDF consolidated HackerOne program policy\" (source security-program, dated 2026-05-07T00:00:00.000Z, id 6a557e6b278e0ac6a2b6fc37).",
+        "[C] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven scout.searchResearch({ q: \"Stellar Development Foundation security program HackerOne migration\", limit: 3 }) → row 1 [\"Stellar Bug Bounty Program — SDF consolidated HackerOne program policy\", \"security-program\", \"2026-05-07T00:00:00.000Z\"] (same witness class as the direct read).",
+        "[A] 2026-11-02T21:25:32Z GET https://stellar.org/grants-and-funding (HTTP 200) → \"Bug bounty program ... can earn awards up to $250,000 worth of XLM. Awards up to $50,000 paid in USD can also be earned for possible exploits discovered in the Soroban platform.\" (the tier figures in the golden are unchanged).",
+        "Finding: sls-020 is in improvements/resolved.json (resolved 2026-07-15; refs Stellar-Light/stellar-scout#10 and stellarlight PR #529; live recheck 2026-07-15 recorded the supersession record at rank 1). No active finding backs the cap, and the live surface carries the fix, so the cap ends (ADR-0008 amendment 2026-11-02).",
+        "Change: only the cap sentence in golden.notes was replaced by a plain rule; answer, keyFacts, and avoid are unchanged.",
+        "Sibling sweep 2026-11-02: grep 'HackerOne|sls-020' over eval/qa/corpus/battery → q-comp-security-disclosure-programs (describes the consolidated SDF HackerOne program; no cap sentence); no contradiction."
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: a partial cap needs an active improvements finding; this cap's finding is resolved, so the cap ends)",
+        "improvements/resolved.json entry sls-020 (resolved 2026-07-15; live fix re-confirmed 2026-11-02)"
       ]
     },
     "origin": "raven-next q-scf-sdf-bug-bounty"

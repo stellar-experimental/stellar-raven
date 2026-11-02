@@ -16,7 +16,7 @@
       "Do NOT claim Scout exposes populated skills/scfTier attributes or removed scfTier/featured filters.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "GT-35 CORRECTION 2026-07-10: grade a dated live-union candidate roster with direct code evidence and explicit evidence tiers. A directory match does not prove experience, seniority, deployment, or availability.\nGT-35 independently confirmed by processes 3287/3289; re-check roster and activity at answer time.\nAccurately quoting the canonical Scout source on Rust builder match provenance is not a wrong claim while a cached or older copy still shows matches without provenance before the 2026-07-14 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fact.\n2026-11-02 re-check: a Rust builder query returned 51 matches (40 admitted by code language); neither Samuel Ogera nor Asman Malika appeared. Do not require the 2026-07-11 example names."
+    "notes": "GT-35 CORRECTION 2026-07-10: grade a dated live-union candidate roster with direct code evidence and explicit evidence tiers. A directory match does not prove experience, seniority, deployment, or availability.\nGT-35 independently confirmed by processes 3287/3289; re-check roster and activity at answer time.\nScout builder rows have carried `match` provenance (matched fields, projects, terms, and basis) since 2026-07-14 (sls-041, resolved; re-checked live 2026-11-02). An answer that labels the pre-fix unexplained matches as historical is correct; an answer that presents builder matches as currently unexplained is wrong.\n2026-11-02 re-check: a Rust builder query returned 51 matches (40 admitted by code language); neither Samuel Ogera nor Asman Malika appeared. Do not require the 2026-07-11 example names."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -126,17 +126,18 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-01)",
+      "by": "golden cap backlog 2026-11-02 (caps-1)",
       "evidence": [
-        "C 2026-11-02T16:33:27Z: https://stellarlight.xyz/api/builders?skill=Rust&limit=200 → meta.counts {returned: 51, total: 51}; match.basis {profile-text: 11, code-language: 40}; no row contains 'ogera' or 'malika'.",
-        "C 2026-11-02T16:33Z: https://stellarlight.xyz/api/builders?skill=rust and ?q=rust → meta.counts {returned: 50, total: 51} (default page cap 50; 39 code-language rows on the page).",
-        "C 2026-11-02T16:34:58Z: https://stellarlight.xyz/api/builders?q=Ogera, ?q=Malika, ?q=Asman (limit=200) → total 0 for each.",
-        "F/A 2026-11-02: https://stellarlight.xyz/api/builders?featured=true → 'Unsupported query parameter(s): featured.' supportedParams [q, skill, tech, location, limit, offset, fields]; https://stellarlight.xyz/api/openapi.json (1.9.116) says the never-populated scfTier field was removed in 1.7.19 (avoid item still holds).",
-        "Change: golden.notes adds the dated 2026-11-02 re-check and tells graders not to require the 2026-07-11 example names. Verifier decision: modify (proposer said 50 matches with 40 code-language rows, which mixed the full set and the default page; the verifier's full-set figures 51/40 were applied).",
-        "Sibling sweep 2026-11-02: grep 'Ogera|Asman Malika' over eval/qa/corpus/battery → only this case; q-builder-by-region-latam and q-builder-by-scf-tier assert no Rust roster; no contradiction."
+        "[C] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/builders?skill=Rust&limit=200 → meta.counts {returned 51, total 51}; meta.matchBasis present (\"each row's `match` names the fields, projects and literal terms that hit\"); row 0 match {matchedFields: [\"bio\"], matchedTerms: {rust: \"rust\"}, basis: \"profile-text\"}.",
+        "[C] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven scout.getBuilders({ skill: \"Rust\", limit: 5 }) → counts {returned 5, total 51}, meta.matchBasis present, row 0 match basis \"profile-text\".",
+        "[A] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/openapi.json → apiVersion 1.9.116; /api/builders parameters q, location, skill (no scfTier).",
+        "Finding: sls-041 is in improvements/resolved.json (resolved 2026-07-14; ref Stellar-Light/stellarlight PR #498). No active finding backs the cap, and the live surface carries the fix, so the cap ends (ADR-0008 amendment 2026-11-02).",
+        "Change: only the cap sentence in golden.notes was replaced by a plain rule; answer, keyFacts, avoid, and the 2026-11-02 re-check note are unchanged.",
+        "Sibling sweep 2026-11-02: grep 'scfTier' over eval/qa/corpus/battery → q-builder-by-region-latam and q-builder-by-scf-tier (both edited in this lane with the same rule); no contradiction."
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: a partial cap needs an active improvements finding; this cap's finding is resolved, so the cap ends)",
+        "improvements/resolved.json entry sls-041 (resolved 2026-07-14; live fix re-confirmed 2026-11-02)"
       ]
     },
     "origin": "raven-next q-builder-rust-soroban-devs"
