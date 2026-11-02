@@ -1,7 +1,7 @@
 ---
 id: sd-080
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Fuzzing example tells readers to run `soroban contract build`, but the documented installs ship only `stellar`"
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - "2026-11-02 stellar/stellar-cli main cmd/soroban-cli/src/commands/contract/build.rs lines 339 and 349 run `cargo rustc` with `--crate-type=cdylib`, so `stellar contract build` gives the same LTO workaround that the note describes."
   - "2026-11-02 repeated-claim scan of docs/ and .mintlify/ at 85d2d1b8 for `soroban <subcommand>` CLI calls outside meeting notes: only fuzzing.mdx line 197 gives a live instruction. docs/networks/software-versions.mdx line 2198 is a historical changelog entry, and docs/build/guides/dapps/docker.mdx line 94 is an unrelated echo string."
   - "Dedupe 2026-11-02: resolved sd-075 (stellar/stellar-docs#2974, fixed by #2991) covered the Hello World build commands, not this note. Its independent reviewer flagged this line as a separate defect: .agents/rounds/2026-11-02-upstream-filing.md, section 'Resolver pass: sd-075'. No active finding names fuzzing.mdx."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3024
 ---
 
 ## Finding

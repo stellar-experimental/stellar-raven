@@ -56,7 +56,7 @@ Total findings: 125
 | sls-111 | The directory marks 24 projects with an SCF #45 award. The SCF funded-projects page lists at least 40 SCF #45 awards. Thirteen awarded…     | reported-upstream | 2026-11-02 | 0           |
 | sls-112 | The directory has no record for two first-party Stellar launches from September and October 2026                                            | reported-upstream | 2026-11-02 | 0           |
 | sls-113 | The venueRole field gives the DEX sub-type: AMM, native order book, aggregator, trading UI, or wallet-integrated. On 2026-11-02 it is null… | reported-upstream | 2026-11-02 | 0           |
-| sls-114 | For stellar/stellar-horizon, GET /api/repos/explain returns repoMeta.kind: platform, which is correct. Its codeVerified.contractInterface…  | verified          | 2026-11-02 | 0           |
+| sls-114 | For stellar/stellar-horizon, GET /api/repos/explain returns repoMeta.kind: platform, which is correct. Its codeVerified.contractInterface…  | reported-upstream | 2026-11-02 | 0           |
 
 ## stellar-docs
 
@@ -94,7 +94,7 @@ Total findings: 125
 | sd-077 | Two stellar.org pages describe Marketing Grants eligibility differently for a project that has not launched                                 | verified          | 2026-11-02 | 0           |
 | sd-078 | The simulateTransaction deep-dive guide tells readers that an archived ledger entry must be restored before the transaction can be…         | reported-upstream | 2026-11-02 | 0           |
 | sd-079 | The "Building with AI" page tells readers to connect Raven at https://raven.stellar.buzz/mcp. The "For agents" card on every docs page…     | reported-upstream | 2026-11-02 | 0           |
-| sd-080 | The fuzzing example tells readers to build the contract with soroban contract build to avoid a cargo LTO problem. The CLI is now named…     | verified          | 2026-11-02 | 0           |
+| sd-080 | The fuzzing example tells readers to build the contract with soroban contract build to avoid a cargo LTO problem. The CLI is now named…     | reported-upstream | 2026-11-02 | 0           |
 | sd-081 | The contract-restoration example on two docs pages does not parse and cannot build a valid restoration transaction. getWasmLedgerKey has…   | reported-upstream | 2026-11-02 | 0           |
 
 ## lumenloop
