@@ -12,18 +12,38 @@ Open owner decisions are at the end of this file. Each one is listed once.
 
 ## Priorities
 
-1. Resolve the general routing and source-authority work from the
+1. Migrate the `stellarDocs` operations to Mintlify (below). The Algolia docs index stopped
+   updating on 2026-10-22, so docs answers drift stale until the cutover.
+2. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
+3. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
    authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
    #281, and #270 are merged and deployed; the section guard does not ship.
-3. Fix the table-row loss in `stellarDocs.get_doc_page_sections` (HackMeridian 2026 review
+4. Fix the table-row loss in `stellarDocs.get_doc_page_sections` (HackMeridian 2026 review
    follow-ups below). It is small, and it blocks address and version answers on every docs page.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
 `run-evals` skill for the measurement sequence.
+
+## Stellar Docs migration to Mintlify
+
+### Move the `stellarDocs` operations from Algolia to the Mintlify API
+
+On 2026-10-22 `developers.stellar.org` moved to Mintlify and the Algolia crawler stopped. The
+DocSearch index still answers, but it no longer updates, so every `stellarDocs.*` answer drifts
+stale. Research, the operation mapping, and the list of affected files are in
+[the Mintlify research note](../research/services/stellar-docs-mintlify.md).
+
+Steps: create the assistant key and store it as a host secret; confirm the open API facts with
+keyed probes; rewrite the adapter, spec, and inventory refresh; run an Algolia-versus-Mintlify A/B
+over the docs goldens; pass the routing gate; cut over; then retire the Algolia docs secrets, rule
+canary, and comparison harness. This item also resolves the `get_doc_page_sections` table-row
+loss below if the page endpoint replaces the section query.
+
+Done when: production `stellarDocs.*` reads only Mintlify, the A/B shows no docs-answer regression,
+and no `ALGOLIA_*_DOCS` reference remains outside dated records.
 
 ## Improvements follow-up
 
