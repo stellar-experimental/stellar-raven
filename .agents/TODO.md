@@ -23,21 +23,6 @@ Binding spend rules: no paid method runs without its own written authorization, 
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
 `run-evals` skill for the measurement sequence.
 
-## Golden partial caps
-
-### Convert or back the partial caps that the `cap-finding` lane flags
-
-The ADR-0008 amendment of 2026-11-02 accepts a partial cap only while it names an active
-`improvements/` finding. On 2026-11-02 the QA lint lane `cap-finding` warned on 39 cap sentences
-in 35 cases: 33 name no finding, and 6 name a finding that is resolved or missing. The case list is
-in [the grading-policy record](rounds/2026-11-02-grading-policy.md), "Cap backlog".
-
-Next: for each cap, use the `golden-truth` lane. Either name a verified active finding (file one if
-the source defect is real), or convert the cap to a plain correct or wrong rule. When the backlog is
-empty, raise the lane from warn to error.
-
-Done when: `npm run eval:qa:lint` reports no `cap-finding` warning, and the lane is an error.
-
 ## Stellar Docs migration to Mintlify
 
 ### Derive section anchors for Mintlify search hits

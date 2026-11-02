@@ -194,8 +194,8 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "sd-003 retirement re-sweep (independent reviewer Claude Fable 5.1): the only member that changed is q-ti-rpc-gettransactions-pagination-xdr, and its diff is limited to golden.notes (sd-003 marked resolved; sd-004 caution kept). It carries no CAP-status claim. Re-read every CAP/protocol pair across the 14 members: CAP-0035/P17, CAP-0038/P18, CAP-0051/P21, CAP-0058 Final/P22, CAP-0059 Final/P22, CAP-0062/63/65/67 P23, CAP-0071 Final/P27, CAP-0073 Final/P26, CAP-0074/75 Final/P25 all still match the note.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-edge-factcheck-soroswap-first-amm, q-infra-secp256r1-passkeys, q-protocol-23-whisk-caps, q-protocol-27-cap-0071, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-sep-41-token-interface, q-sor-confidential-tokens, q-sor-contract-trustlines-c-address, q-soroban-auth-delegation-p27, q-soroban-constructor-lifecycle, q-ti-rpc-gettransactions-pagination-xdr agree on protocol and CAP mappings."
         },
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Final/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
         "memberContentSha256": {
@@ -212,7 +212,7 @@
           "q-sor-contract-trustlines-c-address": "614ba6a13caf16cce0a154a4fffff4185c237f25b2cf250b9c0a1583b23f99b0",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750",
           "q-soroban-constructor-lifecycle": "798e2a756125c45237bfb757cf8fc9f241341a32e53be7d56ecba91bea614d82",
-          "q-ti-rpc-gettransactions-pagination-xdr": "4e56c6cf6b92d90a68c28a668e89e0fb130b84baa261848f055e7b272374e54d"
+          "q-ti-rpc-gettransactions-pagination-xdr": "ee43917c0c6fc3f737ebc1e7ba7810e9f69812c646544e83e77e48055d743f01"
         }
       },
       {
@@ -554,12 +554,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "sd-003 retirement re-sweep (independent reviewer): the changed members are q-infra-rpc-methods-list (sd-003 partial-cap sentence removed from golden.notes; the 12-method gate, 120960-ledger retention, and archive-node-beta/queryEvents nuance are unchanged) and q-ti-rpc-gettransactions-pagination-xdr (sd-003 note re-dated; 50/200, cursor, and sd-004 caution unchanged). Horizon lifecycle wording across q-infra-horizon-vs-rpc, q-pc-practical-fee-setting, and q-ti-compute-token-lp-market-data still says nearing end-of-life with the dated sd-072 Lab caution; retention members still use the single history-retention-window (stock 120960) with no 24h default; archive tier remains getLedgers-only with the beta nuance.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-infra-which-indexer, q-soroban-event-indexing-design, q-soroban-publish-events, q-ti-compute-token-lp-market-data, q-ti-enumerate-holders-airdrop, q-ti-historical-pointintime-balances, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill preserve RPC, Horizon, indexer, retention, and beta distinctions."
         },
         "note": "Current review 2026-11-02: official Horizon lifecycle wording is split again. The APIs overview and the Lab Horizon Endpoints page say nearing end-of-life, while the Lab API Explorer page says 'Horizon is considered deprecated.' since the 2026-10-22 Mintlify migration (improvements/stellar-docs/sd-072). q-infra-horizon-vs-rpc dates the nearing-end-of-life label and carries an ADR-0008 Horizon-lifecycle caution for an attributed quote of that page. getEvents: the method page and stellar-rpc v30.0.0 use one configurable history-retention-window with a stock default of 120960 ledgers (about 7 days); the 24-hour-default/seven-day-maximum method prose is fixed (sd-023, improvements/resolved.json), and the remaining '7 days at most' wording is on the events ingest guide (sd-068), which q-soroban-publish-events names. Review 2026-09-09: the rendered Horizon pages and their positive indexed records agreed on nearing-end-of-life wording, and the sd-042 source/index conflict was fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose then conflicted with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. The official RPC Archive tier extends getLedgers only; SDF's archive-node beta and provider betas that serve wider full history are dated nuances, not the official tier. Older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "03a774cd7fafcbc2c45ded06c5e0e0d041b2be4413184e350f986b31a8680796",
+          "q-infra-horizon-vs-rpc": "0954fbdd0627dd7ca3c5a34d5e89571428bac40d4793c3b7370d45322d14faeb",
           "q-infra-hubble-bigquery": "f26308e69f6d9f61a3bd372021f7bbda115cc7ed2e08dd19b4714a622dae989f",
           "q-infra-rpc-methods-list": "390496b268e519710c36cc65537a17e9cf0b524aafdf796e86a9e8b4a1b192b5",
           "q-infra-rpc-provider-archive-tier": "00c3153da6a0a582c325424f65d8cd6b86237250daf2ada6f60224ff2403bc51",
@@ -569,7 +569,7 @@
           "q-ti-compute-token-lp-market-data": "d6abb1027dd3e046effcc91b7b29ad7ac21845fcb2f7381ce6ba523ac2aa61b1",
           "q-ti-enumerate-holders-airdrop": "0a1c801a5573023e605f581f0c116c8f74cd50e8bb3bffcc8709b472955a98c8",
           "q-ti-historical-pointintime-balances": "c991d229c472f9bf1ab95554584b3fdc09b0b2b561a01f24d4ea17448a530ec5",
-          "q-ti-rpc-gettransactions-pagination-xdr": "4e56c6cf6b92d90a68c28a668e89e0fb130b84baa261848f055e7b272374e54d",
+          "q-ti-rpc-gettransactions-pagination-xdr": "ee43917c0c6fc3f737ebc1e7ba7810e9f69812c646544e83e77e48055d743f01",
           "q-ti-self-host-retention-backfill": "843c2e46f0dae94e9af99dca17a792fcd1b72814efa3038b20b0e81e0acbc049"
         }
       },
@@ -610,8 +610,8 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-deep-full-history-report now quotes the 2014 launch article as 'development led by Jed McCaleb and David Mazières'. This agrees with q-org-mazieres-chief-scientist's founder/co-founder and no-exclusive-founder-list framing. The staking case's SCP/no-validator-reward facts are unchanged, so the note's founder, SCP, and not-PoS claims still hold.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-edge-deep-full-history-report, q-edge-noinfo-stellar-pos-staking-rewards, q-hist-scp-rewrite-2015, q-org-mazieres-chief-scientist, q-org-sdf-structure-mandate, q-protocol-tier1-requirements preserve dated history, founder attribution, and SCP distinctions."
         },
         "note": "SCP was authored by David Mazières and rolled out in 2015 using FBA. The causal interpretation of the 2014 fork is disputed: SDF attributed it to weaknesses in the inherited system, while Ripple rejected that conclusion. Mazières's founder/professor/paper facts remain stable, while the Founder and Chief Scientist team-page data is dated and distinguished from the rendered card. SDF structure and not-PoS/no-validator-reward facts remain separate.",
         "memberContentSha256": {
@@ -619,7 +619,7 @@
           "q-edge-noinfo-stellar-pos-staking-rewards": "673d822b4a7ec68b10fd98dd9841b63e01cc86f6ce5cb38acffdf073605e0f72",
           "q-hist-scp-rewrite-2015": "5cd5e7420233297b719580af697a9bf13a267dcf5411dec726260d0ea7806379",
           "q-org-mazieres-chief-scientist": "73b0bc28f31d279e9f8c7e4cd376e73914fbd984fcacdf250928443069dc61d7",
-          "q-org-sdf-structure-mandate": "0a0199f96f9526446052478abd6075a32b62759b751738185ec7ac9f8b7d79fc",
+          "q-org-sdf-structure-mandate": "ae1628b5785986fad875ee3aa2b507b1fc8a8f6d070d9bd02437039e726d61af",
           "q-protocol-tier1-requirements": "b229325c06c351a9667ffaaea846849e828fe4b0f3e75caa62c994332cf7a25f"
         }
       },
@@ -637,16 +637,16 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-eco-defi-tvl-current ($272.8M high on 2026-10-01 above $242.7M on 2026-05-30), q-edge-fresh-latest-blend-tvl (same-provider DefiLlama Blend points, borrowed shown separately), and q-defi-defindex-honest (dated, provider-labeled TVL) all match the note's 2026-11-02 provider/definition/as-of discipline. The Aquarius change is only the Freighter-to-Varial rename.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent re-check rv-caps (Codex gpt-6-astra high) after the Blend cap was limited to the sls-039 declined history scope: q-defi-aquarius-what-is, q-defi-defindex-honest, q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl, and q-edge-noinfo-exact-tvl-figure preserve provider and date rules and limit partial credit to missing history."
         },
         "note": "All gate on provider/endpoint/definition/as-of discipline rather than frozen numbers. Blend additionally requires a same-provider declared-quarter start/end trend; current, quarter peak, record, borrowed, pool/backstop, fees, and volume are distinct. DeFiLlama's Stellar daily history is revised between reads (2026-07-11: June 19 above May 30; 2026-11-02: a $272.8M daily-close high dated 2026-10-01 above $242.7M on 2026-05-30), so no record date is a gate. Chain, protocol, RWA, asset, and CEX measures must not be summed.",
         "memberContentSha256": {
           "q-defi-aquarius-what-is": "7d28613a671cbe3342e5b5c17720a62c2571b184226e29a542e7e887fc67064b",
           "q-defi-defindex-honest": "d46d1b38d374675fa92611d66f2fbe7ac6f4ae02a7028dc8072c7d38751316cd",
           "q-eco-defi-tvl-current": "9914a64f0b9cb2011d8d09dd274f3f4d061d48e2eb0244f9db7d4a3da3ed1f1e",
-          "q-edge-fresh-latest-blend-tvl": "cd6b6c7f10eb5fde13642b109a34d2839e4c2748aadbe8f6230490cb99433338",
-          "q-edge-noinfo-exact-tvl-figure": "927ceda477dcecb833fffba1948735e5cfb1f4c7038be5f5be242ec9ea74e6f2"
+          "q-edge-fresh-latest-blend-tvl": "34f5ede4495a8e40631a3740869b20ce289953bf94901bef9e31481a2a217942",
+          "q-edge-noinfo-exact-tvl-figure": "278c0d75358841b89fcff727054e675f5bb0fb7a1830959b80822e403b75d0a6"
         }
       },
       {
@@ -693,8 +693,8 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Changed members (testnet-vs-futurenet re-dated with a P29/P30 recheck, Lab Varial rename and re-verification, faucet re-dated, and the custodial notes caution removed) still state that Friendbot is a Testnet/Futurenet-only XLM faucet, that no Mainnet funding exists, and that Saved Keypairs storage is not custody. This matches the note.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-edge-jailbreak-generate-secret-keys, q-edge-send-me-free-xlm, q-infra-testnet-vs-futurenet, q-ti-custodial-account-generation-c-address, q-ti-stellar-lab-usage-and-new-ui, q-ti-testnet-usdc-faucet, q-tool-cli-testnet-identity-howto preserve funding, network, custody, and identity distinctions."
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
@@ -704,7 +704,7 @@
           "q-ti-custodial-account-generation-c-address": "f5828e32a8add95fdf0ad82f596da690d6047c3e9188b01d9896ea8cea2d1cd9",
           "q-ti-stellar-lab-usage-and-new-ui": "63b40efe5764847fd87a24bd9d67fab759cc2aa6012c6008bf95d26e4e28171e",
           "q-ti-testnet-usdc-faucet": "ef103b7becca1da989f095aad3e98cda909fad72951beee9c3254381e52cc1ba",
-          "q-tool-cli-testnet-identity-howto": "4013b62c385a4c8bf8002a6c3cde62d3d88e54a49abcd5951697f309c38225e0"
+          "q-tool-cli-testnet-identity-howto": "46c551c4735652b8fe35886f683cc3d4b3a6e64444cb82dfb882a720d7c8d18f"
         }
       },
       {
@@ -955,18 +955,18 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The changed members keep dated, source-attributed snapshots: the wallets-list 2026-11-02 count and Varial rename, the PYUSD dated LLC-to-N.A. conversion, the USDC/EURC MyKobo same-ticker issuer boundary, and the funding-by-category 2026-11-02 aggregate. q-asset-rwa-tokenized-freshness and q-builder-by-region-latam have no judge-facing change, and q-soroban-deploy-cli changed reverifyBy only. No pair conflicts. The note's distinction of snapshots, legal entities, directory reconstructions, and CLI/API semantics stays true.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-asset-rwa-tokenized-freshness, q-asset-usdc-eurc-issuer, q-builder-by-region-latam, q-eco-pyusd-stellar-freshness, q-eco-stellar-wallets-list, q-scf-funding-by-category, q-soroban-deploy-cli preserve dated observations and separate product, person, and command claims."
         },
         "note": "Dated/provenance-bearing overrides now distinguish source snapshots, legal entities, directory reconstructions, and current CLI/API semantics without unsupported comparisons. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "972021107a0b0919afedf3d825e15224c746586f51cc87a077fab8f90da03fbe",
           "q-asset-usdc-eurc-issuer": "14ef248c86b9d3fbc3ec39ba7d659a0bb644387599e2a1f3f5027260d7de2d62",
-          "q-builder-by-region-latam": "7a47850d5a2e7a5f2b30173825505ca26bd7a9cffbf74c66d21ebbbd85d30851",
+          "q-builder-by-region-latam": "788eb3922f28f3f8b15109307aa080ff5fa3fcbf7107ca638371df54cbfdc652",
           "q-eco-pyusd-stellar-freshness": "55d8c1e95c428ead511a88910da029af3fa21da01f9ddaf44306d0a322942fac",
           "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
-          "q-soroban-deploy-cli": "4468032ccf34076bab60e9fad279e782bfc47e1c47ce5c4b8f88b2a5a29568a4"
+          "q-soroban-deploy-cli": "f5742dc6e4f69ce03310856a3ec3d62332f6194067bc1a2d16aad3fdf555eb6f"
         }
       },
       {
@@ -1031,8 +1031,8 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Members agree: q-edge-metamask-evm-mental-model ('MetaMask supports Stellar as a default network', third-party Snap separate) and q-defi-bridge-evm-to-stellar-axelar (MetaMask swaps into Stellar documented, 'did not verify a MetaMask route'); q-asset-trustline-vs-sac and q-sor-sac-introspection agree that the issuer is the initial admin and set_admin transfers it. The note still says only that 'a dated third-party Stellar Snap exists', which the 2026-10-01 re-sweep already marked superseded, so the note omits MetaMask's own dated Stellar support.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-asset-trustline-vs-sac, q-defi-bridge-evm-to-stellar-axelar, q-edge-metamask-evm-mental-model, q-pc-address-types-strkey, q-sor-sac-introspection preserve address, asset, SAC, wallet, and administrator distinctions."
         },
         "note": "Native XLM has no issuer/trustline and is not ERC-20, but it has a deterministic network-specific SAC ID exposing the same asset through SEP-41; for issued assets the issuer is the SAC's initial admin and set_admin can transfer that role. Ordinary MetaMask EVM custom-network flow cannot add Stellar. As of 2026-10-01 (re-read 2026-11-02), MetaMask documents built-in Stellar support and swaps into Stellar, but no MetaMask route, messenger, or destination token was verified; the third-party Stellar Snap remains listed and is distinct from MetaMask's own support, MetaMask Bridge, or a safety endorsement. Wrapped/bridged assets remain separate representations.",
         "memberContentSha256": {
@@ -1040,7 +1040,7 @@
           "q-defi-bridge-evm-to-stellar-axelar": "da563fbed24c83a18c2cd6bf6f5a6e348aa058f1bca5f4e745e4cf656085d423",
           "q-edge-metamask-evm-mental-model": "ed15302fc782209a23743e90c42c0477abec55d447560e15e30f24f17905787e",
           "q-pc-address-types-strkey": "47dada099fd31ab21b253a849c9f4b89e3e601f2bd6eac7b074d57b6e08c5f42",
-          "q-sor-sac-introspection": "f429ff6d7ed91ddc8532a6a6f99a80b67454a29103af51d41b02f220e0f3854b"
+          "q-sor-sac-introspection": "7d9a79ce2fcdce6d908cb7204093acc9ef03ff70906b04b4cde9e72e32c58ace"
         }
       },
       {
@@ -1219,16 +1219,16 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-defi-defindex-honest, q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl, and q-edge-noinfo-exact-tvl-figure all report TVL as dated, provider-labeled snapshots without a required range or block-by-block claim; q-defi-aquarius-what-is carries no TVL scalar (its change is the Freighter/Varial rename). The note remains true.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent re-check rv-caps (Codex gpt-6-astra high) after the Blend cap was limited to the sls-039 declined history scope: q-defi-aquarius-what-is, q-defi-defindex-honest, q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl, and q-edge-noinfo-exact-tvl-figure preserve provider and date rules and limit partial credit to missing history."
         },
         "note": "A live provider may expose a many-decimal scalar, but it remains a provider/endpoint/as-of/inclusion/pricing snapshot rather than an objective protocol fact. The corpus no longer requires an approximate range or claims TVL necessarily moves block-by-block.",
         "memberContentSha256": {
           "q-defi-aquarius-what-is": "7d28613a671cbe3342e5b5c17720a62c2571b184226e29a542e7e887fc67064b",
           "q-defi-defindex-honest": "d46d1b38d374675fa92611d66f2fbe7ac6f4ae02a7028dc8072c7d38751316cd",
           "q-eco-defi-tvl-current": "9914a64f0b9cb2011d8d09dd274f3f4d061d48e2eb0244f9db7d4a3da3ed1f1e",
-          "q-edge-fresh-latest-blend-tvl": "cd6b6c7f10eb5fde13642b109a34d2839e4c2748aadbe8f6230490cb99433338",
-          "q-edge-noinfo-exact-tvl-figure": "927ceda477dcecb833fffba1948735e5cfb1f4c7038be5f5be242ec9ea74e6f2"
+          "q-edge-fresh-latest-blend-tvl": "34f5ede4495a8e40631a3740869b20ce289953bf94901bef9e31481a2a217942",
+          "q-edge-noinfo-exact-tvl-figure": "278c0d75358841b89fcff727054e675f5bb0fb7a1830959b80822e403b75d0a6"
         }
       },
       {
@@ -1314,15 +1314,15 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-hot-sdf-xlm-holdings-sales still describes sales through named exchanges/direct sales without a price guarantee and treats the 2019 no-additional-burn statement and the no-new-plan sweep as dated. q-hot-sdf-transparency-wallets-reports, q-org-sdf-mandate-buckets, and q-org-sdf-structure-mandate keep balances dated and non-exhaustive and reject ~30B as a current reserve, so the note remains true.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets, q-org-sdf-structure-mandate agree on current buckets, dated balances, and historical labels."
         },
         "note": "SDF sells existing XLM through named exchanges/direct sales for operations and mandate work without a price guarantee. The 2019 no-additional-burn statement and current no-new-plan sweep are dated evidence. Current mandate/dashboard/report balances are source-, method-, and timestamp-scoped; ~30B is not a current durable reserve fact and named mixed-timestamp accounts are non-exhaustive.",
         "memberContentSha256": {
-          "q-hot-sdf-transparency-wallets-reports": "b4a45a7433057552d6de572086194b1cb54aa098a5c127a345ff4f411d42cb0d",
-          "q-hot-sdf-xlm-holdings-sales": "324ffd926acadb83f5309786339f166f20d41df0b04f0ca019414d5dabae9be0",
-          "q-org-sdf-mandate-buckets": "fcb2c2d54441aecb4339d6219938a5c4978aeb82fe7aa7da140405b4c234bc2b",
-          "q-org-sdf-structure-mandate": "0a0199f96f9526446052478abd6075a32b62759b751738185ec7ac9f8b7d79fc"
+          "q-hot-sdf-transparency-wallets-reports": "9dd5344d54d73cda9d7b363eee7e83ae2cabe64a40dd7722773d2a8849a9c4bc",
+          "q-hot-sdf-xlm-holdings-sales": "f762a33bc5931d4541010fedc2299b5880f2c9df309bf97762d7aa92f8932097",
+          "q-org-sdf-mandate-buckets": "b5eed40319ca113f0a970afb4acb0405ee70cee90270e14a370aea8d2a27d187",
+          "q-org-sdf-structure-mandate": "ae1628b5785986fad875ee3aa2b507b1fc8a8f6d070d9bd02437039e726d61af"
         }
       },
       {
@@ -1377,13 +1377,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-asset-usdc-eurc-issuer added only an EURC same-ticker (MyKobo) note, and the other members changed metadata only; all still give GA5Z…KZVN as Mainnet, GBBD…FLA5 as Testnet, and the separate 2026-05-18/2026-05-19 CCTP milestones the note pins.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-asset-usdc-eurc-issuer, q-sor-sac-introspection, q-token-circle-usdc-on-stellar preserve Circle, network, issuer, SAC, and administrator distinctions."
         },
         "note": "USDC is a native classic Stellar asset and Circle product, distinct from XLM. GA5Z…KZVN is the Mainnet issuer while GBBD…FLA5 is Testnet. Circle's CCTP record distinguishes 2026-05-18 Stellar mainnet support from the 2026-05-19 SDF/Circle public-live announcement; the prior 2026-02-24 launch attribution is unverified. Product brand, on-chain issuer, jurisdiction-specific legal obligor, technical support, and public announcement remain separate. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes now separate the 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, matching this cluster claim verbatim. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
           "q-asset-usdc-eurc-issuer": "14ef248c86b9d3fbc3ec39ba7d659a0bb644387599e2a1f3f5027260d7de2d62",
-          "q-sor-sac-introspection": "f429ff6d7ed91ddc8532a6a6f99a80b67454a29103af51d41b02f220e0f3854b",
+          "q-sor-sac-introspection": "7d9a79ce2fcdce6d908cb7204093acc9ef03ff70906b04b4cde9e72e32c58ace",
           "q-token-circle-usdc-on-stellar": "7a8f09b36ae6b8db41f9802fdbb30f9ce9426916e33cea7c139d70b60e6886b4"
         }
       },
@@ -1573,11 +1573,11 @@
         "reSwept": {
           "date": "2026-11-02",
           "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-pc-practical-fee-setting moved stable -> scheduled (the 100-stroop fee floor and the Horizon lifecycle label unchanged). No stated value changed, so the other members of \"q-infra-horizon-vs-rpc + q-pc-practical-fee-setting\" still agree."
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-infra-horizon-vs-rpc, q-pc-practical-fee-setting preserve dated Horizon labels and endpoint boundaries without opposing quote rules."
         },
         "note": "As of 2026-09-09, the rendered Horizon pages and indexed EVM record agreed on nearing-end-of-life wording, and the sd-042 occurrence was fixed. As of 2026-11-02, the Lab API Explorer page says 'Horizon is considered deprecated.' (sd-072) while the APIs overview still says nearing end-of-life; q-infra-horizon-vs-rpc carries a dated caution for that page, and q-pc-practical-fee-setting keeps its dated 2026-09-08 nearing-end-of-life label. Both cases retain the endpoint-specific Horizon/RPC boundary rather than claiming complete replacement.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "03a774cd7fafcbc2c45ded06c5e0e0d041b2be4413184e350f986b31a8680796",
+          "q-infra-horizon-vs-rpc": "0954fbdd0627dd7ca3c5a34d5e89571428bac40d4793c3b7370d45322d14faeb",
           "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615"
         }
       },
@@ -1613,11 +1613,11 @@
         "reSwept": {
           "date": "2026-11-02",
           "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-pc-practical-fee-setting moved stable -> scheduled (the 100-stroop fee floor and the Horizon lifecycle label unchanged). No stated value changed, so the other members of \"Fees and Horizon/RPC estimator roles\" still agree."
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-infra-horizon-vs-rpc, q-pc-practical-fee-setting preserve dated Horizon labels and endpoint boundaries without opposing quote rules."
         },
         "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. As of 2026-09-09, the rendered Horizon pages and indexed EVM record agreed on nearing-end-of-life wording; as of 2026-11-02, the Lab API Explorer page instead says 'Horizon is considered deprecated.' (sd-072), and q-infra-horizon-vs-rpc carries a dated caution for it.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "03a774cd7fafcbc2c45ded06c5e0e0d041b2be4413184e350f986b31a8680796",
+          "q-infra-horizon-vs-rpc": "0954fbdd0627dd7ca3c5a34d5e89571428bac40d4793c3b7370d45322d14faeb",
           "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615"
         }
       },
@@ -1717,14 +1717,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All three members agree that Temporary entries are deleted and Persistent/Instance entries are archived and restorable. They also agree on CAP-0062 separation and P23 auto-restore via archivedSorobanEntries with RestoreFootprintOp as the fallback. The new dated 2026-11-02 TTL numbers in q-sor-p23-auto-restore-extendto do not touch the note.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-protocol-state-archival-ttl, q-sor-p23-auto-restore-extendto, q-soroban-storage-types agree on restoration before use; only detailed cases grade the invocation path."
         },
         "note": "Temporary entries expire irreversibly; Persistent and Instance entries archive and are restorable. CAP-0062 separates live/archive state; CAP-0066 added automatic restoration behavior. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-protocol-state-archival-ttl": "8fc5ea8cde2aa0affe832aad70e405f1147e281a6ae21aad42cdf82c90e46395",
-          "q-sor-p23-auto-restore-extendto": "e2338d85a71b66c6491c8f96b92a7f2a56f0e80321063c05947ad1edc144ae73",
-          "q-soroban-storage-types": "bf3994603de7cfc1366334c23580f90966a80aa1e8d249b96d2789b83cab6884"
+          "q-sor-p23-auto-restore-extendto": "154abd5983c6d57471668358679b8aad3d734e89caacc6d14b805ffc730fec8d",
+          "q-soroban-storage-types": "343a0c1d030f1d0bbdfa1331474da011e0d6ff70cd9921500161200f1b3fb071"
         }
       },
       {
@@ -1781,14 +1781,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The anchor roster is now dated 2026-11-02, and the Rust case notes that a 2026-11-02 query returned 51 matches without the 2026-07-11 names. Both still treat Scout as dated candidate discovery and do not infer deployment or seniority. That matches the note.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-anchor-list-builders-discovery, q-builder-by-region-latam, q-builder-rust-soroban-devs agree on dated candidate discovery and match evidence."
         },
         "note": "Scout is candidate discovery. Membership/counts are dated; public footprints corroborate returned rows but do not establish deployment, audit status, seniority, or availability. Skill matches need row-level provenance (sls-041). Re-swept 2026-07-28: the 2026-07-15 reopen was only q-builder-by-region-latam changing an improvement root-cause pointer; roster/evidence-tier claims remain consistent.",
         "memberContentSha256": {
           "q-anchor-list-builders-discovery": "8a4ae812c52c911bb5d3db56e021be50d5a41e336d344d12ec1ab11bcd896fe1",
-          "q-builder-by-region-latam": "7a47850d5a2e7a5f2b30173825505ca26bd7a9cffbf74c66d21ebbbd85d30851",
-          "q-builder-rust-soroban-devs": "79656914e60bf4027d674314958d3d2d71a36a57e563709ead00a8eb9b68923d"
+          "q-builder-by-region-latam": "788eb3922f28f3f8b15109307aa080ff5fa3fcbf7107ca638371df54cbfdc652",
+          "q-builder-rust-soroban-devs": "3b0785b9a2ca6002513ec1b28ad10c6da9de4f2cb37a679ba368e372c24d2748"
         }
       },
       {
@@ -1804,12 +1804,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-nqg-voting and q-scf-verified-members give the same Verified/Pathfinder/Navigator/Pilot permissions and Open-only Build voting. In both, Pilot is the delegate role. q-builder-by-scf-tier keeps project awards separate from person-level tier claims, and q-scf-build-award-cap is project-scoped ($150K in XLM). The note's role/award/person separation holds.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-builder-by-scf-tier, q-scf-build-award-cap, q-scf-nqg-voting, q-scf-verified-members separate governance roles, project awards, and person claims."
         },
         "note": "Verified/Pathfinder/Navigator/Pilot are governance roles. Award programs and submission records concern projects. Neither supplies a person-level advisor ranking without a current attribution crosswalk. Re-swept 2026-07-28: Scout removed the retired scfTier field/filter on 2026-07-15; governance roles, project awards, and person-level attribution remain consistently separated.",
         "memberContentSha256": {
-          "q-builder-by-scf-tier": "58fbed4f1214b66c23e8cd59e0d38e0f95477e37fc9610b8222f2576f91883e2",
+          "q-builder-by-scf-tier": "e47918beeea611139b95b9e30be476ce77136b9567c037673159575cd10e3f9d",
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
           "q-scf-nqg-voting": "92b0aa8a0fa7c9127463da7ced369345edf0b55c8207c8481a39fe2867a2bc54",
           "q-scf-verified-members": "d8d38abd545459080f53ccbc15d30e4fea65819e7481bc900effe854348f1ba8"
@@ -2115,12 +2115,12 @@
         "note": "corrected; sls-020 recurrence.",
         "memberContentSha256": {
           "q-comp-security-disclosure-programs": "c71094fbb1347b0fa6861413bc4cbd9d4b128d2c07edf9290282391d30c38820",
-          "q-scf-sdf-bug-bounty": "939ca58a685617b1222466bc96ebeec5361da627b72a4c0b8a9ea75a8c1ddb79"
+          "q-scf-sdf-bug-bounty": "35522f447ec5176ebe40a38045a05fff1443808366d832e95b19fd22d5d0aeee"
         },
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-comp-security-disclosure-programs now dates the map 2026-11-02, says the SDF landing page routes only to HackerOne, and rewrites its notes as the three-part map; q-scf-sdf-bug-bounty (unchanged) keeps the same HackerOne-consolidation, deprecated general Immunefi, separate OpenZeppelin bounty, and Audit Bank distinctions, so no contradiction and the short note stands.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-comp-security-disclosure-programs, q-scf-sdf-bug-bounty agree on HackerOne consolidation and separate bounty scopes."
         }
       },
       {
@@ -2354,13 +2354,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-sor-p23-auto-restore-extendto added dated 2026-11-02 Mainnet minPersistentTTL/maxEntryTTL figures beside the Core defaults, and q-sor-force-fast-archival-localnet changed only truth.reverifyBy; both still use archivedSorobanEntries with restorePreamble normally nil and unrestorable Temporary data, so the note stands.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto share the sd-078 cap and normal P23 restoration rules."
         },
         "note": "corrected; sd-007 recurrence and sd-019. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-sor-force-fast-archival-localnet": "c00e2417b7f3427bfd6d65602fc3f5aa92ad548dfbfda457184aab1f2131126c",
-          "q-sor-p23-auto-restore-extendto": "e2338d85a71b66c6491c8f96b92a7f2a56f0e80321063c05947ad1edc144ae73"
+          "q-sor-force-fast-archival-localnet": "cb8fb02afb45e8bc4096bd419cfe0b7d5bb98252da7d057fa1fd3d72b07b0761",
+          "q-sor-p23-auto-restore-extendto": "154abd5983c6d57471668358679b8aad3d734e89caacc6d14b805ffc730fec8d"
         }
       },
       {
@@ -2414,13 +2414,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Neither q-asset-deploy-sac-cli nor q-sor-sac-introspection changed judge-facing text (only reverifyBy/truth metadata). Both still derive the SAC ID deterministically via CONTRACT_ID_PREIMAGE_FROM_ASSET, and both treat the issuer as the initial admin, not the token C-address.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-asset-deploy-sac-cli, q-sor-sac-introspection agree on deterministic SAC identity and initial issuer administration."
         },
         "note": "ID is deterministic from Asset plus network; in-contract derivation uses with_stellar_asset(...).deployed_address(); issuer G-address is not token C-address. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-deploy-sac-cli": "71c516f562bac26dae1f33db95f29f9203344e4f531c714f1426295523be33ad",
-          "q-sor-sac-introspection": "f429ff6d7ed91ddc8532a6a6f99a80b67454a29103af51d41b02f220e0f3854b"
+          "q-sor-sac-introspection": "7d9a79ce2fcdce6d908cb7204093acc9ef03ff70906b04b4cde9e72e32c58ace"
         }
       },
       {
@@ -2474,13 +2474,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-soroban-cli-bindings now says that, as of CLI 28.1.0 (2026-09-26), TypeScript bindings still work but are deprecated toward the JS SDK generator, and it adds KMP to the placeholder list. q-soroban-deploy-cli has no judge-facing change. The cases cover disjoint commands (bindings vs build/deploy/invoke), so they do not conflict.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-soroban-cli-bindings, q-soroban-deploy-cli describe distinct binding and deployment commands without opposing grading rules."
         },
         "note": "corrected; owner candidate captured in research. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-soroban-cli-bindings": "0ebb945bb04599f9e88a8a3af74f43640a798b9a94f222887b8455e5e4ef8fac",
-          "q-soroban-deploy-cli": "4468032ccf34076bab60e9fad279e782bfc47e1c47ce5c4b8f88b2a5a29568a4"
+          "q-soroban-deploy-cli": "f5742dc6e4f69ce03310856a3ec3d62332f6194067bc1a2d16aad3fdf555eb6f"
         }
       },
       {
@@ -2536,13 +2536,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-sep-41-token-interface now dates SEP-41 as Draft v0.5.2 (updated 2026-08-24) and still says the SAC implements SEP-41 as a subset of CAP-46-6. q-sor-sac-introspection has no judge-facing change and still says SEP-41 has no generic issuer/asset method. The cases do not conflict.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-sep-41-token-interface, q-sor-sac-introspection agree on SEP-41 compatibility and separate SAC identification."
         },
         "note": "corrected; sd-020. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-sep-41-token-interface": "4207954623e9cd72fa6e59eb36b7de63d4b80f20a26f200981e39f36347c3837",
-          "q-sor-sac-introspection": "f429ff6d7ed91ddc8532a6a6f99a80b67454a29103af51d41b02f220e0f3854b"
+          "q-sor-sac-introspection": "7d9a79ce2fcdce6d908cb7204093acc9ef03ff70906b04b4cde9e72e32c58ace"
         }
       },
       {
@@ -2603,14 +2603,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-sor-p23-auto-restore-extendto now dates the Mainnet settings as of 2026-11-02 (minPersistentTTL 2,073,600; maxEntryTTL 3,110,400 on Mainnet and Testnet). These match the dated 2026-07-10 values in q-sor-ttl-defaults-extend. All three members keep extension, P23 auto-restore, and Temporary deletion separate, as the note says.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-sor-p23-auto-restore-extendto, q-sor-ttl-defaults-extend, q-soroban-storage-types share sd-078 attribution rules and separate restoration from extension."
         },
         "note": "Dated network settings, explicit extension, P23 auto-restore, and Temporary deletion remain separate concepts. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-sor-p23-auto-restore-extendto": "e2338d85a71b66c6491c8f96b92a7f2a56f0e80321063c05947ad1edc144ae73",
-          "q-sor-ttl-defaults-extend": "757bceadb9ec880f7b06c2125e8152b504eed116988071469884273fe8f33b11",
-          "q-soroban-storage-types": "bf3994603de7cfc1366334c23580f90966a80aa1e8d249b96d2789b83cab6884"
+          "q-sor-p23-auto-restore-extendto": "154abd5983c6d57471668358679b8aad3d734e89caacc6d14b805ffc730fec8d",
+          "q-sor-ttl-defaults-extend": "63a7dbe39d333f05b4196049ed6bd64fd695d8b793cbecfa15f51346cecdcfe9",
+          "q-soroban-storage-types": "343a0c1d030f1d0bbdfa1331474da011e0d6ff70cd9921500161200f1b3fb071"
         }
       },
       {
@@ -3168,14 +3168,14 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The four members keep separate scopes. The resource case covers phase-aware, network-controlled limits. The Instance case covers whole-entry loading and DoS, and its new read-path qualifier does not conflict with the Persistent case's network-controlled entry limit. The nullifier case covers per-key persistent retention and TTL. The note still holds.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-sor-persistent-unbounded-collection-cap, q-soroban-resource-limits, q-soroban-instance-storage-dos, q-zk-nullifier-storage separate resource limits, entry growth, Instance risks, and nullifier retention."
         },
         "note": "The generic resource case covers simulation and network limits. The Instance-storage case covers contract-instance state and DoS risk. The nullifier case covers retention and privacy safety. The Persistent-collection case owns one growing Persistent value under one key. The cases are compatible because they use different storage scopes and threat models.",
         "memberContentSha256": {
           "q-sor-persistent-unbounded-collection-cap": "16776ba5bcb0c76d3702f6de28334fd4ad4c43e29fc1db45ffe6c56b673961f2",
           "q-soroban-instance-storage-dos": "188f24e0b7d6d3f6311f759aa65ad57bc7a521e7464c3d426a526e1678817e50",
-          "q-soroban-resource-limits": "c523db7c6eb5f610cce550ede4e808abb2f51cad8486c81d33d05e41ae59c129",
+          "q-soroban-resource-limits": "2e6b482fc814f94a3e88a35713cea24208e2c19c3403d29f929ce8d05b0ed49a",
           "q-zk-nullifier-storage": "f248a6dab58efd086fa840aa3787f229d437358cbe119b3c12405875916f011f"
         }
       },

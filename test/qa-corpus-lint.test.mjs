@@ -201,9 +201,16 @@ describe("QA corpus lint lanes", () => {
     ["Quoting the official page is not a wrong claim while sd-901 stands; grade caps at partial.", new Map([["sd-901", "fixed-upstream"]]), 1],
     ["Quoting the official page is not a wrong claim while sd-902 stands; grade caps at partial.", new Map(), 1],
     ["Quoting the official page is not a wrong claim; grade caps at partial.", new Map(), 1],
+    ["Quoting the canonical Scout source is not a wrong claim while a cached copy shows it.", new Map(), 1],
+    ["An attributed quote is not a wrong claim. Grade caps at partial for that claim.", new Map(), 1],
+    ["Quoting the official old page is not a wrong claim while sd-901 stands; grade caps at partial. Quoting the official other page is not a wrong claim while sd-902 stands; grade caps at partial.", new Map([["sd-901", "fixed-upstream"], ["sd-902", "verified"]]), 1],
+    ["Quoting the official other page is not a wrong claim while sd-902 stands; grade caps at partial. Quoting the official old page is not a wrong claim while sd-901 stands; grade caps at partial.", new Map([["sd-901", "fixed-upstream"], ["sd-902", "verified"]]), 1],
+    ["Cap a Lumenloop-scoped answer at partial for recall gaps.", new Map(), 1],
+    ["Cap a Lumenloop-scoped answer at partial while ll-901 stands.", new Map([["ll-901", "verified"]]), 0],
+    ["Naming such a product as a vault share is not a wrong claim; calling it native staking is wrong.", new Map(), 0],
   ])("checks that a partial cap names an active finding: %s", (notes, statuses, warnings) => {
     const findings = lintCapFindings([{ id: "q-fixture-cap", golden: { notes } }], statuses);
-    expect(findings.filter((item) => item.lane === "cap-finding" && item.level === "warn")).toHaveLength(warnings);
+    expect(findings.filter((item) => item.lane === "cap-finding" && item.level === "error")).toHaveLength(warnings);
   });
 
   it("warns when stable notes cite an as-of value", () => {

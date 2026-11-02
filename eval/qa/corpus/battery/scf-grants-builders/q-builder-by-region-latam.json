@@ -18,7 +18,7 @@
       "Do NOT replace live directory discovery with memory or web search; external sources may corroborate returned profiles.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "GT-35 CORRECTION 2026-07-10: grade a dated, Scout-attributed roster with evidence boundaries. Live filters are q/location/skill; directory count and membership are volatile. Public footprints may corroborate results and Tippa/Stellar View are not corpus-only.\nGT-35 independently confirmed by processes 3287/3289. Treat freshness as required despite the inherited static tag.\nAccurately quoting the canonical Scout documentation on the pre-2026-07-15 `scfTier` filter or pre-2026-07-14 builder skill-match provenance is not a wrong claim while cached or older copies show those pre-fix contracts; grade caps at partial only for those claims unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "GT-35 CORRECTION 2026-07-10: grade a dated, Scout-attributed roster with evidence boundaries. Live filters are q/location/skill; directory count and membership are volatile. Public footprints may corroborate results and Tippa/Stellar View are not corpus-only.\nGT-35 independently confirmed by processes 3287/3289. Treat freshness as required despite the inherited static tag.\nScout removed the never-populated `scfTier` builder field and filter in 1.7.19 (sls-040, resolved 2026-07-15) and builder rows have carried `match` provenance since 2026-07-14 (sls-041, resolved); both were re-checked live on 2026-11-02. An answer that labels those pre-fix contracts as historical is correct; an answer that presents an `scfTier` builder filter as current, or presents builder matches as unexplained, is wrong."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -103,13 +103,21 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-01)",
+      "by": "golden cap backlog 2026-11-02 (caps-1)",
       "evidence": [
-        "C 2026-11-02: https://stellarlight.xyz/api/builders?location=Latin%20America&limit=200 → counts {returned: 51, total: 51}; locations include 'Santiago, Chile' and 'Petrópolis, Rio de Janeiro, Brazil'. The golden's 19-match figure is explicitly dated 2026-07-11 and still holds as a dated example.",
-        "A 2026-11-02: https://stellarlight.xyz/api/openapi.json (apiVersion 1.9.116) lists /api/builders parameters q, location, skill; F: ?featured=true returns supportedParams [q, skill, tech, location, limit, offset, fields] (a tech filter now also exists; the note is incomplete, not false).",
-        "A 2026-11-02: https://stellarlight.xyz/api/status builders count 399, 'Synced from Stellar Passport: small and growing dataset'; growth from 19 to 51 matches confirms the roster-volatility avoid items.",
-        "No judge-facing field changed. The Raven scout.getBuilders read and the direct read are one witness (class C) for the count.",
-        "Sibling sweep 2026-11-02: q-comp-cross-bitso-sep31, q-builder-by-scf-tier, q-builder-rust-soroban-devs assert no fixed Latin America count; no contradiction."
+        "[F] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/builders?scfTier=top → HTTP 400 \"Unsupported query parameter(s): scfTier. This endpoint does not filter by them (no SCF-tier/award data exists on builder profiles: a project's award history lives on /api/projects/search rows).\" supportedParams [q, skill, tech, location, limit, offset, fields].",
+        "[A] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/openapi.json → apiVersion 1.9.116; /api/builders parameters q, location, skill (no scfTier).",
+        "[C] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven scout.getBuilders({ scfTier: \"top\" }) → { ok: false, error: { kind: \"error\", status: 400, message: \"Unsupported query parameter(s): scfTier ...\" } } (consumer path agrees with the direct read; same witness class).",
+        "[C] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/builders?skill=Rust&limit=200 → meta.counts {returned 51, total 51}; meta.matchBasis present (\"each row's `match` names the fields, projects and literal terms that hit\"); row 0 match {matchedFields: [\"bio\"], matchedTerms: {rust: \"rust\"}, basis: \"profile-text\"}.",
+        "[C] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven scout.getBuilders({ skill: \"Rust\", limit: 5 }) → counts {returned 5, total 51}, meta.matchBasis present, row 0 match basis \"profile-text\".",
+        "Finding: sls-040 (resolved 2026-07-15; refs Stellar-Light/stellarlight#521, PR #528, PR #540) and sls-041 (resolved 2026-07-14; PR #498) are in improvements/resolved.json. No active finding backs the cap, and the live surface carries both fixes, so the cap ends (ADR-0008 amendment 2026-11-02).",
+        "Change: only the cap sentence in golden.notes was replaced by a plain rule; answer, keyFacts, and avoid are unchanged.",
+        "Sibling sweep 2026-11-02: grep 'scfTier' over eval/qa/corpus/battery → q-builder-by-scf-tier and q-builder-rust-soroban-devs (both edited in this lane with the same rule); no contradiction."
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: a partial cap needs an active improvements finding; this cap's finding is resolved, so the cap ends)",
+        "improvements/resolved.json entry sls-040 (resolved 2026-07-15; live fix re-confirmed 2026-11-02)",
+        "improvements/resolved.json entry sls-041 (resolved 2026-07-14; live fix re-confirmed 2026-11-02)"
       ]
     },
     "origin": "raven-next q-builder-by-region-latam"

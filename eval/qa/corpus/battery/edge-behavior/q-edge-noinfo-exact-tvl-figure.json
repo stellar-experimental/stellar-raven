@@ -16,7 +16,7 @@
       "Do NOT claim Raven cannot access a live scalar, assert that TVL necessarily moves block-by-block, or silently combine incompatible scopes.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "GT-25 CORRECTION 2026-07-10: precise live provider scalars are accessible, but they are provider-defined snapshots rather than universal truth. Grade provider/endpoint/as-of/method scope and no false exactness; do not require an approximate range or claim block-by-block movement.\nGT-25 independently confirmed by processes 3268/3273; reuse sls-031/sls-038 rather than duplicate findings.\nAccurately quoting the canonical Scout documentation on missing provider/`tvlAsOf` fields or the absent `analyze.totalTvlUSD` rollup is not a wrong claim while a cached or older copy still omits the fields and rollup added by the 2026-07-14 fixes; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "GT-25 CORRECTION 2026-07-10: precise live provider scalars are accessible, but they are provider-defined snapshots rather than universal truth. Grade provider/endpoint/as-of/method scope and no false exactness; do not require an approximate range or claim block-by-block movement.\nGT-25 independently confirmed by processes 3268/3273; reuse sls-031/sls-038 rather than duplicate findings.\nScout's TVL analysis has served `provider`, `asOf`, per-project `tvlAsOf`, an inclusion `basis`, and the `totalTvlUSD` rollup since 2026-07-14 (sls-031 and sls-038, resolved; re-checked live 2026-11-02). An answer that labels the pre-fix omissions as historical is correct; an answer that presents them as current, or claims Scout serves no provider or as-of fields for TVL, is wrong."
   },
   "tags": {
     "category": "edge-behavior",
@@ -71,34 +71,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "golden cap backlog 2026-11-02 (orchestrator, after independent review rv-caps, Codex gpt-6-astra high)",
       "evidence": [
-        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; both independently observed DefiLlama /v2/chains value 229093918.7739924 at separate times.",
-        "Existing improvements/stellar-light-scout/sls-031 and sls-038 cover provenance and ecosystem-rollup contract gaps.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sls-031 and sls-038; the provider-scoped TVL facts are unchanged.",
-        "Improvements review 2026-08-27: improvements/resolved.json entries sls-031 and sls-038 record 2026-07-14 fixes; the disputed claims are missing TVL methodology fields and the absent analyze.totalTvlUSD rollup in older Scout copies.",
-        "Sibling sweep 2026-08-27: grep sls-031|sls-038|totalTvlUSD|tvlMethodUrl → q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl; no contradiction",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; all symmetric-caution provenance is unchanged.",
-        "Sibling sweep 2026-08-27: grep exact objective chain fact|provider value|TVL methodology|totalTvlUSD → q-edge-noinfo-exact-tvl-figure, q-eco-defi-tvl-current; no contradiction",
-        "Structural re-form (long-fact): shortened the source and TVL-method requirements; truth unchanged.",
-        "Live re-check 2026-08-29: https://api.llama.fi/v2/chains and https://github.com/DefiLlama/DefiLlama-Adapters show a live provider value and current source-backed TVL computation.",
-        "Live re-check 2026-08-29: https://api.llama.fi/v2/historicalChainTvl/Stellar exposes dated Stellar TVL points for visible as-of handling.",
-        "Live re-check 2026-08-29: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/stellar-amm/index.js and https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/skills/adapter-author/references/adapter-patterns.md expose the endpoint, latest-day selection, inclusion methodology, and pricing behavior.",
-        "Sibling sweep 2026-08-29: grep TVL methodology|exact objective chain fact|provider.*endpoint|retrieval.*as-of|DefiLlama → q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure, and related TVL cases; no contradiction."
+        "[C] 2026-11-02T21:24:44Z to 21:24:54Z GET https://stellarlight.xyz/api/analyze?dimension=tvl → tvl {totalTvlUSD 1980381301, trackedProjects 17, asOf \"2026-11-02T13:19:15.688Z\", provider \"DefiLlama\"}; top10 rows carry tvlAsOf (Spiko 2026-09-14T10:30:21.591Z, Blend 2026-11-02T13:19:15.688Z); basis \"Sum of per-project tvlUSD across ACTIVE directory projects tracked on DefiLlama (tvlUSD != null; null = not tracked there, never zero ...) As-of dated: never an exact to-the-dollar live\".",
+        "[C] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven scout.analyzeEcosystem({ dimension: \"tvl\" }) → provider DefiLlama, asOf 2026-11-02T13:19:15.688Z, totalTvlUSD 1980381301, trackedProjects 17 (same witness class as the direct read).",
+        "[A] 2026-11-02T21:24:44Z to 21:24:54Z https://stellarlight.xyz/api/openapi.json apiVersion 1.9.116 documents /api/analyze with parameter dimension.",
+        "Finding: sls-031 (resolved 2026-07-14; ref Stellar-Light/stellarlight#494) and sls-038 (resolved 2026-07-14; PR #495) are in improvements/resolved.json. No active finding backs the cap, and the live surface carries both fixes, so the cap ends (ADR-0008 amendment 2026-11-02).",
+        "Change: only the cap sentence in golden.notes was replaced by a plain rule; answer, keyFacts, and avoid are unchanged. The dated TVL figures above are evidence only and are not added to the golden.",
+        "Sibling sweep 2026-11-02: grep 'sls-031|tvlAsOf|totalTvlUSD' over eval/qa/corpus/battery → q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl, q-defi-defindex-honest; each treats TVL as a provider-scoped dated value and none claims the fields are missing. Review rv-caps found that q-edge-fresh-latest-blend-tvl still credited a cached pre-fix provenance omission; that cap is now limited to the sls-039 declined history scope, so the siblings agree."
       ],
       "rootCause": [
-        "improvements/stellar-light-scout/sls-031-tvl-methodology-provenance.md",
-        "improvements/stellar-light-scout/sls-038-analyze-tvl-contract-mismatch.md",
-        "Eval-side aggregation/cadence explanation was overclaimed.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: a partial cap needs an active improvements finding; this cap's finding is resolved, so the cap ends)",
+        "improvements/resolved.json entry sls-031 (resolved 2026-07-14; live fix re-confirmed 2026-11-02)",
+        "improvements/resolved.json entry sls-038 (resolved 2026-07-14; live fix re-confirmed 2026-11-02)"
       ]
     },
     "origin": "raven-next q-edge-noinfo-exact-tvl-figure"
