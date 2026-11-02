@@ -113,28 +113,34 @@ Detection is 4 of 5. The miss is a property of the source: a page that never cha
 ### False alarms
 
 The 22 sentinels in [`eval/qa/source-sentinels.json`](../../../eval/qa/source-sentinels.json) all
-hold on 2026-11-02, so the current set has 0 false alarms. They cover 20 of the 35 Part 1 probe
-cases. The other 15 state a dated or settled fact, or need a source that a plain fetch cannot read,
-such as the live network settings behind `q-soroban-wasm-size-limit`.
+hold on 2026-11-02. That result shows only that each anchor fits its page today: an author confirms
+every anchor live before it lands, so the Part 1 false-alarm count cannot be measured on this set.
+The sentinels cover 18 of the 35 Part 1 probe cases. The other 17 state a dated or settled fact, or
+need a source that a plain fetch cannot read. Examples are the live network settings behind
+`q-soroban-wasm-size-limit` and `q-protocol-max-tx-set-size`, and the HackerOne program profile
+behind `q-comp-security-disclosure-programs`.
 
 A durability proxy estimates the rate over time. [`quote-sweep.json`](quote-sweep.json) re-reads
 every exact quote in the newest class A and B evidence notes of the battery: 154 quotes. Of these,
 75 were recorded in July to October 2026 and fetched without error. Three of the 75 come from a PDF,
-which the plain fetch cannot read. Of the other 72 quotes, 68 hold. The 4 drifts:
+which the plain fetch cannot read. Of the other 72 quotes, 68 hold. The quotes were 18 to 97 days
+old, with a median of 27 days. The 4 drifts:
 
 | Source | Class | Reason |
 |---|---|---|
 | `noether.exchange` | matcher artifact | A period became a semicolon. The fact holds. |
-| `agentic-commerce-protocol` README | reworded | The maintainer sentence became a badge. |
+| `agentic-commerce-protocol` README | matcher artifact | The sentence is unchanged inside Markdown link and bold syntax. |
 | `stellar-mpp-sdk` README | reworded | The session-mode text was rewritten. |
 | MetaMask non-EVM networks page | source changed | MetaMask now lists Stellar. |
 
-Three of 72 anchors needed new wording after 3 to 5 weeks, about 4 percent. That is the expected
-false-alarm load. Each costs one anchor edit, not a full re-verification.
+Three of 72 quotes failed while their fact still held, about 4 percent at a median age of 27 days.
+These quotes were not written as anchors, so the rate is an estimate for authored anchors, not a
+measurement of them. A false alarm costs one anchor edit, not a full re-verification.
 
 ### Decision
 
-Adopted. Sentinels pass the bar, cost nothing to run, and give the same result on each run. Freeform
+Adopted. Sentinels detect 4 of 5 controls, cost nothing to run, and give the same result on each
+run. The false-alarm side of the bar rests on the quote-sweep estimate above. Freeform
 quotes in evidence notes are not usable anchors without change: markdown, PDF, and page chrome break
 them. Each sentinel is therefore written as a structured entry and confirmed live when it lands.
 The daily workflow `.github/workflows/golden-sentinels.yml` keeps one `golden-sentinels` issue in
@@ -145,3 +151,25 @@ step with the drift set. The `truth-maintenance` skill queues each drifted case 
 
 - SLP-0006 now shows status Final. Its golden states the status as of July 11, 2026, so it stays true.
 - Protocol 29 went live on Mainnet on October 1, 2026. It is a security release with no CAPs.
+
+### Independent review
+
+An independent review of PR #314 (Codex `gpt-6-astra`, Grok `grok-4.7`, and Kimi `kimi-k3`, each at
+high effort) changed the set and the runner on the same day:
+
+- `x402-no-sep` now reads the SEP list in `ecosystem/README.md` instead of the repository README.
+- `ledger-operation-limits` and `sdf-bug-bounty-hackerone` were removed. The first matched a
+  sentence dated July 2026, and the second matched a landing page that its golden ranks below the
+  HackerOne policy. No plain fetch reads the live values.
+- `mazieres-chief-scientist` binds the title to his team card, and `go-sdk-module` binds the module
+  to the docs' package location.
+- `mpp-payment-intents` requires the Session section after Charge. `ml-dsa-not-shipped` also
+  matches "post-quantum" and "quantum-safe".
+- `rpc-archive-provider-names` counts the nine named archive rows, so a replaced provider drifts
+  even when the row count stays at nine. Both archive sentinels guard on the table header.
+- `zenex-xlm-usd-market-active` checks the market status, not only the deployment introduction.
+- A check that can hold on an empty page (`absent`, or a count of 0) must name a `guard` pattern. A
+  failed guard is a read error, so a challenge page or an empty response cannot pass as a hold.
+- The runner reads stale sentinels with `--ids` and reports them as unread in report mode. A drift
+  stays in the issue while its source is unreadable. The workflow fails while any sentinel is
+  unread, and it runs only on the default branch.

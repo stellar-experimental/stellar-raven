@@ -5,13 +5,16 @@ name: Golden source sentinels
 # golden-truth re-verification before its `truth.reverifyBy` date; it is never evidence by itself.
 #
 # The report is deterministic (eval/qa/source-sentinels.mjs): its first line carries a fingerprint
-# of the drift set only, so read errors cannot churn the issue.
+# of the drift set only. The open issue's body is passed back as --previous, so a drifted sentinel
+# whose source is unreadable on this run stays in the drift set and cannot churn the issue.
 #   drift, no open issue          -> open one
 #   drift, fingerprint differs    -> replace the body and add one comment
 #   drift, fingerprint same       -> no change
 #   no drift, no read errors      -> close an open issue
 #   no drift, some read errors    -> leave an open issue as is (an unread page proves nothing)
-# Every fetch failing exits 2 before the issue step. No secret is needed; a fork runs it unchanged.
+# Any unreadable or stale sentinel then fails the run, so a dead source is visible in the Actions
+# history even when no issue is open. Every fetch failing exits 2 before the issue step.
+# No secret is needed; a fork runs it unchanged.
 
 on:
   schedule:
@@ -35,6 +38,8 @@ env:
 
 jobs:
   sentinels:
+    # The issue tracks the default branch only; a dispatch from another branch must not close it.
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -46,7 +51,10 @@ jobs:
         id: report
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: node eval/qa/source-sentinels.mjs --report golden-sentinels-report.md --commit "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue list --label golden-sentinels --state open --json body --jq '.[0].body // ""' > previous-report.md
+          node eval/qa/source-sentinels.mjs --report golden-sentinels-report.md --previous previous-report.md --commit "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
       - name: sync the golden-sentinels issue
         env:
           GH_TOKEN: ${{ github.token }}
@@ -65,7 +73,7 @@ jobs:
                 || echo "::warning::Could not assign $SENTINEL_ISSUE_ASSIGNEE to new issue $created"
               echo "Opened $created ($DRIFT drifted)."
             else
-              current=$(gh issue view "$existing" --json body --jq '.body' | head -n 1 | sed -n 's/.*golden-sentinels-report fingerprint=\([0-9a-f]\{64\}\).*/\1/p')
+              current=$(gh issue view "$existing" --json body --jq '.body | split("\n") | .[0]' | sed -n 's/.*golden-sentinels-report fingerprint=\([0-9a-f]\{64\}\).*/\1/p')
               if [ "$current" = "$FINGERPRINT" ]; then
                 echo "Drift set unchanged; issue #$existing left as is."
               else
@@ -83,3 +91,11 @@ jobs:
           else
             echo "No drift and no open issue ($ERRORS unreadable)."
           fi
+      - name: fail on unreadable sentinels
+        if: steps.report.outputs.errors != '0'
+        env:
+          ERRORS: ${{ steps.report.outputs.errors }}
+        run: |
+          echo "::error::$ERRORS sentinels could not be read or are stale. The report lists them."
+          cat golden-sentinels-report.md >> "$GITHUB_STEP_SUMMARY"
+          exit 1

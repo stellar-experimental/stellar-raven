@@ -7,20 +7,27 @@
  *   present  the pattern still matches (the source still states the golden's value)
  *   absent   the pattern still does not match (a roadmap item has not shipped)
  *   count    the pattern matches exactly `count` times (a roster still has N rows)
- * A failed check is `drift`: a trigger that queues the case for golden-truth re-verification,
- * never evidence for a gospel change. The method and its trial are recorded in
+ * A check that can hold on an empty page (absent, or a count of 0) also names a `guard`: a
+ * pattern that must match before the page counts as read. A failed check is `drift`: a trigger
+ * that queues the case for golden-truth re-verification, never evidence for a gospel change.
+ * The method and its trial are recorded in
  * research/audits/2026-11-02-golden-freshness-probe/README.md.
  *
  *   node eval/qa/source-sentinels.mjs --check                offline: schema, cases, caseAsOf
  *   node eval/qa/source-sentinels.mjs [--ids a,b]            live run; prints a table
- *   node eval/qa/source-sentinels.mjs --report <file.md>     live run; writes the issue report
+ *   node eval/qa/source-sentinels.mjs --report <file.md> [--previous <issue-body.md>]
+ *                                                            live run; writes the issue report
  *
- * The live run prints `drift=<n>`, `errors=<n>`, and `fingerprint=<sha256>` lines for
- * $GITHUB_OUTPUT when --report is set. It exits 2 when every fetch fails, so an outage can
- * never close the sentinel issue as clean.
+ * A live table run also reads stale sentinels, so an author can re-confirm an anchor before
+ * updating caseAsOf. Report mode lists a stale sentinel as unread instead: its anchor is not
+ * confirmed for the case's current truth. With --previous, a sentinel that drifted in the
+ * previous report and is unreadable now stays in the drift set, so a flaky source cannot churn
+ * the issue. Report mode prints `drift=<n>`, `errors=<n>`, and `fingerprint=<sha256>` lines for
+ * $GITHUB_OUTPUT. The run exits 2 when every fetch fails, so an outage can never close the
+ * sentinel issue as clean.
  */
 import { createHash } from "node:crypto";
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -82,7 +89,7 @@ export function validateSentinels(doc, cases) {
       problems.push(`${where}: url must be an absolute URL`);
     }
     if (url && url.protocol !== "https:") problems.push(`${where}: url must use https`);
-    if (url && /\/(blob|tree)\/[0-9a-f]{40}\//.test(url.pathname)) problems.push(`${where}: a commit-pinned URL cannot drift`);
+    if (url && isCommitPinned(url)) problems.push(`${where}: a commit-pinned URL cannot drift`);
 
     const check = s?.check ?? {};
     if (!KINDS.has(check.kind)) problems.push(`${where}: check.kind must be present, absent, or count`);
@@ -97,8 +104,25 @@ export function validateSentinels(doc, cases) {
       problems.push(`${where}: a count check needs a non-negative integer count`);
     }
     if (check.kind !== "count" && check.count !== undefined) problems.push(`${where}: count applies only to a count check`);
+    if (check.guard !== undefined) {
+      try {
+        if (typeof check.guard !== "string" || check.guard.length === 0) throw new Error("empty");
+        new RegExp(check.guard, check.flags ?? "");
+      } catch {
+        problems.push(`${where}: check.guard must be a non-empty valid regular expression`);
+      }
+    } else if (check.kind === "absent" || (check.kind === "count" && check.count === 0)) {
+      problems.push(`${where}: a check that holds on an empty page needs a guard pattern`);
+    }
   }
   return { problems, stale };
+}
+
+/** A source pinned to a commit SHA never changes, so a sentinel on it cannot drift. */
+function isCommitPinned(url) {
+  if (url.hostname === "github.com") return /^\/[^/]+\/[^/]+\/(?:blob|tree)\/[0-9a-f]{40}(?:\/|$)/i.test(url.pathname);
+  if (url.hostname === "raw.githubusercontent.com") return /^\/[^/]+\/[^/]+\/[0-9a-f]{40}\//i.test(url.pathname);
+  return false;
 }
 
 /** GitHub blob URLs read the raw file; other URLs are fetched as given, without the fragment. */
@@ -113,19 +137,24 @@ export function fetchUrl(url) {
  * server-rendered payloads read as text, drop tag-shaped spans from HTML only (JSON and
  * Markdown carry literal `<T>` text), decode entities, and collapse whitespace.
  */
+const fromCodePoint = (code, entity) => (Number.isInteger(code) && code <= 0x10ffff ? String.fromCodePoint(code) : entity);
+
 export function normalize(body, { html = true } = {}) {
   const decoded = body
     .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
     .replace(/\\"/g, '"');
   return (html ? decoded.replace(/<!--[\s\S]*?-->/g, " ").replace(/<\/?[a-zA-Z][^<>]*>/g, " ") : decoded)
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (entity, dec) => fromCodePoint(Number(dec), entity))
+    .replace(/&#x([0-9a-f]+);/gi, (entity, hex) => fromCodePoint(parseInt(hex, 16), entity))
     .replace(/&([a-z]+);/gi, (entity, name) => ENTITIES[name.toLowerCase()] ?? entity)
-    .replace(/[\s​]+/g, " ");
+    .replace(/[\s\u200b]+/g, " ");
 }
 
-/** Apply one check to normalized text. */
+/** Apply one check to normalized text. A failed guard means the page did not load as expected. */
 export function evaluate(check, text) {
+  if (check.guard !== undefined && !new RegExp(check.guard, check.flags ?? "").test(text)) {
+    return { verdict: "error", detail: "guard did not match: the source content was not recognized" };
+  }
   const matches = [...text.matchAll(new RegExp(check.pattern, `g${check.flags ?? ""}`))].length;
   const hold =
     check.kind === "present" ? matches > 0 : check.kind === "absent" ? matches === 0 : matches === check.count;
@@ -152,19 +181,50 @@ async function fetchText(url, fetchImpl) {
   throw lastError;
 }
 
-/** Fetch each distinct URL once, then evaluate every sentinel against its page. */
-export async function runSentinels(sentinels, fetchImpl = fetch) {
+/**
+ * Fetch each distinct URL once, then evaluate every sentinel against its page. Sentinels whose
+ * id is in `unread` are not fetched; each becomes an error with the given detail.
+ */
+export async function runSentinels(sentinels, fetchImpl = fetch, unread = new Map()) {
   const pages = new Map();
-  for (const url of new Set(sentinels.map((s) => fetchUrl(s.url)))) {
+  for (const url of new Set(sentinels.filter((s) => !unread.has(s.id)).map((s) => fetchUrl(s.url)))) {
     pages.set(url, fetchText(url, fetchImpl).then((text) => ({ text }), (error) => ({ error: String(error?.message ?? error) })));
   }
   const results = [];
   for (const s of sentinels) {
-    const page = await pages.get(fetchUrl(s.url));
     const base = { id: s.id, caseId: s.caseId, url: s.url, kind: s.check.kind, expectedCount: s.check.count };
+    if (unread.has(s.id)) {
+      results.push({ ...base, verdict: "error", detail: unread.get(s.id) });
+      continue;
+    }
+    const page = await pages.get(fetchUrl(s.url));
     results.push(page.error ? { ...base, verdict: "error", detail: page.error } : { ...base, ...evaluate(s.check, page.text) });
   }
   return results;
+}
+
+/** Read the drift set (id -> matches) from a previous report's first line; empty when absent. */
+export function previousDrift(markdown) {
+  const line = (markdown ?? "").split("\n", 1)[0];
+  const m = line.match(new RegExp(`^<!-- ${MARKER} fingerprint=[0-9a-f]{64} drift=([^ ]*) -->$`));
+  const drift = new Map();
+  for (const entry of m?.[1] ? m[1].split(",") : []) {
+    const [id, matches] = entry.split(":");
+    if (ID_RE.test(id) && /^\d+$/.test(matches)) drift.set(id, Number(matches));
+  }
+  return drift;
+}
+
+/**
+ * Keep a previously drifted sentinel in the drift set while its source is unreadable: an
+ * unread page proves nothing, so it must not silently drop a case from the issue.
+ */
+export function carryDrift(results, previous) {
+  return results.map((r) =>
+    r.verdict === "error" && previous.has(r.id)
+      ? { ...r, verdict: "drift", matches: previous.get(r.id), carried: true }
+      : r
+  );
 }
 
 /** Deterministic Markdown report; the fingerprint covers only the drift set. */
@@ -175,9 +235,10 @@ export function renderReport(results, commit = "") {
     .update(JSON.stringify(drift.map((r) => [r.id, r.matches])))
     .digest("hex");
   const describe = (r) =>
-    r.kind === "count" ? `expected ${r.expectedCount} matches, found ${r.matches}` : r.kind === "present" ? "anchor no longer matches" : `anchor now matches ${r.matches} times`;
+    (r.kind === "count" ? `expected ${r.expectedCount} matches, found ${r.matches}` : r.kind === "present" ? "anchor no longer matches" : `anchor now matches ${r.matches} times`) +
+    (r.carried ? ` (previous run; unreadable now: ${r.detail})` : "");
   const lines = [
-    `<!-- ${MARKER} fingerprint=${fingerprint} -->`,
+    `<!-- ${MARKER} fingerprint=${fingerprint} drift=${drift.map((r) => `${r.id}:${r.matches}`).join(",")} -->`,
     "# Golden source sentinels drifted",
     "",
     `${drift.length} of ${results.length} sentinels drifted${commit ? ` at commit \`${commit}\`` : ""}.`,
@@ -196,7 +257,7 @@ export function renderReport(results, commit = "") {
 }
 
 function parseArgs(argv) {
-  const opts = { check: false, sentinels: DEFAULT_SENTINELS, ids: null, report: null, commit: "" };
+  const opts = { check: false, sentinels: DEFAULT_SENTINELS, ids: null, report: null, previous: null, commit: "" };
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
     const value = () => {
@@ -208,6 +269,7 @@ function parseArgs(argv) {
     else if (flag === "--sentinels") opts.sentinels = path.resolve(value());
     else if (flag === "--ids") opts.ids = new Set(value().split(","));
     else if (flag === "--report") opts.report = path.resolve(value());
+    else if (flag === "--previous") opts.previous = path.resolve(value());
     else if (flag === "--commit") opts.commit = value();
     else throw new Error(`unknown flag ${flag}`);
   }
@@ -228,12 +290,15 @@ async function main() {
   }
   if (problems.length) process.exit(1);
 
-  const staleSet = new Set(stale);
-  const selected = doc.sentinels.filter((s) => (!opts.ids || opts.ids.has(s.id)) && !staleSet.has(s.id));
   if (opts.ids) for (const id of opts.ids) if (!doc.sentinels.some((s) => s.id === id)) throw new Error(`unknown sentinel id ${id}`);
-  const results = await runSentinels(selected);
+  const selected = doc.sentinels.filter((s) => !opts.ids || opts.ids.has(s.id));
+  const unread = new Map(
+    opts.report ? stale.map((id) => [id, "stale: the case was re-verified; re-confirm the anchor and update caseAsOf"]) : []
+  );
+  let results = await runSentinels(selected, fetch, unread);
 
   if (opts.report) {
+    if (opts.previous) results = carryDrift(results, previousDrift(existsSync(opts.previous) ? readFileSync(opts.previous, "utf8") : ""));
     const report = renderReport(results, opts.commit);
     writeFileSync(opts.report, report.markdown);
     console.log(`drift=${report.drift}`);
@@ -242,10 +307,11 @@ async function main() {
   } else {
     const order = { drift: 0, error: 1, hold: 2 };
     for (const r of [...results].sort((a, b) => order[a.verdict] - order[b.verdict] || a.id.localeCompare(b.id))) {
-      console.log(`${r.verdict.padEnd(5)} ${r.id.padEnd(34)} ${r.caseId.padEnd(44)} ${r.detail ?? `matches=${r.matches}`}`);
+      const note = stale.includes(r.id) ? " (stale caseAsOf)" : "";
+      console.log(`${r.verdict.padEnd(5)} ${r.id.padEnd(34)} ${r.caseId.padEnd(44)} ${r.detail ?? `matches=${r.matches}`}${note}`);
     }
   }
-  if (results.length && results.every((r) => r.verdict === "error")) process.exit(2);
+  if (results.length && results.every((r) => r.verdict === "error" && !unread.has(r.id))) process.exit(2);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

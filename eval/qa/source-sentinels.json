@@ -39,7 +39,20 @@
       "check": {
         "kind": "count",
         "pattern": "\\| \\[[^\\]]+\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} ✅ \\|",
-        "count": 9
+        "count": 9,
+        "guard": "\\| Provider \\| Futurenet \\| Testnet \\| Mainnet \\| Dedicated Nodes \\| RPC Archive \\|"
+      }
+    },
+    {
+      "id": "rpc-archive-provider-names",
+      "caseId": "q-infra-rpc-provider-archive-tier",
+      "caseAsOf": "2026-11-02",
+      "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
+      "check": {
+        "kind": "count",
+        "pattern": "\\| \\[(?:Validation Cloud|Gateway|Ankr|Obsrvr|OnFinality|Lightsail Network - Quasar|Exaion|GetBlock|node101)(?:\\\\\\*)?\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} ✅ \\|",
+        "count": 9,
+        "guard": "\\| Provider \\| Futurenet \\| Testnet \\| Mainnet \\| Dedicated Nodes \\| RPC Archive \\|"
       }
     },
     {
@@ -50,6 +63,16 @@
       "check": {
         "kind": "present",
         "pattern": "live Zenex deployment on Stellar mainnet"
+      }
+    },
+    {
+      "id": "zenex-xlm-usd-market-active",
+      "caseId": "q-defi-perps-whitespace",
+      "caseAsOf": "2026-10-15",
+      "url": "https://docs.zenex.trade/deployments/contract-addresses",
+      "check": {
+        "kind": "present",
+        "pattern": "Market XLM-USD Status Active"
       }
     },
     {
@@ -69,7 +92,7 @@
       "url": "https://stellar.org/foundation/team",
       "check": {
         "kind": "present",
-        "pattern": "Founder and Chief Scientist"
+        "pattern": "\"description\":\"Founder and Chief Scientist\"(?:(?!\"_type\":\"card\").){0,4000}?\"title\":\"David Mazières\""
       }
     },
     {
@@ -109,7 +132,7 @@
       "url": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
       "check": {
         "kind": "present",
-        "pattern": "go-stellar-sdk"
+        "pattern": "all of which you can find in the .{0,60}?https://github\\.com/stellar/go-stellar-sdk(?![-\\w])"
       }
     },
     {
@@ -123,23 +146,13 @@
       }
     },
     {
-      "id": "ledger-operation-limits",
-      "caseId": "q-protocol-max-tx-set-size",
-      "caseAsOf": "2026-08-25",
-      "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
-      "check": {
-        "kind": "present",
-        "pattern": "1,000 non-smart-contract operations and 2,000 smart contract transactions"
-      }
-    },
-    {
       "id": "mpp-payment-intents",
       "caseId": "q-mpp-discovery-and-modes",
       "caseAsOf": "2026-11-02",
       "url": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
       "check": {
         "kind": "present",
-        "pattern": "supports two payment intents: Charge"
+        "pattern": "supports two payment intents: Charge .{0,1500}?Session The session intent"
       }
     },
     {
@@ -149,7 +162,9 @@
       "url": "https://developers.stellar.org/docs/networks/software-versions",
       "check": {
         "kind": "absent",
-        "pattern": "ML-DSA"
+        "pattern": "ML-DSA|post-quantum|quantum-safe",
+        "guard": "Smart Contract Host Environment \\d+\\.\\d+\\.\\d+",
+        "flags": "i"
       }
     },
     {
@@ -183,16 +198,6 @@
       }
     },
     {
-      "id": "sdf-bug-bounty-hackerone",
-      "caseId": "q-comp-security-disclosure-programs",
-      "caseAsOf": "2026-08-29",
-      "url": "https://stellar.org/grants-and-funding/bug-bounty",
-      "check": {
-        "kind": "present",
-        "pattern": "partnered with HackerOne"
-      }
-    },
-    {
       "id": "sdp-transaction-submission-service",
       "caseId": "q-anchor-sdp-what",
       "caseAsOf": "2026-11-02",
@@ -217,10 +222,12 @@
       "id": "x402-no-sep",
       "caseId": "q-hist-x402-stellar-announcement",
       "caseAsOf": "2026-10-06",
-      "url": "https://github.com/stellar/stellar-protocol/blob/master/README.md",
+      "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
       "check": {
         "kind": "absent",
-        "pattern": "x402"
+        "pattern": "x402",
+        "flags": "i",
+        "guard": "\\| \\[SEP-0001\\]\\(sep-0001\\.md\\) \\| Stellar Info File \\|"
       }
     }
   ]
