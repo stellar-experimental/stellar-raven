@@ -1,7 +1,7 @@
 ---
 id: sls-097
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "POST /api/partners/match omits its HTTP 502 failure response from OpenAPI"
 evidence:
@@ -15,6 +15,7 @@ evidence:
   - "2026-11-02 calibration: rg -n '502|503|Anthropic.APIError|unavailable' over src/app/api/partners/match/route.ts at upstream 1388bdd79b3151208d2be3ce0117316c0bc9694b confirms an explicit 502 JSON handler for Anthropic.APIError. The missing-client path returns 503. A model failure cause and an introducing release remain unknown. The request uses the live documented need field; no dependency-bound broken snippet is alleged."
   - "2026-11-02 dedupe: gh search issues partners/match and gh search prs partners/match, each with --repo Stellar-Light/stellarlight and --state open/closed, found no dedicated report for this 502 schema omission. Merged #1755 and #1764 concern other failed reads and error contracts. rg -n -i 'partners/match|partner.match.*502|matchmaking' improvements/ found only this active Scout finding for the defect. Resolved sls-004 concerns method errors on other routes."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1908
 ---
 
 ## Finding

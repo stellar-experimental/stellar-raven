@@ -1,7 +1,7 @@
 ---
 id: ll-035
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: list_documents silently ignores unknown argument names despite additionalProperties false
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 30 issues and 17 PRs in lumenloop/lumenloop-backend. Existing issue 43 and ll-028 concern invalid sort values; unknown key names require the shared object-validation correction.
   - Affected golden case: eval/qa/corpus/battery/tooling-infra/q-gap-lumen-documents-browse.json
   - 2026-11-02T17:18:13Z earlier verification: search_directory and get_project accepted bogus_arg="x" with HTTP 200 and no warning. The no-filter list_documents control returned total=1192. Published list_documents and search_directory schemas set additionalProperties=false.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/49
 ---
 
 ## Finding

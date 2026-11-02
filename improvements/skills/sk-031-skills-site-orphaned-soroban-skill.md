@@ -1,7 +1,7 @@
 ---
 id: sk-031
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: skills.stellar.org still publishes the deleted soroban skill with obsolete build guidance
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 43 issues and 125 PRs in stellar/stellar-dev-skill. Resolved sk-001 corrected current build guidance; sk-027 concerns Scout references. Issue 21 concerns earlier content defects. This finding owns stale deployment retention.
   - Resolved predecessor sk-001 corrected current smart-contracts build guidance. Its receipt names stellar/stellar-dev-skill issue 44 and PR 45. The stale published soroban file escaped that correction.
   - The consumer reference remains active in sk-027. Stellar-Light/stellar-scout references/api-reference.md builds https://skills.stellar.org/skills/{name}/SKILL.md and names soroban. This finding targets publication retention at stellar/stellar-dev-skill.
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/172
 ---
 
 ## Finding

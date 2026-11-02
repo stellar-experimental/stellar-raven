@@ -1,7 +1,7 @@
 ---
 id: sls-105
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "GET /api/rfps source-verification requirements omit the published brief scope and source"
 probe:
@@ -21,6 +21,7 @@ evidence:
   - "2026-11-02T22:38Z source check: curl -sS --max-time 50 https://raw.githubusercontent.com/stellar/scf-handbook/e37c0d541ddbee5f06f152b9cd1f03bbe0321f23/scf-awards/build-award/rfp-track.md returned HTTP 200. Its Q2 brief requires SEP-58 source modes and an SDF-allowlisted trusted build image. It excludes fully deterministic Rust compilation as a research effort. Reproducible builds themselves remain in scope."
   - "2026-11-02 calibration: gh api repos/stellar/scf-handbook/commits/e37c0d541ddbee5f06f152b9cd1f03bbe0321f23 confirms 2026-06-29T15:40:50Z. This is a historical publication snapshot, not an introduction date. The current main handbook page returned HTTP 200 and now lists Q4 placeholders. Grep of ideas.ts and rfps/route.ts confirms that the API copies the idea requirements and links /ideas. The missing metadata requirements are verified; deterministic-build incompatibility is not."
   - "2026-11-02 dedupe: gh search issues and gh search prs searched Stellar-Light/stellarlight for contract-source-verification and 'rfp requirements', across all states. The broad identifier query returned unrelated source, resolver, and triage records. No matching brief-scope correction appeared. rg over improvements/ and improvements/resolved.json found resolved sls-045, sls-060, sls-067, and sls-072, with different defects. Intake resolves to Stellar-Light/stellarlight without an override."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1916
 ---
 
 ## Finding

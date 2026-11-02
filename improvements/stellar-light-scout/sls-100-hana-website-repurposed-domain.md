@@ -1,7 +1,7 @@
 ---
 id: sls-100
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Hana wallet links point to a domain that redirects to the Wend remittance product"
 probe:
@@ -22,6 +22,7 @@ evidence:
   - "2026-11-02 adjacent check: rg -n 'hana.money|hanawallet' over upstream scripts/data/curation-maps.ts and scripts/data/curate-partners.ts at 1388bdd79b3151208d2be3ce0117316c0bc9694b found the old domain in STATUS_FIX.hana, WEBSITE_FIXES.hana, and URL_CORRECTIONS[hana-wallet]. The finding now requests correction of all three repeated source values and both live records. No dependency-bound broken snippet is alleged."
   - "2026-11-02 dedupe: gh search issues Hana and gh search prs Hana, each with --repo Stellar-Light/stellarlight and --state open/closed, found no correction for the current Wend redirect. Merged #1117 and #1317 retain older Hana source facts; #619 documents the former allowed dual-domain redirect. rg -n -i 'hana.money|hanawallet|Hana.*website' improvements/ found no other active Scout record for this defect. Resolved sls-028 covers different project rows; this is a new affected row."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1911
 ---
 
 ## Finding

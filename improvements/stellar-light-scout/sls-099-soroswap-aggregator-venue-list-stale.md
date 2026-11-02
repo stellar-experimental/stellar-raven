@@ -1,7 +1,7 @@
 ---
 id: sls-099
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Scout Soroswap descriptions omit current API venues and do not distinguish Phoenix contract support"
 probe:
@@ -23,6 +23,7 @@ evidence:
   - "2026-11-02 calibration: rg -n -i 'Phoenix|Sushi|Comet|protocols|SDEX' over both fetched operator pages confirms the API/contract distinction. A scan of shortDescription across both Scout searches found the two relevant Soroswap aggregation claims. Other products describe their own routing. No first-bad release or executable dependency snippet is claimed."
   - "2026-11-02 dedupe: gh search issues Soroswap and gh search prs Soroswap, each with --repo Stellar-Light/stellarlight and --state open/closed, found no duplicate venue-description report. Additional issue/PR searches for 'supported-amms' and the exact 'aggregated by Soroswap' phrase found none. rg -n -i 'Soroswap.*venue|supported-amms|aggregated by Soroswap|SushiSwap|Phoenix' improvements/ found sls-085 for a contract-role label (fixed upstream and resolved 2026-11-02; see improvements/resolved.json) and active sls-113 for taxonomy coverage. Neither covers the venue list; no merge is needed."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1910
 ---
 
 ## Finding

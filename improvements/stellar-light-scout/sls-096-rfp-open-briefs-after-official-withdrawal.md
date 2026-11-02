@@ -1,7 +1,7 @@
 ---
 id: sls-096
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "GET /api/rfps?status=open lists Q3 briefs that the official SCF page removed"
 probe:
@@ -23,6 +23,7 @@ evidence:
   - "2026-11-02 adjacent check: rg -n 'ACTIVE_QUARTER|layerzero-dvn|x402-facilitator-bazaar' over upstream src/data/ideas.ts at 1388bdd79b3151208d2be3ce0117316c0bc9694b confirms q3-2026 and both brief definitions. rfpStatus derives open status from ACTIVE_QUARTER. /ideas and both brief pages returned HTTP 200. No dependency-bound broken snippet is alleged."
   - "2026-11-02 dedupe: gh search issues RFP and gh search prs RFP, each with --repo Stellar-Light/stellarlight and --state open/closed, found no report for the October removal. Merged #751 introduced Q3 briefs; #910 corrected Q3 tabs. Other matches concern round metadata or API guards. rg -n -i 'layerzero-dvn|x402-facilitator-bazaar|RFP.*(withdraw|Q4|open)' improvements/ found no duplicate. Resolved sls-014, sls-045, sls-067, and sls-072 concern other RFP behavior."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1907
 ---
 
 ## Finding

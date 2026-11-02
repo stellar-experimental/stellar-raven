@@ -1,7 +1,7 @@
 ---
 id: ll-036
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Seven indexed Aquarius proposals contain an HTML payload title and have missing source pages
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 30 issues and 17 PRs in lumenloop/lumenloop-backend. PR 17 concerns rediscovery after local deletion and explicitly exempts proposals. It does not correct these proposal rows.
   - Affected golden case: eval/qa/corpus/battery/defi-ecosystem/q-gap-semantic-similar-projects.json (the answering lane met these rows in search_content_semantic proposal results)
   - 2026-11-02T17:19:01Z earlier verification: search_content_semantic returned the same seven rows with different asset-registry summaries. Example summary subjects: id 195 USDY, id 196 Bitcoin, id 193 XRP.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/50
 ---
 
 ## Finding

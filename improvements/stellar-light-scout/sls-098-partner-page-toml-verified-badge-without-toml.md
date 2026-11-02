@@ -1,7 +1,7 @@
 ---
 id: sls-098
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Partner pages falsely verify unfetched stellar.toml data; detail responses turn unknown SEPs into empty lists"
 probe:
@@ -27,6 +27,7 @@ evidence:
   - "2026-11-02 calibration: rg -n 'hasCapabilities|stellar.toml verified|Verified from|seps:|assets:' over the partner page, detail handler, and list handler at upstream 1388bdd79b3151208d2be3ce0117316c0bc9694b found both page labels under hasCapabilities. Detail uses p.seps ?? []; list gates seps and assets on tomlFetchedAt. The source confirms the same provenance mismatch in adjacent fields. No introducing release or broken dependency snippet is claimed."
   - "2026-11-02 dedupe: gh search issues toml and gh search prs toml, each with --repo Stellar-Light/stellarlight and --state open/closed, found no duplicate. Additional issue/PR searches for the exact badge and for 'tomlFetchedAt seps' found no matching correction. Merged #831 added source fields; #331 added trust labels. Existing #324 concerns anchor corridor coverage. rg -n -i 'stellar.toml verified|tomlSourceUrl|never.*toml|seps.*(null|empty)' improvements/ distinguishes resolved sls-049's curated capability fill from this provenance defect."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1909
 ---
 
 ## Finding

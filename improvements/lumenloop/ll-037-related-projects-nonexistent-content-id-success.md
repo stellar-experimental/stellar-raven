@@ -1,7 +1,7 @@
 ---
 id: ll-037
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: get_related_projects reports a successful empty result for an unavailable content item
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 30 issues and 17 PRs in lumenloop/lumenloop-backend. ll-029 records the same observation as a recurrence but requests output-schema corrections. This finding requests a generic source-unavailable result and preserves unpublished-source non-disclosure.
   - Affected golden case: eval/qa/corpus/battery/assets-anchors-seps/q-gap-related-projects-empty.json (truth.verified 2026-11-02). The golden credits an answer that treats the empty result as inconclusive
   - 2026-11-02T18:33:49Z earlier controls: get_document {"id":99999999,"collection":"articles"} returned HTTP 200 with a document-not-found message. get_related_projects {"content_id":690,"content_type":"article"} returned HTTP 200 and four project mentions.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/51
 ---
 
 ## Finding

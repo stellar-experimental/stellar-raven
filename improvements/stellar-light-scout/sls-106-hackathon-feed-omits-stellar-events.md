@@ -1,7 +1,7 @@
 ---
 id: sls-106
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "GET /api/hackathons omits the completed Rise In Stellar Pro Hackathon"
 evidence:
@@ -18,6 +18,7 @@ evidence:
   - "2026-11-02T22:38Z: curl -sS --max-time 50 https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar returned HTTP 200. It gives November 2 to November 18, 2026 and $15K in prizes. The Velocity organizer page also returned HTTP 200 and states Nov 2-18, 2026. This university challenge tests curation scope; it is not evidence of a missing DoraHacks listing."
   - "2026-11-02 calibration: grep of curated-hackathons.ts confirms existing Rise In programs and no Istanbul or Waterloo row. Grep of hackathons/route.ts confirms that the summary already says 'in stellarlight's feed'. It does not assert global absence. Its additional 'between events' wording can still imply an ecosystem schedule. Remove that inference as an optional wording improvement. No first-bad version or dependency-based snippet claim applies."
   - "2026-11-02 dedupe: gh search issues and gh search prs searched Stellar-Light/stellarlight for 'hackathon istanbul', 'between events', and Waterloo, across all states. No matching issue appeared. Merged PR 1797 uses 'between events' for analytics comparisons, not feed completeness. rg over improvements/ and improvements/resolved.json found resolved sls-001, sls-005, sls-016, and sls-092. Active sls-110 concerns rubric weights, not feed coverage. Intake resolves to Stellar-Light/stellarlight without an override."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1917
 ---
 
 ## Finding

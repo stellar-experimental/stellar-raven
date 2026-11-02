@@ -1,7 +1,7 @@
 ---
 id: ll-038
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: The xBull directory description advertises mobile platforms with unavailable store listings
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among four issues and eight PRs in lumenloop/stellar-ecosystem-db. sls-033 concerns Scout wallet availability metadata, not this Lumenloop record. No active or resolved record owns this directory correction.
   - Affected golden case: eval/qa/corpus/battery/retail-consumer/q-eco-xbull-wallet.json (truth.verified 2026-11-02). Its notes say that the Lumenloop Android and iOS platform claim is stale
   - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/xbull.yaml. The 2026-06-29 file timestamp does not date mobile store withdrawal.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/stellar-ecosystem-db/issues/15
 ---
 
 ## Finding

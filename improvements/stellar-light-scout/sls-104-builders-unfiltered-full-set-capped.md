@@ -1,7 +1,7 @@
 ---
 id: sls-104
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "GET /api/builders caps its full set at 300 and omits rows reachable with location filters"
 evidence:
@@ -16,6 +16,7 @@ evidence:
   - "2026-11-02T22:38Z: curl -sS --max-time 50 'https://stellarlight.xyz/api/builders?location=Latin%20America&limit=200' returned HTTP 200 with 59 rows. A githubUsername comparison found 23 absent from the unfiltered union, including pedro-pelicioni, wrever, salazarsebas, and DiegoPoveda01. curl -sS --max-time 50 https://stellarlight.xyz/api/status returned HTTP 200 with builders count=399 and populationId=builders|status:all."
   - "2026-11-02 calibration: grep of builders/route.ts found visibility hidden excluded, a payload.find limit of 300, totalMatching=builders.length, then client-page slicing. The collection count can include hidden rows. Therefore 399 minus 300 does not prove exactly 99 eligible omissions. The 23 filter-reachable rows prove the defect independently. OpenAPI 1.9.116 documents no roster cap. No first-bad version or dependency-based snippet claim applies."
   - "2026-11-02 dedupe: gh search issues and gh search prs searched Stellar-Light/stellarlight for 'builders 300' and 'builders full set', across all states. No matching issue appeared. The only PR hit, merged PR 300, concerns repository scanning. rg over improvements/ and improvements/resolved.json found resolved sls-010, sls-040, and sls-048, with different defects. Intake resolves to Stellar-Light/stellarlight without an override."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1915
 ---
 
 ## Finding

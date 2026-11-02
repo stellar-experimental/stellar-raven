@@ -1,7 +1,7 @@
 ---
 id: sls-101
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "GET /api/analyze includes stale TVL rows without a stale-total warning"
 evidence:
@@ -16,6 +16,7 @@ evidence:
   - "2026-11-02T22:38Z provider checks: curl -sS --max-time 50 https://api.llama.fi/protocols returned HTTP 200. Spiko and Etherfuse each have tvl=null, chains=[], and chainTvls={}. curl -sS --max-time 50 https://api.llama.fi/protocol/spiko returned HTTP 200 with currentChainTvls={}. curl -sS --max-time 50 https://api.llama.fi/protocol/sentora returned HTTP 200 with currentChainTvls.Stellar=71200916."
   - "2026-11-02 calibration: curl -sS --retry 2 --max-time 30 'https://stellarlight.xyz/api/projects/search?q=etherfuse&limit=3' returned HTTP 200. Etherfuse still has tvlUSD=2 and tvlAsOf=2026-09-14T10:30:21.591Z. Equivalent spiko and sentora queries returned HTTP 200. All three rows still say refreshed weekly. Grep of analyze/route.ts and scripts/enrich-tvl.ts confirms the sum lacks an age filter. These dates show last observations, not the first defective release."
   - "2026-11-02 dedupe: gh search issues and gh search prs searched Stellar-Light/stellarlight for spiko and 'tvl stale', across all states. No matching stale-total report appeared. Issue 494 covers provenance; issues 1710 and 1531 cover other defects; tracker 586 covers routine triage. PR results concern other data or TVL features. rg over improvements/ and improvements/resolved.json found related sls-031, sls-038, and declined sls-039, with different defects. Intake resolves to Stellar-Light/stellarlight without an override."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1912
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sk-030
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Six Lumenloop skill files still name Freighter after the wallet became Varial
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among three issues and two PRs in lumenloop/lumenloop-skills. ll-032 concerns the separate directory record. No other active or resolved skill record owns this rename.
   - Golden provenance: q-ti-skill-builder-quickstart and q-ti-skill-integration-finder exposed the stale wording on 2026-11-02. Neither case grades the wallet name.
   - The earlier four-file source verification matched the Raven pin d92c56bda17ab702d3202335cfe814d64e70e191. This correction targets current upstream files.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-skills/issues/6
 ---
 
 ## Finding

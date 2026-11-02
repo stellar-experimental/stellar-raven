@@ -1,7 +1,7 @@
 ---
 id: ll-032
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: The freighter directory record omits the Varial name and current website
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among four issues and eight PRs in lumenloop/stellar-ecosystem-db. The active sk-030 concerns separate skill files. sls-095 concerns the separate Scout directory.
   - Affected golden cases: eval/qa/corpus/battery/retail-consumer/q-eco-freighter-wallet.json, eval/qa/corpus/battery/retail-consumer/q-tool-freighter-wallet.json, eval/qa/corpus/battery/defi-ecosystem/q-eco-stellar-wallets-list.json
   - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/freighter.yaml. The latest file change dates to 2026-06-09, before the public rename.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/stellar-ecosystem-db/issues/13
 ---
 
 ## Finding

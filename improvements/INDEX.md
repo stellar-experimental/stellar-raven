@@ -19,8 +19,8 @@ Total findings: 114
 | sk-027 | The Scout skill describes /api/skills as a catalog of seven SDF skills. On 2026-09-30 the live catalog had 43 entries from four sources…    | reported-upstream | 2026-09-30 | 1           |
 | sk-028 | The Scout skill gives the size of the Builders directory as a fixed count. SKILL.md says the directory is "currently in the dozens, not…    | reported-upstream | 2026-09-30 | 0           |
 | sk-029 | The Core API emits error type URLs of the form …/api-rest/errors/<code-in-kebab-case>. The docs site redirects that ungrouped path to the…  | reported-upstream | 2026-10-27 | 0           |
-| sk-030 | Six Lumenloop skill files still name the wallet Freighter and omit its current name, Varial. SDF announced the rename on 2026-10-29. The…   | verified          | 2026-11-02 | 0           |
-| sk-031 | skills.stellar.org/skills/soroban/SKILL.md still returns the deleted soroban skill with obsolete build guidance. The source repository…     | verified          | 2026-11-02 | 0           |
+| sk-030 | Six Lumenloop skill files still name the wallet Freighter and omit its current name, Varial. SDF announced the rename on 2026-10-29. The…   | reported-upstream | 2026-11-02 | 0           |
+| sk-031 | skills.stellar.org/skills/soroban/SKILL.md still returns the deleted soroban skill with obsolete build guidance. The source repository…     | reported-upstream | 2026-11-02 | 0           |
 
 ## stellar-light-scout
 
@@ -31,17 +31,17 @@ Total findings: 114
 | sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 8           |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
 | sls-095 | Scout cannot resolve Varial because the freighter project record still uses the former name, Freighter. GET /api/projects/resolve?q=varial… | reported-upstream | 2026-11-02 | 0           |
-| sls-096 | GET /api/rfps?status=open returns two Q3 2026 briefs that the official SCF page removed. The rows are layerzero-dvn and…                    | verified          | 2026-11-02 | 0           |
-| sls-097 | POST /api/partners/match returns HTTP 502, but OpenAPI does not describe that response. OpenAPI 1.9.116 lists only 200, 429, and 503. The…  | verified          | 2026-11-02 | 0           |
-| sls-098 | The Bitso and Honey Coin partner pages label curated capabilities as verified from stellar.toml without a recorded fetch. Both pages…       | verified          | 2026-11-02 | 0           |
-| sls-099 | The Scout Soroswap description omits current API venues and does not distinguish API support from contract support. It names "Soroswap,…    | verified          | 2026-11-02 | 0           |
-| sls-100 | The Hana project website and status source point to a domain that redirects to the Wend remittance product. https://hana.money/ and…        | verified          | 2026-11-02 | 0           |
-| sls-101 | GET /api/analyze?dimension=tvl includes old project values without a warning that the total contains stale data. On 2026-11-02, it reports… | verified          | 2026-11-02 | 0           |
-| sls-102 | The Blend row in GET /api/projects/search links tvlMethodUrl to one child protocol instead of its four-row aggregate. It reports tvlUSD:…   | verified          | 2026-11-02 | 0           |
-| sls-103 | GET /api/analyze?dimension=funding treats an empty stored snapshot as a valid baseline for its funding delta. previousSnapshot has…         | verified          | 2026-11-02 | 0           |
-| sls-104 | GET /api/builders stops its unfiltered listing at 300 rows while calling the result a full set. Its matchModeLabel says "no text query:…    | verified          | 2026-11-02 | 0           |
-| sls-105 | GET /api/rfps presents idea requirements for contract-source-verification without the published brief's SEP-58 scope or source link. The…   | verified          | 2026-11-02 | 0           |
-| sls-106 | GET /api/hackathons omits the completed Rise In Stellar Pro Hackathon in Istanbul. The event ran from 2026-09-18 to 2026-09-20 with a…      | verified          | 2026-11-02 | 0           |
+| sls-096 | GET /api/rfps?status=open returns two Q3 2026 briefs that the official SCF page removed. The rows are layerzero-dvn and…                    | reported-upstream | 2026-11-02 | 0           |
+| sls-097 | POST /api/partners/match returns HTTP 502, but OpenAPI does not describe that response. OpenAPI 1.9.116 lists only 200, 429, and 503. The…  | reported-upstream | 2026-11-02 | 0           |
+| sls-098 | The Bitso and Honey Coin partner pages label curated capabilities as verified from stellar.toml without a recorded fetch. Both pages…       | reported-upstream | 2026-11-02 | 0           |
+| sls-099 | The Scout Soroswap description omits current API venues and does not distinguish API support from contract support. It names "Soroswap,…    | reported-upstream | 2026-11-02 | 0           |
+| sls-100 | The Hana project website and status source point to a domain that redirects to the Wend remittance product. https://hana.money/ and…        | reported-upstream | 2026-11-02 | 0           |
+| sls-101 | GET /api/analyze?dimension=tvl includes old project values without a warning that the total contains stale data. On 2026-11-02, it reports… | reported-upstream | 2026-11-02 | 0           |
+| sls-102 | The Blend row in GET /api/projects/search links tvlMethodUrl to one child protocol instead of its four-row aggregate. It reports tvlUSD:…   | reported-upstream | 2026-11-02 | 0           |
+| sls-103 | GET /api/analyze?dimension=funding treats an empty stored snapshot as a valid baseline for its funding delta. previousSnapshot has…         | reported-upstream | 2026-11-02 | 0           |
+| sls-104 | GET /api/builders stops its unfiltered listing at 300 rows while calling the result a full set. Its matchModeLabel says "no text query:…    | reported-upstream | 2026-11-02 | 0           |
+| sls-105 | GET /api/rfps presents idea requirements for contract-source-verification without the published brief's SEP-58 scope or source link. The…   | reported-upstream | 2026-11-02 | 0           |
+| sls-106 | GET /api/hackathons omits the completed Rise In Stellar Pro Hackathon in Istanbul. The event ran from 2026-09-18 to 2026-09-20 with a…      | reported-upstream | 2026-11-02 | 0           |
 | sls-107 | GET /api/stablecoins has one company field, and it holds a brand name. For two issuers the brand differs from the ORG_NAME in the issuer's… | reported-upstream | 2026-11-02 | 0           |
 | sls-109 | GET /api/repos/search ranks name-matching hackathon forks above the canonical repository for common product names                           | reported-upstream | 2026-11-02 | 0           |
 | sls-110 | The HackMeridian 2026 record gives the qualitative judging criteria only. The organizer's Build page publishes one weighted rubric: seven…  | reported-upstream | 2026-11-02 | 0           |
@@ -121,13 +121,13 @@ Total findings: 114
 | ll-029 | Five public Lumenloop tools declare an output object with optional results and text fields. The live payload for each tool uses a…          | reported-upstream | 2026-08-18 | 1           |
 | ll-030 | lumenloop.get_project returns a record for wisdomtree that counts the issuer's tokenized funds without naming any of them. The record…      | reported-upstream | 2026-08-28 | 2           |
 | ll-031 | search_documents returns a string ID that get_document and get_related_projects reject. get_document also returns that ID as a string…      | reported-upstream | 2026-10-09 | 1           |
-| ll-032 | The freighter directory record omits the wallet's current name, Varial, and its current website. Its title is Freighter, its other_names…   | verified          | 2026-11-02 | 0           |
-| ll-033 | The slender directory description incorrectly says users can borrow assets without collateral. Slender's audit describes ordinary loans as… | verified          | 2026-11-02 | 0           |
-| ll-034 | search_directory returns account-demolisher for {"query":"Blend","limit":1} and omits the exact slug match blend. The default result page…  | verified          | 2026-11-02 | 0           |
-| ll-035 | list_documents silently ignores unknown argument names, although its published schema sets additionalProperties: false. A request with…     | verified          | 2026-11-02 | 0           |
-| ll-036 | Seven indexed Aquarius proposal rows contain the title <img src=x onerror=alert(1)> w50c and reference unavailable source proposals. The…   | verified          | 2026-11-02 | 0           |
-| ll-037 | get_related_projects returns a successful empty result for the unavailable article id 99999999. The response contains success: true, data:… | verified          | 2026-11-02 | 0           |
-| ll-038 | The xbull directory description lists Android and iOS support without qualifying the unavailable mobile store listings. The checked Apple…  | verified          | 2026-11-02 | 0           |
+| ll-032 | The freighter directory record omits the wallet's current name, Varial, and its current website. Its title is Freighter, its other_names…   | reported-upstream | 2026-11-02 | 0           |
+| ll-033 | The slender directory description incorrectly says users can borrow assets without collateral. Slender's audit describes ordinary loans as… | reported-upstream | 2026-11-02 | 0           |
+| ll-034 | search_directory returns account-demolisher for {"query":"Blend","limit":1} and omits the exact slug match blend. The default result page…  | reported-upstream | 2026-11-02 | 0           |
+| ll-035 | list_documents silently ignores unknown argument names, although its published schema sets additionalProperties: false. A request with…     | reported-upstream | 2026-11-02 | 0           |
+| ll-036 | Seven indexed Aquarius proposal rows contain the title <img src=x onerror=alert(1)> w50c and reference unavailable source proposals. The…   | reported-upstream | 2026-11-02 | 0           |
+| ll-037 | get_related_projects returns a successful empty result for the unavailable article id 99999999. The response contains success: true, data:… | reported-upstream | 2026-11-02 | 0           |
+| ll-038 | The xbull directory description lists Android and iOS support without qualifying the unavailable mobile store listings. The checked Apple…  | reported-upstream | 2026-11-02 | 0           |
 
 ## workers-ai-provider
 

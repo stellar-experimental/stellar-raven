@@ -105,3 +105,44 @@ clusters (`cluster-012`, `cluster-014`, `cluster-038`, `cluster-046`) were re-sw
 - `sd-059`: compare raw Discovery candidates with the adapter output (TODO item), then report on #2995 only if Discovery itself omits the pages.
 - Pin bump for `sk-032` to `sk-036` waits for the overnight golden QA run (TODO item).
 - `wai-001` migration (TODO item). `sd-048` stays `reported-upstream` after the stale-bot closure.
+
+## Ecosystem filing batch
+
+Three Codex lanes (`fl-s1`, `fl-s2`, `fl-lk`) rechecked 21 verified findings live. Grok `grok-4.7`
+at high reviewed all of them ([`rv-fl-review.md`](2026-11-02-upstream-followup/rv-fl-review.md)):
+20 FILE and one HOLD.
+
+- `sls-095` (HOLD): merged Stellar-Light/stellarlight#1889 claims the Varial rename, but production
+  still returns `found: false` for `varial` at 2026-11-02T23:18Z. Raven posted that result on the PR
+  (https://github.com/Stellar-Light/stellarlight/pull/1889#issuecomment-6590972277) instead of a
+  duplicate issue. The record is `reported-upstream`.
+- The four 22:30Z probe fixed-candidates (`sls-095`, `sls-096`, `sls-100`, `sls-102`) were false: the
+  probe parser kept `\"` in needles. The parser fix is in #336.
+- Before filing, the Lumenloop records dropped internal lane wording and scratch file paths, and
+  `sls-099` names `sls-085` as resolved.
+
+Filed on 2026-11-02 and read back with `gh api` (state open, author `kalepail`, immutable snapshot
+link present):
+
+| finding | issue |
+|---|---|
+| `ll-032` | lumenloop/stellar-ecosystem-db#13 |
+| `ll-033` | lumenloop/stellar-ecosystem-db#14 |
+| `ll-034` | lumenloop/lumenloop-backend#48 |
+| `ll-035` | lumenloop/lumenloop-backend#49 |
+| `ll-036` | lumenloop/lumenloop-backend#50 |
+| `ll-037` | lumenloop/lumenloop-backend#51 |
+| `ll-038` | lumenloop/stellar-ecosystem-db#15 |
+| `sk-030` | lumenloop/lumenloop-skills#6 |
+| `sk-031` | stellar/stellar-dev-skill#172 |
+| `sls-096` | Stellar-Light/stellarlight#1907 |
+| `sls-097` | Stellar-Light/stellarlight#1908 |
+| `sls-098` | Stellar-Light/stellarlight#1909 |
+| `sls-099` | Stellar-Light/stellarlight#1910 |
+| `sls-100` | Stellar-Light/stellarlight#1911 |
+| `sls-101` | Stellar-Light/stellarlight#1912 |
+| `sls-102` | Stellar-Light/stellarlight#1913 |
+| `sls-103` | Stellar-Light/stellarlight#1914 |
+| `sls-104` | Stellar-Light/stellarlight#1915 |
+| `sls-105` | Stellar-Light/stellarlight#1916 |
+| `sls-106` | Stellar-Light/stellarlight#1917 |

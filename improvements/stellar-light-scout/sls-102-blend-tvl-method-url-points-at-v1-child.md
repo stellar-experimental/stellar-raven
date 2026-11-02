@@ -1,7 +1,7 @@
 ---
 id: sls-102
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Blend tvlMethodUrl points to one V1 child while tvlUSD sums four protocol rows"
 probe:
@@ -22,6 +22,7 @@ evidence:
   - "2026-11-02T22:38Z: curl -sS --max-time 50 https://api.llama.fi/protocols returned HTTP 200. Stellar values: blend-pools=42836.071317956426; blend-pools-v2=127720821.97049162; both backstop base values=0. All four share parentProtocol=parent#blend. curl -sS --max-time 50 https://api.llama.fi/protocol/blend returned HTTP 200 with currentChainTvls.Stellar=127763657. Values have different observation times; they are not exact matches to Scout's stored amount."
   - "2026-11-02 calibration: rg -n 'tvlMethodUrl|tvlMethodUrlFor' over the current upstream projects/search/route.ts found one helper and three callers. The helper selects slugs[0]. Correcting the shared helper covers the repeated response paths. No dependency-based code snippet or first-bad version claim applies."
   - "2026-11-02 dedupe: gh search issues and gh search prs searched Stellar-Light/stellarlight for tvlMethodUrl and 'blend pools', across all states. Issues 494 and 522 and merged PRs 530 and 531 describe the original provenance feature. PR 1234 concerns stablecoin display. Issue 522 explicitly keeps history at the provider; this finding requests a citation matching the existing aggregate. rg over improvements/ and improvements/resolved.json found related sls-031 and declined sls-039, without this aggregate-link correction. Intake resolves to Stellar-Light/stellarlight without an override."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1913
 ---
 
 ## Finding

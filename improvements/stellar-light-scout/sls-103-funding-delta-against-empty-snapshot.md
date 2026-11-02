@@ -1,7 +1,7 @@
 ---
 id: sls-103
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "GET /api/analyze funding delta treats an empty snapshot as a valid comparison"
 probe:
@@ -21,6 +21,7 @@ evidence:
   - "2026-11-02 calibration: the Python hashlib command in Evidence printed e3b0c44298fc1c14. The standard-library snippet ran successfully. The two stored timestamps differ by 2.638 seconds. They date the observed records, not the first defective release."
   - "2026-11-02 adjacent-source check: analyze/route.ts catches a failed projects read and continues with projects=[]. The funding branch can then persist that empty set. The snapshot selection accepts a hash without checking baseline completeness. This code supports a failure mechanism but does not prove the historical request failed. The response already cautions against inferring causes from headline drift."
   - "2026-11-02 dedupe: gh search issues and gh search prs searched Stellar-Light/stellarlight for previousSnapshot and snapshotDelta, across all states. Only closed issue 520 and merged PR 530 appeared. They introduce comparison provenance and do not address an empty baseline. rg over improvements/ and improvements/resolved.json found resolved sls-013 and sls-044, with different defects. Intake resolves to Stellar-Light/stellarlight without an override."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1914
 ---
 
 ## Finding

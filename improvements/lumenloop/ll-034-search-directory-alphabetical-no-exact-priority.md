@@ -1,7 +1,7 @@
 ---
 id: ll-034
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: search_directory omits the exact Blend match when limit is 1
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among 30 issues and 17 PRs in lumenloop/lumenloop-backend. Existing issue 29 and ll-012 concern broad RWA discovery and deployment state, not exact-slug priority.
   - Affected golden case: eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-blend-tvl.json
   - 2026-11-02 earlier controls: the soroswap name query placed soroswap at zero-based position 7 of 10. The xbull query placed xbull at position 1 of 2.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/48
 ---
 
 ## Finding
