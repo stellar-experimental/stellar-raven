@@ -18,12 +18,12 @@
  *
  * Scout skill bodies can also describe operations outside Raven's manifest.
  * The scrub removes a complete Markdown section, table row, blockquote, or list item that
- * names any excluded path. The host exposure policy owns the path set.
- * Unstructured prose fails closed.
+ * names any excluded path. In a plain paragraph it removes each complete
+ * sentence that names one. The host exposure policy owns the path set.
  *
  * Fail-loud drift guard: if upstream introduces a non-exposed reference
- * outside a removable Markdown block, the scrub throws instead of emitting
- * the leak. At build time that fails the build. At read time src/skills/store.ts
+ * outside a removable Markdown block or sentence (for example, in a code
+ * fence), the scrub throws instead of emitting the leak. At build time that fails the build. At read time src/skills/store.ts
  * returns an error envelope. The leak is never served.
  */
 import { EXCLUDED_SCOUT_PATHS } from "../policy/scout-exposure.ts";
@@ -70,12 +70,33 @@ export function scrubRetiredSkillRefs(text: string, context: string): string {
   return scrubbed;
 }
 
-const excludedScoutPathPatterns = [...EXCLUDED_SCOUT_PATHS].map(
-  (path) => new RegExp(`${path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\w/-])`)
-);
+// A templated segment such as `{id}` matches any concrete value as well as
+// the literal template, so `/api/x/{id}` also covers `/api/x/123`.
+function excludedPathPattern(path: string): RegExp {
+  const source = path
+    .split(/(\{[^}/]+\})/)
+    .map((part) =>
+      /^\{[^}/]+\}$/.test(part) ? "[^\\s/`)\\]]+" : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    )
+    .join("");
+  return new RegExp(`${source}(?![\\w/-])`);
+}
+
+const excludedScoutPathPatterns = [...EXCLUDED_SCOUT_PATHS].map(excludedPathPattern);
+
+function decodePercentRuns(text: string): string {
+  return text.replace(/(?:%[0-9a-f]{2})+/gi, (encoded) => {
+    try {
+      return decodeURIComponent(encoded);
+    } catch {
+      return encoded;
+    }
+  });
+}
 
 function containsExcludedScoutPath(text: string): boolean {
-  return excludedScoutPathPatterns.some((pattern) => pattern.test(text));
+  const decoded = decodePercentRuns(text);
+  return excludedScoutPathPatterns.some((pattern) => pattern.test(text) || pattern.test(decoded));
 }
 
 function headingDepth(line: string): number | undefined {
@@ -87,10 +108,75 @@ function listItemStart(line: string): boolean {
   return /^\s*(?:[-*+] |\d+[.)] )/.test(line);
 }
 
+function fenceLine(line: string): boolean {
+  return /^\s*(?:```|~~~)/.test(line);
+}
+
+// An indented code block (four spaces or a tab) is code, not prose, so it is
+// never split into sentences; a reference in it fails closed.
+function paragraphLine(line: string): boolean {
+  return (
+    line.trim() !== "" &&
+    !/^(?: {4}|\t)/.test(line) &&
+    headingDepth(line) === undefined &&
+    !fenceLine(line) &&
+    !/^\s*[|>]/.test(line) &&
+    !listItemStart(line)
+  );
+}
+
+const ABBREVIATION_END_RE = /\b(?:e\.g|i\.e|etc|vs|cf)\.$/i;
+const CLOSING_CHARS = new Set(["*", "_", '"', "'", ")", "]"]);
+const SENTENCE_END_RE = /[.!?][*_"')\]]*\s*$/;
+
+function endsSentence(line: string): boolean {
+  return SENTENCE_END_RE.test(line) && !ABBREVIATION_END_RE.test(line.trimEnd());
+}
+
 /**
- * Remove complete Markdown blocks that advertise excluded Scout paths.
- * Any reference that does not fit a safe structural block stops the build or
- * read. This keeps the policy general and prevents partial sentence edits.
+ * Split paragraph text at sentence ends: ".", "!", or "?", then any closing
+ * marks (`*`, `_`, quotes, `)`, `]`), then whitespace, outside code spans and
+ * open parentheses or brackets. Unbalanced backticks or parentheses keep the
+ * rest of the text as one unit, so the scrub can remove too much but never
+ * part of a sentence.
+ */
+function splitSentences(text: string): string[] {
+  const sentences: string[] = [];
+  let start = 0;
+  let inCode = false;
+  let depth = 0;
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    if (char === "`") inCode = !inCode;
+    if (inCode) continue;
+    if (char === "(" || char === "[") depth += 1;
+    else if (char === ")" || char === "]") depth = Math.max(0, depth - 1);
+    else if (char === "." || char === "!" || char === "?") {
+      let end = i + 1;
+      let closedDepth = depth;
+      while (end < text.length && CLOSING_CHARS.has(text[end] ?? "")) {
+        if (text[end] === ")" || text[end] === "]") closedDepth = Math.max(0, closedDepth - 1);
+        end += 1;
+      }
+      if (closedDepth !== 0 || !/\s/.test(text[end] ?? "")) continue;
+      const sentence = text.slice(start, end);
+      if (ABBREVIATION_END_RE.test(sentence.replace(/[*_"')\]]+$/, ""))) continue;
+      sentences.push(sentence.trim());
+      start = end;
+      depth = 0;
+      i = end - 1;
+    }
+  }
+  const rest = text.slice(start).trim();
+  if (rest !== "") sentences.push(rest);
+  return sentences;
+}
+
+/**
+ * Remove complete Markdown blocks that advertise excluded Scout paths, and
+ * complete sentences that name one inside a plain paragraph. A paragraph that
+ * names no excluded path keeps its exact bytes. Any reference that does not
+ * fit one of these units stops the build or read; no sentence is edited in part.
  */
 export function scrubExcludedScoutOperationRefs(text: string, context: string): string {
   const lines = text.split("\n");
@@ -116,8 +202,15 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
   }
 
   const out: string[] = [];
+  let inFence = false;
   for (let i = 0; i < withoutSections.length; i++) {
     const line = withoutSections[i] ?? "";
+    // Fenced lines bypass every removal, so a reference in a fence fails closed.
+    if (fenceLine(line)) inFence = !inFence;
+    if (inFence || fenceLine(line)) {
+      out.push(line);
+      continue;
+    }
     if (/^\s*\|.*\|\s*$/.test(line) && containsExcludedScoutPath(line)) continue;
 
     if (/^\s*>/.test(line)) {
@@ -133,7 +226,35 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
     }
 
     if (!listItemStart(line)) {
-      out.push(line);
+      if (!paragraphLine(line)) {
+        out.push(line);
+        continue;
+      }
+      const paragraph = [line];
+      let j = i + 1;
+      while (j < withoutSections.length && paragraphLine(withoutSections[j] ?? "")) {
+        paragraph.push(withoutSections[j] ?? "");
+        j += 1;
+      }
+      i = j - 1;
+      if (!containsExcludedScoutPath(paragraph.join("\n"))) {
+        out.push(...paragraph);
+        continue;
+      }
+      // Keep the source line breaks when each line ends a sentence; otherwise
+      // a sentence can wrap across lines, so split the joined paragraph.
+      const units = paragraph.every(endsSentence)
+        ? paragraph
+        : [paragraph.map((part) => part.trim()).join(" ")];
+      const keptLines = units.flatMap((unit) => {
+        if (!containsExcludedScoutPath(unit)) return [unit];
+        const indent = /^\s*/.exec(unit)?.[0] ?? "";
+        const kept = splitSentences(unit).filter((sentence) => !containsExcludedScoutPath(sentence));
+        return kept.length > 0 ? [indent + kept.join(" ")] : [];
+      });
+      out.push(...keptLines);
+      // A fully removed paragraph also drops one blank line, so no double gap remains.
+      if (keptLines.length === 0 && (withoutSections[j] ?? "").trim() === "" && (out.at(-1) ?? "").trim() === "") i = j;
       continue;
     }
 
@@ -154,7 +275,7 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
   const scrubbed = out.join("\n");
   if (containsExcludedScoutPath(scrubbed)) {
     throw new Error(
-      `Non-exposed Scout operation reference survives outside a removable Markdown block in ${context} — ` +
+      `Non-exposed Scout operation reference survives outside a removable Markdown block or sentence in ${context} — ` +
         `an upstream re-sync changed the reference shape; update the structural scrub in ` +
         `src/skills/scrub.ts so the reference cannot be emitted.`
     );
