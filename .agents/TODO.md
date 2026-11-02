@@ -331,6 +331,14 @@ Acceptance checks:
 Done when: all twelve acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
 
+
+2026-11-02 delegated round (decision B, pre-registered contract with two amendments; ledger
+`rounds/2026-11-02-routing-repair.md`). Nine designs ran on both sources; none passes, and the
+scorer stays. `morph` token boundaries plus the schema rule fix the short-token and schema-only
+classes, but broad retrieval and skills recall then collapses. Next direction: restore that
+recall with legitimate evidence first, then remove the spurious kind. Owner decision B covers the
+dense option.
+
 ### Stop schema enum values and example tokens from admitting new Scout operations
 
 Found by the 2026-10-28 repair round (`rounds/2026-10-28-routing-repair/verify/final.md`, O3). On
@@ -851,12 +859,16 @@ method. Then either promote it into `eval/qa/` with its test, or delete the roun
 
 Assemble the plan again before you sign its hash. The dated hashes in the run sheet are history.
 
-### B. Routing repair acceptance (delegated 2026-11-02)
+### B. Decide whether search may call a query-embedding model
 
-The owner delegated this decision to the orchestrator on 2026-11-02. The orchestrator replaced the
-Groth16 question with a pre-registered acceptance contract for a general scoring repair:
-[contract](rounds/2026-11-02-routing-repair/contract.md), amended once after an independent
-assumption attack ([attack](rounds/2026-11-02-routing-repair/attack-g.md)). The round ledger is
-[2026-11-02-routing-repair.md](rounds/2026-11-02-routing-repair.md). Floors stay unchanged: the
-contract withdraws any floor move, and the only room is the slack already in `eval/gates.json`.
-Delete this entry when the round closes.
+The 2026-11-02 routing round ([ledger](rounds/2026-11-02-routing-repair.md)) found that dense
+evidence is the strongest measured recall signal: W − L +20 on main and +21 on the fresh source,
+with `@cf/baai/bge-base-en-v1.5` (listed at USD 0.0666 per million tokens; about USD 0.0013 per
+1,000 queries of 20 tokens). Every pure lexical repair
+fails because it removes spurious evidence that recall depends on. A query embedding is a paid
+model call on the MCP search path. `AGENTS.md` requires host-side approval, elicitation, and
+budget enforcement for that, and search has none, so the contract (G13) ruled it out.
+
+Options: (1) keep search lexical-only (current state); (2) allow a bounded, metered query
+embedding on search with a lexical fallback, which needs an `AGENTS.md` rule change and a design
+for budget enforcement and CI measurement.
