@@ -1,7 +1,7 @@
 ---
 id: sd-063
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: State-archival page gives a stale restored-entry TTL of current_ledger_number + 4095
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - state-archival.mdx line 179 defines [minimum] as stellar-core 2109a168 src/ledger/NetworkConfig.h#L77-L78, which is the initial constant MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4096
   - 2026-11-02 stellar-core master b8c4f12d6f src/transactions/RestoreFootprintOpFrame.cpp lines 126-127 compute restoredLiveUntilLedger = ledgerSeq + archivalSettings.minPersistentTTL - 1
   - 2026-11-02 grep of stellar/stellar-docs main 5142b219 docs/ for 4095, 4096, and 4,096 finds no other prose that gives an initial TTL constant
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3000
 ---
 
 ## Finding

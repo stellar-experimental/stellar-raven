@@ -1,7 +1,7 @@
 ---
 id: sd-065
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Debugging Errors page names HostError(..., LimitExceeded); the error code is ExceededLimit
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - the sibling page docs/learn/fundamentals/contract-development/contract-interactions/overview.mdx line 38 already says the error code is ExceededLimit with type Budget or Storage
   - "2026-11-02T20:07Z recheck: live page .md lines 41 and 99 still read HostError(Budget, LimitExceeded) and HostError(Storage, LimitExceeded); stellar/stellar-docs main 5142b219 lines 38 and 100 unchanged"
   - Raven eval golden case q-sor-decode-hosterror-codes, audited 2026-11-02
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3001
 ---
 
 ## Finding

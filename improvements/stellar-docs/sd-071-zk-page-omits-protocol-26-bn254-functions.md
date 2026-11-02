@@ -1,7 +1,7 @@
 ---
 id: sd-071
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: ZK page lists only the Protocol 25 BN254 host functions; add the Protocol 26 CAP-80 set
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - stellar/stellar-protocol master core/cap-0080.md "Host functions for efficient ZK BN254 use cases", Status Final, Protocol version 26
   - the same docs commit docs/networks/software-versions.mdx lines 257 and 297 list "Host Functions for Efficient ZK BN254 Use Cases - CAP-80" for Protocol 26
   - golden cases q-zk-host-functions-status and q-pc-protocol-26-yardstick (golden audit pass 2, 2026-11-02)
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3006
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: cs-004
 service: canonical-source
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "CCTP Stellar contracts reference names handle_receive_* but the deployed TokenMessengerMinter exposes handle_recv_*"
 probe:
@@ -18,6 +18,7 @@ evidence:
   - "2026-11-02T20:11Z recheck: page lines 84-85 unchanged; stellar contract info interface (stellar 28.1.0) on the mainnet TokenMessengerMinter still returns only handle_recv_finalized_message and handle_recv_unfinalized_message. gh search code finds handle_receive_finalized_message in circlefin/solana-cctp-contracts (Solana V2), not in circlefin/stellar-cctp."
   - "Dedupe 2026-11-02: circlefin/stellar-cctp issues and PRs (state all) contain no report about handler names or this docs page. Circle publishes no public repository for developers.circle.com content; circlefin/docs-examples holds code samples only."
   - "Golden consumer: eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json answer and keyFacts tell the answerer to use the deployed handle_recv_* names amid the docs contradiction."
+  - upstream issue filed 2026-11-02: https://github.com/circlefin/stellar-cctp/issues/36
 ---
 
 ## Finding

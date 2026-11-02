@@ -1,7 +1,7 @@
 ---
 id: sd-061
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Claimable-balances guide says getLedgerEntries finds the Balance ID, but the method needs the ID as input
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - golden case q-aas-claim-received-claimable-balances (golden audit pass 2, 2026-11-02) records that RPC getLedgerEntries reads a claimable balance only by a known balance id and has no claimant filter
   - stellar/stellar-docs main 5142b219 docs/data/apis/migrate-from-horizon-to-rpc.mdx lines 46-47 say GET /claimable_balances has "No direct RPC equivalent" and that getLedgerEntries retrieves "a specific claimable balance by ID"
   - the sentence came from stellar/stellar-docs#1784 (merged 2025-09-17), which replaced the earlier "can be done in several ways" text
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/2998
 ---
 
 ## Finding

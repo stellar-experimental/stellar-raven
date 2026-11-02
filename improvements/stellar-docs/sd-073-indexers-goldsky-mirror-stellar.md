@@ -1,7 +1,7 @@
 ---
 id: sd-073
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Indexers page says Goldsky Mirror supports Stellar; Goldsky now serves Stellar only through Turbo
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - 2026-11-02T17:23:17Z GET https://docs.goldsky.com/chains/stellar.md returned HTTP 200; the page documents Turbo pipelines for stellar_mainnet and stellar_testnet and links "Migrate from Mirror to Turbo"
   - 2026-11-02T20:08:28Z GET https://docs.goldsky.com/subgraph-vs-mirror.md (the target of the Stellar Docs "two main products" link) returned HTTP 200 titled "Which product do I need?"; it says "Goldsky offers six products" and "Mirror is Goldsky's original pipeline product. It's now legacy, superseded by Turbo."; the supported-networks matrix row for Stellar is "| Stellar | — | M+T | — | — | — |" (Turbo only)
   - golden case q-infra-which-indexer (golden audit pass 2, 2026-11-02)
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3008
 ---
 
 ## Finding

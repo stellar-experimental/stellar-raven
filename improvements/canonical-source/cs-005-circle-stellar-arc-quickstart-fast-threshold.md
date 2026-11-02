@@ -1,7 +1,7 @@
 ---
 id: cs-005
 service: canonical-source
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Stellar to Arc quickstart labels threshold 1000 as Fast Transfer, but Stellar-source Fast Transfer is N/A"
 probe:
@@ -20,6 +20,7 @@ evidence:
   - "The https://developers.circle.com/cctp/references/stellar.md example with minFinalityThreshold 1000 and finalityThresholdExecuted 2000 is an Ethereum-to-Stellar message (sourceDomain 0). It does not show Stellar-source behavior."
   - "Dedupe 2026-11-02: circlefin/stellar-cctp issues and PRs (state all) contain no report about Stellar-source Fast Transfer. Circle publishes no public repository for developers.circle.com content."
   - "Golden consumer: eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json answer discloses the conflict, and its keyFacts say to use Standard 2000 until the Stellar-source 1000/Fast versus N/A dispute resolves."
+  - upstream issue filed 2026-11-02: https://github.com/circlefin/stellar-cctp/issues/37
 ---
 
 ## Finding

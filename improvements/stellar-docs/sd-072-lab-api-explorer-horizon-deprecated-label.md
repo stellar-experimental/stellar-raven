@@ -1,7 +1,7 @@
 ---
 id: sd-072
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Lab API Explorer card says Horizon is deprecated; other pages say it is nearing end-of-life
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - predecessor fix stellar/stellar-docs#2592 and stellar/stellar-docs#2620 (merged 2026-07-16; Raven record sd-017) unified the Horizon lifecycle label; this card is a regression from migration commit 700ed32d, which replaced the Docusaurus <DocCardList /> with a hard-coded card
   - 2026-11-02T20:08:06Z recheck - GET https://developers.stellar.org/docs/tools/lab/api-explorer.md returned HTTP 200 with "Horizon is considered deprecated."; stellar/stellar-docs main 5142b219d3ead7605cc1d9dd661582c653664ec5 docs/tools/lab/api-explorer/index.mdx line 13 is unchanged
   - golden case q-infra-horizon-vs-rpc (golden audit pass 2, 2026-11-02)
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3007
 ---
 
 ## Finding

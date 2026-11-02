@@ -1,7 +1,7 @@
 ---
 id: sd-068
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Events ingest guide calls getEvents retention 7 days at most; the window is configurable
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - stellar/stellar-docs#2595 and its fix stellar/stellar-docs#2656 (merged 2026-07-21) corrected the same retention wording on getTransaction.mdx, rpc/README.mdx, and the OpenRPC getEvents and getTransaction descriptions; they did not touch docs/build/guides/events/ingest.mdx or docs/tools/lab/transaction-dashboard.mdx
   - 2026-11-02T20:07:19Z GET https://developers.stellar.org/docs/tools/lab/transaction-dashboard returned HTTP 200 with "This feature uses an RPC and RPC retains at maximum 7 days of historical data. Any transaction older than 7 days will be displayed as invalid." (stellar/stellar-docs main 5142b219 docs/tools/lab/transaction-dashboard.mdx line 18)
   - golden case q-soroban-publish-events (golden audit pass 2, 2026-11-02)
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3004
 ---
 
 ## Finding

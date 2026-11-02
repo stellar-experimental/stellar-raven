@@ -1,7 +1,7 @@
 ---
 id: sd-067
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Token interface events table says SEP-41 mint and clawback events are not part of the interface
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - 'stellar/stellar-protocol 1e09d9f636 (2025-03-13, "SEP-41: add mint and clawback event (#1588)") introduced both events; the table cells came from stellar/stellar-docs PR 2720 merged 2026-08-04, so the cells were wrong from creation'
   - "2026-11-02T20:07Z recheck: live .md lines 209-210 unchanged; main 5142b219 token-interface.mdx lines 211-212 unchanged"
   - Raven eval golden case q-soroban-event-indexing-design, audited 2026-11-02
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3003
 ---
 
 ## Finding

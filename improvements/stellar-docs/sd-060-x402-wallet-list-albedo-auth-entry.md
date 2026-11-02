@@ -1,7 +1,7 @@
 ---
 id: sd-060
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Remove Albedo from the x402 auth-entry signing wallet list
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - 2026-11-02 stellar-expert/albedo master c2fe8f68 (2026-08-31) intent/src/intent-interface.js defines the same nine intents, so unreleased Albedo code also has no auth-entry intent
   - the Wallets Kit Albedo module already rejected signAuthEntry at commit 90b8854a (2025-09-13); the x402 page listed Albedo from its first version, stellar/stellar-docs#2264 (merged 2026-02-18)
   - golden case q-soroban-x402-auth-entry-signing (golden audit pass 2, 2026-11-02)
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/2997
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sd-066
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Test Events guide says env.events().all() returns events since the Env was created
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - 2026-11-02 verbatim guide test on soroban-sdk 29.0.1 compiles (ContractEvents implements PartialEq<Vec<(Address, Vec<Val>, Val)>>) and panics at assert_eq; left has one event with data U32(3)
   - docs/build/smart-contracts/example-contracts/events.mdx line 239 already says all() returns the events published by the last contract invocation
   - Raven eval golden case q-sor-test-event-assertion-ordering, audited 2026-11-02
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3002
 ---
 
 ## Finding

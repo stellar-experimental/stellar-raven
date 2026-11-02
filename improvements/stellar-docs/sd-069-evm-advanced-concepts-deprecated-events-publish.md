@@ -1,7 +1,7 @@
 ---
 id: sd-069
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: EVM migration guide teaches the deprecated events().publish and a stale token event shape
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - stellar/soroban-examples main 03d42aa6b973dcf3a453a99d0c6a6e8d25a196e2 token/src has no event.rs; token/src/contract.rs defines events with #[contractevent] and publishes events::MintWithAmountOnly { to, amount }
   - adjacent repeated pattern docs/build/guides/fees/analyzing-smart-contract-cost.mdx lines 241 and 247 also call env.events().publish
   - golden cases q-sor-evm-to-soroban-porting and q-soroban-publish-events (golden audit pass 2, 2026-11-02)
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3005
 ---
 
 ## Finding

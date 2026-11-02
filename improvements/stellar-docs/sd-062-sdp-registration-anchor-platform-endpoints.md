@@ -1,7 +1,7 @@
 ---
 id: sd-062
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: SDP Registration API reference still describes decommissioned Anchor Platform endpoints
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - the same Registration tag already lists /sep10/auth, /sep24/info, and /sep24-interactive-deposit/* operations, added by stellar/stellar-docs#2150 (merged 2026-01-08), which kept the old tag description
   - stellar/stellar-disbursement-platform-backend CHANGELOG.md 6.0.0 (released 2025-12-04) "Decommission Anchor Platform and add support for SEP-10 and SEP-24 endpoints in the SDP" with "Add SEP10 /auth endpoints", "Add SEP24 /info endpoints", and "Remove Anchor Platform integration from the SDP"; latest release 7.1.0 (2026-10-26)
   - golden case q-pay-sdp-disbursement (golden audit pass 2, 2026-11-02) records the stale reference as an observation
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/2999
 ---
 
 ## Finding
