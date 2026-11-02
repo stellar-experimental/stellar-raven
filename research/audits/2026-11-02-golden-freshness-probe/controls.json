@@ -1,0 +1,57 @@
+{
+  "schema": "qa-freshness-probes-v1",
+  "probes": [
+    {
+      "id": "control-scf-45-phase",
+      "caseId": "q-scf-current-round",
+      "caseAsOf": "2026-10-01",
+      "subject": { "program": "Stellar Community Fund (SCF) round #45, communityfund.stellar.org" },
+      "question": {
+        "type": "choice",
+        "instructions": "What phase is Stellar Community Fund round #45 currently in?",
+        "criteria": { "submission": "Submission", "notification_award": "Notification and Award Distribution", "ended": "Ended or concluded", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "notification_award"
+    },
+    {
+      "id": "control-scf-46-deadline",
+      "caseId": "q-edge-fresh-latest-scf-round",
+      "caseAsOf": "2026-10-01",
+      "subject": { "program": "Stellar Community Fund (SCF) round #46, communityfund.stellar.org" },
+      "question": {
+        "type": "choice",
+        "instructions": "What is the submission deadline of Stellar Community Fund round #46?",
+        "criteria": { "2026-11-08": "November 8, 2026", "2026-11-09": "November 9, 2026", "2026-11-16": "November 16, 2026", "other": "Another date", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "2026-11-08"
+    },
+    {
+      "id": "control-meridian-upcoming",
+      "caseId": "q-hist-meridian-2026-corrected-venue",
+      "caseAsOf": "2026-07-11",
+      "subject": { "event": "Meridian 2026, the Stellar Development Foundation conference" },
+      "question": { "type": "noul", "instructions": "Meridian 2026 has not yet taken place; it is still upcoming." },
+      "expect": true
+    },
+    {
+      "id": "control-rpc-archive-count",
+      "caseId": "q-infra-rpc-provider-archive-tier",
+      "caseAsOf": "2026-07-11",
+      "subject": { "page": "Stellar RPC providers table, developers.stellar.org/docs/data/apis/rpc/providers" },
+      "question": {
+        "type": "choice",
+        "instructions": "How many hosted providers does the official Stellar RPC providers table mark as supporting the RPC Archive tier?",
+        "criteria": { "7": "7 providers", "8": "8 providers", "9": "9 providers", "10": "10 providers", "unknown": "The evidence is insufficient" }
+      },
+      "expect": "7"
+    },
+    {
+      "id": "control-no-mainnet-perps",
+      "caseId": "q-defi-perps-whitespace",
+      "caseAsOf": "2026-07-10",
+      "subject": { "market": "Perpetual-futures DEXes on the Stellar network" },
+      "question": { "type": "noul", "instructions": "No perpetual-futures DEX is live on Stellar Mainnet." },
+      "expect": true
+    }
+  ]
+}

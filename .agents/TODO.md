@@ -441,6 +441,22 @@ class. Encode the conflict as disputed if it persists, and file an
 Done when: both cases carry the 2026-11-02 or later state with provenance, and
 `npm run eval:qa:lint -- --stale --enforce-floors` passes.
 
+### Flag stale goldens from their own primary sources before `reverifyBy`
+
+The stale queue finds drift only on a case's `reverifyBy` date. The 2026-11-02 trial of a web-index
+trigger (Parallel `web_decisions`, [audit](../research/audits/2026-11-02-golden-freshness-probe/README.md))
+failed its value bar: it detected 1 of 5 real drift corrections, endorsed 2 stale values, and raised
+2 confident false alarms in 35 current goldens. The cause is index lag; the tool answered from an
+old snapshot even when it cited the current official page.
+
+Next: design a free trigger that re-reads each scheduled case's class-A `truth.sources[]` refs live
+and flags a changed value. A trigger output queues a golden-truth re-verification; it never changes
+gospel by itself.
+
+Done when: a candidate detects at least 3 of the audit's 5 controls with at most 2 false alarms in
+its 35 current probes, and it is wired into the `truth-maintenance` drip; or the owner declines the
+program. Delete this item then.
+
 ### Measure the execute annotation change in isolation
 
 PR #225 and #234 set `execute` `readOnlyHint: true` and `openWorldHint: false`. Claude Code `2.1.292`
