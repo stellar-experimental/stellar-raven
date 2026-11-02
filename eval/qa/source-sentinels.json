@@ -1,0 +1,227 @@
+{
+  "schema": "qa-source-sentinels-v1",
+  "sentinels": [
+    {
+      "id": "scf-46-submission-deadline",
+      "caseId": "q-scf-current-round",
+      "caseAsOf": "2026-11-02",
+      "url": "https://communityfund.stellar.org/awards",
+      "check": {
+        "kind": "present",
+        "pattern": "SCF #46 Submission Deadline to submit: November 9, 2026"
+      }
+    },
+    {
+      "id": "scf-45-ended",
+      "caseId": "q-scf-current-round",
+      "caseAsOf": "2026-11-02",
+      "url": "https://communityfund.stellar.org/awards",
+      "check": {
+        "kind": "present",
+        "pattern": "SCF #45 Ended"
+      }
+    },
+    {
+      "id": "scf-46-submission-deadline-edge",
+      "caseId": "q-edge-fresh-latest-scf-round",
+      "caseAsOf": "2026-11-02",
+      "url": "https://communityfund.stellar.org/awards",
+      "check": {
+        "kind": "present",
+        "pattern": "SCF #46 Submission Deadline to submit: November 9, 2026"
+      }
+    },
+    {
+      "id": "rpc-archive-provider-rows",
+      "caseId": "q-infra-rpc-provider-archive-tier",
+      "caseAsOf": "2026-11-02",
+      "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
+      "check": {
+        "kind": "count",
+        "pattern": "\\| \\[[^\\]]+\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} ✅ \\|",
+        "count": 9
+      }
+    },
+    {
+      "id": "zenex-mainnet-deployment",
+      "caseId": "q-defi-perps-whitespace",
+      "caseAsOf": "2026-10-15",
+      "url": "https://docs.zenex.trade/deployments/contract-addresses",
+      "check": {
+        "kind": "present",
+        "pattern": "live Zenex deployment on Stellar mainnet"
+      }
+    },
+    {
+      "id": "sdf-board-roster",
+      "caseId": "q-org-sdf-board-directors",
+      "caseAsOf": "2026-08-18",
+      "url": "https://stellar.org/foundation/team",
+      "check": {
+        "kind": "present",
+        "pattern": "Board of directors Jed McCaleb Lin-Hua Wu Ronaldo Lemos Ginger Baker Asiff Hirji Advis"
+      }
+    },
+    {
+      "id": "mazieres-chief-scientist",
+      "caseId": "q-org-mazieres-chief-scientist",
+      "caseAsOf": "2026-07-13",
+      "url": "https://stellar.org/foundation/team",
+      "check": {
+        "kind": "present",
+        "pattern": "Founder and Chief Scientist"
+      }
+    },
+    {
+      "id": "sep55-draft",
+      "caseId": "q-soroban-contract-build-verification",
+      "caseAsOf": "2026-08-04",
+      "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
+      "check": {
+        "kind": "present",
+        "pattern": "Status: Draft"
+      }
+    },
+    {
+      "id": "sep58-draft",
+      "caseId": "q-soroban-contract-build-verification",
+      "caseAsOf": "2026-08-04",
+      "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
+      "check": {
+        "kind": "present",
+        "pattern": "Status: Draft"
+      }
+    },
+    {
+      "id": "flutter-sdk-soneso",
+      "caseId": "q-tool-flutter-mobile-sdk",
+      "caseAsOf": "2026-07-11",
+      "url": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+      "check": {
+        "kind": "present",
+        "pattern": "The Flutter Stellar SDK is maintained by dedicated community developer, Soneso"
+      }
+    },
+    {
+      "id": "go-sdk-module",
+      "caseId": "q-tool-go-sdk-ingest",
+      "caseAsOf": "2026-07-11",
+      "url": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+      "check": {
+        "kind": "present",
+        "pattern": "go-stellar-sdk"
+      }
+    },
+    {
+      "id": "enterprise-fund-portfolio",
+      "caseId": "q-org-sdf-enterprise-fund",
+      "caseAsOf": "2026-10-06",
+      "url": "https://stellar.org/enterprise-fund",
+      "check": {
+        "kind": "present",
+        "pattern": "portfolio totaling over \\$100m"
+      }
+    },
+    {
+      "id": "ledger-operation-limits",
+      "caseId": "q-protocol-max-tx-set-size",
+      "caseAsOf": "2026-08-25",
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+      "check": {
+        "kind": "present",
+        "pattern": "1,000 non-smart-contract operations and 2,000 smart contract transactions"
+      }
+    },
+    {
+      "id": "mpp-payment-intents",
+      "caseId": "q-mpp-discovery-and-modes",
+      "caseAsOf": "2026-11-02",
+      "url": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+      "check": {
+        "kind": "present",
+        "pattern": "supports two payment intents: Charge"
+      }
+    },
+    {
+      "id": "ml-dsa-not-shipped",
+      "caseId": "q-hist-quantum-preparedness-plan",
+      "caseAsOf": "2026-07-11",
+      "url": "https://developers.stellar.org/docs/networks/software-versions",
+      "check": {
+        "kind": "absent",
+        "pattern": "ML-DSA"
+      }
+    },
+    {
+      "id": "instaward-cap",
+      "caseId": "q-scf-ambassador-program",
+      "caseAsOf": "2026-08-04",
+      "url": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/instawards/official-rules.md",
+      "check": {
+        "kind": "present",
+        "pattern": "up to a total cap of \\$15,000"
+      }
+    },
+    {
+      "id": "metamask-stellar-default",
+      "caseId": "q-edge-metamask-evm-mental-model",
+      "caseAsOf": "2026-10-01",
+      "url": "https://support.metamask.io/configure/networks/stellar/",
+      "check": {
+        "kind": "present",
+        "pattern": "MetaMask supports Stellar as a default network"
+      }
+    },
+    {
+      "id": "mainnet-base-reserve",
+      "caseId": "q-protocol-base-reserve-min-balance",
+      "caseAsOf": "2026-07-11",
+      "url": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+      "check": {
+        "kind": "present",
+        "pattern": "\\\"base_reserve_in_stroops\\\": ?5000000\\b"
+      }
+    },
+    {
+      "id": "sdf-bug-bounty-hackerone",
+      "caseId": "q-comp-security-disclosure-programs",
+      "caseAsOf": "2026-08-29",
+      "url": "https://stellar.org/grants-and-funding/bug-bounty",
+      "check": {
+        "kind": "present",
+        "pattern": "partnered with HackerOne"
+      }
+    },
+    {
+      "id": "sdp-transaction-submission-service",
+      "caseId": "q-anchor-sdp-what",
+      "caseAsOf": "2026-11-02",
+      "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+      "check": {
+        "kind": "present",
+        "pattern": "Transaction Submission Service ?: the service that submits all payment transactions"
+      }
+    },
+    {
+      "id": "soroban-sdk-advisories",
+      "caseId": "q-soroban-sdk-cve",
+      "caseAsOf": "2026-09-03",
+      "url": "https://api.github.com/repos/stellar/rs-soroban-sdk/security-advisories?per_page=100",
+      "check": {
+        "kind": "count",
+        "pattern": "\\\"ghsa_id\\\": ?\\\"GHSA-",
+        "count": 3
+      }
+    },
+    {
+      "id": "x402-no-sep",
+      "caseId": "q-hist-x402-stellar-announcement",
+      "caseAsOf": "2026-10-06",
+      "url": "https://github.com/stellar/stellar-protocol/blob/master/README.md",
+      "check": {
+        "kind": "absent",
+        "pattern": "x402"
+      }
+    }
+  ]
+}

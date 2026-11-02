@@ -61,6 +61,11 @@ refresh workflow, so a date passing fires within 24 hours. This skill owns that 
   staggered across cases, so re-verification arrives as a steady drip instead of a cliff.
   When a round re-verifies many cases at once, spread the new dates; a wall of identical
   dates is a review finding.
+- **Source sentinels fire early.** The daily `golden-sentinels` workflow re-reads each
+  sentinel's primary source and keeps one issue, labeled `golden-sentinels`, open while any
+  anchor drifts. Queue each drifted case into the `golden-truth` lane ahead of its
+  `reverifyBy` date. A drift is a trigger, never evidence: when the fact still holds and only
+  the wording moved, re-author the anchor instead of the case.
 - **Look ahead, not just behind.** A maintenance round should also sweep upcoming dates
   (e.g. the next 2–4 weeks) and fold near-due cases into the current round's golden lane
   rather than waiting for the gate to fire.

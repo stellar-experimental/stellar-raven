@@ -75,11 +75,73 @@ also the least likely to go stale unnoticed.
 
 The failures share one cause: the tool answers from an index snapshot, even when it cites the
 current page. A useful trigger must read the golden's own primary sources live. The class-A refs in
-`truth.sources[]` already name them. `.agents/TODO.md` tracks that design under "Eval instruments".
-A future candidate must pass the same bar against these probes and controls.
+`truth.sources[]` already name them. Part 2 tests that design against the same bar.
 
 ## Incidental observation
 
 Mainnet reported `protocolVersion` 29 at ledger 65270160 (`getLatestLedger`, 2026-11-02). No battery
 golden asserts an undated current protocol version. Every Protocol 28 mention carries a date, so this
 trial found no stale golden from that upgrade.
+
+## Part 2 — primary-source sentinels
+
+### Method
+
+A sentinel fetches one primary source of a golden and tests one anchor for a volatile value. The
+checks are `present`, `absent`, or `count`. The fetch reads GitHub blob URLs as raw files, decodes
+JSON escapes and HTML entities, strips tags from HTML only, and collapses whitespace. The runner is
+[`eval/qa/source-sentinels.mjs`](../../../eval/qa/source-sentinels.mjs). It needs no key and no model.
+
+The bar is the Part 1 bar: detect at least 3 of the 5 controls, with at most 2 false alarms in the
+current set.
+
+### Controls
+
+[`sentinel-controls.json`](sentinel-controls.json) restates the Part 1 controls as anchors on the
+pages that the goldens cite. Each anchor holds the old value as the page stated it before the change.
+
+| Control | Anchor | Result |
+|---|---|---|
+| `control-scf-45-phase` | "currently in the Notification and Award Distribution phase" | detected: the page now says "SCF #45 Ended" |
+| `control-scf-46-deadline` | "Deadline to submit: November 8, 2026" | detected: the page now says November 9 |
+| `control-rpc-archive-rows` | 7 archive-tier rows in `providers.mdx` | detected: 9 rows |
+| `control-zenex-testnet` | the Zenex FAQ testnet statement | detected: the server-rendered FAQ no longer states it |
+| `control-meridian-upcoming` | "Meridian 2026 is a two-day in-person conference taking place" | missed: the event page did not change after the event |
+
+Detection is 4 of 5. The miss is a property of the source: a page that never changes cannot signal.
+
+### False alarms
+
+The 22 sentinels in [`eval/qa/source-sentinels.json`](../../../eval/qa/source-sentinels.json) all
+hold on 2026-11-02, so the current set has 0 false alarms. They cover 20 of the 35 Part 1 probe
+cases. The other 15 state a dated or settled fact, or need a source that a plain fetch cannot read,
+such as the live network settings behind `q-soroban-wasm-size-limit`.
+
+A durability proxy estimates the rate over time. [`quote-sweep.json`](quote-sweep.json) re-reads
+every exact quote in the newest class A and B evidence notes of the battery: 154 quotes. Of these,
+75 were recorded in July to October 2026 and fetched without error. Three of the 75 come from a PDF,
+which the plain fetch cannot read. Of the other 72 quotes, 68 hold. The 4 drifts:
+
+| Source | Class | Reason |
+|---|---|---|
+| `noether.exchange` | matcher artifact | A period became a semicolon. The fact holds. |
+| `agentic-commerce-protocol` README | reworded | The maintainer sentence became a badge. |
+| `stellar-mpp-sdk` README | reworded | The session-mode text was rewritten. |
+| MetaMask non-EVM networks page | source changed | MetaMask now lists Stellar. |
+
+Three of 72 anchors needed new wording after 3 to 5 weeks, about 4 percent. That is the expected
+false-alarm load. Each costs one anchor edit, not a full re-verification.
+
+### Decision
+
+Adopted. Sentinels pass the bar, cost nothing to run, and give the same result on each run. Freeform
+quotes in evidence notes are not usable anchors without change: markdown, PDF, and page chrome break
+them. Each sentinel is therefore written as a structured entry and confirmed live when it lands.
+The daily workflow `.github/workflows/golden-sentinels.yml` keeps one `golden-sentinels` issue in
+step with the drift set. The `truth-maintenance` skill queues each drifted case into the
+`golden-truth` lane.
+
+### Incidental observations
+
+- SLP-0006 now shows status Final. Its golden states the status as of July 11, 2026, so it stays true.
+- Protocol 29 went live on Mainnet on October 1, 2026. It is a security release with no CAPs.
