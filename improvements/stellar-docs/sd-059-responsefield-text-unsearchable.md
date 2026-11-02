@@ -15,12 +15,12 @@ evidence:
 
 ## Finding
 
-The Mintlify Discovery search API (`POST /discovery/v1/search/<domain>`) does not find text inside `<ResponseField>` components.
+The Mintlify Discovery search API (`POST /discovery/v1/search/<domain>`) often fails to return a page for text inside its `<ResponseField>` components.
 The site's own MCP search finds the same text (2026-11-02 two-path recheck in the evidence).
 The page store and the rendered site hold the text, but a search for that text rarely returns the page.
 93 docs files use `<ResponseField>`, including every Horizon result-code page and the Horizon resource objects.
 These components hold the Horizon string codes (`op_bad_signer`, `op_line_full`, `tx_bad_auth_extra`) and their meanings.
-A reader who searches for an error code that Horizon returned cannot find the page that explains it.
+Through the Discovery API, a search for an error code that Horizon returned often does not find the page that explains it. The site MCP search did not show this failure for the seven checked queries.
 
 ## Evidence
 

@@ -106,9 +106,12 @@ Done when: `npm run improvements:lint -- --live` passes.
 On 2026-11-02 stellar/stellar-dev-skill merged PRs #167 to #171, which fix `sk-032` to `sk-036` in
 the upstream skill text (main `9c604c2b`). Raven still serves the pin `cac64041`
 (`ecosystem-skills/MANIFEST.json`), so `codemode.skill.read` returns the old text until the pin
-moves. Run the pin update and `node scripts/check-pin-review.mjs`, the routing gate, and the exposure
-guards. Deploy only after the 2026-11-02 overnight QA run releases its remote-identity pin
-(`rounds/2026-11-02-golden-overnight.md`).
+moves. Follow the full update sequence in `ecosystem-skills/README.md`: run `./update.sh`, read the
+skill diffs, and review the selection of the new `assets/regulated-assets.md` companion. Then run
+`node scripts/check-pin-review.mjs`, the routing gate, and the exposure guards. A hand-edited commit
+SHA is not enough, because `update.sh` discovers the selected files. Deploy only after the overnight
+golden QA run of 2026-11-02 ends. That run belongs to another session, pins the remote server
+identity, and does not authorize a deploy. Its owner releases the pin.
 
 Done when: production `codemode.skill.read` serves the fixed sections, for example
 `skills/smart-contracts/SKILL.md` with `soroban-sdk = "29"`.

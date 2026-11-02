@@ -75,7 +75,7 @@ Total findings: 125
 | sd-055 | Two archival examples call sign() on the builder returned by assembleTransaction(). The non-restoration branch fails with TypeError:…       | fixed-upstream    | 2026-10-09 | 1           |
 | sd-057 | The Anchor Platform admin guide uses Circle's Testnet USDC issuer without a network label. Its asset-ID explanation says the example…       | fixed-upstream    | 2026-10-09 | 0           |
 | sd-058 | The fee-payer signing example calls removed XDR getter methods with the current JavaScript SDK. It throws TypeError: txEnvelope.v1 is not…  | reported-upstream | 2026-10-09 | 0           |
-| sd-059 | The Mintlify Discovery search API (POST /discovery/v1/search/<domain>) does not find text inside <ResponseField> components. The site's…    | reported-upstream | 2026-11-02 | 0           |
+| sd-059 | The Mintlify Discovery search API (POST /discovery/v1/search/<domain>) often fails to return a page for text inside its <ResponseField>…    | reported-upstream | 2026-11-02 | 0           |
 | sd-060 | The x402 overview page lists Albedo as a wallet that supports auth-entry signing. Albedo has no auth-entry signing intent, and the Stellar… | reported-upstream | 2026-11-02 | 0           |
 | sd-061 | The claimable-balances guide says that RPC getLedgerEntries gets the Balance ID. The sample that follows needs the Balance ID as its input  | reported-upstream | 2026-11-02 | 0           |
 | sd-062 | The SDP Registration API reference says that wallets authenticate through Anchor Platform endpoints on a separate host. SDP 6.0.0 removed…  | reported-upstream | 2026-11-02 | 0           |

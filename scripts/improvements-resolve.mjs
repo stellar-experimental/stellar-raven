@@ -205,7 +205,8 @@ function parseArgs(argv) {
 }
 
 function usage() {
-  console.error("usage: node scripts/improvements-resolve.mjs --file improvements/...md --live-recheck <evidence> --review-evidence <evidence> [--resolved YYYY-MM-DD] [--repo owner/name] [--resolving-ref URL ...] [--upstream-ref-gone URL ...] --references-reviewed (--upstream-commented | --upstream-comment-na) [--dry-run]");
+  console.error("usage: node scripts/improvements-resolve.mjs --file improvements/...md --live-recheck <evidence> --review-evidence <evidence> [--resolved YYYY-MM-DD] [--repo owner/name] [--resolving-ref URL ...] [--upstream-ref-gone URL ...] --references-reviewed [--upstream-commented | --upstream-comment-na] [--dry-run]");
+  console.error("  --upstream-commented is required while any recorded ref is not gone; --upstream-comment-na is required when the finding records no ref.");
 }
 
 function fail(message, code = 2) {

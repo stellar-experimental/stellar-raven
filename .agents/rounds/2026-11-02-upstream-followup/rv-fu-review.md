@@ -1,3 +1,7 @@
+> Copy of the first review report. Its relative links (`evidence/`, `evidence2/`, `fixtures/`) point
+> to the reviewer's scratch folder `tmp/rv-fu/` in the review worktree. That folder is not committed.
+> The findings restate the evidence that a stranger needs.
+
 | Item | Severity | Verdict | Required action |
 | --- | --- | --- | --- |
 | `sd-055` | BLOCKER | RETIRE-WITH-SUCCESSOR | Preserve the separate contract-restoration defects before deletion. |

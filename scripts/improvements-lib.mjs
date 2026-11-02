@@ -196,12 +196,16 @@ function parseScalarValue(value) {
   return unquote(value);
 }
 
-function unquote(value) {
-  if (
-    (value.startsWith('"') && value.endsWith('"')) ||
-    (value.startsWith("'") && value.endsWith("'"))
-  ) {
-    return value.slice(1, -1);
+// YAML scalar quoting: a double-quoted value uses backslash escapes, and a single-quoted
+// value escapes a quote by doubling it.
+export function unquote(value) {
+  if (value.length >= 2 && value.startsWith('"') && value.endsWith('"')) {
+    return value.slice(1, -1).replace(/\\(["\\/nt])/g, (_, ch) =>
+      ch === "n" ? "\n" : ch === "t" ? "\t" : ch,
+    );
+  }
+  if (value.length >= 2 && value.startsWith("'") && value.endsWith("'")) {
+    return value.slice(1, -1).replaceAll("''", "'");
   }
   return value;
 }
