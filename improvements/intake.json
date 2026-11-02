@@ -199,10 +199,6 @@
       "repo": "cloudflare/agents",
       "reason": "The @cloudflare/codemode package metadata names cloudflare/agents as its issue owner; searchConnectors lives in packages/codemode."
     },
-    "cs-002": {
-      "intake": "unclear",
-      "reason": "soroswap/docs published docs.soroswap.finance and owned the stale pages when cs-002 was filed. On 2026-11-02 https://api.github.com/repos/soroswap/docs returns HTTP 404, and no other public soroswap repository owns the docs."
-    },
     "cs-003": {
       "repo": "stellar/stellar-protocol",
       "reason": "stellar/stellar-protocol owns ecosystem/README.md and every sep-NNNN.md preamble."

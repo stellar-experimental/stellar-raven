@@ -2,6 +2,25 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "entries": [
     {
+      "id": "cs-002",
+      "title": "Two published Soroswap docs pages give a stale status for aggregator liquidity sources. concepts/aggregator.mdx labels Phoenix Protocol…",
+      "service": "canonical-source",
+      "discovered": "2026-09-17",
+      "resolved": "2026-11-02",
+      "repo": "soroswap/docs",
+      "upstreamRefs": [
+        "https://github.com/soroswap/docs/issues/47"
+      ],
+      "upstreamRefsGone": [
+        "https://github.com/soroswap/docs/issues/47"
+      ],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-11-02T22:37Z-23:05Z (Grok rv-fl): GET https://docs.soroswap.finance/concepts/aggregator returns HTTP 308 to /; GET https://docs.soroswap.finance/aggregator/supported-amms(.md) returns HTTP 200 with 'soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex' and 0 matches for 'currently on Testnet' or 'Coming Soon'; llms.txt and llms-full.txt (356430 bytes) contain neither phrase. The stale adapter-status labels no longer render.",
+      "reviewEvidence": "Distinct reviewer Grok grok-4.7 high (lane rv-fl; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fl-review.md section C (RETIRE). gh api repos/soroswap/docs/issues/47 --silent exits 1 with 'gh: Not Found (HTTP 404)', so no resolution comment can be posted.",
+      "sourceCommit": "d43cc7d548abd769ae757193d4857ff6cb5f122d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d43cc7d548abd769ae757193d4857ff6cb5f122d/improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md"
+    },
+    {
       "id": "ll-021",
       "title": "Lumenloop's SCF recap discovery lags the official round result. The accessible recap index stops at round 40, so current retrieval cannot…",
       "service": "lumenloop",

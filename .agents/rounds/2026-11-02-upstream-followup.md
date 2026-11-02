@@ -23,7 +23,7 @@ needed action.
 | `sls-088` | Stellar-Light/stellarlight#1739, PR #1806 | closed 2026-10-08 | classification fixed on Scout 1.9.116; fixture interfaces still have no source paths | `fixed-upstream`, retire; successor `sls-114` |
 | `sd-048` | stellar/stellar-protocol#2010 | closed not_planned by the stale bot | still reproduces on master `0da06899` | closed-unfixed recurrence; status unchanged |
 | `wai-001` | cloudflare/ai#634, PR #639 | PR closed unmerged; package frozen | still reproduces on 4.0.1 | `declined-upstream`; TODO "Move the demo off the deprecated `workers-ai-provider`" |
-| `sd-059` | stellar/stellar-docs#2995 | open; the triage bot asks the maintainers to decide | site MCP search finds the codes; Raven's Discovery API path does not | evidence line; reply on #2995 (see "Upstream comments"); TODO option added |
+| `sd-059` | stellar/stellar-docs#2995 | open; the triage bot asks the maintainers to decide | site MCP search finds the codes; Raven's Discovery API path does not | evidence line; reply on #2995 posted (see "Upstream comments"); TODO option added |
 
 stellar/stellar-dev-skill issues #162 to #166 (`sk-032` to `sk-036`) closed, and PRs #167 to #171
 merged on 2026-11-02 (main `9c604c2b`). The deployed skills.stellar.org files match main. All five
@@ -62,7 +62,46 @@ comparison as the first step.
 documented install methods ships a `soroban` binary. The sd-075 reviewer recorded this residual. A docs-tree scan
 found no other live `soroban` CLI instruction.
 
-## Review
+## Reviews
 
-Pending: the distinct reviewer re-derives the five deletion candidates, the two status changes, the
-sd-059 evidence, and the sd-080 draft.
+- Codex `gpt-6.1-sol` at high (lane `rv-fu`), two passes:
+  [`rv-fu-review.md`](2026-11-02-upstream-followup/rv-fu-review.md) and
+  [`rv-fu-review2.md`](2026-11-02-upstream-followup/rv-fu-review2.md). Every FIX item is reconciled
+  in commit `9e3ec615` (`sd-059` body, `sd-081` shared-import residual, `sls-114` attribution, the
+  pin TODO, and this ledger).
+- Grok `grok-4.7` at high (lane `rv-fl`):
+  [`rv-fl-review.md`](2026-11-02-upstream-followup/rv-fl-review.md). It accepted the resolver change,
+  confirmed the `cs-002` retirement, and found the probe escape bug. The YAML unquote fix and the
+  added resolver tests reconcile its notes. With the fix, `npm run improvements:probes` reports 18
+  recurring and 0 fixed-candidate.
+
+## Upstream comments (posted and read back with `gh api`, 2026-11-02)
+
+| ref | purpose | comment |
+|---|---|---|
+| stellar/stellar-docs#2562 | `sd-081` added defects | https://github.com/stellar/stellar-docs/issues/2562#issuecomment-6590839544 |
+| stellar/stellar-docs#2906 | `sd-055` resolution, residual `sd-081` | https://github.com/stellar/stellar-docs/issues/2906#issuecomment-6590846860 |
+| stellar/stellar-docs#2908 | `sd-057` resolution | https://github.com/stellar/stellar-docs/issues/2908#issuecomment-6590847175 |
+| Stellar-Light/stellarlight#1673 | `sls-085` resolution | https://github.com/Stellar-Light/stellarlight/issues/1673#issuecomment-6590847484 |
+| Stellar-Light/stellarlight#1674 | `sls-086` resolution | https://github.com/Stellar-Light/stellarlight/issues/1674#issuecomment-6590847807 |
+| Stellar-Light/stellarlight#1739 | `sls-088` resolution, residual `sls-114` | https://github.com/Stellar-Light/stellarlight/issues/1739#issuecomment-6590848126 |
+| stellar/stellar-docs#2995 | `sd-059` two-path table; content change withdrawn | https://github.com/stellar/stellar-docs/issues/2995#issuecomment-6590941274 |
+| cloudflare/ai#634 | `wai-001` decline acknowledged; closed not planned | https://github.com/cloudflare/ai/issues/634#issuecomment-6590945505 |
+| stellar/stellar-dev-skill#162 to #166 | `sk-032` to `sk-036` resolutions | comments `6590848522`, `6590848916`, `6590849279`, `6590849669`, `6590850074` |
+
+New filings: `sd-080` as stellar/stellar-docs#3024 and `sls-114` as Stellar-Light/stellarlight#1906.
+
+## Retirements
+
+`improvements/resolved.json` now holds `sd-055`, `sd-057`, `sls-085`, `sls-086`, `sls-088`, `sk-032`
+to `sk-036`, and `cs-002`. The `cs-002` receipt records `upstreamRefsGone` for `soroswap/docs#47`
+(HTTP 404), so no comment applied. Its golden `q-defi-soroswap-what-is` now names the resolved
+receipt in `truth.verified.rootCause`. Only judge-blind truth changed, and the four reopened
+clusters (`cluster-012`, `cluster-014`, `cluster-038`, `cluster-046`) were re-swept as consistent.
+`npm run improvements:lint -- --live` passes.
+
+## Open after this round
+
+- `sd-059`: compare raw Discovery candidates with the adapter output (TODO item), then report on #2995 only if Discovery itself omits the pages.
+- Pin bump for `sk-032` to `sk-036` waits for the overnight golden QA run (TODO item).
+- `wai-001` migration (TODO item). `sd-048` stays `reported-upstream` after the stale-bot closure.

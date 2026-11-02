@@ -89,18 +89,6 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
 
-### Repair the `cs-002` owner after `soroswap/docs` disappeared
-
-On 2026-10-27, `gh api repos/soroswap/docs` and the recorded issue `soroswap/docs#47` return HTTP
-404, so `npm run improvements:lint -- --live` fails on `cs-002` and its `intake.json` override. The
-round ledger `rounds/2026-10-27-issue-batch.md` records the failure.
-
-Next check: find whether the repository was renamed, made private, or deleted, and whether
-`docs.soroswap.finance` still shows the stale adapter status. Then update the `cs-002` owner and
-evidence, or resolve or retarget the finding.
-
-Done when: `npm run improvements:lint -- --live` passes.
-
 ### Bump the `stellar-dev` skill pin to serve the sk-032 to sk-036 fixes
 
 On 2026-11-02 stellar/stellar-dev-skill merged PRs #167 to #171, which fix `sk-032` to `sk-036` in
