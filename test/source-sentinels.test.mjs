@@ -211,6 +211,17 @@ describe("committed sentinel set", () => {
     expect(evaluate(check, "supports two payment intents: Charge One-time payments. Nav: MPP Session Guide").verdict).toBe("drift");
   });
 
+  it("drifts when Mainnet leaves Protocol 29, whatever the release notes call the change", () => {
+    const check = byId("mainnet-protocol-29");
+    const root = (network, version) =>
+      normalize(`{\n  "network_passphrase": "${network}",\n  "current_protocol_version": ${version},\n  "core_supported_protocol_version": 30\n}`, { html: false });
+    const mainnet = "Public Global Stellar Network ; September 2015";
+    expect(evaluate(check, root(mainnet, 29)).verdict).toBe("hold");
+    expect(evaluate(check, root(mainnet, 30)).verdict).toBe("drift");
+    expect(evaluate(check, root(mainnet, 290)).verdict).toBe("drift");
+    expect(evaluate(check, root("Test SDF Network ; September 2015", 29)).verdict).toBe("error");
+  });
+
   it("detects a replaced archive provider that keeps the row count", () => {
     const header = "| Provider | Futurenet | Testnet | Mainnet | Dedicated Nodes | RPC Archive | ";
     const row = (name) => `| [${name}](https://x) | ❌ | ✅ | ✅ | ✅ | ✅ | `;
