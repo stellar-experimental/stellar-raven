@@ -876,6 +876,26 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e67f8d11bc4fb218a618516b16e32b1be01722be/improvements/stellar-docs/sd-052-cli-bindings-placeholder-languages.md"
     },
     {
+      "id": "sd-055",
+      "title": "Two archival examples call sign() on the builder returned by assembleTransaction(). The non-restoration branch fails with TypeError:…",
+      "service": "stellar-docs",
+      "discovered": "2026-10-09",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2906",
+        "https://github.com/stellar/stellar-docs/pull/2933"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2906",
+        "https://github.com/stellar/stellar-docs/pull/2933"
+      ],
+      "liveRecheck": "2026-11-02T22:24Z of the deployed Markdown (GET https://developers.stellar.org/<path>.md, HTTP 200): restore-data-js line 62 and state-archival line 259 now call assembleTransaction(tx, sim).build() before sign; both import Operation and set .setTimeout(30) on the restoreFootprint builder; submit-transaction-wait-js returns or throws finalStatus; transaction-simulation uses new Server(...), await s.getAccount(...), BASE_FEE, nativeToScVal, named invokeContractFunction arguments, setTimeout(30), await s.prepareTransaction(tx) in Example 1, await s.simulateTransaction(tx), Promise.all over auth entries with simResult.latestLedger + 12, and assembleTransaction(tx, simResult).build() before sign in Example 2.",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section A1 (RETIRE-WITH-SUCCESSOR; successor sd-081, whose added defects were posted on https://github.com/stellar/stellar-docs/issues/2562#issuecomment-6590839544). Resolution comment: https://github.com/stellar/stellar-docs/issues/2906#issuecomment-6590846860",
+      "sourceCommit": "26e4e4207eb59da0268a9b1c71b181cf35b61c1f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-docs/sd-055-assembly-examples-sign-unbuilt-builders.md"
+    },
+    {
       "id": "sd-056",
       "title": "The Ledgers page says the ledger-header fee pool uses lumens rather than stroops. The XDR field feePool holds an integer amount in…",
       "service": "stellar-docs",
@@ -894,6 +914,26 @@
       "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-11-02 (.agents/rounds/2026-11-02-upstream-filing/sd-056-retire-review.md); author Claude Opus 5.5; trigger repeated live, XDR and CAP-38 cross-checked, Horizon header decoded, Mintlify search not stale; resolution comment https://github.com/stellar/stellar-docs/issues/2907#issuecomment-6588462663",
       "sourceCommit": "4274b6da355a62eb371a95f8082df3ed57b605bd",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/4274b6da355a62eb371a95f8082df3ed57b605bd/improvements/stellar-docs/sd-056-ledger-header-fee-units-and-extension.md"
+    },
+    {
+      "id": "sd-057",
+      "title": "The Anchor Platform admin guide uses Circle's Testnet USDC issuer without a network label. Its asset-ID explanation says the example…",
+      "service": "stellar-docs",
+      "discovered": "2026-10-09",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2908",
+        "https://github.com/stellar/stellar-docs/pull/2929"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2908",
+        "https://github.com/stellar/stellar-docs/pull/2929"
+      ],
+      "liveRecheck": "2026-11-02T22:24Z GET https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/assets-and-client-wallets.md (HTTP 200) line 52: the example now 'represents Circle's [USDC on Testnet](https://developers.circle.com/stablecoins/usdc-contract-addresses)'. The verified defect (missing network scope) is fixed. The PR review dropped the optional sentence that issuers differ between networks; the linked Circle table lists the Mainnet issuer, so no residual is recorded.",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section A2 (RETIRE). Resolution comment: https://github.com/stellar/stellar-docs/issues/2908#issuecomment-6590847175",
+      "sourceCommit": "26e4e4207eb59da0268a9b1c71b181cf35b61c1f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-docs/sd-057-anchor-admin-usdc-network-label.md"
     },
     {
       "id": "sd-075",
@@ -1258,6 +1298,106 @@
       "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-27 (round ledger .agents/rounds/2026-10-27-issue-batch.md, PR #301 review https://github.com/stellar-experimental/stellar-raven/pull/301#issuecomment-6431210571); author Claude Opus 5.5; trigger repeated live; resolution comment https://github.com/Trustless-Work/trustlesswork-skill/issues/16#issuecomment-6431221485",
       "sourceCommit": "6d796128a6918be6371204ede0d2828bba6ae9d1",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6d796128a6918be6371204ede0d2828bba6ae9d1/improvements/skills/sk-026-core-api-error-documentation-links.md"
+    },
+    {
+      "id": "sk-032",
+      "title": "The Smart Contracts skill says it targets Protocol 27 and pins soroban-sdk = \"27\". Its comment says Mainnet runs Protocol 27. On…",
+      "service": "skills",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/162",
+        "https://github.com/stellar/stellar-dev-skill/pull/169"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/162",
+        "https://github.com/stellar/stellar-dev-skill/pull/169"
+      ],
+      "liveRecheck": "the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): skills/smart-contracts/SKILL.md lines 71 and 77 pin soroban-sdk \"29\"; line 41 drops the mainnet-version clause and keeps RPC getVersionInfo; development.md line 340 calls update_current_contract(ContractExecutable::Wasm(new_wasm_hash)) and line 345 notes the CAP-85 change. crates.io soroban-sdk max_stable_version 29.0.1; Mainnet and Testnet getVersionInfo report protocolVersion 29 (2026-11-02).",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review2.md section 3 (sk-032 RETIRE). Resolution comment: https://github.com/stellar/stellar-dev-skill/issues/162#issuecomment-6590848522",
+      "sourceCommit": "f020ad52616aa37794249a31a7cef768368bc732",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/f020ad52616aa37794249a31a7cef768368bc732/improvements/skills/sk-032-smart-contracts-skill-pinned-to-sdk-27.md"
+    },
+    {
+      "id": "sk-033",
+      "title": "skills/smart-contracts/development.md line 287 gives the wrong shape for generated try_ client methods. It says the return type is…",
+      "service": "skills",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/163",
+        "https://github.com/stellar/stellar-dev-skill/pull/170"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/163",
+        "https://github.com/stellar/stellar-dev-skill/pull/170"
+      ],
+      "liveRecheck": "the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): skills/smart-contracts/development.md line 287 says try_foo() returns Result<Result<T, _>, Result<E, InvokeError>>, Err(Ok(e)) is the typed error, and Err(Err(_)) is an InvokeError.",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review2.md section 3 (sk-033 RETIRE). Resolution comment: https://github.com/stellar/stellar-dev-skill/issues/163#issuecomment-6590848916",
+      "sourceCommit": "f020ad52616aa37794249a31a7cef768368bc732",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/f020ad52616aa37794249a31a7cef768368bc732/improvements/skills/sk-033-try-client-result-nesting-swapped.md"
+    },
+    {
+      "id": "sk-034",
+      "title": "The resource-limits table in skills/smart-contracts/development.md has no row for the total footprint size. On Mainnet,…",
+      "service": "skills",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/164",
+        "https://github.com/stellar/stellar-dev-skill/pull/171"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/164",
+        "https://github.com/stellar/stellar-dev-skill/pull/171"
+      ],
+      "liveRecheck": "the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): skills/smart-contracts/development.md line 399 adds 'Footprint entries (read-only + read-write) | 400', and line 400 reads 'Disk-read entries / written entries | 200 / 200'.",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review2.md section 3 (sk-034 RETIRE). Resolution comment: https://github.com/stellar/stellar-dev-skill/issues/164#issuecomment-6590849279",
+      "sourceCommit": "f020ad52616aa37794249a31a7cef768368bc732",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/f020ad52616aa37794249a31a7cef768368bc732/improvements/skills/sk-034-limits-table-omits-footprint-entry-cap.md"
+    },
+    {
+      "id": "sk-035",
+      "title": "The Assets skill says it covers \"regulated assets\" and \"regulated-asset flows\". No skill in stellar/stellar-dev-skill mentions SEP-8…",
+      "service": "skills",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/165",
+        "https://github.com/stellar/stellar-dev-skill/pull/167"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/165",
+        "https://github.com/stellar/stellar-dev-skill/pull/167"
+      ],
+      "liveRecheck": "the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): new skills/assets/regulated-assets.md ('# Regulated Assets (SEP-0008)') covers when to use SEP-0008 and the approval-server flow; skills/assets/SKILL.md links it; skills/standards/resources.md line 173 lists SEP-0008 Regulated Assets.",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review2.md section 3 (sk-035 RETIRE). Resolution comment: https://github.com/stellar/stellar-dev-skill/issues/165#issuecomment-6590849669",
+      "sourceCommit": "f020ad52616aa37794249a31a7cef768368bc732",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/f020ad52616aa37794249a31a7cef768368bc732/improvements/skills/sk-035-assets-skill-omits-sep-8-regulated-assets.md"
+    },
+    {
+      "id": "sk-036",
+      "title": "The data skill's \"Send Transaction\" example polls only when sendTransaction returns PENDING. It has no branch for DUPLICATE,…",
+      "service": "skills",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-02",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/166",
+        "https://github.com/stellar/stellar-dev-skill/pull/168"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/166",
+        "https://github.com/stellar/stellar-dev-skill/pull/168"
+      ],
+      "liveRecheck": "the published skill source at stellar/stellar-dev-skill main 9c604c2be6ae69f962fbb578bce6b681d462fea5 (2026-11-02T22:48:07Z): skills/data/SKILL.md line 129 lists PENDING, DUPLICATE, TRY_AGAIN_LATER, and ERROR; the example retries TRY_AGAIN_LATER (line 136), throws on ERROR with response.errorResult (line 144), and polls on PENDING or DUPLICATE (line 150); the dapp example inspects response.errorResult (line 382).",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review2.md section 3 (sk-036 RETIRE). Resolution comment: https://github.com/stellar/stellar-dev-skill/issues/166#issuecomment-6590850074",
+      "sourceCommit": "f020ad52616aa37794249a31a7cef768368bc732",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/f020ad52616aa37794249a31a7cef768368bc732/improvements/skills/sk-036-data-skill-send-transaction-statuses.md"
     },
     {
       "id": "sls-001",
@@ -2709,6 +2849,46 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1de777ed60471ec134a13c8c4d66e332c7709940/improvements/stellar-light-scout/sls-084-status-basis-openapi-enum.md"
     },
     {
+      "id": "sls-085",
+      "title": "The Soroswap project record labels contract CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH as aggregator router. That address is…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-09-17",
+      "resolved": "2026-11-02",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1673",
+        "https://github.com/Stellar-Light/stellarlight/pull/1805"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1673",
+        "https://github.com/Stellar-Light/stellarlight/pull/1805"
+      ],
+      "liveRecheck": "2026-11-02T22:26:43Z GET https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3 (HTTP 200, OpenAPI 1.9.116, response sha256 9351d4fec1b3f8a8fa9b28449c997885c2539514f5e72549b72877516af19ed9): onchain.contracts lists CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH label 'amm router' and CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO label 'aggregator'.",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section A3 (RETIRE). Resolution comment: https://github.com/Stellar-Light/stellarlight/issues/1673#issuecomment-6590847484",
+      "sourceCommit": "26e4e4207eb59da0268a9b1c71b181cf35b61c1f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-light-scout/sls-085-soroswap-contract-role.md"
+    },
+    {
+      "id": "sls-086",
+      "title": "The Aquarius project description says: \"AQUA locks into ICE for on-chain DAO governance votes directing rewards across DEX/AMM markets.\"…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-09-17",
+      "resolved": "2026-11-02",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1674",
+        "https://github.com/Stellar-Light/stellarlight/pull/1805"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1674",
+        "https://github.com/Stellar-Light/stellarlight/pull/1805"
+      ],
+      "liveRecheck": "2026-11-02T22:26:43Z GET https://stellarlight.xyz/api/projects/search?q=aquarius&limit=3 (HTTP 200, OpenAPI 1.9.116, response sha256 064da0f9c358f8a2e080e9304b683fbee341cf77e146b09f4b292243b2beeb58): the aquarius shortDescription now ends 'Locking AQUA mints ICE; upvoteICE votes direct AQUA rewards to markets, and governICE votes on governance proposals without rewards.'",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section A4 (RETIRE). Resolution comment: https://github.com/Stellar-Light/stellarlight/issues/1674#issuecomment-6590847807",
+      "sourceCommit": "26e4e4207eb59da0268a9b1c71b181cf35b61c1f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-light-scout/sls-086-aquarius-governance-vote-description.md"
+    },
+    {
       "id": "sls-087",
       "title": "Scout returns a stale Horizon protocol ceiling for a current-source question. The answer states MaxSupportedProtocolVersion = 28. The…",
       "service": "stellar-light-scout",
@@ -2725,6 +2905,26 @@
       "reviewEvidence": "Claude Fable 5.1 high distinct drain review on 2026-10-10 (DRAIN-OK); resolution comment https://github.com/Stellar-Light/stellarlight/issues/1738#issuecomment-6098261074",
       "sourceCommit": "d15a4ce52c997577313779872d9f89de7725debc",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d15a4ce52c997577313779872d9f89de7725debc/improvements/stellar-light-scout/sls-087-horizon-protocol-ceiling-note-stale.md"
+    },
+    {
+      "id": "sls-088",
+      "title": "Scout marks the Horizon API server repository as a deployable Soroban contract product. The response returns…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-09-29",
+      "resolved": "2026-11-02",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1739",
+        "https://github.com/Stellar-Light/stellarlight/pull/1806"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1739",
+        "https://github.com/Stellar-Light/stellarlight/pull/1806"
+      ],
+      "liveRecheck": "2026-11-02T22:26:43Z GET https://stellarlight.xyz/api/repos/explain?repo=stellar/stellar-horizon&q=<original question> (HTTP 200, OpenAPI 1.9.116, response sha256 7210f4fa611c69d8ec82d13f585621008bf20e9b32645ed72a20c0969f30523a): repoMeta.kind platform, kindBasis knownPlatform, codeVerified.isDeployableContract false, scannedRef 597544b60c20f8536d532d32abca8462394874f3.",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high (lane rv-fu; author Claude Opus 5.5) re-derived the fix live on 2026-11-02: .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section A5 (RETIRE-WITH-SUCCESSOR; successor sls-114, filed as https://github.com/Stellar-Light/stellarlight/issues/1906). Resolution comment: https://github.com/Stellar-Light/stellarlight/issues/1739#issuecomment-6590848126",
+      "sourceCommit": "26e4e4207eb59da0268a9b1c71b181cf35b61c1f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-light-scout/sls-088-horizon-product-contract-misclassification.md"
     },
     {
       "id": "sls-089",
