@@ -29,6 +29,13 @@ import {
 // Share the runtime scrub pattern instead of maintaining another retired-id list.
 const RETIRED_SKILL_RE = RETIRED_SKILL_REF_RE;
 const RAW_SCOUT_PATHS = [...EXCLUDED_SCOUT_OPS].map((signature) => signature.split(" ")[1]);
+// A templated segment (`{id}`) also matches a concrete value, the same rule as
+// the runtime scrub in src/skills/scrub.ts.
+const TEMPLATED_SCOUT_PATH_RES = RAW_SCOUT_PATHS.filter((path) => /\{[^}/]+\}/.test(path)).map(
+  (path) => [path, new RegExp(path.toLowerCase().split(/(\{[^}/]+\})/).map((part) =>
+    /^\{[^}/]+\}$/.test(part) ? "[^\\s/`)\\]]+" : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  ).join("") + "(?![\\w/-])")]
+);
 const SCOUT_NAME_SPELLINGS = [...NON_EXPOSED_SCOUT_OP_NAMES].flatMap((name) => [
   name, name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase()
 ]);
@@ -66,8 +73,11 @@ export function assertNoNonExposedRefsInText(text, label) {
   const decodedText = text.replace(/(?:%[0-9a-f]{2})+/gi, (encoded) => {
     try { return decodeURIComponent(encoded); } catch { return encoded; }
   }).toLowerCase();
+  const matchesPath = (path) =>
+    decodedText.includes(path.toLowerCase()) ||
+    TEMPLATED_SCOUT_PATH_RES.some(([templated, re]) => templated === path && re.test(decodedText));
   for (const path of RAW_SCOUT_PATHS) {
-    if (decodedText.includes(path.toLowerCase())) {
+    if (matchesPath(path)) {
       throw new Error(
         `ADR-0003 leak: ${label} emits excluded scout endpoint path "${path}" — ` +
           `if it came from an exposed OPERATION's description, add the clause to ` +

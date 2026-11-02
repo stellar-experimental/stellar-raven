@@ -27,6 +27,15 @@ describe("assertNoNonExposedRefsInText", () => {
     ).not.toThrow();
   });
 
+  it("matches a templated excluded Scout path with a concrete value, not its exposed parent", () => {
+    expect(() =>
+      assertNoNonExposedRefsInText("fetch /api/hackathons/builds/dorahacks-buidl-12", "skill prose")
+    ).toThrow(/\/api\/hackathons\/builds\/\{id\}/);
+    expect(() =>
+      assertNoNonExposedRefsInText("search /api/hackathons/builds?q=defi first", "skill prose")
+    ).not.toThrow();
+  });
+
   it("throws on a bare excluded lumenloop op name", () => {
     expect(EXCLUDED_LUMENLOOP_OPS.has("request_research")).toBe(true);
     expect(() =>

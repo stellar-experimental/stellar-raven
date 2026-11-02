@@ -28,7 +28,7 @@ The scrub removes their four heading sections. Three prose sentences in the expo
 `GET /api/hackathons/builds` section also name `/api/hackathons/analyze`. The scrub threw on
 them, so the build would fail closed. The scrub now removes each complete prose sentence that names
 an excluded path. It keeps the line breaks when each source line ends a sentence. It never edits a
-sentence in part, and a reference in a code fence still throws.
+sentence in part. A reference in a fenced or indented code block still throws.
 
 ## Measurement
 
@@ -43,4 +43,23 @@ sentence in part, and a reference in a code fence still throws.
 
 ## Review
 
-Pending.
+Reviewer: Claude Fable 5.1 at high, a subagent of this session. Herdr was not active, so a Codex
+frontier lane (the matched tier for scrub code) was not available. The author is Claude Opus 5.5.
+Verdict: approve with changes. The reviewer reproduced the measurement, checked the blob SHAs, the
+live Scout operation names, and the Allbridge and Varial claims, and found no leak in the served
+bytes.
+
+| # | Finding | Resolution |
+| --- | --- | --- |
+| 1 | An indented code block was split as prose instead of failing closed. | Fixed: `paragraphLine` rejects lines with four spaces or a tab; test added. |
+| 2 | A sentence that ends with `)`, a quote, or `**` did not split, so the next sentence was also removed. | Fixed: `splitSentences` consumes closing marks before the whitespace test; tests added. |
+| 3 | A line that ends in an abbreviation could leave a fragment. | Fixed: per-line mode also checks `ABBREVIATION_END_RE`; test added. |
+| 4 | `/api/hackathons/builds/{id}` matched only the literal `{id}`. | Fixed in the scrub and in `assertNoNonExposedRefsInText`: a templated segment matches any concrete value; tests added. |
+| 5 | The runtime scrub did not decode percent-encoded paths (existing gap). | Fixed: `containsExcludedScoutPath` also tests the decoded text, as the build guard does. |
+| 6 | Table, quote, and list lines inside a fence were removed instead of failing closed (existing gap). | Fixed: fenced lines bypass every removal; test added. |
+| 7 | The removed sentences held the only `.meta.counts` definition for the exposed builds operation; "(here only, not on analyze)" remains. | Accepted, not filed upstream: upstream documents its own API, where analyze is public, so the sentence mixing is not an upstream defect. The Params list keeps the `hackathon` forms. |
+| 8 | The policy comment said to move the entries to the excluded list on absorb. | Fixed: the comment points to the exposure recommendation in `.agents/TODO.md`. |
+| 9 | The gates note said "skill-section descriptions". | Fixed: it names the two skill file entries. |
+
+After the fixes, all eight upstream files (held and new) scrub to the same bytes as commit
+5816ed4f. The served text does not change.

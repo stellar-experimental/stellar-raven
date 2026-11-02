@@ -25,10 +25,11 @@ export const EXCLUDED_SCOUT_OPERATIONS = new Map([
 
 // Reviewed exclusions not yet in the accepted inventory. Current Scout lists
 // these operations, while the accepted 1.9.61 snapshot does not. Their
-// presence must not block refresh or expose them; validate each exact method
-// and name when listed. Move each above when an inventory containing it is
-// accepted. Each stays excluded until its routing contract passes the routing
-// gates and independent exposure review.
+// presence must not block refresh or expose them; the catalog build validates
+// each exact method and name when listed. When an inventory containing them is
+// accepted, decide exposure per the recommendation in .agents/TODO.md ("Preserve
+// structured routing intent across extraction caps and gate tiers"), and move
+// to EXCLUDED_SCOUT_OPERATIONS only the operations that stay excluded.
 export const OPTIONAL_EXCLUDED_SCOUT_OPERATIONS = new Map([
   ["GET /api/hackathons/review", "reviewSubmission"],
   ["GET /api/hackathons/analyze", "analyzeHackathonSubmissions"],

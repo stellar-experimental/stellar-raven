@@ -101,6 +101,44 @@ describe("skill-body operation exposure scrub", () => {
     );
   });
 
+  it("fails closed on an indented code block and on structural lines inside a fence", () => {
+    for (const text of [
+      ["Before.", "", `    curl https://x${excludedPath}`, "    echo done. Next thing.", "", "After."].join("\n"),
+      ["```", `- ${excludedPath}`, `| ${excludedPath} |`, `> ${excludedPath}`, "```"].join("\n")
+    ]) {
+      expect(() => scrubExcludedScoutOperationRefs(text, "code fixture")).toThrow(
+        "survives outside a removable Markdown block or sentence"
+      );
+    }
+  });
+
+  it("splits after closing marks and keeps the next sentence", () => {
+    const analyze = "/api/hackathons/analyze";
+    expect(scrubExcludedScoutOperationRefs(`(See ${analyze}.) Keep this.`, "paren")).toBe("Keep this.");
+    expect(scrubExcludedScoutOperationRefs(`He said "call ${analyze}." Keep this.`, "quote")).toBe(
+      "Keep this."
+    );
+    expect(scrubExcludedScoutOperationRefs(`**Note.** Call ${analyze}. Keep.`, "bold")).toBe(
+      "**Note.** Keep."
+    );
+  });
+
+  it("treats a line that ends in an abbreviation as part of the next sentence", () => {
+    const text = ["Call e.g.", "/api/hackathons/analyze now.", "Keep this."].join("\n");
+    expect(scrubExcludedScoutOperationRefs(text, "abbreviation")).toBe("Keep this.");
+  });
+
+  it("matches a templated excluded path with a concrete value and a percent-encoded path", () => {
+    const text = [
+      "- Fetch /api/hackathons/builds/dorahacks-buidl-12 for detail.",
+      "- Call /api/hackathons%2Fanalyze now.",
+      "- Keep `/api/hackathons/builds?q=defi`."
+    ].join("\n");
+    expect(scrubExcludedScoutOperationRefs(text, "templated")).toBe(
+      "- Keep `/api/hackathons/builds?q=defi`."
+    );
+  });
+
   it("does not split a sentence at a period inside a code span or parentheses", () => {
     const text = `Keep \`a. b\` and (see c. d) together. Drop \`${excludedPath}\` here.`;
     expect(scrubExcludedScoutOperationRefs(text, "split fixture")).toBe(

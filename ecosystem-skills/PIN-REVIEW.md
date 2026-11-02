@@ -468,7 +468,7 @@ correction for the `golden-truth` lane.
 
 | Source | Pinned commit | Selection | Reviewed |
 | --- | --- | --- | --- |
-| `stellar-light` | `9f77b3f9433be8b57b2b78a7c14b94855779f4fe` | `sel:77022c737742` | author read; independent review pending |
+| `stellar-light` | `9f77b3f9433be8b57b2b78a7c14b94855779f4fe` | `sel:77022c737742` | author read; independent Claude Fable 5.1 high approved with changes |
 
 Three files changed: `SKILL.md`, `references/api-reference.md`, and `references/examples.md`.
 Most changed lines only replace dashes with colons or semicolons.
@@ -488,8 +488,9 @@ Live Scout 1.9.116 lists those four operations with the method and name that
 `OPTIONAL_EXCLUDED_SCOUT_OPERATIONS` records. The exposure scrub removes their sections. Three
 sentences in the exposed `GET /api/hackathons/builds` section name `/api/hackathons/analyze`.
 The scrub now removes each complete prose sentence that names an excluded path. Before this
-change it failed closed on such prose. A reference in a code fence still fails closed. The same
-scrub gives byte-identical output for the four held files. No new operation becomes callable.
+change it failed closed on such prose. A reference in a fenced or indented code block still fails
+closed. A templated segment such as `{id}` now also matches a concrete value. The same scrub gives
+byte-identical output for the four held files. No new operation becomes callable.
 
 The diff has no credential, no behavior instruction outside the skill topic, and no claim about
 this gateway. The install command `npx skills add Stellar-Light/stellar-scout` and the
@@ -497,3 +498,7 @@ SCF-plugin line accepted on 2026-10-01 are unchanged. One served phrase, "(here 
 analyze)", names the analyze tool without its path; it gives no way to call it.
 No selected skill was added or removed. The stellarlight and skills.stellar.org snapshots moved
 only their timestamps.
+
+The independent review found no leak in the served bytes. Its fixes harden the scrub for future
+upstream text and do not change any served byte. See
+[the round ledger](../.agents/rounds/2026-11-02-stellar-light-pin.md).
