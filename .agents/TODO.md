@@ -889,8 +889,8 @@ Safe default: do not run it. Use the free probe evidence until the owner authori
 writing.
 ### D. Decide the grading-policy questions from the 2026-11-02 golden audit
 
-The audit (`rounds/2026-11-02-golden-audit.md`, "Owner decisions") added no partial cap and removed
-expired ones, but three policy questions remain:
+The audit (`rounds/2026-11-02-golden-audit.md`, "Owner decisions") added no new partial-cap slot and removed
+expired caps, but three policy questions remain:
 
 1. Partial caps outside the ADR-0008 set. ADR-0008 accepts canonical-page caps for exactly base
    reserve, Horizon lifecycle, and RPC pagination. Existing aggregator caps (for example
@@ -900,7 +900,8 @@ expired ones, but three policy questions remain:
 2. Freshness tags. Eleven `live` and five `stable` cases carry dated example values in golden text.
    Decide whether such a case is always `scheduled` with a `reverifyBy` date.
 3. Re-judge. The golden-truth skill asks for a re-judge of saved rows whose verdict hinged on a
-   changed golden, with the flip direction recorded. That is paid judge work.
+   changed golden, with the flip direction recorded. That is paid judge work. The case list is
+   `rounds/2026-11-02-golden-audit/rejudge-set.json` (214 gospel changes, 55 priority).
 
 Safe default: keep the existing caps and tags, and do not re-judge until the owner authorizes the
 spend in writing.

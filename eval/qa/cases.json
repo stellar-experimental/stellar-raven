@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "a2904abcacc0a0d103ade4330f1d2dea088ede2786d996a7da50e3133a559b73",
+  "corpusContentSha256": "5e4530ace61c9ebcad9b7575aede7ef50113bc4b2b573dc3997acb5f7a37fe23",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -19156,7 +19156,7 @@
         ],
         "avoid": [
           "Do NOT say xBull V2 or its passkey support has already shipped.",
-          "Do NOT say xBull is currently listed on the iOS App Store or Google Play.",
+          "Do NOT say xBull is currently listed on the iOS App Store or Google Play (no listing found at checked store URLs as of 2026-11-02).",
           "Do NOT freeze star counts, broad integration/features, or current maintenance without dated evidence.",
           "Do NOT attribute xBull to SDF or Ultra Stellar."
         ],
@@ -19327,7 +19327,8 @@
             "Pass 1 proposer matrix and independent verifier decisions (accept/modify): .agents/rounds/2026-11-02-golden-audit.md, batch varial-retail; applier spot-checked README, npm, www.freighter.app redirect, and SDF blog RSS on 2026-11-02.",
             "Pass 2 2026-11-02: Scout xbull row (https://stellarlight.xyz/api/projects/search?q=xbull) lifecycle.note 'Live basis = web wallet (xbull.app) + Chrome Web Store extension' and availability ios/android 'unavailable', so the notes caution about quoting Scout's Live label as Android proof lost its trigger and is removed (ADR-0008 also bars partial caps for aggregator claims). avoid[0] is split into two answer-visible predicates; the old 'from code/directory metadata alone' clause named a basis the judge cannot see. Lumenloop get_project xbull still lists Android and iOS (observedAt 2026-11-02). The Scout correction traces to improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md (lifecycle note cites sls-024/#533); the caution expired through freshness-drift.",
             "Sibling sweep pass 2 2026-11-02: q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-builder-by-scf-tier, q-ti-connect-wallet-button-code, q-defi-reflector-oracle, q-raph-lobstr-legitimacy; none claims xBull store availability or a shipped V2; no contradiction.",
-            "Upstream finding filed 2026-11-02 (pass 3): improvements/lumenloop/ll-038-xbull-record-stale-mobile-platforms.md (status verified). Re-check 2026-11-02T18:33:49Z: Lumenloop get_project xbull description still says 'web browsers, Android, and iOS devices'; projects/xbull.yaml in lumenloop/stellar-ecosystem-db carries the same sentence; App Store id6705122563 and both Google Play package pages return HTTP 404."
+            "Upstream finding filed 2026-11-02 (pass 3): improvements/lumenloop/ll-038-xbull-record-stale-mobile-platforms.md (status verified). Re-check 2026-11-02T18:33:49Z: Lumenloop get_project xbull description still says 'web browsers, Android, and iOS devices'; projects/xbull.yaml in lumenloop/stellar-ecosystem-db carries the same sentence; App Store id6705122563 and both Google Play package pages return HTTP 404.",
+            "Independent review 2026-11-02 (Claude Fable 5.1, finding F4; .agents/rounds/2026-11-02-golden-audit/reviews/independent-fable.md): https://itunes.apple.com/lookup?id=6705122563, ?bundleId=app.xbull.mobile, ?bundleId=app.xbull.wallet, and https://itunes.apple.com/search?term=xBull&entity=software returned no xBull app. The store-absence avoid item now carries its observation date so the case reverifyBy sweep can retire it if a listing returns."
           ],
           "rootCause": [
             "freshness-drift",
@@ -48721,7 +48722,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-11-02, the verified sources supported this observed answer:\n\nYes—an already-launched Stellar project may apply for an SDF Marketing Grant. Official pages differ on pre-launch scope: the funding index says **new and existing projects with a live product**, while the dedicated page's Traction criterion asks whether the project is **live with traction or preparing to launch soon**. Grants are up to **$500,000**, with the funding index listing USD, USDC, or XLM, for growth/user acquisition work such as media, incentives, communications, agencies, and tools. Applicants need concrete use cases, timelines, budget/benchmarks, and a capable team, and must respect exclusions around manipulation or investment promotion. This is a separate SDF-direct application path, not an SCF Build track.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-11-02, the verified sources supported this observed answer:\n\nYes—an already-launched Stellar project may apply for an SDF Marketing Grant. Official pages differ on pre-launch scope: the funding index says **new and existing projects with a live product**, while the Traction criterion in the dedicated page's page data (not shown in its rendered text) and the 2022-08-02 SDF blog asks whether the project is **live with traction or preparing to launch soon**. Grants are up to **$500,000**, with the funding index listing USD, USDC, or XLM, for growth/user acquisition work such as media, incentives, communications, agencies, and tools. Applicants need concrete use cases, timelines, budget/benchmarks, and a capable team, and must respect exclusions around manipulation or investment promotion. This is a separate SDF-direct application path, not an SCF Build track.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as current or dated, not unsupported memory.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -48733,7 +48734,7 @@
           "Do NOT call Marketing an SCF Build track or promise approval.",
           "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
         ],
-        "notes": "Dossier §5.5. Trap: applying the SCF Build $150K cap to the SDF Marketing Grant.\nAlso good if the answer: Marketing Grants are an SDF-direct program (stellar.org/grants-and-funding), separate from SCF Build.\nGolden cites: stellar.org/grants-and-funding marketing-grants section.\nSources disagree on pre-launch scope (observed 2026-11-02): stellar.org/grants-and-funding says 'with a live product'; the dedicated page's Traction card says 'live with traction or preparing to launch soon'. Do not penalize either attributed wording; an already-launched project qualifies under both."
+        "notes": "Dossier §5.5. Trap: applying the SCF Build $150K cap to the SDF Marketing Grant.\nAlso good if the answer: Marketing Grants are an SDF-direct program (stellar.org/grants-and-funding), separate from SCF Build.\nGolden cites: stellar.org/grants-and-funding marketing-grants section.\nSources disagree on pre-launch scope (observed 2026-11-02): stellar.org/grants-and-funding says 'with a live product'; the Traction card description in the dedicated page's embedded page data (its rendered text shows only the card title) and the 2022-08-02 SDF blog say 'live with traction or preparing to launch soon'. Do not penalize either attributed wording; an already-launched project qualifies under both."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -48861,7 +48862,8 @@
             "D 2026-11-02: Perplexity search -> https://stellar.org/blog/foundation-news/the-marketing-grants-programs-first-million — 'Traction: Is the project live with traction or preparing to launch soon?'.",
             "Decision: the two official pages disagree on pre-launch scope, so the answer states both wordings and truth.status is mixed (core claim confirmed, pre-launch scope disputed). avoid[0] now targets only the claim false under both pages: that a launched project is ineligible.",
             "Upstream finding filed 2026-11-02 (pass 3): improvements/stellar-docs/sd-077-stellar-org-marketing-grants-pre-launch-eligibility-conflict.md (status verified; site-content; intake unclear). Live re-check 2026-11-02T18:32:50Z: both pages HTTP 200 and still carry the 'with a live product' and 'preparing to launch soon' wordings.",
-            "Sibling sweep 2026-11-02: grep 'Marketing Grant' with 'live product|post-launch|already-live|preparing to launch' over eval/qa/corpus/battery -> only this case; q-scf-vs-sdf-enterprise-fund states only the separate path and the ~$500K cap, so no contradiction."
+            "Sibling sweep 2026-11-02: grep 'Marketing Grant' with 'live product|post-launch|already-live|preparing to launch' over eval/qa/corpus/battery -> only this case; q-scf-vs-sdf-enterprise-fund states only the separate path and the ~$500K cap, so no contradiction.",
+            "Independent review 2026-11-02 (Claude Fable 5.1, finding F2; .agents/rounds/2026-11-02-golden-audit/reviews/independent-fable.md): curl https://stellar.org/grants-and-funding/marketing-grants carries 'Is the project live with traction or preparing to launch soon?' once, inside the embedded JSON page data; the server-rendered Traction card shows only its title. The answer and notes now attribute the wording to the page data and the 2022-08-02 blog (https://stellar.org/blog/foundation-news/the-marketing-grants-programs-first-million). Status stays mixed: both are official SDF sources and still disagree with the funding index."
           ],
           "rootCause": [
             "Eval-side authoring flaw: the golden resolved a live conflict between two official SDF pages by pinning the dedicated page and made the other page's wording an avoid trap.",

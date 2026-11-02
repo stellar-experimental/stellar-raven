@@ -82,7 +82,9 @@ Against `origin/main`, the round changes 483 of 501 battery case files:
 
 Owner-queue items closed by this round:
 
-- Varial rename: every case that names the wallet accepts both names, records the 2026-10-29
+- Varial rename: 18 cases named Freighter on `main`. The 13 that name it in judge-facing text now
+  accept both names; the other 5 name it only in judge-blind metadata. Every case that names the
+  wallet accepts both names, records the 2026-10-29
   rename with primary sources, and carries a symmetric either-name caution. No avoid punishes
   "Freighter".
 - Confidential Tokens: the three cases state privacy as the announced design, record the
@@ -124,7 +126,10 @@ held that number was renumbered and then withdrawn. No upstream issue was opened
 ## Owner decisions
 
 1. Partial caps outside the ADR-0008 set. ADR-0008 accepts canonical-page caps for exactly three
-   cases (base reserve, Horizon lifecycle, RPC pagination). This round added no new cap, removed
+   cases (base reserve, Horizon lifecycle, RPC pagination). This round added no new slot. It put a
+   new trigger on the accepted Horizon-lifecycle slot: `q-infra-horizon-vs-rpc` cites the Lab API
+   Explorer "Horizon is considered deprecated." line (`sd-072`), and the caution expires when
+   `sd-072` is fixed upstream. The earlier `sd-042` trigger on that slot had expired on `main`. It also removed
    caps whose trigger expired (`sd-008`, `sd-013`, the SCF RFP Scout caps, the xBull Scout caution,
    `q-scf-total-distributed`), and reverted one pass-1 widening (`q-scf-regional-india`). Caps that
    already existed on `main` stay: aggregator caps (for example `q-tool-wallets-comparison`,
@@ -141,9 +146,26 @@ held that number was renumbered and then withdrawn. No upstream issue was opened
    `q-eco-dex-saturation`, `q-anchor-endpoint-discovery`. Decide whether such cases are always
    `scheduled`.
 3. Re-judge. The golden-truth skill asks for a re-judge of saved rows whose verdict hinged on a
-   changed golden, with the flip direction recorded. That spends money, so it did not run. Pass 1
+   changed golden, with the flip direction recorded. That spends money, so it did not run. The
+   deferred set is `2026-11-02-golden-audit/rejudge-set.json`: all 214 gospel-change IDs, with a
+   priority subset of 55 cases that gained leniency lines in `notes` or only lost key facts. Pass 1
    added do-not-penalize language to 52 cases; pass 2 added plain-wrong rules and avoids about as
    often as leniency.
+
+## Independent review
+
+Reviewer: Claude Fable 5.1 at high effort (Fable tier, matched to golden truth as product and
+taste work). The author and orchestrator were Opus 5.5, so the tier was eligible. Report:
+`2026-11-02-golden-audit/reviews/independent-fable.md`. Verdict: no blocker.
+
+| finding | severity | reconciliation |
+|---|---|---|
+| F1 saved rows not re-judged | major | Deferred to the owner (paid). The case list is in `rejudge-set.json`; owner decision D in `.agents/TODO.md` points to it. |
+| F2 marketing-grant criterion is page data, not rendered text | major | Confirmed by curl. `q-scf-sdf-marketing-grant` answer and notes now attribute the wording to the page data and the 2022-08-02 SDF blog; status stays `mixed`. `sd-077` names the unrendered description. |
+| F3 new trigger on the Horizon-lifecycle slot | minor | Recorded under owner decision 1 with its `sd-072` expiry. No case change. |
+| F4 undated xBull store-absence avoid | minor | The avoid item now carries "as of 2026-11-02", with the reviewer store lookups as evidence. |
+| F5 5.50.0 versus 5.51.0 | nit | Release 5.50.0 says "This is the first release under the new name.", so the cases stand. `sk-030` now states both releases. The Varial count above is corrected. |
+| F6 two removal-only cases | nit | No change; both are in the re-judge priority subset. |
 
 ## Follow-ups
 

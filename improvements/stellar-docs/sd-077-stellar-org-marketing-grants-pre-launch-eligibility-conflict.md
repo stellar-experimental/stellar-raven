@@ -23,8 +23,10 @@ are "For both new and existing projects with a live product built on the
 Stellar network". This wording requires a live product.
 
 The dedicated page at `https://stellar.org/grants-and-funding/marketing-grants`
-has a Traction criterion. It asks "Is the project live with traction or
-preparing to launch soon?". This wording admits a project before launch.
+has a Traction criterion card. Its description is in the page data but not in
+the server-rendered text, which shows only the card title. The description asks
+"Is the project live with traction or preparing to launch soon?". This wording
+admits a project before launch.
 
 A reader cannot tell from the two pages whether a pre-launch project can apply.
 An agent that reads only one page gives a different eligibility answer from an
@@ -48,6 +50,10 @@ The two pages agree on the other facts. Both give a cap of up to $500,000. Both
 say that new and existing projects can apply.
 
 ## Recommendation
+
+Render the Traction card description, or remove it from the page data, so that
+readers and agents see the same criterion.
+
 
 Use one eligibility statement on both pages. State whether a project that is
 preparing to launch can apply.
