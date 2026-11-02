@@ -118,8 +118,9 @@ dates that expired on 2026-11-01 (`q-mpp-discovery-and-modes`, `q-quickstart-man
   original trigger, and its content carries the 1–200 limit. Deletion needs a distinct reviewer and
   a resolution comment on stellar/stellar-docs#2566. Not posted; it needs owner approval.
 - `sd-005` and `sd-009`: still reproduce on Mintlify. They are content gaps. Local recurrences only.
-- No new upstream finding. Mintlify-side asks are recorded in the research note instead: section
-  anchors in search results, a relevance score or threshold, and lower tail latency.
+- `sd-059` (new, verified): `<ResponseField>` text is not findable in the docs search. See "Paid QA
+  diagnostic". Other Mintlify-side asks are in the research note: section anchors in search
+  results, a relevance score or threshold, and lower tail latency.
 
 ## Whole-page reads close the HackMeridian table-row item
 
@@ -127,6 +128,75 @@ dates that expired on 2026-11-01 (`q-mpp-discovery-and-modes`, `q-quickstart-man
 software-versions table (R22), and the `getEvents` tables (R32) come back complete. A `/meetings`
 page reads normally (Q9). The `.agents/TODO.md` item is removed. The software-versions page is
 147 KB, so answers rely on host truncation and artifacts for it.
+
+## Paid QA diagnostic
+
+Brief and pre-spend review: `qa-brief.md`, `qa-brief-review.md`. Diagnostic only: 30 IDs is below
+the 100-ID paired-verdict minimum, so no PASS/FAIL is claimed.
+
+Run record:
+
+- Runner: this worktree at `dfccf526` for both arms. Arm A server `03c863a3` (Algolia), surface
+  `b83aa0e6…`; arm B server `dfccf526` (Mintlify), surface `bb19653b…`. `meta.manifestFileSha256`
+  is runner-side, so both artifacts carry the candidate's value.
+- Pins: binary `64c327e9…` (2.1.316), env `0fa958e7…`, remote identity probe `aabfb83f…`, stable
+  remote vector `70190797…` (three captures), stability register `8a93b230…`, `--max-panel-cases 10`.
+- Env amendment: the launch shell also passes `USER` and `LOGNAME`; without them the CLI reported
+  `loggedIn: false`. Neither name is in the hashed environment set, so the env pin is unchanged.
+- Arm A's Algolia backend was unguarded by the probe. A free `search_docs` call before spend
+  returned 5 hits (2026-11-02T15:18:58Z).
+- Arm A: 30 of 30 rows, $15.90, guards matched.
+- Arm B: stopped after 26 rows, $13.44. The remote guard saw `llms-full.txt` change
+  (5,810,884 → 5,831,417 bytes; `llms.txt` unchanged) between 17:07:24Z and 17:08:38Z. Every one of
+  the 26 completed rows had matching before and after checks, so those rows are comparable. Missing:
+  `q-ti-compute-token-lp-market-data`, `q-ti-enumerate-holders-airdrop`, `q-ti-testnet-usdc-faucet`,
+  `q-zk-verification-resource-budget`. Per brief rule 6 there was no re-run. Total spend $29.34 of
+  the $60 authorization.
+
+Results on the 26 paired rows:
+
+| Arm | Correct | Partial | Wrong | Half-credit |
+|---|---|---|---|---|
+| A (Algolia) | 9 | 12 | 5 | 57.7 % |
+| B (Mintlify) | 8 | 13 | 5 | 55.8 % |
+
+Eight verdicts changed, four each way. Three review lanes read both transcripts and replayed every
+docs call through both adapters (`rows-lane-*` notes are in the session scratchpad; the decisive
+evidence is quoted here).
+
+| Row | Slice | A → B | Cause |
+|---|---|---|---|
+| `q-ti-classic-submission-errors` | downside | partial → wrong | **Backend.** Mintlify never returned the Set Options result-code body (`sd-059`); the agent mapped "bad signer" onto `op_bad_auth`. Algolia returned the `op_bad_signer` ↔ `SET_OPTIONS_BAD_SIGNER` mapping. |
+| `q-soroban-instance-storage-dos` | upside | wrong → partial | **Backend.** Mintlify returned the storage-strategies "Red flags in review" section; B's query on Algolia does not. |
+| `q-aas-list-token-on-exchanges-aggregators` | upside | correct → wrong | Agent variance: A made a Scout and a Lumenloop call that B did not, and added the exchange-listing caveat. Same docs page in both arms. |
+| `q-anchor-endpoint-discovery` | upside | correct → partial | Judge variance on key fact 3 (single judge vs panel); answers equal on the graded point. |
+| `q-defi-arbitrage-pathpayment-bots` | downside | correct → partial | Judge variance on an unstable register (0.625). Mintlify retrieved the `/paths` endpoint pages that Algolia missed. |
+| `q-mpp-discovery-and-modes` | control | partial → correct | Judge variance. B made no docs call. Golden stale. |
+| `q-raph-hardware-wallet` | upside | partial → correct | Agent variance. |
+| `q-soroban-reentrancy` | upside | wrong → partial | Agent variance: A dropped the skill's scope qualifier. No docs page mentions reentrancy in either backend. |
+
+Rows wrong in both arms (`q-builder-content-by-person`, `q-raph-remove-scam-token`,
+`q-sor-confidential-tokens`) are not caused by the backend. Each `wrong` claim was checked against
+live sources. Two goldens are stale because of the 2026-10-21/22 docs changes. A replay of arm A's 14
+docs calls for the unrun `q-ti-enumerate-holders-airdrop` shows Mintlify returning the
+`list-all-accounts` and Hubble snapshot pages that Algolia missed.
+
+Reading: answer quality is flat within single-sample noise. Retrieval gains reach some answers
+(instance storage, and better pages on two more rows without a grade change). The one regression
+mechanism is general: Mintlify search rarely returns text inside `<ResponseField>` components. On
+the 93 files that use them, a ResponseField sentence finds its own page in the top 5 for 8 of 90
+pages, against 50 of 84 for a prose sentence (`responsefield-rank.json`). Eight of 25 probed
+identifiers, all Horizon string codes, never appear in the 50 candidates (`identifier-probe.json`).
+
+Follow-ups:
+
+- Upstream: `sd-059` (verified; not filed — filing needs owner approval).
+- Own repo: `.agents/TODO.md` → "Point agents at the page when a docs hit has no body", and
+  "Re-verify five goldens that the docs migration made stale".
+- Mintlify-side ask added to the research note: index `<ResponseField>` text.
+- Judge tiering note: a single-judge `correct` is never re-checked, while a single-judge `partial`
+  escalates to a panel (`q-anchor-endpoint-discovery`). Recorded here only; no change proposed from
+  one row.
 
 ## Independent review
 
@@ -150,6 +220,6 @@ branch (five `reverifyBy` dates expired on 2026-11-01).
 
 ## Open items
 
-- Paid QA paired A/B on the docs cases: see "Paid QA diagnostic".
+- The 4 arm B rows that did not run need a new bounded authorization (about $2–3).
 - Production cut-over: `MINTLIFY_ASSISTANT_API_KEY` Worker secret, then delete the `ALGOLIA_*_DOCS`
   secrets after deploy.

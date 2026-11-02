@@ -41,9 +41,13 @@ retired; the free retrieval A/B favors Mintlify (mean golden-page recall 0.614 â
 pages, so the HackMeridian table-row loss (Q18, R22, R32) and the soft-empty `/meetings` pages (Q9)
 no longer reproduce. Ledger: [2026-11-02 Mintlify migration](rounds/2026-11-02-mintlify-migration.md).
 
-Remaining steps: the paid QA paired A/B on the docs cases; an independent review of the branch;
-the production cut-over (set the `MINTLIFY_ASSISTANT_API_KEY` Worker secret before deploy, then
-delete the `ALGOLIA_*_DOCS` Worker and GitHub secrets).
+Later on 2026-11-02: the independent review (Claude Fable, APPROVE WITH CHANGES) is reconciled in
+`a3ecf688`. The paid QA diagnostic ran 30 IDs on Algolia and 26 on Mintlify; the Mintlify arm
+stopped when the docs site deployed. On the 26 paired rows, verdicts were flat (8 changed, 4 each
+way); one gain and one loss trace to the backend. The loss is `sd-059`.
+
+Remaining steps: the production cut-over (set the `MINTLIFY_ASSISTANT_API_KEY` Worker secret before
+deploy, then delete the `ALGOLIA_*_DOCS` Worker and GitHub secrets).
 
 Done when: production `stellarDocs.*` reads only Mintlify, the A/B shows no docs-answer regression,
 and no `ALGOLIA_*_DOCS` reference remains outside dated records.
@@ -62,6 +66,38 @@ found 21 golden source URLs that no longer resolve: 11 site 308 redirects and 10
 absent from the retired Algolia index. `get_doc_page` follows the redirects, but the goldens should
 cite the canonical paths. Use the `golden-truth` skill. Done when the page-coverage check reports
 zero 404s and zero redirects for active cases.
+
+### Point agents at the page when a docs hit has no body
+
+`sd-059`: Mintlify search rarely returns `<ResponseField>` text, so a result-code page often comes
+back as its title-and-description chunk only. In the 2026-11-02 QA diagnostic the agent had the
+Set Options result-code path in a hit, did not read the page, and gave a wrong code mapping. Options:
+mark such hits (a chunk that is the page title plus one description line) with a hint to call
+`stellarDocs.get_doc_page`, or read those pages host-side and take the snippet from the body. Either
+changes the output contract, so it needs the routing gate and a free retrieval replay of the
+result-code queries in `rounds/2026-11-02-mintlify-migration/identifier-probe.json`. Done when the
+`op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search call or one hinted
+page read, and the change is measured on the retrieval A/B. Remove when `sd-059` is fixed upstream.
+
+### Re-verify five goldens that the docs migration made stale
+
+The 2026-11-02 QA row review (`rounds/2026-11-02-mintlify-migration.md`, "Paid QA diagnostic")
+found these goldens out of date with live sources. Use the `golden-truth` skill for each:
+
+- `q-sor-confidential-tokens`: the privacy page now says the OpenZeppelin v0.8.0 audit covers the
+  confidential token contracts (stellar/stellar-docs #2915, 2026-10-21). Key fact 2 and avoid 1 say
+  "not audited".
+- `q-builder-content-by-person`: the `/meetings/authors` index was removed in the migration; seven
+  live meeting pages carry the byline instead.
+- `q-mpp-discovery-and-modes`: two GitHub sources return 404, one docs URL moved, and mpp.dev now
+  documents one `mppx` endpoint serving both MPP and x402 (key fact 5). Its `reverifyBy` passed.
+- `q-soroban-instance-storage-dos`: stellar-core validates entry size on reads, so a later-lowered
+  `contract_data_entry_size_bytes` makes an oversized instance entry unreadable. Key fact 3 and
+  avoid 1 need that qualifier.
+- `q-anchor-endpoint-discovery`: state in `notes` whether deriving endpoints only from the live
+  `stellar.toml` satisfies key fact 3; one arm's single judge said yes, the other arm's panel no.
+
+Done when each case has a refreshed `truth.verified` and `eval:qa:lint -- --stale` passes for it.
 
 ### Resolve `sd-003` after its upstream comment
 

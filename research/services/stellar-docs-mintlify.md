@@ -174,6 +174,11 @@ and per-case rows are in
 These Mintlify API limits cost Raven quality. They are requests for the Mintlify project owner,
 not docs-content defects, so they are not `improvements/` findings:
 
+- **`<ResponseField>` text.** Search rarely returns text inside `<ResponseField>` components. On the
+  93 files that use them, a sentence from inside a ResponseField finds its own page in the top 5 for
+  8 of 90 pages; a prose sentence does so for 50 of 84. Horizon string codes such as
+  `op_bad_signer` never reach the 50 candidates. This caused the one backend-attributable answer
+  regression in the 2026-11-02 QA diagnostic. Finding: `improvements/stellar-docs/sd-059-*`.
 - **Section anchors.** A search chunk has a page path but no heading anchor. Agents cannot cite the
   matched section.
 - **A relevance signal.** The search returns no score, and `scoreThreshold` changes nothing. The
