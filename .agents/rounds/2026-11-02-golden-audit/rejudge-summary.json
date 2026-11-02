@@ -1,0 +1,341 @@
+{
+  "schema": "golden-audit-rejudge-summary-v1",
+  "note": "Paired re-judge of the saved 2026-10-08 variantA answers whose case is in rejudge-set.json allGospelChanged. Old arm grades against cases.json at 12f182e2 (before the golden audit); new arm grades against cases.json at 049fb747 (after PR #319). Same judge, same answers; only the golden differs. The saved-vs-old-arm difference measures judge noise on an unchanged golden.",
+  "source": {
+    "results": "/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+    "sha256": "e3517cf81b724016ac33f84be1deb9c4e17207507a2c8f2b841e08876465e5f4"
+  },
+  "judgeModel": "claude-sonnet-5",
+  "arms": {
+    "old": {
+      "casesRef": "12f182e2",
+      "casesSha256": "84a54622648320b01690493a98f2805f0252cdfd03048deb4962b0f53cd61523",
+      "artifactSha256": "9139e8a12f5a5470e865f08c986af6ff68b1b783df58fd2c8abf354d51d59410",
+      "costUsd": 3.3608334,
+      "startedAt": "2026-11-02T19:59:36.195Z",
+      "finishedAt": "2026-11-02T20:16:16.778Z"
+    },
+    "new": {
+      "casesRef": "049fb747",
+      "casesSha256": "f2f49508dc9c34c7c0b1b2a8f42e81851e4139a41b3ace8698de99fb1ab28ef3",
+      "artifactSha256": "101ba476f0dc981d0f4fd8cd71361002a90d4fb5cb65707a9ddc8a4c614269e5",
+      "costUsd": 3.522775,
+      "startedAt": "2026-11-02T20:16:17.539Z",
+      "finishedAt": "2026-11-02T20:33:39.483Z"
+    }
+  },
+  "totals": {
+    "rows": 41,
+    "saved": {
+      "partial": 20,
+      "correct": 14,
+      "wrong": 7
+    },
+    "oldGolden": {
+      "partial": 22,
+      "correct": 14,
+      "wrong": 5
+    },
+    "newGolden": {
+      "partial": 23,
+      "correct": 12,
+      "wrong": 6
+    },
+    "directions": {
+      "same": 34,
+      "down": 5,
+      "up": 2
+    },
+    "judgeNoiseSavedVsOld": 6,
+    "totalCostUsd": 6.8836
+  },
+  "rows": [
+    {
+      "id": "q-anchor-sdp-vs-anchor-platform",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-asset-issue-asset-howto",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-asset-two-account-issuer",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-comp-auth-flags-overview",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-comp-cross-moneygram-partnership-sep24",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-defi-allbridge-what-is",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-defi-bridge-evm-to-stellar-axelar",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "wrong",
+      "direction": "down"
+    },
+    {
+      "id": "q-defi-comet-what-is",
+      "saved": "partial",
+      "oldGolden": "correct",
+      "newGolden": "partial",
+      "direction": "down"
+    },
+    {
+      "id": "q-defi-etherfuse-stablebonds",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-defi-phoenix-what-is",
+      "saved": "wrong",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-eco-pyusd-stellar-freshness",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-eco-stellar-wallets-list",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-edge-fresh-latest-blend-tvl",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-edge-fresh-latest-protocol-version",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-edge-fresh-latest-scf-round",
+      "saved": "correct",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-gap-compare-hackathons",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-gap-leaderboard-project-not-builder",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-gap-related-projects-empty",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-hist-quantum-preparedness-plan",
+      "saved": "wrong",
+      "oldGolden": "wrong",
+      "newGolden": "correct",
+      "direction": "up"
+    },
+    {
+      "id": "q-mpp-discovery-and-modes",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-passkey-platform-constraints",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-pc-quantum-preparedness-dormant",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-protocol-27-cap-0071",
+      "saved": "partial",
+      "oldGolden": "wrong",
+      "newGolden": "wrong",
+      "direction": "same"
+    },
+    {
+      "id": "q-protocol-ledger-header-fields",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "partial",
+      "direction": "down"
+    },
+    {
+      "id": "q-protocol-parallel-execution",
+      "saved": "wrong",
+      "oldGolden": "wrong",
+      "newGolden": "partial",
+      "direction": "up"
+    },
+    {
+      "id": "q-scf-cross-reflector-rounds-current",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "wrong",
+      "direction": "down"
+    },
+    {
+      "id": "q-scf-funding-by-category",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-scf-verified-members",
+      "saved": "wrong",
+      "oldGolden": "wrong",
+      "newGolden": "wrong",
+      "direction": "same"
+    },
+    {
+      "id": "q-sep-43-web-wallet-api",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-sor-deploy-invoke-from-js-sdk",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-sor-scval-conversion",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-soroban-contract-build-verification",
+      "saved": "correct",
+      "oldGolden": "correct",
+      "newGolden": "correct",
+      "direction": "same"
+    },
+    {
+      "id": "q-soroban-oz-upgradeable-macro",
+      "saved": "wrong",
+      "oldGolden": "wrong",
+      "newGolden": "wrong",
+      "direction": "same"
+    },
+    {
+      "id": "q-soroban-sdk-cve",
+      "saved": "wrong",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-ti-custodial-account-generation-c-address",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "wrong",
+      "direction": "down"
+    },
+    {
+      "id": "q-ti-freighter-localhost-not-detected",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-ti-testnet-usdc-faucet",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-tool-freighter-wallet",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-tool-passkeykit-smart-wallet",
+      "saved": "partial",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    },
+    {
+      "id": "q-tool-sdk-repos-discovery",
+      "saved": "wrong",
+      "oldGolden": "partial",
+      "newGolden": "partial",
+      "direction": "same"
+    }
+  ]
+}

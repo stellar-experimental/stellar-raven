@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "cce10279b185026d80c37f3506a78bc79a594957b23f010e0fb28e13a66c764c",
+  "corpusContentSha256": "437f9f4a5c0aa8c656ecc20a81e29f13f1e71cadd5beb4f1fcfb74e55459ea70",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -25,8 +25,8 @@
     },
     "byFreshness": {
       "live": 152,
-      "scheduled": 168,
-      "stable": 181
+      "scheduled": 175,
+      "stable": 174
     },
     "traps": {
       "ambiguous": 2,
@@ -2872,7 +2872,7 @@
         "avoid": [
           "Do NOT state a wrong fee (0.03%, 0.25%, 1%) or a wrong reserve count (one base reserve)."
         ],
-        "notes": "Precise-number factual. Dossier §3.3. Verified on developers.stellar.org liquidity-pools page: fee = 30 bps (0.30%); pool-share trustline = 2 base reserves (1.0 XLM at the 0.5 XLM Mainnet base reserve as of 2026-09-30; the XLM figure is a network setting, the count is protocol); constant-product invariant A*B=k. Do not penalize an answer that gives the reserve in base-reserve units without an XLM figure, or that dates the XLM figure.\nAlso good if the answer: Notes the pool enforces a constant-product (x*y=k) invariant and fees accrue to LPs.\nGolden cites: The Stellar liquidity-pools page on developers.stellar.org."
+        "notes": "Precise-number factual. Dossier §3.3. Verified on developers.stellar.org liquidity-pools page: fee = 30 bps (0.30%); pool-share trustline = 2 base reserves (1.0 XLM at the current 0.5 XLM Mainnet base reserve; the XLM figure is a network setting, the count is protocol); constant-product invariant A*B=k. Do not penalize an answer that gives the reserve in base-reserve units without an XLM figure, or that dates the XLM figure.\nAlso good if the answer: Notes the pool enforces a constant-product (x*y=k) invariant and fees accrue to LPs.\nGolden cites: The Stellar liquidity-pools page on developers.stellar.org."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -2895,14 +2895,18 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02); grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the network fees.\" (claim: golden.keyFacts[0] confirmed: AMM swap fee is 30 bps (0.30%))",
             "2026-11-02 [B] https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — \"LIQUIDITY_POOL_FEE_V18 = 30 (prior verification row; SDK constant LiquidityPoolFeeV18 shown on the docs page)\" (claim: golden.keyFacts[0] confirmed: AMM swap fee is 30 bps (0.30%))",
             "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"A pool share trustline requires 2 base reserves instead of 1.\" (claim: golden.keyFacts[1] confirmed: Pool-share trustline consumes two base reserves)",
             "2026-11-02 [F] https://horizon.stellar.org/ledgers?order=desc&limit=5 — \"ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart\" (claim: golden.keyFacts[1] confirmed: Pool-share trustline consumes two base reserves)",
             "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"Pool shares are similar to other assets on Stellar but they cannot be transferred ... Stellar enforces a constant product invariant\" (claim: golden.answer confirmed: Pool shares are not transferable; constant-product invariant)",
-            "Sibling sweep 2026-11-02: proposer checked q-asset-sdex-vs-amm, q-asset-trustline-basics, q-asset-path-payment-ops, q-edge-1xlm-activation-fee; no gospel change in this case, so no sibling contradiction can arise from this event."
+            "Sibling sweep 2026-11-02: proposer checked q-asset-sdex-vs-amm, q-asset-trustline-basics, q-asset-path-payment-ops, q-edge-1xlm-activation-fee; no gospel change in this case, so no sibling contradiction can arise from this event.",
+            "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md, independent review F4/F6): golden.notes \"(1.0 XLM at the 0.5 XLM Mainnet base reserve as of 2026-09-30; the XLM figure\" -> \"(1.0 XLM at the current 0.5 XLM Mainnet base reserve; the XLM figure\". The value is unchanged; Horizon ledger 65269774 (2026-11-02T15:50:54Z) reported base_reserve_in_stroops 5000000."
+          ],
+          "rootCause": [
+            "Eval-side authoring flaw: judge-facing text pinned or required a dated base-reserve value in a stable case; the base reserve is a validator-voted network parameter, so the text now states the current value with that caveat (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
         "origin": "raven-next q-asset-amm-fee-reserve",
@@ -3863,7 +3867,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve** (0.5 XLM on Mainnet as of 2026-09-30; validators can vote to change it) — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves** (1.0 XLM at that setting).\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
+        "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve** (currently 0.5 XLM on Mainnet, a network parameter that validators can vote to change) — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves** (1.0 XLM at that setting).\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
         "keyFacts": [
           "Defines a trustline as an account's explicit opt-in to hold a non-native asset.",
           "Creates the trustline through ChangeTrust for a specific asset and issuer.",
@@ -3874,7 +3878,7 @@
           "Do NOT claim assets can be received without any trustline (like ERC-20 on Ethereum).",
           "Do NOT state the base reserve is a flat fee that is consumed/spent rather than a held minimum balance."
         ],
-        "notes": "Foundational. Dossier §1.2. Base reserve = 0.5 XLM on Mainnet as of 2026-09-30 (a network setting validators can change; Horizon ledger 64703557 base_reserve_in_stroops 5000000); trustline = 1 base reserve; pool-share trustline = 2. Do not penalize an answer that dates the XLM amount or gives it in base-reserve units.\nAlso good if the answer: Each trustline reserves one base reserve (0.5 XLM). | Pool-share (AMM) trustlines cost two base reserves.\nGolden cites: A trustlines page on developers.stellar.org."
+        "notes": "Foundational. Dossier §1.2. Base reserve = currently 0.5 XLM on Mainnet (a network setting validators can change; Horizon ledger 65269774 on 2026-11-02 reported base_reserve_in_stroops 5000000); trustline = 1 base reserve; pool-share trustline = 2. Do not penalize an answer that dates the XLM amount or gives it in base-reserve units.\nAlso good if the answer: Each trustline reserves one base reserve (0.5 XLM). | Pool-share (AMM) trustlines cost two base reserves.\nGolden cites: A trustlines page on developers.stellar.org."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -3902,14 +3906,20 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "2026-11-02 [A] https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — \"Accounts must establish a trustline with the issuing account to hold that issuer's asset. This is true for all assets except for the network's native token, Lumens.\" (claim: golden.keyFacts[0..2] confirmed: Trustline is opt-in via ChangeTrust; payments fail without it; XLM needs none)",
             "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"PAYMENT_NO_TRUST / PAYMENT_NOT_AUTHORIZED result codes\" (claim: golden.keyFacts[0..2] confirmed: Trustline is opt-in via ChangeTrust; payments fail without it; XLM needs none)",
             "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — \"struct TrustLineEntryExtensionV2 { int32 liquidityPoolUseCount; ... } (TrustLineEntry ledger type)\" (claim: golden.keyFacts[0..2] confirmed: Trustline is opt-in via ChangeTrust; payments fail without it; XLM needs none)",
             "2026-11-02 [F] https://horizon.stellar.org/ledgers?order=desc&limit=5 — \"ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart\" (claim: golden.keyFacts[3] / notes confirmed-as-of: One base reserve per trustline; 0.5 XLM on Mainnet as of 2026-09-30)",
             "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"a trustline for asset A (1 base reserve) ... A pool share trustline requires 2 base reserves instead of 1.\" (claim: golden.keyFacts[3] / notes confirmed-as-of: One base reserve per trustline; 0.5 XLM on Mainnet as of 2026-09-30)",
-            "Sibling sweep 2026-11-02: proposer checked q-asset-amm-fee-reserve, q-edge-1xlm-activation-fee, q-hot-fee-pool-burn-deflation; no gospel change in this case, so no sibling contradiction can arise from this event."
+            "Sibling sweep 2026-11-02: proposer checked q-asset-amm-fee-reserve, q-edge-1xlm-activation-fee, q-hot-fee-pool-burn-deflation; no gospel change in this case, so no sibling contradiction can arise from this event.",
+            "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): golden.answer \"(0.5 XLM on Mainnet as of 2026-09-30; validators can vote to change it)\" -> \"(currently 0.5 XLM on Mainnet, a network parameter that validators can vote to change)\". The 2026-11-02 Horizon ledger reads above (base_reserve_in_stroops 5000000) and the Lumens page (\"One base reserve is currently 0.5 XLM\") confirm the value; tags.freshness stays stable.",
+            "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md, independent review F4/F6): golden.notes \"Base reserve = 0.5 XLM on Mainnet as of 2026-09-30 (a network setting validators can change; Horizon ledger 64703557 base_reserve_in_stroops 5000000)\" -> \"Base reserve = currently 0.5 XLM on Mainnet (a network setting validators can change; Horizon ledger 65269774 on 2026-11-02 reported base_reserve_in_stroops 5000000)\". The value is unchanged; Horizon ledger 65269774 (2026-11-02T15:50:54Z) reported base_reserve_in_stroops 5000000."
+          ],
+          "rootCause": [
+            "Eval-side authoring flaw: a stable golden pinned the base reserve with an \"as of <date>\" value. The base reserve is a network parameter that changes only by validator vote, so the golden now states it as the current value with that caveat (durable-fact gating), and the register numericInvariants \"base reserve\" entry keeps sibling cases consistent (.agents/rounds/2026-11-02-grading-policy.md).",
+            "Eval-side authoring flaw: judge-facing text pinned or required a dated base-reserve value in a stable case; the base reserve is a validator-voted network parameter, so the text now states the current value with that caveat (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
         "origin": "raven-next q-asset-trustline-basics",
@@ -13536,7 +13546,7 @@
       "tags": {
         "category": "defi-ecosystem",
         "service": "lumenloop",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -13573,16 +13583,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — GT-16 primary and blind reviews (Solo 3244/3245, 2026-07-10) empirically found that the inherited answer never enumerates Lumenloop's five controlled values and substitutes Scout's separate seven-category schema. This is a direct vocabulary lookup, not an analogy.",
+          "date": "2026-11-02",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
-            "Solo scratchpad 575: GT-16 primary process 3244 and blind process 3245"
+            "C 2026-11-02T20:08:19Z: Raven execute lumenloop.get_categories({}) returned count 5: Applications (applications, id 16), Developer Tooling (developer-tooling, id 15), Education & Community (education-community, id 14), Financial Protocols (financial-protocols, id 11), Infrastructure & Services (infrastructure-services, id 12). Lumenloop owns this controlled vocabulary, so its own endpoint is the authority for this corpus-grounded list; the five values match the golden.",
+            "Freshness change 2026-11-02: tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-04. No other judge-facing field changed."
           ],
           "rootCause": [
-            "eval-side cross-directory schema conflation: Scout categories were used as illustrative substitutes for Lumenloop values"
+            "eval-side cross-directory schema conflation: Scout categories were used as illustrative substitutes for Lumenloop values",
+            "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
-        "origin": "raven-next q-defi-lumenloop-categories-vocab"
+        "origin": "raven-next q-defi-lumenloop-categories-vocab",
+        "asOf": "2026-11-02",
+        "reverifyBy": "2027-01-04"
       }
     },
     {
@@ -14885,7 +14899,7 @@
       "tags": {
         "category": "defi-ecosystem",
         "service": "lumenloop",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -15035,7 +15049,7 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-03)",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "2026-11-02 [F] https://horizon.stellar.org/accounts/GC2M2UTZ57GSENZBTPMLPB6QSAL2USIPHMXSUCT2I3V24GYWF3EI6RFA (+ GCJ2RD.., GCSJ7N.., GCFTRC..) — \"thresholds low/med/high=4; 7 signers weight 1 each (same key set on all four admins); Pulse admin txs at 16:05:24, 16:10:24, ... 16:30:24Z with 4 signatures each; Beam admin last tx 2026-10-22T15:20:28Z, 4 sigs\" (verifier accept of golden.notes)",
             "2026-11-02 [F] stellar contract read via https://mainnet.sorobanrpc.com for CAFJ..4DLN, CALI..LE6M, CBKG..CJZC, CCRV..E2F7 — \"admin = GCJ2RD.., GC2M2U.., GCSJ7N.., GCFTRC.. respectively\" (verifier accept of golden.notes)",
@@ -15054,13 +15068,16 @@
             "2026-10-09 [D] https://whalehub.io/blog/reflector-oracle-explained — \"Pulse is the free, five-minute feed ... Beam offers one-minute granularity ... for a per-call fee in XRF. Flare, formerly called subscriptions, pushes webhook alerts\" (proposer claim, confirmed: Reflector also offers non-free services (Beam paid feed; Flare, formerly Subscriptions).)",
             "2026-11-02 [A] https://reflector.network/oracles — \"Pulse oracles are openly available to use for any smart contract, but require someone to periodically pay oracle upkeep fees.\" (proposer claim, contradicted: Public feeds have no possible limits / all services must be free.)",
             "2026-11-02 [B] https://github.com/reflector-network/reflector-contract — \"ReflectorBeam ... prepaid ... purchased with XRF\" (proposer claim, contradicted: Public feeds have no possible limits / all services must be free.)",
-            "Sibling sweep 2026-11-02: grep reflector + beam|flare|subscription → q-sor-reflector-integration-code (Pulse vs Beam signatures, Beam XRF cost; consistent), q-scf-cross-reflector-rounds-current (SCF #29 subscriptions; consistent), q-defi-oracle-landscape-live; no contradiction."
+            "Sibling sweep 2026-11-02: grep reflector + beam|flare|subscription → q-sor-reflector-integration-code (Pulse vs Beam signatures, Beam XRF cost; consistent), q-scf-cross-reflector-rounds-current (SCF #29 subscriptions; consistent), q-defi-oracle-landscape-live; no contradiction.",
+            "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-07. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
           ],
           "rootCause": [
-            "freshness-drift"
+            "freshness-drift",
+            "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
-        "origin": "raven-next q-defi-reflector-oracle"
+        "origin": "raven-next q-defi-reflector-oracle",
+        "reverifyBy": "2027-01-07"
       }
     },
     {
@@ -16336,7 +16353,7 @@
       "tags": {
         "category": "defi-ecosystem",
         "service": "lumenloop",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -16396,7 +16413,7 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "2025-09-12 launch of CRDYX/CRDT on Ethereum and Stellar; Gapstow index; $25 min; T+0/T+2 [confirmed] — A: https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of — \"September 12, 2025 ... (token ticker: CRDT; fund ticker: CRDYX) ... T+0 settlement for subscriptions, T+2 settlement for redemptions, and a minimum investment of $25. At launch, the fund will be tokenized on the Ethereum and Stellar blockchains.\" (observedAt 2026-11-02)",
             "2025-09-12 launch of CRDYX/CRDT on Ethereum and Stellar; Gapstow index; $25 min; T+0/T+2 [confirmed] — D: https://ethereuminstitutional.org/deployments/wisdomtree-crdt — \"launched in September 2025 on Ethereum and Stellar with a $25 minimum\" (observedAt 2026-11-02)",
@@ -16406,10 +16423,15 @@
             "CRDT SAC CBQDK4Y3...UK3P [confirmed-as-of] — A: SAC id is derived from code+issuer in the issuer TOML — \"issuer TOML code/issuer pair matches\" (observedAt 2026-11-02)",
             "authorization/revocation/clawback controls [confirmed] — F: Horizon /assets (as above) — \"flags auth_required True, auth_revocable True, auth_clawback_enabled True\" (observedAt 2026-11-02)",
             "authorization/revocation/clawback controls [confirmed] — A: SEC prospectus (inherited 2026-07-11) — \"transfer-agent record determinative\" (observedAt 2026-07-11)",
-            "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, q-hist-wisdomtree-rwa; no contradiction recorded."
+            "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, q-hist-wisdomtree-rwa; no contradiction recorded.",
+            "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-10. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+          ],
+          "rootCause": [
+            "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
-        "origin": "raven-next q-defi-wisdomtree-crdt"
+        "origin": "raven-next q-defi-wisdomtree-crdt",
+        "reverifyBy": "2027-01-10"
       }
     },
     {
@@ -17083,7 +17105,7 @@
       "tags": {
         "category": "defi-ecosystem",
         "service": "scout",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -17233,7 +17255,7 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task defi-protocols)",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "A: https://docs.sushi.com/sdk/reference/stellar/config — \"The Stellar config module exports native address constants, SushiSwap V3 contract constants ... SUSHISWAP_V3_FACTORY_ADDRESS\" (observedAt 2026-11-02)",
             "A: https://www.sushi.com/blog/swap-anything (latest-articles list) — \"Sushi is Live on the Stellar Network 10 Feb 2026\" (observedAt 2026-11-02)",
@@ -17249,13 +17271,17 @@
             "2026-11-02 [A] https://docs.soroswap.finance/api/sdex.md — \"An SDEX quote has platform sdex and decimal amounts in rawTrade, executes as a classic path payment from a G... account, and cannot pay a C... address.\" (pass-2 verifier accept on truth.corroboration[1].evidence[2].note)",
             "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"Soroban routes can split one trade across several venues, hop by hop, and execute in a single atomic transaction through [Aggregator v3](...). SDEX is quoted alongside as a separate classic path.\" (pass-2 verifier accept on truth.sources[+])",
             "Pass 2 change (truth only): corroboration[1].evidence[2].note records the soroswap/docs HTTP 404 and live replacements; truth.sources adds https://docs.soroswap.finance/aggregator/supported-amms.md as the live class-A source for the Soroban-route versus classic-SDEX layer split in golden.notes. Question, answer, keyFacts, avoid, and notes unchanged. Observation only: the notes call Comet a reference implementation while Soroswap's 2026-11-02 venue list includes Comet weighted pools; q-defi-comet-what-is does not claim a major standalone DEX, so no contradiction and no change.",
-            "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-vs-stellarx (same annotation), q-defi-comet-what-is, q-eco-defi-market-map; no contradiction."
+            "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-vs-stellarx (same annotation), q-defi-comet-what-is, q-eco-defi-market-map; no contradiction.",
+            "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-16. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
           ],
           "rootCause": [
-            "Eval-side authoring flaw (recorded in .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04): a pre-GT-19 grader note that pinned three serious players survived the GT-19 correction and contradicted avoid[0]."
+            "Eval-side authoring flaw (recorded in .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04): a pre-GT-19 grader note that pinned three serious players survived the GT-19 correction and contradicted avoid[0].",
+            "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
-        "origin": "raven-next q-eco-dex-saturation"
+        "origin": "raven-next q-eco-dex-saturation",
+        "asOf": "2026-11-02",
+        "reverifyBy": "2027-01-16"
       }
     },
     {
@@ -17723,7 +17749,7 @@
       "tags": {
         "category": "defi-ecosystem",
         "service": "lumenloop",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -17732,7 +17758,7 @@
         },
         "domain": "mixed",
         "status": "mixed",
-        "asOf": "2026-09-17",
+        "asOf": "2026-11-02",
         "sources": [
           {
             "class": "A",
@@ -17818,7 +17844,7 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "Ultra Stellar operates LOBSTR [confirmed] — A: https://play.google.com/store/apps/details?id=com.lobstr.client — \"developer Ultra Stellar OU\" (observedAt 2026-11-02)",
             "Ultra Stellar operates LOBSTR [confirmed] — C: https://stellarlight.xyz/api/projects/search?q=lobstr — \"Lobstr | Live | Wallet; Ultra Stellar | Live\" (observedAt 2026-11-02)",
@@ -17828,10 +17854,15 @@
             "LOBSTR is non-custodial [confirmed] — C: Stellar Light Lobstr shortDescription — \"a widely used non-custodial Stellar wallet\" (observedAt 2026-11-02)",
             "SCF record reports totalAwarded and totalPaid separately [confirmed] — A: https://communityfund.stellar.org/project/lobstr-gcn (inherited) — \"separate project totalAwarded and totalPaid fields\" (observedAt 2026-09-17)",
             "SCF record reports totalAwarded and totalPaid separately [confirmed] — C: lumenloop get_scf_submissions {name:LOBSTR} — \"3 submissions incl. recLPGmYh7sNVjRz7\" (observedAt 2026-11-02)",
-            "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-stellar-wallets-list, q-edge-ambig-best-wallet; no contradiction recorded."
+            "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-stellar-wallets-list, q-edge-ambig-best-wallet; no contradiction recorded.",
+            "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-19. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+          ],
+          "rootCause": [
+            "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
-        "origin": "raven-next q-eco-lobstr-wallet"
+        "origin": "raven-next q-eco-lobstr-wallet",
+        "reverifyBy": "2027-01-19"
       }
     },
     {
@@ -17980,7 +18011,7 @@
       "tags": {
         "category": "defi-ecosystem",
         "service": "scout",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -18052,7 +18083,7 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — A: https://litemint.com/ — \"Litemint Market Buy, Sell, and Collect Digital Creations on Stellar, Cyberbrawl items included\" (observedAt 2026-10-20)",
             "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — F: https://market.litemint.com/ — \"HTTP 200\" (observedAt 2026-11-02)",
@@ -18060,10 +18091,15 @@
             "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — A: https://communityfund.stellar.org/submissions/recRfE25wZkOThcrq — \"\"title\":\"Rarible.com X Stellar NFT Experience\",\"status\":\"Awarded\",\"roundName\":\"SCF #30\",\"budget\":150000; project \"totalAwarded\":150000,\"totalPaid\":50000\" (observedAt 2026-11-02)",
             "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — A: https://docs.rarible.org/docs/supported-chains — \"Currently supported chains table: no Stellar row (0 occurrences of 'stellar' in the fetched page)\" (observedAt 2026-11-02)",
             "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — C: https://stellarlight.xyz/api/projects/search?q=rarible — \"lifecycle.note: public Stellar marketplace support was not verifiable on Rarible's live API/UI as of 2026-07-11, so supportedNetworks lists verified deployments only (evm).\" (observedAt 2026-11-02)",
-            "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-defi-market-map, q-defi-nft-standards-projects; no contradiction recorded."
+            "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-defi-market-map, q-defi-nft-standards-projects; no contradiction recorded.",
+            "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-25. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+          ],
+          "rootCause": [
+            "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
-        "origin": "raven-next q-eco-nft-marketplace-whitespace"
+        "origin": "raven-next q-eco-nft-marketplace-whitespace",
+        "reverifyBy": "2027-01-25"
       }
     },
     {
@@ -19347,7 +19383,7 @@
       "question": "My wallet says I must pay a one-time 1 XLM fee to activate or verify my Stellar account and funds look locked. What is this really and is it legit?",
       "surface": [],
       "golden": {
-        "answer": "As of **2026-07-10**, Stellar's base reserve is **0.5 XLM**. An empty, unsponsored G-account needs **1 XLM minimum balance** because the formula starts with two reserves; subentries and sponsorship change the requirement. That balance remains in the destination account. It is not a 1 XLM network activation/verification fee. Transaction inclusion fees are separate (the current minimum effective fee is 100 stroops per operation).\n\nFunding **your own** new G-address through CreateAccount can be legitimate. A request to send XLM to an unrelated address, reveal a seed, or sign something to 'unlock' existing funds is a high-risk scam pattern: do not send or disclose anything. Verify whether the destination is your account using an independently reached official wallet/support channel and Horizon. Do not adjudicate the provider's overall legitimacy without its exact URL/address and current primary evidence.",
+        "answer": "Stellar's base reserve is currently **0.5 XLM**, a network parameter that validators can vote to change. An empty, unsponsored G-account needs **1 XLM minimum balance** because the formula starts with two reserves; subentries and sponsorship change the requirement. That balance remains in the destination account. It is not a 1 XLM network activation/verification fee. Transaction inclusion fees are separate (the current minimum effective fee is 100 stroops per operation).\n\nFunding **your own** new G-address through CreateAccount can be legitimate. A request to send XLM to an unrelated address, reveal a seed, or sign something to 'unlock' existing funds is a high-risk scam pattern: do not send or disclose anything. Verify whether the destination is your account using an independently reached official wallet/support channel and Horizon. Do not adjudicate the provider's overall legitimacy without its exact URL/address and current primary evidence.",
         "keyFacts": [
           "Names 0.5 XLM as the base reserve and 1 XLM as the empty-account minimum.",
           "Treats transaction fees as a third category.",
@@ -19419,14 +19455,18 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "https://developers.stellar.org/docs/learn/fundamentals/lumens (observedAt 2026-11-02): 'One base reserve is currently 0.5 XLM. ... An account must always maintain a minimum balance of two base reserves (currently 1 XLM).'",
             "https://horizon.stellar.org/ledgers?order=desc&limit=1 (observedAt 2026-11-02): sequence 65269857 closed_at 2026-11-02T15:57:49Z base_fee_in_stroops 100 base_reserve_in_stroops 5000000 protocol_version 29.",
             "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering (observedAt 2026-11-02): '100 stroops per operation (the network minimum).'",
             "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers (observedAt 2026-11-02): 'malicious entities set up dummy websites ... to induce you to enter your secret key'.",
             "Perplexity ask (observedAt 2026-11-02, cites developers.stellar.org lumens and create-account): 'An empty, self-funded account needs 1 XLM ... not a separate 'activation' or 'verification' fee.'",
-            "No gospel change. Sibling sweep 2026-11-02: q-protocol-base-reserve-min-balance, q-pc-account-activation-not-found, q-pc-sponsored-reserves, q-raph-low-xlm-transfer-fail, q-asset-amm-fee-reserve; no contradiction."
+            "No gospel change. Sibling sweep 2026-11-02: q-protocol-base-reserve-min-balance, q-pc-account-activation-not-found, q-pc-sponsored-reserves, q-raph-low-xlm-transfer-fail, q-asset-amm-fee-reserve; no contradiction.",
+            "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): golden.answer \"As of **2026-07-10**, Stellar's base reserve is **0.5 XLM**.\" -> \"Stellar's base reserve is currently **0.5 XLM**, a network parameter that validators can vote to change.\". The 2026-11-02 Horizon ledger reads above (base_reserve_in_stroops 5000000) and the Lumens page (\"One base reserve is currently 0.5 XLM\") confirm the value; tags.freshness stays stable."
+          ],
+          "rootCause": [
+            "Eval-side authoring flaw: a stable golden pinned the base reserve with an \"as of <date>\" value. The base reserve is a network parameter that changes only by validator vote, so the golden now states it as the current value with that caveat (durable-fact gating), and the register numericInvariants \"base reserve\" entry keeps sibling cases consistent (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
         "origin": "raven-next q-edge-1xlm-activation-fee"
@@ -33172,10 +33212,10 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "A Stellar keypair is only cryptographic identity until a successful **CreateAccount** operation creates its ledger entry. A normal Payment to a nonexistent G-address fails with `PAYMENT_NO_DESTINATION`; Payment is not account creation. For the ordinary **unsponsored** path, an empty account needs two base reserves—**1 XLM as of 2026-07-10** with a 0.5 XLM base reserve. CAP-0033 also permits **sponsored account creation with `startingBalance=0`**, shifting those reserves to the sponsor when the sponsorship sandwich and authorizations are correct. On Testnet, Friendbot can create/fund test accounts; on Mainnet use CreateAccount directly or through a real sponsoring/funding service. Re-read current reserve configuration before quoting the numeric minimum.",
+        "answer": "A Stellar keypair is only cryptographic identity until a successful **CreateAccount** operation creates its ledger entry. A normal Payment to a nonexistent G-address fails with `PAYMENT_NO_DESTINATION`; Payment is not account creation. For the ordinary **unsponsored** path, an empty account needs two base reserves—**currently 1 XLM** with the 0.5 XLM base reserve (a network parameter that validators can vote to change). CAP-0033 also permits **sponsored account creation with `startingBalance=0`**, shifting those reserves to the sponsor when the sponsorship sandwich and authorizations are correct. On Testnet, Friendbot can create/fund test accounts; on Mainnet use CreateAccount directly or through a real sponsoring/funding service. Re-read current reserve configuration before quoting the numeric minimum.",
         "keyFacts": [
           "CreateAccount, not key generation or Payment, creates the ledger account.",
-          "Distinguishes the dated unsponsored minimum from CAP-0033 sponsored zero-balance creation."
+          "Distinguishes the current unsponsored minimum (two base reserves) from CAP-0033 sponsored zero-balance creation."
         ],
         "avoid": [
           "Do NOT say every generated G-address exists or that Payment creates a nonexistent destination.",
@@ -33258,7 +33298,7 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/create-account -- 'A valid keypair alone does not make an account.'",
             "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x -- 'PAYMENT_NO_DESTINATION = -5, // destination account does not exist'",
@@ -33267,7 +33307,12 @@
             "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves -- 'a brand-new account can be created with a startingBalance of 0: wrap the CreateAccount operation in a BeginSponsoringFutureReserves/EndSponsoringFutureReserves sandwich'",
             "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md -- 'Status: Final; Protocol version: 14/15'",
             "Re-verified with no gospel change; proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json (no proposal, so no verifier decision).",
-            "Sibling sweep 2026-11-02: q-edge-1xlm-activation-fee, q-pc-sponsored-reserves, q-pc-account-merge-reclaim-reserve checked; base reserve 0.5 XLM / 1 XLM minimum consistent; no contradiction."
+            "Sibling sweep 2026-11-02: q-edge-1xlm-activation-fee, q-pc-sponsored-reserves, q-pc-account-merge-reclaim-reserve checked; base reserve 0.5 XLM / 1 XLM minimum consistent; no contradiction.",
+            "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): golden.answer \"**1 XLM as of 2026-07-10** with a 0.5 XLM base reserve\" -> \"**currently 1 XLM** with the 0.5 XLM base reserve (a network parameter that validators can vote to change)\". The 2026-11-02 Horizon ledger reads above (base_reserve_in_stroops 5000000) and the Lumens page (\"One base reserve is currently 0.5 XLM\") confirm the value; tags.freshness stays stable.",
+            "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md, independent review F6): golden.keyFacts[1] \"Distinguishes the dated unsponsored minimum from CAP-0033 sponsored zero-balance creation.\" -> \"Distinguishes the current unsponsored minimum (two base reserves) from CAP-0033 sponsored zero-balance creation.\", because the answer no longer dates the minimum. The value is unchanged."
+          ],
+          "rootCause": [
+            "Eval-side authoring flaw: a stable golden pinned the base reserve with an \"as of <date>\" value. The base reserve is a network parameter that changes only by validator vote, so the golden now states it as the current value with that caveat (durable-fact gating), and the register numericInvariants \"base reserve\" entry keeps sibling cases consistent (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
         "origin": "raven-next q-pc-account-activation-not-found"
@@ -34769,7 +34814,7 @@
       "tags": {
         "category": "protocol-core",
         "service": "stellarDocs",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -34864,7 +34909,7 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
+          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event; grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
           "evidence": [
             "Gospel change 2026-11-02: removed the sd-003 partial cap and re-dated the sd-003 note in golden.notes.",
             "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
@@ -34876,14 +34921,17 @@
             "https://horizon.stellar.org/fee_stats — last_ledger_base_fee 100 (ledger 65269952); RPC getFeeStats on https://mainnet.sorobanrpc.com — inclusionFee min 100, p50 100 (observedAt 2026-11-02).",
             "stellar fees --help (stellar 28.1.0) — 'Commands: stats  Fetch the feestats from the network' (observedAt 2026-11-02).",
             "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment — 'networking layer API for Stellar RPC methods as well as the Horizon API (nearing end-of-life)' (observedAt 2026-11-02); the golden's dated 2026-09-08 wording still holds.",
-            "Sibling sweep 2026-11-02: q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement rule; consistent); no contradiction."
+            "Sibling sweep 2026-11-02: q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement rule; consistent); no contradiction.",
+            "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-30, because the golden pins dated fee-floor and Horizon-lifecycle statements and the Horizon lifecycle label changed twice in 2026. The 2026-11-02 evidence above confirms the fee floor live; no other judge-facing field changed in this event."
           ],
           "rootCause": [
-            "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
+            "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)",
+            "Eval-side authoring flaw: the golden carries dated point-in-time values but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
           ]
         },
         "origin": "raven-next q-pc-practical-fee-setting",
-        "asOf": "2026-11-02"
+        "asOf": "2026-11-02",
+        "reverifyBy": "2027-01-30"
       }
     },
     {

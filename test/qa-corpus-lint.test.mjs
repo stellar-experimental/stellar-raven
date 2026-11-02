@@ -9,6 +9,7 @@ import {
   lintCorroboration,
   lintDateContingentTraps,
   lintGoldenAuthoring,
+  lintCapFindings,
   lintGospelChanges,
   runLint,
   lintStale,
@@ -193,6 +194,27 @@ describe("QA corpus lint lanes", () => {
       truth: {},
     }]);
     expect(findings.some((item) => item.lane === "freshness" && item.level === "error")).toBe(flagged);
+  });
+
+  it.each([
+    ["Quoting the official page is not a wrong claim while sd-901 stands; grade caps at partial.", new Map([["sd-901", "verified"]]), 0],
+    ["Quoting the official page is not a wrong claim while sd-901 stands; grade caps at partial.", new Map([["sd-901", "fixed-upstream"]]), 1],
+    ["Quoting the official page is not a wrong claim while sd-902 stands; grade caps at partial.", new Map(), 1],
+    ["Quoting the official page is not a wrong claim; grade caps at partial.", new Map(), 1],
+  ])("checks that a partial cap names an active finding: %s", (notes, statuses, warnings) => {
+    const findings = lintCapFindings([{ id: "q-fixture-cap", golden: { notes } }], statuses);
+    expect(findings.filter((item) => item.lane === "cap-finding" && item.level === "warn")).toHaveLength(warnings);
+  });
+
+  it("warns when stable notes cite an as-of value", () => {
+    const findings = lintGoldenAuthoring([{
+      id: "q-fixture-freshness-notes",
+      question: "What is the base reserve?",
+      golden: { answer: "The base reserve is currently 0.5 XLM.", keyFacts: [], notes: "Observed 0.5 XLM as of 2026-09-30." },
+      tags: { freshness: "stable" },
+      truth: {},
+    }]);
+    expect(findings.filter((item) => item.lane === "freshness").map((item) => item.level)).toEqual(["warn"]);
   });
 
   it("seeds all register hashes without reopening, then reopens known changes", () => {

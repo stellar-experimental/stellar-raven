@@ -141,25 +141,30 @@ new authorization.
 
 ## Amendment (2026-11-02): partial caps follow open upstream findings
 
-The owner accepted partial caps beyond the original three cases. The 2026-11-02 golden audit found
-about 50 existing caps. Most of them cover stale aggregator data from Scout or Lumenloop. The rest
-cover official pages that conflict with stronger authority. The owner chose to keep partial credit
-and to push the upstream fixes actively.
+The owner accepted partial caps beyond the original three cases. On 2026-11-02 the corpus had 65
+cap sentences in `golden.notes`. Many cover stale aggregator data from Scout or Lumenloop. The rest
+cover official pages that conflict with stronger authority. The owner reviewed both kinds by name
+and chose to keep partial credit and to push the upstream fixes actively.
 
 - A cap applies when an answer accurately quotes a named source, and that source conflicts with
   stronger applicable authority. The source can be an official page, a canonical source, or an
   aggregator.
-- Each cap names one active `improvements/` finding. A cap without an active finding becomes a
-  plain correct or wrong rule.
+- Each cap names at least one active `improvements/` finding. Active means `verified`,
+  `reported-upstream`, or `declined-upstream`. A `proposed` finding, a `fixed-upstream` finding, and
+  an id that exists only in `improvements/resolved.json` are not active. A cap without an active
+  finding becomes a plain correct or wrong rule.
 - A cap ends when its finding reaches `fixed-upstream` and the live source no longer carries the
-  wording. A `declined-upstream` finding keeps the cap until a later owner decision.
+  wording. The change that moves a finding to `fixed-upstream` also removes the cap from every case
+  that names the finding. A `declined-upstream` finding keeps the cap until a later owner decision.
 - File each verified finding that backs a cap upstream after its live re-check passes. Use
   `npm run improvements:file`. Do not leave such a finding unfiled for a later round. When no
   public tracker exists, record that in `improvements/intake.json` and in the round ledger.
 - An unattributed false claim remains `wrong`.
 
 Base reserve, Horizon lifecycle, and RPC pagination stay in the accepted set under the same rules.
-The record is `.agents/rounds/2026-11-02-grading-policy.md`.
+The QA lint lane `cap-finding` warns on each cap that names no active finding. The caps that the
+lane flagged on 2026-11-02 are a conversion backlog in `.agents/TODO.md`. The record is
+`.agents/rounds/2026-11-02-grading-policy.md`.
 
 ## Consequences
 

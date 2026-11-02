@@ -508,6 +508,8 @@ export function lintGoldenAuthoring(cases) {
     // A stable case is never re-checked by date, so it must not pin a point-in-time value.
     if (kase.tags?.freshness === "stable" && STABLE_AS_OF_RE.test([kase.golden?.answer, ...(kase.golden?.keyFacts ?? [])].filter(Boolean).join(" "))) {
       findings.push(finding("error", "freshness", kase.id, "stable golden pins an \"as of <date>\" value; tag it scheduled with truth.reverifyBy, or state the fact without a point-in-time date"));
+    } else if (kase.tags?.freshness === "stable" && STABLE_AS_OF_RE.test([kase.golden?.notes, ...(kase.golden?.avoid ?? [])].filter(Boolean).join(" "))) {
+      findings.push(finding("warn", "freshness", kase.id, "stable golden notes or avoid items cite an \"as of <date>\" value; confirm it is a historical observation, not a current value"));
     }
     const snapshotDates = new Set([kase.truth?.asOf, kase.truth?.verified?.date].filter((date) => DATE_RE.test(date ?? "")));
     for (const fact of kase.golden?.keyFacts ?? []) {
@@ -538,6 +540,46 @@ export function lintGoldenAuthoring(cases) {
         .some((match) => !/^improvements\/resolved\.json\.?$/i.test(match[1])));
     if (hasImprovementRootCause && !hasSymmetricCaution(kase.golden?.notes)) {
       findings.push(finding("warn", "symmetric-caution", kase.id, "improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes"));
+    }
+  }
+  return findings;
+}
+
+const CAP_SENTENCE_RE = /not a wrong claim|\bcaps? at partial\b|\bcapped at partial\b/i;
+const FINDING_ID_RE = /\b(?:sls|ll|sd|sk|cs|wai)-\d{3}\b/g;
+const ACTIVE_FINDING_STATUSES = new Set(["verified", "reported-upstream", "declined-upstream"]);
+
+/** Read finding ids and statuses from improvements/<collection>/<id>-*.md frontmatter. */
+export function loadFindingStatuses(improvementsDir) {
+  const statuses = new Map();
+  if (!existsSync(improvementsDir)) return statuses;
+  for (const collection of readdirSync(improvementsDir, { withFileTypes: true })) {
+    if (!collection.isDirectory()) continue;
+    for (const file of readdirSync(path.join(improvementsDir, collection.name))) {
+      if (!file.endsWith(".md")) continue;
+      const head = readFileSync(path.join(improvementsDir, collection.name, file), "utf8").split(/^---$/m)[1] ?? "";
+      const id = /^id:\s*(\S+)/m.exec(head)?.[1];
+      const status = /^status:\s*(\S+)/m.exec(head)?.[1];
+      if (id && status) statuses.set(id, status);
+    }
+  }
+  return statuses;
+}
+
+// ADR-0008 (2026-11-02 amendment): a partial cap is accepted only while it names an active finding.
+export function lintCapFindings(cases, findingStatuses) {
+  const findings = [];
+  if (!findingStatuses) return findings;
+  for (const kase of cases) {
+    const sentences = String(kase.golden?.notes ?? "").split(/(?<=[.!?])\s+/).filter((sentence) => CAP_SENTENCE_RE.test(sentence));
+    for (const sentence of sentences) {
+      const ids = [...new Set(sentence.match(FINDING_ID_RE) ?? [])];
+      if (ids.length === 0) {
+        findings.push(finding("warn", "cap-finding", kase.id, `partial cap names no improvements finding: ${sentence.slice(0, 140)}`));
+      } else if (!ids.some((id) => ACTIVE_FINDING_STATUSES.has(findingStatuses.get(id)))) {
+        const states = ids.map((id) => `${id}=${findingStatuses.get(id) ?? "not active (resolved or missing)"}`).join(", ");
+        findings.push(finding("warn", "cap-finding", kase.id, `partial cap names no active finding (${states})`));
+      }
     }
   }
   return findings;
@@ -928,7 +970,7 @@ function printFindings(findings) {
   return errors;
 }
 
-export function runLint({ cases, proposedCases = [], tombstones = [], laneFindings = [], manifest, register = {}, ledger, lifecycleRegistry, lifecyclePolicy, previousCases, coverage = false, enforceFloors = false, stale = false, today }) {
+export function runLint({ cases, proposedCases = [], tombstones = [], laneFindings = [], manifest, register = {}, ledger, findingStatuses, lifecycleRegistry, lifecyclePolicy, previousCases, coverage = false, enforceFloors = false, stale = false, today }) {
   const findings = [
     ...lintLifecycle(cases, lifecycleRegistry, lifecyclePolicy, today, { proposedCases, tombstones, laneFindings }),
     ...lintSurface(cases, manifest),
@@ -937,6 +979,7 @@ export function runLint({ cases, proposedCases = [], tombstones = [], laneFindin
     ...lintAvoidPhrases(cases),
     ...lintGoldenAuthoring(cases),
     ...lintCorroboration(cases, register),
+    ...lintCapFindings(cases, findingStatuses),
     ...lintLedger(cases, ledger, enforceFloors)
   ];
   if (previousCases) findings.push(...lintGospelChanges(cases, previousCases));
@@ -994,6 +1037,7 @@ function main() {
     manifest: json(manifestPath),
     register: existsSync(registerPath) ? json(registerPath) : {},
     ledger: existsSync(ledgerPath) ? json(ledgerPath) : undefined,
+    findingStatuses: loadFindingStatuses(path.join(ROOT, "improvements")),
     lifecycleRegistry: existsSync(lifecycleRegistryPath) ? json(lifecycleRegistryPath) : undefined,
     lifecyclePolicy: existsSync(lifecyclePolicyPath) ? json(lifecyclePolicyPath) : undefined,
     previousCases,
