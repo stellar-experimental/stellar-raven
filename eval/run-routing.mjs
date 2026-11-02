@@ -109,8 +109,15 @@ function gateEvidenceFailures(gateConfig) {
         failures.push(`gates.json evidence.inputs has an invalid SHA-256 for ${path}`);
         continue;
       }
-      const actual = createHash("sha256").update(readFileSync(join(REPO, path))).digest("hex");
-      if (actual !== expected) failures.push(`${path} SHA-256 does not match the committed gate evidence — re-baseline gates.json explicitly`);
+      // The manifest evidence must describe the manifest this run grades, including a --manifest variant.
+      const source = path === "catalog/manifest.json" ? MANIFEST : join(REPO, path);
+      const actual = createHash("sha256").update(readFileSync(source)).digest("hex");
+      if (actual === expected) continue;
+      if (source === MANIFEST && MANIFEST !== join(REPO, path)) {
+        failures.push(`selected manifest ${relative(REPO, MANIFEST)} SHA-256 does not match the committed ${path} gate evidence — a variant manifest cannot pass --gate`);
+      } else {
+        failures.push(`${path} SHA-256 does not match the committed gate evidence — re-baseline gates.json explicitly`);
+      }
     }
     for (const path of inputs.keys()) {
       if (!GATE_EVIDENCE_INPUTS.includes(path)) failures.push(`gates.json evidence.inputs contains unexpected path ${path}`);
