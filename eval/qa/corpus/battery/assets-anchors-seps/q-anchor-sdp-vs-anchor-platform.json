@@ -73,8 +73,8 @@
       },
       {
         "class": "B",
-        "ref": "https://github.com/stellar/java-stellar-anchor-sdk",
-        "note": "Anchor Platform source; carries SEP-45 request and JWT classes as of 2026-11-02."
+        "ref": "https://github.com/stellar/anchor-platform",
+        "note": "Anchor Platform source (the old java-stellar-anchor-sdk name redirects here); its source tree carries SEP-45 modules as of 2026-11-02. The docs page https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 documents SEP45_ENABLED."
       }
     ],
     "corroboration": [
@@ -227,7 +227,8 @@
         "Live A/B 2026-11-02: https://developers.stellar.org/docs/platforms/anchor-platform lists SEP-1/6/10/12/24/31/38/45; java-stellar-anchor-sdk@2a4b58c3c90d3ca79a7216bd09b92143b2248616 has SEP-45 classes. The notes now allow SEP-45, so the misnumbering trap does not punish a true claim. keyFacts are unchanged.",
         "Live A/B 2026-11-02: https://developers.stellar.org/docs/build/apps/wallet/intro and @stellar/typescript-wallet-sdk src/walletSdk/Anchor/index.ts on main still expose SEP-1/6/10/12/24/38 and no SEP-31 client.",
         "Live B 2026-11-02: the SDP backend README confirms native SEP-10/24 and no required external Anchor Platform.",
-        "Sibling sweep 2026-11-02: corrected together with q-anchor-sdp-what, which had the same false text. q-pay-sdp-disbursement, q-crp-sdp-operation, and q-anchor-platform-what agree and do not mention 10,000. Register cluster-135's note repeats the old wording and needs a re-sweep."
+        "Sibling sweep 2026-11-02: corrected together with q-anchor-sdp-what, which had the same false text. q-pay-sdp-disbursement, q-crp-sdp-operation, and q-anchor-platform-what agree and do not mention 10,000. Register cluster-135's note repeats the old wording and needs a re-sweep.",
+        "Review reconciliation 2026-11-02 (PR #310 review finding 5): the class-B source now names the canonical stellar/anchor-platform repository."
       ],
       "rootCause": [
         "Eval-side authoring flaw: the 2026-08-05 rescope read only the stellar.org product page and the Docs. It did not read the SDP backend source constant, so avoid[1] and the notes called a source-enforced per-disbursement cap mere product positioning.",

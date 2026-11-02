@@ -11,13 +11,13 @@
       "Makes the as-of date visible for each changeable status or deadline.",
       "Reports SCF #46 in Submission in the dated example.",
       "Reports 2026-11-09 as SCF #46's submission deadline.",
-      "Places #45 as the last concluded round and does not treat #44 as current."
+      "Places #45 as the last concluded round."
     ],
     "avoid": [
       "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
       "Do NOT invent a deadline time, timezone, notification date, or submission count."
     ],
-    "notes": "Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-11-02, #46 is in Submission through 2026-11-09. #45 has ended. The official deadline moved from 2026-11-08 (observed 2026-10-01 and in a 2026-10-18 Wayback snapshot) to 2026-11-09. Third-party posts still say November 8. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong."
+    "notes": "Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-11-02, #46 is in Submission through 2026-11-09. #45 has ended. The official deadline moved from 2026-11-08 (observed 2026-10-01 and in a 2026-10-18 Wayback snapshot) to 2026-11-09. Third-party posts (r/Stellar, @lumenloop) still say November 8. Grade an answer that gives November 8 with attribution to an older or third-party source as at most partial, not wrong."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -48,6 +48,16 @@
         "class": "C",
         "ref": "https://stellarlight.xyz/api/rfps?status=open",
         "note": "Live Scout result observed 2026-10-01; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, submission deadline 2026-11-08, and round 45 in Notification & Award Distribution."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.reddit.com/r/Stellar/comments/1xkwoj4/rstellar_weekly_community_thread_nov_1_to_7_2026/",
+        "note": "Third-party post observed 2026-11-02: 'SCF #46 submissions are due by Nov 8.' Evidence of the stale date in circulation, not of the deadline."
+      },
+      {
+        "class": "D",
+        "ref": "https://x.com/lumenloop/status/2112203379225321685",
+        "note": "Third-party post observed 2026-11-02: 'Full submission: Nov 8'. Evidence of the stale date in circulation, not of the deadline."
       }
     ],
     "corroboration": [
@@ -132,7 +142,8 @@
         "Live C 2026-11-02: https://stellarlight.xyz/api/rfps?status=open titles the synthetic row 'SCF Round #46: submissions OPEN until 2026-11-09'.",
         "The official deadline moved from 2026-11-08 to 2026-11-09 between the 2026-10-18 Wayback snapshot and 2026-11-02. #45 moved from Notification & Award Distribution to Ended.",
         "Sibling sweep 2026-11-02: q-scf-current-round and q-edge-fresh-latest-scf-round changed together. q-scf-open-rfps and q-scf-rfp-tooling also name 2026-11-08; they are due 2026-11-12/13 and need a separate roster decision (the official RFP page now says 'New Q4 RFPs are coming soon' while Scout still lists two open Q3 briefs), recorded in .agents/TODO.md.",
-        "reverifyBy 2026-11-12 is event-triggered: Submission closes 2026-11-09 and Panel Review opens 2026-11-11."
+        "reverifyBy 2026-11-12 is event-triggered: Submission closes 2026-11-09 and Panel Review opens 2026-11-11.",
+        "Review reconciliation 2026-11-02 (PR #310 review findings 4 and 6): the third-party November 8 posts are now named in the notes and in truth.sources (Reddit r/Stellar weekly thread, @lumenloop status 2112203379225321685). keyFact 5 keeps one predicate; avoid[0] already traps treating #44 as current."
       ],
       "rootCause": [
         "freshness-drift"

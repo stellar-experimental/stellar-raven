@@ -73,3 +73,23 @@ the dead `github.com/stellar/mpp` source.
 - `@cloudflare/codemode` 0.5.6 (2026-10-29) still has the reverse-prefix match in `scoreField`
   (`token.startsWith(c)`). Upstream cloudflare/agents#2296 is open with no reply. Issue #167 stays
   open.
+
+## Independent review
+
+Reviewer: Claude Fable 5.1, run after the merge of #310 (`86cc5f53`) with an independent
+re-derivation brief. It did not read the ledger or the matrices first.
+
+Verdict: approve with changes. All nine gospel changes are true on live sources, and each has an
+independent truth defect. The reviewer found no score laundering. The cautions are symmetric, and the
+metadata-only cases changed no judge-facing field.
+
+| # | Severity | Finding | Reconciliation |
+| --- | --- | --- | --- |
+| 1 | major | `q-scf-open-rfps` and `q-scf-rfp-tooling` still gave the 2026-11-08 deadline | Fixed: 2026-11-09 with an as-of date and the partial cap; the roster stays queued |
+| 2 | minor | `q-infra-secp256r1-passkeys` and `q-passkey-platform-constraints` lacked the origin/RP-ID caution | Fixed: same caution added to the notes; key facts unchanged |
+| 3 | minor | `q-sor-cross-warmancer-zk-stack` notes called CAP-0080 Implemented | Fixed: "Final since 2026-09-22" |
+| 4 | minor | "Third-party posts still say November 8" had no source | Fixed: r/Stellar and @lumenloop posts named in the notes and sources |
+| 5 | minor | The Anchor Platform source used the old repository name | Fixed: `stellar/anchor-platform` |
+| 6 | nit | keyFact 5 in the two SCF round cases had two predicates | Fixed: one predicate; avoid[0] keeps the #44 trap |
+| 7 | nit | The hackmeridian.com source still shows a countdown | Fixed: a source note says so |
+| 8 | nit | Six cases fall due on 2026-11-12 | No change: the two SCF cases are event-triggered, and the TODO item says so |
