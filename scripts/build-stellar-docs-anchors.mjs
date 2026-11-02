@@ -9,12 +9,37 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "src/adapters/stellar-docs-anchors.json");
 const ORIGIN = "https://developers.stellar.org";
 
+/** Drop script elements so heading-like text inside the Next.js payload is not parsed. */
+export function withoutScripts(html) {
+  const lower = html.toLowerCase();
+  let out = "";
+  let at = 0;
+  for (;;) {
+    const open = lower.indexOf("<script", at);
+    if (open < 0) return out + html.slice(at);
+    out += html.slice(at, open);
+    const close = lower.indexOf("</script", open);
+    if (close < 0) return out;
+    const end = lower.indexOf(">", close);
+    if (end < 0) return out;
+    at = end + 1;
+  }
+}
+
 /** Read rendered text and IDs, including custom IDs and every duplicate heading. */
 export function extractPageAnchors(html) {
-  const window = new Window();
+  // The window only parses markup; it never runs or fetches page code.
+  const window = new Window({
+    settings: {
+      disableJavaScriptEvaluation: true,
+      disableJavaScriptFileLoading: true,
+      disableCSSFileLoading: true,
+      disableIframePageLoading: true,
+    },
+  });
   try {
     // Parse heading fragments only; the full Next.js payload is large and unnecessary.
-    const rendered = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    const rendered = withoutScripts(html);
     window.document.body.innerHTML = [...rendered.matchAll(/<h([2-6])\b[^>]*>[\s\S]*?<\/h\1>/gi)].map(([tag]) => tag).join("");
     const anchors = Object.create(null);
     for (const heading of window.document.querySelectorAll("h2[id],h3[id],h4[id],h5[id],h6[id]")) {

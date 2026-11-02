@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { buildAnchorIndex, extractPageAnchors } from "../scripts/build-stellar-docs-anchors.mjs";
+import { withoutScripts, buildAnchorIndex, extractPageAnchors } from "../scripts/build-stellar-docs-anchors.mjs";
 
 const ORIGIN = "https://developers.stellar.org";
 const heading = (text, id) => `<h3 id="${id}"><div><a href="#${id}" aria-label="Navigate to header">​<svg></svg></a></div><span>${text}</span></h3>`;
@@ -114,5 +114,15 @@ describe("rendered docs anchor capture", () => {
     expect(summary.changedPages).toBe(0);
     expect(summary.removedPages).toBe(0);
     expect(readFileSync(path, "utf8")).toBe(previous);
+  });
+});
+
+describe("withoutScripts", () => {
+  it("drops script elements, including upper-case and spaced end tags", () => {
+    const html = '<h2 id="a">A</h2><script>var x = "<h2 id=\'b\'>B</h2>";</script ><h3 id="c">C</h3><SCRIPT type="x">y</SCRIPT>tail';
+    expect(withoutScripts(html)).toBe('<h2 id="a">A</h2><h3 id="c">C</h3>tail');
+  });
+  it("drops an unterminated script to the end", () => {
+    expect(withoutScripts('<h2 id="a">A</h2><script>never closed <h2 id="b">B</h2>')).toBe('<h2 id="a">A</h2>');
   });
 });
