@@ -392,10 +392,10 @@ operation. That is the document-frequency filter doing its job, not a regression
 Anti-overfitting rules bind here: zero-hit routing cases stay failing until a *general*
 mechanism fixes them; no query→service maps, no per-question vocabulary. If the only fix
 you can imagine is case-specific, the case stays red and the note says why. The same rule binds
-operator Algolia access: a docs-search rule or synonym must be a general mechanism with a
-measured win on the A/B harness (`npm run eval:algolia-raven`) before it lands, and content-shaped
-gaps still go upstream. The `improvements-pipeline` skill's "Direct Algolia remediation" section is
-the gate.
+the docs search layer: a change to Raven's docs scoping or relevance guard must be a general
+mechanism with a measured win on a read-only retrieval-level A/B before it lands, and
+content-shaped or upstream-ranking gaps still go upstream. The `improvements-pipeline` skill's
+"Docs search-mechanism findings" section is the gate.
 
 **Keep case evidence in the round record.** Production descriptions, keywords, examples,
 archetypes, scorer constants, and tool instructions express a general user intent. Give each
@@ -481,6 +481,6 @@ Close-out checklist:
 - Headline = QA end-to-end; when two instruments disagree, the one closer to the headline wins.
 - No per-question tuning, no foreign schemas/judge code from prior-art repos (spirit, not schema).
 - Freshness-sensitive truth is graded as behavior, never pinned values in gates.
-- Never print or commit secrets (`LUMENLOOP_API_KEY`, Algolia keys); paid Lumenloop research
+- Never print or commit secrets (`LUMENLOOP_API_KEY`, Mintlify keys, Algolia site keys); paid Lumenloop research
   stays gated (dedup via `list_my_research`, budget cap, off by default) — eval runs use free ops.
 - Sandbox/network posture is not relaxed for eval convenience.

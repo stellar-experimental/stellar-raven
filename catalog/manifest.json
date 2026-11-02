@@ -25375,18 +25375,13 @@
       }
     },
     {
-      "description": "Fetch all indexed sections (heading anchors + content) of a single Stellar developer docs page identified by its URL path, e.g. /docs/build/smart-contracts/getting-started/storing-data or /docs/learn/fundamentals/stellar-consensus-protocol. Use after a search hit to read a whole page section by section instead of a single snippet — the docs equivalent of opening the page. Returns every section in on-page order with anchor, heading breadcrumb and full content text.\n\nReturns: An object with page, sections, nbSections, complete, truncated, optional truncationReason, and optional usedFallbackQuery. Each section has url, url_without_anchor, anchor, type, breadcrumb, and optional content or snippet.",
-      "id": "stellarDocs.get_doc_page_sections",
+      "description": "Fetch the full text of a single Stellar developer docs page identified by its URL path, e.g. /docs/build/smart-contracts/getting-started/storing-data or /docs/learn/fundamentals/stellar-consensus-protocol. Use after a search hit to read a whole page instead of a single snippet — the docs equivalent of opening the page. Returns the page title and the full page content in on-page order, with headings, tables and code blocks.\n\nReturns: An object with url, path, title, and content (the whole page as Markdown).",
+      "id": "stellarDocs.get_doc_page",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
-          "includeContent": {
-            "default": true,
-            "description": "Include each section's full content text (default true — this op exists to read pages).",
-            "type": "boolean"
-          },
           "path": {
-            "description": "URL path of the page on developers.stellar.org, no domain, no anchor — e.g. /docs/build/smart-contracts/getting-started/storing-data. Use url_without_anchor from a previous search hit.",
+            "description": "URL path of the page on developers.stellar.org, no domain — e.g. /docs/build/smart-contracts/getting-started/storing-data. Use `path` from a search hit. An anchor or trailing slash is ignored.",
             "pattern": "^/(docs|meetings)/",
             "type": "string"
           }
@@ -25400,79 +25395,34 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "complete": {
-            "type": "boolean"
+          "content": {
+            "description": "The whole page as Markdown. Large reference pages can exceed 20 KB.",
+            "type": "string"
           },
-          "nbSections": {
-            "minimum": 0,
-            "type": "integer"
+          "path": {
+            "type": "string"
           },
-          "page": {
+          "title": {
+            "description": "The page's H1 title, or the last path segment when the page has none.",
+            "type": "string"
+          },
+          "url": {
             "format": "uri",
-            "type": "string"
-          },
-          "sections": {
-            "items": {
-              "additionalProperties": false,
-              "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
-                "content": {
-                  "type": "string"
-                },
-                "snippet": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string"
-                },
-                "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
-                  "format": "uri",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "type",
-                "breadcrumb"
-              ],
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "truncated": {
-            "type": "boolean"
-          },
-          "truncationReason": {
-            "type": "string"
-          },
-          "usedFallbackQuery": {
             "type": "string"
           }
         },
         "required": [
-          "page",
-          "sections",
-          "nbSections",
-          "complete",
-          "truncated"
+          "url",
+          "path",
+          "title",
+          "content"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -25503,84 +25453,32 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "equals": "https://developers.stellar.org{path}",
-            "field": "url_without_anchor",
-            "why": "URL is not a facet; the adapter queries with the derived title words (distinct disabled to get every section record) and keeps only records of the requested page, sorted by weight.position when retrieved."
-          },
-          "derivedQuery": "tokens of the path's last segment, hyphens split — e.g. 'storing data' from .../storing-data",
-          "fallback": "if the derived query returns no records for the page, retry with the last two path segments as the query; zero matches after that = path not in the index.",
-          "fixedParams": {
-            "attributesToRetrieve": [
-              "url",
-              "url_without_anchor",
-              "anchor",
-              "hierarchy",
-              "type",
-              "content"
-            ],
-            "distinct": 0,
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {}
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "page"
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Search Stellar docs about anchors and implementing SEP standards: what an anchor is (on/off-ramp connecting Stellar to banking rails and fiat), the Anchor Platform admin guide and SEP guides — hosted deposits and withdrawals (SEP-24 interactive flow), programmatic deposits and withdrawals (SEP-6), cross-border payments (SEP-31), web authentication (SEP-10), KYC customer info (SEP-12), quotes (SEP-38), the stellar.toml info file (SEP-1) — plus event handling/callbacks, and the Stellar Disbursement Platform (SDP) for bulk payouts and disbursements (admin guide, user interface). Covers /docs/platforms/anchor-platform, /docs/platforms/stellar-disbursement-platform and the anchors fundamentals page.\n\nReturns: { hits: Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "description": "Search Stellar docs about anchors and implementing SEP standards: what an anchor is (on/off-ramp connecting Stellar to banking rails and fiat), the Anchor Platform admin guide and SEP guides — hosted deposits and withdrawals (SEP-24 interactive flow), programmatic deposits and withdrawals (SEP-6), cross-border payments (SEP-31), web authentication (SEP-10), KYC customer info (SEP-12), quotes (SEP-38), the stellar.toml info file (SEP-1) — plus event handling/callbacks, and the Stellar Disbursement Platform (SDP) for bulk payouts and disbursements (admin guide, user interface). Covers /docs/platforms/anchor-platform, /docs/platforms/stellar-disbursement-platform and the anchors fundamentals page.\n\nReturns: { hits: Array of anchor/SEP hits: { url, path, title, section?, snippet, content? } }.",
       "id": "stellarDocs.search_anchor_sep_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -25644,77 +25542,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "clientFiltered": {
-            "description": "True when the operation kept only hits under its docs category.",
-            "type": "boolean"
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
           },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Index-wide match count before any category filter.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -25755,90 +25643,37 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "field": "url_without_anchor",
-            "prefixesAnyOf": [
-              "https://developers.stellar.org/docs/platforms",
-              "https://developers.stellar.org/docs/learn/fundamentals/anchors",
-              "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals"
-            ]
-          },
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            }
-          },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {
-            "query": "query"
-          }
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "search",
+          "include": [
+            "/docs/platforms",
+            "/docs/learn/fundamentals/anchors",
+            "/docs/learn/fundamentals/stellar-ecosystem-proposals"
+          ]
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: { hits: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: { hits: Array of asset/token hits: { url, path, title, section?, snippet, content? } }.",
       "id": "stellarDocs.search_asset_token_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -25882,77 +25717,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "clientFiltered": {
-            "description": "True when the operation kept only hits under its docs category.",
-            "type": "boolean"
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
           },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Index-wide match count before any category filter.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -25993,89 +25818,36 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "field": "url_without_anchor",
-            "prefixesAnyOf": [
-              "https://developers.stellar.org/docs/tokens",
-              "https://developers.stellar.org/docs/build/guides/tokens/"
-            ]
-          },
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            }
-          },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {
-            "query": "query"
-          }
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "search",
+          "include": [
+            "/docs/tokens",
+            "/docs/build/guides/tokens/"
+          ]
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Title-only search over Stellar developer docs page and section headings (hierarchy levels 1-3). The fastest way to find the one canonical docs page for a topic when you roughly know what it is called — e.g. 'State Archival', 'Stellar Consensus Protocol', 'How to Issue an Asset', 'Stellar Asset Contract', 'Migrate from Horizon to RPC', 'Anchor Platform', 'Stellar CLI'. Skips body text so results are page-level and precise instead of content-fuzzy; follow up with get_doc_page_sections or includeContent on search_docs to read the page.\n\nReturns: { hits: Array of hits (page/heading level): { url, url_without_anchor, anchor, breadcrumb, type, snippet? } } plus { nbHits }.",
+      "description": "Title-ranked search over Stellar developer docs pages: one hit per page, ranked by the page title and URL path. The fastest way to find the one canonical docs page for a topic when you roughly know what it is called — e.g. 'State Archival', 'Stellar Consensus Protocol', 'How to Issue an Asset', 'Stellar Asset Contract', 'Migrate from Horizon to RPC', 'Anchor Platform', 'Stellar CLI'. Returns one row per page so results are page-level and precise instead of content-fuzzy; follow up with get_doc_page or includeContent on search_docs to read the page.\n\nReturns: { hits: Array of hits (page/heading level): { url, path, title, section?, snippet } } plus { candidates }.",
       "id": "stellarDocs.search_doc_titles",
       "inputSchema": {
         "additionalProperties": false,
@@ -26107,70 +25879,59 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
+          "candidates": {
+            "description": "Sections the search service returned for the query. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
+          },
           "hits": {
-            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "description": "One hit per page; `data.hits`, not `data`, is the array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
                   "type": "string"
                 },
-                "breadcrumb": {
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
-                  "description": "Present when the matched record has body text.",
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`lvl1` to `lvl6` for a heading record; `content` for a body record matched through its headings.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
-          },
-          "nbHits": {
-            "description": "Total matches in the index for this query.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index query at the requested hitsPerPage. This operation takes no `page` argument, so only the first page is reachable.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: this operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -26201,80 +25962,41 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "conditionalParams": {
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
+        ],
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "conditional": {
             "includeMeetings=true": {
-              "facetFilters": null
+              "exclude": null
             }
           },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "restrictSearchableAttributes": [
-              "hierarchy.lvl1",
-              "hierarchy.lvl2",
-              "hierarchy.lvl3"
-            ]
-          },
-          "paramMap": {
-            "hitsPerPage": "hitsPerPage",
-            "query": "query"
-          }
+          "endpoint": "search",
+          "exclude": [
+            "/meetings/"
+          ],
+          "groupBy": "page"
         },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
-        ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, breadcrumb hierarchy (lvl0 > lvl1 > ...) and a highlighted content snippet. Zero hits = topic not in the docs corpus; nonzero hits still need judging by snippet.\n\nReturns: { hits: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet?, content? } } plus { nbHits, nbPages, page }.",
+      "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, page path, page title, section heading and a content snippet. A soft-empty result means no returned section contains a query term; returned hits still need judging by snippet.\n\nReturns: { hits: Array of hits: { url, path, title, section?, snippet, content? } } plus { candidates }.",
       "id": "stellarDocs.search_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -26292,17 +26014,11 @@
           },
           "includeMeetings": {
             "default": false,
-            "description": "Also search the /meetings meeting-notes slice (drops the docs-only facet filter).",
+            "description": "Also search the /meetings meeting-notes slice.",
             "type": "boolean"
           },
-          "page": {
-            "default": 0,
-            "description": "page * hitsPerPage beyond 1000 records is unreachable (paginationLimitedTo).",
-            "minimum": 0,
-            "type": "integer"
-          },
           "query": {
-            "description": "Keyword query. advancedSyntax is on: quoted \"exact phrases\" and -exclusions work directly. The final word is prefix-matched (queryType prefixLast).",
+            "description": "Keyword query or natural-language question.",
             "type": "string"
           }
         },
@@ -26318,73 +26034,63 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
+          "candidates": {
+            "description": "Sections the search service returned for the query. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
+          },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
-          },
-          "nbHits": {
-            "description": "Total matches in the index for this query.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages available at the requested hitsPerPage.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "The page returned (the `page` argument).",
-            "minimum": 0,
-            "type": "integer"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -26423,92 +26129,46 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            },
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
+        ],
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "conditional": {
             "includeMeetings=true": {
-              "facetFilters": null
+              "exclude": null
             }
           },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ]
-          },
-          "paramMap": {
-            "hitsPerPage": "hitsPerPage",
-            "page": "page",
-            "query": "query"
-          }
+          "endpoint": "search",
+          "exclude": [
+            "/meetings/"
+          ]
         },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
-        ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Keyword search restricted to ONE top-level category of the Stellar developer docs. Categories: build (smart contracts, guides, apps/dapps, security, agentic payments), data (Stellar RPC, Horizon, Hubble analytics, indexers/Galexie, oracles), tools (Stellar CLI, Lab, Quickstart, SDKs, developer tools), learn (protocol fundamentals: ledgers, accounts, transactions, operations, fees, consensus, lumens XLM, anchors, SEPs, migrate from EVM), platforms (Anchor Platform, Stellar Disbursement Platform), validators (running a stellar-core validator node), tokens (issuing assets, asset anatomy, access control, Stellar Asset Contract, token interface), networks (resource limits and fees), and meetings (protocol and developer meeting notes). Use when a question clearly belongs to one area and general search returns cross-area noise.\n\nReturns: { hits: Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } } plus counts { nbHits }.",
+      "description": "Keyword search restricted to ONE top-level category of the Stellar developer docs. Categories: build (smart contracts, guides, apps/dapps, security, agentic payments), data (Stellar RPC, Horizon, Hubble analytics, indexers/Galexie, oracles), tools (Stellar CLI, Lab, Quickstart, SDKs, developer tools), learn (protocol fundamentals: ledgers, accounts, transactions, operations, fees, consensus, lumens XLM, anchors, SEPs, migrate from EVM), platforms (Anchor Platform, Stellar Disbursement Platform), validators (running a stellar-core validator node), tokens (issuing assets, asset anatomy, access control, Stellar Asset Contract, token interface), networks (resource limits and fees), and meetings (protocol and developer meeting notes). Use when a question clearly belongs to one area and general search returns cross-area noise.\n\nReturns: { hits: Array of hits limited to the category: { url, path, title, section?, snippet, content? } } plus { candidates, pathFiltered }.",
       "id": "stellarDocs.search_docs_in_category",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
           "category": {
-            "description": "Top-level docs area; maps to the /docs/<category> URL prefix (meetings → the docusaurus_tag blog slice).",
+            "description": "Top-level docs area; maps to the /docs/<category> URL prefix (meetings → the /meetings slice).",
             "enum": [
               "build",
               "learn",
@@ -26548,77 +26208,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "clientFiltered": {
-            "description": "True when the operation kept only hits under its docs category. Absent for category=meetings, which filters in the index.",
-            "type": "boolean"
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
           },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Index-wide match count before any category filter.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -26659,98 +26309,43 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "field": "url_without_anchor",
-            "prefixesAnyOf": [
-              "https://developers.stellar.org/docs/{category}/",
-              "https://developers.stellar.org/docs/{category}"
-            ],
-            "why": "hierarchy.lvl0 is not facetable and URL is not a facet — the adapter over-fetches (hitsPerPage 100) and keeps hits whose URL starts with the category prefix, then truncates to the requested hitsPerPage."
-          },
-          "conditionalParams": {
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
+        ],
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "conditional": {
             "category=meetings": {
-              "clientFilter": null,
-              "facetFilters": [
-                [
-                  "docusaurus_tag:-docs-default-current"
-                ]
-              ]
-            },
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
+              "include": [
+                "/meetings/"
               ]
             }
           },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {
-            "query": "query"
-          }
+          "endpoint": "search",
+          "include": [
+            "/docs/{category}/",
+            "/docs/{category}"
+          ]
         },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
-        ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Search the Stellar protocol & developers meeting notes published at developers.stellar.org/meetings (2024–2026): CAP (Core Advancement Proposal) discussions, protocol upgrade votes and release planning for stellar-core, SEP proposals and ecosystem standards debates, validator coordination. This is the non-docs slice of the index, selected server-side via the docusaurus_tag facet. Useful for history questions — when or why something was decided, which protocol version introduced a change — that regular docs pages do not answer.\n\nReturns: { hits: Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "description": "Search the Stellar protocol & developers meeting notes published at developers.stellar.org/meetings (2024–2026): CAP (Core Advancement Proposal) discussions, protocol upgrade votes and release planning for stellar-core, SEP proposals and ecosystem standards debates, validator coordination. This is the non-docs slice of the docs site, selected by the /meetings URL path. Useful for history questions — when or why something was decided, which protocol version introduced a change — that regular docs pages do not answer.\n\nReturns: { hits: Array of meeting-note hits: { url, path, title, section?, snippet, content? } }.",
       "id": "stellarDocs.search_meeting_notes",
       "inputSchema": {
         "additionalProperties": false,
@@ -26779,73 +26374,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
+          },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Total matches in the index for this query.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index query at the requested hitsPerPage. This operation takes no `page` argument, so only the first page is reachable.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: this operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -26886,83 +26475,35 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            }
-          },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:-docs-default-current"
-              ]
-            ]
-          },
-          "note": "facet negation verified: every hit is under /meetings.",
-          "paramMap": {
-            "hitsPerPage": "hitsPerPage",
-            "query": "query"
-          }
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "search",
+          "include": [
+            "/meetings/"
+          ]
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Search Stellar docs explaining core protocol concepts and network fundamentals: ledgers, accounts (balances, base reserve, sequence numbers, signers, thresholds, multisig), transactions and operations (every classic operation type, path payments, claimable balances, sponsored reserves), fees, resource limits and metering, lumens (XLM), the Stellar Consensus Protocol (SCP), Stellar data structures and the XDR data format, liquidity on Stellar (SDEX order books vs AMM liquidity pools), what anchors are, the Stellar Ecosystem Proposals (SEPs) overview, the Stellar stack (stellar-core, Horizon, Stellar RPC and how protocol versions relate), networks (mainnet/pubnet, testnet, futurenet) and network resource limits, migrating from EVM chains like Ethereum, plus interactive learning and the glossary. Covers /docs/learn and /docs/networks.\n\nReturns: { hits: Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "description": "Search Stellar docs explaining core protocol concepts and network fundamentals: ledgers, accounts (balances, base reserve, sequence numbers, signers, thresholds, multisig), transactions and operations (every classic operation type, path payments, claimable balances, sponsored reserves), fees, resource limits and metering, lumens (XLM), the Stellar Consensus Protocol (SCP), Stellar data structures and the XDR data format, liquidity on Stellar (SDEX order books vs AMM liquidity pools), what anchors are, the Stellar Ecosystem Proposals (SEPs) overview, the Stellar stack (stellar-core, Horizon, Stellar RPC and how protocol versions relate), networks (mainnet/pubnet, testnet, futurenet) and network resource limits, migrating from EVM chains like Ethereum, plus interactive learning and the glossary. Covers /docs/learn and /docs/networks.\n\nReturns: { hits: Array of fundamentals hits: { url, path, title, section?, snippet, content? } }.",
       "id": "stellarDocs.search_protocol_concepts_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -27011,7 +26552,6 @@
         "hardhat",
         "solidity",
         "support",
-        "via",
         "solang",
         "audits",
         "poseidon",
@@ -27023,77 +26563,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "clientFiltered": {
-            "description": "True when the operation kept only hits under its docs category.",
-            "type": "boolean"
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
           },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Index-wide match count before any category filter.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -27134,89 +26664,36 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "field": "url_without_anchor",
-            "prefixesAnyOf": [
-              "https://developers.stellar.org/docs/learn/",
-              "https://developers.stellar.org/docs/networks"
-            ]
-          },
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            }
-          },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {
-            "query": "query"
-          }
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "search",
+          "include": [
+            "/docs/learn/",
+            "/docs/networks"
+          ]
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc. Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.\n\nReturns: { hits: Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc. Includes the per-RPC-method and per-Horizon-endpoint API reference pages as well as structure/errors/admin pages and method guides.\n\nReturns: { hits: Array of data/API hits: { url, path, title, section?, snippet, content? } }.",
       "id": "stellarDocs.search_rpc_horizon_data_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -27325,8 +26802,7 @@
         "changes",
         "within",
         "range",
-        "count",
-        "each",
+        "type",
         "archive",
         "successful",
         "processors",
@@ -27339,77 +26815,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "clientFiltered": {
-            "description": "True when the operation kept only hits under its docs category.",
-            "type": "boolean"
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
           },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Index-wide match count before any category filter.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -27450,89 +26916,36 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "field": "url_without_anchor",
-            "prefixesAnyOf": [
-              "https://developers.stellar.org/docs/data",
-              "https://developers.stellar.org/docs/build/guides/rpc/"
-            ]
-          },
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            }
-          },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {
-            "query": "query"
-          }
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "search",
+          "include": [
+            "/docs/data",
+            "/docs/build/guides/rpc/"
+          ]
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.\n\nReturns: { hits: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.\n\nReturns: { hits: Array of tools/SDK hits: { url, path, title, section?, snippet, content? } }.",
       "id": "stellarDocs.search_sdk_cli_tools_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -27578,6 +26991,7 @@
         "more",
         "analytics",
         "platforms",
+        "anchor",
         "asset",
         "sandbox",
         "block",
@@ -27627,77 +27041,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "clientFiltered": {
-            "description": "True when the operation kept only hits under its docs category.",
-            "type": "boolean"
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
           },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Index-wide match count before any category filter.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -27728,89 +27132,36 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "field": "url_without_anchor",
-            "prefixesAnyOf": [
-              "https://developers.stellar.org/docs/tools",
-              "https://developers.stellar.org/docs/tools/cli/agent-cli"
-            ]
-          },
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            }
-          },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {
-            "query": "query"
-          }
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "search",
+          "include": [
+            "/docs/tools",
+            "/docs/tools/cli/agent-cli"
+          ]
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data, deploy to testnet), the example-contract library, contract storage (persistent vs temporary vs instance, TTL, state archival, restoring archived entries), authorization and custom accounts (__check_auth, contract accounts), cross-contract calls, events (emit and read back), errors and debugging, testing guides (unit tests, mutation, fuzzing, ledger snapshots), conventions (no Rust std, no floating point, wasm build), transaction simulation (simulateTransaction), fees and metering, deploying and invoking with the Stellar CLI, and contract-development fundamentals (environment, host functions, versioning across protocol releases). Covers /docs/build/smart-contracts, /docs/build/guides and /docs/learn/fundamentals/contract-development.\n\nReturns: { hits: Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "description": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data, deploy to testnet), the example-contract library, contract storage (persistent vs temporary vs instance, TTL, state archival, restoring archived entries), authorization and custom accounts (__check_auth, contract accounts), cross-contract calls, events (emit and read back), errors and debugging, testing guides (unit tests, mutation, fuzzing, ledger snapshots), conventions (no Rust std, no floating point, wasm build), transaction simulation (simulateTransaction), fees and metering, deploying and invoking with the Stellar CLI, and contract-development fundamentals (environment, host functions, versioning across protocol releases). Covers /docs/build/smart-contracts, /docs/build/guides and /docs/learn/fundamentals/contract-development.\n\nReturns: { hits: Array of contract-development hits: { url, path, title, section?, snippet, content? } }.",
       "id": "stellarDocs.search_soroban_contract_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -27872,6 +27223,7 @@
         "organize",
         "error",
         "enum",
+        "type",
         "extending",
         "deployed",
         "upgrading",
@@ -27983,77 +27335,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "clientFiltered": {
-            "description": "True when the operation kept only hits under its docs category.",
-            "type": "boolean"
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
           },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Index-wide match count before any category filter.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -28084,91 +27426,38 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "field": "url_without_anchor",
-            "prefixesAnyOf": [
-              "https://developers.stellar.org/docs/build/smart-contracts",
-              "https://developers.stellar.org/docs/build/guides/",
-              "https://developers.stellar.org/docs/learn/fundamentals/contract-development/",
-              "https://developers.stellar.org/docs/tools/cli/"
-            ]
-          },
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            }
-          },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {
-            "query": "query"
-          }
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "search",
+          "include": [
+            "/docs/build/smart-contracts",
+            "/docs/build/guides/",
+            "/docs/learn/fundamentals/contract-development/",
+            "/docs/tools/cli/"
+          ]
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     },
     {
-      "description": "Search Stellar docs about building applications, wallets and dapps: the Build a Wallet with the Wallet SDK tutorial series (including anchor SEP-24 deposit/withdrawal integration), Build a Payment App with the JS SDK tutorial, the passkey-powered guestbook dapp (smart wallets, WebAuthn passkeys, secp256r1 signature verification), dapp frontend guide and dapp development guides (initialization, state archival handling in dapps, working with deployed contracts), Freighter browser-extension wallet integration guides, the Swift payment app, payment tracking with the ingest SDK, ZK (zero-knowledge) apps, privacy considerations and application design considerations. Covers /docs/build/apps, /docs/build/guides/dapps and /docs/build/guides/freighter.\n\nReturns: { hits: Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "description": "Search Stellar docs about building applications, wallets and dapps: the Build a Wallet with the Wallet SDK tutorial series (including anchor SEP-24 deposit/withdrawal integration), Build a Payment App with the JS SDK tutorial, the passkey-powered guestbook dapp (smart wallets, WebAuthn passkeys, secp256r1 signature verification), dapp frontend guide and dapp development guides (initialization, state archival handling in dapps, working with deployed contracts), Freighter browser-extension wallet integration guides, the Swift payment app, payment tracking with the ingest SDK, ZK (zero-knowledge) apps, privacy considerations and application design considerations. Covers /docs/build/apps, /docs/build/guides/dapps and /docs/build/guides/freighter.\n\nReturns: { hits: Array of app/wallet/dapp hits: { url, path, title, section?, snippet, content? } }.",
       "id": "stellarDocs.search_wallet_dapp_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -28259,77 +27548,67 @@
       "outputSchema": {
         "additionalProperties": false,
         "properties": {
-          "clientFiltered": {
-            "description": "True when the operation kept only hits under its docs category.",
-            "type": "boolean"
+          "candidates": {
+            "description": "Sections the search service returned before this operation kept only its own paths. It is a window size, not a corpus count.",
+            "minimum": 0,
+            "type": "integer"
           },
           "hits": {
             "description": "The hits live under `data.hits`; `data` itself is not an array.",
             "items": {
               "additionalProperties": false,
               "properties": {
-                "anchor": {
-                  "type": "string"
-                },
-                "breadcrumb": {
-                  "type": "string"
-                },
                 "content": {
-                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "description": "Present only with includeContent: true. The whole matched section as Markdown; it can be several KB.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative page path, e.g. /docs/tokens/how-to-issue-an-asset. Pass it to get_doc_page to read the page.",
+                  "type": "string"
+                },
+                "section": {
+                  "description": "Heading of the matched section, when the section starts with one.",
                   "type": "string"
                 },
                 "snippet": {
+                  "description": "Up to about 300 characters of the section, centered on the first query term found.",
                   "type": "string"
                 },
-                "type": {
-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                "title": {
+                  "description": "Page title.",
                   "type": "string"
                 },
                 "url": {
-                  "format": "uri",
-                  "type": "string"
-                },
-                "url_without_anchor": {
+                  "description": "Page URL on developers.stellar.org. Sections have no anchor.",
                   "format": "uri",
                   "type": "string"
                 }
               },
               "required": [
                 "url",
-                "url_without_anchor",
-                "type",
-                "breadcrumb"
+                "path",
+                "title",
+                "snippet"
               ],
               "type": "object"
             },
             "type": "array"
           },
-          "nbHits": {
-            "description": "Index-wide match count before any category filter.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "nbPages": {
-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
-            "minimum": 0,
-            "type": "integer"
-          },
-          "page": {
-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
-            "minimum": 0,
-            "type": "integer"
+          "pathFiltered": {
+            "description": "True when the operation kept only hits under its own docs paths.",
+            "type": "boolean"
           }
         },
         "required": [
           "hits",
-          "nbHits"
+          "candidates"
         ],
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-02T14:03:39Z",
-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+        "fetchedAt": "2026-11-02T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against the Mintlify API — not a fetched descriptor",
+        "source": "https://developers.stellar.org/llms.txt",
         "spec": "specs/stellar-docs.json"
       },
       "retrievalProfile": {
@@ -28360,86 +27639,33 @@
       },
       "service": "stellarDocs",
       "transport": {
-        "algolia": {
-          "clientFilter": {
-            "field": "url_without_anchor",
-            "prefixesAnyOf": [
-              "https://developers.stellar.org/docs/build/apps",
-              "https://developers.stellar.org/docs/build/guides/dapps",
-              "https://developers.stellar.org/docs/build/guides/freighter"
-            ]
-          },
-          "conditionalParams": {
-            "includeContent=true": {
-              "attributesToRetrieve": [
-                "url",
-                "url_without_anchor",
-                "anchor",
-                "hierarchy",
-                "type",
-                "content"
-              ]
-            }
-          },
-          "fixedParams": {
-            "facetFilters": [
-              [
-                "docusaurus_tag:docs-default-current"
-              ]
-            ],
-            "hitsPerPage": 100
-          },
-          "paramMap": {
-            "query": "query"
-          }
-        },
-        "apiKeyEnv": "ALGOLIA_API_KEY_DOCS",
-        "applicationIdEnv": "ALGOLIA_APPLICATION_ID_DOCS",
-        "baseParams": {
-          "analytics": false,
-          "attributesToRetrieve": [
-            "url",
-            "url_without_anchor",
-            "anchor",
-            "hierarchy",
-            "type"
-          ],
-          "attributesToSnippet": [
-            "content:20"
-          ],
-          "highlightPostTag": "**",
-          "highlightPreTag": "**"
-        },
-        "constraints": {
-          "advancedSyntax": "quoted \"exact phrases\" and -exclusions work directly in `query`; queryType prefixLast matches the final word as a prefix.",
-          "apiReferencePagesNotIndexed": "Auto-generated per-method RPC reference pages (e.g. /docs/data/apis/rpc/api-reference/methods/getLedgerEntries) and per-endpoint Horizon reference pages are NOT in the index. Only hand-written structure/errors/admin-guide pages are. Method-specific how-tos live under /docs/build/guides/rpc and /docs/build/guides/transactions.",
-          "distinct": "distinct:true on url by default — hits are deduped per URL+anchor; nbHits counts distinct groups. distinct:0 reveals raw per-section records.",
-          "facetableAttributes": [
-            "type",
-            "lang",
-            "language",
-            "version",
-            "docusaurus_tag"
-          ],
-          "hierarchyLvl0NotFacetable": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix (see per-op `clientFilter`).",
-          "paginationLimitedTo": 1000,
-          "urlNotFilterable": "url / url_without_anchor are not facets; any URL-scoped operation over-fetches and filters client-side.",
-          "usefulFacets": [
-            "type",
-            "docusaurus_tag"
-          ],
-          "zeroHitSemantics": "removeWordsIfNoResults: allOptional — zero hits means definitely not in corpus, but nonzero hits are not necessarily a good match; judge the top hit's snippet/hierarchy."
-        },
-        "endpoint": "POST /1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
-        "hosts": [
-          "{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-1.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-2.algolianet.com",
-          "{ALGOLIA_APPLICATION_ID_DOCS}-3.algolianet.com"
+        "apiBase": "https://api.mintlify.com",
+        "apiKeyEnv": "MINTLIFY_ASSISTANT_API_KEY",
+        "attemptTimeoutsMs": [
+          8000,
+          12000
         ],
-        "index": "crawler_Stellar Docs - Docusaurus",
-        "retry": "network/5xx only, escalating timeout, fallback hosts in order; never retry 4xx; treat 429 as back-off, not host-retry",
-        "type": "algolia"
+        "candidateWindow": 50,
+        "constraints": {
+          "alwaysReturns": "The semantic search returns its nearest sections even for nonsense queries. The adapter reports soft-empty only when no kept section contains a query term.",
+          "candidateWindow": "pageSize is at most 50, so path-filtered operations see at most 50 candidates.",
+          "noFacets": "filter.version, filter.language and filter.tag had no effect (the site defines none), and scoreThreshold did not change any result set (measured 2026-11-02). Category and meetings scoping happens adapter-side by path prefix.",
+          "pagePaths": "The page endpoint takes the path without a leading slash and returns 404 { message: \"Page not found\" } for an unknown path.",
+          "resultShape": "Search returns an array of { path, content, metadata: { title } }: one entry per section chunk, no score, no anchor, no total count. A page can appear more than once."
+        },
+        "mintlify": {
+          "endpoint": "search",
+          "include": [
+            "/docs/build/apps",
+            "/docs/build/guides/dapps",
+            "/docs/build/guides/freighter"
+          ]
+        },
+        "pagePath": "/discovery/v1/page/stellardevelopmentfoundation",
+        "retry": "one host; retry once on network error, timeout, or HTTP 5xx; never retry 4xx; 429 returns immediately",
+        "searchPath": "/discovery/v1/search/stellardevelopmentfoundation",
+        "siteOrigin": "https://developers.stellar.org",
+        "type": "mintlify"
       }
     }
   ],

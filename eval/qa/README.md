@@ -103,7 +103,9 @@ REMOTE_IDENTITY_SHA256=$(env -i PATH="$PATH" "$REMOTE_IDENTITY_PROBE" --stable-s
 
 This command makes live, read-only requests without model calls.
 It captures three vectors, waits five minutes between captures, and requires all hashes to match.
-The probe covers Scout OpenAPI, Lumenloop's public inventory, and Stellar Docs settings and title records.
+The probe covers Scout OpenAPI, Lumenloop's public inventory, and the Stellar Docs Mintlify files.
+For Stellar Docs, it records the SHA-256 and byte length of `llms.txt` and `llms-full.txt`.
+`llms.txt` identifies the page index. `llms-full.txt` identifies the published page content.
 It receives only `PATH` and records no repository credentials.
 [probe-remote-identities.mjs](probe-remote-identities.mjs) defines canonicalization, retry limits, and timeout bounds.
 
@@ -116,7 +118,9 @@ A reuse cannot see an identity change that starts and ends between two fresh cap
 Each check and failed attempt records a wall-clock time for reports and `elapsedMs`, the monotonic time since the guard started.
 The paired validator binds each before and after pair to the rows' `attempts.agent[]` in execution order.
 It orders checks and failed attempts by `elapsedMs`. Each wall-clock time must stay within 300,000 ms of that elapsed time.
-The probe makes two Algolia calls: Stellar Docs settings, and one multi-query request for title pages 0 to 9.
+The probe reads the two Stellar Docs files without a key and makes no Mintlify API call.
+Thus it does not use the 10,000 requests per hour that the answering server shares on the Mintlify organization key.
+The identity does not cover Mintlify search ranking. A ranking change with no content change is not detected.
 When the probe is unavailable, the guard repeats that one capture after 30 s, 60 s, and 120 s.
 `meta.remoteIdentityGuard.failedCaptureAttempts[]` records each failed attempt with its kind and sanitized probe reason.
 The reason is the last `remote-identity-probe: ` stderr line, kept only when it matches a known probe message form.
@@ -621,7 +625,7 @@ npm run eval:qa:paired:collect -- \
 ```
 
 The capacity command makes live public requests without model calls or a local server.
-Its artifact requires two overlapping captures and 14 successful responses: Scout 2, Lumenloop 6, and Stellar Docs 6.
+Its artifact requires two overlapping captures and 12 successful responses: Scout 2, Lumenloop 6, and Stellar Docs 4.
 It requires matching vectors, actual request concurrency, and no errors, retries, or `Retry-After` headers.
 Each capture and the complete check must finish within 120,000 ms.
 The artifact remains valid through exactly 86,400,000 ms after completion. Future timestamps fail.

@@ -131,7 +131,7 @@ describe("validateArgs — the manifest schema dialect", () => {
 });
 
 describe("redaction", () => {
-  const secrets = secretsFromEnv({ LUMENLOOP_API_KEY: "llmcp_secret_value_123", ALGOLIA_API_KEY_DOCS: "short" });
+  const secrets = secretsFromEnv({ LUMENLOOP_API_KEY: "llmcp_secret_value_123", ALGOLIA_API_KEY_SITE: "short" });
 
   it("collects every secret-shaped binding declared by the CI type-generation stub", () => {
     const workflow = readFileSync(join(ROOT, ".github", "workflows", "ci.yml"), "utf8");
@@ -144,7 +144,6 @@ describe("redaction", () => {
     const NOT_SECRETS = new Set([
       "WORKOS_CLIENT_ID",
       "DEV_ALLOW_UNAUTHENTICATED",
-      "ALGOLIA_APPLICATION_ID_DOCS",
       "ALGOLIA_APPLICATION_ID_SITE",
       "DEMO_AI_GATEWAY_ID",
       "EXECUTE_MODEL_BOUNDARY_MAX_TOKENS",
@@ -179,15 +178,15 @@ describe("redaction", () => {
   it("collects every current host secret env name", () => {
     const collected = secretsFromEnv({
       LUMENLOOP_API_KEY: "lumen_key_abcdefgh",
-      ALGOLIA_API_KEY_DOCS: "algolia_key_abcdefgh",
       ALGOLIA_API_KEY_SITE: "algolia_site_key_abcdefgh",
+      MINTLIFY_ASSISTANT_API_KEY: "mint_dsc_key_abcdefgh",
       MCP_SERVER_SECRET: "server_secret_abcdefgh",
       WORKOS_API_KEY: "workos_key_abcdefgh"
     });
     expect(collected).toEqual([
       "lumen_key_abcdefgh",
-      "algolia_key_abcdefgh",
       "algolia_site_key_abcdefgh",
+      "mint_dsc_key_abcdefgh",
       "server_secret_abcdefgh",
       "workos_key_abcdefgh"
     ]);
@@ -203,9 +202,9 @@ describe("redaction", () => {
     expect(clean.note).toContain("[REDACTED]");
   });
 
-  it("scrubs both property-specific Algolia API keys", () => {
+  it("scrubs both the docs and the site search keys", () => {
     const propertySecrets = secretsFromEnv({
-      ALGOLIA_API_KEY_DOCS: "docs_property_key_abcdefgh",
+      MINTLIFY_ASSISTANT_API_KEY: "docs_property_key_abcdefgh",
       ALGOLIA_API_KEY_SITE: "site_property_key_abcdefgh"
     });
     const clean = redactSecrets(

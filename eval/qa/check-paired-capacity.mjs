@@ -6,7 +6,7 @@ import { remoteIdentityVectorSha256 } from "./remote-identity-guard.mjs";
 
 const SERVICES = ["scout", "lumenloop", "stellarDocs"];
 
-export const PAIRED_CAPACITY_SCHEMA = "qa-paired-capacity-check-v3";
+export const PAIRED_CAPACITY_SCHEMA = "qa-paired-capacity-check-v4";
 export const PAIRED_CAPACITY_FRESHNESS_MS = 24 * 60 * 60 * 1_000;
 export const PAIRED_CAPACITY_CONTRACT = Object.freeze({
   schedule: Object.freeze({
@@ -36,7 +36,7 @@ export function classifyService(url) {
   const hostname = new URL(url).hostname;
   if (hostname === "stellarlight.xyz") return "scout";
   if (hostname === "api.lumenloop.com") return "lumenloop";
-  if (hostname.endsWith("-dsn.algolia.net")) return "stellarDocs";
+  if (hostname === "developers.stellar.org") return "stellarDocs";
   throw new Error(`unrecognized public capacity-check host: ${hostname}`);
 }
 
@@ -310,7 +310,7 @@ function assert(condition, message) {
 export function selfTest() {
   assert(classifyService("https://stellarlight.xyz/api/openapi.json") === "scout", "Scout classification");
   assert(classifyService("https://api.lumenloop.com/v1/tools") === "lumenloop", "Lumenloop classification");
-  assert(classifyService("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x") === "stellarDocs", "Docs classification");
+  assert(classifyService("https://developers.stellar.org/llms.txt") === "stellarDocs", "Docs classification");
   assert(JSON.stringify(summarizeLatency([5, 10, 15, 20])) === JSON.stringify({
     count: 4, minMs: 5, p50Ms: 10, p95Ms: 20, maxMs: 20, meanMs: 13
   }), "latency summary");

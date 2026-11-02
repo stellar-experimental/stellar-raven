@@ -12,7 +12,7 @@
   // global_fetch_strictly_public: all global fetches resolve as public
   // internet (SSRF-safe), which lets workers-oauth-provider enable CIMD —
   // URL-based client_ids so MCP clients can skip dynamic registration. Safe
-  // here: every host-side fetch (Lumenloop, Scout, Algolia, WorkOS) is a
+  // here: every host-side fetch (Lumenloop, Scout, Mintlify, WorkOS) is a
   // public hostname and the execute sandbox has no network at all.
   "compatibility_flags": [
     "nodejs_compat",
@@ -121,7 +121,7 @@
   // output; without maps, errors point at minified positions).
   "upload_source_maps": true
   // NOTE: stateless server (ARCHITECTURE.md) — deliberately no Durable Object
-  // bindings/migrations. Secrets (LUMENLOOP_API_KEY, ALGOLIA_{APPLICATION_ID,API_KEY}_{DOCS,SITE},
+  // bindings/migrations. Secrets (LUMENLOOP_API_KEY, MINTLIFY_ASSISTANT_API_KEY, ALGOLIA_{APPLICATION_ID,API_KEY}_SITE,
   // WORKOS_CLIENT_ID, WORKOS_API_KEY,
   // MCP_SERVER_SECRET) go via `wrangler secret put` in prod and `.dev.vars`
   // locally. DEV_ALLOW_UNAUTHENTICATED lives ONLY in `.dev.vars` (auth

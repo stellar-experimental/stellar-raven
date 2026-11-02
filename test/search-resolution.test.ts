@@ -37,8 +37,7 @@ type McpSearchResult = {
 const catalog = getCatalog();
 const env = {
   LUMENLOOP_API_KEY: "test-key-not-real-1234",
-  ALGOLIA_APPLICATION_ID_DOCS: "TESTAPPID",
-  ALGOLIA_API_KEY_DOCS: "test"
+  MINTLIFY_ASSISTANT_API_KEY: "test"
 };
 
 let client: Client;

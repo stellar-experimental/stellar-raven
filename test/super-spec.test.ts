@@ -45,7 +45,7 @@ type Operation = {
   >;
   "x-service": string;
   "x-execute"?: string;
-  "x-algolia"?: unknown;
+  "x-mintlify"?: { endpoint?: string };
   "x-skill-index"?: Array<{ id: string; source: string; description: string; sections: string[] }>;
   "x-runnable-index"?: Array<{
     id: string;
@@ -442,27 +442,29 @@ describe("runnable skills — /skills/run_skill (design §5)", () => {
 });
 
 describe("service specifics", () => {
-  it("stellarDocs ops keep the algolia mapping as a vendor extension", () => {
+  it("stellarDocs ops keep the mintlify mapping as a vendor extension", () => {
     const docsOps = allOps().filter(([, , op]) => op["x-service"] === "stellarDocs");
+    expect(docsOps).toHaveLength(12);
     for (const [, , op] of docsOps) {
-      expect(op["x-algolia"], op.operationId).toBeDefined();
+      expect(op["x-mintlify"], op.operationId).toBeDefined();
+      expect(["search", "page"], op.operationId).toContain(op["x-mintlify"]!.endpoint);
+      expect(op, op.operationId).not.toHaveProperty("x-algolia");
     }
-    const backend = (spec["x-services"].stellarDocs as { backend: { type: string } }).backend;
-    expect(backend.type).toBe("algolia");
+    const docsService = spec["x-services"].stellarDocs as { backend: { type: string }; taxonomy?: unknown };
+    expect(docsService.backend.type).toBe("mintlify");
+    expect(docsService).not.toHaveProperty("taxonomy");
   });
 
-  it("carries the authored Docs page-sections output schema", () => {
-    const op = spec.paths["/stellarDocs/get_doc_page_sections"]!.post!;
+  it("carries the authored Docs page output schema", () => {
+    expect(spec.paths["/stellarDocs/get_doc_page_sections"]).toBeUndefined();
+    const op = spec.paths["/stellarDocs/get_doc_page"]!.post!;
+    expect(op["x-mintlify"]).toEqual({ endpoint: "page" });
     const schema = op.responses!["200"]!.content!["application/json"]!.schema as {
       required: string[];
-      properties: {
-        sections: { items: { required: string[]; properties: Record<string, unknown> } };
-      };
+      properties: Record<string, unknown>;
     };
-    expect(schema.required).toEqual(["page", "sections", "nbSections", "complete", "truncated"]);
-    expect(schema.properties.sections.items.required).not.toContain("content");
-    expect(schema.properties.sections.items.properties).toHaveProperty("content");
-    expect(schema.properties.sections.items.properties).toHaveProperty("snippet");
+    expect(schema.required).toEqual(["url", "path", "title", "content"]);
+    expect(Object.keys(schema.properties).sort()).toEqual(["content", "path", "title", "url"]);
   });
 
   it("carries the current scout.getRfps contract", () => {

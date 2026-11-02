@@ -1,5 +1,5 @@
 {
-  "$comment": "Acceptable service-sets for the multi-tool plan eval (eval/plan/grade-plan.mjs). Ordered rules, evaluated top-to-bottom, FIRST MATCH WINS; `overrides` (by case id) beat all rules. Every set is derived from documented service coverage — research/services/lumenloop.md, research/services/stellar-light.md, research/services/stellar-docs-algolia.md, catalog/manifest.json — NEVER from what agents happened to pick in past runs (anti-overfitting, Solo todo 799). Schema: see eval/plan/README.md. plan.required = services a good plan MUST all touch; plan.anyOf = at-least-one-of set (for legitimate overlap where required can't express OR); plan.acceptable = the full on-plan set (superset of required+anyOf); progressionExpected = the question class demands a broad→detail call pair.",
+  "$comment": "Acceptable service-sets for the multi-tool plan eval (eval/plan/grade-plan.mjs). Ordered rules, evaluated top-to-bottom, FIRST MATCH WINS; `overrides` (by case id) beat all rules. Every set is derived from documented service coverage — research/services/lumenloop.md, research/services/stellar-light.md, research/services/stellar-docs-mintlify.md, catalog/manifest.json — NEVER from what agents happened to pick in past runs (anti-overfitting, Solo todo 799). Schema: see eval/plan/README.md. plan.required = services a good plan MUST all touch; plan.anyOf = at-least-one-of set (for legitimate overlap where required can't express OR); plan.acceptable = the full on-plan set (superset of required+anyOf); progressionExpected = the question class demands a broad→detail call pair.",
   "version": 1,
   "services": ["lumenloop", "scout", "stellarDocs", "skills"],
   "overrides": {
@@ -11,7 +11,7 @@
       "progressionExpected": true
     },
     "q-ti-video-tutorials": {
-      "comment": "Video/YouTube tutorial discovery — the docs Algolia index covers developers.stellar.org pages, not videos (stellar-docs-algolia.md); AV content + transcripts live in lumenloop (lumenloop.md overview). Category rule (tooling-infra → docs/skills) is wrong here.",
+      "comment": "Video/YouTube tutorial discovery — the Mintlify docs backend covers developers.stellar.org pages, not videos (stellar-docs-mintlify.md); AV content + transcripts live in lumenloop (lumenloop.md overview). Category rule (tooling-infra → docs/skills) is wrong here.",
       "required": [],
       "anyOf": ["lumenloop"],
       "acceptable": ["lumenloop", "scout", "stellarDocs"],
@@ -61,7 +61,7 @@
     },
     {
       "id": "protocol-core",
-      "why": "Protocol/consensus/core questions are answered by developers.stellar.org docs — the Algolia index (stellar-docs-algolia.md: docs + blog + meeting notes; stellarDocs.search_protocol_concepts_docs). scout's research corpus also carries SEPs/papers/dev-docs (stellar-light.md /api/research sources) and the stellar-dev.standards skill covers SEPs/CAPs (manifest). Algolia records ARE page sections with content, so a broad search alone usually suffices — no progression demanded.",
+      "why": "Protocol/consensus/core questions are answered by developers.stellar.org docs — the Mintlify docs backend (stellar-docs-mintlify.md: docs pages + meeting notes; stellarDocs.search_protocol_concepts_docs). scout's research corpus also carries SEPs/papers/dev-docs (stellar-light.md /api/research sources) and the stellar-dev.standards skill covers SEPs/CAPs (manifest). Mintlify search results carry page content, so a broad search alone usually suffices — no progression demanded.",
       "match": { "category": "protocol-core" },
       "plan": {
         "required": ["stellarDocs"],
@@ -83,7 +83,7 @@
     },
     {
       "id": "soroban",
-      "why": "Soroban how-to/code questions: docs (stellar-docs-algolia.md; stellarDocs.search_soroban_contract_docs, sdk/cli category) OR the bundled skills (manifest: skills.stellar-dev.smart-contracts, skills.openzeppelin-stellar.*) — either is a legitimate primary. scout repos/explainRepo acceptable for example code (stellar-light.md). Docs sections carry content directly — no progression demanded.",
+      "why": "Soroban how-to/code questions: docs (stellar-docs-mintlify.md; stellarDocs.search_soroban_contract_docs, sdk/cli category) OR the bundled skills (manifest: skills.stellar-dev.smart-contracts, skills.openzeppelin-stellar.*) — either is a legitimate primary. scout repos/explainRepo acceptable for example code (stellar-light.md). Docs sections carry content directly — no progression demanded.",
       "match": { "category": "soroban" },
       "plan": {
         "required": [],
@@ -105,7 +105,7 @@
     },
     {
       "id": "tooling-infra",
-      "why": "SDK/CLI/RPC/Horizon/infra how-to: docs (stellar-docs-algolia.md; stellarDocs.search_sdk_cli_tools_docs, search_rpc_horizon_data_docs) OR bundled skills (manifest: skills.stellar-dev.data / dapp / smart-contracts). scout repos/skills catalog acceptable for tool discovery (stellar-light.md). Docs sections carry content — no progression demanded.",
+      "why": "SDK/CLI/RPC/Horizon/infra how-to: docs (stellar-docs-mintlify.md; stellarDocs.search_sdk_cli_tools_docs, search_rpc_horizon_data_docs) OR bundled skills (manifest: skills.stellar-dev.data / dapp / smart-contracts). scout repos/skills catalog acceptable for tool discovery (stellar-light.md). Docs sections carry content — no progression demanded.",
       "match": { "category": "tooling-infra" },
       "plan": {
         "required": [],
@@ -127,7 +127,7 @@
     },
     {
       "id": "assets-anchors-seps",
-      "why": "Asset issuance / trustlines / SAC / SEP mechanics are docs territory (stellar-docs-algolia.md; stellarDocs.search_asset_token_docs, search_anchor_sep_docs). skills.stellar-dev.assets / standards cover the same ground (manifest); scout research corpus carries SEP texts (stellar-light.md). Docs sections carry content — no progression demanded.",
+      "why": "Asset issuance / trustlines / SAC / SEP mechanics are docs territory (stellar-docs-mintlify.md; stellarDocs.search_asset_token_docs, search_anchor_sep_docs). skills.stellar-dev.assets / standards cover the same ground (manifest); scout research corpus carries SEP texts (stellar-light.md). Docs sections carry content — no progression demanded.",
       "match": { "category": "assets-anchors-seps" },
       "plan": {
         "required": ["stellarDocs"],
@@ -149,7 +149,7 @@
     },
     {
       "id": "compliance-rwa-payments",
-      "why": "Regulated assets (SEP-8), auth flags, clawback, payment SEPs are docs territory (stellar-docs-algolia.md; search_anchor_sep_docs, search_asset_token_docs); skills.stellar-dev.standards / assets cover the same (manifest); scout research corpus carries SEPs/audits (stellar-light.md). No progression demanded.",
+      "why": "Regulated assets (SEP-8), auth flags, clawback, payment SEPs are docs territory (stellar-docs-mintlify.md; search_anchor_sep_docs, search_asset_token_docs); skills.stellar-dev.standards / assets cover the same (manifest); scout research corpus carries SEPs/audits (stellar-light.md). No progression demanded.",
       "match": { "category": "compliance-rwa-payments" },
       "plan": {
         "required": ["stellarDocs"],
@@ -160,7 +160,7 @@
     },
     {
       "id": "defi-docs",
-      "why": "DeFi questions labeled stellarDocs are protocol-level (AMM operations, liquidity pools, path payments) — covered by the docs index (stellar-docs-algolia.md). Ecosystem services stay acceptable for protocol/project color (stellar-light.md projects/clusters; lumenloop.md directory/content). No progression demanded.",
+      "why": "DeFi questions labeled stellarDocs are protocol-level (AMM operations, liquidity pools, path payments) — covered by the docs backend (stellar-docs-mintlify.md). Ecosystem services stay acceptable for protocol/project color (stellar-light.md projects/clusters; lumenloop.md directory/content). No progression demanded.",
       "match": { "category": "defi-ecosystem", "service": "stellarDocs" },
       "plan": {
         "required": ["stellarDocs"],
@@ -182,7 +182,7 @@
     },
     {
       "id": "history-docs",
-      "why": "History/tokenomics questions labeled stellarDocs are protocol-mechanics questions (fee pool, burn, supply) answered by docs + the indexed blog (stellar-docs-algolia.md: docs + blog + meeting notes). Ecosystem services acceptable for corroborating stats. No progression demanded.",
+      "why": "History/tokenomics questions labeled stellarDocs are protocol-mechanics questions (fee pool, burn, supply) answered by docs pages (stellar-docs-mintlify.md: docs pages + meeting notes; the blog is not in the docs backend). Ecosystem services acceptable for corroborating stats. No progression demanded.",
       "match": { "category": "history-org-tokenomics", "service": "stellarDocs" },
       "plan": {
         "required": ["stellarDocs"],
@@ -193,7 +193,7 @@
     },
     {
       "id": "history-org-tokenomics",
-      "why": "Org history / ecosystem-evolution questions: scout research corpus (papers, ec-developer-report, incidents) + analytics (stellar-light.md) AND lumenloop news/articles/AV + editorial research (lumenloop.md) both cover them; the docs-indexed blog/meeting notes are acceptable corroboration (stellar-docs-algolia.md). Specific answers need search→detail.",
+      "why": "Org history / ecosystem-evolution questions: scout research corpus (papers, ec-developer-report, incidents) + analytics (stellar-light.md) AND lumenloop news/articles/AV + editorial research (lumenloop.md) both cover them; docs meeting notes are acceptable corroboration (stellar-docs-mintlify.md). Specific answers need search→detail.",
       "match": { "category": "history-org-tokenomics" },
       "plan": {
         "required": [],
@@ -215,7 +215,7 @@
     },
     {
       "id": "edge-behavior",
-      "why": "Governance/edge questions span three documented surfaces: docs meeting notes + protocol pages (stellar-docs-algolia.md; stellarDocs.search_meeting_notes), lumenloop governance proposals (lumenloop.md overview lists governance proposals as a content type), and scout research corpus incl. incidents (stellar-light.md source enum). Any one is a legitimate anchor. No progression demanded.",
+      "why": "Governance/edge questions span three documented surfaces: docs meeting notes + protocol pages (stellar-docs-mintlify.md; stellarDocs.search_meeting_notes), lumenloop governance proposals (lumenloop.md overview lists governance proposals as a content type), and scout research corpus incl. incidents (stellar-light.md source enum). Any one is a legitimate anchor. No progression demanded.",
       "match": { "category": "edge-behavior" },
       "plan": {
         "required": [],

@@ -16,16 +16,16 @@ const REPLACEMENT = "[REDACTED]";
  * scrubbed before it reaches the sandbox/model. Named API-key tokens are
  * request data, never host environment values or sandbox inputs.
  *
- * The ALGOLIA_APPLICATION_ID_* names are DELIBERATELY absent: they are
- * semi-public app ids (appear in site payloads / hostnames by design), not
+ * ALGOLIA_APPLICATION_ID_SITE is DELIBERATELY absent: it is a
+ * semi-public app id (appear in site payloads / hostnames by design), not
  * secrets — the refresh script even asserts they stay OUT of the generated
  * inventory. Adding them here would scrub public identifiers from
  * legitimate results.
  */
 const SECRET_ENV_NAMES = [
   "LUMENLOOP_API_KEY",
-  "ALGOLIA_API_KEY_DOCS",
   "ALGOLIA_API_KEY_SITE",
+  "MINTLIFY_ASSISTANT_API_KEY",
   "MCP_SERVER_SECRET",
   "WORKOS_API_KEY"
 ] as const;

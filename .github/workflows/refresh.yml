@@ -1,13 +1,13 @@
 name: Refresh (live drift check)
 
 # Re-fetches the live service surfaces (Lumenloop /v1/tools + /v1/me union,
-# Stellar Light /api/openapi.json, docs config) and rebuilds the derived
+# Stellar Light /api/openapi.json, Stellar Docs Mintlify backend and llms.txt
+# page index) and rebuilds the derived
 # artifacts. Any diff = upstream drift → an issue is opened/updated and the run
 # fails so drift is impossible to miss. Diffing op-id sets is the signal —
 # info.version is NOT (Scout has shipped new ops without bumping it).
 #
-# Also checks the load-bearing Stellar Docs Algolia rule through a read-only,
-# analytics:false rules-on/off behavioral delta, and checks the
+# Also checks the
 # ecosystem-skills/ pin set for upstream drift (pinned commit SHAs /
 # stellarlight catalog) via check-skills-drift.mjs — detection only; pins are
 # never auto-advanced from CI, because skill bodies are prompt input.
@@ -54,15 +54,14 @@ jobs:
         id: check
         env:
           LUMENLOOP_API_KEY: ${{ secrets.LUMENLOOP_API_KEY }}
-          ALGOLIA_APPLICATION_ID_DOCS: ${{ secrets.ALGOLIA_APPLICATION_ID_DOCS }}
-          ALGOLIA_API_KEY_DOCS: ${{ secrets.ALGOLIA_API_KEY_DOCS }}
+          MINTLIFY_ASSISTANT_API_KEY: ${{ secrets.MINTLIFY_ASSISTANT_API_KEY }}
           ALGOLIA_APPLICATION_ID_SITE: ${{ secrets.ALGOLIA_APPLICATION_ID_SITE }}
           ALGOLIA_API_KEY_SITE: ${{ secrets.ALGOLIA_API_KEY_SITE }}
           REPOSITORY: ${{ github.repository }}
           CONFIGURED_SERVICE_URL: ${{ vars.RAVEN_SERVICE_URL }}
         run: |
           configured=true
-          for name in LUMENLOOP_API_KEY ALGOLIA_APPLICATION_ID_DOCS ALGOLIA_API_KEY_DOCS ALGOLIA_APPLICATION_ID_SITE ALGOLIA_API_KEY_SITE; do
+          for name in LUMENLOOP_API_KEY MINTLIFY_ASSISTANT_API_KEY ALGOLIA_APPLICATION_ID_SITE ALGOLIA_API_KEY_SITE; do
             if [ -z "${!name}" ]; then
               if [ "$REPOSITORY" = "stellar-experimental/stellar-raven" ]; then
                 echo "::error::$name is absent. The live refresh requires this secret."
@@ -159,26 +158,11 @@ jobs:
         run: |
           {
             echo "LUMENLOOP_API_KEY=${{ secrets.LUMENLOOP_API_KEY }}"
-            echo "ALGOLIA_APPLICATION_ID_DOCS=${{ secrets.ALGOLIA_APPLICATION_ID_DOCS }}"
+            echo "MINTLIFY_ASSISTANT_API_KEY=${{ secrets.MINTLIFY_ASSISTANT_API_KEY }}"
             echo "ALGOLIA_APPLICATION_ID_SITE=${{ secrets.ALGOLIA_APPLICATION_ID_SITE }}"
-            echo "ALGOLIA_API_KEY_DOCS=${{ secrets.ALGOLIA_API_KEY_DOCS }}"
             echo "ALGOLIA_API_KEY_SITE=${{ secrets.ALGOLIA_API_KEY_SITE }}"
           } > .env
       - run: node scripts/refresh-inventory.mjs
-      # Search-only behavioral guard. The script's exit codes distinguish real
-      # rule-effect drift (1) from a check/request error (2); both are captured
-      # so drift detection can report the right class without exposing keys.
-      - name: check load-bearing Algolia rule
-        id: algolia_rule
-        run: |
-          set -o pipefail
-          ec=0
-          npm run algolia:rule-canary -- --require-env --env-file .env 2>&1 | tee algolia-rule-canary.txt || ec=$?
-          case "$ec" in
-            0) echo "state=clean" >> "$GITHUB_OUTPUT" ;;
-            1) echo "state=drift" >> "$GITHUB_OUTPUT" ;;
-            *) echo "state=error" >> "$GITHUB_OUTPUT" ;;
-          esac
       - run: node scripts/build-catalog.mjs
       - run: npm run micro-map:build
       - run: npm run spec:build
@@ -219,12 +203,6 @@ jobs:
             true|false) ;;
             *) skills_error=true ;;
           esac
-          algolia_rule_state='${{ steps.algolia_rule.outputs.state }}'
-          algolia_rule_error=false
-          case "$algolia_rule_state" in
-            clean|drift) ;;
-            *) algolia_rule_error=true ;;
-          esac
           # Same ENUM discipline for the two classes captured before the
           # builders: an empty output means the step never wrote one. That is a
           # check error — never a silent pass, and never coerced into the domain
@@ -242,7 +220,6 @@ jobs:
           case "$canary_state" in clean|failing|stale) ;; *) canary_error=true; canary_state=error ;; esac
           {
             echo "skills_error=$skills_error"
-            echo "algolia_rule_error=$algolia_rule_error"
             echo "pins_error=$pins_error"
             echo "gospel_error=$gospel_error"
             echo "canary_error=$canary_error"
@@ -252,7 +229,7 @@ jobs:
           # header — and the dedicated fail-on-*-check-error steps below already
           # make the job red without asserting something untrue.
           if [ "$inventory_drift" = "false" ] && [ "$skills_drift" != "true" ] \
-             && [ "$algolia_rule_state" != "drift" ] && [ "$pins_state" != "unresolvable" ] \
+             && [ "$pins_state" != "unresolvable" ] \
              && [ "$gospel_state" != "stale" ] && [ "$canary_state" = "clean" ]; then
             echo "drift=false" >> "$GITHUB_OUTPUT"
           else
@@ -342,17 +319,6 @@ jobs:
                 echo 'Source drift needs a reviewed re-pin. Community-only drift needs only a directory snapshot and index refresh.'
                 echo 'Never auto-sync from CI.'
               fi
-              if [ "$algolia_rule_state" = "drift" ]; then
-                echo
-                echo '#### Stellar Docs Algolia rule-effect drift'
-                echo
-                echo 'The read-only rules-on/off canary lost a named ranking invariant:'
-                echo '```'
-                cat algolia-rule-canary.txt
-                echo '```'
-                echo
-                echo 'Remediation: inspect the live rule and crawler/search behavior read-only; do not auto-write Algolia state.'
-              fi
             } > drift-report.md
           fi
       # The credential comes in as a step env var, not from .env: the drift step above
@@ -389,11 +355,6 @@ jobs:
         run: |
           echo "::error::skills drift check errored — see skills-drift.txt output"
           exit 1
-      - name: fail on Algolia rule check error
-        if: steps.drift.outputs.algolia_rule_error == 'true'
-        run: |
-          echo "::error::Algolia rule canary errored — see algolia-rule-canary.txt output"
-          exit 1
       # These two fail the job WITHOUT asserting a domain fact. A crashed
       # check-mirrors or a runner-side network fault is not evidence that
       # production is down, and a broken corpus linter is not evidence that a
@@ -420,7 +381,7 @@ jobs:
           exit 1
       # Crash guard for GENUINELY UNCLASSIFIED failures only. Every drift class
       # with a documented owner — unresolvable pin, stale gospel, inventory,
-      # skills-HEAD, Algolia rule — is captured as an enum above and reported in
+      # skills-HEAD — is captured as an enum above and reported in
       # the drift issue with its own remediation, so it never lands here. What
       # remains is a real script fault (refresh-inventory / build-catalog /
       # micro-map / spec:build) that died before drift detection completed, which
@@ -440,8 +401,8 @@ jobs:
             echo
             echo 'Every known drift class is captured as an enum and reported in the drift issue'
             echo 'with its own remediation — an unresolvable skill pin, stale QA gospel, inventory'
-            echo 'drift, skills-HEAD drift, and Algolia rule drift all land there, not here. If one'
-            echo 'of those is the real cause, this workflow has a routing bug as well.'
+            echo 'drift, and skills-HEAD drift all land there, not here. If one of those is the'
+            echo 'real cause, this workflow has a routing bug as well.'
             echo
             echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           } > refresh-failure.md

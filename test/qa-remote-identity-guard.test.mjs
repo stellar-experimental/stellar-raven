@@ -33,8 +33,8 @@ import {
 const HASH = {
   scout: "1".repeat(64),
   lumenloop: "2".repeat(64),
-  docsSettings: "3".repeat(64),
-  docsTitles: "4".repeat(64)
+  docsLlmsTxt: "3".repeat(64),
+  docsLlmsFullTxt: "4".repeat(64)
 };
 
 function vector() {
@@ -50,8 +50,10 @@ function vector() {
         canonicalInventorySha256: HASH.lumenloop
       },
       stellarDocs: {
-        indexSettingsSha256: HASH.docsSettings,
-        canonicalTitleSetSha256: HASH.docsTitles
+        llmsTxtSha256: HASH.docsLlmsTxt,
+        llmsTxtBytes: 55_668,
+        llmsFullTxtSha256: HASH.docsLlmsFullTxt,
+        llmsFullTxtBytes: 5_810_884
       }
     }
   };
@@ -64,7 +66,7 @@ function changedVector(service) {
     changed.services.lumenloop.canonicalInventorySha256 = "5".repeat(64);
   }
   if (service === "stellarDocs") {
-    changed.services.stellarDocs.indexSettingsSha256 = "6".repeat(64);
+    changed.services.stellarDocs.llmsFullTxtSha256 = "6".repeat(64);
   }
   return changed;
 }
@@ -121,6 +123,37 @@ describe("QA remote identity vector contract", () => {
       });
     }
   );
+
+  it("detects a Stellar Docs byte-count change alone", () => {
+    const changed = vector();
+    changed.services.stellarDocs.llmsTxtBytes += 1;
+    expect(compareRemoteIdentityVectors(vector(), changed)).toEqual({
+      matches: false,
+      changedServices: ["stellarDocs"]
+    });
+  });
+
+  it.each([
+    ["zero", 0],
+    ["negative", -1],
+    ["fractional", 1.5],
+    ["string", "55668"],
+    ["unsafe", Number.MAX_SAFE_INTEGER + 1]
+  ])("rejects a %s Stellar Docs byte count", (_label, value) => {
+    const invalid = vector();
+    invalid.services.stellarDocs.llmsFullTxtBytes = value;
+    expect(() => parseRemoteIdentityVector(invalid))
+      .toThrow("remote identity stellarDocs.llmsFullTxtBytes must be a positive byte count");
+  });
+
+  it("rejects the retired Algolia docs identity fields", () => {
+    const retired = vector();
+    retired.services.stellarDocs = {
+      indexSettingsSha256: "3".repeat(64),
+      canonicalTitleSetSha256: "4".repeat(64)
+    };
+    expect(() => parseRemoteIdentityVector(retired)).toThrow(/stellarDocs must contain exactly/);
+  });
 
   it("rejects volatile timestamps and any other extra field", () => {
     const withTimestamp = vector();
@@ -554,11 +587,11 @@ describe("QA remote identity probe stderr diagnostics", () => {
       "remote-identity-probe: Scout OpenAPI attempt 1/3 failed (HTTP 503); retrying in 250 ms",
       "unrelated stderr text",
       "remote-identity-probe: Scout OpenAPI attempt 2/3 failed (timeout); retrying in 1000 ms",
-      "remote-identity-probe: Stellar Docs title pagination changed during capture",
+      "remote-identity-probe: Stellar Docs llms-full.txt is not a UTF-8 Markdown document",
       ""
     ].join("\n");
     expect(probeStderrDiagnostics(stderr)).toEqual({
-      reason: "Stellar Docs title pagination changed during capture",
+      reason: "Stellar Docs llms-full.txt is not a UTF-8 Markdown document",
       probeRetryLines: 2
     });
   });
@@ -570,7 +603,8 @@ describe("QA remote identity probe stderr diagnostics", () => {
     ["a short token", "remote-identity-probe: Scout OpenAPI returned HTTP 503 tok-12345"],
     ["an environment value", "remote-identity-probe: PATH /synthetic/private/bin"],
     ["an unknown label", "remote-identity-probe: Private API returned HTTP 503"],
-    ["a retired probe label", "remote-identity-probe: Stellar Docs remaining title pages returned HTTP 429"],
+    ["a retired probe label", "remote-identity-probe: Stellar Docs title pages returned HTTP 429"],
+    ["a retired probe message", "remote-identity-probe: Stellar Docs title pagination changed during capture"],
     ["an unbounded status", "remote-identity-probe: Scout OpenAPI returned HTTP 50312"],
     ["an unknown error text", "remote-identity-probe: Cannot read properties of undefined"],
     ["a long token", `remote-identity-probe: failed ${"a1".repeat(20)}`],
@@ -585,12 +619,14 @@ describe("QA remote identity probe stderr diagnostics", () => {
 
   it.each([
     "Scout OpenAPI attempt 2/3 failed (network error); retrying in 1000 ms",
-    "Stellar Docs settings returned HTTP 429",
+    "Stellar Docs llms.txt returned HTTP 429",
     "Lumenloop public skills returned invalid JSON",
-    "Stellar Docs title pages timed out",
+    "Stellar Docs llms-full.txt timed out",
+    "Stellar Docs llms-full.txt attempt 1/3 failed (HTTP 503); retrying in 250 ms",
     "Lumenloop tools hint must be a non-empty string",
-    "Stellar Docs title page count is invalid",
-    "Stellar Docs title pages are incomplete",
+    "Stellar Docs llms.txt is not a UTF-8 Markdown document",
+    "Stellar Docs llms-full.txt is not a UTF-8 Markdown document",
+    "remote identity stellarDocs.llmsTxtBytes must be a positive byte count",
     "remote identity scout.openapiVersion must be a safe identity token",
     "remote identity service lumenloop must contain exactly: advertisedContractIdentity, canonicalInventorySha256"
   ])("accepts the known probe message %s", (message) => {

@@ -86,9 +86,9 @@ capability.
 - **D. General-web research** — web search, answer, and deep-research tools, including
   scripted sweeps. These are metered/paid — that is the point: gospel is worth expensive
   verification. (Paid **Lumenloop** research stays gated and off.)
-- **E. Docs search index** — the Stellar Docs Algolia index, through the `stellarDocs.*`
+- **E. Docs search index** — the Stellar Docs search backend (Mintlify), through the `stellarDocs.*`
   operations or a direct read-only query: checks BOTH the fact and its discoverability; an
-  authoritative page missing from the index is an `improvements/` finding.
+  authoritative page that the search cannot surface is an `improvements/` finding.
 - **F. Empirical execution** — for executable claims (CLI commands, address derivation,
   XDR decoding, API parameters), RUN the thing on testnet/live free ops rather than
   reading about it. The strongest evidence class for how-to facts — "the command is real,

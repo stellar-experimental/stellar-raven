@@ -2,19 +2,19 @@
   "id": "q-sor-doc-page-sections-followup",
   "question": "After docs search gives me a Stellar developer-docs page path, how do I read that whole page in section order rather than rely on one snippet?",
   "surface": [
-    "stellarDocs.get_doc_page_sections"
+    "stellarDocs.get_doc_page"
   ],
   "golden": {
-    "answer": "Pass the exact url_without_anchor path from the search hit to get_doc_page_sections. Keep includeContent enabled when reading the page, then consume the returned headings, breadcrumbs, anchors, and content in on-page order. This is a page-follow-up operation; it is not a corpus-wide search.",
+    "answer": "Pass the exact path from the search hit (a /docs or /meetings path, no domain or anchor) to get_doc_page. It returns the page url, path, title and the whole page as Markdown in on-page order, including headings, tables and code blocks. This is a page-follow-up operation; it is not a corpus-wide search.",
     "keyFacts": [
       "Uses the exact path from a prior docs hit, without the domain or anchor.",
-      "Reads section headings and content in page order."
+      "Reads the whole page content, headings included, in page order."
     ],
     "avoid": [
       "Do NOT pass a full external URL or fragment where the operation requires a /docs or /meetings path.",
       "Do NOT treat one snippet as the complete page."
     ],
-    "notes": "Live docs-index behavioral case."
+    "notes": "Live docs page-reading behavioral case."
   },
   "tags": {
     "category": "soroban",
@@ -28,34 +28,35 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
-        "ref": "specs/stellar-docs.json",
-        "note": "Fetch-verified local path exists and defines the exercised contract/workflow."
+        "ref": "src/adapters/stellar-docs.ts",
+        "note": "Mintlify adapter: page endpoint, /index retry, 404 soft-empty, page-level title grouping."
       },
       {
-        "class": "C",
-        "ref": "http://localhost:8787/mcp",
-        "note": "Live localhost search→execute probe."
+        "class": "B",
+        "ref": "specs/stellar-docs.json",
+        "note": "Operation contract (params, returns, outputSchema) for the Mintlify backend."
+      },
+      {
+        "class": "F",
+        "ref": ".agents/rounds/2026-11-02-mintlify-migration/retrieval-ab.mts",
+        "note": "Live adapter execution against the Mintlify API, 2026-11-02."
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Mintlify migration round (.agents/rounds/2026-11-02-mintlify-migration.md)",
       "evidence": [
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; get_doc_page_sections returned envelope ok=true for the storing-data path with ordered headings and content.",
-        "specs/stellar-docs.json exists and supports the behavioral golden.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened one long page-reading fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/specs/stellar-docs.json — the source contract returns all page sections with headings and full content in on-page order.",
-        "Sibling sweep 2026-08-29: grep get_doc_page_sections|ordered section|one search snippet|url_without_anchor → q-edge-doc-page-sections-soft-empty, q-sor-doc-page-sections-followup, q-sor-doc-title-discovery, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-compute-token-lp-market-data, q-ti-scaffold-stellar; no contradiction."
+        "2026-11-02 live adapter probe: get_doc_page {path:'/docs/build/smart-contracts/getting-started/storing-data'} → ok=true {url, path, title '3. Storing Data', content: the whole page as Markdown starting '# 3. Storing Data'} (8,317 characters).",
+        "specs/stellar-docs.json get_doc_page params: path only, pattern ^/(docs|meetings)/; returns { url, path, title, content }.",
+        "Gospel change: get_doc_page_sections (Algolia sections with anchors and breadcrumbs, includeContent) was replaced by get_doc_page (full-page Markdown) in the Mintlify migration.",
+        "Sibling sweep 2026-11-02: git grep get_doc_page_sections|url_without_anchor|Algolia over eval/qa/corpus/battery → q-edge-doc-page-sections-soft-empty, q-sor-doc-page-sections-followup, q-sor-doc-title-discovery (changed); q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-compute-token-lp-market-data, q-ti-rpc-gettransactions-pagination-xdr carry only dated evidence strings (unchanged records); no contradiction."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/TODO.md — Move the `stellarDocs` operations from Algolia to the Mintlify API"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

@@ -12,18 +12,94 @@ Open owner decisions are at the end of this file. Each one is listed once.
 
 ## Priorities
 
-1. Resolve the general routing and source-authority work from the
+1. Migrate the `stellarDocs` operations to Mintlify (below). The Algolia docs index stopped
+   updating on 2026-10-22, so docs answers drift stale until the cutover.
+2. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
+3. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
    authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
    #281, and #270 are merged and deployed; the section guard does not ship.
-3. Fix the table-row loss in `stellarDocs.get_doc_page_sections` (HackMeridian 2026 review
-   follow-ups below). It is small, and it blocks address and version answers on every docs page.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
 `run-evals` skill for the measurement sequence.
+
+## Stellar Docs migration to Mintlify
+
+### Move the `stellarDocs` operations from Algolia to the Mintlify API
+
+On 2026-10-22 `developers.stellar.org` moved to Mintlify and the Algolia crawler stopped. The
+DocSearch index still answers, but it no longer updates, so every `stellarDocs.*` answer drifts
+stale. Research, the operation mapping, and the list of affected files are in
+[the Mintlify research note](../research/services/stellar-docs-mintlify.md).
+
+2026-11-02: the adapter, spec, inventory refresh, tests, and docs are rewritten on branch
+`feat/mintlify-docs-migration`; the Algolia docs scripts, rule canary, and comparison harness are
+retired; the free retrieval A/B favors Mintlify (mean golden-page recall 0.614 → 0.787, soft-empty
+80 → 6); the routing gate is re-baselined with per-case evidence. `get_doc_page` returns whole
+pages, so the HackMeridian table-row loss (Q18, R22, R32) and the soft-empty `/meetings` pages (Q9)
+no longer reproduce. Ledger: [2026-11-02 Mintlify migration](rounds/2026-11-02-mintlify-migration.md).
+
+Later on 2026-11-02: the independent review (Claude Fable, APPROVE WITH CHANGES) is reconciled in
+`a3ecf688`. The paid QA diagnostic ran 30 IDs on Algolia and 26 on Mintlify; the Mintlify arm
+stopped when the docs site deployed; its 4 missing rows were re-run. On all 30 rows half-credit
+is 56.7 % in both arms; two gains and one loss trace to the backend. The loss is `sd-059`.
+
+Remaining steps: the production cut-over (set the `MINTLIFY_ASSISTANT_API_KEY` Worker secret before
+deploy, then delete the `ALGOLIA_*_DOCS` Worker and GitHub secrets).
+
+Done when: production `stellarDocs.*` reads only Mintlify, the A/B shows no docs-answer regression,
+and no `ALGOLIA_*_DOCS` reference remains outside dated records.
+
+### Derive section anchors for Mintlify search hits
+
+Algolia hits linked to the matched section (`#anchor`); Mintlify sections carry only the page path.
+A hit's `section` heading could yield the anchor if the adapter applies the site's heading-slug
+rule. Found in the 2026-11-02 migration A/B. Done when a test pins the slug rule against live
+heading anchors on at least five pages, including headings with code spans and punctuation.
+
+### Repair or retire stale golden docs references
+
+The 2026-11-02 page-coverage check (`rounds/2026-11-02-mintlify-migration/page-coverage.json`)
+found 21 golden source URLs that no longer resolve: 11 site 308 redirects and 10 404s, all also
+absent from the retired Algolia index. `get_doc_page` follows the redirects, but the goldens should
+cite the canonical paths. Use the `golden-truth` skill. Done when the page-coverage check reports
+zero 404s and zero redirects for active cases.
+
+### Point agents at the page when a docs hit has no body
+
+`sd-059`: Mintlify search rarely returns `<ResponseField>` text, so a result-code page often comes
+back as its title-and-description chunk only. In the 2026-11-02 QA diagnostic the agent had the
+Set Options result-code path in a hit, did not read the page, and gave a wrong code mapping. Options:
+mark such hits (a chunk that is the page title plus one description line) with a hint to call
+`stellarDocs.get_doc_page`, or read those pages host-side and take the snippet from the body. Either
+changes the output contract, so it needs the routing gate and a free retrieval replay of the
+result-code queries in `rounds/2026-11-02-mintlify-migration/identifier-probe.json`. Done when the
+`op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search call or one hinted
+page read, and the change is measured on the retrieval A/B. Remove when `sd-059` is fixed upstream.
+
+### Fold the Mintlify QA golden points into the golden audit
+
+The 2026-11-02 QA row review found five goldens affected by the docs migration. The full golden
+audit (`rounds/2026-11-02-golden-audit.md`) owns battery edits today; two of the five are already
+fixed there and one was re-verified on main in #310. The open points (instance-storage read-side
+size check, anchor key-fact-3 grading, MPP key fact 5) are in
+`rounds/2026-11-02-mintlify-migration/golden-handoff.md`. Done when the audit lands and each open
+point is accepted, rejected with evidence, or carried into its own item.
+
+### Retire `sd-003` after the Mintlify deploy and the golden audit
+
+`sd-003` is `fixed-upstream`. A distinct reviewer re-derived RESOLVE on 2026-11-02
+(`rounds/2026-11-02-mintlify-migration/sd003-recheck.md`), and the resolution comment is posted:
+https://github.com/stellar/stellar-docs/issues/2566#issuecomment-6585113964. Two conditions remain.
+First, the Mintlify adapter must be live in production; the Algolia adapter still reproduces the
+gap. Second, four battery cases name `sd-003` (`q-ti-rpc-gettransactions-pagination-xdr`,
+`q-infra-rpc-methods-list`, `q-pc-practical-fee-setting`, `q-pc-tx-finality-failure-semantics`),
+and the 2026-11-02 golden audit owns battery edits. After both land, run the resolver with the
+command in the recheck file (section 8), reconcile those four cases with the `golden-truth` skill,
+and update the current-state lines the recheck lists (TODO, the Mintlify research note,
+`ideas/source-delivery-ranked-references.md`).
 
 ## Improvements follow-up
 
@@ -732,20 +808,6 @@ four questions repeated on Sonnet and Haiku, and independent Fable grades agains
 Probe ids below are `Q<n>` (round 1) and `R<nn>` (round 2). The report, the probe answers, and the
 grades are in the owner's private evidence snapshot `2026-10-26-hackmeridian` (see
 `usage/README.md`); that copy also holds the production figures, which stay out of this repo.
-
-### Return every table row from `stellarDocs.get_doc_page_sections`
-
-`sortAndDedupeSections` (`src/adapters/stellar-docs.ts`) keeps one Algolia record for each section
-URL. Every row of a docs table shares its heading's URL, so only the first row survives. Q18 (the
-oracle testnet addresses) lost its answer this way. R22 (the software-versions sections came back
-empty) and R32 (a chunk cut the `getEvents` limits table) are related table losses; confirm their
-cause in the same pass. The same pass should normalize `path` (strip the
-`https://developers.stellar.org` origin and any `#anchor` before the `^/(docs|meetings)/` guard)
-and fix or document the soft-empty `/meetings` pages (Q9). A Markdown page reader over the docs'
-`<page>.md` text is the broader fix for tables and admonitions; weigh it against a dedupe fix.
-
-Done when: a test shows that the oracle page's testnet table and the software-versions table come
-back complete, and Q18 and R22 pass when run again.
 
 ### Add a release and package-version source
 

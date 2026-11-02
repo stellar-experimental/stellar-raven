@@ -44,7 +44,7 @@ jobs:
       # PLUS .dev.vars names; without the stub, Env loses the secret members and
       # tsc fails. Names only — never real values.
       - name: stub .dev.vars for type generation
-        run: printf 'LUMENLOOP_API_KEY=x\nALGOLIA_APPLICATION_ID_DOCS=x\nALGOLIA_API_KEY_DOCS=x\nALGOLIA_APPLICATION_ID_SITE=x\nALGOLIA_API_KEY_SITE=x\nWORKOS_CLIENT_ID=x\nWORKOS_API_KEY=x\nMCP_SERVER_SECRET=x\nDEV_ALLOW_UNAUTHENTICATED=x\n' > .dev.vars
+        run: printf 'LUMENLOOP_API_KEY=x\nMINTLIFY_ASSISTANT_API_KEY=x\nALGOLIA_APPLICATION_ID_SITE=x\nALGOLIA_API_KEY_SITE=x\nWORKOS_CLIENT_ID=x\nWORKOS_API_KEY=x\nMCP_SERVER_SECRET=x\nDEV_ALLOW_UNAUTHENTICATED=x\n' > .dev.vars
       - run: npm run typegen
       - run: npm run typecheck
       # Bundle/deploy path: dry-run the Worker build so a broken bundle, a missing/

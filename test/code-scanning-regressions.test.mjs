@@ -52,8 +52,8 @@ describe("code scanning regressions", () => {
 
   it("preserves inventory diagnostics and public app IDs while redacting secret forms", () => {
     const root = realpathSync(mkdtempSync(join(tmpdir(), "inventory-error-")));
-    const secretNames = ["LUMENLOOP_API_KEY", "ALGOLIA_API_KEY_DOCS", "ALGOLIA_API_KEY_SITE", "MCP_SERVER_SECRET", "WORKOS_API_KEY"];
-    const publicNames = ["ALGOLIA_APPLICATION_ID_DOCS", "ALGOLIA_APPLICATION_ID_SITE"];
+    const secretNames = ["LUMENLOOP_API_KEY", "ALGOLIA_API_KEY_SITE", "MINTLIFY_ASSISTANT_API_KEY", "MCP_SERVER_SECRET", "WORKOS_API_KEY"];
+    const publicNames = ["ALGOLIA_APPLICATION_ID_SITE"];
     const fixtures = Object.fromEntries([...secretNames, ...publicNames].map((name, index) =>
       [name, `fixture-${index}/value+with=symbols`]
     ));

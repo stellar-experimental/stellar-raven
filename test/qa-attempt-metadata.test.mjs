@@ -24,7 +24,7 @@ const vector = {
   services: {
     scout: { openapiVersion: "test", canonicalOpenapiSha256: "1".repeat(64) },
     lumenloop: { advertisedContractIdentity: "test", canonicalInventorySha256: "2".repeat(64) },
-    stellarDocs: { indexSettingsSha256: "3".repeat(64), canonicalTitleSetSha256: "4".repeat(64) }
+    stellarDocs: { llmsTxtSha256: "3".repeat(64), llmsTxtBytes: 55_668, llmsFullTxtSha256: "4".repeat(64), llmsFullTxtBytes: 5_810_884 }
   }
 };
 const input = {

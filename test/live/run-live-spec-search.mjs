@@ -90,7 +90,7 @@ export const CASES = [
       const docs = await stellarDocs.search_anchor_sep_docs({ query: "SEP-24 hosted deposit and withdrawal", hitsPerPage: 3 });
       return {
         specOps,
-        nbHits: docs.ok ? docs.data.nbHits : docs.error,
+        candidates: docs.ok ? docs.data.candidates : docs.error,
         topUrls: docs.ok ? docs.data.hits.map(h => h.url).slice(0, 3) : null
       };
     }`

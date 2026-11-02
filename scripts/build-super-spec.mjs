@@ -16,8 +16,8 @@
  *  - standard OpenAPI shapes (summary/description/tags/parameters/
  *    requestBody/responses/components) so generic spec-grepping code works;
  *  - per-operation vendor extensions: x-service, x-execute (exact sandbox
- *    call line), x-upstream (real HTTP method+path), x-algolia (stellarDocs
- *    query mapping);
+ *    call line), x-upstream (real HTTP method+path), x-mintlify (stellarDocs
+ *    request mapping);
  *  - spec-level x-services (per-service metadata incl. the stellarDocs
  *    backend block + measured corpus taxonomy) and x-generated (provenance,
  *    counts, size).
@@ -450,10 +450,10 @@ function buildStellarDocs(spec, exposed) {
           }
         },
         "x-service": "stellarDocs",
-        // The exact Algolia query mapping the host adapter applies — kept as a
+        // The exact request mapping the host adapter applies — kept as a
         // vendor extension so spec-grepping code can see what each intent op
-        // actually does (facet filters, client-side URL-prefix filters, …).
-        "x-algolia": op.algolia,
+        // actually does (endpoint, path-prefix scope, page grouping).
+        "x-mintlify": op.mintlify,
         "x-execute": `await stellarDocs.${op.name}(args)`
       }
     };
@@ -772,7 +772,7 @@ async function main() {
     {
       name: "stellarDocs",
       description:
-        "Official Stellar developer docs at developers.stellar.org, searched via the Algolia DocSearch index (12 intent-named operations)."
+        "Official Stellar developer docs at developers.stellar.org, searched via the Mintlify search and page-content API (12 intent-named operations)."
     },
     {
       name: "skills",
@@ -793,7 +793,7 @@ async function main() {
       version: "1.0.0",
       description:
         "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout " +
-        "(Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). " +
+        "(Stellar Light), stellarDocs (Mintlify-backed docs search), and skills (pinned agent playbooks). " +
         "Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation " +
         "with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as " +
         "`await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema " +
@@ -826,10 +826,9 @@ async function main() {
       },
       stellarDocs: {
         backend: stellarDocsSpec.backend,
-        taxonomy: stellarDocsSpec.taxonomy,
         authoredAt: stellarDocsSpec.authoredAt,
         source: "specs/stellar-docs.json",
-        note: "Authored spec-as-data operations over the Algolia DocSearch index; x-algolia on each op records the exact query mapping."
+        note: "Authored spec-as-data operations over the Mintlify discovery API; x-mintlify on each op records the exact request mapping."
       },
       skills: {
         mirror: "ecosystem-skills/",

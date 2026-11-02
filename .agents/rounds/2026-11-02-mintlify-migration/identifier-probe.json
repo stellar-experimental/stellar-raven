@@ -1,0 +1,302 @@
+[
+ {
+  "q": "op_bad_signer",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_bad_signer error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "SET_OPTIONS_BAD_SIGNER",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "SET_OPTIONS_BAD_SIGNER error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "op_low_reserve",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_low_reserve error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_too_many_signers",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_too_many_signers error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_underfunded",
+  "rank": 0,
+  "n": 50,
+  "path": "admin-guide/troubleshooting"
+ },
+ {
+  "q": "op_underfunded error meaning",
+  "rank": 1,
+  "n": 50,
+  "path": "admin-guide/troubleshooting"
+ },
+ {
+  "q": "op_no_trust",
+  "rank": 0,
+  "n": 50,
+  "path": "admin-guide/troubleshooting"
+ },
+ {
+  "q": "op_no_trust error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "admin-guide/troubleshooting"
+ },
+ {
+  "q": "op_line_full",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_line_full error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_cross_self",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_cross_self error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_over_source_max",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_over_source_max error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_under_dest_min",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "op_under_dest_min error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "tx_bad_seq",
+  "rank": 0,
+  "n": 50,
+  "path": "errors/error-handling"
+ },
+ {
+  "q": "tx_bad_seq error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "errors/error-handling"
+ },
+ {
+  "q": "tx_insufficient_fee",
+  "rank": 0,
+  "n": 50,
+  "path": "fundamentals/fees-resource-limits-metering"
+ },
+ {
+  "q": "tx_insufficient_fee error meaning",
+  "rank": 1,
+  "n": 50,
+  "path": "fundamentals/fees-resource-limits-metering"
+ },
+ {
+  "q": "tx_too_late",
+  "rank": 0,
+  "n": 50,
+  "path": "errors/error-handling"
+ },
+ {
+  "q": "tx_too_late error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "tx_bad_auth_extra",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "tx_bad_auth_extra error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "CHANGE_TRUST_LOW_RESERVE",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "CHANGE_TRUST_LOW_RESERVE error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "MANAGE_SELL_OFFER_CROSS_SELF",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "MANAGE_SELL_OFFER_CROSS_SELF error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "PATH_PAYMENT_STRICT_RECEIVE_OVER_SENDMAX",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "PATH_PAYMENT_STRICT_RECEIVE_OVER_SENDMAX error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "ACCOUNT_MERGE_HAS_SUB_ENTRIES",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "ACCOUNT_MERGE_HAS_SUB_ENTRIES error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/list-of-operations"
+ },
+ {
+  "q": "contract_data_entry_size_bytes",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "contract_data_entry_size_bytes error meaning",
+  "rank": -1,
+  "n": 50,
+  "path": null
+ },
+ {
+  "q": "getLedgerEntries",
+  "rank": 0,
+  "n": 50,
+  "path": "methods/getLedgerEntries"
+ },
+ {
+  "q": "getLedgerEntries error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "methods/getLedgerEntries"
+ },
+ {
+  "q": "simulateTransaction",
+  "rank": 0,
+  "n": 50,
+  "path": "methods/simulateTransaction"
+ },
+ {
+  "q": "simulateTransaction error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "methods/simulateTransaction"
+ },
+ {
+  "q": "restore_footprint",
+  "rank": 0,
+  "n": 50,
+  "path": "gold/hourly-soroban-fee-agg-contract"
+ },
+ {
+  "q": "restore_footprint error meaning",
+  "rank": 10,
+  "n": 50,
+  "path": "gold/hourly-soroban-fee-agg-contract"
+ },
+ {
+  "q": "extend_footprint_ttl",
+  "rank": 0,
+  "n": 50,
+  "path": "gold/hourly-soroban-fee-agg-contract"
+ },
+ {
+  "q": "extend_footprint_ttl error meaning",
+  "rank": 21,
+  "n": 50,
+  "path": "gold/hourly-soroban-fee-agg-contract"
+ },
+ {
+  "q": "AUTH_CLAWBACK_ENABLED_FLAG",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/clawbacks"
+ },
+ {
+  "q": "AUTH_CLAWBACK_ENABLED_FLAG error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "transactions/clawbacks"
+ },
+ {
+  "q": "SorobanAuthorizationEntry",
+  "rank": 0,
+  "n": 50,
+  "path": "contract-development/authorization"
+ },
+ {
+  "q": "SorobanAuthorizationEntry error meaning",
+  "rank": 0,
+  "n": 50,
+  "path": "contract-development/authorization"
+ }
+]

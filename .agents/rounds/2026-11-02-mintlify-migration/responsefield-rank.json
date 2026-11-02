@@ -1,0 +1,639 @@
+[
+ {
+  "path": "sds-preview",
+  "skip": "no-page"
+ },
+ {
+  "path": "snippets/anchor-platform/response",
+  "skip": "no-page"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getEvents",
+  "rfRank": 14,
+  "proseRank": 1,
+  "rfQ": "Unique identifier for this event, based on the [TOID](https://github.com/stellar",
+  "prQ": "The maximum number of records returned. The limit for getEvents can range from 1"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getHealth",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "The unix timestamp (as a string) of the close time of the oldest ledger kept in ",
+  "prQ": "You can check the **node health status** on both **Testnet** and **Mainnet** usi"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/structure/xdr",
+  "rfRank": 0,
+  "proseRank": 0,
+  "rfQ": "The details about the effects of a transaction encoded in XDR.",
+  "prQ": "When you post a transaction, a client will encode the transaction as XDR before "
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getNetwork",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "Stellar Core protocol version associated with the latest ledger.",
+  "prQ": "Example request to the `getNetwork` method for a node connected to the Stellar F"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getLedgers",
+  "rfRank": 15,
+  "proseRank": 2,
+  "rfQ": "The sequence number of the latest ledger known to Stellar RPC at the time it han",
+  "prQ": "The maximum number of records returned. The limit for getLedgers can range from "
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/response",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "A base64-encoded representation of the TransactionEnvelope XDR whose failure tri",
+  "prQ": "When any error occurs, Horizon responds with a JSON document with the below attr"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/queryEvents",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "The event topics, each represented as a Base64-encoded XDR `ScVal`.",
+  "prQ": "A query may use at most 15 distinct index terms by default; node operators can c"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getFeeStats",
+  "rfRank": 0,
+  "proseRank": 0,
+  "rfQ": "Fee distribution statistics for Stellar (i.e. non-Soroban) transactions. Statist",
+  "prQ": "You can view the current **mainnet fee stats** using [`mainnet.sorobanrpc.com`]("
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getVersionInfo",
+  "rfRank": null,
+  "proseRank": 0,
+  "prQ": "The `getVersionInfo` method provides **version details** about the RPC service a"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getLatestLedger",
+  "rfRank": 4,
+  "proseRank": 0,
+  "rfQ": "The timestamp at which the latest ledger was closed.",
+  "prQ": "You can check the **latest known ledger** on both **Testnet** and **Mainnet** us"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/effects/types",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "create\\_account, payment, path\\_payment, merge\\_account",
+  "prQ": "Although offer identifiers were [historically defined](https://github.com/stella"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/trades/object",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "The Stellar address of the base asset’s issuer.",
+  "prQ": "When Horizon returns information about a trade, it uses the following format:"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/assets/object",
+  "rfRank": -1,
+  "proseRank": 13,
+  "rfQ": "The number of units for this asset held by all claimable balances.",
+  "prQ": "The [latest ledger](../../structure/consistency) known to Horizon is included as"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/offers/object",
+  "rfRank": -1,
+  "proseRank": 12,
+  "rfQ": "How many units of `buying` it takes to get 1 unit of `selling`. A number represe",
+  "prQ": "The [latest ledger](../../structure/consistency) known to Horizon is included as"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+  "rfRank": 5,
+  "proseRank": -1,
+  "rfQ": "(optional) - It can only be present on successful simulation (i.e. no error) of ",
+  "prQ": "Specifies whether XDR should be encoded as Base64 (default or 'base64') or JSON "
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/ledgers/object",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "The number of total operations in the transaction set (including failed transact",
+  "prQ": "When Horizon returns information about a ledger, it uses the following format:"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/payments/object",
+  "rfRank": -1,
+  "proseRank": 9,
+  "rfQ": "The code for the asset being sent. Appears if the `asset_type` is not `native`.",
+  "prQ": "See the [`Payment` errors](../../errors/result-codes/operation-specific/payment)"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/accounts/object",
+  "rfRank": -1,
+  "proseRank": 8,
+  "rfQ": "If set to `true`, anyone who wants to hold an asset issued by this account must ",
+  "prQ": "The [latest ledger](../../structure/consistency) known to Horizon is included as"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/aggregations/paths/object",
+  "rfRank": -1,
+  "proseRank": 14,
+  "rfQ": "The Stellar address of the destination asset’s issuer.",
+  "prQ": "The [latest ledger](../../structure/consistency) known to Horizon is included as"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/structure/pagination/index",
+  "rfRank": 7,
+  "proseRank": 0,
+  "rfQ": "An `href` key with a link to the next page for this endpoint as the value.",
+  "prQ": "To move between pages of a collection of records, use the links in the `next` an"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/transactions/object",
+  "rfRank": 1,
+  "proseRank": 0,
+  "rfQ": "***\\[To be deprecated in Q3]*** A base64 encoded string of the raw `TransactionM",
+  "prQ": "When Horizon returns information about a transaction, it uses the following form"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/aggregations/fee-stats/object",
+  "rfRank": 6,
+  "proseRank": 0,
+  "rfQ": "95th percentile fee charged over the last 5 ledgers.",
+  "prQ": "The `fee_charged` represents the actual fee paid for the transaction, while `max"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operations",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "The operation is not supported at this time.",
+  "prQ": "Each entry shows the Horizon result code, then the Stellar protocol code."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/aggregations/order-books/object",
+  "rfRank": -1,
+  "proseRank": 10,
+  "rfQ": "The ask price of the base asset denominated in the counter asset. A number repre",
+  "prQ": "The [latest ledger](../../structure/consistency) known to Horizon is included as"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/transactions",
+  "rfRank": -1,
+  "proseRank": 1,
+  "rfQ": "The ledger closeTime was after the maxTime.",
+  "prQ": "Each entry shows the Horizon result code, then the Stellar protocol code."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/index",
+  "rfRank": -1,
+  "proseRank": 8,
+  "rfQ": "Indicates if this operation was part of a successful transaction.",
+  "prQ": "See the [generic Operation errors](/docs/data/apis/horizon/api-reference/errors/"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/http-status-codes/standard",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "The request does not have an acceptable response content-type.",
+  "prQ": "These responses are Internet protocol codes that describe basic issues with a su"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/claimablebalances/object",
+  "rfRank": 9,
+  "proseRank": 9,
+  "rfQ": "The account ID who can claim the balance.",
+  "prQ": "The [latest ledger](../../structure/consistency) known to Horizon is included as"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/buy-offer",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "The Stellar address of the buying asset’s issuer. Appears if the `buying_asset_t",
+  "prQ": "See the [`Manage Buy Offer` errors](../../../errors/result-codes/operation-speci"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/sell-offer",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "The Stellar address of the buying asset’s issuer. Appears if the `buying_asset_t",
+  "prQ": "See the [`Manage Sell Offer` errors](../../../errors/result-codes/operation-spec"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/aggregations/trade-aggregations/object",
+  "rfRank": 8,
+  "proseRank": 0,
+  "rfQ": "The price as seen on first trade aggregated.",
+  "prQ": "When Horizon returns information about a trade aggregation, it uses the followin"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getTransaction",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "(optional) Indicates whether the transaction was fee bumped. This field is only ",
+  "prQ": "Query for a transaction hash that returns `SUCCESS` from the RPC node."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/manage-data",
+  "rfRank": -1,
+  "proseRank": 1,
+  "rfQ": "If present, then this value will be set in the DataEntry. It can be up to 64 byt",
+  "prQ": "See the [`Manage Data` errors](../../../errors/result-codes/operation-specific/m"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/allow-trust",
+  "rfRank": -1,
+  "proseRank": 1,
+  "rfQ": "The issuing account, or source account in this instance.",
+  "prQ": "See the [`Allow Trust` errors](../../../errors/result-codes/operation-specific/a"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/set-options",
+  "rfRank": 5,
+  "proseRank": 1,
+  "rfQ": "The array of numeric values of flags that has been set in this operation. Option",
+  "prQ": "See the [`Set Options` errors](../../../errors/result-codes/operation-specific/s"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/sendTransaction",
+  "rfRank": 35,
+  "proseRank": 0,
+  "rfQ": "The unix timestamp of the close time of the latest ledger known to Stellar RPC a",
+  "prQ": "Submitting a valid transaction using the `sendTransaction` method, resulting in "
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/change-trust",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "Limits the amount of an asset that the source account can hold.",
+  "prQ": "See the [`Change Trust` errors](../../../errors/result-codes/operation-specific/"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/bump-sequence",
+  "rfRank": 3,
+  "proseRank": 1,
+  "rfQ": "The new desired value for the source account's sequence number.",
+  "prQ": "See the [`Bump Sequence` errors](../../../errors/result-codes/operation-specific"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/account-merge",
+  "rfRank": 3,
+  "proseRank": 2,
+  "rfQ": "The Stellar address receiving the deleted account's lumens.",
+  "prQ": "See the [`Account Merge` errors](../../../errors/result-codes/operation-specific"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/create-account",
+  "rfRank": -1,
+  "proseRank": 1,
+  "rfQ": "The amount of XLM to send the newly created account.",
+  "prQ": "See the [`Create Account` errors](../../../errors/result-codes/operation-specifi"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_trust",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/get_transaction",
+  "rfRank": 40,
+  "proseRank": 27,
+  "rfQ": "The transaction envelope, containing all the transaction information.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_trust_set",
+  "rfRank": -1,
+  "proseRank": 15,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Flag which indicates if trustline was configured by user."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/get_transactions",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "The date and time when the transaction is created.",
+  "prQ": "Available options: `created_at`, `transfer_received_at`, `user_action_required_b"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/passive-sell-offer",
+  "rfRank": -1,
+  "proseRank": 1,
+  "rfQ": "The Stellar address of the buying asset’s issuer. Appears if the `buying_asset_t",
+  "prQ": "See the [`Create Passive Sell Offer` errors](../../../errors/result-codes/operat"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_refund",
+  "rfRank": -1,
+  "proseRank": 12,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/revoke-sponsorship",
+  "rfRank": 15,
+  "proseRank": null,
+  "rfQ": "The id of the offer which is no longer sponsored."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/payment",
+  "rfRank": 23,
+  "proseRank": 7,
+  "rfQ": "The destination account does not have a trustline for the asset being sent.",
+  "prQ": "Learn more about the [`Payment` operation](../../../../../../../learn/fundamenta"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_refund_sent",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Example request to the `notify_refund_sent` method."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_payment",
+  "rfRank": -1,
+  "proseRank": 6,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/extend-footprint-ttl",
+  "rfRank": -1,
+  "proseRank": null,
+  "rfQ": "The new live until ledger which will be applied to the ledger entries."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/invoke-host-function",
+  "rfRank": 20,
+  "proseRank": null,
+  "rfQ": "An array of [Stellar Asset Contract](../../../../../../../tokens/stellar-asset-c"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/allow-trust",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "The source account is trying to revoke the trustline of the trustor, but it cann",
+  "prQ": "Learn more about the [`Allow Trust` operation](../../../../../../../learn/fundam"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/set-options",
+  "rfRank": 22,
+  "proseRank": 3,
+  "rfQ": "This account can no longer change the option it wants to change.",
+  "prQ": "Learn more about the [`Set Options` operation](../../../../../../../learn/fundam"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_onchain_funds",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_refund_pending",
+  "rfRank": -1,
+  "proseRank": 10,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/manage-data",
+  "rfRank": -1,
+  "proseRank": 6,
+  "rfQ": "Trying to remove a Data Entry that isn’t there. This will happen if Name is set ",
+  "prQ": "Learn more about the [`Manage Data` operation](../../../../../../../learn/fundam"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/liquidity-pool-deposit",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "A floating point value encoded as a string indicating the maximum exchange rate ",
+  "prQ": "See the [`Liquidity Pool Deposit` operation](../../../../../../../learn/fundamen"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_offchain_funds",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "The asset to be sent by anchor to user at end of transaction"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/claim-claimable-balance",
+  "rfRank": 20,
+  "proseRank": null,
+  "rfQ": "The id of the account which claimed the balance."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust",
+  "rfRank": -1,
+  "proseRank": 3,
+  "rfQ": "This account does not have enough XLM to satisfy the minimum XLM reserve increas",
+  "prQ": "Learn more about the [`Change Trust` operation](../../../../../../../learn/funda"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/liquidity-pool-withdraw",
+  "rfRank": 6,
+  "proseRank": 1,
+  "rfQ": "The number of shares that were redeemed for this withdrawal operation",
+  "prQ": "See the [`Liquidity Pool Withdraw` operation](../../../../../../../learn/fundame"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_amounts_updated",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "The asset to be sent by anchor to user at end of transaction"
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+  "rfRank": 0,
+  "proseRank": 5,
+  "rfQ": "The key's current [LedgerEntryData](https://github.com/stellar/stellar-xdr/blob/",
+  "prQ": "Much like an [account](#accounts), the resulting entry has a balance, but it als"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/path-payment-strict-send",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "The type for the intermediary asset. Either `native`, `credit_alphanum4`, or `cr",
+  "prQ": "See the [`Path Payment Strict Send` errors](../../../errors/result-codes/operati"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/bump-sequence",
+  "rfRank": 8,
+  "proseRank": 2,
+  "rfQ": "The specified bumpTo sequence number is not a valid sequence number. It must be ",
+  "prQ": "Learn more about the [`Bump Sequence` operation](../../../../../../../learn/fund"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "Source account sequence number is too high.",
+  "prQ": "Learn more about the [`Account Merge` operation](../../../../../../../learn/fund"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/create-claimable-balance",
+  "rfRank": -1,
+  "proseRank": null,
+  "rfQ": "The array will always contain two elements which also are predicates. This claus"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/create-account",
+  "rfRank": -1,
+  "proseRank": 3,
+  "rfQ": "The source account performing the command does not have enough funds to give the",
+  "prQ": "Learn more about the [`Create Account` operation](../../../../../../../learn/fun"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_error",
+  "rfRank": -1,
+  "proseRank": 0,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Example request to the `notify_transaction_error` method."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_onchain_funds_sent",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "The unique transaction identifier for this transfer on the Stellar network."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/structure/response-format",
+  "rfRank": 3,
+  "proseRank": 0,
+  "rfQ": "Present when querying an endpoint that responds with a collection of records.",
+  "prQ": "If a response is a single record, the `_links` section will provide links to any"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_sent",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "The unique identifier of this transaction on the external network."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/path-payment-strict-receive",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "The Stellar address of the intermediary asset’s issuer.",
+  "prQ": "See the [`Path Payment Strict Receive` errors](../../../errors/result-codes/oper"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_on_hold",
+  "rfRank": -1,
+  "proseRank": 34,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/manage-buy-offer",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "The account creating the offer does not have sufficient limits to send selling a",
+  "prQ": "Learn more about the [`Manage Buy Offer` operation](../../../../../../../learn/f"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_expired",
+  "rfRank": -1,
+  "proseRank": 28,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_recovery",
+  "rfRank": -1,
+  "proseRank": 9,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/manage-sell-offer",
+  "rfRank": -1,
+  "proseRank": 2,
+  "rfQ": "The account creating the offer does not have sufficient limits to send selling a",
+  "prQ": "Learn more about the [`Manage Sell Offer` operation](../../../../../../../learn/"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_customer_info_updated",
+  "rfRank": -1,
+  "proseRank": 27,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "Please note that parameter structure within the request must contain named param"
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_pending",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "The unique identifier of this transaction on the external network."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/end-sponsoring-future-reserves",
+  "rfRank": -1,
+  "proseRank": null,
+  "rfQ": "The id of the account which initiated the sponsorship."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_onchain_funds_received",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_received",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/resources/operations/object/begin-sponsoring-future-reserves",
+  "rfRank": 24,
+  "proseRank": null,
+  "rfQ": "The id of the account which will be sponsored."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_available",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "The unique identifier of this transaction on the external network."
+ },
+ {
+  "path": "docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_interactive_flow_completed",
+  "rfRank": -1,
+  "proseRank": -1,
+  "rfQ": "A numerical representation of an amount of some asset.",
+  "prQ": "A numerical representation of an amount of some asset."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/path-payment-strict-send",
+  "rfRank": -1,
+  "proseRank": 5,
+  "rfQ": "The destination account is not authorized to hold this asset.",
+  "prQ": "Learn more about the [`Path Payment Strict Send` operation](../../../../../../.."
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/create-passive-sell-offer",
+  "rfRank": -1,
+  "proseRank": 3,
+  "rfQ": "The account creating the offer does not have sufficient limits to receive buying",
+  "prQ": "Learn more about the [`Create Passive Sell Offer` operation](../../../../../../."
+ },
+ {
+  "path": "docs/data/apis/rpc/api-reference/methods/getTransactions",
+  "rfRank": 21,
+  "proseRank": 2,
+  "rfQ": "An array of base64-encoded [xdr.TransactionEvent](https://github.com/stellar/ste",
+  "prQ": "The maximum number of records returned. The limit for getTransactions can range "
+ },
+ {
+  "path": "docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/path-payment-strict-receive",
+  "rfRank": -1,
+  "proseRank": 5,
+  "rfQ": "The destination account is not authorized to hold this asset.",
+  "prQ": "Learn more about the [`Path Payment Strict Receive` operation](../../../../../.."
+ }
+]

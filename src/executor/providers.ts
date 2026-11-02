@@ -583,7 +583,7 @@ type CatalogArg = { kind?: unknown; service?: unknown; compact?: unknown };
 /**
  * Sandbox-facing projection of one catalog entry for `codemode.catalog()`:
  * everything the model may reason over, nothing host-only (transport carries
- * base URLs / Algolia mappings / env-var names; provenance is refresh
+ * base URLs / request mappings / env-var names; provenance is refresh
  * bookkeeping). Every entry is callable/readable — exposure is filtered at
  * build time (ADR-0003), so there is no policy to show.
  */

@@ -345,10 +345,15 @@ describe("build-catalog.mjs", () => {
     expect(docs.map((e) => e.id)).toContain("stellarDocs.search_docs");
     expect(docs.map((e) => e.id)).toContain("stellarDocs.search_docs_in_category");
     expect(docs.map((e) => e.id)).toContain("stellarDocs.search_meeting_notes");
-    // Every docs operation carries its Algolia execution mapping.
+    expect(docs.map((e) => e.id)).toContain("stellarDocs.get_doc_page");
+    expect(docs.map((e) => e.id)).not.toContain("stellarDocs.get_doc_page_sections");
+    // Every docs operation carries its Mintlify execution mapping.
     for (const op of docs) {
-      expect(op.transport?.type, op.id).toBe("algolia");
-      expect((op.transport as Record<string, unknown>).algolia, op.id).toBeDefined();
+      expect(op.transport?.type, op.id).toBe("mintlify");
+      const mintlify = (op.transport as Record<string, unknown>).mintlify as { endpoint?: string } | undefined;
+      expect(mintlify, op.id).toBeDefined();
+      expect(["search", "page"], op.id).toContain(mintlify!.endpoint);
+      expect(op.transport as Record<string, unknown>, op.id).not.toHaveProperty("algolia");
       expect(op.inputSchema).not.toBeNull();
     }
 
@@ -471,28 +476,15 @@ describe("build-catalog.mjs", () => {
     expect(round.currentRound?.description).toContain("NOT a claim that submissions are open");
   });
 
-  it("emits the authored object contract for Docs page sections", () => {
-    const page = catalog.entries.find((entry) => entry.id === "stellarDocs.get_doc_page_sections")!;
-    expect(page.description).toContain(
-      "An object with page, sections, nbSections, complete, truncated"
-    );
-    const output = page.outputSchema as {
-      required: string[];
-      properties: {
-        sections: { items: { required: string[]; properties: Record<string, unknown> } };
-      };
-    };
-    expect(output.required).toEqual(["page", "sections", "nbSections", "complete", "truncated"]);
-    expect(output.properties.sections.items.required).toEqual([
-      "url",
-      "url_without_anchor",
-      "anchor",
-      "type",
-      "breadcrumb"
-    ]);
-    expect(output.properties.sections.items.properties).toHaveProperty("content");
-    expect(output.properties.sections.items.properties).toHaveProperty("snippet");
-    expect(output.properties.sections.items.required).not.toContain("content");
+  it("emits the authored object contract for the Docs page", () => {
+    const page = catalog.entries.find((entry) => entry.id === "stellarDocs.get_doc_page")!;
+    expect(page.description).toMatch(/Returns: .*url, path, title, and content/);
+    expect(page.inputSchema).toMatchObject({ required: ["path"], properties: { path: { type: "string" } } });
+    expect(Object.keys((page.inputSchema as { properties: Record<string, unknown> }).properties)).toEqual(["path"]);
+    expect((page.transport as { mintlify?: unknown }).mintlify).toEqual({ endpoint: "page" });
+    const output = page.outputSchema as { required: string[]; properties: Record<string, unknown> };
+    expect(output.required).toEqual(["url", "path", "title", "content"]);
+    expect(Object.keys(output.properties).sort()).toEqual(["content", "path", "title", "url"]);
   });
 
   it("maps each design-stage build domain to exact Scout, skill, and Docs authority", () => {

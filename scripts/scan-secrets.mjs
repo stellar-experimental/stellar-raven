@@ -47,15 +47,15 @@ execFileSync(process.execPath, [join(ROOT, "scripts/check-private-usage.mjs"), p
 // ── Config ──────────────────────────────────────────────────────────────────
 
 // Env-var NAMES whose values are public identifiers, not secrets — excluded from
-// layer B so e.g. the Algolia Application ID (VNSJF5AWIZ, in hostnames/docs by
-// design) never trips the scanner.
+// layer B so e.g. an Algolia Application ID (public by design) never trips the
+// scanner.
 const PUBLIC_KEYS = /(APPLICATION_ID|CLIENT_ID|DEV_ALLOW|_PUBLIC$|PUBLIC_)/i;
 
 // Documented public values that appear in research docs on purpose. Belt over
 // layer C/D so an edit to those docs never false-positives.
 const KNOWN_PUBLIC = new Set([
-  "VNSJF5AWIZ",                          // Algolia Application ID (public)
-  "c932e7670879e29070e269d202fb6740",    // DocSearch search-only key (ships in docs.stellar.org)
+  "VNSJF5AWIZ",                          // retired Stellar Docs Algolia Application ID (public; dated research records)
+  "c932e7670879e29070e269d202fb6740",    // retired Stellar Docs DocSearch search-only key (public; dated research records)
   "yXtzs-p7TOyu9BQddSwV9g",              // Algolia-hosted MCP URL path token (documented non-secret)
 ]);
 
@@ -79,6 +79,7 @@ const PATTERNS = [
   ["GitHub token", /\bgh[pousr]_[A-Za-z0-9]{36,}\b/],
   ["Slack token", /\bxox[baprs]-[A-Za-z0-9-]{10,}\b/],
   ["Google API key", /\bAIza[0-9A-Za-z_\-]{35}\b/],
+  ["Mintlify API key", /\bmint_(?:dsc_)?[A-Za-z0-9]{20,}\b/],
   ["OpenAI/Anthropic-style key", /\b(?:sk|rk)-[A-Za-z0-9]{20,}\b/],
   ["AWS access key id", /\bAKIA[0-9A-Z]{16}\b/],
   ["JWT", /\beyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{10,}\b/],
