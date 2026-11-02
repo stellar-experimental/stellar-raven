@@ -59,3 +59,13 @@ Not filed (3):
 - Re-check each filed issue when its owner responds. A closed issue or merged PR is evidence to
   inspect, not proof of a fix.
 - Retire `sd-075` to `improvements/resolved.json` in the next resolver pass.
+
+## Resolver pass: sd-056
+
+On 2026-11-02 `sd-056` moved to `improvements/resolved.json`. stellar/stellar-docs#2930 is
+deployed, and the live Ledgers page no longer has the error. Claude Fable 5.1 at high re-derived the
+fix as the distinct reviewer: [`sd-056-retire-review.md`](2026-11-02-upstream-filing/sd-056-retire-review.md),
+verdict RETIRE, no residual. The resolution comment is
+https://github.com/stellar/stellar-docs/issues/2907#issuecomment-6588462663. This closes the handoff
+issue #316. `sd-075` stays `fixed-upstream`: a golden `rootCause` cites it, and its evidence names
+`TEMPLATE.mdx` line 135 as a possible residual. Review both before it retires.
