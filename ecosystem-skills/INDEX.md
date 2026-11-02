@@ -2,7 +2,7 @@
 
 # Stellar/Soroban ecosystem skills — index
 
-Directory of **21 agent skills** across **5 sources** · pinned 2026-10-28T22:47:20Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
+Directory of **21 agent skills** across **5 sources** · pinned 2026-11-02T14:20:09Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
 
 The **What it does** column is host-owned discovery text. Exact-ID overrides in `scripts/description-notes.mjs` can narrow upstream frontmatter for routing. They do not modify pinned source bytes. `codemode.skill.read` still applies its existing exposure scrub.
 
@@ -69,7 +69,7 @@ _Third-party Stellar platform skills — integrate hosted ecosystem services fro
 
 ## Ecosystem directory (stellarlight.xyz catalog snapshot)
 
-_The broader map of what exists across the Stellar agent-skill ecosystem — 82 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-10-28T22:47:20Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
+_The broader map of what exists across the Stellar agent-skill ecosystem — 82 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-11-02T14:20:09Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
 
 | Entry | Source | Kind |
 | --- | --- | --- |

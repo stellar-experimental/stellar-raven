@@ -1,6 +1,6 @@
 {
   "source": "https://stellarlight.xyz/api/skills",
-  "fetched_at": "2026-10-28T22:47:20Z",
+  "fetched_at": "2026-11-02T14:20:09Z",
   "counts": {
     "returned": 82,
     "total": 82,
@@ -433,13 +433,13 @@
     },
     {
       "name": "freighter-api",
-      "title": "Freighter API",
+      "title": "Varial SDK (formerly Freighter API)",
       "source": "external",
       "kind": "sdk",
-      "tagline": "Browser SDK for connecting to the Freighter Stellar wallet.",
-      "install": "npm install @stellar/freighter-api",
+      "tagline": "Browser SDK for connecting to the Varial Stellar wallet, formerly Freighter.",
+      "install": "npm install @stellar/varial-sdk",
       "repository": "https://github.com/stellar/freighter",
-      "homepage": "https://www.freighter.app/"
+      "homepage": "https://varialwallet.com/"
     },
     {
       "name": "mercury-indexer",
@@ -526,7 +526,7 @@
       "title": "Stellar Wallets Kit",
       "source": "external",
       "kind": "sdk",
-      "tagline": "Multi-wallet connector for Stellar dapps (Freighter, xBull, Albedo, Lobstr, …).",
+      "tagline": "Multi-wallet connector for Stellar dapps (Varial, formerly Freighter; xBull, Albedo, Lobstr, …).",
       "install": "npm install @creit.tech/stellar-wallets-kit",
       "repository": "https://github.com/Creit-Tech/Stellar-Wallets-Kit",
       "homepage": "https://stellarwalletskit.dev/"
