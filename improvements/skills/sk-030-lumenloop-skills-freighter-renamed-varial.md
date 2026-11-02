@@ -5,7 +5,7 @@ status: verified
 discovered: 2026-11-02
 upstreamTitle: Six Lumenloop skill files still name Freighter after the wallet became Varial
 evidence:
-  - 2026-11-02 public recheck: curl -sS -L https://codeload.github.com/lumenloop/lumenloop-skills/tar.gz/refs/heads/main returned HTTP 200. gh api repos/lumenloop/lumenloop-skills/commits/main identified a87ca95730d2a4015c884defebd66b44ea01d3b2 (2026-10-12). rg -n -i "freighter|varial" found eight Freighter lines across six SKILL.md files and no Varial line. Raw scan: tmp/fl-lk/skills-rename-sweep.txt.
+  - 2026-11-02 public recheck: curl -sS -L https://codeload.github.com/lumenloop/lumenloop-skills/tar.gz/refs/heads/main returned HTTP 200. gh api repos/lumenloop/lumenloop-skills/commits/main identified a87ca95730d2a4015c884defebd66b44ea01d3b2 (2026-10-12). rg -n -i "freighter|varial" found eight Freighter lines across six SKILL.md files and no Varial line.
   - 2026-11-02 adjacent calibration adds two missed files: skills/lumenloop-mcp-connect/SKILL.md:39 and skills/stellar-ecosystem-scout/SKILL.md:33. The earlier four-file finding omitted both repeated build-stack summaries.
   - 2026-11-02 public recheck: GET https://raw.githubusercontent.com/stellar/freighter/master/README.md and https://stellar.org/blog/foundation-news/freighter-is-now-varial each returned HTTP 200. The README names Varial; the SDF announcement confirms the rename. gh api repos/stellar/freighter/releases/tags/5.50.0 reports published_at=2026-10-29T20:32:42Z. This dates the public announcement, not the earliest rebrand commit.
   - 2026-11-02 calibration: the eight affected lines contain prose wallet names, not executable wallet SDK snippets. The recommendation changes display names only. SDK migration is outside this finding.
