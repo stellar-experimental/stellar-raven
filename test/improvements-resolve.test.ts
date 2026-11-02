@@ -1,5 +1,6 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
 // @ts-expect-error — plain .mjs script, no type declarations
@@ -76,5 +77,56 @@ describe("improvements resolution lifecycle", () => {
 
     expect(result.status).toBe(2);
     expect(result.stderr).toContain("status must be fixed-upstream before resolution");
+  });
+
+  function goneRefFixture(): string {
+    const dir = mkdtempSync(path.join(os.tmpdir(), "resolve-gone-"));
+    const file = path.join(dir, "cs-900-fixture.md");
+    writeFileSync(file, [
+      "---",
+      "id: cs-900",
+      "service: canonical-source",
+      "status: fixed-upstream",
+      "discovered: 2026-11-02",
+      "evidence:",
+      "  - upstream issue filed: https://github.com/example-owner/example-repo/issues/7",
+      "  - owner reply: https://github.com/example-owner/other-repo/issues/8",
+      "---",
+      "",
+      "## Finding",
+      "",
+      "Fixture finding.",
+      "",
+    ].join("\n"));
+    return file;
+  }
+
+  function resolveFixture(extra: string[]) {
+    return spawnSync(
+      process.execPath,
+      [
+        "scripts/improvements-resolve.mjs",
+        "--file", goneRefFixture(),
+        "--repo", "example-owner/example-repo",
+        "--live-recheck", "fixed",
+        "--review-evidence", "reviewed",
+        "--references-reviewed",
+        "--dry-run",
+        ...extra,
+      ],
+      { cwd: ROOT, encoding: "utf8" },
+    );
+  }
+
+  test("refuses a gone ref that the finding does not record", () => {
+    const result = resolveFixture(["--upstream-ref-gone", "https://github.com/example-owner/example-repo/issues/99"]);
+    expect(result.status).toBe(2);
+    expect(result.stderr).toContain("must be an upstream ref that the finding records");
+  });
+
+  test("still requires a comment on every ref that is not gone", () => {
+    const result = resolveFixture(["--upstream-ref-gone", "https://github.com/example-owner/example-repo/issues/7"]);
+    expect(result.status).toBe(2);
+    expect(result.stderr).toContain("pass --upstream-commented");
   });
 });
