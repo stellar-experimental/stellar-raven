@@ -463,3 +463,37 @@ The independent review re-derived the body diff and the routing comparison. It f
 issues. This entry now states the MPP mainnet status as unverified. Three active goldens state the
 Confidential Tokens privacy claim without the non-ZK verifier limit; `.agents/TODO.md` tracks that
 correction for the `golden-truth` lane.
+
+## 2026-11-02 — stellar-light withdraws the Allbridge recommendation and renames Freighter (decision E, #223)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-light` | `9f77b3f9433be8b57b2b78a7c14b94855779f4fe` | `sel:77022c737742` | author read; independent review pending |
+
+Three files changed: `SKILL.md`, `references/api-reference.md`, and `references/examples.md`.
+Most changed lines only replace dashes with colons or semicolons.
+
+- `SKILL.md` withdraws the Allbridge SDK recommendation. The held text recommended it for
+  "move USDC from EVM to Stellar" flows. The new text says not to recommend it for Stellar
+  transfers: Allbridge Core was exploited on 2026-07-19 and its Stellar support is unavailable.
+- `SKILL.md` renames Freighter to Varial (formerly Freighter). It names `@stellar/varial-sdk`
+  and says `@stellar/freighter-api` keeps working. npm lists `@stellar/varial-sdk` 7.0.0
+  (created 2026-10-28).
+- `references/api-reference.md` adds detail to exposed hackathon, research, project-search, and
+  repo operations. It also adds sections for four operations that the held Scout 1.9.61 manifest
+  does not expose: `GET /api/sources/locate`, `GET /api/hackathons/builds/{id}`,
+  `GET /api/hackathons/analyze`, and `GET /api/hackathons/review`.
+
+Live Scout 1.9.116 lists those four operations with the method and name that
+`OPTIONAL_EXCLUDED_SCOUT_OPERATIONS` records. The exposure scrub removes their sections. Three
+sentences in the exposed `GET /api/hackathons/builds` section name `/api/hackathons/analyze`.
+The scrub now removes each complete prose sentence that names an excluded path. Before this
+change it failed closed on such prose. A reference in a code fence still fails closed. The same
+scrub gives byte-identical output for the four held files. No new operation becomes callable.
+
+The diff has no credential, no behavior instruction outside the skill topic, and no claim about
+this gateway. The install command `npx skills add Stellar-Light/stellar-scout` and the
+SCF-plugin line accepted on 2026-10-01 are unchanged. One served phrase, "(here only, not on
+analyze)", names the analyze tool without its path; it gives no way to call it.
+No selected skill was added or removed. The stellarlight and skills.stellar.org snapshots moved
+only their timestamps.

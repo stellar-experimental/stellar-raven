@@ -679,35 +679,6 @@ and primary service; not a paraphrase), a contract mismatch appears, or trace ev
 prompt requests the wrong behavior. Record every recurrence with its case ID, result stamp, and
 transcript.
 
-### Absorb the stellar-light skill pin with the Scout operations it describes
-
-The stellar-dev pin `cac64041d0c7` and the directory snapshots shipped on 2026-10-28 (option b of
-the earlier item). The stellar-light pin stays at `3b587aa9f23d`. The live pin `789c9061f0dc`
-changes `references/api-reference.md`, which describes Scout paths that the held 1.9.61 manifest
-does not expose (`GET /api/hackathons/builds/{id}`, `GET /api/hackathons/analyze`). The section
-filter drops only the explicit excluded-path set, so those sections would reach
-`codemode.skill.read` and break the manifest-exposure rule.
-
-2026-10-28 measurement (`rounds/2026-10-28-routing-repair/`): the `789c9061` pin changes no
-searchable field and no row of the 544. With the two hackathon read operations exposed and
-`reviewSubmission` excluded, the runtime scrub keeps no non-exposed Scout path or operation name.
-That holds for all four pinned files. Under the held 1.9.61 manifest, the two hackathon sections
-still leak. The pin moves with the Scout absorb.
-
-2026-11-02 update (PR #308 review): upstream is now `9f77b3f9433b` (2026-11-01), two commits past
-`789c9061`. Its `references/api-reference.md` adds `GET /api/sources/locate`, which decision D
-excludes. That is a third non-exposed path next to the two hackathon paths, so the 2026-10-28 scrub
-and routing measurement no longer describes the live head. Re-run it on the head before any absorb.
-The hold now also has a content cost. The held `SKILL.md` (line 288) still says to recommend the
-Allbridge SDK for "move USDC from EVM to Stellar" flows. Upstream line 288 now says "Do not recommend
-it for Stellar transfers today: Allbridge Core was exploited on 2026-07-19". The held text also
-names Freighter instead of Varial. `codemode.skill.read` serves this text to models today. Owner
-decision E chooses between keeping the hold and absorbing the pin with an excluded-path entry for
-the three paths in the section filter after a fresh measurement.
-
-Done when: the stellar-light pin is absorbed together with, or after, the Scout operations it
-describes, with no exposure leak.
-
 ### Add the Varial rename to the goldens that name Freighter
 
 Found by the 2026-11-02 stellarlight directory refresh. The Freighter wallet is now Varial. The
@@ -957,13 +928,3 @@ The run measures the gaps before the fixes above ship, and then again after them
 
 Safe default: do not run it. Use the free probe evidence until the owner authorizes the spend in
 writing.
-
-### E. Choose how to stop serving the withdrawn Allbridge recommendation
-
-The held stellar-light pin (`3b587aa9f23d`) still recommends the Allbridge SDK for EVM-to-Stellar
-USDC flows. Upstream withdrew that recommendation after the 2026-07-19 Allbridge Core exploit. See
-"Absorb the stellar-light skill pin with the Scout operations it describes".
-
-Option 1: absorb the upstream pin now, with an excluded-path entry for `GET /api/sources/locate` and
-the two hackathon paths in the section filter, after a fresh scrub and routing measurement. Option 2:
-keep the hold until the Scout absorb. Safe default: option 2, which keeps serving the withdrawn text.

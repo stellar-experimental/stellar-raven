@@ -51,13 +51,61 @@ describe("skill-body operation exposure scrub", () => {
     expect(scrubbed).not.toContain("This continuation also goes.");
   });
 
-  it("fails closed when excluded operation prose is not a removable block", () => {
+  it("fails closed when an excluded path is not in a removable block or sentence", () => {
     expect(() =>
       scrubExcludedScoutOperationRefs(
-        `A plain paragraph tells the caller to use ${excludedPath}.`,
-        "unsafe prose fixture"
+        ["Run this:", "```sh", `curl https://example.test${excludedPath}`, "```"].join("\n"),
+        "code fence fixture"
       )
-    ).toThrow("survives outside a removable Markdown block");
+    ).toThrow("survives outside a removable Markdown block or sentence");
+  });
+
+  it("removes only the complete sentences that name an excluded path in a paragraph", () => {
+    const text = [
+      "Intro.",
+      "",
+      `**Units:** count rows (e.g. one per entry). The unit \`${excludedPath}\` counts matches it.`,
+      `**Values** (here and on \`${excludedPath}\`): each is a slug. A bad value returns 400!`,
+      "**Kept line** stays exactly.  Two spaces stay.",
+      "",
+      "Outro."
+    ].join("\n");
+    expect(scrubExcludedScoutOperationRefs(text, "sentence fixture")).toBe(
+      [
+        "Intro.",
+        "",
+        "**Units:** count rows (e.g. one per entry).",
+        "A bad value returns 400!",
+        "**Kept line** stays exactly.  Two spaces stay.",
+        "",
+        "Outro."
+      ].join("\n")
+    );
+  });
+
+  it("joins a wrapped paragraph before it removes a sentence that spans lines", () => {
+    const text = [
+      "Keep the first sentence. Then call",
+      `\`${excludedPath}\` for the rest. Keep the`,
+      "last sentence."
+    ].join("\n");
+    expect(scrubExcludedScoutOperationRefs(text, "wrapped fixture")).toBe(
+      "Keep the first sentence. Keep the last sentence."
+    );
+  });
+
+  it("drops a fully removed paragraph and one blank line", () => {
+    const text = ["Before.", "", `Use ${excludedPath} here.`, "", "After."].join("\n");
+    expect(scrubExcludedScoutOperationRefs(text, "whole paragraph fixture")).toBe(
+      ["Before.", "", "After."].join("\n")
+    );
+  });
+
+  it("does not split a sentence at a period inside a code span or parentheses", () => {
+    const text = `Keep \`a. b\` and (see c. d) together. Drop \`${excludedPath}\` here.`;
+    expect(scrubExcludedScoutOperationRefs(text, "split fixture")).toBe(
+      "Keep `a. b` and (see c. d) together."
+    );
   });
 
   it("removes an unavailable collection's whole blockquote and retains exposed child paths", () => {
