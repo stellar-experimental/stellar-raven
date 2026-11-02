@@ -1,7 +1,7 @@
 ---
 id: sd-063
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: State-archival page gives a stale restored-entry TTL of current_ledger_number + 4095
 evidence:
@@ -11,6 +11,10 @@ evidence:
   - 2026-11-02T17:17:27Z the live storage-strategies appendix https://developers.stellar.org/docs/build/guides/storage/storage-strategies says "Min TTL - persistent/instance create or restore 2,073,600 ledgers ≈ 120 d"
   - 2026-11-02T17:20:48Z Raven stellarDocs.search_docs "restore persistent entry minimum TTL 4095" returned the state-archival RestoreFootprintOp record with the 4095 text
   - golden cases q-sor-p23-auto-restore-extendto and q-sor-force-fast-archival-localnet (golden audit pass 2, 2026-11-02)
+  - state-archival.mdx line 179 defines [minimum] as stellar-core 2109a168 src/ledger/NetworkConfig.h#L77-L78, which is the initial constant MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4096
+  - 2026-11-02 stellar-core master b8c4f12d6f src/transactions/RestoreFootprintOpFrame.cpp lines 126-127 compute restoredLiveUntilLedger = ledgerSeq + archivalSettings.minPersistentTTL - 1
+  - 2026-11-02 grep of stellar/stellar-docs main 5142b219 docs/ for 4095, 4096, and 4,096 finds no other prose that gives an initial TTL constant
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3000
 ---
 
 ## Finding
@@ -23,8 +27,6 @@ The same sentence says that the minimum is a network configuration parameter. Th
 sentence is therefore stale, and the docs storage-strategies appendix gives the current value.
 
 A reader can calculate a restored entry's TTL as about 5.7 hours instead of about 120 days.
-
-This is a `docs-content` finding.
 
 ## Evidence
 
@@ -40,8 +42,11 @@ create or restore.
 ## Recommendation
 
 Replace the fixed number with the setting name. For example: the restored entry's live-until
-ledger is `current_ledger_number + minPersistentTTL - 1`. Add the current Mainnet value with an
-as-of date, or link to the storage-strategies appendix or the Lab network-limits page.
+ledger is `current_ledger_number + minPersistentTTL - 1`. Link to the "Minimum TTL" section on
+the same page, which already points to the Lab network-limits page.
 
-Optional: grep the archival pages for other initial-configuration TTL constants, such as 4096
-and 16.
+The `[minimum]` reference link points to the initial constant
+`MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4096` in a pinned stellar-core `NetworkConfig.h`. Remove
+that link, or point it to the current network-limits source.
+
+Optional: add the current Mainnet value with an as-of date.

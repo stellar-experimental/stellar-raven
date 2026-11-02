@@ -1,7 +1,7 @@
 ---
 id: sd-070
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Storage migration guide says an added Option field always traps; soroban-sdk 28 reads it as None
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - stellar/rs-soroban-sdk release v28.0.0 notes "A contracttype struct can be read from stored data with extra or missing fields (CAP-86). A field missing from the map reads as None if it is an Option, and errors otherwise ... An Option field can now be added or removed without migrating everything already stored." (rs-soroban-sdk PR 2006)
   - stellar/stellar-protocol master core/cap-0086.md "Host functions for sparse Symbol-keyed map creation and unpacking", Status Final, Protocol version 28
   - 2026-11-02 crates.io soroban-sdk max stable version 29.0.1
+  - 2026-11-02 pre-existing upstream PR https://github.com/stellar/stellar-docs/pull/2763 (open draft, opened 2026-08-18 by leighmcculloch) proposes this fix; Raven did not file a separate issue
   - golden cases q-soroban-storage-migration and q-soroban-upgradeable-storage-compat (golden audit pass 2, 2026-11-02)
 ---
 
@@ -24,7 +25,7 @@ still gives an error.
 
 A reader can build a full versioned migration for a change that the current SDK handles directly.
 
-This is a `docs-content` finding. The old behavior is still true for contracts built with
+The old behavior is still true for contracts built with
 soroban-sdk before 28.
 
 ## Evidence
@@ -44,3 +45,6 @@ later: an added or removed `Option` field needs no migration, and an added requi
 needs a versioned key or an explicit migration.
 
 Optional: link the soroban-sdk migration note `_migrating::v28_contracttype_unpacking`.
+
+The open draft pull request https://github.com/stellar/stellar-docs/pull/2763 "Document sparse
+contracttype unpacking (SDK v28)" proposes this fix.

@@ -1,7 +1,7 @@
 ---
 id: cs-003
 service: canonical-source
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "ecosystem/README.md status column disagrees with the preamble Status of SEP-0007, 0008, 0014, 0039, and 0054"
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - "Minor adjacent wording: the Abandoned table lists SEP-0013 as 'Abandoned', and sep-0013.md says 'Status: Rejected (In favor of SEP-6)'. 'Rejected' is not one of the README's defined SEP status terms."
   - "Dedupe 2026-11-02: gh search issues and PRs in stellar/stellar-protocol for 'README status', 'status mismatch README', 'preamble status', 'sep-0007 Final', 'SEP-14 status', 'SEP-39 status', and 'SEP-54 status' found no issue or PR about these rows."
   - "Golden consumers (eval-side encoding, status not gated): eval/qa/corpus/battery/assets-anchors-seps/q-sep-7-uri.json and q-sep-8-regulated-assets.json notes record the preamble-vs-README conflict; q-sep-catalog-list.json carries disputed truth rows for SEP-7 and SEP-8 and cites commits 600c326b and 936a617e."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-protocol/issues/2055
 ---
 
 ## Finding

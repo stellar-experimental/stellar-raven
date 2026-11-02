@@ -1,10 +1,11 @@
 ---
 id: sd-075
 service: stellar-docs
-status: verified
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: Hello World calls stellar contract build a cargo build shortcut; soroban-sdk 28 rejects plain cargo
 evidence:
+  - "2026-11-02 live re-check: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world.md now says that with soroban-sdk 28 or later, running cargo build --target wasm32v1-none --release directly fails with the error soroban-sdk requires stellar-cli v25.2.0+ to build a contract. Fixed by https://github.com/stellar/stellar-docs/pull/2991 (merged 2026-11-02T20:13:29Z), which closes https://github.com/stellar/stellar-docs/issues/2974 (opened 2026-11-01 by oceans404). Raven did not file a separate issue."
   - 2026-11-02T17:17:27Z GET https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world returned HTTP 200 with "This is a small wrapper around cargo build that sets the target to wasm32v1-none and the profile to release ... You can think of it as a shortcut for the following command" followed by "cargo build --target wasm32v1-none --release"
   - stellar/stellar-docs main 7cb5e8a492706d2ae95bbb14be737fbf96100058 docs/build/smart-contracts/getting-started/hello-world.mdx lines 309-312; docs/build/smart-contracts/example-contracts/TEMPLATE.mdx line 135 repeats the plain cargo command
   - stellar/rs-soroban-sdk v29.0.1 soroban-sdk/src/_migrating/v28_spec_shaking.rs "contracts must be built with stellar contract build from stellar-cli v25.2.0 or newer. Building a contract for wasm with any other build system produces a build error - error - soroban-sdk requires stellar-cli v25.2.0+ to build a contract"
@@ -23,8 +24,6 @@ script requires the build to come from `stellar contract build` in stellar-cli v
 The CLI strips unused contract spec entries after the build.
 
 A reader who runs the "equivalent" command gets a build error.
-
-This is a `docs-content` finding.
 
 ## Evidence
 
