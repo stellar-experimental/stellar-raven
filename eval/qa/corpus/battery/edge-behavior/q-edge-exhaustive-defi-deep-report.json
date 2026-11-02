@@ -72,17 +72,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-22 primary 3262 and blind 3265; DeFi roster/status sibling sweep.",
-        "Structural re-form (long-fact): Shortened the bounded DeFi landscape fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/ecosystem/what-the-defi-is-happening-on-stellar — the official dated landscape separates established, launched, and upcoming DeFi projects across categories.",
-        "Sibling sweep 2026-08-29: grep exhaustive DeFi|bounded landscape|staged scope|deep-dive → q-edge-deep-full-history-report, q-scf-skill-stellar-scout, q-edge-exhaustive-defi-deep-report; no contradiction"
-      ],
-      "rootCause": [
-        "Non-exhaustiveness discipline was encoded as a blanket research ban with obsolete internal mechanics and a static example roster.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://stellar.org/blog/ecosystem/what-the-defi-is-happening-on-stellar (observedAt 2026-11-02): HTTP 200.",
+        "Raven stellarDocs.search_meeting_notes -> https://developers.stellar.org/meetings/2026/04/16#defi-ecosystem-update (observedAt 2026-11-02): 'Blend has crossed $80 million in TVL' (dated category evidence).",
+        "catalog/manifest.json (worktree, 2026-11-02): request_research occurrences 0; free research ids exposed are lumenloop.list_research and scout.searchResearch only.",
+        "No gospel change. Sibling sweep 2026-11-02: q-edge-deep-full-history-report, q-eco-defi-projects-discovery; no contradiction."
       ]
     },
     "origin": "raven-next q-edge-exhaustive-defi-deep-report"

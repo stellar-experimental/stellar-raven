@@ -86,22 +86,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-01)",
       "evidence": [
-        "Solo scratchpad 575: GT-14 process 3239 and blind process 3242",
-        "Direct Blend documentation and repository review 2026-07-10",
-        "Structural re-form (compound-predicate): Split two compound key facts into five atomic facts; all Soroban, lending, pool, borrowing, Script3, blend-capital, no-DAO, administration, and risk claims remain unchanged.",
-        "Live re-check 2026-08-27: https://github.com/blend-capital/blend-contracts — identified Blend as a Soroban lending primitive with permissionless isolated pools.",
-        "Live re-check 2026-08-27: https://docs.blend.capital/users/lending-borrowing/lending — showed lending and collateral-backed borrowing through Blend pools.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/developers/composability-on-stellar-from-concept-to-reality — identified Blend as a lending protocol created by Script3.",
-        "Live re-check 2026-08-27: https://github.com/blend-capital — showed the public Blend code and brand organization.",
-        "Live re-check 2026-08-27: https://github.com/blend-capital/docs-v2/blob/main/pool-creators/general.md — showed Blend's no-DAO protocol design alongside owned or DAO-managed pool choices.",
-        "Sibling sweep 2026-08-27: grep Blend|Script3|blend-capital|isolated pools → q-defi-blend-alternatives, q-defi-cross-blend-rivool-sac, q-scf-blend-winners-live, q-edge-fresh-latest-blend-tvl; no contradiction"
-      ],
-      "rootCause": [
-        "eval-side entity/governance compression: builder, brand org, protocol control, and individual-pool governance were collapsed",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "2026-10-10 [A] https://docs.blend.capital/users/general-faq — \"All Blend lending pools are isolated from one another ... anyone can deploy a new lending pool as long as they can attract backstop module depositors\" (proposer claim, confirmed: Blend: Soroban lending with permissionless isolated pools and over-collateralized loans)",
+        "2026-11-02 [C] https://stellarlight.xyz/entities/script3 — \"borrowers take over-collateralized loans\" (proposer claim, confirmed: Blend: Soroban lending with permissionless isolated pools and over-collateralized loans)",
+        "2026-11-02 [D] https://iq.wiki/wiki/blend — \"non-custodial lending and borrowing protocol built on the Stellar network's Soroban\" (proposer claim, confirmed: Blend: Soroban lending with permissionless isolated pools and over-collateralized loans)",
+        "2026-11-02 [C] https://api.lumenloop.com/v1/tools/get_project (blend) — \"\"parent\": \"Script3\" ... \"github\": [\"github.com/blend-capital\"]\" (proposer claim, confirmed: Script3 developed Blend; blend-capital is the code org; not SDF)",
+        "2026-11-02 [B] https://github.com/blend-capital/blend-contracts-v2 — \"Soroban implementation of the Blend Protocol v2 (pushed 2026-10-26)\" (proposer claim, confirmed: Script3 developed Blend; blend-capital is the code org; not SDF)",
+        "2026-11-02 [D] https://thedefiant.io/education/defi/stellar-network-real-world-rails-bring-defi-to-new-audiences — \"Blend is a universal liquidity protocol created by Script3.\" (proposer claim, confirmed: Script3 developed Blend; blend-capital is the code org; not SDF)",
+        "2026-11-02 [A] https://docs.blend.capital/pool-creators/general — \"New markets and assets do not require the approval of a DAO (Blend has no DAO) ... By setting a Governance smart contract as a pool owner, someone could easily recreate a Compound or Aave like product\" (proposer claim, confirmed: No DAO / no central operator at protocol level; pools can be owned or governed)",
+        "2026-11-02 [A] https://docs.blend.capital/users/general-faq — \"No central organization controls Blend\" (proposer claim, confirmed: No DAO / no central operator at protocol level; pools can be owned or governed)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=blend — \"Blend | blend | Live | Protocol/Contract | [Lending]\" (proposer claim, confirmed: avoid items punish false claims (blend.com, SDF builder, no pool admin, required dominance))",
+        "No gospel change: proposer verdict 'unchanged'; every answer, keyFact, and avoid claim was re-checked against the sources above on 2026-11-02.",
+        "Sibling sweep 2026-11-02: checked q-defi-cross-blend-rivool-sac, q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit; no gospel change in this case, so no sibling contradiction can arise from this event."
       ]
     },
     "origin": "raven-next q-defi-blend-what-is"

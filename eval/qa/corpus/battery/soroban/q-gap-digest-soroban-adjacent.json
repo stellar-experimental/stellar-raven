@@ -29,7 +29,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -57,26 +57,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
-        "catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest",
-        "inventory/lumenloop.json",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep stellar-ecosystem-digest|softEmpty|corpus roundup → q-gap-digest-defi-adjacent; no contradiction",
-        "Structural re-form (compound-predicate): split digest use, returned window, audit checks, and no-item semantics into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/lumenloop/lumenloop-skills/blob/main/skills/stellar-ecosystem-digest/SKILL.md — the current upstream digest skill remains runnable for a theme such as Soroban.",
-        "Live re-check 2026-08-27: https://github.com/lumenloop/lumenloop-skills/blob/main/skills/stellar-ecosystem-digest/SKILL.md — the current upstream skill still requires a dated returned window.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current runnable contract still exposes softEmpty and the constituent-call audit.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current softEmpty contract still treats a matched-empty window as quiet, not failed.",
-        "Sibling sweep 2026-08-27: grep stellar-ecosystem-digest|softEmpty|returned date window|call audit → q-gap-digest-defi-adjacent; no contradiction"
-      ],
-      "rootCause": [
-        "solo://project/49/scratchpad/p4/n1-gapops",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case).",
+        "golden.answer confirmed-as-of: C Raven execute codemode.skill.run('skills.lumenloop.stellar-ecosystem-digest',{subject:'Soroban',subjectType:'theme',days:7}) — 'keys [subject,subjectType,window,items,counts,softEmpty,upcomingEvents,calls]; window 2026-10-26..2026-11-02; counts articles 5, av 5, events 5, research 1; softEmpty false' (observedAt 2026-11-02).",
+        "golden.answer + avoid[0]: B https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-ecosystem-digest/SKILL.md — 'Produce a dated, cited digest of recent Stellar ecosystem activity ... Always date.' (observedAt 2026-11-02).",
+        "golden.keyFacts[3]: A catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest — 'true <=> the window matched nothing - a quiet window, not a failure.' (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-gap-digest-defi-adjacent checked; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

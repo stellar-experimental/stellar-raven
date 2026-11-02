@@ -34,7 +34,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -153,35 +153,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-01)",
       "evidence": [
-        "Solo scratchpad 575: GT-12 primary process 3237 and blind process 3241",
-        "Primary x402, MPP, AP2/FIDO, ACP, SEP-41, and current Stellar integration records rechecked 2026-07-10",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Independent Terra review 2026-07-14 rechecked current Stellar agentic-payments Docs/skill plus primary AP2 and ACP sources; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review",
-        "SEP-41 Draft v0.5.0 / updated 2026-06-08 observed from the normative source on 2026-08-04; other protocol claims were not re-dated.",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep x402|MPP|AP2|ACP → q-agent-payment-standard-choice, q-mpp-discovery-and-modes, q-defi-x402-on-stellar-what; no contradiction",
-        "Structural re-form (long-fact): split and shortened the facts without changing the required claims; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the current dated normative record demonstrates why changeable status and version claims need an as-of date.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments — the official guide treats x402 and MPP as general protocols with Stellar SEP-41 settlement methods.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments — the official guide documents one-time MPP charge payments and high-frequency off-chain channels.",
-        "Live re-check 2026-08-29: https://github.com/google-agentic-commerce/AP2 and https://github.com/agentic-commerce-protocol/agentic-commerce-protocol — the primary repositories document AP2 mandates with optional x402 composition and ACP's beta checkout and payment-handler model.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — SEP-41 remains the Stellar Soroban token interface, separate from external protocol status and scope.",
-        "Sibling sweep 2026-08-29: grep AP2|ACP|streaming-only|Stellar token-interface role → q-agent-payment-standard-choice, q-defi-agentic-payment-standards-compare; no contradiction."
-      ],
-      "rootCause": [
-        "freshness-drift: the pinned SEP-41 metadata lagged the normative v0.5.0 record",
-        "eval-side protocol-layer conflation: external standard identity, network method, settlement substrate, and optional composition were merged",
-        "coverage diagnostic: the exposed Stellar agentic-payments skill does not cover external AP2/ACP, which does not by itself establish a Stellar Docs content obligation",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "2026-11-02 [A] https://docs.cdp.coinbase.com/x402/support/faq — \"x402 was incubated at Coinbase and contributed to the x402 Foundation, which launched under the Linux Foundation\" (proposer claim, confirmed: x402 created at Coinbase, now governed via x402 Foundation / Linux Foundation)",
+        "2026-11-02 [D] https://theagenteconomy.si/tools/protocol-compatibility — \"Linux Foundation announcement of the x402 Foundation, 14 July 2026\" (proposer claim, confirmed: x402 created at Coinbase, now governed via x402 Foundation / Linux Foundation)",
+        "2026-10-09 [A] https://developers.stellar.org/docs/build/agentic-payments — \"x402 on Stellar — An open protocol from the Coinbase Developer Platform for per-request payments using Soroban authorization\" (proposer claim, confirmed: Stellar x402 uses Soroban auth entries + facilitator; Stellar MPP supports charge and session)",
+        "2026-10-22 [A] https://developers.stellar.org/docs/build/agentic-payments/mpp — \"The @stellar/mpp SDK supports two payment intents: Charge ... Session\" (proposer claim, confirmed: Stellar x402 uses Soroban auth entries + facilitator; Stellar MPP supports charge and session)",
+        "2026-11-02 [B] https://github.com/tempoxyz/mpp-specs/tree/main/specs/methods/stellar — \"specs/methods/stellar/draft-stellar-charge-00.md\" (proposer claim, confirmed: Stellar x402 uses Soroban auth entries + facilitator; Stellar MPP supports charge and session)",
+        "2026-04-06 [A] https://mpp.dev/intents/ — \"The charge intent requests an immediate one-time payment ... For metered billing ... use the session intent\" (proposer claim, confirmed: General MPP supports charge, session, subscription; IETF Internet-Draft)",
+        "2026-11-02 [D] https://zeroclick.ai/resources/mpp-for-api-sellers — \"The current intent reference lists Tempo support for all three [charge, session, subscription]\" (proposer claim, confirmed: General MPP supports charge, session, subscription; IETF Internet-Draft)",
+        "2026-11-02 [D] https://www.quicknode.com/docs/build-with-ai/agentic-payments — \"MPP (Machine Payments Protocol) is an IETF Internet-Draft by Tempo Labs and Stripe\" (proposer claim, confirmed: General MPP supports charge, session, subscription; IETF Internet-Draft)",
+        "2026-11-02 [A] https://fidoalliance.org/fido-alliance-agentic-ai — \"These specifications will draw from initial contributions from Google (AP2) and Mastercard (Verifiable Intent)\" (proposer claim, confirmed: AP2 is moving through FIDO standardization; x402 optional)",
+        "2026-11-02 [D] https://fidoalliance.org/pymnts-google-and-mastercard-contribute-agentic-commerce-standards-to-fido-alliance — \"Google ... donated AP2 to the FIDO Alliance\" (proposer claim, confirmed: AP2 is moving through FIDO standardization; x402 optional)",
+        "2026-11-02 [B] https://github.com/agentic-commerce-protocol/agentic-commerce-protocol — \"The specification is maintained by OpenAI and Stripe and is currently in beta\" (proposer claim, confirmed: ACP is a beta checkout/commerce protocol delegating payment to handlers)",
+        "2026-11-02 [A] https://docs.stripe.com/agentic-commerce/protocols/acp — \"Delegate payment: Securely pass payment tokens between buyers, agents, and businesses using payment handlers.\" (proposer claim, confirmed: ACP is a beta checkout/commerce protocol delegating payment to handlers)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/agentic-payments/mpp — \"Session ... unidirectional payment channels\" (proposer claim, confirmed: keyFacts and avoid items match current sources)",
+        "No gospel change: proposer verdict 'unchanged'; every answer, keyFact, and avoid claim was re-checked against the sources above on 2026-11-02.",
+        "Sibling sweep 2026-11-02: checked q-mpp-discovery-and-modes; no gospel change in this case, so no sibling contradiction can arise from this event."
       ]
     },
     "origin": "raven-next q-defi-agentic-payment-standards-compare"

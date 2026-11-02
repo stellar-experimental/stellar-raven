@@ -76,19 +76,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-21 primary 3260 and blind 3261",
-        "Sibling sweep: asset metadata, SEP-1, explorer verification, secret-key safety",
-        "Structural re-form (compound-predicate): split bidirectional verification and non-certification requirements into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0032.md — the current source still describes forward and reverse issuer-domain/TOML checks.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — the current official safety guide still requires independent diligence rather than certification from one signal.",
-        "Sibling sweep 2026-08-27: grep code+issuer|contract ID|TOML|trust oracle → q-sep-1-toml, q-aas-trusted-asset-list-whitelist, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-raph-claimable-balance-safety, q-raph-lobstr-legitimacy; no contradiction"
-      ],
-      "rootCause": [
-        "Useful identity evidence was written too close to a certification/legitimacy conclusion.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset (observedAt 2026-11-02): 'Assets are uniquely identified by the combination of their asset code and issuer.'",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md (observedAt 2026-11-02): 'the home_domain of your Stellar account to the domain that hosts your stellar.toml'.",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0032.md (observedAt 2026-11-02): 'Reverse verification of an asset issuer address and domain'.",
+        "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers (observedAt 2026-11-02): 'malicious entities set up dummy websites ... to induce you to enter your secret key ... Always verify the domain'.",
+        "No gospel change. Sibling sweep 2026-11-02: q-sep-1-toml, q-aas-trusted-asset-list-whitelist, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-raph-lobstr-legitimacy; no contradiction."
       ]
     },
     "origin": "raven-next q-edge-asset-site-scam-detection"

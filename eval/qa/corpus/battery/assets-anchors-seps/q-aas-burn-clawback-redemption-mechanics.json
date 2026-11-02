@@ -107,21 +107,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (compound-predicate): Split supply and return mechanics, shortened clawback, and moved the issuer-balance trap to avoid; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed issued classic balances outside the issuer.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed that returning an asset to its issuer burns it.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — showed holder-balance removal under clawback-enabled issuer controls.",
-        "Sibling sweep 2026-08-27: grep burn|redemption|clawback|issuer balance → q-aas-issuer-fees-supply-cap-freeze, q-sep-clawback-prereq-flag, q-comp-clawback-cap0035, q-comp-clawback-holder-risk; no contradiction",
-        "Corroboration audit 2026-08-29: added 2 row(s) for issuer accounting and clawback balance effects; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md — 'To delete, or \"burn\", an asset, you must send it back to the account that issued it.' (claim: Burning an issued asset is done by sending it back to the issuing account.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tokens/stellar-asset-contract.md — 'Transfers to the issuer account will burn the token, while transfers from the issuer account will mint.' (claim: Burning an issued asset is done by sending it back to the issuing account.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tokens/stellar-asset-contract.md — 'Clawback `amount` from `from` account. `amount` is burned in the clawback process.' (claim: The SAC describes the clawed-back amount as burned; clawback needs clawback-enabled trustlines/flags.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tokens/control-asset-access.md — 'With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any *subsequent* trustlines established with this account will have clawbacks enabled.' (claim: The SAC describes the clawed-back amount as burned; clawback needs clawback-enabled trustlines/flags.; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — 'The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed in all cases that an account holds an asset, the issuer must be able to revoke authorization to release any offers creating selling' (claim: The SAC describes the clawed-back amount as burned; clawback needs clawback-enabled trustlines/flags.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust.md — 'CHANGE_TRUST_SELF_NOT_ALLOWED: The source account attempted to create a trustline for itself, which is not allowed.' (claim: Issuer does not hold its own classic asset as a normal balance.; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/rs-soroban-env/blob/0c99950e96128beba3319aa96b116646ce974e69/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs#L337-L343 — 'fn mint ... check_not_issuer(e, &to)?;' (claim: Issuer does not hold its own classic asset as a normal balance.; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-aas-issuer-fees-supply-cap-freeze, q-comp-clawback-cap0035, q-sep-clawback-prereq-flag, q-comp-sac-inherits-flags checked; no contradiction."
       ]
     },
     "origin": "raven-next q-aas-burn-clawback-redemption-mechanics"

@@ -1,0 +1,1662 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "protocol-core-05",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-protocol-operations-vs-transactions",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Operations are individual ledger-changing commands",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Operations are individual commands that modify the ledger."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"operations and transactions bundle 1-100 operations\"",
+       "observedAt": "2026-11-02",
+       "quote": "a bundle of between 1-100 operations (except smart contract transactions, which can only have one operation per transaction)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Names payment, create account, invoke contract, manage offer as examples",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Operations are used to send payments, invoke a smart contract function, enter orders into the decentralized exchange, change settings on accounts, and authorize…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "A transaction bundles one or more operations",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Transactions comprise a bundle of between 1-100 operations"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs",
+       "observedAt": "2026-11-02",
+       "quote": "a bundle of between 1-100 operations"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "The transaction is the signed unit submitted to the network",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "compose operations, bundle them into a transaction, and then sign and submit the transaction to the network"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Operations execute atomically; per-op source account override",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Transactions are atomic. Meaning if one operation in a transaction fails, all operations fail"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Operations are executed for the source account of the transaction unless an operation override is defined."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Inverted containment / independently submitted operations are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "bundle them into a transaction, and then sign and submit the transaction"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Gives example operation types, such as a payment, create account, or contract invocation.",
+     "reason": "Eval-side authoring flaw: the keyFact binds one incidental four-item example list; the cited docs page uses a different list, so a true answer can fail it."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: keyFact binds an incidental exact example list."
+   ],
+   "siblings": ""
+  },
+  {
+   "id": "q-protocol-parallel-execution",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "CAP-0063/P23 introduced parallel smart-contract scheduling",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 23 9/3/25 - CAP-0062 ..., CAP-0063 (Parallel smart contract transaction processing)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md",
+       "observedAt": "2026-11-02",
+       "quote": "During the protocol upgrade to version 23, the respective configuration setting ledger entry will be created and ledgerMaxDependentTxClusters will be set to 1 (…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "P23 activation date 2025-09-03",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/announcing-protocol-23",
+       "observedAt": "2026-11-02",
+       "quote": "The Mainnet vote will occur on September 3, 2025 at 10am PST/GMT 17:00."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 23 9/3/25"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Setting raised to 2 on 2026-01-29 17:00 UTC at ledger 60993066",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/60993066",
+       "observedAt": "2026-11-02",
+       "quote": "closed_at 2026-01-29T17:00:09Z"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md",
+       "observedAt": "2026-11-02",
+       "quote": "Instructions/threads | ... | 600'000'000 / 1 thread | 580'000'000 / 2 threads"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Current setting is 2 (RPC reads 2026-07-10)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "getLedgerEntries CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 on https://mainnet.sorobanrpc.com, https://soroban-rpc.mainnet.stellar.gateway.fm, https://rpc.lightsail.network",
+       "observedAt": "2026-11-02",
+       "quote": "decoded words (8, 14, 3), lastModifiedLedgerSeq 65080525, latestLedger 65269941 on all three"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/65080525",
+       "observedAt": "2026-11-02",
+       "quote": "closed_at 2026-10-22T17:00:08Z"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0007.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final ... | Dependent Tx Clusters | 2 | 3 |"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+       "observedAt": "2026-11-02",
+       "quote": "SLP-0007 (live on Mainnet since October 22, 2026) ... raised the dependent transaction cluster count (2 → 3)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Disjoint footprints and a bounded current setting",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md",
+       "observedAt": "2026-11-02",
+       "quote": "The number of clusters per stage must not exceed the value of ledgerMaxDependentTxClusters network configuration setting"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Wrong protocol / sharding / P23 immediately multi-cluster are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md",
+       "observedAt": "2026-11-02",
+       "quote": "parallel execution logic won't be active until ledgerMaxDependentTxClusters is increased by a separate SLP and a validator vote."
+      }
+     ]
+    },
+    {
+     "field": "tags.freshness",
+     "claim": "stable",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "mainnet RPC getLedgerEntries",
+       "observedAt": "2026-11-02",
+       "quote": "setting changed 2 -> 3 at ledger 65080525"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Yes—Stellar now applies non-conflicting smart-contract transactions in bounded parallel clusters. **Protocol 23/Whisk** introduced CAP-0063 scheduling support on 2025-09-03, but initialized `ledgerMaxDependentTxClusters` to **1** (no multi-cluster parallel execution). Later network-settings votes raised it to **2** on **2026-01-29 at 17:00 UTC** (SLP-0004, ledger 60993066) and to **3** on **2026-10-22 at 17:00 UTC** (SLP-0007, ledger 65080525). As of 2026-11-02, three independent Mainnet RPC reads decoded setting 3; validators can change this setting again. The scheduler groups disjoint read/w…",
+     "reason": "freshness-drift: SLP-0007 raised ledgerMaxDependentTxClusters from 2 to 3 on Mainnet on 2026-10-22; the golden still pins 2 as current."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Parallel execution = CAP-0063 = Protocol 23 Whisk. DATE CORRECTED to 2025-09-03 (was 2025-06-10 in draft — that was the blog publish date, not activation). Verified via stellar.org 'Introducing Whisk' + Protocol 23 Upgrade Guide: Mainnet vote 2025-09-03 17:00 UTC. Trap is wrong CAP/version.\nAlso good if the answer: Notes this is part of the SDF 'Road to 5000 TPS' scaling effort (parallel core / dissemination work). | Notes Whisk activated on Mainnet 2025-09-03.\nGolden cites: The Protocol 23 / Whisk material and/or CAP-0063, plus the 'Parallelizing Stellar Core' blog.\nGT-25/GT-31/GT-33: P23 sup…",
+     "reason": "freshness-drift: record the second settings change and the volatility of the current value for graders."
+    },
+    {
+     "field": "tags.freshness",
+     "op": "replace",
+     "new": "scheduled",
+     "reason": "The golden carries a volatile current network-setting value that drifted; scheduled freshness requires truth.asOf and truth.reverifyBy."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-23-whisk-caps; q-protocol-version-history-list"
+  },
+  {
+   "id": "q-protocol-quorum-slice-vs-quorum",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Quorum set = node-configured set of trusted nodes",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "A node's trusted set of nodes is called a quorum set."
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/faq",
+       "observedAt": "2026-11-02",
+       "quote": "SCP allows each validator to choose its own trusted set of other validators"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Quorum slice = sufficient threshold subset of one node's quorum set",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "The combination of agreeing nodes within the quorum set are called quorum slices."
+      },
+      {
+       "class": "B",
+       "ref": "https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "FBA's robustness stems from quorum slices, individual trust decisions made by each node"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "Quorum = node set sufficient for agreement, each member has a slice inside",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "A quorum is a set of nodes sufficient to reach an agreement wherein each node is part of a quorum slice."
+      },
+      {
+       "class": "D",
+       "ref": "https://datatracker.ietf.org/meeting/103/materials/slides-103-dinrg-scp-update-00",
+       "observedAt": "2026-11-02",
+       "quote": "A quorum U ⊆ V is a set of nodes that contains at least one slice of each of its members"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "A blocking set can prevent the network from reaching agreement",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "Node blocking sets are any set of nodes in a quorum set that prevent a node from reaching agreement."
+      },
+      {
+       "class": "B",
+       "ref": "https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "Let v ∈ V be a node in FBAS ⟨V,Q⟩. A set B ⊆ V is v-blocking iff it overlaps every one of v's slices"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Slice is not global committee; not stake weight; not centrally assigned",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "each Core node decides on which other nodes it would like to trust to reach agreement"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/faq",
+       "observedAt": "2026-11-02",
+       "quote": "The SCP is a proof-of-agreement system with no on-chain financial incentives"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "- **Quorum set**: the set of other nodes a given node chooses to trust — its configured trust list, with a **threshold** (the minimum number of those trusted nodes that must agree) [1].\n- **Quorum slice**: a threshold-sized **subset** of a node's quorum set that is sufficient to convince *that* node to agree [1].\n- **Quorum**: a set of nodes sufficient to reach **network-wide** agreement, where each node in the set has at least one of its quorum slices contained in the set [1].\n- Quorums form through nodes' **overlapping / intersecting slices**, which enables open membership — each node config…",
+     "reason": "Eval-side authoring flaw: the golden made a blocking set network-wide; the docs and the SCP whitepaper define it relative to one node (v-blocking)."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: blocking-set definition drifted from the source (network-wide vs node-relative)."
+   ],
+   "siblings": "q-hist-scp-rewrite-2015; q-protocol-scp-consensus-algorithm"
+  },
+  {
+   "id": "q-protocol-scp-consensus-algorithm",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Stellar uses SCP, a construction of FBA",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar network reaches consensus using the Stellar Consensus Protocol (SCP), which is a construction of the Federated Byzantine Agreement (FBA)."
+      },
+      {
+       "class": "B",
+       "ref": "https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "We also present the Stellar Consensus Protocol (SCP), a construction for FBA."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..4]",
+     "claim": "FBA uses user-defined quorum sets; PoW=computation, PoS=stake",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "FBA differs from ... Proof of Work (which relies on a node's computational power) and Proof of Stake (which relies on a node's staking power)"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/faq",
+       "observedAt": "2026-11-02",
+       "quote": "This design is intended to overcome the limitations of incentive-based mechanisms, such as proof-of-work (PoW) and proof-of-stake (PoS)."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "No monetary rewards for validators",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "There are no monetary rewards for being a validator on the Stellar network."
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/faq",
+       "observedAt": "2026-11-02",
+       "quote": "Validators operate without on-chain financial incentives built into the protocol"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SCP favors safety over liveness and can halt",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "SCP prioritizes fault tolerance and safety over liveness."
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/faq",
+       "observedAt": "2026-11-02",
+       "quote": "SCP favors safety over liveness."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Authored by David Mazières",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus. David Mazières, Stellar Development Foundation"
+      },
+      {
+       "class": "D",
+       "ref": "https://datatracker.ietf.org/doc/html/draft-mazieres-dinrg-scp-04",
+       "observedAt": "2026-11-02",
+       "quote": "Mazieres, D., \"The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus\", Stellar Development Foundation whitepaper, 2015"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "PoW, PoS/staking rewards, PBFT/Tendermint/DPoS names are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "construction of the Federated Byzantine Agreement (FBA)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-hist-scp-rewrite-2015; q-protocol-quorum-slice-vs-quorum; q-raph-xlm-staking"
+  },
+  {
+   "id": "q-protocol-state-archival-ttl",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "TTL in ledgers for contract storage",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-11-02",
+       "quote": "An entry's Time To Live (TTL) is defined as how many ledgers remain until the entry is no longer live."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md",
+       "observedAt": "2026-11-02",
+       "quote": "A LIVE entry's TTL can be extended by a Soroban operation (`ExtendFootprintTTLOp`) or by a host function"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Expired persistent/instance entries are archived and must be restored",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-11-02",
+       "quote": "When a Persistent or Instance entry TTL is 0, it is \"archived\" and can't be accessed until it is \"restored\"."
+      },
+      {
+       "class": "F",
+       "ref": "mainnet RPC getLedgerEntries CONFIG_SETTING_STATE_ARCHIVAL",
+       "observedAt": "2026-11-02",
+       "quote": "(8,10,3110400,17280,2073600,...) maxEntryTTL 3110400, minTemporaryTTL 17280, minPersistentTTL 2073600"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Temporary entries are deleted at TTL 0",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-11-02",
+       "quote": "When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "Archival bounds live state / rent model",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-0062 Live state prioritization: This proposal separates archived state and live state into two separate DBs."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-11-02",
+       "quote": "All contract data has a Time To Live (TTL) that must be periodically extended."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "P23/Whisk CAP-0062 live-vs-archival separation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 23 9/3/25 - CAP-0062 (Network evicts persistent entries to archive)"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/announcing-protocol-23",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-0062 introduces the performance features of full state archival"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "TTL extension via host functions/ops is CAP-0053",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0053.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Separate host functions to extend the TTL for contract instance and contract code ... Protocol version: 21"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Soroban State Archival Interface ... Protocol version: 20 ... TTL can be extended by a Soroban operation (ExtendFootprintTTLOp) or by a host function"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Free-forever storage; destroyed persistent data are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-11-02",
+       "quote": "Archived persistent entries can never be re-created. They must instead be restored."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "- Soroban contract storage entries have a **TTL (time-to-live, in ledgers)**; when the TTL expires the entry is **archived** rather than kept live and must be **restored before use** [1].\n- Purpose: state archival bounds the size of live state so validators don't pay forever to host unused data (sustainable state growth / rent model) [1].\n- Durability tiers behave differently: **Temporary** entries are **deleted** on expiry; **Persistent** and **Instance** entries can be **restored** [1].\n- TTL can be extended via `extend_ttl` host functions or `ExtendFootprintTTLOp` (CAP-0046-12, Protocol 20)…",
+     "reason": "Eval-side authoring flaw: TTL extension came from CAP-0046-12 (P20); CAP-0053 only added separate instance/code extension host functions in P21."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "State archival/TTL subtopic. Traps: 'storage is free forever' and 'expired persistent data is destroyed' (it's archived/restorable).\nAlso good if the answer: Notes the storage durability tiers (Temporary vs Persistent vs Instance) behave differently — temporary entries are deleted on expiry, persistent/instance can be restored. | Notes TTL can be extended via `extend_ttl` host functions or `ExtendFootprintTTLOp` (CAP-0046-12; CAP-0053 later split instance/code extension).\nGolden cites: The Soroban state archival / TTL docs on developers.stellar.org.",
+     "reason": "Same CAP misattribution in the grader notes."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: TTL-extension mechanism misattributed to CAP-0053."
+   ],
+   "siblings": "q-sor-persistent-unbounded-collection-cap; q-protocol-version-history-list"
+  },
+  {
+   "id": "q-protocol-tier1-requirements",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Three geographically dispersed Full Validators, separate archive each",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+       "observedAt": "2026-11-02",
+       "quote": "Full Validators | 3, each publishing a complete separate history archive"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/validators/admin-guide/configuring.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "HIGH quality requires publishing a history archive and at least three validators under the same home domain — both requirements are programmatically enforced."
+      },
+      {
+       "class": "D",
+       "ref": "https://thefintechtimes.com/moneygram-figure-markets-and-range-join-stellar-as-tier-1-validators/",
+       "observedAt": "2026-11-02",
+       "quote": "Each organisation must operate three geographically dispersed full validators, maintain uptime of 99.9% or above, publish complete history archives"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Tier 1 status from quorum-set trust of Tier 1 peers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+       "observedAt": "2026-11-02",
+       "quote": "Joining is not a unilateral SDF decision — every existing Tier 1 organization independently decides whether to add you to their quorum set."
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/nemorixgroup/Stellar-Knowledge-Base/blob/main/module-02-consensus/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Every existing Tier 1 organization independently decides whether to add a new organization to its quorum set."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "99.9%+ uptime, SEP-1 and SEP-20, months not weeks, 2-of-3",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+       "observedAt": "2026-11-02",
+       "quote": "Uptime | 99.9%+ target with 24/7 monitoring and alerting ... Expect a process measured in months, not weeks. ... other participants can require ⅔ of your nodes …"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Staking/fee, SDF-assigned, wrong count are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+       "observedAt": "2026-11-02",
+       "quote": "Becoming Tier 1 is not a unilateral decision by SDF — it depends on the quorum set choices of all existing Tier 1 organizations."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "There are no monetary rewards for being a validator on the Stellar network."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-validator-node-roles; q-comp-yieldblox-oracle-incident; q-infra-which-indexer"
+  },
+  {
+   "id": "q-protocol-validator-node-roles",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Watcher nodes are passive outside consensus",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/docs/stellar-core_example.cfg",
+       "observedAt": "2026-11-02",
+       "quote": "should not be used on a node participating in consensus, only a passive \"watcher\" node. ... Only nodes that want to participate in SCP should set NODE_IS_VALIDA…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/packages/blob/master/docs/running-a-full-validator.md",
+       "observedAt": "2026-11-02",
+       "quote": "start off with a working `watcher` config and simply add the required validator configuration parameters (NODE_IS_VALIDATOR, NODE_SEED)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Validators sign ledger changes through consensus voting",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators",
+       "observedAt": "2026-11-02",
+       "quote": "configured to participate in consensus by voting on — and signing off on — changes to the ledger"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Only Full Validators publish a public history archive",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators",
+       "observedAt": "2026-11-02",
+       "quote": "a Basic Validator does not publish a history archive; a Full Validator publishes one covering the network's complete history."
+      },
+      {
+       "class": "D",
+       "ref": "https://github.com/nemorixgroup/Stellar-Knowledge-Base/blob/main/module-02-consensus/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Basic Validator: participates in consensus, does not publish a history archive"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "RPC and Galexie are non-consensus roles",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators",
+       "observedAt": "2026-11-02",
+       "quote": "There are two varieties of non-validating nodes ... Stellar RPC Nodes ... Galexie Nodes"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Stake-size difference / watchers vote are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "There are no monetary rewards for being a validator on the Stellar network."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-tier1-requirements"
+  },
+  {
+   "id": "q-protocol-validator-upgrade-vote",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..2]",
+     "claim": "Operators arm with upgrades?mode=set&upgradetime=...&protocolversion=N",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "http-command 'upgrades?mode=set&upgradetime=2018-01-31T20:00:00Z&protocolversion=9'"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/adapter-protocol-28-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "upgrades?mode=set&upgradetime=2026-09-16T17:00:00Z&protocolversion=28"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/64458446",
+       "observedAt": "2026-11-02",
+       "quote": "protocol_version 28, closed_at 2026-09-16T17:00:06Z (prior ledger 27 at 17:00:01Z)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4]",
+     "claim": "Ledger header carries upgrades in-band; SCP flips version at scheduled time",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "When the network time is later than the upgradetime ... the validator will vote ... For a new value to be adopted, the same level of consensus between nodes nee…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger.x",
+       "observedAt": "2026-11-02",
+       "quote": "StellarValue upgrades vector carried in LedgerHeader.scpValue (prior verification 2026-08-29, unchanged)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "17:00 UTC mainnet votes; testnet precedes mainnet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/adapter-protocol-28-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "August 27, 2026, 1700 UTC — Testnet upgrade vote. September 16, 2026, 1700 UTC — Mainnet upgrade vote."
+      },
+      {
+       "class": "D",
+       "ref": "https://status.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "Bell, Protocol 30 Testnet Upgrade Nov 3, 2026 17:00 ... Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Token vote / hard-fork download / off-chain switch are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "A node can be configured to vote for upgrades using the upgrades endpoint."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-pc-protocol-upgrade-timing; q-protocol-max-tx-set-size"
+  },
+  {
+   "id": "q-protocol-version-history-list",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Live tail is Protocol 27 (as of 2026-07-10)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_latest_ledger 65269933, closed 2026-11-02T16:04:09Z"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 28 (Mainnet, September 16, 2026)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "P28/Adapter 2026-09-16 with CAP-83, CAP-85, CAP-86",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "New features in Adapter, Protocol 28: ... CAP-83 ... CAP-85 ... CAP-86"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/releases/tag/v28.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "This release bumps the protocol to version 28, which includes CAP-0083, CAP-0085, and CAP-0086."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/64458446",
+       "observedAt": "2026-11-02",
+       "quote": "protocol_version 28, closed_at 2026-09-16T17:00:06Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "P29 2026-10-01 security release, no new CAPs",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/releases/tag/v29.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "P29 bump by @sisuresh ... Lower max message size in protocol 29"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/64717645",
+       "observedAt": "2026-11-02",
+       "quote": "protocol_version 29, closed_at 2026-10-01T17:00:07Z"
+      },
+      {
+       "class": "D",
+       "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-sep-25-2026",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 went live on Mainnet on October 1 at 1700 UTC"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "P30/Bell scheduled: Testnet 2026-11-03, Mainnet 2026-11-23, CAP-84/87/88",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "bumps the protocol to version 30, which includes CAP-0084 (Muxed Contract Addresses), CAP-0087 ... CAP-0088"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon-testnet.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "testnet current_protocol_version 29 on 2026-11-02"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "P19-P27 dates and headline features",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 23 9/3/25 ... Protocol 22 12/5/2024 ... Protocol 19 6-8-2022"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 27 (Mainnet, July 8, 2026) ... Protocol 26 (Mainnet, May 6, 2026) ... Protocol 25 (Mainnet, January 22, 2026) ... Protocol 24 (Mainnet, October 22, 202…"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/63386819",
+       "observedAt": "2026-11-02",
+       "quote": "P27 boundary ledger (prior verification)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Maps P19-P27 headline features",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 29 (Mainnet, October 1, 2026)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "\"Dates.\"",
+     "verdict": "unverifiable",
+     "sources": []
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Calling P27 pending or P26 latest is false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer obtains the requested current value or state from the current official Stellar documentation, states the measurement basis, and makes the observation date visible. As of 2026-11-02, the verified sources supported this observed answer:\n\nStellar protocol history from P19 through live **Protocol 29**: P19 (2022-06-08) generalized transaction preconditions and signed-payload signers; P20/Soroban (2024-02-20) introduced Wasm smart contracts; P21 (2024-06-18) added secp256r1/passkeys and TTL extension; P22 (2024-12-05) added BLS12-381 and constructors; P23/Whisk (2025-09-03) introd…",
+     "reason": "freshness-drift: Mainnet moved to P28 on 2026-09-16 and P29 on 2026-10-01; P30 is scheduled. The golden stops at P27 as latest."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Correctly maps P19-P29 headline features, including that P29 added no new CAPs.",
+     "reason": "freshness-drift: the live tail now extends to P29."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "replace",
+     "new": "Gives each listed protocol's Mainnet activation date.",
+     "reason": "Eval-side authoring flaw: the one-word keyFact \"Dates.\" is truncated and ambiguous to the judge."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "replace",
+     "new": "Do NOT call P26, P27, or P28 the latest Mainnet version after 2026-10-01, or imply P23 immediately enabled multiple dependent clusters.",
+     "reason": "freshness-drift: the trap must also punish naming P27 or P28 as latest now that P29 is live."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-34 RECONCILIATION 2026-07-10: P27/Zipper is live from ledger 63386819 on 2026-07-08. P23 introduced CAP-0063 support with the dependent-cluster setting initially one; later network settings enabled multiple clusters. Grade feature/version mapping and dated live-tail verification. The P20 row says CAP-0046 series and does not imply a contiguous numbered range.\nGT-25/GT-34 independently reconciled: P27 live tail and P23 initial-one-cluster nuance are both effective; duplicate override composition was removed.\nAUDIT 2026-11-02: Horizon shows P28/Adapter from ledger 64458446 (2026-09-16 17:00:0…",
+     "reason": "freshness-drift: grader guidance for the new tail and the scheduled P30 vote."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: truncated keyFact \"Dates.\""
+   ],
+   "siblings": "q-edge-fresh-latest-protocol-version; q-pc-protocol-upgrade-timing; q-protocol-27-cap-0071; q-pc-protocol-27-zipper; q-protocol-parallel-execution; q-protocol-23-whisk-caps"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-protocol-operations-vs-transactions",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "Old keyFact required four named types; the docs list a different example set (no create account or manage offer by name). The new 'such as' wording grades giving examples, not one exact list. 86 chars. Not score laundering: the containment facts stay strict.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+      "observedAt": "2026-11-02",
+      "quote": "Operations are used to send payments, invoke a smart contract function, enter orders into the decentralized exchange, change settings on accounts, and authorize…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-transaction.x",
+      "observedAt": "2026-11-02",
+      "quote": "CREATE_ACCOUNT = 0, PAYMENT = 1, MANAGE_SELL_OFFER = 3, INVOKE_HOST_FUNCTION = 24"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-parallel-execution",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Four Mainnet RPCs decode setting 3, last modified at ledger 65080525, which closed 2026-10-22T17:00:08Z. SLP-0007 is Final with clusters 2 to 3. Official docs date SLP-0007 live on Mainnet on 2026-10-22. The 2026-01-29 SLP-0004 step (1 to 2 threads, ledger 60993066) is confirmed. The value is dated as of 2026-11-02 and the text says validators can change it.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "getLedgerEntries CONFIG_SETTING id 14 (AAAACAAAAA4=) on https://mainnet.sorobanrpc.com, https://soroban-rpc.mainnet.stellar.gateway.fm, https://rpc.lightsail.network, https://stellar.api.onfinality.io/public",
+      "observedAt": "2026-11-02",
+      "quote": "all four: latestLedger 65270251, lastModifiedLedgerSeq 65080525, xdr 000000080000000e00000003 (ledgerMaxDependentTxClusters = 3)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/65080525",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 65080525, closed_at 2026-10-22T17:00:08Z, protocol_version 29"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... | Dependent Tx Clusters |       2 |        3 |"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+      "observedAt": "2026-11-02",
+      "quote": "SLP-0007 (live on Mainnet since October 22, 2026). ... raised the dependent transaction cluster count (2 → 3)"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... | Instructions/threads | ... | 600'000'000 / 1 thread | 580'000'000 / 2 threads |"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/60993066",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 60993066, closed_at 2026-01-29T17:00:09Z, protocol_version 25"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-parallel-execution",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Audit note matches the live evidence.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... | Dependent Tx Clusters |       2 |        3 |"
+     },
+     {
+      "class": "C",
+      "ref": "getLedgerEntries CONFIG_SETTING id 14 (AAAACAAAAA4=) on https://mainnet.sorobanrpc.com, https://soroban-rpc.mainnet.stellar.gateway.fm, https://rpc.lightsail.network, https://stellar.api.onfinality.io/public",
+      "observedAt": "2026-11-02",
+      "quote": "all four: latestLedger 65270251, lastModifiedLedgerSeq 65080525, xdr 000000080000000e00000003 (ledgerMaxDependentTxClusters = 3)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/65080525",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 65080525, closed_at 2026-10-22T17:00:08Z, protocol_version 29"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-parallel-execution",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "The answer now pins a volatile network-setting value with an as-of date, which is the freshness-sensitive class. The skill requires 'scheduled' plus truth.asOf (2026-11-02) and truth.reverifyBy in the same diff; the applier must set both, or the lint rejects the case.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "getLedgerEntries CONFIG_SETTING id 14 (AAAACAAAAA4=) on https://mainnet.sorobanrpc.com, https://soroban-rpc.mainnet.stellar.gateway.fm, https://rpc.lightsail.network, https://stellar.api.onfinality.io/public",
+      "observedAt": "2026-11-02",
+      "quote": "all four: latestLedger 65270251, lastModifiedLedgerSeq 65080525, xdr 000000080000000e00000003 (ledgerMaxDependentTxClusters = 3)"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-quorum-slice-vs-quorum",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Old bullet said a blocking set prevents 'the network' from agreeing. The docs say it prevents 'a node'. The core code counts n - threshold + 1 members, which is the same as meeting every slice of that node. The new bullet is more exact. No keyFact or avoid changes.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+      "observedAt": "2026-11-02",
+      "quote": "Node blocking sets are any set of nodes in a quorum set that prevent a node from reaching agreement. For example, if a node requires 3 out of 4 of the nodes in …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/scp/LocalNode.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "int leftTillBlock = (int)((1 + qset.validators.size() + qset.innerSets.size()) - qset.threshold); ... `isVBlocking` tests if the filtered nodes V are a v-blocki…"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-state-archival-ttl",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Old text credited TTL extension to CAP-0053. TTL extension shipped in P20 through CAP-0046-12. CAP-0053 (P21) only split instance and code extension. The correction is supported by both A and B.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-12.md",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol version: 20 ... A LIVE entry's TTL can be extended by a Soroban operation (`ExtendFootprintTTLOp`) or by a host function (`extend_*` family of function…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0053.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Separate host functions to extend the TTL for contract instance and contract code ... Protocol version: 21"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+      "observedAt": "2026-11-02",
+      "quote": "In addition to contract-defined TTL extensions using the `extend_ttl()` function, a contract data entry's TTL can be extended via the `ExtendFootprintTTLOp` ope…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 21 (Mainnet, June 18, 2024) ... Soroban host function for extending TTL of contract instance and code separately: CAP-0053"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-state-archival-ttl",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The Also-good line now matches the corrected answer. It is not an avoid item, so no claim gets a penalty.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-12.md",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol version: 20 ... A LIVE entry's TTL can be extended by a Soroban operation (`ExtendFootprintTTLOp`) or by a host function (`extend_*` family of function…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0053.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Separate host functions to extend the TTL for contract instance and contract code ... Protocol version: 21"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+      "observedAt": "2026-11-02",
+      "quote": "In addition to contract-defined TTL extensions using the `extend_ttl()` function, a contract data entry's TTL can be extended via the `ExtendFootprintTTLOp` ope…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 21 (Mainnet, June 18, 2024) ... Soroban host function for extending TTL of contract instance and code separately: CAP-0053"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-version-history-list",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "A grounded answer obtains the requested current value or state from the current official Stellar documentation, states the measurement basis, and makes the observation date visible. As of 2026-11-02, the verified sources supported this observed answer:\n\nStellar protocol history from P19 through live **Protocol 29**: P19 (2022-06-08) generalized transaction preconditions and signed-payload signers; P20/Soroban (2024-02-20) introduced Wasm smart contracts; P21 (2024-06-18) added secp256r1/passkeys and separate instance/code TTL extension (CAP-0053); P22 (2024-12-05) added BLS12-381 and construct…",
+    "note": "Dates, ledgers, CAP sets, and P30 schedule all check out. Two edits: (1) CAP-0083 lets validators vote to drop the transaction set; 'empty-transaction-set consensus values' is vaguer than the CAP title. (2) Sibling fix with the TTL case: P21/CAP-0053 added separate instance/code TTL extension, not TTL extension itself (CAP-0046-12, P20).",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458445",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64458445, closed_at 2026-09-16T17:00:01Z, protocol_version 27"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458446",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64458446, closed_at 2026-09-16T17:00:06Z, protocol_version 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717644",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64717644, closed_at 2026-10-01T17:00:02Z, protocol_version 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717645",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64717645, closed_at 2026-10-01T17:00:07Z, protocol_version 29"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ and https://horizon-testnet.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "mainnet current_protocol_version 29, core_supported_protocol_version 30, latest ledger 65270248 at 2026-11-02T16:30:24Z; testnet current_protocol_version 29"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. ... …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md (+ cap-0085, cap-0086, cap-0084, cap-0087, cap-0088)",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0083 'Allow validators to vote to drop the transaction set from the current ledger' Protocol version: 28; CAP-0085 'Externally managed contract executables'…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "Bell, Protocol 30 Testnet Upgrade Nov 3 , 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23 , 2026 17:00 - 17:05 UTC (via Perplexit…"
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-sep-25-2026 (via Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 went live on Mainnet on October 1 at 1700 UTC, following a Testnet vote on September 29. It is a security-focused release"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-version-history-list",
+    "field": "golden.keyFacts[2]",
+    "decision": "modify",
+    "newText": "Correctly maps P19-P29 headline features; P29 is a security-focused release.",
+    "note": "The P19-P29 range is right. Requiring the exact phrase 'no new CAPs' can fail a true answer that only calls P29 a security release. The docs give both facts; grade the security-release mapping. 77 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. ... …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md (+ cap-0085, cap-0086, cap-0084, cap-0087, cap-0088)",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0083 'Allow validators to vote to drop the transaction set from the current ledger' Protocol version: 28; CAP-0085 'Externally managed contract executables'…"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-version-history-list",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "'Dates.' was not gradable. Mainnet activation dates are what the answer and sources give. 53 chars.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458445",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64458445, closed_at 2026-09-16T17:00:01Z, protocol_version 27"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458446",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64458446, closed_at 2026-09-16T17:00:06Z, protocol_version 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717644",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64717644, closed_at 2026-10-01T17:00:02Z, protocol_version 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717645",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64717645, closed_at 2026-10-01T17:00:07Z, protocol_version 29"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ and https://horizon-testnet.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "mainnet current_protocol_version 29, core_supported_protocol_version 30, latest ledger 65270248 at 2026-11-02T16:30:24Z; testnet current_protocol_version 29"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. ... …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md (+ cap-0085, cap-0086, cap-0084, cap-0087, cap-0088)",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0083 'Allow validators to vote to drop the transaction set from the current ledger' Protocol version: 28; CAP-0085 'Externally managed contract executables'…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "Bell, Protocol 30 Testnet Upgrade Nov 3 , 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23 , 2026 17:00 - 17:05 UTC (via Perplexit…"
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-sep-25-2026 (via Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 went live on Mainnet on October 1 at 1700 UTC, following a Testnet vote on September 29. It is a security-focused release"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-version-history-list",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Horizon shows P29 from ledger 64717645 (2026-10-01). The avoid item only flags P26/P27/P28 as 'latest' after that date. It does not punish a later answer that reports P30 after activation. The P23 clause is kept. Judge-visible and dated.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717645",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64717645, closed_at 2026-10-01T17:00:07Z, protocol_version 29"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ and https://horizon-testnet.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "mainnet current_protocol_version 29, core_supported_protocol_version 30, latest ledger 65270248 at 2026-11-02T16:30:24Z; testnet current_protocol_version 29"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. ... …"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-version-history-list",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The audit note matches Horizon and the official docs. Applier may add: 'P21 row corrected to separate instance/code TTL extension (CAP-0053)'. P30 stays scheduled: testnet was still on 29 at 2026-11-02T16:32Z.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458445",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64458445, closed_at 2026-09-16T17:00:01Z, protocol_version 27"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458446",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64458446, closed_at 2026-09-16T17:00:06Z, protocol_version 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717644",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64717644, closed_at 2026-10-01T17:00:02Z, protocol_version 28"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64717645",
+      "observedAt": "2026-11-02",
+      "quote": "sequence 64717645, closed_at 2026-10-01T17:00:07Z, protocol_version 29"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ and https://horizon-testnet.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "mainnet current_protocol_version 29, core_supported_protocol_version 30, latest ledger 65270248 at 2026-11-02T16:30:24Z; testnet current_protocol_version 29"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks/software-versions",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 (Mainnet, October 1, 2026) ... Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs. ... …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md (+ cap-0085, cap-0086, cap-0084, cap-0087, cap-0088)",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0083 'Allow validators to vote to drop the transaction set from the current ledger' Protocol version: 28; CAP-0085 'Externally managed contract executables'…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "Bell, Protocol 30 Testnet Upgrade Nov 3 , 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23 , 2026 17:00 - 17:05 UTC (via Perplexit…"
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-sep-25-2026 (via Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "Protocol 29 went live on Mainnet on October 1 at 1700 UTC, following a Testnet vote on September 29. It is a security-focused release"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+   "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+   "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+   "https://developers.stellar.org/docs/networks/software-versions",
+   "https://developers.stellar.org/docs/build/guides/storage/storage-strategies (via Perplexity excerpt)",
+   "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+   "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar (search excerpt)",
+   "https://stellar.org/blog/developers/adapter-protocol-28-upgrade-guide (search excerpt)",
+   "https://status.stellar.org/ (search excerpt)",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/README.md",
+   "https://api.github.com/repos/stellar/stellar-protocol/contents/limits",
+   "https://api.github.com/repos/stellar/stellar-protocol/commits?path=limits/slp-0007.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-12.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0053.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0085.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md",
+   "https://raw.githubusercontent.com/stellar/stellar-core/master/src/scp/LocalNode.cpp",
+   "https://raw.githubusercontent.com/stellar/stellar-core/master/src/scp/LocalNode.h",
+   "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-transaction.x",
+   "https://horizon.stellar.org/",
+   "https://horizon-testnet.stellar.org/",
+   "https://horizon.stellar.org/ledgers/{60993066,64458445,64458446,64717644,64717645,65080525}",
+   "https://mainnet.sorobanrpc.com",
+   "https://soroban-rpc.mainnet.stellar.gateway.fm",
+   "https://rpc.lightsail.network",
+   "https://stellar.api.onfinality.io/public",
+   "https://stellar-soroban-public.nodies.app (non-JSON response)",
+   "Raven execute: stellarDocs.search_docs x3, lumenloop.search_content_semantic x2 (no SLP-0007 hit)",
+   "https://lumenloop.com/research/stellar-weekly-roundup-week-sep-25-2026 (Perplexity excerpt)",
+   "https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30 (search excerpt)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-protocol-operations-vs-transactions; q-protocol-parallel-execution; q-protocol-quorum-slice-vs-quorum; q-protocol-state-archival-ttl; q-protocol-version-history-list",
+  "verifiedOnly": "q-protocol-scp-consensus-algorithm; q-protocol-tier1-requirements; q-protocol-validator-node-roles; q-protocol-validator-upgrade-vote",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-protocol-23-whisk-caps",
+    "issue": "Sibling outside this batch: it still dates ledgerMaxDependentTxClusters = 2 as of 2026-07-11; SLP-0007 raised it to 3 at ledger 65080525 on 2026-10-22 (four Mainnet RPC reads, 2026-11-02). Refresh its dated tail in its own batch."
+   },
+   {
+    "id": "q-protocol-version-history-list",
+    "issue": "consistency-register dateContingentTraps entry 0 (trigger: Mainnet activation of Protocol 28) has passed (P28 at ledger 64458446 on 2026-09-16; P29 live since 2026-10-01). The orchestrator must re-sweep that entry; this lane edits case files only. reverifyBy set to 2026-11-24, tied to the Bell/P30 Mainnet vote on 2026-11-23."
+   },
+   {
+    "id": "q-protocol-parallel-execution",
+    "issue": "Upstream discoverability defect for improvements/ (not filed by this lane): stellarDocs.search_docs \"dependent transaction clusters\" does not return the storage-strategies page that states the 3-cluster value (observed 2026-11-02)."
+   },
+   {
+    "id": "q-protocol-state-archival-ttl",
+    "issue": "Upstream docs defect for improvements/ (not filed): the state-archival page says a restored persistent entry gets min TTL current_ledger_number + 4095, but live Mainnet minPersistentTTL is 2073600 (RPC CONFIG_SETTING_STATE_ARCHIVAL, 2026-11-02)."
+   },
+   {
+    "id": "q-protocol-validator-upgrade-vote",
+    "issue": "Upstream blog defect for improvements/ (not filed): the Adapter P28 upgrade guide says arm validators before the Mainnet vote September 9, 2026, but its key dates and arm command use September 16."
+   },
+   {
+    "id": "all-batch-ids",
+    "issue": "lifecycle-registry caseContentSha256 is stale errors remain for all 9 ids; they clear only when the orchestrator runs npm run eval:qa:register."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-protocol-operations-vs-transactions",
+    "log": "changed golden.keyFacts[1]"
+   },
+   {
+    "id": "q-protocol-parallel-execution",
+    "log": "changed golden.answer, golden.notes, tags.freshness; reverifyBy 2027-04-14; asOf 2026-11-02"
+   },
+   {
+    "id": "q-protocol-quorum-slice-vs-quorum",
+    "log": "changed golden.answer"
+   },
+   {
+    "id": "q-protocol-scp-consensus-algorithm",
+    "log": "verified only; truth.verified refreshed"
+   },
+   {
+    "id": "q-protocol-state-archival-ttl",
+    "log": "changed golden.answer, golden.notes"
+   },
+   {
+    "id": "q-protocol-tier1-requirements",
+    "log": "verified only; truth.verified refreshed"
+   },
+   {
+    "id": "q-protocol-validator-node-roles",
+    "log": "verified only; truth.verified refreshed"
+   },
+   {
+    "id": "q-protocol-validator-upgrade-vote",
+    "log": "verified only; truth.verified refreshed"
+   },
+   {
+    "id": "q-protocol-version-history-list",
+    "log": "changed golden.answer, golden.keyFacts[2], golden.keyFacts[3], golden.avoid[1], golden.notes; reverifyBy 2026-11-24; asOf 2026-11-02"
+   }
+  ]
+ }
+}

@@ -34,8 +34,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-09-03",
-    "reverifyBy": "2026-12-03",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-11",
     "sources": [
       {
         "class": "C",
@@ -126,29 +126,46 @@
           }
         ],
         "note": "Legacy verdict: confirmed-as-of-2026-07-11T07:17:34Z."
+      },
+      {
+        "claim": "As of 2026-11-02 Scout /api/skills returned 82 rows with the same six valid kinds and five valid sources; kind=agent-kit was a valid filter with zero rows, while source=community now returned 39 rows.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/skills",
+            "observedAt": "2026-11-02",
+            "note": "Exact: '\"generatedAt\": \"2026-11-02T16:41:08.683Z\", \"counts\": {\"returned\": 82, \"total\": 82, \"bySource\": {\"sdf\": 8, \"stellarlight\": 15, \"lumenloop\": 8, \"external\": 12, \"community\": 39}}, \"validSources\": [\"sdf\", \"stellarlight\", \"lumenloop\", \"external\", \"community\"], \"validKinds\": [\"skill-md\", \"mcp-server\", \"sdk\", \"cli\", \"agent-kit\", \"tool\"]'"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/skills?kind=agent-kit",
+            "observedAt": "2026-11-02",
+            "note": "0 rows (generatedAt 2026-11-02T16:43:25.815Z)."
+          },
+          {
+            "class": "A",
+            "ref": "https://skills.stellar.org/llms.txt",
+            "observedAt": "2026-11-02",
+            "note": "HTTP 200. Exact: '# Stellar Skills ... Agent-readable Stellar developer documentation' (63 list items)."
+          }
+        ],
+        "note": "The 2026-07-11 row above (community empty) is a dated historical row; the golden never pins per-enum counts."
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-04)",
       "evidence": [
-        "C returned 43 rows and unchanged enums. A/B confirmed the official skill catalog and source links.",
-        "Sibling sweep 2026-09-03: q-tool-skill-detail-install remains the exact-detail lane; no contradiction found.",
-        "C: https://stellarlight.xyz/api/skills at 2026-08-05T20:45:26.922Z returned 42 rows and six valid kinds/five valid sources; filtered kind=agent-kit and source=community each returned 0 rows, confirming that accepted filters do not promise populated categories.",
-        "A/B: https://skills.stellar.org/, https://github.com/stellar/stellar-dev-skill, https://github.com/stellar/stellar-cli, and https://www.npmjs.com/package/@stellar-light/scout-mcp independently confirmed row-level ownership/install details and the need to preserve community-tool caveats.",
-        "Dated uncertainty: Scout /api/status reported nine upstream SDF skills while /api/skills?source=sdf returned seven rows; no reconciliation or frozen count is inferred from those source-relative values.",
-        "Sibling sweep: q-tool-skill-detail-install remains the exact-detail lane, q-gap-scout-list-skill-directory keeps its historical roster date-scoped, and the routing-corpus q-tool-mcp-servers-skills-discovery remains the narrow MCP-only lane.",
-        "Structural re-form (negative-predicate): split three compound facts into five atomic positive facts; the existing avoid items retain enum-fabrication traps, so truth is unchanged",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/skills — Scout still exposes a broad live skills catalog across requested tooling kinds",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/skills — concrete current rows remain the catalog output",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/skills — valid filter enums versus populated rows remain distinct catalog categories",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/skills — empty categories remain valid current results",
-        "Live re-check 2026-08-27: https://skills.stellar.org/ and https://github.com/Stellar-Light/scout-mcp — returned rows still need install/config, ownership, scope, URLs, and maturity caveats",
-        "Sibling sweep 2026-08-27: grep Scout skills|validKinds|agent-kit|mcp-server → q-defi-skill-ecosystem-scout, q-scf-skill-stellar-scout; no contradiction"
+        "Verification-only event 2026-11-02: no judge-facing field changed; asOf 2026-11-02 and reverifyBy 2027-03-11 refreshed; one dated corroboration row added.",
+        "Live C 2026-11-02T16:41:08Z: https://stellarlight.xyz/api/skills — '\"counts\": {\"returned\": 82, \"total\": 82, \"bySource\": {\"sdf\": 8, \"stellarlight\": 15, \"lumenloop\": 8, \"external\": 12, \"community\": 39}}'; validKinds and validSources unchanged",
+        "Live C 2026-11-02T16:43:25Z: https://stellarlight.xyz/api/skills?kind=agent-kit — 0 rows; a valid filter can return an empty array",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/skills?kind=mcp-server — stellar-scout-mcp (stellarlight) 'npx @stellar-light/scout-mcp'; lumenloop-mcp (lumenloop) 'claude mcp add --transport http lumenloop https://mcp.lumenloop.com'",
+        "Live A 2026-11-02: https://skills.stellar.org/llms.txt — '# Stellar Skills ... Agent-readable Stellar developer documentation' (HTTP 200)",
+        "Sibling sweep 2026-11-02: q-gap-scout-list-skill-directory, q-tool-skill-detail-install, q-gap-scout-get-skill-detail checked; enums agree and none pins per-kind counts; no contradiction."
       ],
       "rootCause": [
-        "freshness-recheck",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the live catalog grew (82 rows; community now populated) without contradicting the behavioral golden."
       ]
     },
     "origin": "raven-next q-tool-cli-skills-discovery"

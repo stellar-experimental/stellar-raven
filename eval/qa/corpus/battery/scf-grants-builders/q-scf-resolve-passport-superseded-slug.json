@@ -5,19 +5,19 @@
     "scout.resolveProject"
   ],
   "golden": {
-    "answer": "Use `scout.resolveProject` with the old slug or URL and cite the response's `meta.generatedAt` as the as-of date (observed value `2026-08-28T17:11:33.764Z`). As observed on 2026-08-28, the query `passport` matched on slug. The matched record is `Stellar Passport` (slug `passport`) with status Inactive, and `superseded` is true. The `current` record is slug `stellar-passport`, name `Stellar Passport`, status Live, at https://stellarlight.xyz/project/stellar-passport. The evidence block dates the Live status to `statusAsOf` 2026-08-17, with basis `site-liveness` and source https://demo.stellarpassport.xyz/, and `unsourced` is false. Both records carry the same name, so the old slug is a superseded duplicate directory record, not a real-world rename; the project site https://stellarpassport.xyz/ is live under the same name. Site-liveness means only that a page answered, so do not present it as proof of product activity. Scout lists Stellar Passport as an SCF-funded passkey-secured onboarding and identity platform.",
+    "answer": "Use `scout.resolveProject` with the old slug or URL and cite the response's `meta.generatedAt` as the as-of date (observed value `2026-11-02T16:34:40.509Z`). As observed on 2026-11-02, the query `passport` matched on slug. The matched record is `Stellar Passport` (slug `passport`) with status Draft, and `superseded` is true. The `current` record is slug `stellar-passport`, name `Stellar Passport`, status Live, at https://stellarlight.xyz/project/stellar-passport. The response's `evidence` block describes the matched record, not the current one: `statusAsOf` 2026-08-17, basis `site-liveness`, source https://demo.stellarpassport.xyz/, and `unsourced` false. Resolving `stellar-passport` directly returns the current record's evidence: `statusAsOf` 2026-09-06, basis `human-verified`, source https://stellarpassport.xyz/. Both records carry the same name, so the old slug is a superseded duplicate directory record, not a real-world rename; the project site https://stellarpassport.xyz/ is live under the same name. Site-liveness means only that a page answered, so do not present it as proof of product activity. Scout lists Stellar Passport as an SCF-funded passkey-secured onboarding and identity platform.",
     "keyFacts": [
       "Resolves `passport` as a superseded record whose current slug is `stellar-passport`.",
-      "Reports the current record as Stellar Passport with status Live, dated to its statusAsOf.",
+      "Reports the current record as Stellar Passport, status Live, with a dated observation.",
       "States the old slug is a superseded directory record, not a real-world rename.",
       "Treats site-liveness as page-answered evidence, not proof of product activity."
     ],
     "avoid": [
       "Do NOT claim Stellar Passport shut down or is defunct; the current record is Live.",
       "Do NOT claim the project was renamed from Passport to a different name.",
-      "Do NOT report the superseded record's Inactive status as the project's current status."
+      "Do NOT report the superseded record's Draft or Inactive status as the project's current status."
     ],
-    "notes": "Grade the resolver semantics: matched record, superseded flag, current record, and dated evidence. The Live status and the observation dates can change; do not penalize a later dated status if the answer cites its as-of date. The observed generatedAt value is an example; a later run must cite its own response's value, not this one."
+    "notes": "Grade the resolver semantics: matched record, superseded flag, current record, and dated evidence. The Live status and the observation dates can change; do not penalize a later dated status if the answer cites its as-of date. The observed generatedAt value is an example; a later run must cite its own response's value, not this one. The resolver's `evidence` block is built from the matched record, not from `current` (Stellar-Light src/lib/resolve-project.ts). Dating the Live status from that block is an imprecision to name, not a wrong answer. The matched record showed Inactive on 2026-08-28 and Draft on 2026-11-02; accept either when it is dated as the superseded record's status."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,8 +31,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-08-28",
-    "reverifyBy": "2026-12-03",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-06-03",
     "sources": [
       {
         "class": "C",
@@ -58,6 +58,24 @@
         "class": "B",
         "ref": "https://github.com/Tellus-Cooperative",
         "note": "GitHub org linked from the Scout record; 10 public repos, no rename signal."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/resolve?q=passport",
+        "note": "generatedAt 2026-11-02T16:34:40.509Z, matchedOn slug; subject passport/Draft; current stellar-passport/Live; superseded true; evidence statusAsOf 2026-08-17T03:02:29.060Z site-liveness https://demo.stellarpassport.xyz/ unsourced false.",
+        "observedAt": "2026-11-02T16:34:40.509Z"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/resolve?q=stellar-passport",
+        "note": "superseded false; evidence statusAsOf 2026-09-06T00:00:00.000Z human-verified https://stellarpassport.xyz/; note 'stellar-passport is current'.",
+        "observedAt": "2026-11-02T16:34:41.102Z"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/resolve-project.ts",
+        "note": "Last commit 2719551583 (2026-10-24): 'const evidence: ResolutionEvidence = { statusAsOf: hit.statusAsOf ?? null, statusBasis: hit.statusBasis ?? null, statusSourceUrl: hit.statusSourceUrl ?? null, unsourced, };' — evidence comes from the matched record.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -102,19 +120,55 @@
             "note": "Prior finding recorded duplicate Stellar Passport rows under different slugs and statuses."
           }
         ]
+      },
+      {
+        "claim": "The resolver's evidence block describes the matched (superseded) record, not the current record; as of 2026-11-02 the matched passport record shows Draft and the current stellar-passport record has its own human-verified evidence.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/resolve-project.ts",
+            "observedAt": "2026-11-02",
+            "note": "evidence is built from `hit`, the matched record."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=passport",
+            "observedAt": "2026-11-02T16:34:40.509Z",
+            "note": "subject Draft; evidence statusAsOf 2026-08-17 site-liveness demo URL."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=stellar-passport",
+            "observedAt": "2026-11-02T16:34:41.102Z",
+            "note": "current record evidence statusAsOf 2026-09-06 human-verified."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarpassport.xyz/",
+            "observedAt": "2026-11-02",
+            "note": "200, '<title>Stellar Passport — Proof you showed up. Proof you shipped.</title>'; same name, no rename."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-28",
-      "by": "eval block 2 lane F (Claude Fable 5, high) — .agents/rounds/2026-08-28-eval-block2.md",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-04)",
       "evidence": [
-        "GET https://stellarlight.xyz/api/projects/resolve?q=Passport on 2026-08-28: generatedAt 2026-08-28T17:11:33.764Z, searched 1025, matchedOn slug, superseded true, current stellar-passport Live, evidence statusAsOf 2026-08-17T03:02:29.060Z site-liveness https://demo.stellarpassport.xyz/ unsourced false.",
-        "raven.stellar.org execute scout.resolveProject on 2026-08-28 returned the same payload; scout.searchProjects(q=Stellar Passport) returned one stellar-passport row (Live, scfTotalAwardedUSD 150000).",
-        "https://stellarpassport.xyz/ and https://github.com/Tellus-Cooperative checked 2026-08-28; the project is live under the same name and no rename exists.",
-        "Sibling sweep 2026-08-28: grep -i passport across eval/qa/corpus/battery returned no other case; q-scf-cross-reflector-rounds-current and q-edge-strupey-ambiguous-stellar-history list scout.resolveProject only as an optional surface and do not test a superseded record."
+        "Verifier C 2026-11-02T16:34:40.509Z: https://stellarlight.xyz/api/projects/resolve?q=passport (also q=https://stellarlight.xyz/project/passport) — '\"generatedAt\":\"2026-11-02T16:34:40.509Z\",\"matchedOn\":\"slug\",\"subject\":{\"slug\":\"passport\",\"name\":\"Stellar Passport\",\"status\":\"Draft\"},\"current\":{\"slug\":\"stellar-passport\",...\"status\":\"Live\"},\"superseded\":true,\"evidence\":{\"statusAsOf\":\"2026-08-17T03:02:29.060Z\",\"statusBasis\":\"site-liveness\",\"statusSourceUrl\":\"https://demo.stellarpassport.xyz/\",\"unsourced\":fal…'",
+        "Verifier C 2026-11-02T16:34:41.102Z: https://stellarlight.xyz/api/projects/resolve?q=stellar-passport — '\"superseded\":false,\"evidence\":{\"statusAsOf\":\"2026-09-06T00:00:00.000Z\",\"statusBasis\":\"human-verified\",\"statusSourceUrl\":\"https://stellarpassport.xyz/\",\"unsourced\":false},\"note\":\"\\\"stellar-passport\\\" is current.\"'",
+        "Verifier B 2026-11-02: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/resolve-project.ts (last commit 2719551583, 2026-10-24) — 'const evidence: ResolutionEvidence = { statusAsOf: hit.statusAsOf ?? null, statusBasis: hit.statusBasis ?? null, statusSourceUrl: hit.statusSourceUrl ?? null, unsourced, };'",
+        "Verifier A 2026-11-02: https://stellarpassport.xyz/ ; https://stellarlight.xyz/project/passport — '200 <title>Stellar Passport — Proof you showed up. Proof you shipped.</title>; /project/passport 307 -> https://stellarlight.xyz/project/stellar-passport (page shows Live)'",
+        "Verifier C 2026-11-02T16:39:02.025Z: Raven MCP execute scout.getRfps({status:\"open\"}) + getHackathons active/upcoming + resolveProject({q:\"passport\"}) — 'rows [[\"scf-round-46\",\"open\",\"scf-round\"],[\"layerzero-dvn\",\"open\",\"rfp\"],[\"x402-facilitator-bazaar\",\"open\",\"rfp\"]]; getHackathons active/upcoming ok caveat no-rows, fallbackChannels present'",
+        "Applier re-check 2026-11-02T16:39:00.503Z: resolve?q=passport matchedOn slug, superseded true, subject Draft, current stellar-passport Live, evidence statusAsOf 2026-08-17T03:02:29.060Z site-liveness https://demo.stellarpassport.xyz/ unsourced false.",
+        "Verifier replaced the proposer's unobservable generatedAt 2026-11-02T16:09:57.042Z with its own re-walkable value 2026-11-02T16:34:40.509Z.",
+        "Sibling sweep 2026-11-02: other files mentioning Passport (q-eco-stellar-wallets-list, q-builder-by-region-latam, q-gap-builders-person-empty, q-edge-strupey-ambiguous-stellar-history) carry no Stellar Passport status or slug claim in judge-facing text; no contradiction.",
+        "reverifyBy 2027-06-03 (scheduled; inside the 2027-06 window)."
       ],
       "rootCause": [
-        ".agents/rounds/2026-08-28-eval-block2.md — scout.resolveProject had no dedicated superseded-record case after the 2026-08-27 Scout 1.9.1 exposure (CI coverage floor)"
+        "freshness-drift",
+        "eval-side authoring flaw: the golden attributed the resolver evidence block (built from the matched record per Stellar-Light src/lib/resolve-project.ts) to the current record"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

@@ -18,7 +18,7 @@
       "Do NOT treat a missing/wrong-network result as proof the object never existed.",
       "Do NOT claim an explorer proves custody, reverses transactions, recovers funds, or supplies timeless UI/market facts."
     ],
-    "notes": "Verified explorer home URLs and official Stellar Lab docs on 2026-06-29. Specific explorer UI fields can change; Phase 3 may screenshot current UI if it wants stricter UI-field claims.\nAlso good if the answer: Mentions StellarChain as an alternate explorer with contract support, with source caveat if only site-level verification was available. | Cites a live explorer URL and an official Stellar Lab/explorer-related docs page.\nGolden cites: A live explorer URL. | An official Stellar Lab or developer docs page describing transaction/contract inspection.\nGT-51 CORRECTION 2026-07-11: grade network/identifier discipline and dated explorer capability, not a memorized UI field list or a universal retention scalar.\nAccurately quoting the canonical Stellar Docs page on a 24-hour RPC retention default and separate seven-day cap is not a wrong claim while a cached or older copy still shows that pre-2026-07-27 wording; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Verified explorer home URLs and official Stellar Lab docs on 2026-06-29. Specific explorer UI fields can change; Phase 3 may screenshot current UI if it wants stricter UI-field claims.\nAlso good if the answer: Mentions StellarChain as an alternate explorer with contract support, with source caveat if only site-level verification was available. | Cites a live explorer URL and an official Stellar Lab/explorer-related docs page.\nGolden cites: A live explorer URL. | An official Stellar Lab or developer docs page describing transaction/contract inspection.\nGT-51 CORRECTION 2026-07-11: grade network/identifier discipline and dated explorer capability, not a memorized UI field list or a universal retention scalar.\nAs of 2026-11-02, the official block-explorer page also lists Soroscan (Mainnet, Testnet, Futurenet) and Soroban Scan (Mainnet, Testnet); naming either is accurate."
   },
   "tags": {
     "category": "retail-consumer",
@@ -32,13 +32,14 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2027-03-04",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-22",
     "sources": [
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers",
-        "note": "class inferred at migration"
+        "note": "Official block-explorer list; StellarExpert not available for Futurenet; Soroscan and Soroban Scan listed as of 2026-11-02.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
@@ -64,57 +65,98 @@
         "class": "D",
         "ref": "https://steexp.com",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/developer-tools/block-explorers.mdx",
+        "note": "Docs source; Soroscan added in #2814 (2026-09-08), Soroban Scan in #2901 (2026-10-06).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://api.stellar.expert/explorer/futurenet/ledger/last",
+        "note": "Returns HTTP 400 'Unknown network name: \"futurenet\"'; public and testnet return 200.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://soroscan.io",
+        "note": "HTTP 200",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://sorobanscan.rumblefish.dev",
+        "note": "HTTP 200",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
         "claim": "Explorer lookup must start with the exact network and canonical identifier; StellarExpert is not listed for Futurenet while other explorers advertise different coverage.",
-        "verdict": "confirmed",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
-            "ref": "A: current official block-explorer and Lab documentation",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers",
+            "observedAt": "2026-11-02",
+            "note": "'StellarExpert ... Not available for Futurenet.' StellarChain, Stellar Explorer and Soroscan list Futurenet coverage."
+          },
+          {
+            "class": "F",
+            "ref": "https://api.stellar.expert/explorer/futurenet/ledger/last",
+            "observedAt": "2026-11-02",
+            "note": "HTTP 400 'Unknown network name: \"futurenet\"'."
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers#stellarexpert",
+            "observedAt": "2026-11-02",
+            "note": "stellarDocs.search_docs hit: 'Not available for Futurenet.'"
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02 the official block-explorer page lists Soroscan (Mainnet, Testnet, Futurenet) and Soroban Scan (Mainnet, Testnet).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers",
+            "observedAt": "2026-11-02",
+            "note": "'Soroscan ... Available for Mainnet, Testnet, and Futurenet.'"
           },
           {
             "class": "B",
-            "ref": "B: current explorer-owned interfaces/pages",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/developer-tools/block-explorers.mdx",
+            "observedAt": "2026-11-02",
+            "note": "'### [Soroban Scan](https://sorobanscan.rumblefish.dev) A Soroban-first block explorer built on direct ledger ingestion, independent of Horizon. ... Available for Mainnet and Testnet.'"
           },
           {
-            "class": "C",
-            "ref": "C: read-only explorer/API checks",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "D",
+            "ref": "https://nownodes.io/blog/best-stellar-explorer-for-soroban-smart-contracts-in-2026/",
+            "observedAt": "2026-11-02",
+            "note": "'Soroscan|Mainnet, Testnet, Futurenet'"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-51 primary/blind matrices independently agreed on the product/network/freshness correction.",
-        "Sibling sweep checked q-ti-stellar-lab-usage-and-new-ui and the RPC-retention cluster; the answer does not promote Lab's stale seven-day scalar.",
-        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-023; the explorer network and identifier facts are unchanged.",
-        "No live recheck was required for this pure symmetric-caution re-form.",
-        "Improvements review 2026-08-27: improvements/resolved.json entry sd-023 records the 2026-07-27 Docs fix; the disputed claim is the older universal 24-hour RPC retention default and separate seven-day cap.",
-        "Sibling sweep 2026-08-27: grep sd-023|24-hour|120960 ledgers|retention → q-infra-rpc-provider-archive-tier, q-ti-self-host-retention-backfill, q-pc-tx-finality-failure-semantics; no contradiction",
-        "Structural re-form (compound-predicate): Recast three long or compound facts as four atomic facts; network, identifier, coverage, interpretation, freshness, miss, and Lab claims are unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/developer-tools/block-explorers — explorer lookups still depend on the network and canonical identifiers, including asset code and issuer.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/developer-tools/block-explorers — StellarExpert remains unlisted for Futurenet while other explorers show different coverage.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/example-application-tutorial/querying-data — StellarExpert output remains an indexed interpretation with changeable rankings.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/developer-tools/block-explorers — explorer coverage remains network-specific, so a miss does not establish nonexistence.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab/transaction-dashboard — Lab remains a developer inspection complement rather than a permanent archive.",
-        "Sibling sweep 2026-08-27: grep StellarExpert|Futurenet|block explorer|asset code plus issuer|Stellar Lab → q-infra-testnet-vs-futurenet, q-ti-block-explorer-basics, q-ti-enumerate-all-contracts, q-ti-stellar-lab-usage-and-new-ui, q-tool-lab-what-is; no contradiction"
+        "Gospel change 2026-11-02: golden.notes drop the sd-023 cached-copy retention caution (sd-023 resolved 2026-07-27 in improvements/resolved.json; live getEvents, getTransaction and getTransactions pages and docs source no longer carry the 24-hour default or separate seven-day cap) and add a dated line that naming Soroscan or Soroban Scan is accurate. Verifier decision: modify (added Soroban Scan).",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction — 'configured by a single history-retention-window setting expressed in ledgers, with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence).'",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/rpc/api-reference/methods/getEvents.mdx — 'configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/tools/developer-tools/block-explorers — 'Soroscan ... Available for Mainnet, Testnet, and Futurenet.'; 'StellarExpert ... Not available for Futurenet.'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-docs/commit/9e22dd6b00 — 'docs: add Soroban Scan to block explorers (#2901)' 2026-10-06; 1eab34405e 'docs: add Soroscan to block explorers (#2814)' 2026-09-08",
+        "Live E 2026-11-02: https://developers.stellar.org/docs/tools/developer-tools/block-explorers#soroban-scan — 'A Soroban-first block explorer built on direct ledger ingestion, independent of Horizon.'",
+        "Live F 2026-11-02: https://api.stellar.expert/explorer/futurenet/ledger/last — HTTP 400 'Unknown network name: \"futurenet\"'",
+        "Sibling sweep 2026-11-02: q-infra-testnet-vs-futurenet, q-ti-stellar-lab-usage-and-new-ui, q-tool-lab-what-is, q-ti-enumerate-all-contracts, q-soroban-publish-events, q-ti-self-host-retention-backfill checked; no contradiction."
       ],
       "rootCause": [
-        "Eval-side product/network freshness drift.",
-        "improvements/stellar-docs/sd-023-rpc-event-retention-config-drift.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift",
+        "eval-authoring: a canonical-page caution for the fixed upstream finding sd-023 (improvements/resolved.json) stayed in golden.notes after the live page changed"
       ]
     },
     "origin": "raven-next q-ti-block-explorer-basics"

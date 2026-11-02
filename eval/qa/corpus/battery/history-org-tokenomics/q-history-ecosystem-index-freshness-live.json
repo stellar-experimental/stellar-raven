@@ -1,1 +1,98 @@
-{"id":"q-history-ecosystem-index-freshness-live","question":"Before relying on Stellar ecosystem recommendations, how fresh is the served index and what collection counts does it report now?","surface":["scout.getStatus"],"golden":{"answer":"Call the live status endpoint, report generatedAt plus each relevant source's count and lastUpdatedAt, and explain collection-specific notes (including full-collection versus active-project denominators). Judge fitness relative to the requested use; never cite one global count or last-updated date for all sources.","keyFacts":["Uses live status generatedAt and per-source count/lastUpdatedAt.","Preserves collection-specific notes and denominator distinctions.","Assesses freshness for the intended use rather than declaring the whole index fresh/stale."],"avoid":["Reports one archived project count or timestamp as the freshness of every collection."]},"tags":{"category":"history-org-tokenomics","service":"scout","freshness":"live"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/status"},{"class":"B","ref":"catalog/manifest.json#scout.getStatus"},{"class":"A","ref":"https://stellar.org/ecosystem"}],"corroboration":[{"claim":"Index freshness is per-source and requires current counts, lastUpdatedAt, notes, and use-relative interpretation.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/status","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.getStatus","observedAt":"2026-07-11"},{"class":"A","ref":"https://stellar.org/ecosystem","observedAt":"2026-07-11"}]},{"claim":"One archived project count/timestamp describes every collection.","verdict":"contradicted","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/status","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","catalog/manifest.json#scout.getStatus","https://stellar.org/ecosystem"],"rootCause":["freshness-drift"]},"origin":"core-35 ecosystem-index-freshness"}}
+{
+  "id": "q-history-ecosystem-index-freshness-live",
+  "question": "Before relying on Stellar ecosystem recommendations, how fresh is the served index and what collection counts does it report now?",
+  "surface": [
+    "scout.getStatus"
+  ],
+  "golden": {
+    "answer": "Call the live status endpoint, report generatedAt plus each relevant source's count and lastUpdatedAt, and explain collection-specific notes (including full-collection versus active-project denominators). Judge fitness relative to the requested use; never cite one global count or last-updated date for all sources.",
+    "keyFacts": [
+      "Uses live status generatedAt and per-source count/lastUpdatedAt.",
+      "Preserves collection-specific notes and denominator distinctions.",
+      "Assesses freshness for the intended use rather than declaring the whole index fresh/stale."
+    ],
+    "avoid": [
+      "Reports one archived project count or timestamp as the freshness of every collection."
+    ]
+  },
+  "tags": {
+    "category": "history-org-tokenomics",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-11-02",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/status"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.getStatus"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/ecosystem"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Index freshness is per-source and requires current counts, lastUpdatedAt, notes, and use-relative interpretation.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/status",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getStatus",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/ecosystem",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "One archived project count/timestamp describes every collection.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/status",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
+      "evidence": [
+        "[C] golden.keyFacts[0] (confirmed): https://stellarlight.xyz/api/status :: generatedAt 2026-11-02T16:00:22.243Z; sources[] e.g. {name: projects, count: 1139, lastUpdatedAt: 2026-11-02T13:19:39.201Z, populationId: projects|status:all}; partners lastUpdatedAt 2026-10-06T08:00:00.410Z (observedAt 2026-11-02)",
+        "[B] golden.keyFacts[0] (confirmed): catalog/manifest.json#scout.getStatus :: \"per-source freshness and counts (sources[])\" (observedAt 2026-11-02)",
+        "[B] golden.keyFacts[1]/answer (denominators) (confirmed): catalog/manifest.json#scout.getStatus outputSchema populationId :: \"DB-backed sources here are <collection>|status:all (the FULL collection incl. Inactive), which is why projects.count is larger than analyze/clusters' active-only populations.\" (observedAt 2026-11-02)",
+        "[C] golden.keyFacts[1]/answer (denominators) (confirmed): https://stellarlight.xyz/api/status :: partners notes: \"Counts ALL rows incl. unpublished drafts; /api/partners serves published-only, so its total can be smaller.\" (scout.getPartners meta.counts.total=43 vs status count 50) (observedAt 2026-11-02)",
+        "[C] golden.avoid[0] (contradicted): https://stellarlight.xyz/api/status :: nine sources with distinct counts and lastUpdatedAt (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-gap-scout-status-envelope, q-defi-category-saturation-live, q-scf-funding-by-category checked; consistent; per-source counts and lastUpdatedAt still differ.",
+        "No judge-facing change; prior verification event 2026-07-11 is in git history.",
+        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
+      ],
+      "rootCause": [
+        "freshness-drift"
+      ]
+    },
+    "origin": "core-35 ecosystem-index-freshness"
+  }
+}

@@ -29,8 +29,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2027-02-18",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-04",
     "sources": [
       {
         "class": "A",
@@ -75,18 +75,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-42 processes 3308/3315.",
-        "Structural re-form (compound-predicate): split automatic direct-contract auth from explicit deeper-call authorization; no claim changed.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — confirmed direct A→B contract-invoker authorization is automatic.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — confirmed authorize_as_current_contract applies to C/deeper calls.",
-        "Sibling sweep 2026-08-27: grep authorize_as_current_contract|direct invoker|deeper → q-sor-recurring-escrow-patterns, q-sor-reflector-integration-code, q-soroban-token-transfer-pattern; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side call-depth auth inversion.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#contract-invoker — \"all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized (but not any calls on behalf of the contract deeper down the stack).\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/env.rs — \"All the direct calls that the current contract performs are always considered to have been authorized. This is only needed to authorize deeper calls that originate from the next contract call from the current contract.\"",
+        "Proposer E 2026-11-02: stellarDocs.search_soroban_contract_docs 'authorize_as_current_contract sub-contract call' — \"top hit https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#matching-authorized-invocation-trees\"",
+        "Proposer claim verdict confirmed (golden.answer): require_auth for the direct invoker contract A is automatic; deeper calls need authorize_as_current_contract entries, not the direct B call",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — \"Without that, the authorized inner `add()` call can be front-run by anyone without being wrapped in `add_with()`.\"",
+        "Proposer claim verdict confirmed (golden.answer): Requiring user auth at A's entry prevents the inner authorization being front-run through an unintended wrapper",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — \"The second condition occurs when an account contract has not provided invoker authorization, for example, by calling a function that requires authorization directly.\"",
+        "Proposer claim verdict confirmed (golden.answer): __check_auth is not used for the automatic direct-contract-invoker case",
+        "Sibling sweep 2026-11-02: checked q-soroban-token-transfer-pattern, q-sor-recurring-escrow-patterns, q-soroban-require-auth; no contradiction found."
       ]
     },
     "origin": "raven-next q-sor-require-auth-propagation"

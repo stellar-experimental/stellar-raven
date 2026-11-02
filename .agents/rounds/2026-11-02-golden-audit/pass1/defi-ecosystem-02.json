@@ -1,0 +1,2399 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "defi-ecosystem-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-defi-cluster-rollup-live",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "getClusters plus analyzeEcosystem all, or separate category and funding rollups, give the quantitative view.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=all",
+       "observedAt": "2026-11-02",
+       "quote": "validDimensions: all, hackathons, categories, funding, tvl, gaps, developers, toolchain"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json#/api/clusters",
+       "observedAt": "2026-11-02",
+       "quote": "Groups the active Stellar project directory into topic clusters ... dimension=category|types"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "SCF dollars are the service's reconstructed project-based total.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "Counts distinct PROJECTS with scf.awarded=true ... Dollar totals are in-house reconstructions: SCF does not publish per-award amounts for all rounds"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "funding methodologyVersion funding-v2 (2026-07-05); scfTotalDistributedUSD 58585451.99 over 582 projects"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2] / golden.avoid[0]",
+     "claim": "Clusters and rollups have separate denominators / are not an identical population.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+       "observedAt": "2026-11-02",
+       "quote": "population.id projects|status:Development+Live+Pre-Release, totalAvailable 906, included 906; 7 category clusters sum to size 906, scfFunded 582, scfTotalUSD 58…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+       "observedAt": "2026-11-02",
+       "quote": "population.id projects|status:Development+Live+Pre-Release; totalProjects 906; per-category counts identical to clusters"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json#/components/schemas/PopulationScope",
+       "observedAt": "2026-11-02",
+       "quote": "Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Type clusters overlap and are not summable.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+       "observedAt": "2026-11-02",
+       "quote": "25 type clusters, summed size 1206 over a 906-project population"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=all#gaps",
+       "observedAt": "2026-11-02",
+       "quote": "A project counts under EACH of its types."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Each view carries generatedAt and scope.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters",
+       "observedAt": "2026-11-02",
+       "quote": "meta.generatedAt 2026-11-02T15:50:21.826Z; population.statusScope [Development, Live, Pre-Release]"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Call getClusters and analyzeEcosystem({dimension:\"all\"}), or separate analyzeEcosystem category and funding calls. Report each view's generatedAt, scope, and meta.population id: matching ids mean mechanically comparable numbers, and different ids mean different populations. Label SCF dollars as the service's reconstructed project-based total, and state that overlapping type clusters are not summable.",
+     "reason": "Live 2026-11-02: clusters and analyze carry the identical population id projects|status:Development+Live+Pre-Release (906); category clusters sum exactly to the rollup; OpenAPI PopulationScope says identical ids are mechanically comparable."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Compares each view's population id before combining cluster and rollup numbers.",
+     "reason": "The old fact required separate denominators, but category clusters and rollups now share one population."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Treats views with different population ids as one population, or sums type clusters as a project total.",
+     "reason": "The old avoid could fire on the true claim that category clusters and the rollup share one 906-project population."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "eval-authoring flaw: the avoid asserted a cluster/rollup population split that the service does not guarantee"
+   ],
+   "siblings": "q-defi-category-funding-ratio-live; q-scf-funding-by-category; q-defi-tooling-whitespace-live; q-defi-category-saturation-live; q-scf-total-distributed"
+  },
+  {
+   "id": "q-defi-comet-what-is",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Comet received $150K in SCF #13 and $141K in SCF #18 ($291K).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop get_scf_submissions(slug=comet)",
+       "observedAt": "2026-11-02",
+       "quote": "recG7Kj7ouwAFP2XY SCF #13 budget 150000; recIRbsKDA1ayFXCF SCF #18 budget 141000"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Comet",
+       "observedAt": "2026-11-02",
+       "quote": "scfTotalAwardedUSD 291000, scfAwardedRounds [13,18], scfBasis human-verified"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recG7Kj7ouwAFP2XY",
+       "observedAt": "2026-07-11",
+       "quote": "page renders client-side; prior verified fetch 2026-07-11 recorded Awarded $150,000"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Comet's public standalone repo/frontend are stale.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/CometDEX/comet-contracts-v1/releases",
+       "observedAt": "2026-11-02",
+       "quote": "v1.1.0 published 2026-09-11T21:29:14Z; repo pushed_at 2026-09-11T21:30:16Z, archived false"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Comet",
+       "observedAt": "2026-11-02",
+       "quote": "Comet ... status Inactive ... The standalone venue is no longer maintained"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Comet code serves as Blend's BLND:USDC 80/20 backstop on mainnet.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/mainnet-deployments",
+       "observedAt": "2026-11-02",
+       "quote": "v2.1 Mainnet ... Backstop CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ ... Comet v1.1 Contract (BLND:USDC liquidity pool) CASYAKK3SHDN6S2E6IUOBVRXT3…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+       "observedAt": "2026-11-02",
+       "quote": "Blend V2.1 contracts were deployed to mainnet ... on 2026-09-30 14:57 UTC ... they match V2, with the exception of Comet, which matches the released V1.1.0 cont…"
+      },
+      {
+       "class": "F",
+       "ref": "https://api.stellar.expert/explorer/public/contract/CASYAKK3SHDN6S2E6IUOBVRXT3KKPVQCVQO4GNBDTVE6XZQQMW4UMIHE",
+       "observedAt": "2026-11-02",
+       "quote": "created 1790780222 (2026-09-30), token_name Comet Pool Token, features sep41, invocations 109, errors 0"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new)",
+     "claim": "On 2026-08-25 an attacker drained 717,518.92 USDC from the Comet V1 BLND:USDC pool via a same-token swap bug.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2093365171846533577",
+       "observedAt": "2026-11-02",
+       "quote": "On August 25, 03:31:02 UTC, an attacker began a repeated exploit impacting the Comet BLND-USDC liquidity pool ... extract 717,518.92 USDC from the Comet pool."
+      },
+      {
+       "class": "D",
+       "ref": "https://olympix.security/blog/cometdexs-718k-loss-and-how-olympix-would-have-prevented-it",
+       "observedAt": "2026-11-02",
+       "quote": "Loss: 717,518.92 USDC drained from the Comet BLND-USDC pool. Class: same-token swap"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask (Comet backstop exploit 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "On 25 August 2026, an attacker exploited a bug in Comet's BLND-USDC weighted pool ... extracting 717,518.92 USDC"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop search_content_semantic (YieldBlox DAO proposal 51)",
+       "observedAt": "2026-11-02",
+       "quote": "YieldBlox proposes setting the backstop take rate to zero following an exploit on the Comet pool"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Scout lists Comet as Live and NOT SCF-awarded; unfunded.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Comet",
+       "observedAt": "2026-11-02",
+       "quote": "status Inactive, statusAsOf 2026-08-29, statusBasis human-verified; SCF-funded in rounds 13 and 18 ($291K)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Saying Comet was not SCF-funded or has no mainnet deployment is false.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/mainnet-deployments",
+       "observedAt": "2026-11-02",
+       "quote": "Comet v1.1 Contract (BLND:USDC liquidity pool) CASYAKK..."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "**Comet** began as an SCF-funded Balancer-style weighted-AMM design for Soroban/Futurenet. It received **$150K in SCF #13** and **$141K in SCF #18**. No current TVL/volume evidence establishes a major standalone DEX; as of 2026-11-02, Scout lists the standalone venue as Inactive.\n\nComet is not merely dead prior art: its weighted-pool code backs Blend's **BLND:USDC 80/20 backstop**. On **2026-08-25**, an attacker drained **717,518.92 USDC** from the original Comet V1 BLND:USDC pool through a same-token swap bug. As of 2026-11-02, Blend's V2.1 deployment uses a new **Comet V1.1** BLND:USDC LP as…",
+     "reason": "Comet V1 BLND:USDC pool was exploited 2026-08-25; Blend V2.1 (deployed 2026-09-30) uses a Comet V1.1 LP; CometDEX repo shipped v1.1.0 on 2026-09-11, so 'stale repo' is contradicted."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Per-project IDENTITY (lumenloop_get_project); a DISTINCT lane from q-defi-comet-content's topic-coverage corpus search (lumenloop_search_content_semantic). As of 2026-11-02, Scout lists Comet as Inactive (standalone venue no longer maintained), SCF-awarded in rounds 13 and 18 ($291K), with its weighted-pool code embedded in Blend's backstop; the 2026-06-29 Scout reading (status Live, not SCF-awarded) is superseded. The 2026-08-25 Comet V1 pool exploit and the Comet V1.1 LP behind the Blend V2.1 backstop are dated facts.\nAlso good if the answer: Notes it originated from Stellar's Soroban Financ…",
+     "reason": "Notes carried a superseded Scout reading (Live, NOT SCF-awarded, unfunded) that contradicts the golden."
+    },
+    {
+     "field": "golden.avoid[+]",
+     "op": "append",
+     "new": "Do NOT describe the exploited Comet V1 BLND:USDC pool as Blend's current healthy backstop.",
+     "reason": "Answer-visible guard for the dated incident; a stale answer would assert a false current state."
+    },
+    {
+     "field": "tags.freshness",
+     "op": "replace",
+     "new": "scheduled",
+     "reason": "The golden now carries dated incident and deployment facts."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Volatile facts need truth.asOf."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-05-11",
+     "reason": "Scheduled cases need reverifyBy; batch window 2027-05."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-eco-dex-saturation; q-defi-soroswap-what-is; q-defi-soroswap-vs-stellarx; q-eco-defi-tvl-current; q-defi-blend-what-is; q-edge-fresh-latest-blend-tvl; q-comp-yieldblox-oracle-incident"
+  },
+  {
+   "id": "q-defi-cross-blend-rivool-sac",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question / golden.answer / keyFacts[0]",
+     "claim": "A June 2026 Blend & Rivool case study: Rivool integrated Blend for advisor-managed, risk-profiled yield.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop search_content_semantic",
+       "observedAt": "2026-11-02",
+       "quote": "' Blend & Rivool case study' url https://x.com/i/article/2065568320821096448 publishing_date 2026-06-12 ... Rivool integrated Blend's DeFi lending protocol to b…"
+      },
+      {
+       "class": "A",
+       "ref": "https://x.com/rivool_finance/article/2067602216978878472",
+       "observedAt": "2026-11-02",
+       "quote": "We integrated Blend into Rivool's moderate and aggressive strategies."
+      },
+      {
+       "class": "D",
+       "ref": "https://lumenloop.com/news/blend-rivool-case-study",
+       "observedAt": "2026-11-02",
+       "quote": "Article x.com @rivool_finance June 12, 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Scout lists Blend as Live, built by Script3, with permissionless isolated lending pools (USDC, XLM, EURC).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Blend&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "Blend ... status Live ... builtBy Script3 ... Anyone can deploy permissionless, isolated lending pools where suppliers earn yield ... depositing assets like USD…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/mainnet-deployments",
+       "observedAt": "2026-11-02",
+       "quote": "v2.1 Mainnet Smart Contract Addresses ... Pool Factory CACUXRNBUFV7BFPKUDLVJFQI6H7EHHNSJPOFJSCWJCYUUYMORM6C63AL"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "Classic USDC in Soroban uses its SAC, which implements SEP-41 (balance, transfer, approve, allowance).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/tokens/stellar-asset-contract#contract-interface",
+       "observedAt": "2026-11-02",
+       "quote": "the common SEP-41 Token Interface, and include functions like transfer, burn, allowance, etc."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/tokens/anatomy-of-an-asset#strengths",
+       "observedAt": "2026-11-02",
+       "quote": "the Stellar Asset Contract implements the SEP-41 token interface"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.defindex.io/api/strategies",
+       "observedAt": "2026-11-02",
+       "quote": "usdc_blend_autocompound_etherfuse asset CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75 assetSymbol USDC (the USDC SAC used as a contract token)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Aquarius or DeFindex is the protocol in the Rivool case study.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/rivool_finance/article/2067602216978878472",
+       "observedAt": "2026-11-02",
+       "quote": "We integrated Blend into Rivool's moderate and aggressive strategies."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "The 2026-06-12 item is the Blend & Rivool case study: Rivool integrated Blend to put on-chain lending yield behind managed, risk-profiled strategies for financial advisers and clients. As observed on 2026-11-02, Scout lists Blend as a live Stellar/Soroban lending-and-borrowing protocol built by Script3, with permissionless isolated pools for assets such as USDC, XLM, and EURC. For classic USDC, a Soroban integration should use USDC's Stellar Asset Contract (SAC), which exposes the SEP-41 token interface; a token client can call standard functions such as `balance`, `transfer`, `approve`, and `…",
+     "reason": "Live Scout re-read 2026-11-02 still shows Blend Live, built by Script3, with permissionless isolated pools for USDC, XLM, and EURC."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Refreshed observation."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-05-06",
+     "reason": "Old reverifyBy 2026-11-19 is near; batch window 2027-05."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-blend-what-is; q-ass-cross-bando-stablebonds-sac; q-asset-usdc-eurc-path-fx"
+  },
+  {
+   "id": "q-defi-defindex-honest",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Noncustodial vaults, API, SDKs, dfToken, sponsored transactions; seven BlendStrategy adapters.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.defindex.io/llms.txt",
+       "observedAt": "2026-11-02",
+       "quote": "Vaults: The base product ... Stable APY ... Boost ... Blend Autocompound ... K2 Autocompound ... RWA Wrapper ... Deposit & Transfer dfTokens ... Sponsored Trans…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.defindex.io/api/strategies",
+       "observedAt": "2026-11-02",
+       "quote": "7 rows, all type BlendStrategy: ustry_, cetes_, eurc_, usdc_ (etherfuse), blend_autocompound_fixed (USDC), xlm_, tesouro_"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=DeFindex",
+       "observedAt": "2026-11-02",
+       "quote": "DeFindex (by PaltaLabs) is yield infrastructure on Stellar/Soroban. Non-custodial tokenized vaults ... types [Infrastructure, SDK, Yield]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Current TVL is $16.26M-$16.57M (approximate dated range).",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://api.llama.fi/tvl/defindex",
+       "observedAt": "2026-11-02",
+       "quote": "18725820.892980076"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=DeFindex",
+       "observedAt": "2026-11-02",
+       "quote": "tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15.688Z, tvlSource defillama"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.defindex.io/api/strategies",
+       "observedAt": "2026-11-02",
+       "quote": "blend_autocompound_fixed USDC tvl 18785565.97 USDC plus small EURC, XLM, CETES, USTRY balances"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Exact current TVL is not surfaced; reward flagging TVL unknown.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://api.llama.fi/tvl/defindex",
+       "observedAt": "2026-11-02",
+       "quote": "18725820.892980076"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Current TVL is unavailable / undated $1.1M.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://api.llama.fi/tvl/defindex",
+       "observedAt": "2026-11-02",
+       "quote": "18725820.892980076"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.defindex.io/api/strategies",
+       "observedAt": "2026-11-02",
+       "quote": "live per-strategy tvl values"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "**DeFindex** is noncustodial multi-token vault/yield infrastructure on Soroban, with vault and strategy contracts, a factory/GUI, REST API, TypeScript and Flutter SDKs, dfToken vault shares, partner fees, sponsored transactions, and integration/zapper support. As of 2026-11-02, the operator docs list Vaults, Stable APY, and Boost as products, and Blend Autocompound, K2 Autocompound, and RWA Wrapper as strategy types. Its operator strategy endpoint exposed seven BlendStrategy adapters on 2026-07-10 and on 2026-11-02; those are adapters, not seven distinct end-user products.\n\nCurrent TVL is avai…",
+     "reason": "The answer presented the July snapshot as 'current' and told graders to use a $16.26M-$16.57M range; live readings on 2026-11-02 are about $18.73M-$18.8M."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Identity is well grounded: as of 2026-11-02, Scout lists DeFindex (by PaltaLabs, status Live, types Infrastructure/SDK/Yield) as non-custodial tokenized yield vaults that route deposits across Blend and other protocols. The honesty test is dated, provider-labeled TVL reporting, not a refusal: current TVL is publicly available.\nAlso good if the answer: Notes DeFindex's role as a Blend-aware yield router/aggregator (deposits flow into underlying lenders like Blend).\nGolden cites: A source for DeFindex's role (Scout project record or operator docs), plus dated, provider-labeled TVL.\nCorrected 202…",
+     "reason": "Notes still said TVL is 'not surfaced' and rewarded 'flag TVL unknown', which contradicts avoid[0]; Scout types changed from [Lending] to Infrastructure/SDK/Yield."
+    },
+    {
+     "field": "tags.freshness",
+     "op": "replace",
+     "new": "scheduled",
+     "reason": "The golden carries dated TVL values."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Refreshed observation."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-05-18",
+     "reason": "Scheduled cases need reverifyBy; batch window 2027-05."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "eval-authoring flaw: notes kept the retired no-information TVL framing that contradicts avoid[0]"
+   ],
+   "siblings": "q-defi-aquarius-what-is; q-eco-defi-tvl-current; q-edge-fresh-latest-blend-tvl; q-edge-noinfo-exact-tvl-figure; q-defi-blend-alternatives"
+  },
+  {
+   "id": "q-defi-etherfuse-stablebonds",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "USTRY and CETES share issuer GCRYUGD5...MYWC with SACs CBLV4ATS...NUR and CAL6ER2T...VXV.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://etherfuse.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "code = \"USTRY\" issuer = \"GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC\" ... anchor_asset = \"US Treasury Notes\"; code = \"CETES\" ... anchor_asset = \"Me…"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=USTRY&asset_issuer=GCRYUGD5...",
+       "observedAt": "2026-11-02",
+       "quote": "contract_id CBLV4ATSIWU67CFSQU2NVRKINQIKUZ2ODSZBUJTJ43VJVRSBTZYOPNUR; flags auth_revocable true, auth_clawback_enabled true"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=CETES&asset_issuer=GCRYUGD5...",
+       "observedAt": "2026-11-02",
+       "quote": "contract_id CAL6ER2TI6CTRAY6BFXWNWA7WTYXUXTQCHUBCIBU5O6KM3HJFG6Z6VXV; auth_clawback_enabled true"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Stablebonds are NAV-based tokenized sovereign-debt claims in regulated custody, redeemable per terms.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://app.etherfuse.com/legal/stablebonds-overview",
+       "observedAt": "2026-11-02",
+       "quote": "Each Stablebond token represents a proportional economic claim whose value is based on the net asset value (NAV) of a segregated pool of sovereign-debt assets h…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Etherfuse",
+       "observedAt": "2026-11-02",
+       "quote": "it issues Stablebonds - tokenized government treasury bonds (Mexican CETES, US Treasuries and others)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Etherfuse services are unavailable in the United States.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stage.etherfuse.com/legal (restricted-country banner)",
+       "observedAt": "2026-11-02",
+       "quote": "Currently, restricted countries include: ... the United States of America"
+      },
+      {
+       "class": "A",
+       "ref": "https://app.etherfuse.com/legal/terms-and-conditions",
+       "observedAt": "2026-11-02",
+       "quote": "The Holder is not a U.S. Person as defined in Rule 902(k) of Regulation S"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.sec.gov/about/crypto-task-force/written-submission/etherfuse-brogan-law-052325",
+       "observedAt": "2026-11-02",
+       "quote": "Etherfuse prohibits U.S. Persons from accessing Stablebonds, implementing geofencing and KYC checks"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4] / avoid[3]",
+     "claim": "YieldBlox incident was a pool/oracle-consumer failure, not an Etherfuse issuer exploit.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/blend-exploits-2026",
+       "observedAt": "2026-11-02",
+       "quote": "collateral is only as safe as the market that prices it ... neither was a flaw in Blend V2's pool contracts"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop research roundups",
+       "observedAt": "2026-11-02",
+       "quote": "validators contained a $10 million oracle-manipulation attack on the Blend lending protocol"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ass-cross-etherfuse-cetes-controls; q-ass-cross-bando-stablebonds-sac; q-comp-yieldblox-oracle-incident; q-hist-yieldblox-v2-2026-exploit; q-defi-reflector-oracle; q-soroban-oracle-defensive-consumption"
+  },
+  {
+   "id": "q-defi-flash-loans",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[2]",
+     "claim": "No native flash-loan op; contracts implement them via atomic cross-contract calls; errors roll back.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/build/guides/conventions/cross-contract#handling-responses",
+       "observedAt": "2026-11-02",
+       "quote": "if there is an issue with the underlying contract call, the contract will panic"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/build/guides/conventions/error-enum",
+       "observedAt": "2026-11-02",
+       "quote": "is invoked, the transaction will fail. Contracts making cross contract calls have the ability to catch and handle these failures"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3]",
+     "claim": "Blend v2 is a verified deployed flash-loan implementation.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+       "observedAt": "2026-11-02",
+       "quote": "V2.1 would deploy fresh instances of the exact unchanged Blend V2.0.0 backstop, pool-factory, and pool WASMs ... I have independently verified the wasm hashes o…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/mainnet-deployments",
+       "observedAt": "2026-11-02",
+       "quote": "v2.1 Mainnet Smart Contract Addresses ... Pool Factory CACUXRNBUFV7BFPKUDLVJFQI6H7EHHNSJPOFJSCWJCYUUYMORM6C63AL"
+      },
+      {
+       "class": "D",
+       "ref": "https://olympix.security/blog/cometdexs-718k-loss-and-how-olympix-would-have-prevented-it",
+       "observedAt": "2026-11-02",
+       "quote": "Flash-loan source (Blend pool ..."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[4]",
+     "claim": "XycLoans: public code and history, usable deployment unverified; Slender: marketing claim, Scout Inactive.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/xycloo/xycloans",
+       "observedAt": "2026-11-02",
+       "quote": "archived false, pushed_at 2024-12-09T18:13:06Z"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=XycLoans",
+       "observedAt": "2026-11-02",
+       "quote": "status Live, statusBasis product-integration, statusSourceUrl https://main.xycloans.app/_next/static/chunks/eef1a047-8f44bfe5d78759e9.js, deployment.network unk…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Slender",
+       "observedAt": "2026-11-02",
+       "quote": "Slender ... status Inactive, statusAsOf 2026-07-09, human-verified"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Slender reference removed; XycLoans is the named flash-loan provider.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Slender",
+       "observedAt": "2026-11-02",
+       "quote": "noncustodial lending and borrowing protocol ... Inactive"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Deployment evidence tiers, not an exclusive project name, are the factual gate. As of 2026-11-02, Scout lists XycLoans (a flash-loans-only Soroban protocol) as Live on a frontend-bundle basis with no deployment record, and Slender (a noncustodial money market by eq-lab whose operator marketing claims flash loans) as Inactive; neither directory label alone proves a usable deployment. Blend V2.1 (mainnet, 2026-09-30) redeployed the unchanged v2.0.0 pool WASM, which exposes `flash_loan`.\nAlso good if the answer: Describes XycLoans' design (flash-loans-only, per-token liquidity pools enforcing sam…",
+     "reason": "Notes said 'Slender reference removed' and named XycLoans 'the credible' provider, contradicting the golden's Slender association and evidence tiers."
+    }
+   ],
+   "rootCause": [
+    "eval-authoring flaw: notes kept a superseded 2026-06-29 correction that contradicts the current golden"
+   ],
+   "siblings": "q-defi-blend-alternatives; q-defi-comet-what-is"
+  },
+  {
+   "id": "q-defi-lending-landscape-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "The live directory returns lending rows with project links, SCF fields, scope, pagination, and generatedAt.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=lending",
+       "observedAt": "2026-11-02",
+       "quote": "counts returned 20, total 88; generatedAt 2026-11-02T15:50:25.723Z; filters limit 20 offset 0; rows carry url, scfAwarded, scfTotalAwardedUSD, scfSourceUrl"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?type=Lending",
+       "observedAt": "2026-11-02",
+       "quote": "counts returned 5, total 43 (type filter differs from keyword scope)"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "counts.total: Rows matching the filter pre-slice"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "The archived flagship roster and awards are timeless.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=lending",
+       "observedAt": "2026-11-02",
+       "quote": "first page Blend, Vaquita, Crebit, For Yield, Lucent, XOXNO, Turbolong, Tezoro"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-blend-alternatives"
+  },
+  {
+   "id": "q-defi-liquid-staking-whitespace",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Stellar uses SCP/FBA and validators receive no monetary reward.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "There are no monetary rewards for being a validator on the Stellar network."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.stakingrewards.com/asset/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "There is no way to stake XLM ... there are no monetary rewards for being a validator on the Stellar network."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "No live native-XLM LST in the dated source universe (negative).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=liquid%20staking",
+       "observedAt": "2026-11-02",
+       "quote": "total 79 (majority-keyword); only staking-adjacent hit Hatom Protocol, a MultiversX liquid-staking hub connecting to Stellar"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop search_directory(query=liquid staking)",
+       "observedAt": "2026-11-02",
+       "quote": "2 rows: hatom-protocol, helix (multi-chain validators on other L1s)"
+      },
+      {
+       "class": "D",
+       "ref": "https://api.llama.fi/protocols",
+       "observedAt": "2026-11-02",
+       "quote": "44 Stellar-chain protocols; categories include Lending, Yield, Dexs, RWA; no Liquid Staking category"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search (Stellar XLM liquid staking 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "results: rajdeep-singha/sXLM (StelloFi XLM vault), ANSHSINGH5999/sxlm-liquid-staking (testnet), st-XLM repo; none earns validator rewards"
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/xlm-staking",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar has no native staking. There is no proof-of-stake, no validator rewards, no delegation and no lock-up."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new)",
+     "claim": "Self-described sXLM 'liquid staking' vaults earn DeFi yield, not validator rewards.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/rajdeep-singha/sXLM",
+       "observedAt": "2026-11-02",
+       "quote": "sXLM appreciates when XLM is added to the vault without new shares being minted. Five sources do that, all internal to the protocol: Borrow interest ... Swap fe…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stst-lake.vercel.app/",
+       "observedAt": "2026-11-02",
+       "quote": "Deposit XLM, receive sXLM - a yield-bearing token backed by diversified DeFi strategies. Earn from lending, market making, and liquidity provision."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/ANSHSINGH5999/sxlm-liquid-staking",
+       "observedAt": "2026-11-02",
+       "quote": "XLM is deployed to yield-generating strategies ... Stellar Testnet"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "yXLM and Chrysalis are not native XLM LSTs.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/reclPkvuD4iqLs6E5",
+       "observedAt": "2026-07-11",
+       "quote": "prior verification 2026-07-11 (Chrysalis SCF concept)"
+      },
+      {
+       "class": "A",
+       "ref": "https://ultracapital.xyz/.well-known/stellar.toml",
+       "observedAt": "2026-07-11",
+       "quote": "prior verification 2026-07-11"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Stellar uses **SCP/FBA, not proof of stake**, and validators receive no protocol monetary reward, so there is no native validator-staking position for a canonical XLM LST to tokenize. As of **2026-07-10**, and again in a **2026-11-02** re-sweep, no live native-XLM liquid-staking token/protocol was identified across official Stellar docs/site search, current Scout/Lumenloop directories, provider/repository searches, DeFiLlama, and deep web conflict sweeps. This is a bounded snapshot, not a permanent impossibility.\n\nDo not misclassify alternatives: **yXLM** is an issuer/anchor-backed interest-ea…",
+     "reason": "Re-sweep 2026-11-02 holds the negative; new sXLM-branded 'liquid staking' vaults (StelloFi, sXLM Protocol) exist and must be classified."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Dated negative re-swept."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-build-staking-for-own-token; q-edge-noinfo-stellar-pos-staking-rewards; q-protocol-scp-consensus-algorithm; q-raph-xlm-staking; q-eco-defi-market-map; q-eco-defi-tvl-current"
+  },
+  {
+   "id": "q-defi-lumenloop-categories-vocab",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Lumenloop get_categories returns exactly five values with ids 16,15,14,11,12.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_categories",
+       "observedAt": "2026-11-02",
+       "quote": "count 5: {id 16 Applications applications}, {15 Developer Tooling developer-tooling}, {14 Education & Community education-community}, {11 Financial Protocols fi…"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop get_project(slug=comet)",
+       "observedAt": "2026-11-02",
+       "quote": "category Financial Protocols (a live row uses the controlled label)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1] / avoid[0]",
+     "claim": "Scout uses a different 7-category schema.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+       "observedAt": "2026-11-02",
+       "quote": "User-Facing App, Infrastructure, Tooling, Protocol/Contract, Asset, Anchor, Partner Integration; totalProjects 906"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-builder-lumenloop-regions-vocab; q-defi-tooling-whitespace-live"
+  },
+  {
+   "id": "q-defi-market-making-kelp",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / avoid[0]",
+     "claim": "stellar-deprecated/kelp is archived; latest release v1.12.0 on 2021-11-05; DEX/CEX trading bot.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar-deprecated/kelp",
+       "observedAt": "2026-11-02",
+       "quote": "archived true, pushed_at 2023-11-03T05:46:15Z, description 'Kelp is a free and open-source trading bot for the Stellar DEX and 100+ centralized exchanges'"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar-deprecated/kelp/releases/latest",
+       "observedAt": "2026-11-02",
+       "quote": "v1.12.0 2021-11-05T20:56:13Z"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=kelp",
+       "observedAt": "2026-11-02",
+       "quote": "repo search reachable (HTTP 200)"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2..4]",
+     "claim": "Market making spans SDEX offers, AMM pools, and incentive programs; bots manage offers by price, spread, inventory.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "Liquidity pools enable automated market making on the Stellar network ... Last updated on Jul 15, 2026"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-hummingbot-kelp-closed-rfp; q-defi-sdex-offer-lifecycle; q-defi-arbitrage-pathpayment-bots; q-scf-open-rfps-live"
+  },
+  {
+   "id": "q-defi-named-newer-protocols",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 a DeFi directory query returned 39 matches (DeFindex, HedgePay, HiYield on page one).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=DeFi",
+       "observedAt": "2026-11-02",
+       "quote": "2026-11-02: counts total 208; first page Blend, Aquarius, Phoenix, DeFindex, Hoops Finance, Vaquita ..."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new) / avoid[1]",
+     "claim": "FxDAO is an XLM-backed stablecoin debt protocol, still in development; not production-ready.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://fxdao.io/",
+       "observedAt": "2026-11-02",
+       "quote": "The first decentralized stablecoin protocol running on the Stellar network. Note: The protocol is still on development"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=FxDAO",
+       "observedAt": "2026-11-02",
+       "quote": "Debt issuance protocol for the issuance of decentralized stablecoins backed by XLMs. status Inactive, statusAsOf 2026-09-05, human-verified; DefiLlama TVL 0"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/FxDAO/FxDAO-SC",
+       "observedAt": "2026-11-02",
+       "quote": "archived false, pushed_at 2025-06-16T16:19:01Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new) / avoid[0]",
+     "claim": "OrbitCDP is a CDP protocol (XLM, USTRY, CETES collateral, oUSD); operator banner vs Scout Inactive conflict.",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://orbitcdp.finance/",
+       "observedAt": "2026-11-02",
+       "quote": "OrbitCDP Live on Stellar ... oUSD Minted - Collateral Locked - Borrow APY - (empty stats); Launch App links to mainnet.blend.capital pool CAE7QVOM..."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=OrbitCDP",
+       "observedAt": "2026-11-02",
+       "quote": "status Inactive ... lifecycle.note 'Owner verdict 2026-09-05: dead - the page's protocol stats are empty ... the Live on Stellar banner is marketing copy'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new) / avoid[2]",
+     "claim": "Zenex is a live mainnet perps exchange with an XLM-USD market.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+       "observedAt": "2026-11-02",
+       "quote": "meta description: Every contract of the live Zenex deployment on Stellar mainnet"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/zenith-protocols/zenex-docs/blob/main/docs/deployments.md",
+       "observedAt": "2026-11-02",
+       "quote": "Market XLM-USD | Status Active | Market contract CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB ... checked on 6 October 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Zenex",
+       "observedAt": "2026-11-02",
+       "quote": "Zenex (formerly Hermes) ... Live on Stellar mainnet; status Live, statusAsOf 2026-10-03"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new) / avoid[1]",
+     "claim": "JST is JST Digital (ex JST Capital), a general market maker that funded Script3; not a Stellar DeFi protocol.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://jstdigital.io/about-us",
+       "observedAt": "2026-11-02",
+       "quote": "Our services include market making, treasury management solutions, strategic advisory services and venture capital funding"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.prnewswire.com/news-releases/script3-launches-first-defi-protocol-built-on-the-stellar-network-301464692.html",
+       "observedAt": "2026-11-02",
+       "quote": "Script3 has successfully completed YieldBlox development, raised financing from JST Capital"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=JST",
+       "observedAt": "2026-11-02",
+       "quote": "total 0 strict matches; 5 semantic-only rows (ARST, Steexp, KES, TZS ...)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n- **FxDAO:** a debt-issuance protocol for decentralized stablecoins backed by XLM. Its operator site says the protocol is still in development, and Scout labels it Inactive; production readiness is unverified.\n- **OrbitCDP:** a CDP protocol that locks XLM and Etherfuse Stablebonds (USTRY, CETES) to borrow stablecoins su…",
+     "reason": "The answer gave a stale 2026-07-11 DeFi directory count (39; now 208) and no per-entity identity; Scout now labels FxDAO and OrbitCDP Inactive."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Scout found OrbitCDP and Zenex directly. Zenex (Zenith Protocols, formerly Hermes) is a Soroban perpetual futures exchange; as of 2026-10-15 its operator deployments page lists a live Stellar mainnet XLM-USD market (core contracts deployed 2026-09-29), and a public mainnet RPC read shows fills. The 2026-08-29 testnet reading of the Zenex FAQ is superseded. As of 2026-11-02, FxDAO has its own Scout row (Inactive, human-verified 2026-09-05). JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-liv…",
+     "reason": "Scout now has a first-class FxDAO row."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Refreshed observation."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "eval-authoring flaw: the answer carried a generic directory count instead of the four named-entity identities"
+   ],
+   "siblings": "q-defi-blend-alternatives; q-defi-perps-whitespace; q-eco-defi-market-map; q-defi-etherfuse-stablebonds; q-defi-rwa-scf-similar"
+  },
+  {
+   "id": "q-defi-ondo-usdy",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "keyFacts[1] / keyFacts[2]",
+     "claim": "USDY launched on Stellar 2025-09-17 at about 5.3% APY.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/ondo-finance-launches-usdy-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Rio de Janeiro, Brazil - September 17, 2025 - Ondo Finance ... USDY currently offers a 5.3% APY"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Ondo",
+       "observedAt": "2026-11-02",
+       "quote": "Ondo Finance issues USDY on Stellar ... Launched on Stellar in 2025"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[0] / keyFacts[3]",
+     "claim": "USDY is an accumulating tokenized note; backing depends on issuance date (Treasuries, ETF shares, bank deposits).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.ondo.finance/general-access-products/usdy/basics",
+       "observedAt": "2026-11-02",
+       "quote": "USDY ... is a tokenized note formerly issued by Ondo USDY LLC, which as of December 15, 2025 has been folded into the Ondo Stocks umbrella. Depending on the iss…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Ondo",
+       "observedAt": "2026-11-02",
+       "quote": "USDY ... backed by short-term US Treasuries and bank deposits"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4] / avoid[1]",
+     "claim": "Eligibility excludes US persons and prohibited jurisdictions; others may need qualified status and KYC.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.ondo.finance/general-access-products/usdy/eligibility",
+       "observedAt": "2026-11-02",
+       "quote": "Prohibited Persons ... United States ... persons who are 'US persons' ... Restricted Persons generally will be required to produce evidence that they satisfy th…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/ondo-finance-launches-usdy-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "enables global (non-US) individual and institutional investors"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Also-good line: USDY backed by tokenized US Treasuries.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.ondo.finance/general-access-products/usdy/basics",
+       "observedAt": "2026-11-02",
+       "quote": "may be secured by either short-term US Treasuries, shares of iShares Short Treasury Bond ETF, or bank demand deposits"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "VERIFIED against the dossier's primary source (stellar.org Ondo USDY press release): Ondo Finance's institutional-grade yieldcoin backed by tokenized US Treasuries, launched on Stellar Sep 17 2025, ~5.3% APY at launch, available to non-US (global) individual + institutional investors only — 'not offered or sold to US persons.' Entity-grounded → find_content_by_entity. USDY=non-US yieldcoin; issuer/product precision trap (vs BENJI mutual-fund share, CRDT private credit).\nAlso good if the answer: Notes it carried about 5.3% APY at launch, when the Stellar release tied it to tokenized U.S. Treasu…",
+     "reason": "The 'also good' line rewarded 'backed by tokenized US Treasuries', which conflicts with avoid[0]; Ondo docs now name a different issuer entity."
+    }
+   ],
+   "rootCause": [
+    "eval-authoring flaw: an 'also good' note rewarded a backing claim that avoid[0] punishes"
+   ],
+   "siblings": "q-defi-benji-franklin-templeton; q-defi-wisdomtree-crdt; q-rwa-projects-tokenizing-stellar; q-eco-stablecoins-on-stellar; q-defi-rwa-scf-similar; q-eco-defi-market-map"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-defi-cluster-rollup-live",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Live meta.population.id is identical (projects|status:Development+Live+Pre-Release, 906/906) across clusters(category), clusters(types), analyze(all) and analyze(funding); upstream schema says identical ids are mechanically comparable. The old keyFact/avoid ('separate denominators', 'identical population') now punishes a true claim; the new population-id test is better grounded and answer-visible.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+      "observedAt": "2026-11-02",
+      "quote": "\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"totalAvailable\": 906, \"included\": 906, \"truncated\": false}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+      "observedAt": "2026-11-02",
+      "quote": "\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"included\": 906}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=all",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population.id \"projects|status:Development+Live+Pre-Release\"; categories.scope \"Active projects only ... don't merge the two without labeling the source.\""
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population.id \"projects|status:Development+Live+Pre-Release\"; funding.methodologyVersion \"funding-v2 (2026-07-05)\", scfTotalDistributedUSD 58585451.99"
+     },
+     {
+      "class": "B",
+      "ref": "catalog/manifest.json#scout.analyzeEcosystem outputSchema meta.population (upstream OpenAPI https://stellarlight.xyz/api/openapi.json)",
+      "observedAt": "2026-11-02",
+      "quote": "Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations — never merg…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-cluster-rollup-live",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "keyFact is 79 chars and states a durable behavior (compare population ids) instead of a stale denominator assumption.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+      "observedAt": "2026-11-02",
+      "quote": "\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"totalAvailable\": 906, \"included\": 906, \"truncated\": false}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+      "observedAt": "2026-11-02",
+      "quote": "\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"included\": 906}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=all",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population.id \"projects|status:Development+Live+Pre-Release\"; categories.scope \"Active projects only ... don't merge the two without labeling the source.\""
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population.id \"projects|status:Development+Live+Pre-Release\"; funding.methodologyVersion \"funding-v2 (2026-07-05)\", scfTotalDistributedUSD 58585451.99"
+     },
+     {
+      "class": "B",
+      "ref": "catalog/manifest.json#scout.analyzeEcosystem outputSchema meta.population (upstream OpenAPI https://stellarlight.xyz/api/openapi.json)",
+      "observedAt": "2026-11-02",
+      "quote": "Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations — never merg…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-cluster-rollup-live",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "Answer-visible avoid: fires only on merging different-id views or summing overlapping type clusters; types clusters still count a project under each type (analyze gaps.scope).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+      "observedAt": "2026-11-02",
+      "quote": "\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"totalAvailable\": 906, \"included\": 906, \"truncated\": false}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+      "observedAt": "2026-11-02",
+      "quote": "\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"included\": 906}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=all",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population.id \"projects|status:Development+Live+Pre-Release\"; categories.scope \"Active projects only ... don't merge the two without labeling the source.\""
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population.id \"projects|status:Development+Live+Pre-Release\"; funding.methodologyVersion \"funding-v2 (2026-07-05)\", scfTotalDistributedUSD 58585451.99"
+     },
+     {
+      "class": "B",
+      "ref": "catalog/manifest.json#scout.analyzeEcosystem outputSchema meta.population (upstream OpenAPI https://stellarlight.xyz/api/openapi.json)",
+      "observedAt": "2026-11-02",
+      "quote": "Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations — never merg…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-comet-what-is",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "All new facts verified: SCF #13 $150K + #18 $141K (Scout + Lumenloop); Scout Inactive 2026-11-02; 2026-08-25 exploit of 717,518.92 USDC via same-token swap (Script3 post-mortem + Olympix + Lumenloop + Web3 Daily); V2.1 backstop_token is Comet v1.1 CASYAKK3... (docs + discussion #64 + on-chain read). Dated, attributed.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Comet&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "status \"Inactive\", statusBasis \"human-verified\", statusAsOf 2026-08-29; scfAwardedRounds [13, 18], scfTotalAwardedUSD 291000; shortDescription \"Comet was a Bala…"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/get_project {slug:comet}",
+      "observedAt": "2026-11-02",
+      "quote": "\"scf\":{\"awarded_round\":[13,18],\"awarded_total\":291000,\"submission_urls\":[\"communityfund.stellar.org/submissions/recG7Kj7ouwAFP2XY\",\"communityfund.stellar.org/su…"
+     },
+     {
+      "class": "D",
+      "ref": "https://x.com/script3official/status/2093365171846533577",
+      "observedAt": "2026-11-02",
+      "quote": "On August 25, 03:31:02 UTC, an attacker began a repeated exploit impacting the Comet BLND-USDC liquidity pool ... extract 717,518.92 USDC from the Comet pool."
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/news/comet-blnd-usdc-lp-incident-post-mortem",
+      "observedAt": "2026-11-02",
+      "quote": "The bug failed to verify that swap inputs and outputs referenced different tokens ... The Comet pool itself is unsafe and frozen."
+     },
+     {
+      "class": "D",
+      "ref": "https://olympix.security/blog/cometdexs-718k-loss-and-how-olympix-would-have-prevented-it",
+      "observedAt": "2026-11-02",
+      "quote": "Loss: 717,518.92 USDC drained from the Comet BLND-USDC pool. Class: same-token swap that let a pool's recorded reserve drift from its real balance"
+     },
+     {
+      "class": "D",
+      "ref": "https://web3-daily-exploits.ghost.io/web3-daily-exploits-26-august-2026-realio-enjin-comet-morpho",
+      "observedAt": "2026-11-02",
+      "quote": "The pool accepted a USDC→USDC swap. That should be a no-op. Instead it corrupted reserve accounting"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.blend.capital/mainnet-deployments",
+      "observedAt": "2026-11-02",
+      "quote": "v2.1 Mainnet Smart Contract Addresses ... Backstop Smart Contract CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ ... Comet v1.1 Contract (BLND:USDC li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+      "observedAt": "2026-11-02",
+      "quote": "V2.1 would deploy fresh instances of the exact unchanged Blend V2.0.0 backstop, pool-factory, and pool WASMs ... introduce a new seven-decimal 80:20 BLND:USDC C…"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract invoke --send=no --id CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ -- backstop_token (https://mainnet.sorobanrpc.com)",
+      "observedAt": "2026-11-02",
+      "quote": "\"CASYAKK3SHDN6S2E6IUOBVRXT3KKPVQCVQO4GNBDTVE6XZQQMW4UMIHE\" (V2.1 backstop); V2 backstop CAQQR5SW...3IM7 returns \"CAS3FL6TLZKDGGSISDBWGGPXT3NRR4DYTZD7YOD3HMYO6LT…"
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+      "observedAt": "2026-11-02",
+      "quote": "The release forks Blend V2 with an updated Comet V1.1 AMM as the backstop token, bringing back a functional backstop."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-comet-what-is",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removes the stale 2026-06-29 'status Live, NOT SCF-awarded' text that contradicted the golden; new Scout reading verified live.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Comet&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "status \"Inactive\", statusBasis \"human-verified\", statusAsOf 2026-08-29; scfAwardedRounds [13, 18], scfTotalAwardedUSD 291000; shortDescription \"Comet was a Bala…"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/get_project {slug:comet}",
+      "observedAt": "2026-11-02",
+      "quote": "\"scf\":{\"awarded_round\":[13,18],\"awarded_total\":291000,\"submission_urls\":[\"communityfund.stellar.org/submissions/recG7Kj7ouwAFP2XY\",\"communityfund.stellar.org/su…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-comet-what-is",
+    "field": "golden.avoid[+]",
+    "decision": "accept",
+    "note": "Answer-visible and true: Script3 says the V1 pool is unsafe/frozen and advises against new backstop deposits; the qualifier 'current healthy' keeps it from firing on a neutral statement that Comet code backs Blend's backstop (V2 backstop_token is still CAS3FL6T..., verified on-chain).",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://x.com/script3official/status/2093365171846533577",
+      "observedAt": "2026-11-02",
+      "quote": "On August 25, 03:31:02 UTC, an attacker began a repeated exploit impacting the Comet BLND-USDC liquidity pool ... extract 717,518.92 USDC from the Comet pool."
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/news/comet-blnd-usdc-lp-incident-post-mortem",
+      "observedAt": "2026-11-02",
+      "quote": "The bug failed to verify that swap inputs and outputs referenced different tokens ... The Comet pool itself is unsafe and frozen."
+     },
+     {
+      "class": "D",
+      "ref": "https://olympix.security/blog/cometdexs-718k-loss-and-how-olympix-would-have-prevented-it",
+      "observedAt": "2026-11-02",
+      "quote": "Loss: 717,518.92 USDC drained from the Comet BLND-USDC pool. Class: same-token swap that let a pool's recorded reserve drift from its real balance"
+     },
+     {
+      "class": "D",
+      "ref": "https://web3-daily-exploits.ghost.io/web3-daily-exploits-26-august-2026-realio-enjin-comet-morpho",
+      "observedAt": "2026-11-02",
+      "quote": "The pool accepted a USDC→USDC swap. That should be a no-op. Instead it corrupted reserve accounting"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.blend.capital/mainnet-deployments",
+      "observedAt": "2026-11-02",
+      "quote": "v2.1 Mainnet Smart Contract Addresses ... Backstop Smart Contract CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ ... Comet v1.1 Contract (BLND:USDC li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+      "observedAt": "2026-11-02",
+      "quote": "V2.1 would deploy fresh instances of the exact unchanged Blend V2.0.0 backstop, pool-factory, and pool WASMs ... introduce a new seven-decimal 80:20 BLND:USDC C…"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract invoke --send=no --id CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ -- backstop_token (https://mainnet.sorobanrpc.com)",
+      "observedAt": "2026-11-02",
+      "quote": "\"CASYAKK3SHDN6S2E6IUOBVRXT3KKPVQCVQO4GNBDTVE6XZQQMW4UMIHE\" (V2.1 backstop); V2 backstop CAQQR5SW...3IM7 returns \"CAS3FL6TLZKDGGSISDBWGGPXT3NRR4DYTZD7YOD3HMYO6LT…"
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+      "observedAt": "2026-11-02",
+      "quote": "The release forks Blend V2 with an updated Comet V1.1 AMM as the backstop token, bringing back a functional backstop."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-comet-what-is",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "Case now carries dated volatile facts (exploit, V1.1 migration); scheduled freshness is correct.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://x.com/script3official/status/2093365171846533577",
+      "observedAt": "2026-11-02",
+      "quote": "On August 25, 03:31:02 UTC, an attacker began a repeated exploit impacting the Comet BLND-USDC liquidity pool ... extract 717,518.92 USDC from the Comet pool."
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/news/comet-blnd-usdc-lp-incident-post-mortem",
+      "observedAt": "2026-11-02",
+      "quote": "The bug failed to verify that swap inputs and outputs referenced different tokens ... The Comet pool itself is unsafe and frozen."
+     },
+     {
+      "class": "D",
+      "ref": "https://olympix.security/blog/cometdexs-718k-loss-and-how-olympix-would-have-prevented-it",
+      "observedAt": "2026-11-02",
+      "quote": "Loss: 717,518.92 USDC drained from the Comet BLND-USDC pool. Class: same-token swap that let a pool's recorded reserve drift from its real balance"
+     },
+     {
+      "class": "D",
+      "ref": "https://web3-daily-exploits.ghost.io/web3-daily-exploits-26-august-2026-realio-enjin-comet-morpho",
+      "observedAt": "2026-11-02",
+      "quote": "The pool accepted a USDC→USDC swap. That should be a no-op. Instead it corrupted reserve accounting"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.blend.capital/mainnet-deployments",
+      "observedAt": "2026-11-02",
+      "quote": "v2.1 Mainnet Smart Contract Addresses ... Backstop Smart Contract CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ ... Comet v1.1 Contract (BLND:USDC li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+      "observedAt": "2026-11-02",
+      "quote": "V2.1 would deploy fresh instances of the exact unchanged Blend V2.0.0 backstop, pool-factory, and pool WASMs ... introduce a new seven-decimal 80:20 BLND:USDC C…"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract invoke --send=no --id CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ -- backstop_token (https://mainnet.sorobanrpc.com)",
+      "observedAt": "2026-11-02",
+      "quote": "\"CASYAKK3SHDN6S2E6IUOBVRXT3KKPVQCVQO4GNBDTVE6XZQQMW4UMIHE\" (V2.1 backstop); V2 backstop CAQQR5SW...3IM7 returns \"CAS3FL6TLZKDGGSISDBWGGPXT3NRR4DYTZD7YOD3HMYO6LT…"
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+      "observedAt": "2026-11-02",
+      "quote": "The release forks Blend V2 with an updated Comet V1.1 AMM as the backstop token, bringing back a functional backstop."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-comet-what-is",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Required for scheduled freshness.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://x.com/script3official/status/2093365171846533577",
+      "observedAt": "2026-11-02",
+      "quote": "On August 25, 03:31:02 UTC, an attacker began a repeated exploit impacting the Comet BLND-USDC liquidity pool ... extract 717,518.92 USDC from the Comet pool."
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/news/comet-blnd-usdc-lp-incident-post-mortem",
+      "observedAt": "2026-11-02",
+      "quote": "The bug failed to verify that swap inputs and outputs referenced different tokens ... The Comet pool itself is unsafe and frozen."
+     },
+     {
+      "class": "D",
+      "ref": "https://olympix.security/blog/cometdexs-718k-loss-and-how-olympix-would-have-prevented-it",
+      "observedAt": "2026-11-02",
+      "quote": "Loss: 717,518.92 USDC drained from the Comet BLND-USDC pool. Class: same-token swap that let a pool's recorded reserve drift from its real balance"
+     },
+     {
+      "class": "D",
+      "ref": "https://web3-daily-exploits.ghost.io/web3-daily-exploits-26-august-2026-realio-enjin-comet-morpho",
+      "observedAt": "2026-11-02",
+      "quote": "The pool accepted a USDC→USDC swap. That should be a no-op. Instead it corrupted reserve accounting"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.blend.capital/mainnet-deployments",
+      "observedAt": "2026-11-02",
+      "quote": "v2.1 Mainnet Smart Contract Addresses ... Backstop Smart Contract CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ ... Comet v1.1 Contract (BLND:USDC li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+      "observedAt": "2026-11-02",
+      "quote": "V2.1 would deploy fresh instances of the exact unchanged Blend V2.0.0 backstop, pool-factory, and pool WASMs ... introduce a new seven-decimal 80:20 BLND:USDC C…"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract invoke --send=no --id CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ -- backstop_token (https://mainnet.sorobanrpc.com)",
+      "observedAt": "2026-11-02",
+      "quote": "\"CASYAKK3SHDN6S2E6IUOBVRXT3KKPVQCVQO4GNBDTVE6XZQQMW4UMIHE\" (V2.1 backstop); V2 backstop CAQQR5SW...3IM7 returns \"CAS3FL6TLZKDGGSISDBWGGPXT3NRR4DYTZD7YOD3HMYO6LT…"
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+      "observedAt": "2026-11-02",
+      "quote": "The release forks Blend V2 with an updated Comet V1.1 AMM as the backstop token, bringing back a functional backstop."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-comet-what-is",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Within the batch window 2027-05-01..2027-05-31; staggered.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://x.com/script3official/status/2093365171846533577",
+      "observedAt": "2026-11-02",
+      "quote": "On August 25, 03:31:02 UTC, an attacker began a repeated exploit impacting the Comet BLND-USDC liquidity pool ... extract 717,518.92 USDC from the Comet pool."
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/news/comet-blnd-usdc-lp-incident-post-mortem",
+      "observedAt": "2026-11-02",
+      "quote": "The bug failed to verify that swap inputs and outputs referenced different tokens ... The Comet pool itself is unsafe and frozen."
+     },
+     {
+      "class": "D",
+      "ref": "https://olympix.security/blog/cometdexs-718k-loss-and-how-olympix-would-have-prevented-it",
+      "observedAt": "2026-11-02",
+      "quote": "Loss: 717,518.92 USDC drained from the Comet BLND-USDC pool. Class: same-token swap that let a pool's recorded reserve drift from its real balance"
+     },
+     {
+      "class": "D",
+      "ref": "https://web3-daily-exploits.ghost.io/web3-daily-exploits-26-august-2026-realio-enjin-comet-morpho",
+      "observedAt": "2026-11-02",
+      "quote": "The pool accepted a USDC→USDC swap. That should be a no-op. Instead it corrupted reserve accounting"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.blend.capital/mainnet-deployments",
+      "observedAt": "2026-11-02",
+      "quote": "v2.1 Mainnet Smart Contract Addresses ... Backstop Smart Contract CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ ... Comet v1.1 Contract (BLND:USDC li…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+      "observedAt": "2026-11-02",
+      "quote": "V2.1 would deploy fresh instances of the exact unchanged Blend V2.0.0 backstop, pool-factory, and pool WASMs ... introduce a new seven-decimal 80:20 BLND:USDC C…"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract invoke --send=no --id CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ -- backstop_token (https://mainnet.sorobanrpc.com)",
+      "observedAt": "2026-11-02",
+      "quote": "\"CASYAKK3SHDN6S2E6IUOBVRXT3KKPVQCVQO4GNBDTVE6XZQQMW4UMIHE\" (V2.1 backstop); V2 backstop CAQQR5SW...3IM7 returns \"CAS3FL6TLZKDGGSISDBWGGPXT3NRR4DYTZD7YOD3HMYO6LT…"
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+      "observedAt": "2026-11-02",
+      "quote": "The release forks Blend V2 with an updated Comet V1.1 AMM as the backstop token, bringing back a functional backstop."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-cross-blend-rivool-sac",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Scout still lists Blend Live (onchain-activity), builtBy Script3, permissionless isolated pools for USDC/XLM/EURC on 2026-11-02; Blend docs list live v2/v2.1 mainnet deployments. Date-only refresh, Rivool/SAC parts unchanged.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Blend&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "Blend status \"Live\", statusBasis \"onchain-activity\", builtBy Script3; \"Anyone can deploy permissionless, isolated lending pools where suppliers earn yield ... b…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.blend.capital/mainnet-deployments",
+      "observedAt": "2026-11-02",
+      "quote": "Blend is deployed on both Stellar mainnet and testnet! ... v2.1 Mainnet Smart Contract Addresses"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-cross-blend-rivool-sac",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Refresh of the observation date; verified 2026-11-02.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Blend&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "Blend status \"Live\", statusBasis \"onchain-activity\", builtBy Script3; \"Anyone can deploy permissionless, isolated lending pools where suppliers earn yield ... b…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.blend.capital/mainnet-deployments",
+      "observedAt": "2026-11-02",
+      "quote": "Blend is deployed on both Stellar mainnet and testnet! ... v2.1 Mainnet Smart Contract Addresses"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-cross-blend-rivool-sac",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Within the batch window; staggered.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Blend&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "Blend status \"Live\", statusBasis \"onchain-activity\", builtBy Script3; \"Anyone can deploy permissionless, isolated lending pools where suppliers earn yield ... b…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.blend.capital/mainnet-deployments",
+      "observedAt": "2026-11-02",
+      "quote": "Blend is deployed on both Stellar mainnet and testnet! ... v2.1 Mainnet Smart Contract Addresses"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-defindex-honest",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Products (Vaults, Stable APY, Boost) and strategy types (Blend Autocompound, K2 Autocompound, RWA Wrapper) quoted from operator llms.txt; 7 BlendStrategy rows on 2026-11-02; DeFiLlama 18.73M, Scout 18,732,903 (tvlSource defillama), operator strategy sum ~18.81M. Old July readings retained with dates; no figure frozen.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.defindex.io/llms.txt",
+      "observedAt": "2026-11-02",
+      "quote": "[Vaults] ... [Stable APY] ... [Boost] ... [Blend Autocompound] ... [K2 Autocompound] ... [RWA Wrapper]: Sovereign bond yield"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.defindex.io/api/strategies",
+      "observedAt": "2026-11-02",
+      "quote": "7 rows, all \"type\":\"BlendStrategy\" (ustry_, cetes_, eurc_, usdc_ etherfuse, blend_autocompound_fixed, xlm_, tesouro_); blend_autocompound_fixed USDC tvl ≈ 18,78…"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/tvl/defindex",
+      "observedAt": "2026-11-02",
+      "quote": "18725820.892980076 (protocol currentChainTvls Stellar 18731277.09)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=DeFindex&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "DeFindex status \"Live\", types [\"Infrastructure\",\"SDK\",\"Yield\"], builtBy Paltalabs, tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15Z, tvlSource \"defillama\""
+     }
+    ]
+   },
+   {
+    "id": "q-defi-defindex-honest",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Fixes an internal contradiction: old notes rewarded 'flag TVL unknown' while avoid[0] forbids saying TVL is unavailable. Scout identity (Live, Infrastructure/SDK/Yield, Paltalabs) verified; the old 'types=[Lending]' was stale.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.defindex.io/llms.txt",
+      "observedAt": "2026-11-02",
+      "quote": "[Vaults] ... [Stable APY] ... [Boost] ... [Blend Autocompound] ... [K2 Autocompound] ... [RWA Wrapper]: Sovereign bond yield"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.defindex.io/api/strategies",
+      "observedAt": "2026-11-02",
+      "quote": "7 rows, all \"type\":\"BlendStrategy\" (ustry_, cetes_, eurc_, usdc_ etherfuse, blend_autocompound_fixed, xlm_, tesouro_); blend_autocompound_fixed USDC tvl ≈ 18,78…"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/tvl/defindex",
+      "observedAt": "2026-11-02",
+      "quote": "18725820.892980076 (protocol currentChainTvls Stellar 18731277.09)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=DeFindex&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "DeFindex status \"Live\", types [\"Infrastructure\",\"SDK\",\"Yield\"], builtBy Paltalabs, tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15Z, tvlSource \"defillama\""
+     }
+    ]
+   },
+   {
+    "id": "q-defi-defindex-honest",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "Answer pins dated TVL readings; scheduled is the correct freshness for volatile figures.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.defindex.io/llms.txt",
+      "observedAt": "2026-11-02",
+      "quote": "[Vaults] ... [Stable APY] ... [Boost] ... [Blend Autocompound] ... [K2 Autocompound] ... [RWA Wrapper]: Sovereign bond yield"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.defindex.io/api/strategies",
+      "observedAt": "2026-11-02",
+      "quote": "7 rows, all \"type\":\"BlendStrategy\" (ustry_, cetes_, eurc_, usdc_ etherfuse, blend_autocompound_fixed, xlm_, tesouro_); blend_autocompound_fixed USDC tvl ≈ 18,78…"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/tvl/defindex",
+      "observedAt": "2026-11-02",
+      "quote": "18725820.892980076 (protocol currentChainTvls Stellar 18731277.09)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=DeFindex&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "DeFindex status \"Live\", types [\"Infrastructure\",\"SDK\",\"Yield\"], builtBy Paltalabs, tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15Z, tvlSource \"defillama\""
+     }
+    ]
+   },
+   {
+    "id": "q-defi-defindex-honest",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "New observation date.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.defindex.io/llms.txt",
+      "observedAt": "2026-11-02",
+      "quote": "[Vaults] ... [Stable APY] ... [Boost] ... [Blend Autocompound] ... [K2 Autocompound] ... [RWA Wrapper]: Sovereign bond yield"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.defindex.io/api/strategies",
+      "observedAt": "2026-11-02",
+      "quote": "7 rows, all \"type\":\"BlendStrategy\" (ustry_, cetes_, eurc_, usdc_ etherfuse, blend_autocompound_fixed, xlm_, tesouro_); blend_autocompound_fixed USDC tvl ≈ 18,78…"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/tvl/defindex",
+      "observedAt": "2026-11-02",
+      "quote": "18725820.892980076 (protocol currentChainTvls Stellar 18731277.09)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=DeFindex&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "DeFindex status \"Live\", types [\"Infrastructure\",\"SDK\",\"Yield\"], builtBy Paltalabs, tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15Z, tvlSource \"defillama\""
+     }
+    ]
+   },
+   {
+    "id": "q-defi-defindex-honest",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "Within the batch window; staggered.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.defindex.io/llms.txt",
+      "observedAt": "2026-11-02",
+      "quote": "[Vaults] ... [Stable APY] ... [Boost] ... [Blend Autocompound] ... [K2 Autocompound] ... [RWA Wrapper]: Sovereign bond yield"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.defindex.io/api/strategies",
+      "observedAt": "2026-11-02",
+      "quote": "7 rows, all \"type\":\"BlendStrategy\" (ustry_, cetes_, eurc_, usdc_ etherfuse, blend_autocompound_fixed, xlm_, tesouro_); blend_autocompound_fixed USDC tvl ≈ 18,78…"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/tvl/defindex",
+      "observedAt": "2026-11-02",
+      "quote": "18725820.892980076 (protocol currentChainTvls Stellar 18731277.09)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=DeFindex&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "DeFindex status \"Live\", types [\"Infrastructure\",\"SDK\",\"Yield\"], builtBy Paltalabs, tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15Z, tvlSource \"defillama\""
+     }
+    ]
+   },
+   {
+    "id": "q-defi-flash-loans",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removes the stale 'Slender is NOT a flash-loan protocol' note that contradicted avoid[0]; Slender marketing still claims flash loans and Scout marks it Inactive; XycLoans Live on a JS-bundle (product-integration) basis with network unknown; v2.1 Fixed pool WASM hash equals v2 pool and the v2.0.0 release asset and exposes flash_loan; v2.1 deployed 2026-09-30.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=XycLoans&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "XycLoans status \"Live\", statusBasis \"product-integration\", statusSourceUrl \"https://main.xycloans.app/_next/static/chunks/eef1a047-8f44bfe5d78759e9.js\", deploym…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Slender&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "Slender status \"Inactive\", statusBasis \"human-verified\", builtBy EQ Lab, tvlUSD 88"
+     },
+     {
+      "class": "A",
+      "ref": "https://slender.fi/",
+      "observedAt": "2026-11-02",
+      "quote": "Flash loans — Borrow and repay in the same block with no collateral"
+     },
+     {
+      "class": "F",
+      "ref": "stellar contract fetch CBAKAZUEJBAFA2DCGBRS2WKJT3FNIMJBHTFL76AY7XMAVEINQNNIQWAO (Fixed v2.1 pool) and CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD (v2 Fixed pool); sha256",
+      "observedAt": "2026-11-02",
+      "quote": "both a41fc53d6753b6c04eb15b021c55052366a4c8e0e21bc72700f461264ec1350e; interface line 49 \"fn flash_loan(\""
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/blend-capital/blend-contracts-v2/releases/download/v2.0.0_pool_cli22.0.1/pool_v2.0.0.wasm",
+      "observedAt": "2026-11-02",
+      "quote": "sha256 a41fc53d6753b6c04eb15b021c55052366a4c8e0e21bc72700f461264ec1350e (matches the deployed v2.1 Fixed pool)"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+      "observedAt": "2026-11-02",
+      "quote": "Blend V2.1 contracts were deployed to mainnet by @Robeartt on 2026-09-30 14:57 UTC ... they match V2, with the exception of Comet"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Re-sweep reproduced: no LST row in Scout (4 queries) or Lumenloop directory (Helix stakes on other chains), no Stellar liquid-staking protocol in DeFiLlama, no LST page in Stellar Docs. Self-described 'liquid staking' sXLM projects earn lending/swap-fee/strategy yield (repos/sites quoted), so the new classification sentence is true and names no project to punish. Negative stays dated and bounded.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://github.com/rajdeep-singha/sXLM (via perplexity_search 'sXLM liquid staking Stellar vault token')",
+      "observedAt": "2026-11-02",
+      "quote": "sXLM appreciates when XLM is added to the vault ... Borrow interest ... Swap fees ... No external strategy is implemented"
+     },
+     {
+      "class": "D",
+      "ref": "https://github.com/ANSHSINGH5999/sxlm-liquid-staking",
+      "observedAt": "2026-11-02",
+      "quote": "First Liquid Staking Protocol on Stellar. Stake XLM, receive sXLM, earn real DeFi yield from Soroswap ... live testnet deployment"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellofi.vercel.app/",
+      "observedAt": "2026-11-02",
+      "quote": "sXLM is a vault share token representing a proportional claim on pooled XLM and any net yield generated by approved Stellar DeFi strategies."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=liquid%20staking (also q=sXLM, q=StelloFi, q=staked%20XLM)",
+      "observedAt": "2026-11-02",
+      "quote": "matchMode majority; rows Backyard, Normal, DeFindex, For Yield, Cushion, Meria DeFi; no LST row"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/search_directory {query:'liquid staking'} + get_project {slug:helix}",
+      "observedAt": "2026-11-02",
+      "quote": "Helix: \"Helix Labs operates validators on Cardano, ICP, BNB, Aptos, Sui, Solana, and Ethereum\" (not native XLM); hatom-protocol"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/protocols",
+      "observedAt": "2026-11-02",
+      "quote": "no protocol with chains including Stellar in categories Liquid Staking / Liquid Restaking / Staking Pool"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'liquid staking XLM validator rewards'",
+      "observedAt": "2026-11-02",
+      "quote": "hits only lumens base-reserve, SDP CLI, create-account, validator maintenance pages; no LST page"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Records the dated re-sweep; case stays stable.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://github.com/rajdeep-singha/sXLM (via perplexity_search 'sXLM liquid staking Stellar vault token')",
+      "observedAt": "2026-11-02",
+      "quote": "sXLM appreciates when XLM is added to the vault ... Borrow interest ... Swap fees ... No external strategy is implemented"
+     },
+     {
+      "class": "D",
+      "ref": "https://github.com/ANSHSINGH5999/sxlm-liquid-staking",
+      "observedAt": "2026-11-02",
+      "quote": "First Liquid Staking Protocol on Stellar. Stake XLM, receive sXLM, earn real DeFi yield from Soroswap ... live testnet deployment"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellofi.vercel.app/",
+      "observedAt": "2026-11-02",
+      "quote": "sXLM is a vault share token representing a proportional claim on pooled XLM and any net yield generated by approved Stellar DeFi strategies."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=liquid%20staking (also q=sXLM, q=StelloFi, q=staked%20XLM)",
+      "observedAt": "2026-11-02",
+      "quote": "matchMode majority; rows Backyard, Normal, DeFindex, For Yield, Cushion, Meria DeFi; no LST row"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/search_directory {query:'liquid staking'} + get_project {slug:helix}",
+      "observedAt": "2026-11-02",
+      "quote": "Helix: \"Helix Labs operates validators on Cardano, ICP, BNB, Aptos, Sui, Solana, and Ethereum\" (not native XLM); hatom-protocol"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/protocols",
+      "observedAt": "2026-11-02",
+      "quote": "no protocol with chains including Stellar in categories Liquid Staking / Liquid Restaking / Staking Pool"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'liquid staking XLM validator rewards'",
+      "observedAt": "2026-11-02",
+      "quote": "hits only lumens base-reserve, SDP CLI, create-account, validator maintenance pages; no LST page"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-named-newer-protocols",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n- **FxDAO:** a debt-issuance protocol for decentralized stablecoins backed by XLM. Its operator site says the protocol is still in development, and Scout labels it Inactive; production readiness is unverified.\n- **OrbitCDP:** a CDP protocol that locks XLM and Etherfuse Stablebonds (USTRY, CETES) to borrow stablecoins su…",
+    "note": "FxDAO, OrbitCDP and Zenex lines verified live 2026-11-02 (fxdao.io 'still on development' + Scout Inactive; orbitcdp.finance 'Live on Stellar' with empty stats vs Scout Inactive; Zenex docs live mainnet XLM-USD Active). JST correction: the only primary evidence is a 2022-01-20 release saying Script3 had already raised financing from JST Capital, so 'funded Script3 in 2022' is not established; rewo…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://fxdao.io/",
+      "observedAt": "2026-11-02",
+      "quote": "The first decentralized stablecoin protocol running on the Stellar network. Note: The protocol is still on development"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=FxDAO&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "FxDAO status \"Inactive\", statusBasis \"human-verified\", statusAsOf 2026-09-05; shortDescription \"Debt issuance protocol for the issuance of decentralized stablec…"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/get_project {slug:fxdao}",
+      "observedAt": "2026-11-02",
+      "quote": "\"description\":\"Debt issuance protocol for the issuance of decentralized stablecoins backed by XLMs.\",\"parent\":\"Creit Tech\""
+     },
+     {
+      "class": "A",
+      "ref": "https://orbitcdp.finance/",
+      "observedAt": "2026-11-02",
+      "quote": "OrbitCDP Live on Stellar ... oUSD Minted — Collateral Locked — Borrow APY — ... Lock XLM, USTRY or CETES into a smart contract vault."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=OrbitCDP&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "OrbitCDP status \"Inactive\", statusBasis \"human-verified\"; \"Users lock collateral (XLM and Etherfuse tokenized bonds like the USTRY US Treasury token and CETES M…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.zenex.trade/deployments/contract-addresses (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet ... Market XLM-USD Status Active Market contract CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHI…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Zenex&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "Zenex (formerly Hermes) is a decentralized perpetual (leveraged) trading exchange on Stellar/Soroban ... Live on Stellar mainnet"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.prnewswire.com/news-releases/script3-launches-first-defi-protocol-built-on-the-stellar-network-301464692.html",
+      "observedAt": "2026-11-02",
+      "quote": "(Jan. 20, 2022) Since then, Script3 has successfully completed YieldBlox development, raised financing from JST Capital, and released a YieldBlox public testnet…"
+     },
+     {
+      "class": "D",
+      "ref": "https://pitchbook.com/profiles/investor/463423-96",
+      "observedAt": "2026-11-02",
+      "quote": "Website jstdigital.io Formerly Known As JST Capital"
+     },
+     {
+      "class": "A",
+      "ref": "https://jstdigital.io/services/",
+      "observedAt": "2026-11-02",
+      "quote": "Services include market making, treasury management, consulting/advisory and venture funding."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-named-newer-protocols",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Scout now returns a first-class FxDAO row (Inactive, human-verified, statusAsOf 2026-09-05); the old 'not a first-class project row' line is superseded.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://fxdao.io/",
+      "observedAt": "2026-11-02",
+      "quote": "The first decentralized stablecoin protocol running on the Stellar network. Note: The protocol is still on development"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=FxDAO&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "FxDAO status \"Inactive\", statusBasis \"human-verified\", statusAsOf 2026-09-05; shortDescription \"Debt issuance protocol for the issuance of decentralized stablec…"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/get_project {slug:fxdao}",
+      "observedAt": "2026-11-02",
+      "quote": "\"description\":\"Debt issuance protocol for the issuance of decentralized stablecoins backed by XLMs.\",\"parent\":\"Creit Tech\""
+     },
+     {
+      "class": "A",
+      "ref": "https://orbitcdp.finance/",
+      "observedAt": "2026-11-02",
+      "quote": "OrbitCDP Live on Stellar ... oUSD Minted — Collateral Locked — Borrow APY — ... Lock XLM, USTRY or CETES into a smart contract vault."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=OrbitCDP&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "OrbitCDP status \"Inactive\", statusBasis \"human-verified\"; \"Users lock collateral (XLM and Etherfuse tokenized bonds like the USTRY US Treasury token and CETES M…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.zenex.trade/deployments/contract-addresses (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet ... Market XLM-USD Status Active Market contract CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHI…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Zenex&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "Zenex (formerly Hermes) is a decentralized perpetual (leveraged) trading exchange on Stellar/Soroban ... Live on Stellar mainnet"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.prnewswire.com/news-releases/script3-launches-first-defi-protocol-built-on-the-stellar-network-301464692.html",
+      "observedAt": "2026-11-02",
+      "quote": "(Jan. 20, 2022) Since then, Script3 has successfully completed YieldBlox development, raised financing from JST Capital, and released a YieldBlox public testnet…"
+     },
+     {
+      "class": "D",
+      "ref": "https://pitchbook.com/profiles/investor/463423-96",
+      "observedAt": "2026-11-02",
+      "quote": "Website jstdigital.io Formerly Known As JST Capital"
+     },
+     {
+      "class": "A",
+      "ref": "https://jstdigital.io/services/",
+      "observedAt": "2026-11-02",
+      "quote": "Services include market making, treasury management, consulting/advisory and venture funding."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-named-newer-protocols",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "New observation date; reverifyBy 2027-01-20 still valid.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://fxdao.io/",
+      "observedAt": "2026-11-02",
+      "quote": "The first decentralized stablecoin protocol running on the Stellar network. Note: The protocol is still on development"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=FxDAO&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "FxDAO status \"Inactive\", statusBasis \"human-verified\", statusAsOf 2026-09-05; shortDescription \"Debt issuance protocol for the issuance of decentralized stablec…"
+     },
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/get_project {slug:fxdao}",
+      "observedAt": "2026-11-02",
+      "quote": "\"description\":\"Debt issuance protocol for the issuance of decentralized stablecoins backed by XLMs.\",\"parent\":\"Creit Tech\""
+     },
+     {
+      "class": "A",
+      "ref": "https://orbitcdp.finance/",
+      "observedAt": "2026-11-02",
+      "quote": "OrbitCDP Live on Stellar ... oUSD Minted — Collateral Locked — Borrow APY — ... Lock XLM, USTRY or CETES into a smart contract vault."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=OrbitCDP&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "OrbitCDP status \"Inactive\", statusBasis \"human-verified\"; \"Users lock collateral (XLM and Etherfuse tokenized bonds like the USTRY US Treasury token and CETES M…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.zenex.trade/deployments/contract-addresses (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet ... Market XLM-USD Status Active Market contract CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHI…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Zenex&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "Zenex (formerly Hermes) is a decentralized perpetual (leveraged) trading exchange on Stellar/Soroban ... Live on Stellar mainnet"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.prnewswire.com/news-releases/script3-launches-first-defi-protocol-built-on-the-stellar-network-301464692.html",
+      "observedAt": "2026-11-02",
+      "quote": "(Jan. 20, 2022) Since then, Script3 has successfully completed YieldBlox development, raised financing from JST Capital, and released a YieldBlox public testnet…"
+     },
+     {
+      "class": "D",
+      "ref": "https://pitchbook.com/profiles/investor/463423-96",
+      "observedAt": "2026-11-02",
+      "quote": "Website jstdigital.io Formerly Known As JST Capital"
+     },
+     {
+      "class": "A",
+      "ref": "https://jstdigital.io/services/",
+      "observedAt": "2026-11-02",
+      "quote": "Services include market making, treasury management, consulting/advisory and venture funding."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-ondo-usdy",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Operator docs: formerly issued by Ondo USDY LLC, folded into Ondo Stocks as of 2025-12-15; issuer named Ondo Global Markets (BVI) Limited on eligibility/app/legal pages; independent Findas review corroborates the transition. The revised 'Also good' line no longer contradicts avoid[0] (Treasuries-only backing) and keeps 5.3% as launch-only.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.ondo.finance/general-access-products/usdy/basics",
+      "observedAt": "2026-11-02",
+      "quote": "USDY ... is a tokenized note formerly issued by Ondo USDY LLC, which as of December 15, 2025 has been folded into the Ondo Stocks umbrella. Depending on the iss…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.ondo.finance/general-access-products/usdy/eligibility",
+      "observedAt": "2026-11-02",
+      "quote": "Ondo Global Markets (BVI) Limited, the issuer of USDY tokens, also prohibits persons from subscribing for, acquiring or redeeming its tokens"
+     },
+     {
+      "class": "A",
+      "ref": "https://app.ondo.finance/assets/usdy (via perplexity_search)",
+      "observedAt": "2026-11-02",
+      "quote": "USDY tokens are issued by Ondo Global Markets (BVI) Limited, a British Virgin Islands business company."
+     },
+     {
+      "class": "D",
+      "ref": "https://www.findas.org/tokenomics-review/the-tokenomics-of-ondo-us-dollar-yield-usdy",
+      "observedAt": "2026-11-02",
+      "quote": "Ondo's docs state USDY was formerly issued by Ondo USDY LLC and that, as of December 15, 2025, it was \"folded into the Ondo Global Markets umbrella.\""
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "Raven stellarDocs.search_docs 'liquid staking XLM validator rewards'",
+   "catalog/manifest.json#scout.analyzeEcosystem outputSchema meta.population (upstream OpenAPI https://stellarlight.xyz/api/openapi.json)",
+   "https://api.coingecko.com/api/v3/simple/price?ids=stellar,euro-coin&vs_currencies=usd",
+   "https://api.llama.fi/protocol/defindex",
+   "https://api.llama.fi/protocols",
+   "https://api.llama.fi/tvl/defindex",
+   "https://api.lumenloop.com/v1/tools/get_project {slug:comet}",
+   "https://api.lumenloop.com/v1/tools/get_project {slug:fxdao}",
+   "https://api.lumenloop.com/v1/tools/search_content_semantic",
+   "https://api.lumenloop.com/v1/tools/search_directory {query:'liquid staking'} + get_project {slug:helix}",
+   "https://app.ondo.finance/assets/usdy (via perplexity_search)",
+   "https://docs.blend.capital/mainnet-deployments",
+   "https://docs.blend.capital/users/backstopping",
+   "https://docs.defindex.io/llms.txt",
+   "https://docs.ondo.finance/general-access-products/usdy/basics",
+   "https://docs.ondo.finance/general-access-products/usdy/eligibility",
+   "https://docs.zenex.trade/deployments/contract-addresses (live curl)",
+   "https://fxdao.io/",
+   "https://github.com/ANSHSINGH5999/sxlm-liquid-staking",
+   "https://github.com/blend-capital/blend-contracts-v2/discussions/64",
+   "https://github.com/blend-capital/blend-contracts-v2/releases/download/v2.0.0_pool_cli22.0.1/pool_v2.0.0.wasm",
+   "https://github.com/rajdeep-singha/sXLM (via perplexity_search 'sXLM liquid staking Stellar vault token')",
+   "https://jstdigital.io/services/",
+   "https://lumenloop.com/news/comet-blnd-usdc-lp-incident-post-mortem",
+   "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+   "https://main.xycloans.app/",
+   "https://olympix.security/blog/cometdexs-718k-loss-and-how-olympix-would-have-prevented-it",
+   "https://ondo.finance/.well-known/stellar.toml",
+   "https://orbitcdp.finance/",
+   "https://pitchbook.com/profiles/investor/463423-96",
+   "https://raw.githubusercontent.com/zenith-protocols/zenex-docs/main/docs/deployments/contract-addresses.md (404)",
+   "https://slender.fi/",
+   "https://stellarlight.xyz/api/analyze?dimension=all",
+   "https://stellarlight.xyz/api/analyze?dimension=funding",
+   "https://stellarlight.xyz/api/clusters?dimension=category",
+   "https://stellarlight.xyz/api/clusters?dimension=type",
+   "https://stellarlight.xyz/api/clusters?dimension=types",
+   "https://stellarlight.xyz/api/projects/search?q=Blend&limit=3",
+   "https://stellarlight.xyz/api/projects/search?q=Comet&limit=3",
+   "https://stellarlight.xyz/api/projects/search?q=DeFindex&limit=3",
+   "https://stellarlight.xyz/api/projects/search?q=FxDAO&limit=3",
+   "https://stellarlight.xyz/api/projects/search?q=OrbitCDP&limit=3",
+   "https://stellarlight.xyz/api/projects/search?q=Slender&limit=3",
+   "https://stellarlight.xyz/api/projects/search?q=XycLoans&limit=3",
+   "https://stellarlight.xyz/api/projects/search?q=Zenex&limit=3",
+   "https://stellarlight.xyz/api/projects/search?q=liquid%20staking (also q=sXLM, q=StelloFi, q=staked%20XLM)",
+   "https://stellarlight.xyz/llms.txt",
+   "https://stellofi.vercel.app/",
+   "https://web3-daily-exploits.ghost.io/web3-daily-exploits-26-august-2026-realio-enjin-comet-morpho",
+   "https://whalehub.io/blog/blend-exploits-2026",
+   "https://www.defindex.io/api/strategies",
+   "https://www.findas.org/tokenomics-review/the-tokenomics-of-ondo-us-dollar-yield-usdy",
+   "https://www.prnewswire.com/news-releases/script3-launches-first-defi-protocol-built-on-the-stellar-network-301464692.html",
+   "https://x.com/script3official/status/2093365171846533577",
+   "https://yfarmx.com/tools/exploit-tracker/exploit-0009",
+   "stellar contract fetch CBAKAZUEJBAFA2DCGBRS2WKJT3FNIMJBHTFL76AY7XMAVEINQNNIQWAO (Fixed v2.1 pool) and CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD (v2 Fixed pool); sha256",
+   "stellar contract invoke --send=no --id CCS4AZ5ORM6VLLPJTJUFRNXWBMHOO3L5WHHRPL2ZMILE35ZDMQFHOQMJ -- backstop_token (https://mainnet.sorobanrpc.com)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-defi-cluster-rollup-live; q-defi-comet-what-is; q-defi-cross-blend-rivool-sac; q-defi-defindex-honest; q-defi-flash-loans; q-defi-liquid-staking-whitespace; q-defi-named-newer-protocols; q-defi-ondo-usdy",
+  "verifiedOnly": "q-defi-etherfuse-stablebonds; q-defi-lending-landscape-live; q-defi-market-making-kelp",
+  "untouched": "q-defi-lumenloop-categories-vocab",
+  "escalations": [
+   {
+    "id": "q-defi-flash-loans",
+    "issue": "Applier tense fix on accepted notes text: Slender marketing \"claims\" -> \"claimed\". The verifier quoted slender.fi on 2026-11-02, but slender.fi and app.slender.fi are NXDOMAIN on 1.1.1.1 and 8.8.8.8 on 2026-11-02, so the quote may be cached. The answer still says Slender marketing claims flash loans under its 2026-07-10 date (dated, left unchanged)."
+   },
+   {
+    "id": "q-defi-flash-loans",
+    "issue": "Upstream defect for improvements/ (not filed by this lane): Stellar Light labels XycLoans Live with statusBasis product-integration from a frontend JS chunk and deployment.network unknown (https://stellarlight.xyz/api/projects/search?q=XycLoans, 2026-11-02)."
+   },
+   {
+    "id": "q-defi-cluster-rollup-live",
+    "issue": "Siblings outside this batch carry older population assumptions: q-defi-category-funding-ratio-live says to report analyzeEcosystem as a separate population, and q-scf-funding-by-category says /api/clusters truncates at 500. On 2026-11-02 both views share population id projects|status:Development+Live+Pre-Release with 906/906 included, truncated false. Re-check in their own batches."
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace",
+    "issue": "Consistency-register cluster \"SCP rewards versus third-party XLM yield\" text still bounds the negative to the 2026-07-10 sweep; this case now adds a 2026-11-02 re-sweep. The orchestrator register run should re-stamp and, if needed, update that note."
+   },
+   {
+    "id": "q-defi-named-newer-protocols",
+    "issue": "reverifyBy moved 2027-01-20 -> 2027-05-25 per the batch window; the matrix and verifier gave no event-tied reason for the earlier date (the verifier only said 2027-01-20 was still valid)."
+   },
+   {
+    "id": "all-batch-ids",
+    "issue": "lifecycle-registry caseContentSha256 is stale errors for the 11 edited ids remain. They clear only when the orchestrator runs npm run eval:qa:register, which this lane must not run."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-defi-cluster-rollup-live",
+    "log": "answer, keyFacts[2], avoid[0] replaced (population-id test; verifier accept x3); corroboration rows rebuilt (old 'identical population' contradicted row removed); 3 sources added; asOf 2026-07-11 -> 2026-11-02; freshness stays live (no reverifyBy); truth.verified rootCause freshness-drift + authoring flaw."
+   },
+   {
+    "id": "q-defi-comet-what-is",
+    "log": "answer replaced (Scout Inactive, 2026-08-25 V1 exploit 717,518.92 USDC, Comet V1.1 LP behind Blend V2.1 backstop; stale-repo clause dropped; accept); notes replaced (stale 2026-06-29 Scout reading removed; accept); avoid appended (exploited V1 pool not current healthy backstop; accept); freshness stable -> scheduled; asOf 2026-11-02; reverifyBy 2027-05-11; 8 sources; 4 corroboration rows; rootCause freshness-drift."
+   },
+   {
+    "id": "q-defi-cross-blend-rivool-sac",
+    "log": "answer observation date -> 2026-11-02 (accept); asOf 2026-11-02; reverifyBy 2026-11-19 -> 2027-05-06; 3 sources; corroboration evidence appended; rootCause freshness-drift."
+   },
+   {
+    "id": "q-defi-defindex-honest",
+    "log": "answer replaced (2026-11-02 products/strategy types and dated TVL readings; range instruction dropped; accept); notes replaced (no-information framing removed; accept); freshness stable -> scheduled; asOf 2026-11-02; reverifyBy 2027-05-18; status stays disputed; 4 sources; 3 corroboration rows; rootCause freshness-drift + authoring flaw."
+   },
+   {
+    "id": "q-defi-flash-loans",
+    "log": "notes replaced (dated evidence tiers; stale 'Slender removed' text gone; accept) with one applier tense fix 'claims' -> 'claimed' for Slender marketing (slender.fi NXDOMAIN 2026-11-02); 6 sources; 2 corroboration rows; asOf kept 2026-07-10 (answer is dated 2026-07-10); rootCause authoring flaw."
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace",
+    "log": "answer: 2026-11-02 re-sweep date plus sXLM vault classification clause (accept); asOf 2026-11-02 added; 7 sources; negative corroboration row re-dated with 4 new evidence rows; new sXLM corroboration row; rootCause freshness-drift."
+   },
+   {
+    "id": "q-defi-named-newer-protocols",
+    "log": "answer replaced with verifier modify newText (per-entity FxDAO/OrbitCDP/Zenex/JST; JST wording dated to the 2022-01-20 release); notes FxDAO line updated (accept); asOf 2026-10-15 -> 2026-11-02; reverifyBy 2027-01-20 -> 2027-05-25; status stays disputed; 8 sources; 3 corroboration rows + Zenex evidence appended; rootCause freshness-drift + authoring flaw."
+   },
+   {
+    "id": "q-defi-ondo-usdy",
+    "log": "notes 'Also good' line rewritten (no Treasuries-only reward; dated issuer transition; accept); asOf 2026-11-02 added; 3 sources; 2 corroboration rows; rootCause authoring flaw + freshness-drift."
+   },
+   {
+    "id": "q-defi-etherfuse-stablebonds",
+    "log": "No gospel change; truth.verified refreshed (A/C/D/F evidence); old rootCause dropped (no gospel change this event); asOf kept 2026-07-10 (golden text dated)."
+   },
+   {
+    "id": "q-defi-lending-landscape-live",
+    "log": "No gospel change; truth.verified refreshed (C + A OpenAPI evidence); old rootCause dropped; asOf 2026-07-11 -> 2026-11-02 (live behavior case)."
+   },
+   {
+    "id": "q-defi-market-making-kelp",
+    "log": "No gospel change; truth.verified refreshed (B + A + C evidence); old rootCause dropped; asOf kept 2026-06-29 (golden text dated)."
+   },
+   {
+    "id": "q-defi-lumenloop-categories-vocab",
+    "log": "Untouched: matrix evidence is class C only (Lumenloop get_categories plus Scout analyze); no multi-class re-verification to record."
+   }
+  ]
+ }
+}

@@ -1,0 +1,1020 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "peer-handoff",
+ "kind": "pass3",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-soroban-instance-storage-dos",
+   "claims": [
+    {
+     "claim": "stellar-core validates contract-data entry size when it loads each live footprint entry, not only when it writes modified entries; failure gives INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "addReads(...) ... if (!validateContractLedgerEntry(lk, entrySize, mSorobanConfig, mAppConfig, mOpFrame.mParentTx, mDiagnosticEvents)) { mOpFrame.innerResult(mRe…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/TransactionUtils.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "if (lk.type() == CONTRACT_DATA && config.maxContractDataEntrySizeBytes() < entrySize) { diagnosticEvents.pushError(SCE_BUDGET, SCEC_EXCEEDED_LIMIT, \"ContractDat…"
+      }
+     ]
+    },
+    {
+     "claim": "The contract-data entry-size limit is validator-voted and may be lowered, down to a small protocol floor (2,000 B).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "case ConfigSettingID::CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES: valid = cfg.contractDataEntrySizeBytes() >= MinimumSorobanNetworkConfig::MAX_CONTRACT_DATA_…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/ledger/NetworkConfig.h",
+       "observedAt": "2026-11-02",
+       "quote": "static constexpr uint32_t MAX_CONTRACT_DATA_ENTRY_SIZE_BYTES = 2'000;  (MinimumSorobanNetworkConfig)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage",
+       "observedAt": "2026-11-02",
+       "quote": "The limit is set by validator vote, and the protocol only requires it to stay at or above a small fixed minimum, so it isn't guaranteed to never decrease. Leave…"
+      }
+     ]
+    },
+    {
+     "claim": "Under ordinary growth, an over-limit write is rejected and the prior entry (at or below the limit) stays readable; the existing keyFacts[2] and avoid[0] stay true.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "recordModifiedEntry ... validateContractLedgerEntry ... INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED; return false;"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+       "observedAt": "2026-11-02",
+       "quote": "Everything in instance() shares the contract instance's single ledger entry: it is all loaded on every invocation, it must fit the 64 KiB cap together"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Add the verified read-path qualifier: an instance entry left above a later-lowered limit makes every call fail until the limit rises. Without it a correct limit-decrease answer reads as the banned permanent brick."
+    },
+    {
+     "field": "golden.notes",
+     "reason": "Symmetric caution tied to the verified ambiguity (read-path check under a lowered limit vs. ordinary growth): the conditioned claim is correct and does not fire avoid[0]; the unconditioned growth claim stays wrong. Not a partial cap; ADR-0008 untouched."
+    },
+    {
+     "field": "truth.sources[+] x3",
+     "reason": "stellar-core v30.0.0 source for the read check, the error string, and the upgrade floor."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Required for a gospel change; eval-side authoring gap."
+    }
+   ],
+   "rootCause": "Eval-side authoring gap: the golden covered over-limit writes only and omitted stellar-core's read-path entry-size check under a validator-lowered limit.",
+   "siblings": "q-soroban-vuln-classes; q-sor-persistent-unbounded-collection-cap; q-soroban-resource-limits; q-soroban-wasm-size-limit; q-soroban-storage-types; q-zk-nullifier-storage"
+  },
+  {
+   "id": "q-anchor-endpoint-discovery",
+   "claims": [
+    {
+     "claim": "SEP-24 makes the anchor's stellar.toml TRANSFER_SERVER_SEP0024 the discovery mechanism for the anchor server; SEP-24 says nothing about a directory.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+       "observedAt": "2026-11-02",
+       "quote": "An anchor must define the location of their `TRANSFER_SERVER_SEP0024` in their `stellar.toml`. This is how a wallet knows where to find the anchor's server."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "By setting the home_domain of your Stellar account to the domain that hosts your `stellar.toml`, you can create a definitive link between this information and t…"
+      }
+     ]
+    },
+    {
+     "claim": "The question never mentions directories; avoid[0] already traps the directory-supplies-endpoints error.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-endpoint-discovery.json",
+       "observedAt": "2026-11-02",
+       "quote": "How does a wallet discover and integrate a Stellar anchor's SEP-24 endpoints?"
+      }
+     ]
+    },
+    {
+     "claim": "Rubric ambiguity: keyFacts[2] 'Uses ... instead of directory metadata' was read as behavior (single judge) and as a required explicit contrast (panel) on equal answers.",
+     "verdict": "confirmed (lead, rubric wording only)",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "/private/tmp/claude-501/raven-mintlify-1102/.agents/rounds/2026-11-02-mintlify-migration/qa-rows-lane-1.md",
+       "observedAt": "2026-11-02",
+       "quote": "A's single judge read fact 3 as behavior ... B's panel read it as a statement the answer must make"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Append one line that settles the reading of keyFacts[2]; names the ambiguity and the SEP-24 basis; keeps the miss when an answer uses directory metadata. No truth change, no keyFact rewrite."
+    },
+    {
+     "field": "truth.verified.rootCause[+]",
+     "reason": "Required for a gospel change; eval-side rubric ambiguity."
+    }
+   ],
+   "rootCause": "Eval-side rubric ambiguity in keyFacts[2] wording.",
+   "siblings": "q-anchor-list-builders-discovery; q-sep6-sep24-sep31-choice; q-sep-45-contract-auth; q-crp-anchors-by-corridor"
+  },
+  {
+   "id": "q-mpp-discovery-and-modes",
+   "claims": [
+    {
+     "claim": "As of 2026-11-02, mpp.dev says one mppx endpoint can serve both MPP and x402, for x402-compatible EVM charges.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/mpp-vs-x402",
+       "observedAt": "2026-11-02",
+       "quote": "You can run both protocols on the same endpoint with `mppx`, so adopting MPP doesn't require you to exclude x402 clients. ... With `mppx`, you can run x402-comp…"
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/guides/use-mpp-with-x402",
+       "observedAt": "2026-10-31",
+       "quote": "Returns MPP and x402 Challenges on `402` responses; Accepts MPP and x402 Credentials; ... Returns the Receipt header that matches the client's protocol"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/wevm/mppx/blob/ed76e8e21c/src/integrations/x402/Negotiator.ts",
+       "observedAt": "2026-11-02",
+       "quote": "/** Selects MPP, x402, or an immediate response for a request. */ ... 'Send either an MPP credential or an x402 payment signature, not both.'"
+      }
+     ]
+    },
+    {
+     "claim": "MPP and x402 keep distinct challenge, credential, and receipt headers, so payloads must not be relabeled.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/mpp-vs-x402",
+       "observedAt": "2026-11-02",
+       "quote": "Challenge header | PAYMENT-REQUIRED | WWW-Authenticate: Payment; Credential header | PAYMENT-SIGNATURE | Authorization: Payment ...; Receipt header | PAYMENT-RE…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/wevm/mppx/blob/ed76e8e21c/src/integrations/x402/Negotiator.ts",
+       "observedAt": "2026-11-02",
+       "quote": "Send either an MPP credential or an x402 payment signature, not both."
+      }
+     ]
+    },
+    {
+     "claim": "'expose separate adapters' and 'non-interchangeable adapters' are no longer safe universal claims.",
+     "verdict": "contradicted as a universal; separate adapters remain a valid design",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/guides/use-mpp-with-x402",
+       "observedAt": "2026-10-31",
+       "quote": "The wrapper delegates x402 Credentials, lifecycle hooks, verification, and settlement to the official x402 adapter."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Replace the universal 'expose separate adapters' directive with the dated dual-endpoint fact plus the still-true never-relabel rule."
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "reason": "Drop 'non-interchangeable adapters'; keep one positive predicate (distinct challenge and credential formats). 89 characters."
+    },
+    {
+     "field": "golden.notes",
+     "reason": "Re-date the status line to the 2026-11-02 re-verification; add a symmetric caution tied to the verified mpp.dev change (separate adapters or one endpoint both fine; relabeling wrong)."
+    },
+    {
+     "field": "truth.sources[+] x2",
+     "reason": "mpp.dev guide and mppx Negotiator source."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "freshness-drift: mpp.dev added dual-protocol endpoints after the golden was written."
+    }
+   ],
+   "rootCause": "freshness-drift",
+   "siblings": "q-agent-payment-standard-choice; q-defi-agentic-payment-standards-compare; q-defi-x402-on-stellar-what; q-agent-identity-erc8004-stellar; q-defi-streaming-payments-prior-art"
+  },
+  {
+   "id": "q-builder-content-by-person",
+   "claims": [
+    {
+     "claim": "Seven live Developer Docs meeting pages (2024-01-26, 02-08, 02-22, 03-07, 03-21, 04-18, 06-13) carry the byline 'Tyler van der Hoeven, Developer Advocate Director'.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://developers.stellar.org/meetings/2024/01/26 (and 02/08, 02/22, 03/07, 03/21, 04/18, 06/13)",
+       "observedAt": "2026-11-02",
+       "quote": "January 26, 2024 · Tyler van der Hoeven , Developer Advocate Director"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs (code search repo:stellar/stellar-docs \"van der Hoeven\")",
+       "observedAt": "2026-11-02",
+       "quote": "meetings/2024/06/13.mdx, 02/22, 02/08, 04/18, 03/07, 03/21, 01/26 (+ .mintlify/skills/standards/SKILL.md)"
+      }
+     ]
+    },
+    {
+     "claim": "The author index /meetings/authors/kalepail still returns HTTP 404.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://developers.stellar.org/meetings/authors/kalepail",
+       "observedAt": "2026-11-02T18:43:40Z",
+       "quote": "HTTP 404"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/stellar-docs/sd-064-meeting-author-pages-404-after-migration.md",
+       "observedAt": "2026-11-02",
+       "quote": "The Mintlify migration removed the meeting author index pages. It added no redirect."
+      }
+     ]
+    },
+    {
+     "claim": "The 2024-06-13 page covers Super Peach, Passkey Kit, and Launchtube; the three event pages keep their dates (2020-04-10; Turing page header July 10, 2020 vs body June 19th 2020; AMA May 4, 2023).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://developers.stellar.org/meetings/2024/06/13",
+       "observedAt": "2026-11-02",
+       "quote": "Tyler created Super Peach, a web3 application that uses passkeys to sign transactions ... Introduced Launchtube, a service for submitting transactions onchain"
+      },
+      {
+       "class": "F",
+       "ref": "https://stellar.org/community/events/turing-complete-contract-proposal-for-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Date and time July 10, 2020 at 5.00 PM UTC ... tune in on June 19th 2020, 1:00 PM ET!"
+      },
+      {
+       "class": "F",
+       "ref": "https://stellar.org/events/community/practical-path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "April 10, 2020 at 5.00 PM UTC ... Highlighted Speakers Tyler van der Hoeven"
+      },
+      {
+       "class": "F",
+       "ref": "https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates",
+       "observedAt": "2026-11-02",
+       "quote": "May 4, 2023 at 2.00 PM UTC ... Tyler van der Hoeven, Elliot Voris, Julian Martinez, Nicole Adair"
+      }
+     ]
+    },
+    {
+     "claim": "Repository state: kalepail/passkey-kit archived with move pointer; stellar/launchtube archived, pushed 2026-01-14.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/kalepail/passkey-kit; repos/stellar/launchtube",
+       "observedAt": "2026-11-02",
+       "quote": "archived=true '[MOVED → github.com/stellar/passkey-kit] ...'; archived=true pushed_at 2026-01-14T03:09:51Z"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Replace the removed author index with the seven live bylined meeting pages, re-date the roster sentence to 2026-11-02 (every item re-observed live), and record the index removal."
+    },
+    {
+     "field": "golden.notes",
+     "reason": "Last line: cite sd-064, name the seven meeting pages as the source, and date the repository descriptions to 2026-07-13."
+    },
+    {
+     "field": "truth.sources[0]",
+     "reason": "Dead author-index A source replaced by the 2024-01-26 meeting page; the existing F row keeps the 404 record."
+    },
+    {
+     "field": "truth.sources[1].note",
+     "reason": "Record the re-observed byline on the 2024-06-13 page."
+    },
+    {
+     "field": "truth.sources[+] x6",
+     "reason": "Five more bylined meeting pages (A) and the stellar-docs repository code-search source (B)."
+    },
+    {
+     "field": "truth.verified.rootCause[+]",
+     "reason": "Upstream defect pointer sd-064."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-docs/sd-064-meeting-author-pages-404-after-migration.md"
+   ],
+   "siblings": "q-edge-lumenloop-person-entity-empty; q-tool-passkeykit-smart-wallet; q-tool-passkey-repo-live; q-tool-smart-wallet-repos-discovery; q-passkey-wallet-recovery; q-soroban-add-signer-smart-wallet-howto; q-passkey-smart-account-architecture; q-tool-wallets-comparison; q-tool-passkey-wallet-recovery; cluster-073 / cluster-128 members"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-soroban-instance-storage-dos",
+    "field": "golden.answer (replace #0)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified at B: addReads (footprint read path) runs validateContractLedgerEntry on every live entry, CONTRACT_DATA over maxContractDataEntrySizeBytes fails with INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED; the setting is upgradable down to the 2,000 B MinimumSorobanNetworkConfig floor. F: Mainnet value is 65,536 B today, so the scenario is hypothetical but mechanically true. The check exists in v2…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "bool addReads(xdr::xvector<LedgerKey> const& footprintKeys, bool isReadOnly) ... if (!validateContractLedgerEntry(lk, entrySize, mSorobanConfig, mAppConfig, mOp…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/TransactionUtils.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "if (lk.type() == CONTRACT_DATA && config.maxContractDataEntrySizeBytes() < entrySize) { diagnosticEvents.pushError(SCE_BUDGET, SCEC_EXCEEDED_LIMIT, \"ContractDat…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "case ConfigSettingID::CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES: valid = cfg.contractDataEntrySizeBytes() >= MinimumSorobanNetworkConfig::MAX_CONTRACT_DATA_…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.h",
+      "observedAt": "2026-11-02",
+      "quote": "// Defines the minimum values allowed for the network configuration settings during upgrades. ... static constexpr uint32_t MAX_CONTRACT_DATA_ENTRY_SIZE_BYTES =…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v21.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "validateContractLedgerEntry called at line 434 (footprint read) and line 552 (modified entry write); same read-path check also at v23.0.0 lines 451/595/947, so …"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://mainnet.sorobanrpc.com getLedgerEntries keys=[AAAACAAAAAk=] (CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES)",
+      "observedAt": "2026-11-02",
+      "quote": "xdr AAAACAAAAAkAAQAA = 65536 bytes; lastModifiedLedgerSeq 57941156; latestLedger 65271915; getLatestLedger protocolVersion 29"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-instance-storage-dos",
+    "field": "golden.notes (replace #1)",
+    "decision": "accept",
+    "newText": null,
+    "note": "The read-path qualifier is a symmetric clarification tied to a verified mechanism (B, stellar-core). It does not loosen grading: the ordinary-growth 'existing entry unreadable' and 'permanently unusable' claims stay wrong, and avoid[0] keeps its scope. Not a partial cap.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "bool addReads(xdr::xvector<LedgerKey> const& footprintKeys, bool isReadOnly) ... if (!validateContractLedgerEntry(lk, entrySize, mSorobanConfig, mAppConfig, mOp…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/TransactionUtils.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "if (lk.type() == CONTRACT_DATA && config.maxContractDataEntrySizeBytes() < entrySize) { diagnosticEvents.pushError(SCE_BUDGET, SCEC_EXCEEDED_LIMIT, \"ContractDat…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "case ConfigSettingID::CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES: valid = cfg.contractDataEntrySizeBytes() >= MinimumSorobanNetworkConfig::MAX_CONTRACT_DATA_…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-instance-storage-dos",
+    "field": "truth.sources[+] (add #2)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Ref and note match the v30.0.0 source (addReads at line 552, check at line 612).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "bool addReads(xdr::xvector<LedgerKey> const& footprintKeys, bool isReadOnly) ... if (!validateContractLedgerEntry(lk, entrySize, mSorobanConfig, mAppConfig, mOp…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-instance-storage-dos",
+    "field": "truth.sources[+] (add #3)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Exact error string confirmed at TransactionUtils.cpp line 2034.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/TransactionUtils.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "if (lk.type() == CONTRACT_DATA && config.maxContractDataEntrySizeBytes() < entrySize) { diagnosticEvents.pushError(SCE_BUDGET, SCEC_EXCEEDED_LIMIT, \"ContractDat…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-instance-storage-dos",
+    "field": "truth.sources[+] (add #4)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Upgrade validity check (NetworkConfig.cpp line 1466-1468) and the 2'000 floor (NetworkConfig.h line 37, struct MinimumSorobanNetworkConfig) confirmed.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "case ConfigSettingID::CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES: valid = cfg.contractDataEntrySizeBytes() >= MinimumSorobanNetworkConfig::MAX_CONTRACT_DATA_…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.h",
+      "observedAt": "2026-11-02",
+      "quote": "// Defines the minimum values allowed for the network configuration settings during upgrades. ... static constexpr uint32_t MAX_CONTRACT_DATA_ENTRY_SIZE_BYTES =…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-instance-storage-dos",
+    "field": "truth.verified.rootCause (add #5)",
+    "decision": "modify",
+    "newText": [
+     "Eval-side authoring gap: the golden covered over-limit writes only and omitted stellar-core's read-path entry-size check under a validator-lowered limit (hand-off .agents/rounds/2026-11-02-mintlify-migration/golden-handoff.md on branch feat/mintlify-docs-migration)."
+    ],
+    "note": "The cited hand-off file does not exist on this branch; it exists only on branch feat/mintlify-docs-migration (git ls-tree), so a stranger on main cannot re-walk it. The newText names the branch. Applier must also refresh truth.verified.evidence: the current line 'No gospel change: all keyFacts and avoid items confirmed' becomes false once golden.answer and golden.notes change; add the stellar-core…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "bool addReads(xdr::xvector<LedgerKey> const& footprintKeys, bool isReadOnly) ... if (!validateContractLedgerEntry(lk, entrySize, mSorobanConfig, mAppConfig, mOp…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/blob/v21.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "validateContractLedgerEntry called at line 434 (footprint read) and line 552 (modified entry write); same read-path check also at v23.0.0 lines 451/595/947, so …"
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-endpoint-discovery",
+    "field": "golden.notes (replace #0)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified ambiguity is in truth, not only in judges: SEP-24 v3.8.0 itself says the stellar.toml TRANSFER_SERVER_SEP0024 entry 'is how a wallet knows where to find the anchor's server', and the question never mentions directories. keyFacts[2] is worded as behavior ('Uses ... instead of'), so the note matches its literal text rather than loosening it. An answer that relies on directory metadata still…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+      "observedAt": "2026-11-02",
+      "quote": "An anchor must define the location of their `TRANSFER_SERVER_SEP0024` in their [`stellar.toml`](sep-0001.md). This is how a wallet knows where to find the ancho…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+      "observedAt": "2026-11-02",
+      "quote": "The assets issuing account should have a home_domain set so the clients can find the toml file to begin the process."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200 on 2026-11-02 (page still resolves after the Mintlify move)"
+     }
+    ]
+   },
+   {
+    "id": "q-anchor-endpoint-discovery",
+    "field": "truth.verified.rootCause[+] (add #1)",
+    "decision": "modify",
+    "newText": "Eval-side authoring flaw: keyFacts[2] 'instead of directory metadata' can be read as a required directory statement, but SEP-24 v3.8.0 makes the stellar.toml TRANSFER_SERVER_SEP0024 entry the discovery path and the question names no directory (hand-off .agents/rounds/2026-11-02-mintlify-migration/qa-rows-lane-1.md on branch feat/mintlify-docs-migration).",
+    "note": "As proposed, the rootCause rests on a judge split ('read as behavior by one judge and as a required statement by a panel'), which the skill says never justifies a change by itself, and the cited path exists only on branch feat/mintlify-docs-migration. The newText grounds the rootCause in the verified SEP-24 text and names the branch. Applier must also add a truth.verified.evidence line for the SEP…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+      "observedAt": "2026-11-02",
+      "quote": "An anchor must define the location of their `TRANSFER_SERVER_SEP0024` in their [`stellar.toml`](sep-0001.md). This is how a wallet knows where to find the ancho…"
+     }
+    ]
+   },
+   {
+    "id": "q-mpp-discovery-and-modes",
+    "field": "golden.answer (replace #0)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified live: mpp.dev says one mppx endpoint can serve both protocols for x402-compatible EVM charges, emits both Challenges, accepts either Credential, and returns the matching Receipt; headers are distinct (PAYMENT-REQUIRED/PAYMENT-SIGNATURE/PAYMENT-RESPONSE vs WWW-Authenticate: Payment/Authorization: Payment/Payment-Receipt). The old 'expose separate adapters' prescription is no longer the onl…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/mpp-vs-x402",
+      "observedAt": "2026-11-02",
+      "quote": "You can run both protocols on the same endpoint with mppx , so adopting MPP doesn't require you to exclude x402 clients. ... With mppx , you can run x402-compat…"
+     },
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/mpp-vs-x402",
+      "observedAt": "2026-11-02",
+      "quote": "| Challenge header | PAYMENT-REQUIRED | WWW-Authenticate: Payment | Credential header | PAYMENT-SIGNATURE | Authorization: Payment, or an advertised alternate f…"
+     },
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/guides/use-mpp-with-x402",
+      "observedAt": "2026-11-02",
+      "quote": "mppx : Returns MPP and x402 Challenges on 402 responses Accepts MPP and x402 Credentials Calls the configured facilitator to verify and settle x402 payments Ret…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/wevm/mppx/blob/ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30/src/integrations/x402/Negotiator.ts",
+      "observedAt": "2026-11-02",
+      "quote": "/** Selects MPP, x402, or an immediate response for a request. */ ... if (hasMppCredential(request) && getX402Credential(request)) return { response: Response.j…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/wevm/mppx/commits?path=src/integrations/x402",
+      "observedAt": "2026-11-02",
+      "quote": "oldest commit on the path: 2026-08-24T18:57:01Z 07c59cf40b 'feat: add MPP compatibility to x402 adapters (#831)'; ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30 (2026…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_fetch cached copies (acquired 2026-10-30/31) of https://mpp.dev/mpp-vs-x402 and https://mpp.dev/guides/use-mpp-with-x402",
+      "observedAt": "2026-10-31",
+      "quote": "You can run both protocols on the same endpoint with `mppx`, so adopting MPP doesn't require you to exclude x402 clients."
+     }
+    ]
+   },
+   {
+    "id": "q-mpp-discovery-and-modes",
+    "field": "golden.keyFacts[4] (replace #1)",
+    "decision": "modify",
+    "newText": "Treats MPP and x402 as distinct protocols with non-interchangeable payloads.",
+    "note": "The proposed text (89 chars) is true but swaps the old payload predicate for a new requirement to name challenge and credential formats, which an answer can miss while still being right about non-interchangeability. The minimal truthful edit drops only the falsified 'adapters' prescription and keeps the payload predicate that the answer ('never relabel') and the new note ('relabels ... is wrong') …",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/mpp-vs-x402",
+      "observedAt": "2026-11-02",
+      "quote": "You can run both protocols on the same endpoint with mppx , so adopting MPP doesn't require you to exclude x402 clients. ... With mppx , you can run x402-compat…"
+     },
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/mpp-vs-x402",
+      "observedAt": "2026-11-02",
+      "quote": "| Challenge header | PAYMENT-REQUIRED | WWW-Authenticate: Payment | Credential header | PAYMENT-SIGNATURE | Authorization: Payment, or an advertised alternate f…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/wevm/mppx/blob/ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30/src/integrations/x402/Negotiator.ts",
+      "observedAt": "2026-11-02",
+      "quote": "/** Selects MPP, x402, or an immediate response for a request. */ ... if (hasMppCredential(request) && getX402Credential(request)) return { response: Response.j…"
+     }
+    ]
+   },
+   {
+    "id": "q-mpp-discovery-and-modes",
+    "field": "golden.notes (replace #2)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Symmetric do-not-penalize caution tied to the verified one-endpoint wording on https://mpp.dev/mpp-vs-x402; it keeps relabeling wrong, names the page, and carries an as-of date. Not a partial cap. The status date bump to 2026-11-02 is backed by the 2026-11-02 re-verification of all claims. Applier follow-ups: (a) reword corroboration claim 'MPP and x402 require separate adapters; their payloads mu…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/mpp-vs-x402",
+      "observedAt": "2026-11-02",
+      "quote": "You can run both protocols on the same endpoint with mppx , so adopting MPP doesn't require you to exclude x402 clients. ... With mppx , you can run x402-compat…"
+     },
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/guides/use-mpp-with-x402",
+      "observedAt": "2026-11-02",
+      "quote": "mppx : Returns MPP and x402 Challenges on 402 responses Accepts MPP and x402 Credentials Calls the configured facilitator to verify and settle x402 payments Ret…"
+     }
+    ]
+   },
+   {
+    "id": "q-mpp-discovery-and-modes",
+    "field": "truth.sources[+] (add #3)",
+    "decision": "accept",
+    "newText": null,
+    "note": "mpp.dev is the protocol's own documentation (class A). Note text matches the live page.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/guides/use-mpp-with-x402",
+      "observedAt": "2026-11-02",
+      "quote": "mppx : Returns MPP and x402 Challenges on 402 responses Accepts MPP and x402 Credentials Calls the configured facilitator to verify and settle x402 payments Ret…"
+     },
+     {
+      "class": "A",
+      "ref": "https://mpp.dev/guides/use-mpp-with-x402",
+      "observedAt": "2026-11-02",
+      "quote": "The wrapper delegates x402 Credentials, lifecycle hooks, verification, and settlement to the official x402 adapter."
+     }
+    ]
+   },
+   {
+    "id": "q-mpp-discovery-and-modes",
+    "field": "truth.sources[+] (add #4)",
+    "decision": "modify",
+    "newText": {
+     "class": "B",
+     "ref": "https://github.com/wevm/mppx/blob/ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30/src/integrations/x402/Negotiator.ts",
+     "note": "Negotiator selects MPP or x402 per request and rejects a request that carries both credentials",
+     "observedAt": "2026-11-02"
+    },
+    "note": "Content confirmed (Negotiator.ts line 37 and lines 57-63). Use the full 40-character SHA so the pin cannot become ambiguous; ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30 is identical to main on 2026-11-02.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/wevm/mppx/blob/ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30/src/integrations/x402/Negotiator.ts",
+      "observedAt": "2026-11-02",
+      "quote": "/** Selects MPP, x402, or an immediate response for a request. */ ... if (hasMppCredential(request) && getX402Credential(request)) return { response: Response.j…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/wevm/mppx/commits?path=src/integrations/x402",
+      "observedAt": "2026-11-02",
+      "quote": "oldest commit on the path: 2026-08-24T18:57:01Z 07c59cf40b 'feat: add MPP compatibility to x402 adapters (#831)'; ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30 (2026…"
+     }
+    ]
+   },
+   {
+    "id": "q-mpp-discovery-and-modes",
+    "field": "truth.verified.rootCause (add #5)",
+    "decision": "accept",
+    "newText": null,
+    "note": "freshness-drift is correct: the mppx x402 integration path's oldest commit is 2026-08-24 (#831), after the case's 2026-07-11 status snapshot.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/wevm/mppx/commits?path=src/integrations/x402",
+      "observedAt": "2026-11-02",
+      "quote": "oldest commit on the path: 2026-08-24T18:57:01Z 07c59cf40b 'feat: add MPP compatibility to x402 adapters (#831)'; ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30 (2026…"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "golden.answer (replace #0)",
+    "decision": "modify",
+    "newText": "A grounded answer consults the current LumenLoop corpus, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, verified exact-name sources included seven official Developer Docs meeting pages bylined \"Tyler van der Hoeven, Developer Advocate Director\" (2024-01-26 to 2024-06-13), among them the **2024-06-13 developer meeting** covering Super Peach, Passkey Kit, and Launchtube; **Practical Path Payments** (2020-04-10); the **Turing Complete Contract Proposal for Stellar** event page (which renders July 1…",
+    "note": "All roster items re-verified live on 2026-11-02: seven meeting pages carry the byline 'Tyler van der Hoeven , Developer Advocate Director' with dates 2024-01-26..2024-06-13; the three event pages show the stated dates (Turing page still shows July 10 header vs June 19 body); the author index returns 404; repo archive states match. Only change: 'it now returns HTTP 404' is an undated volatile obser…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/01/26",
+      "observedAt": "2026-11-02",
+      "quote": "January 26, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/02/08",
+      "observedAt": "2026-11-02",
+      "quote": "February 8, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/02/22",
+      "observedAt": "2026-11-02",
+      "quote": "February 22, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/03/07",
+      "observedAt": "2026-11-02",
+      "quote": "March 7, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/03/21",
+      "observedAt": "2026-11-02",
+      "quote": "March 21, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/04/18",
+      "observedAt": "2026-11-02",
+      "quote": "April 18, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/06/13",
+      "observedAt": "2026-11-02",
+      "quote": "June 13, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/meetings/authors/kalepail",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/events/community/practical-path-payments",
+      "observedAt": "2026-11-02",
+      "quote": "Date and time April 10, 2020 at 5.00 PM UTC Location Engineering Talks Highlighted Speakers Tyler van der Hoeven"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/events/community/turing-complete-contract-proposal-for-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Date and time July 10, 2020 at 5.00 PM UTC ... Highlighted Speakers Tyler van der Hoeven ... tune in on June 19th 2020, 1:00 PM ET!"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates",
+      "observedAt": "2026-11-02",
+      "quote": "Date and time May 4, 2023 at 2.00 PM UTC - May 4, 2023 at 3.00 PM UTC Location Stellar Developer's Discord Highlighted Speakers Tyler van der Hoeven, Elliot Vor…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/kalepail/passkey-kit; gh api repos/stellar/launchtube",
+      "observedAt": "2026-11-02",
+      "quote": "kalepail/passkey-kit archived=true description '[MOVED → github.com/stellar/passkey-kit] ...'; stellar/launchtube archived=true pushed_at 2026-01-14T03:09:51Z"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-docs/sd-064-meeting-author-pages-404-after-migration.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: verified ... The Mintlify migration removed the meeting author index pages. It added no redirect."
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "golden.notes (replace #1)",
+    "decision": "modify",
+    "newText": "GT-35 CORRECTION 2026-07-10: the exact Lumenloop person lane is all-empty and Scout has no Tyler row. Grade a bounded official-source roster and explicit validation of semantic candidates; empty service output is inconclusive.\nGT-35 independently confirmed by processes 3287/3289; this case is freshness-sensitive despite its inherited tag.\nAn answer that reports the LumenLoop exact-person lane as empty, or semantic person matches as unverified, makes a true source-scoped observation, not a wrong claim, while ll-005 and ll-017 stand. An answer that infers from that lane that nothing was publishe…",
+    "note": "The proposed 2026-09-30/2026-11-02 line is verified (seven bylines, three event pages, repo states, sd-064 path exists). But the full-field replace re-asserts a partial cap for an aggregator (LumenLoop ll-005/ll-017) claim, outside ADR-0008's accepted set (base reserve, Horizon lifecycle, RPC pagination). The newText keeps every other line verbatim and converts that line to a plain correct/wrong r…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/01/26",
+      "observedAt": "2026-11-02",
+      "quote": "January 26, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/06/13",
+      "observedAt": "2026-11-02",
+      "quote": "June 13, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/meetings/authors/kalepail",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/events/community/practical-path-payments",
+      "observedAt": "2026-11-02",
+      "quote": "Date and time April 10, 2020 at 5.00 PM UTC Location Engineering Talks Highlighted Speakers Tyler van der Hoeven"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/events/community/turing-complete-contract-proposal-for-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Date and time July 10, 2020 at 5.00 PM UTC ... Highlighted Speakers Tyler van der Hoeven ... tune in on June 19th 2020, 1:00 PM ET!"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates",
+      "observedAt": "2026-11-02",
+      "quote": "Date and time May 4, 2023 at 2.00 PM UTC - May 4, 2023 at 3.00 PM UTC Location Stellar Developer's Discord Highlighted Speakers Tyler van der Hoeven, Elliot Vor…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/kalepail/passkey-kit; gh api repos/stellar/launchtube",
+      "observedAt": "2026-11-02",
+      "quote": "kalepail/passkey-kit archived=true description '[MOVED → github.com/stellar/passkey-kit] ...'; stellar/launchtube archived=true pushed_at 2026-01-14T03:09:51Z"
+     },
+     {
+      "class": "C",
+      "ref": "Raven execute lumenloop.find_content_by_entity {entity:\"Tyler van der Hoeven\", entity_type:\"person\"} + lumenloop.search_content_semantic {query:\"Tyler van der Hoeven\", limit:5}",
+      "observedAt": "2026-11-02",
+      "quote": "find_content_by_entity ok, caveat no-rows: articles 0, av 0, events 0, proposals 0, scf_submissions 0; search_content_semantic caveat unverified-match, top row …"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-docs/sd-064-meeting-author-pages-404-after-migration.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: verified ... The Mintlify migration removed the meeting author index pages. It added no redirect."
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.sources[0] (replace #2)",
+    "decision": "accept",
+    "newText": null,
+    "note": "The dead author index is replaced by a live official page with the exact byline; the 2026-07-13 index observation stays in the corroboration rows and the 2026-11-02 404 stays in the F source row.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/01/26",
+      "observedAt": "2026-11-02",
+      "quote": "January 26, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     },
+     {
+      "class": "F",
+      "ref": "https://developers.stellar.org/meetings/authors/kalepail",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.sources[1].note (replace #3)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Byline re-observed on 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/06/13",
+      "observedAt": "2026-11-02",
+      "quote": "June 13, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.sources[+] (add #4)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Byline and date confirmed live.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/02/08",
+      "observedAt": "2026-11-02",
+      "quote": "February 8, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.sources[+] (add #5)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Byline and date confirmed live.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/02/22",
+      "observedAt": "2026-11-02",
+      "quote": "February 22, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.sources[+] (add #6)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Byline and date confirmed live.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/03/07",
+      "observedAt": "2026-11-02",
+      "quote": "March 7, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.sources[+] (add #7)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Byline and date confirmed live.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/03/21",
+      "observedAt": "2026-11-02",
+      "quote": "March 21, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.sources[+] (add #8)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Byline and date confirmed live.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/meetings/2024/04/18",
+      "observedAt": "2026-11-02",
+      "quote": "April 18, 2024 · Tyler van der Hoeven , Developer Advocate Director (HTTP 200)"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.sources[+] (add #9)",
+    "decision": "modify",
+    "newText": {
+     "class": "B",
+     "ref": "https://github.com/stellar/stellar-docs/tree/main/meetings/2024",
+     "note": "Code search repo:stellar/stellar-docs \"van der Hoeven\": seven meeting files meetings/2024/MM/DD.mdx bylined Tyler van der Hoeven (01/26, 02/08, 02/22, 03/07, 03/21, 04/18, 06/13).",
+     "observedAt": "2026-11-02"
+    },
+    "note": "Code search confirms exactly seven meeting files, but they are meetings/2024/MM/DD.mdx (for example meetings/2024/01/26.mdx), not meetings/2024/*.mdx; the search also hits .mintlify/skills/standards/SKILL.md, which is not a meeting. newText fixes the path pattern.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh search code \"van der Hoeven\" --repo stellar/stellar-docs",
+      "observedAt": "2026-11-02",
+      "quote": "hits: meetings/2024/01/26.mdx, 02/08.mdx, 02/22.mdx, 03/07.mdx, 03/21.mdx, 04/18.mdx, 06/13.mdx, plus .mintlify/skills/standards/SKILL.md (not a meeting page)"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/blob/main/meetings/2024/01/26.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "_January 26, 2024_ · [Tyler van der Hoeven](https://github.com/kalepail), Developer Advocate Director (main at 635ac81e9c10719bf47475dcf342a09d274a1c2c)"
+     }
+    ]
+   },
+   {
+    "id": "q-builder-content-by-person",
+    "field": "truth.verified.rootCause[+] (add #10)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Path exists on this branch (status: verified); existing 'freshness-drift' stays alongside it.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/stellar-docs/sd-064-meeting-author-pages-404-after-migration.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: verified ... The Mintlify migration removed the meeting author index pages. It added no redirect."
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://github.com/stellar/stellar-core (git/ref/tags/v30.0.0, releases/latest; contents at v30.0.0: src/transactions/InvokeHostFunctionOpFrame.cpp, src/transactions/TransactionUtils.cpp, src/ledger/NetworkConfig.cpp, src/ledger/NetworkConfig.h; InvokeHostFunctionOpFrame.cpp at v23.0.0 and v21.0.0)",
+   "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md, cap-0046-09.md, cap-0046-05.md (no lowered-limit text found)",
+   "https://soroban-rpc.mainnet.stellar.gateway.fm (getLedgerEntries config 8)",
+   "https://mainnet.sorobanrpc.com (getLatestLedger; getLedgerEntries config 9)",
+   "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+   "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration",
+   "https://mpp.dev/mpp-vs-x402",
+   "https://mpp.dev/guides/use-mpp-with-x402",
+   "Parallel web_fetch of the two mpp.dev pages",
+   "https://github.com/wevm/mppx (commits/ed76e8e21c, contents src/integrations/x402/Negotiator.ts, compare to main, commits?path=src/integrations/x402)",
+   "https://developers.stellar.org/meetings/2024/01/26, /02/08, /02/22, /03/07, /03/21, /04/18, /06/13",
+   "https://developers.stellar.org/meetings/authors/kalepail",
+   "gh search code 'van der Hoeven' repo:stellar/stellar-docs; https://github.com/stellar/stellar-docs contents meetings/2024 and meetings/2024/01/26.mdx; commits/main",
+   "https://stellar.org/events/community/practical-path-payments",
+   "https://stellar.org/community/events/turing-complete-contract-proposal-for-stellar (redirects to /events/community/...)",
+   "https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates",
+   "gh api repos/kalepail/passkey-kit, repos/stellar/launchtube",
+   "Raven MCP execute: lumenloop.find_content_by_entity, lumenloop.search_content_semantic"
+  ]
+ },
+ "applier": {}
+}

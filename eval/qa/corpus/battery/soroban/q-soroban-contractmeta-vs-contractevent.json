@@ -75,13 +75,15 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited golden invented attribute syntax for static contract metadata. Current SDK v27 exposes a function-like contractmeta!(...) macro; #[contractevent] is the attribute macro.",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-45 primary 3325 and independent blind 3328; blind independently identified the false syntax and pinned the v27 declarations."
-      ],
-      "rootCause": [
-        "Eval-side API-shape transcription error: a function-like proc macro was rendered as an attribute."
+        "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk-macros/src/lib.rs — \"#[proc_macro] pub fn contractmeta(metadata: TokenStream) -> TokenStream\" and \"#[proc_macro_attribute] pub fn contractevent(metadata: TokenStream, input: TokenStream) -> TokenStream\" (observedAt 2026-11-02).",
+        "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/lib.rs — \"under the section name 'contractmetav0' ... contractmeta!(key=\\\"desc\\\", val=\\\"hello world contract\\\");\" (observedAt 2026-11-02).",
+        "Raven stellarDocs.search_docs \"contractmeta! contractmetav0\" — \"--meta <META> — Add key-value to contract meta (adds the meta to the contractmetav0 custom section)\" (observedAt 2026-11-02).",
+        "Latest soroban-sdk release v29.0.1 (2026-10-12); v30.0.0-rc.1 is a prerelease (observedAt 2026-11-02).",
+        "No gospel change; no proposal (verifier noProposalCases).",
+        "Sibling sweep 2026-11-02: q-soroban-contract-build-verification; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-contractmeta-vs-contractevent"

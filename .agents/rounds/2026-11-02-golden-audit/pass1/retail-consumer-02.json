@@ -1,0 +1,932 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "retail-consumer-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-raph-exchange-memo",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0-1]",
+     "claim": "Use the exchange deposit address as destination and the exact memo; a pooled address needs the memo to credit the individual customer.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-11-02",
+       "quote": "most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account ... an internal customer database maps transactions t…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0029.md",
+       "observedAt": "2026-11-02",
+       "quote": "Custodial wallets often use a single Stellar account for all deposits/withdrawals, relying on the transaction `memo` to disambiguate incoming payments."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/fixing-memo-less-payments",
+       "observedAt": "2026-11-02",
+       "quote": "they must include the memo ID or the exchange won't know to credit the account."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'pooled account memo exchange'",
+       "observedAt": "2026-11-02",
+       "quote": "top hit https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos (4 hits)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0-1]",
+     "claim": "Inventing a memo / putting memo in the address field, or calling a required memo optional, is wrong.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/fixing-memo-less-payments",
+       "observedAt": "2026-11-02",
+       "quote": "they must include the memo ID or the exchange won't know to credit the account."
+      },
+      {
+       "class": "A",
+       "ref": "https://support.kraken.com/articles/crypto-assets-deposit-recovery",
+       "observedAt": "2026-11-02",
+       "quote": "Missing or Incorrect Tag/Memo : Certain cryptocurrencies require a tag or memo to identify your transaction. Omitting or entering an incorrect tag/memo can prev…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Exchange-specific deposit instructions control memo type and minimums.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0029.md",
+       "observedAt": "2026-11-02",
+       "quote": "Memo type verification routines are intentionally omitted from this SEP"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.binance.com/en/support/faq/detail/40b87335db904481888ef406b105442b",
+       "observedAt": "2026-11-02",
+       "quote": "Deposits without tag/memo are only eligible for Recovery if the network uses a single address format requiring a memo"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-missing-exchange-memo; q-jutsu-what-is-a-memo; q-raph-withdraw-exchange-self-custody; q-raph-buy-xlm-safely"
+  },
+  {
+   "id": "q-raph-low-xlm-transfer-fail",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Low-XLM operations fail because the account must keep its minimum balance/reserves and pay the fee.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02 (cache 2026-10-24)",
+       "quote": "PAYMENT_UNDERFUNDED ... Note that if sending XLM, the sender must additionally maintain its minimum XLM reserve."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02 (cache 2026-10-31)",
+       "quote": "available balance = balance - minimum balance - liabilities.selling"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "txINSUFFICIENT_BALANCE = -7, // fee would bring account below reserve"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "'A failed transaction normally leaves the original balance in the account'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/hourly-fee-agg-account",
+       "observedAt": "2026-11-02",
+       "quote": "Failed transactions are still charged fees and included in all fee aggregates."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+       "observedAt": "2026-11-02",
+       "quote": "If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consum…"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/transactions/81b3be6d421d99b2f00e324ddbefc676897f152705e0fecd23f0ab43df65b86c",
+       "observedAt": "2026-11-02",
+       "quote": "successful=false, fee_charged=200 (2 ops), ledger 65269972, 2026-11-02T16:07:24Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "A failed transaction does not normally transfer the intended funds.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Transactions are atomic. Meaning if one operation in a transaction fails, all operations fail, and the entire transaction is not applied to the ledger."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "txFAILED = -1, // one of the operations failed (none were applied)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Eligible subentry cleanup lowers reserve.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "When you close a subentry, the associated base reserve will be added to your available balance."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+       "observedAt": "2026-11-02",
+       "quote": "each subentry increases the account's required minimum balance"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "limit == 0 path deletes the trustline; CHANGE_TRUST_CANNOT_DELETE when liquidityPoolUseCount != 0"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / answer AccountMerge",
+     "claim": "AccountMerge is conditional: blocking subentries and sponsorship conditions must be cleared.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "A source account can only be merged once it holds no non-signer subentries ... ACCOUNT_MERGE_IS_SPONSOR ... cannot be merged because it is sponsoring reserves."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "ACCOUNT_MERGE_HAS_SUB_ENTRIES = -4 ... ACCOUNT_MERGE_IS_SPONSOR = -7"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[0]",
+     "claim": "Exact reserve settings can change; do not quote a timeless exact minimum balance.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "One base reserve is currently 0.5 XLM. Validators can vote to change the base reserve, but that's uncommon"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269970 closed 2026-11-02T16:07:14Z base_reserve_in_stroops=5000000 protocol_version=29"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Do not pay a stranger to unlock the wallet.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "SDF ... DOES NOT have the capability to freeze or return XLM held in a Stellar account."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A failed transaction does not move the intended funds, though one included in a ledger still pays its small network fee; do not send recovery fees to someone who claims it is 'stuck.'",
+     "reason": "Included tx_failed transactions are charged the fee (Hubble docs + live Horizon failed tx); current wording contradicts sibling q-pc-tx-finality-failure-semantics."
+    }
+   ],
+   "rootCause": [
+    "eval-side authoring flaw: answer conflated 'intended funds not moved' with 'balance unchanged', ignoring the fee charged on included failed transactions"
+   ],
+   "siblings": "q-pc-tx-finality-failure-semantics; q-pc-account-merge-reclaim-reserve; q-protocol-base-reserve-min-balance; q-edge-1xlm-activation-fee; q-ti-classic-submission-errors"
+  },
+  {
+   "id": "q-raph-merchant-payments",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Acceptance, holding, and off-ramping to a bank via a provider/anchor are distinct choices.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/setup",
+       "observedAt": "2026-11-02",
+       "quote": "An anchor is a Stellar-specific term for the on and off-ramps that connect the Stellar network to traditional"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic -> https://stellar.org/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration",
+       "observedAt": "2026-11-02",
+       "quote": "SDF launches Stellar Ramps, a suite of open standards enabling applications to connect to a global network of on and off ramps provided by Stellar anchors"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1] / answer",
+     "claim": "On-chain payments are not automatically reversible.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "SDF ... DOES NOT have the capability to freeze or return XLM held in a Stellar account."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+       "observedAt": "2026-11-02",
+       "quote": "Circle USDC issuer flags: auth_revocable=true, auth_clawback_enabled=false, home_domain circle.com"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0] / keyFacts[1]",
+     "claim": "Using USDC does not by itself make a merchant compliant; local legal/tax checks needed.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/platforms/anchor-platform",
+       "observedAt": "2026-11-02",
+       "quote": "Anchor Platform docs place KYC/compliance on the operating business (SEP-12 KYC)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-offramp-xlm-usdc; q-jutsu-cash-crypto-ramps; q-crp-become-an-anchor-licensing"
+  },
+  {
+   "id": "q-raph-missing-exchange-memo",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0] / avoid[0]",
+     "claim": "A confirmed transaction cannot be edited or reversed by Stellar/SDF; the exchange must identify and credit the memo-less deposit.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "SDF ... DOES NOT have the capability to freeze or return XLM held in a Stellar account."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0029.md",
+       "observedAt": "2026-11-02",
+       "quote": "Dealing with missing memos may result in lost funds and requires manual actions from the custodial support staff."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-11-02",
+       "quote": "most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account ... an internal customer database maps transactions t…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Transaction hash and deposit details are the recovery evidence.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://support.kraken.com/articles/crypto-assets-deposit-recovery",
+       "observedAt": "2026-11-02 (page dated 2026-09-21)",
+       "quote": "Reach out to our Support Team with detailed information about the transaction, including transaction ID (TxID), cryptocurrency and amount, deposit address used,…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.binance.com/en/support/faq/detail/40b87335db904481888ef406b105442b",
+       "observedAt": "2026-11-02",
+       "quote": "Enter the details of your deposit ... Coin/Token ... Deposit amount"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[0]",
+     "claim": "Recovery possibility, time, and fee are exchange-specific; recovery is not guaranteed.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://support.kraken.com/articles/crypto-assets-deposit-recovery",
+       "observedAt": "2026-11-02",
+       "quote": "Missing or Incorrect Tag/Memo | Network fee | Credit/Refund ... No Guarantee of Recovery"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.binance.com/en/support/faq/detail/40b87335db904481888ef406b105442b",
+       "observedAt": "2026-11-02",
+       "quote": "We will collect fees for the retrieval service ... after the asset is successfully retrieved, it will only be returned to the source address."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.binance.com/en/square/post/380553313425184",
+       "observedAt": "2026-11-02",
+       "quote": "Recovery isn't guaranteed , and some requests may carry a fee (2026-10-23)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Do not share a secret key.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "NEVER ask you for your private keys."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-exchange-memo; q-jutsu-what-is-a-memo; q-raph-withdraw-exchange-self-custody"
+  },
+  {
+   "id": "q-raph-offramp-xlm-usdc",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0] / avoid[0]",
+     "claim": "Cash-out uses a country-eligible regulated exchange or anchor; no universal bank payout.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/setup",
+       "observedAt": "2026-11-02",
+       "quote": "An anchor is a Stellar-specific term for the on and off-ramps that connect the Stellar network to traditional"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic -> https://stellar.org/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration",
+       "observedAt": "2026-11-02",
+       "quote": "connect to a global network of on and off ramps provided by Stellar anchors"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1] / avoid[1]",
+     "claim": "Check exact asset (code+issuer), network, memo or M-address before sending; USDC-like codes are not interchangeable.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+       "observedAt": "2026-11-02",
+       "quote": "To hold a specific asset, an account must establish a trustline with the issuing account"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+       "observedAt": "2026-11-02",
+       "quote": "Circle USDC issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN home_domain circle.com"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-11-02",
+       "quote": "most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account ... an internal customer database maps transactions t…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-jutsu-cash-crypto-ramps; q-raph-merchant-payments; q-raph-usdc-onto-stellar; q-asset-usdc-eurc-issuer"
+  },
+  {
+   "id": "q-raph-phishing-pending-claim",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Unsolicited demands to pay, connect, sign, or reveal secrets to release XLM are phishing signals.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02 (live curl, HTTP 200)",
+       "quote": "NEVER cold direct-message (DM) people to participate in airdrops and giveaways. NEVER cold DM people regarding support issues or security alerts."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+       "observedAt": "2026-11-02",
+       "quote": "Requests to send personal and financial information ... if you think it could be real, don't click on any link ... Look up another way to contact the company"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "SDF never asks users for private keys or deposits (avoid punishes the opposite).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02 (live curl)",
+       "quote": "NEVER ask you for your private keys. NEVER ask you to deposit funds to any wallet address."
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 'Stellar XLM phishing scam pending claim DM rectification fee 2026'",
+       "observedAt": "2026-11-02",
+       "quote": "no source reports an SDF policy change; results describe seed-phrase/connect-wallet scams"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "A legitimate claimable-balance mechanism exists independent of any message.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "Claimable balances allow an account to send a payment to another account that is not necessarily prepared to receive the payment."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final ... payment to an account that is not necessarily prepared to receive the payment."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Verify through the wallet or an official channel reached independently.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "type the URL into your browser address bar and then bookmark the site. Only use the bookmark to visit the site."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+       "observedAt": "2026-11-02",
+       "quote": "Search for the site in your web browser or type the address yourself"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified live; reverifyBy 2026-11-19 is near due."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-06-15",
+     "reason": "Stagger into this batch's 2027-06 window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-raph-claimable-balance-safety; q-raph-unsolicited-airdrop; q-raph-lobstr-legitimacy; q-edge-1xlm-activation-fee; q-raph-scam-spam-tokens; q-raph-remove-scam-token"
+  },
+  {
+   "id": "q-raph-remittance-path-payment",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0-1]",
+     "claim": "Path payments convert the sent asset to the received asset through SDEX/AMM liquidity, atomically, with ramps at each end.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "path payments cross through the SDEX and/or liquidity pools ... For the path payment to succeed, there has to be a DEX offer or liquidity pool exchange path in …"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Transactions are atomic."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "PATH_PAYMENT_STRICT_RECEIVE_TOO_FEW_OFFERS ... Stellar only considers paths of length 5 or shorter."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "txFAILED = -1, // one of the operations failed (none were applied)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0-1]",
+     "claim": "No guaranteed lower cost than every route; Stellar alone does not cash out without a provider.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/setup",
+       "observedAt": "2026-11-02",
+       "quote": "anchors ... on and off-ramps that connect the Stellar network to traditional"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic -> https://stellar.org/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration",
+       "observedAt": "2026-11-02",
+       "quote": "on and off ramps provided by Stellar anchors"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-usdc-eurc-path-fx; q-crp-anchors-by-corridor; q-defi-arbitrage-pathpayment-bots"
+  },
+  {
+   "id": "q-raph-remove-scam-token",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0] / avoid[0]",
+     "claim": "An issued asset is identified by code plus issuer.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+       "observedAt": "2026-11-02",
+       "quote": "To hold a specific asset, an account must establish a trustline with the issuing account"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02 (live curl)",
+       "quote": "Anyone can issue tokens on the Stellar network and send them to you"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[1] / avoid[1]",
+     "claim": "Trustline deletion needs ChangeTrust limit 0 after zero balance, no liabilities, no pool reference.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "CHANGE_TRUST_INVALID_LIMIT ... occurs when attempting to remove a trustline with a non-zero asset balance ... CHANGE_TRUST_CANNOT_DELETE | -7 | The asset trustl…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "if (mChangeTrust.limit == 0) ... liquidityPoolUseCount != 0 -> CHANGE_TRUST_CANNOT_DELETE"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'remove trustline limit zero'",
+       "observedAt": "2026-11-02",
+       "quote": "--limit 0 removes the trustline and returns its 0.5 XLM reserve, but only at a zero balance."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[2]",
+     "claim": "Return to the exact issuer may burn but can be blocked by authorization/account state; hiding is display-only.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "PAYMENT_NO_DESTINATION ... will not be returned if the receiving account is the issuer of asset (i.e, when the asset is being burned) ... PAYMENT_SRC_NOT_AUTHOR…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "PAYMENT_SRC_NOT_AUTHORIZED = -4, // source not authorized to transfer"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Do not sign unfamiliar links or send the balance to a random address.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "people blast out claimable balances to phish for buyers in the hopes of them clicking a link tied to the asset"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+       "observedAt": "2026-11-02",
+       "quote": "don't click on any link"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-claimable-balance-safety; q-raph-unsolicited-airdrop; q-raph-lobstr-legitimacy; q-edge-1xlm-activation-fee; q-raph-scam-spam-tokens; q-aas-trustline-limit-lifecycle; q-asset-trustline-basics"
+  },
+  {
+   "id": "q-raph-scam-spam-tokens",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0] / avoid[1]",
+     "claim": "Open network: anyone can issue an asset or create a claimable balance for you without approval; not every unsolicited asset is fraudulent.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02 (live curl)",
+       "quote": "Anyone can issue tokens on the Stellar network and send them to you, and sometimes people blast out claimable balances to phish"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "payment to an account that is not necessarily prepared to receive the payment."
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic 'spam claimable balances scam tokens'",
+       "observedAt": "2026-11-02",
+       "quote": "Stellarscam.report connects this to memo-phishing bots on the Stellar Network (2020-12-21)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Non-XLM assets generally need a trustline before they can be held; a claimable balance has its own claim conditions.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an op_no_trust error…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "PAYMENT_NO_TRUST ... The receiver does not trust the issuer of the asset being sent."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Unsolicited entries do not let the sender spend the recipient's funds.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Operations are executed for the source account of the transaction unless an operation override is defined."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-11-02",
+       "quote": "You can ignore claimable balances you don't understand or trust."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-claimable-balance-safety; q-raph-unsolicited-airdrop; q-raph-lobstr-legitimacy; q-edge-1xlm-activation-fee; q-raph-phishing-pending-claim; q-raph-remove-scam-token; q-asset-claimable-balance"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-raph-low-xlm-transfer-fail",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Old text ('normally leaves the original balance') is subtly false: an applied-but-failed tx deducts its fee and consumes the sequence number. New text is correctly scoped: 'included in a ledger' excludes submission-time rejects (TxInsufficientBalance, TxBadAuth), which charge no fee. Ops roll back atomically, so dropping 'normally' for intended funds is supported. keyFacts unchanged (key fact 2 st…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+      "observedAt": "2026-11-02",
+      "quote": "For each transaction, the account's sequence number is consumed (increased by 1) ... The entire transaction will fail if any operation fails, and all previous o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/hourly-fee-agg-account",
+      "observedAt": "2026-11-02",
+      "quote": "Failed transactions are still charged fees and included in all fee aggregates."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/troubleshooting",
+      "observedAt": "2026-11-02",
+      "quote": "TxInsufficientBalance ... The source account cannot cover the transaction's base fee, currently 100 stroops."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "TransactionFrame::processFeeSeqNum(AbstractLedgerTxn& ltx, ... (fee and sequence processed in a separate phase before operation apply)"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/65270251/transactions?include_failed=true&limit=200",
+      "observedAt": "2026-11-02",
+      "quote": "tx 075f946ceb03c6e459988b23d7f314002ec4b678477569aca923e5c98e8ae6d3 successful=false fee_charged=100; tx d3d1a50d1ff4c98770bb7414687f1e4063ddf7da97685e21a0c495c…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+      "observedAt": "2026-11-02",
+      "quote": "ledger 65270251 closed 2026-11-02T16:30:39Z base_fee_in_stroops 100 base_reserve_in_stroops 5000000 failed_transaction_count 17"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: 'Stellar failed transaction still pays fee tx_failed fee charged'",
+      "observedAt": "2026-11-02",
+      "quote": "Even failed Soroban transactions are charged inclusion_fee_charged and non_refundable_resource_fee_charged (developers.stellar.org ledger-fee-stats-agg, surface…"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'failed transaction fee charged' -> https://developers.stellar.org/docs/tools/cli/agent-cli/guides/delegate-spending#spending-the-allowance",
+      "observedAt": "2026-11-02T16:31:03Z",
+      "quote": "fee_charged: 17315, result: TxFailed([OpInner(InvokeHostFunction(Trapped))])"
+     }
+    ]
+   },
+   {
+    "id": "q-raph-phishing-pending-claim",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "All four cited sources re-fetched live with HTTP 200 on 2026-11-02 (curl) and still carry the load-bearing wording; no contradiction. Refreshing asOf to the observation date is supported. The golden text has no volatile figure, so no as-of is dropped.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+      "observedAt": "2026-11-02",
+      "quote": "NEVER ask you for your private keys. NEVER ask you to deposit funds to any wallet address. NEVER cold DM people regarding support issues or security alerts."
+     },
+     {
+      "class": "D",
+      "ref": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+      "observedAt": "2026-11-02",
+      "quote": "if you think it could be real, don't click on any link or call any number in the message. Look up another way to contact the company or person directly"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200; page title 'Claimable balances - Stellar Developer Docs'"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0023.md",
+      "observedAt": "2026-11-02",
+      "quote": "ClaimableBalanceEntry ... claimable balance entries, which permits temporal separation of"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'claimable balance claimant claim' -> https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#claim-claimable-balance",
+      "observedAt": "2026-11-02T16:31:03Z",
+      "quote": "The account claiming the ClaimableBalanceEntry does not have sufficient limits to receive amount of the asset"
+     }
+    ]
+   },
+   {
+    "id": "q-raph-phishing-pending-claim",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-06-15 falls inside the batch's assigned stagger window 2027-06-01..2027-06-30 and follows the refreshed asOf; the old 2026-11-19 date is near expiry. The scheduling choice is a bookkeeping decision, not a truth claim. Record the re-check lines in truth.verified.evidence with rootCause freshness-drift.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+      "observedAt": "2026-11-02",
+      "quote": "How to protect yourself from scammers (updated july 2022)"
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-raph-low-xlm-transfer-fail",
+  "verifiedOnly": "q-raph-exchange-memo; q-raph-merchant-payments; q-raph-missing-exchange-memo; q-raph-offramp-xlm-usdc; q-raph-phishing-pending-claim; q-raph-remittance-path-payment; q-raph-remove-scam-token; q-raph-scam-spam-tokens",
+  "untouched": "",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-raph-exchange-memo",
+    "log": "No gospel change. truth.verified replaced with the audit A/B/E evidence and sibling set (no rootCause); 3 URL sources added with observedAt 2026-11-02."
+   },
+   {
+    "id": "q-raph-low-xlm-transfer-fail",
+    "log": "golden.answer: \"A failed transaction normally leaves the original balance in the account\" -> \"A failed transaction does not move the intended funds, though one included in a ledger still pays its small network fee\" (verifier accept; A+B+F). New confirmed corroboration row (Hubble fee docs, transaction-lifecycle, TransactionFrame.cpp, Horizon failed txs). 11 sources added. truth.verified with rootCause = authoring flaw + round ledger. Applier sibling sweep: consistent with q-pc-tx-finality-failure-semantics and q-ti-tx-too-late-resubmit; no sibling says a failed tx costs nothing."
+   },
+   {
+    "id": "q-raph-merchant-payments",
+    "log": "No gospel change. Live case: truth.asOf 2026-07-11 -> 2026-11-02; 3 sources added; truth.verified replaced (no rootCause)."
+   },
+   {
+    "id": "q-raph-missing-exchange-memo",
+    "log": "No gospel change. Scheduled: truth.asOf -> 2026-11-02; truth.reverifyBy 2027-02-04 -> 2027-06-08; 3 sources added (Kraken, Binance recovery pages); truth.verified replaced (no rootCause)."
+   },
+   {
+    "id": "q-raph-offramp-xlm-usdc",
+    "log": "No gospel change. Live case: truth.asOf -> 2026-11-02; 4 sources added; truth.verified replaced (no rootCause)."
+   },
+   {
+    "id": "q-raph-phishing-pending-claim",
+    "log": "No judge-facing change. Verifier accepts: truth.asOf 2026-07-11 -> 2026-11-02; truth.reverifyBy 2026-11-19 -> 2027-06-15; 1 source added; truth.verified replaced with rootCause freshness-drift."
+   },
+   {
+    "id": "q-raph-remittance-path-payment",
+    "log": "No gospel change. 4 sources added; truth.verified replaced (no rootCause)."
+   },
+   {
+    "id": "q-raph-remove-scam-token",
+    "log": "No gospel change. Scheduled: truth.asOf -> 2026-11-02; truth.reverifyBy 2027-02-11 -> 2027-06-22; 3 sources added; truth.verified replaced (no rootCause)."
+   },
+   {
+    "id": "q-raph-scam-spam-tokens",
+    "log": "No gospel change. 2 sources added; truth.verified replaced (no rootCause)."
+   }
+  ]
+ }
+}

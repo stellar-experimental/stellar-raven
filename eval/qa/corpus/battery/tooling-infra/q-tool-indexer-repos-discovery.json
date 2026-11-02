@@ -5,13 +5,13 @@
     "scout.searchRepos"
   ],
   "golden": {
-    "answer": "Treat this as **answer-time repository discovery**. Query `scout.searchRepos` with several role-specific and alias variations, inspect the raw rows, then open each returned repository before including it. Return a table with the exact GitHub URL, verified role, source of discovery, last activity/release, archive status, maturity/deployment caveats, and why it fits contract-event or ledger indexing.\n\nKeep roles separate: a turnkey/narrow indexer, a Galexie-style ledger-data exporter, the Go Ingest library, an ETL/export pipeline, a hosted-service client SDK, and community prior art are not interchangeable. The 2026-07-11 verification used current official examples such as `stellar-ledger-data-indexer`, `stellar-galexie`, `go-stellar-sdk/ingest`, and `stellar-etl` to establish those roles, but **no named roster is a permanent requirement**. Supplemental repositories found outside the current Scout result are allowed only when directly verified and labeled as external to that result.\n\nDo not infer correctness, security, maintenance quality, or product completeness from `repoScore`, stars, or semantic rank. Exact alias recall can fail (sls-025), and broad queries can return irrelevant Soroban contracts. For recent RPC `getEvents` polling, disclose the selected provider's retention and the need to persist events for durable history rather than calling RPC a full historical indexer.",
+    "answer": "Treat this as **answer-time repository discovery**. Query `scout.searchRepos` with several role-specific and alias variations, inspect the raw rows, then open each returned repository before including it. Return a table with the exact GitHub URL, verified role, source of discovery, last activity/release, archive status, maturity/deployment caveats, and why it fits contract-event or ledger indexing.\n\nKeep roles separate: a turnkey/narrow indexer, a Galexie-style ledger-data exporter, the Go Ingest library, an ETL/export pipeline, a hosted-service client SDK, and community prior art are not interchangeable. The 2026-07-11 verification used current official examples such as `stellar-ledger-data-indexer`, `stellar-galexie`, `go-stellar-sdk/ingest`, and `stellar-etl` to establish those roles, but **no named roster is a permanent requirement**. Supplemental repositories found outside the current Scout result are allowed only when directly verified and labeled as external to that result.\n\nDo not infer correctness, security, maintenance quality, or product completeness from `repoScore`, stars, or semantic rank. Exact owner/name recall missed some repositories before the sls-025 fix (resolved 2026-07-14); an exact miss still does not prove absence, and broad queries can return irrelevant Soroban contracts. For recent RPC `getEvents` polling, disclose the selected provider's retention and the need to persist events for durable history rather than calling RPC a full historical indexer.",
     "keyFacts": [
       "Returns a fresh, directly verified, role-labeled repository table.",
       "Includes URLs, activity, maturity, and source provenance.",
       "Keeps indexers, exporters, ingest libraries, ETL, hosted clients, and prior art distinct.",
       "Uses repoScore and stars only for navigation, not quality or correctness proof.",
-      "Labels direct external supplements separately when Scout exact-alias recall misses them."
+      "Labels any directly verified external supplement as outside the Scout result."
     ],
     "avoid": [
       "Do NOT fabricate repositories, return irrelevant semantic matches, or require SubQuery/OBSRVR/Mercury as a timeless roster.",
@@ -19,7 +19,7 @@
       "Do NOT call Galexie a query index, a hosted-service client a complete backend, or recent RPC events complete history.",
       "Do NOT treat an exact Scout zero result as proof a public repository is absent."
     ],
-    "notes": "Code-shaped discovery → scout_repos is the designed surface. Fabricated repos are the trap.\nAlso good if the answer: Distinguishes code/repo discovery from conceptual docs lookups.\nGolden cites: Scout repo results (stellarlight.xyz/api/repos) and/or the GitHub repos returned.\nGT-55 CORRECTION 2026-07-11: grade fresh verified role-labeled rows, not a frozen roster. repoScore/stars/rank are discovery metadata, not quality proof. Exact SubQuery owner/name recall failed while direct GitHub verification succeeded; sls-025 records the recurrence."
+    "notes": "Code-shaped discovery → scout_repos is the designed surface. Fabricated repos are the trap.\nAlso good if the answer: Distinguishes code/repo discovery from conceptual docs lookups.\nGolden cites: Scout repo results (stellarlight.xyz/api/repos) and/or the GitHub repos returned.\nGT-55 CORRECTION 2026-07-11: grade fresh verified role-labeled rows, not a frozen roster. repoScore/stars/rank are discovery metadata, not quality proof. Exact SubQuery owner/name recall failed on 2026-07-11 while direct GitHub verification succeeded; sls-025 recorded it and was resolved 2026-07-14 (as of 2026-11-02 exact queries return subquery/stellar-subql-starter)."
   },
   "tags": {
     "category": "tooling-infra",
@@ -33,8 +33,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-09-03",
-    "reverifyBy": "2026-12-10",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-22",
     "sources": [
       {
         "class": "C",
@@ -75,6 +75,84 @@
         "class": "D",
         "ref": "https://github.com/subquery/stellar-subql-starter",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=indexer",
+        "note": "counts {returned:20,total:129}; stellar/stellar-ledger-data-indexer 92, stellar/stellar-galexie 92, stellar/stellar-etl 90, stellar/go-stellar-sdk 100, subquery/stellar-subql-starter 59 (dormant); row keys include repoScore, codeVerified, activityState; no license key",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "gh api repos/{stellar/stellar-ledger-data-indexer,stellar/stellar-galexie,stellar/stellar-etl,stellar/go-stellar-sdk}",
+        "note": "archived false for all; pushed_at 2026-10-30, 2026-10-29, 2026-10-28, 2026-10-31",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-rpc/releases/tag/v30.0.0",
+        "note": "`getEvents` no longer returns the `inSuccessfulContractCall` field ... Added Protocol 30 support (no retention or new events-method change)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.searchRepos",
+        "note": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=stellar-subql-starter&limit=5 and ?q=subquery%2Fstellar-subql-starter",
+        "note": "matchMode strict, first row subquery/stellar-subql-starter (total 42); owner/name query matchMode partial, first row subquery/stellar-subql-starter",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "improvements/resolved.json#sls-025 (upstream https://github.com/Stellar-Light/stellarlight/issues/512)",
+        "note": "resolved 2026-07-14; liveRecheck: exact repo queries smart-account-kit, passkey-kit, ERC-8004, x402 and subquery/stellar-subql-starter return exact hits",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=mercury / ?q=obsrvr",
+        "note": "mercury total 18 (xycloo/mercury-light-client, paltalabs/mercury-sdk ...); obsrvr total 6 (withObsrvr/...)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/subquery/stellar-subql-starter",
+        "note": "archived false, pushed 2026-01-22",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/Stellar-Light/stellarlight/issues/512",
+        "note": "state closed, closed_at 2026-07-14T00:13:10Z, 'Repo search misses exact smart-account-kit alias despite indexed public repository'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=subquery/stellar-subql-starter&limit=5",
+        "note": "first row subquery/stellar-subql-starter https://github.com/subquery/stellar-subql-starter",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=stellar-subql-starter&limit=5",
+        "note": "first row subquery/stellar-subql-starter",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "improvements/resolved.json (sls-025)",
+        "note": "resolved 2026-07-14; liveRecheck '2026-07-14 exact repo queries smart-account-kit, passkey-kit, ERC-8004, x402 and subquery/stellar-subql-starter return exact hits'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?q=subquery&limit=5",
+        "note": "rows include subquery/subql-stellar, subquery/stellar-subql-starter, subquery/stellar-subql-dictionaries",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -126,28 +204,61 @@
           }
         ],
         "note": "Legacy verdict: confirmed-with-service-recurrence."
+      },
+      {
+        "claim": "The sls-025 exact owner/name recall miss was fixed upstream on 2026-07-14; as of 2026-11-02 exact queries return subquery/stellar-subql-starter, while an exact miss still does not prove absence.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/Stellar-Light/stellarlight/issues/512",
+            "observedAt": "2026-11-02",
+            "note": "state closed, closed_at 2026-07-14T00:13:10Z, 'Repo search misses exact smart-account-kit alias despite indexed public repository'"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/repos/search?q=subquery/stellar-subql-starter&limit=5",
+            "observedAt": "2026-11-02",
+            "note": "first row subquery/stellar-subql-starter https://github.com/subquery/stellar-subql-starter"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/repos/search?q=stellar-subql-starter&limit=5",
+            "observedAt": "2026-11-02",
+            "note": "first row subquery/stellar-subql-starter"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
       "evidence": [
-        "C returned current indexer results. B confirmed the current official repository roles and activity.",
-        "Sibling sweep 2026-09-03: q-tool-sdk-repos-discovery preserves the same role-separation boundary; no contradiction found.",
-        "C: live https://stellarlight.xyz/api/repos/search probes at 2026-08-05T20:45-20:46Z returned current stellar/stellar-ledger-data-indexer, stellar/stellar-galexie, stellar/go-stellar-sdk, stellar/stellar-etl, and subquery/stellar-subql-starter rows with answer-time activity metadata.",
-        "A/B: https://developers.stellar.org/docs/data/indexers, https://developers.stellar.org/docs/build/guides/events/ingest, and the four direct stellar/* repositories independently confirmed distinct indexer, exporter/data-lake, ingest-library, and ETL roles plus the seven-day getEvents retention ceiling.",
-        "Uncertainty remains source-bounded: Scout rows and timestamps do not prove global repository coverage, deployment, security, or quality.",
-        "Sibling sweep: q-tool-sdk-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight, q-tool-go-sdk-ingest, and q-ti-parse-raw-ledger-data preserve the same fresh-row, direct-verification, and role-separation boundaries.",
-        "Structural re-form (long-fact): Split one long repository-table fact and shortened two role and ranking facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-ledger-data-indexer — live repository metadata confirms a directly verifiable current indexer repository.",
-        "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-ledger-data-indexer — live metadata provides the exact URL, activity timestamp, archive state, and repository provenance.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/indexers — the official guide separates indexers, Galexie data-lake export, ingest, ETL, and hosted-provider roles.",
-        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live searchRepos contract defines repoScore and stars as discovery metadata without correctness proof.",
-        "Sibling sweep 2026-08-29: grep stellar-ledger-data-indexer|Galexie|role-labeled|repoScore → q-tool-indexer-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight, q-tool-go-sdk-ingest, q-tool-sdk-repos-discovery, q-tool-passkey-repo-live, q-tool-oracle-repo-live, q-tool-zk-repo-live, q-tool-smart-wallet-repos-discovery; no contradiction."
+        "C: https://stellarlight.xyz/api/repos/search?q=indexer — \"counts {returned:20,total:129}; stellar/stellar-ledger-data-indexer 92, stellar/stellar-galexie 92, stellar/stellar-etl 90, stellar/go-stellar-sdk 100, subquery/stellar-subql-starter 59 (dormant); row keys include repoScore, codeVerified, activityState; no license key\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
+        "B: gh api repos/{stellar/stellar-ledger-data-indexer,stellar/stellar-galexie,stellar/stellar-etl,stellar/go-stellar-sdk} — \"archived false for all; pushed_at 2026-10-30, 2026-10-29, 2026-10-28, 2026-10-31\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
+        "A: https://developers.stellar.org/docs/data/indexers — \"Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang packages ... Mirror, also called Pipelines: a highly efficient tool to Extract, Transform, & Load (ETL)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2] / golden.avoid[2]",
+        "A: https://developers.stellar.org/docs/build/guides/events/ingest — \"Stellar RPC provides a getEvents method ... However, the data retention window for these events is 7 days at most. If you need access to a longer-lived record of these events you'll want to \"ingest\" the events as they are published\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2] / golden.avoid[2]",
+        "B: https://github.com/stellar/stellar-rpc/releases/tag/v30.0.0 — \"`getEvents` no longer returns the `inSuccessfulContractCall` field ... Added Protocol 30 support (no retention or new events-method change)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2] / golden.avoid[2]",
+        "B: catalog/manifest.json#scout.searchRepos — \"Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[1]",
+        "C: https://stellarlight.xyz/api/repos/search?q=indexer — \"meta.note: Code references graded by repoScore (0-100) = the repo's own merit (code we read: tests, CI, releases, live SDK pin; plus adoption and freshness) lifted by independent corroboration ... Lead with high-score repos as the strongest existing references\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[1]",
+        "C: https://stellarlight.xyz/api/repos/search?q=stellar-subql-starter&limit=5 and ?q=subquery%2Fstellar-subql-starter — \"matchMode strict, first row subquery/stellar-subql-starter (total 42); owner/name query matchMode partial, first row subquery/stellar-subql-starter\" (observedAt 2026-11-02) → contradicted: golden.answer / golden.keyFacts[4] / golden.notes",
+        "B: improvements/resolved.json#sls-025 (upstream https://github.com/Stellar-Light/stellarlight/issues/512) — \"resolved 2026-07-14; liveRecheck: exact repo queries smart-account-kit, passkey-kit, ERC-8004, x402 and subquery/stellar-subql-starter return exact hits\" (observedAt 2026-11-02) → contradicted: golden.answer / golden.keyFacts[4] / golden.notes",
+        "C: https://stellarlight.xyz/api/repos/search?q=mercury / ?q=obsrvr — \"mercury total 18 (xycloo/mercury-light-client, paltalabs/mercury-sdk ...); obsrvr total 6 (withObsrvr/...)\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
+        "A: https://developers.stellar.org/docs/data/indexers — \"Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang packages ... Mirror, also called Pipelines: a highly efficient tool to Extract, Transform, & Load (ETL)\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
+        "B: catalog/manifest.json#scout.searchRepos — \"Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence.\" (observedAt 2026-11-02) → confirmed: golden.avoid[3]",
+        "B: https://api.github.com/repos/subquery/stellar-subql-starter — \"archived false, pushed 2026-01-22\" (observedAt 2026-11-02) → confirmed: golden.avoid[3]",
+        "Verifier (modify golden.answer) B: https://api.github.com/repos/Stellar-Light/stellarlight/issues/512 — \"state closed, closed_at 2026-07-14T00:13:10Z, 'Repo search misses exact smart-account-kit alias despite indexed public repository'\" (observedAt 2026-11-02)",
+        "Verifier (modify golden.answer) C: https://stellarlight.xyz/api/repos/search?q=subquery/stellar-subql-starter&limit=5 — \"first row subquery/stellar-subql-starter https://github.com/subquery/stellar-subql-starter\" (observedAt 2026-11-02)",
+        "Verifier (modify golden.answer) C: https://stellarlight.xyz/api/repos/search?q=stellar-subql-starter&limit=5 — \"first row subquery/stellar-subql-starter\" (observedAt 2026-11-02)",
+        "Verifier (modify golden.answer) B: improvements/resolved.json (sls-025) — \"resolved 2026-07-14; liveRecheck '2026-07-14 exact repo queries smart-account-kit, passkey-kit, ERC-8004, x402 and subquery/stellar-subql-starter return exact hits'\" (observedAt 2026-11-02)",
+        "Verifier (accept golden.keyFacts[4]) C: https://stellarlight.xyz/api/repos/search?q=subquery&limit=5 — \"rows include subquery/subql-stellar, subquery/stellar-subql-starter, subquery/stellar-subql-dictionaries\" (observedAt 2026-11-02)",
+        "Verifier (accept golden.notes) B: https://api.github.com/repos/Stellar-Light/stellarlight/issues/512 — \"closed_at 2026-07-14T00:13:10Z\" (observedAt 2026-11-02)",
+        "Verifier (accept golden.notes) C: https://stellarlight.xyz/api/repos/search?q=subquery/stellar-subql-starter&limit=5 — \"subquery/stellar-subql-starter returned as first row\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-defi-streaming-payments-prior-art, q-tool-greenfield-indexer-prior-art-preflight, q-tool-sdk-repos-discovery, q-tool-go-sdk-ingest, q-ti-parse-raw-ledger-data; grep sls-025 over battery → q-defi-streaming-payments-prior-art already treats sls-025 as fixed 2026-07-14; consistent, no contradiction."
       ],
       "rootCause": [
-        "freshness-recheck",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "improvements/resolved.json entry sls-025 — fixed upstream 2026-07-14"
       ]
     },
     "origin": "raven-next q-tool-indexer-repos-discovery"

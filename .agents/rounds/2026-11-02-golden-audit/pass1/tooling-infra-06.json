@@ -1,0 +1,1312 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "tooling-infra-06",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-tool-passkeykit-smart-wallet",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Both passkey-kit and smart-account-kit are maintained sibling SDKs with different, non-drop-in authorization models.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/passkey-kit/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "smart-account-kit is a sibling SDK built on the audited OpenZeppelin stellar-contracts account. It uses a different on-chain authorization model (context rules …"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/contract-accounts/smart-wallets.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "There are two TypeScript SDKs for building passkey smart wallets. They're siblings rather than old and new versions of the same thing ... so they aren't drop-in…"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/passkey-kit, repos/stellar/smart-account-kit",
+       "observedAt": "2026-11-02",
+       "quote": "archived=false; pushed_at 2026-10-27T17:52:34Z and 2026-10-27T00:11:05Z; npm passkey-kit 0.20.0, smart-account-kit 0.10.0"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=smart-account-kit&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "stellar/smart-account-kit isArchived false; kalepail/smart-account-kit isArchived true successorRepo stellar/smart-account-kit"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Passkey Kit flat multi-signer Signatures; Smart Account Kit OZ context-rule/auth-digest/policy model.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/passkey-kit/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Auth (`__check_auth`): a flat `Signatures` map (`SignerKey → Signature`) signed over the plain signature payload."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/smart-account-kit/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Context rules — fine-grained, per-operation authorization with an auth digest that binds the rules it was signed under"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/contract-accounts/smart-wallets.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "Smart Account Kit: deploys and drives OpenZeppelin Smart Account contracts, where authorization runs through context rules, signers, and policies."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer + keyFacts[2] + avoid[0]",
+     "claim": "Passkey Kit's current README says to review the contract and SDK before holding meaningful value and read the caveats; it no longer presents the project as unaudited.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/passkey-kit/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "**Unaudited software.** This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit. ... Do not…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/passkey-kit/commit/69185164c82dd2d595591c6172ad14d9481fd0b4",
+       "observedAt": "2026-11-02",
+       "quote": "docs: disclose unaudited security status (2026-08-19); parent 18f8706c README line 9: 'Review the contract and SDK yourself before holding meaningful value, and…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/passkey-kit/blob/main/SECURITY.md",
+       "observedAt": "2026-11-02",
+       "quote": "The smart-wallet contract, SDKs, and repository relayer proxy have not received an independent third-party security audit. ... Known-vulnerable wallet WASM hash…"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/contract-accounts/smart-wallets.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "Its repository states that the wallet contract and SDKs have not been independently audited, so review them yourself before they guard real value."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (audit scope)",
+     "claim": "OZ contract review does not cover SDKs, relayers, indexers, etc.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/smart-account-kit/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Unaudited integration software. This SDK, demo, relayer proxy, and indexer integration have not received an independent third-party security audit. ... The unde…"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/contract-accounts/smart-wallets.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "Passkey Kit ... Its repository states that the wallet contract and SDKs have not been independently audited"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[4]",
+     "claim": "Relaying/fee sponsorship is distinct from __check_auth authorization.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/passkey-kit/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Server (`PasskeyServer`) — runs server-side: submits transactions through a relayer (fee sponsorship) ... Holds the relayer secret."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "They hold assets and enforce authorization in `__check_auth` instead of a single secret key."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Canonical repos stellar/passkey-kit and stellar/smart-account-kit; kalepail repos are archived move pointers.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/kalepail/passkey-kit",
+       "observedAt": "2026-11-02",
+       "quote": "archived=true; description '[MOVED → github.com/stellar/passkey-kit] ...'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=smart-account-kit&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "kalepail/smart-account-kit isArchived true successorRepo stellar/smart-account-kit"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Choose between the two currently maintained SDKs by authorization model, then pin and inspect the exact releases and contracts you deploy. **`passkey-kit`** provides its own Stellar smart-wallet contract and a flat multi-signer `Signatures` model for WebAuthn/passkey, Ed25519, and policy signers. As of 2026-11-02, its README and SECURITY.md say the wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit, warn against storing assets you cannot afford to lose, and list known-vulnerable legacy wallet WASM hashes; it does not present the project as lega…",
+     "reason": "README/SECURITY.md since 2026-08-19 state the project is unaudited; old sentence contradicted. Adds SAK's own unaudited label, now in its README."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Uses Passkey Kit's current unaudited-software warning and caveats.",
+     "reason": "The review-and-caveats warning was replaced by an unaudited-software caution."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT characterise Passkey Kit as legacy, superseded, or demo-only material, and do NOT say the README directs readers to Smart Account Kit instead; that composite framing was removed on 2026-07-12. Noting that it carries no third-party audit is accurate and must NOT be penalised — as of 2026-11-02 its README and SECURITY.md label it unaudited software.",
+     "reason": "Exemption clause quoted a README line removed on 2026-08-19."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Freshness correction reverified 2026-08-11: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage. Re-verified 2026-11-02: README commit 69185164 (2026-08-19) replaced the review-before-meaningful-value line with an 'Unaudited software' caution; the official smart-wallets guide repeats that Passkey Kit is not independently audited.",
+     "reason": "Record the dated change and its source."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-smart-wallet-repos-discovery; q-soroban-add-signer-smart-wallet-howto; q-passkey-smart-account-architecture; q-builder-content-by-person"
+  },
+  {
+   "id": "q-tool-rust-soroban-sdk",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "soroban-sdk from stellar/rs-soroban-sdk is the SDF-maintained Rust contract crate.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/contract-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "The Rust SDK is maintained by SDF. The `soroban-sdk` Rust crate contains the Soroban Rust SDK for building smart contracts for Stellar."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/sdks/contract-sdks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "**The Rust SDK is maintained by SDF.**"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs('contract SDKs soroban-sdk Rust Solang AssemblyScript')",
+       "observedAt": "2026-11-02",
+       "quote": "The Rust SDK is maintained by SDF. The soroban-sdk Rust crate contains the Soroban Rust SDK"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Current target guidance is wasm32v1-none.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Contracts must be built for the `wasm32v1-none` target, available with Rust 1.84+. It is the only wasm target supported by the Soroban runtime on Stellar."
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup#install-the-target",
+       "observedAt": "2026-11-02",
+       "quote": "Install the wasm32v1-none target"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Off-chain Rust client crates (stellar-xdr, stellar-strkey, rs-stellar-rpc-client) are separate.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "`stellar-xdr` ... Maintained by SDF. `stellar-strkey` ... Maintained by SDF. `rs-stellar-rpc-client` - Rust Stellar RPC client. Maintained by SDF."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/sdks/client-sdks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "Rust Stellar RPC client. **Maintained by SDF.**"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer + keyFacts[3] + avoid[1]",
+     "claim": "v27.0.0 (observed 2026-07-08) is the current release reference.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/releases",
+       "observedAt": "2026-11-02",
+       "quote": "v30.0.0-rc.1 2026-10-21 (prerelease); v29.0.1 2026-10-12; v29.0.0 2026-10-07; v28.0.0 2026-09-18 'This is a release supporting Protocol 28.'"
+      },
+      {
+       "class": "B",
+       "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "max_stable_version 29.0.1; max_version 30.0.0-rc.1"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 'soroban-sdk crate latest version 29.0.1' -> https://crates.io/crates/soroban-sdk/29.0.1",
+       "observedAt": "2026-11-02",
+       "quote": "soroban-sdk v29.0.1 ... Date: 2026-10-12"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[2]",
+     "claim": "Rust canonical, community Solang/Solidity and AssemblyScript documented.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/contract-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "The Solang compiler is maintained by the Hyperledger community. ... The AssemblyScript SDK is maintained by dedicated community developers."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/sdks/contract-sdks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "## Solidity SDK ... ## AssemblyScript SDK"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Add the SDF-maintained Rust contract crate **`soroban-sdk`** from **`stellar/rs-soroban-sdk`**. It is Stellar's canonical/default first-class SDK for authoring Soroban contracts that compile to Wasm; current CLI guidance targets **`wasm32v1-none`**. Keep it separate from off-chain Rust client components such as `stellar-xdr`, `stellar-strkey`, and `rs-stellar-rpc-client`.\n\nAs of 2026-11-02, the latest stable release is **v29.0.1** (2026-10-12), mainnet runs Protocol 29, and **v30.0.0-rc.1** is a Protocol 30 pre-release. Check crates.io/docs.rs, the release notes, Stellar CLI, and the target ne…",
+     "reason": "Version drift: v28/v29 shipped; dated current stable plus pre-release."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "replace",
+     "new": "Dates any cited soroban-sdk release and checks release and target-network compatibility.",
+     "reason": "Durable-fact gating: the old keyFact required a superseded version."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "replace",
+     "new": "Do NOT freeze v29.0.1 or another release without an as-of date and target-network compatibility check.",
+     "reason": "Update the frozen-version example to the current stable release."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Contract SDK (soroban-sdk) vs client SDK (stellar-sdk) is the core distinction; conflating them is the trap.\nAlso good if the answer: Off-chain Rust client work uses separate crates like `stellar-xdr`, `stellar-strkey`, `rs-stellar-rpc-client`.\nGolden cites: At least one developers.stellar.org contract-sdks page or the stellar/rs-soroban-sdk repo.\nGT-56 CORRECTION 2026-07-11: soroban-sdk is the SDF canonical/default Rust contract crate; v27.0.0 was observed 2026-07-08 and must be checked against registry/network compatibility. Do not turn canonical into an existence denial of documented commun…",
+     "reason": "Record re-verification and symmetric caution."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-which-sdk-comparison; q-sor-build-target-wasm32v1; q-soroban-wasm-language; q-sor-evm-to-soroban-porting; q-soroban-sdk-cve"
+  },
+  {
+   "id": "q-tool-sdk-repos-discovery",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0-2]",
+     "claim": "Scout repo search returns answer-time rows with generatedAt, URL, language, archive state, and dated activity; no static top list.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=stellar%20sdk&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "meta.generatedAt 2026-11-02T16:22:03.441Z; counts {returned 10, total 635}; row keys fullName, url, primaryLanguage, isArchived, lastCommitAt, successorRepo, re…"
+      },
+      {
+       "class": "B",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "activity: Derived from lastCommitAt: active (<=90d) / slowing (<=365d) / dormant / archived."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1] maintainer tier / keyFacts[3]",
+     "claim": "Maintainer tier must come from official docs/source, not Scout fields.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=stellar%20sdk&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "stellar/go-stellar-sdk tier community, tierReason null"
+      },
+      {
+       "class": "B",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "tierReason: ... Null until that lane has judged the row: a bare tier with no reason means the value is the schema default, not a verdict."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "The Go SDK is maintained by SDF."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[3]",
+     "claim": "Retired names need migration/alias explanation.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=smart-account-kit",
+       "observedAt": "2026-11-02",
+       "quote": "kalepail/smart-account-kit isArchived true successorRepo stellar/smart-account-kit"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/kalepail/passkey-kit",
+       "observedAt": "2026-11-02",
+       "quote": "archived true, [MOVED → github.com/stellar/passkey-kit]"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-56 DISCOVERY CORRECTION 2026-07-11: require current observed Scout rows with generatedAt, direct URLs, role, maintainer, archive/activity, and corroboration. No static top/star/order requirement; repoScore and rank are navigation, not quality, security, or ownership proof. Scout's row `tier` (quality/community; a bare community value with null tierReason is the schema default) is a code-curation tier, not maintainer tier: on 2026-11-02 stellar/go-stellar-sdk showed tier community while official docs say SDF maintains the Go SDK. Take maintainer tier from official docs or the owner.",
+     "reason": "Grader caution: Scout tier field is not maintainer tier (keyFact[1] ambiguity)."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring ambiguity: keyFact 'maintainer tier' did not distinguish Scout's code-curation `tier` field from official maintainer labels."
+   ],
+   "siblings": "q-tool-smart-wallet-repos-discovery; q-tool-zk-repo-live; q-tool-which-sdk-comparison; q-tool-indexer-repos-discovery; q-tool-oracle-repo-live; q-tool-passkey-repo-live"
+  },
+  {
+   "id": "q-tool-sep41-status-live",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SEP-41 is a token interface, distinct from the SAC which implements it.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "This proposal defines a standard contract interface for tokens. The interface is a subset of the Stellar Asset contract"
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset#contract-tokens",
+       "observedAt": "2026-11-02",
+       "quote": "The SAC itself implements the token interface (SEP-41)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (as-of status)",
+     "claim": "As observed 2026-08-04, preamble Draft, version 0.5.0, updated 2026-06-08.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/commit/4db3e802b2",
+       "observedAt": "2026-11-02",
+       "quote": "-Updated: 2026-08-03 -Version 0.5.1 +Updated: 2026-08-24 +Version 0.5.2 ... `v0.5.2` - Clarify that implementers may emit additional topics."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [SEP-0041](sep-0041.md) | Soroban Token Interface | Jonathan Jove, Siddharth Suresh | Draft |"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/research?q=SEP-41&source=sep&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "Soroban Token Interface ... publishedAt 2026-08-24T00:00:00.000Z"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Retrieve current SEP-41 and official token-interface documentation, cite both, describe the interface, and report the current preamble status/version/update date with an as-of. As observed 2026-11-02, the official preamble says Draft, version 0.5.2, updated 2026-08-24; re-check rather than trusting an archive or prior snapshot.",
+     "reason": "Refresh the dated preamble snapshot for a live case."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-sep-41-token-interface; q-sor-sep41-transfer-vs-transferfrom; q-soroban-token-transfer-pattern; q-rwa-tokenization-standards"
+  },
+  {
+   "id": "q-tool-skill-detail-install",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / notes",
+     "claim": "'soroban' is not a current exact Scout skill slug; the Soroban-covering SDF skill is smart-contracts.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills/soroban",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404 {\"error\":\"unknown skill: soroban\",\"hint\":\"Try /api/skills to list all available slugs.\"}"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills/stellar-smart-contracts -> skill slug smart-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "slug smart-contracts, name Stellar Smart Contracts, source sdf, install 'npx skills add https://github.com/stellar/stellar-dev-skill', installAlt Claude Code / …"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-dev-skill/contents/skills",
+       "observedAt": "2026-11-02",
+       "quote": "agentic-payments assets cross-chain dapp data smart-contracts standards zk-proofs"
+      },
+      {
+       "class": "A",
+       "ref": "https://skills.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "index lists skills/smart-contracts/; no skills/soroban/ entry; https://skills.stellar.org/skills/soroban/ returns 404 but /skills/soroban/SKILL.md returns 200 (…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3-4] / avoid",
+     "claim": "Host-specific install, community-not-SDF-endorsed, manual review of side effects.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/skills",
+       "observedAt": "2026-11-02",
+       "quote": "counts total 82, bySource {sdf 8, stellarlight 15, lumenloop 8, external 12, community 39}"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill",
+       "observedAt": "2026-11-02",
+       "quote": "installAlt: '/plugin marketplace add stellar/stellar-dev-skill'; Codex 'git clone ... ~/.codex/skills/stellar-dev-skill'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Todo 1248 correction 2026-07-28: `soroban` is no longer a current Scout skill slug. Grade live topic-to-slug resolution, then exact detail retrieval and the full provenance/safety review—not a stale alias or a mandatory catalog call after resolution. Re-verified 2026-11-02: /api/skills/soroban still returns 404 and the SDF slug is `smart-contracts`; skills.stellar.org still serves an unlisted legacy /skills/soroban/SKILL.md, which is not a current catalog slug.",
+     "reason": "Dated re-verification and grader caution about the orphaned legacy SKILL.md still served."
+    }
+   ],
+   "rootCause": [
+    "improvements/skills/sk-027-scout-skill-stale-skills-catalog.md"
+   ],
+   "siblings": "q-gap-scout-get-skill-detail; q-gap-scout-list-skill-directory"
+  },
+  {
+   "id": "q-tool-smart-wallet-repos-discovery",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0-1]",
+     "claim": "Scout returns dated source-scoped repo rows; zero or non-zero results are not open-world claims.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=passkey%20smart%20wallet&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T16:22:05.524Z; total 475; first row stellar/passkey-kit"
+      },
+      {
+       "class": "B",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "searchRepos row fields isArchived, successorRepo, repoScore, codeVerified"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[2-3]",
+     "claim": "stellar/smart-account-kit = TS SDK for OZ smart accounts; OZ stellar-contracts accounts = framework; stellar/passkey-kit = separate SDK; kalepail repos archived move pointers.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/smart-account-kit",
+       "observedAt": "2026-11-02",
+       "quote": "TypeScript SDK for OpenZeppelin Stellar smart accounts with passkeys, multi-signers, authorization policies, and fee-sponsored transactions."
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/kalepail/passkey-kit, repos/kalepail/smart-account-kit",
+       "observedAt": "2026-11-02",
+       "quote": "archived true; '[MOVED → github.com/stellar/passkey-kit]' / '[MOVED → github.com/stellar/smart-account-kit]'"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/contract-accounts/smart-wallets.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "Smart Account Kit: deploys and drives OpenZeppelin Smart Account contracts ... Passkey Kit: ships its own smart wallet contract"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=smart-account-kit",
+       "observedAt": "2026-11-02",
+       "quote": "kalepail/smart-account-kit isArchived true successorRepo stellar/smart-account-kit"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[4]",
+     "claim": "Discovery is not account control or recovery.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/passkey-kit/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Signer proofs provide ownership evidence; address occupancy does not."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-passkeykit-smart-wallet; q-tool-sdk-repos-discovery; q-tool-passkey-repo-live"
+  },
+  {
+   "id": "q-tool-soroban-auth-audit-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[1-2]",
+     "claim": "V2 labels auth recursion V-SOR-VUL-002 Critical/Investigated, judged invalid inline; zero valid Critical; V2.1 moves it to Appendix A.2.2 V-SOR-APP-VUL-003.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://stellarsecurityportal.com/api/v1/reports/28 (mdFile, 'Auditing Report for Soroban Stellar Soroban Core V2')",
+       "observedAt": "2026-11-02",
+       "quote": "V-SOR-VUL-002 Denial of Service During Authorization Critical Investigated ... Why Invalid It turns out that a failed call to require auth in check auth will re…"
+      },
+      {
+       "class": "A",
+       "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "A.2 Invalid Issues ... A.2.2 V-SOR-APP-VUL-003: Denial of Service During Authorization Severity Critical ... Status Investigated; Table 2.3 Critical-Severity Is…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / notes / avoid[3]",
+     "claim": "Scout returns the Veridise row for V-SOR-APP-VUL-003 without meta.exactMiss; absent control V-SOR-APP-VUL-999 returns exactMiss with do-not-report warning.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "results[0] title 'Stellar Soroban Core: Veridise', section 'V-SOR-APP-VUL-003:', url https://stellarsecurityportal.com/report/42; meta has no exactMiss"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "exactMiss.note: 'No document in the searched scope carries V-SOR-APP-VUL-999 verbatim ... Do not report it as found'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-auth-recursion-dos-audit"
+  },
+  {
+   "id": "q-tool-taxonomy-dispatch-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "Both Lumenloop vocabulary operations return exact values with counts and distinct scopes.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_categories",
+       "observedAt": "2026-11-02",
+       "quote": "{\"count\": 5, \"categories\": [{\"name\": \"Applications\", \"slug\": \"applications\"}, {\"name\": \"Developer Tooling\"}, ...]}"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "{\"count\": 85, \"tags\": [{\"name\": \"Accounting\"}, {\"name\": \"AI\"}, ...]}"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.get_project_tags_vocabulary",
+       "observedAt": "2026-11-02",
+       "quote": "Get the controlled tag vocabulary for DIRECTORY PROJECTS. For article/AV content tags use get_tags_vocabulary instead."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-lumenloop-categories-vocab; q-gap-lumen-project-tag-vocabulary; q-ti-vocab-project-categories-live; q-ti-vocab-project-tags-live"
+  },
+  {
+   "id": "q-tool-which-sdk-comparison",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0-2]",
+     "claim": "Contract vs client split; Rust soroban-sdk SDF canonical; community Solang/AssemblyScript documented.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/contract-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "The Rust SDK is maintained by SDF. ... The Solang compiler is maintained by the Hyperledger community. ... The AssemblyScript SDK is maintained by dedicated com…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/sdks/contract-sdks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "## Soroban Rust SDK ... ## Solidity SDK ... ## AssemblyScript SDK"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (client examples)",
+     "claim": "SDF-maintained @stellar/stellar-sdk, go-stellar-sdk, Rust client crates; community Python, Java, iOS/macOS, Flutter, KMP, PHP, .NET.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "The JavaScript SDK is maintained by SDF. ... The Go SDK is maintained by SDF ... https://github.com/stellar/go-stellar-sdk ... Kotlin Multiplatform SDK Maintain…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/sdks/client-sdks.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "## Go **The Go SDK is maintained by SDF.** ## Java SDK **Maintained by a dedicated community developer.**"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs('client SDKs maintained by SDF community')",
+       "observedAt": "2026-11-02",
+       "quote": "rs-stellar-rpc-client - Code Rust Stellar RPC client. Maintained by SDF."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[2]",
+     "claim": "Official catalog gives maintainer labels, no blanket SLA.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "All SDKs are open-source; file a GitHub issue or pull request in the specific SDK repository if you have questions or suggestions."
+      },
+      {
+       "class": "D",
+       "ref": "https://crates.io/crates/soroban-sdk/29.0.1 (via perplexity_search)",
+       "observedAt": "2026-11-02",
+       "quote": "The two most recent soroban-sdk major releases are supported with critical security fixes. ... not guaranteed."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-rust-soroban-sdk; q-tool-go-sdk-ingest"
+  },
+  {
+   "id": "q-tool-zk-repo-live",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0-1,4]",
+     "claim": "repoScore is the index's answer-time ranking; rows are not returned in repoScore order; pagination needed for global claims.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=zero-knowledge&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned 10, total 184}; row repoScores in order 51, 54, 50, 47, 43 ...; note 'Code references graded by repoScore (0-100) = the repo's own merit (code …"
+      },
+      {
+       "class": "B",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "repoScore: integer nullable; activity derived from lastCommitAt"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "codeVerified is scan evidence, not audit.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=zero-knowledge",
+       "observedAt": "2026-11-02",
+       "quote": "codeVerified {stellarProof, codeDepth, isDeployableContract, ciPresent, testsPresent, scannedAt 2026-10-05T22:52:12.992Z, scannedRef ...}"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "X-Ray Games is an archived result (implied by 'X-Ray Games or any other archived result').",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/FredericRezeau/xray-games",
+       "observedAt": "2026-11-02",
+       "quote": "archived=false, pushed_at 2026-02-16T08:40:34Z, 'Trustless ZK gaming arcade on Stellar'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=x-ray&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "fredericrezeau/xray-games isArchived False, hackathonWinner true, judgedHackathon 'Stellar Hacks: ZK Gaming', activityState dormant, repoScore 62"
+      },
+      {
+       "class": "D",
+       "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk-gaming/report",
+       "observedAt": "2026-11-02",
+       "quote": "2nd Place — $2,000 xray.games xray.games is a trustless arcade platform that proves player skill entirely on-chain using zero-knowledge proofs"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Presents one repository's current top rank or hackathonWinner flag as permanent rather than answer-time.",
+     "reason": "Remove false 'archived' premise about X-Ray Games; keep the permanence trap."
+    },
+    {
+     "field": "golden.notes",
+     "op": "add",
+     "new": "Observed 2026-11-02: FredericRezeau/xray-games is not archived; Scout flags it hackathonWinner for Stellar Hacks: ZK Gaming, and DoraHacks lists xray.games 2nd place. Stating that dated, sourced win is not a wrong claim.",
+     "reason": "Grader caution so a dated, sourced xray.games win is not penalised."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: avoid text inherited from Boxy origin sl-code-zk-xray-games-top labelled X-Ray Games an archived result without a source; GitHub and Scout show it not archived."
+   ],
+   "siblings": "q-tool-sdk-repos-discovery; q-tool-smart-wallet-repos-discovery; q-protocol-bn254-poseidon-xray"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-tool-passkeykit-smart-wallet",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Every added clause verified: README+SECURITY.md unaudited caution, cannot-afford-to-lose warning, SECURITY.md lists known-vulnerable legacy WASM hashes (README links to them), SAK README unaudited with separate OZ audit scope. As-of date present.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/passkey-kit/blob/main/README.md (gh api contents)",
+      "observedAt": "2026-11-02",
+      "quote": "**Unaudited software.** This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit. ... Do not…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/passkey-kit/blob/main/SECURITY.md",
+      "observedAt": "2026-11-02",
+      "quote": "The smart-wallet contract, SDKs, and repository relayer proxy have not received an independent third-party security audit. ... ## Known-vulnerable wallet WASM h…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/passkey-kit/commit/69185164c82dd2d595591c6172ad14d9481fd0b4",
+      "observedAt": "2026-11-02",
+      "quote": "2026-08-19T16:06:47Z 'docs: disclose unaudited security status'; README diff: '-> **Security.** Review the contract and SDK yourself before holding meaningful v…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/smart-account-kit/blob/main/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "**Unaudited integration software.** This SDK, demo, relayer proxy, and indexer integration have not received an independent third-party security audit. ... The …"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets (live curl) + github.com/stellar/stellar-docs docs/build/guides/contract-accounts/smart-wallets.mdx line 49",
+      "observedAt": "2026-11-02",
+      "quote": "Its repository states that the wallet contract and SDKs have not been independently audited, so review them yourself before they guard real value."
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search 'stellar passkey-kit Unaudited software' -> github.com/stellar/passkey-kit, whalehub.io/blog/stellar-passkey-smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Smart Account Kit's README is candid that the SDK, demo, relayer proxy and indexer integration are unaudited (whalehub.io, 2026-10-08)"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-passkeykit-smart-wallet",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "Old 'review-and-caveats' wording was replaced upstream on 2026-08-19; new keyFact is 63 chars.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/passkey-kit/blob/main/README.md (gh api contents)",
+      "observedAt": "2026-11-02",
+      "quote": "**Unaudited software.** This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit. ... Do not…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/passkey-kit/commit/69185164c82dd2d595591c6172ad14d9481fd0b4",
+      "observedAt": "2026-11-02",
+      "quote": "2026-08-19T16:06:47Z 'docs: disclose unaudited security status'; README diff: '-> **Security.** Review the contract and SDK yourself before holding meaningful v…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-passkeykit-smart-wallet",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "Keeps the protective non-penalty clause and dates the current label; does not punish a true claim.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/passkey-kit/blob/main/README.md (gh api contents)",
+      "observedAt": "2026-11-02",
+      "quote": "**Unaudited software.** This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit. ... Do not…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/passkey-kit/blob/main/SECURITY.md",
+      "observedAt": "2026-11-02",
+      "quote": "The smart-wallet contract, SDKs, and repository relayer proxy have not received an independent third-party security audit. ... ## Known-vulnerable wallet WASM h…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-passkeykit-smart-wallet",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Commit 69185164 date and diff verified; official smart-wallets guide states the repo says not independently audited.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/passkey-kit/commit/69185164c82dd2d595591c6172ad14d9481fd0b4",
+      "observedAt": "2026-11-02",
+      "quote": "2026-08-19T16:06:47Z 'docs: disclose unaudited security status'; README diff: '-> **Security.** Review the contract and SDK yourself before holding meaningful v…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets (live curl) + github.com/stellar/stellar-docs docs/build/guides/contract-accounts/smart-wallets.mdx line 49",
+      "observedAt": "2026-11-02",
+      "quote": "Its repository states that the wallet contract and SDKs have not been independently audited, so review them yourself before they guard real value."
+     }
+    ]
+   },
+   {
+    "id": "q-tool-rust-soroban-sdk",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "v29.0.1 latest stable (2026-10-12), mainnet Protocol 29, v30.0.0-rc.1 Protocol 30 pre-release all verified across B, A(registry), F, D. Dated as-of retained.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/rs-soroban-sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v30.0.0-rc.1 pre=true 2026-10-21T21:55:12Z; v29.0.1 2026-10-12T22:19:44Z; v29.0.0 2026-10-07T20:29:27Z; v28.0.0 2026-09-18T03:34:58Z; rc.1 body: 'first release …"
+     },
+     {
+      "class": "A",
+      "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 29.0.1, max_version 30.0.0-rc.1"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ and https://mainnet.sorobanrpc.com getNetwork",
+      "observedAt": "2026-11-02",
+      "quote": "current_protocol_version 29, core_supported_protocol_version 30; RPC protocolVersion 29"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search -> https://crates.io/crates/soroban-sdk/29.0.1, https://github.com/stellar/rs-soroban-sdk/pull/2129",
+      "observedAt": "2026-11-02",
+      "quote": "soroban-sdk v29.0.1 ... Release date 2026-10-12; 'Contracts must be built for the wasm32v1-none target'"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-rust-soroban-sdk",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "87 chars (<90). Removes a stale pinned version; keeps dating and compatibility-check requirement.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/rs-soroban-sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v30.0.0-rc.1 pre=true 2026-10-21T21:55:12Z; v29.0.1 2026-10-12T22:19:44Z; v29.0.0 2026-10-07T20:29:27Z; v28.0.0 2026-09-18T03:34:58Z; rc.1 body: 'first release …"
+     },
+     {
+      "class": "A",
+      "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 29.0.1, max_version 30.0.0-rc.1"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-rust-soroban-sdk",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Freeze avoid still conditioned on missing as-of date and compatibility check, so a dated v29.0.1 answer does not fire it.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/rs-soroban-sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v30.0.0-rc.1 pre=true 2026-10-21T21:55:12Z; v29.0.1 2026-10-12T22:19:44Z; v29.0.0 2026-10-07T20:29:27Z; v28.0.0 2026-09-18T03:34:58Z; rc.1 body: 'first release …"
+     },
+     {
+      "class": "A",
+      "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 29.0.1, max_version 30.0.0-rc.1"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-rust-soroban-sdk",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Release dates verified exactly; protects dated older-version statements.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/rs-soroban-sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v30.0.0-rc.1 pre=true 2026-10-21T21:55:12Z; v29.0.1 2026-10-12T22:19:44Z; v29.0.0 2026-10-07T20:29:27Z; v28.0.0 2026-09-18T03:34:58Z; rc.1 body: 'first release …"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search -> https://crates.io/crates/soroban-sdk/29.0.1, https://github.com/stellar/rs-soroban-sdk/pull/2129",
+      "observedAt": "2026-11-02",
+      "quote": "soroban-sdk v29.0.1 ... Release date 2026-10-12; 'Contracts must be built for the wasm32v1-none target'"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-sdk-repos-discovery",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "GT-56 DISCOVERY CORRECTION 2026-07-11: require current observed Scout rows with generatedAt, direct URLs, role, maintainer, archive/activity, and corroboration. No static top/star/order requirement; repoScore and rank are navigation, not quality, security, or ownership proof. Scout's row `tier` (quality/community/archive) is the index's quality tier, not maintainer tier; a null tierReason means the code-tier lane has not judged the row, so the value is the schema default, not a verdict. On 2026-11-02 stellar/go-stellar-sdk showed tier community with null tierReason, while official docs say SDF…",
+    "note": "Substance verified. Corrected the tier enum (schema also has 'archive'), replaced 'code-curation tier' with the schema's own 'quality tier' wording, and stated the null-tierReason rule as the schema states it (any bare tier, not only community).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=go-stellar-sdk&limit=10 (generatedAt 2026-11-02T16:41:34Z); Raven scout.searchRepos asOf 2026-11-02T16:42:14Z",
+      "observedAt": "2026-11-02",
+      "quote": "stellar/go-stellar-sdk tier community, tierReason null, repoScore 100; stellar/js-stellar-sdk tier quality, tierReason null"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/openapi.json",
+      "observedAt": "2026-11-02",
+      "quote": "tier enum [quality, community, archive]: 'Quality tier (tag-and-demote): quality = high-grade, community = alive but unproven, archive = ...'; tierReason: 'Null…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks (Parallel web_fetch)",
+      "observedAt": "2026-11-02",
+      "quote": "**The Go SDK is maintained by SDF.** ... all of which you can find in the [Go SDK](https://github.com/stellar/go-stellar-sdk)"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-sep41-status-live",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Preamble literally reads Draft / 0.5.2 / Updated 2026-08-24 as of 2026-11-02. Upstream nuance: the v0.5.2 changelog change merged 2026-09-15 without bumping the Updated field; an answer citing either date with the version should not be penalised. As-of retained.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "latest commit 4db3e802 2026-09-15 'SEP-41: permit additional event topics (#1994)'; preamble Updated field still 2026-08-24"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search -> https://rya-sge.github.io/access-denied/2026/10/15/stellar-classic-assets-erc20-erc7943/",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-41 itself is still a Draft (v0.5.2 at the time of writing)"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_asset_token_docs 'SEP-41 token interface'",
+      "observedAt": "2026-11-02",
+      "quote": "https://developers.stellar.org/docs/tokens/token-interface#code: 'The interface below uses the Rust soroban-sdk to declare a trait that complies with the SEP-41…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-skill-detail-install",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "All three facts verified: Scout 404 for soroban, SDF-operated smart-contracts slug, legacy unlisted /skills/soroban/SKILL.md still served.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/skills/soroban",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404 {\"error\":\"unknown skill: soroban\"}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/skills/smart-contracts",
+      "observedAt": "2026-11-02",
+      "quote": "200; meta.operator 'Stellar Development Foundation', source https://skills.stellar.org/skills/smart-contracts/SKILL.md, generatedAt 2026-11-02T16:41:01Z"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/skills",
+      "observedAt": "2026-11-02",
+      "quote": "82 skills; 'soroban' not among slugs; 'smart-contracts' present"
+     },
+     {
+      "class": "B",
+      "ref": "https://skills.stellar.org/ and https://skills.stellar.org/llms.txt; https://skills.stellar.org/skills/soroban/SKILL.md",
+      "observedAt": "2026-11-02",
+      "quote": "index lists skills/smart-contracts and skills/soroban-common-mistakes but no skills/soroban; /skills/soroban/SKILL.md still returns 200 with 'name: soroban'"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-zk-repo-live",
+    "field": "golden.avoid[0]",
+    "decision": "modify",
+    "newText": "Presents a repository's answer-time repoScore rank as permanent or network-wide.",
+    "note": "Old avoid rests on a false premise (xray-games is not archived), so removal is right. Proposed new text would also bind on presenting the hackathonWinner flag as permanent; the xray.games ZK Gaming 2nd-place win is a permanent, sourced historical fact, so that clause could punish a true claim. Narrowed to the rank-freeze clause only (79 chars); hackathonWinner handling stays in keyFacts[2].",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/FredericRezeau/xray-games",
+      "observedAt": "2026-11-02",
+      "quote": "archived false, pushed_at 2026-02-16T08:40:34Z, homepage https://xray.games"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=xray (generatedAt 2026-11-02T16:41:20Z); Raven scout.searchRepos asOf 2026-11-02T16:42:13Z",
+      "observedAt": "2026-11-02",
+      "quote": "fredericrezeau/xray-games isArchived false, hackathonWinner true, judgedHackathon 'Stellar Hacks: ZK Gaming', repoScore 62"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search -> https://dorahacks.io/hackathon/stellar-hacks-zk-gaming/report",
+      "observedAt": "2026-11-02",
+      "quote": "2nd Place — $2,000 xray.games xray.games is a trustless arcade platform that proves player skill entirely on-chain using zero-knowledge proofs"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-zk-repo-live",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Not archived (GitHub), Scout hackathonWinner/judgedHackathon, and DoraHacks 2nd place all verified across B, C, D.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/FredericRezeau/xray-games",
+      "observedAt": "2026-11-02",
+      "quote": "archived false, pushed_at 2026-02-16T08:40:34Z, homepage https://xray.games"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=xray (generatedAt 2026-11-02T16:41:20Z); Raven scout.searchRepos asOf 2026-11-02T16:42:13Z",
+      "observedAt": "2026-11-02",
+      "quote": "fredericrezeau/xray-games isArchived false, hackathonWinner true, judgedHackathon 'Stellar Hacks: ZK Gaming', repoScore 62"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search -> https://dorahacks.io/hackathon/stellar-hacks-zk-gaming/report",
+      "observedAt": "2026-11-02",
+      "quote": "2nd Place — $2,000 xray.games xray.games is a trustless arcade platform that proves player skill entirely on-chain using zero-knowledge proofs"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-smart-wallet-repos-discovery",
+    "field": null,
+    "decision": "none",
+    "note": "No proposed change for this case; nothing to verify.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-soroban-auth-audit-live",
+    "field": null,
+    "decision": "none",
+    "note": "No proposed change for this case; nothing to verify.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-taxonomy-dispatch-live",
+    "field": null,
+    "decision": "none",
+    "note": "No proposed change for this case; nothing to verify.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-which-sdk-comparison",
+    "field": null,
+    "decision": "none",
+    "note": "No proposed change for this case; nothing to verify.",
+    "sources": []
+   }
+  ],
+  "urlsHit": [
+   "https://github.com/stellar/passkey-kit (README.md, SECURITY.md, commit 69185164)",
+   "https://github.com/stellar/smart-account-kit (README.md)",
+   "https://github.com/stellar/rs-soroban-sdk/releases",
+   "https://crates.io/api/v1/crates/soroban-sdk",
+   "https://horizon.stellar.org/",
+   "https://mainnet.sorobanrpc.com",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+   "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md",
+   "https://stellarlight.xyz/api/skills/soroban",
+   "https://stellarlight.xyz/api/skills/smart-contracts",
+   "https://stellarlight.xyz/api/skills",
+   "https://skills.stellar.org/",
+   "https://skills.stellar.org/llms.txt",
+   "https://skills.stellar.org/skills/soroban/SKILL.md",
+   "https://skills.stellar.org/skills/smart-contracts/SKILL.md",
+   "https://api.github.com/repos/FredericRezeau/xray-games",
+   "https://stellarlight.xyz/api/repos/search?q=zk&limit=50",
+   "https://stellarlight.xyz/api/repos/search?q=xray",
+   "https://stellarlight.xyz/api/repos/search?q=go-stellar-sdk",
+   "https://stellarlight.xyz/api/repos/search?q=sdk&limit=50",
+   "https://stellarlight.xyz/api/openapi.json",
+   "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+   "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+   "https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites",
+   "https://developers.stellar.org/docs/tokens/token-interface",
+   "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/contract-accounts/smart-wallets.mdx",
+   "https://dorahacks.io/hackathon/stellar-hacks-zk-gaming/report (Parallel web_search)",
+   "Perplexity perplexity_search x3",
+   "Raven stellarDocs.search_asset_token_docs, stellarDocs.search_docs, scout.searchRepos x2"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-tool-passkeykit-smart-wallet; q-tool-rust-soroban-sdk; q-tool-sdk-repos-discovery; q-tool-sep41-status-live; q-tool-skill-detail-install; q-tool-zk-repo-live",
+  "verifiedOnly": "q-tool-smart-wallet-repos-discovery; q-tool-soroban-auth-audit-live; q-tool-which-sdk-comparison",
+  "untouched": "q-tool-taxonomy-dispatch-live",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-tool-passkeykit-smart-wallet",
+    "log": "golden.answer accept; golden.keyFacts[2] accept; golden.avoid[0] accept; golden.notes accept; asOf 2026-11-02, reverifyBy 2027-05-07, sources+5, corroboration+1, verified refreshed"
+   },
+   {
+    "id": "q-tool-rust-soroban-sdk",
+    "log": "golden.answer accept; golden.keyFacts[3] accept; golden.avoid[1] accept; golden.notes accept; asOf 2026-11-02, reverifyBy 2027-05-14, sources+3, corroboration[0] restated for v29.0.1, verified refreshed"
+   },
+   {
+    "id": "q-tool-sdk-repos-discovery",
+    "log": "golden.notes modify; asOf 2026-11-02, reverifyBy 2027-05-21, sources+3, corroboration+1, verified refreshed"
+   },
+   {
+    "id": "q-tool-sep41-status-live",
+    "log": "golden.answer accept; asOf 2026-11-02, sources+4, corroboration[3] restated for v0.5.2, verified refreshed (file re-serialized to 2-space JSON)"
+   },
+   {
+    "id": "q-tool-skill-detail-install",
+    "log": "golden.notes accept; asOf 2026-11-02, reverifyBy 2027-05-28, sources+3, corroboration[0] evidence+2, verified refreshed"
+   },
+   {
+    "id": "q-tool-zk-repo-live",
+    "log": "golden.avoid[0] modify; golden.notes accept; asOf 2026-11-02, sources+3, corroboration[2] restated to mirror the new avoid, verified refreshed"
+   },
+   {
+    "id": "q-tool-smart-wallet-repos-discovery",
+    "log": "no gospel change; asOf 2026-11-02, reverifyBy 2026-12-31 -> 2027-05-04, verified refreshed (B/A/C)"
+   },
+   {
+    "id": "q-tool-soroban-auth-audit-live",
+    "log": "no gospel change; asOf 2026-11-02, verified refreshed (A/D/C)"
+   },
+   {
+    "id": "q-tool-which-sdk-comparison",
+    "log": "no gospel change; asOf 2026-11-02, reverifyBy 2027-01-28 -> 2027-05-18, verified refreshed (A/B/E/D)"
+   },
+   {
+    "id": "q-tool-taxonomy-dispatch-live",
+    "log": "untouched: proposer evidence is live Lumenloop (C) plus the repo manifest only, not independent multi-class; live case with no reverifyBy"
+   }
+  ]
+ }
+}

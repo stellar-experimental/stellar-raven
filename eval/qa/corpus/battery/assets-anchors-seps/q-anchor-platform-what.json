@@ -9,15 +9,13 @@
     "keyFacts": [
       "SDF's Java Anchor Platform is a backend/toolset for anchor operators.",
       "It deploys a SEP-compliant on/off-ramp service.",
-      "It implements SEP-1/6/10/12/24/31/38, plus SEP-45.",
-      "Canonical repos include stellar/anchor-platform and stellar/typescript-wallet-sdk.",
-      "They also include stellar/stellar-disbursement-platform-backend."
+      "It implements SEP-1/6/10/12/24/31/38, plus SEP-45."
     ],
     "avoid": [
       "Do NOT misnumber the SEPs the Anchor Platform implements.",
       "Do NOT claim the Anchor Platform is a wallet app or a consumer product rather than anchor backend infrastructure."
     ],
-    "notes": "Dossier §5.4. Verified: SDF-maintained Java toolset; docs list SEP-1/6/10/12/24/31/38/45. scout_repos acceptable (graded repo).\nAlso good if the answer: It is the fastest way to go live as an anchor without re-implementing the SEP endpoints.\nGolden cites: The Anchor Platform page on developers.stellar.org or the stellar/anchor-platform repo."
+    "notes": "Dossier §5.4. Verified: SDF-maintained Java toolset; docs list SEP-1/6/10/12/24/31/38/45. scout_repos acceptable (graded repo).\nAs of 2026-11-02 the stellar/anchor-platform repo describes itself as a 'Java SDK'; GitHub reports Kotlin as its largest language (JVM). Do not penalize a Java, Kotlin, or JVM description. The docs mark SEP-31 as receive only.\nAlso good if the answer: Names the canonical repo stellar/anchor-platform. | It is the fastest way to go live as an anchor without re-implementing the SEP endpoints.\nGolden cites: The Anchor Platform page on developers.stellar.org or the stellar/anchor-platform repo."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -40,28 +38,30 @@
       {
         "class": "B",
         "ref": "https://github.com/stellar/anchor-platform",
-        "note": "class inferred at migration"
+        "note": "Repo self-description 'Java SDK for the Stellar network anchor development.'; GitHub reports Kotlin as largest language (2026-11-02).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/getting-started",
+        "note": "Found via stellarDocs.search_docs; SEP-31 support is receive-side.",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-anchor-platform-repo-discovery",
-        "https://github.com/stellar/anchor-platform",
-        "https://github.com/stellar/stellar-disbursement-platform-backend",
-        "Structural re-form (long-fact): split the platform role, SEP list, and repository list into five short facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/anchor-platform — the official repo identifies the project as a Java SDK and documents backend APIs for anchors.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the official page describes tools and APIs for building on/off-ramp services.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the supported list names SEP-1/6/10/12/24/31/38/45.",
-        "Live re-check 2026-08-29: https://github.com/stellar/anchor-platform and https://github.com/stellar/typescript-wallet-sdk — both official Stellar repos exist and identify the named projects.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-disbursement-platform-backend — the official Stellar repo exists and identifies the named project.",
-        "Sibling sweep 2026-08-29: grep Anchor Platform|SEP-45|stellar/typescript-wallet-sdk|stellar/stellar-disbursement-platform-backend → q-anchor-list-builders-discovery, q-anchor-platform-what, q-anchor-sdp-vs-anchor-platform, q-anchor-sdp-what, q-asset-wallet-sdk-seps, q-production-anchor-architecture, q-sep-12-kyc, q-sep-38-quotes, q-sep-45-contract-auth, q-sep-catalog-list, q-sep6-sep24-sep31-choice, q-comp-anchor-compliance-stack, q-comp-sep6-vs-sep12-roles, q-crp-anchors-by-corridor, q-crp-become-an-anchor-licensing, q-crp-sdp-operation, q-pay-sdp-disbursement, q-edge-inject-ignore-instructions, q-raph-merchant-payments, and q-tool-wallets-comparison; no contradiction with the rewritten claims."
+        "Gospel change 2026-11-02: removed keyFacts[3] and keyFacts[4] (repo-discovery facts the question does not ask for); repo naming moves to also-good; golden.notes add a dated do-not-penalize caution for Java, Kotlin, or JVM descriptions and note SEP-31 is receive only.",
+        "Live B 2026-11-02: gh api repos/stellar/anchor-platform — '{\"description\":\"Java SDK for the Stellar network anchor development.\",\"language\":\"Kotlin\"}; languages Kotlin 3367219, Java 1516161'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/platforms/anchor-platform — 'SEP-31 — Cross-border payment processing (receive only) ... SEP-45 — Web authentication using challenge/responses for contract accounts'",
+        "Live E 2026-11-02: https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/getting-started — 'building a cross-border payments recieve-side service compatible with SEP-31'",
+        "Live B 2026-11-02: https://github.com/stellar/anchor-platform/releases/tag/5.0.0 — '5.0.0 (2026-10-23) changelog touches SEP-1, SEP-6, SEP-10, SEP-12, SEP-24, SEP-31, SEP-38 code paths'",
+        "Live D 2026-11-02: perplexity_search -> https://developers.stellar.org/docs/platforms/anchor-platform — 'SEP-31 — Cross-border payment processing (receive only)'",
+        "Sibling sweep 2026-11-02: q-anchor-sdp-vs-anchor-platform, q-asset-wallet-sdk-seps, q-sep-45-contract-auth, q-production-anchor-architecture, q-sep6-sep24-sep31-choice checked; the SEP-1/6/10/12/24/31/38/45 set agrees and no sibling requires naming the wallet-SDK or SDP repos for this question; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side authoring flaw: the 2026-07-11 rebalance (74afce0f) absorbed repo-discovery keyFacts from the dropped q-anchor-platform-repo-discovery into a case whose question does not ask for repos."
       ]
     },
     "origin": "raven-next q-anchor-platform-what",
@@ -81,7 +81,32 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02 the stellar/anchor-platform repo describes itself as a Java SDK while GitHub reports Kotlin as its largest language; the docs mark SEP-31 as receive only.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "gh api repos/stellar/anchor-platform",
+            "observedAt": "2026-11-02",
+            "note": "Exact fields: '{\"description\":\"Java SDK for the Stellar network anchor development.\",\"language\":\"Kotlin\"}'; languages Kotlin 3367219, Java 1516161"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'SEP-31 — Cross-border payment processing (receive only)'"
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/getting-started",
+            "observedAt": "2026-11-02",
+            "note": "stellarDocs.search_docs 'Anchor Platform SEP-31 receive'. Exact quote: 'building a cross-border payments recieve-side service compatible with SEP-31'"
+          }
+        ]
       }
-    ]
+    ],
+    "asOf": "2026-11-02"
   }
 }

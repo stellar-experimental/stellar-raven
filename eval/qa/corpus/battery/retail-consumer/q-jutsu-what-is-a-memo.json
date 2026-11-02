@@ -57,22 +57,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "eval/corpus/PROVENANCE.md (privacy-purged Jutsu lineage; raw phrasing unavailable)",
-        "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
-        "https://stellar.org/blog/developers/fixing-memo-less-payments",
-        "Live re-check 2026-08-31: https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-transaction.x#L764-L785 — MEMO_NONE/TEXT/ID/HASH/RETURN; class F tx ff79aa13… has memo_type text.",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — pooled services used memos to tell users apart; class B SEP-0029 and class A Kraken confirm the exact-value rule.",
-        "Sibling sweep 2026-08-31: grep memo type|pooled account|memo ID|memo text → 4 other cases; read q-pc-memos-reference, q-raph-exchange-memo; lane report also read q-raph-missing-exchange-memo; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x — \"MEMO_NONE = 0, MEMO_TEXT = 1, MEMO_ID = 2, MEMO_HASH = 3, MEMO_RETURN = 4 ... string text<28>\" (claim: golden.keyFacts[0] confirmed: Memo is optional tx metadata with text/ID/hash/return types)",
+        "2026-11-02 [E] https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#memo — \"MEMO_ID: A 64-bit unsigned integer. MEMO_HASH: A 32-byte hash. MEMO_RETURN: A 32\" (claim: golden.keyFacts[0] confirmed: Memo is optional tx metadata with text/ID/hash/return types)",
+        "2026-11-02 [F] https://horizon.stellar.org/transactions?limit=1&order=desc — \"memo_type none on latest tx (memo optional)\" (claim: golden.keyFacts[0] confirmed: Memo is optional tx metadata with text/ID/hash/return types)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — \"Transaction memos were traditionally used for this purpose, and many services still rely on them.\" (claim: golden.keyFacts[1] confirmed: Pooled services use memos to credit deposits; use exact supplied value)",
+        "2026-11-02 [D] https://usethebitcoin.com/guides/crypto-basics/cheapest-crypto-to-transfer/ (Perplexity) — \"XRP, XLM, and HBAR require a memo or tag if you plan to withdraw your assets from the exchange. If you don't fill it out, you are at risk of losing your crypto.\" (claim: golden.keyFacts[1] confirmed: Pooled services use memos to credit deposits; use exact supplied value)",
+        "Sibling sweep 2026-11-02: siblings checked q-pc-memos-reference, q-raph-exchange-memo, q-raph-missing-exchange-memo; no gospel change in this case, no contradiction found."
       ]
     },
     "origin": "authored 2026-07 (jutsu phrasing)"

@@ -53,22 +53,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Shortened one long sourcing fact and split one long naming fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md — the current source provides direct SEP-45 authentication and status evidence.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md — the current source names Stellar Web Authentication for Contract Accounts.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md — the current source says SEP-45 is based on SEP-10 for C accounts without replacing SEP-10.",
-        "Sibling sweep 2026-08-29: grep SEP-45|SEP-0045|Contract Accounts|SEP-10 → q-sep-45-contract-auth, q-sep-catalog-list, q-sep-12-kyc, q-comp-anchor-compliance-stack, q-edge-inject-ignore-instructions, q-crp-become-an-anchor-licensing; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md — \"Title: Stellar Web Authentication for Contract Accounts / Status: Draft / Updated: 2025-12-16 / Version: 0.1.1 ... This SEP is based on SEP-10, but does not replace it.\" (observedAt 2026-11-02; supports golden.keyFacts[2-3]: confirmed-as-of)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 — \"SEP-45 (Stellar Web Authentication for Contract Accounts) enables smart wallet applications ... proving control over a contract account (C...)\" (observedAt 2026-10-01; supports golden.keyFacts[2-3]: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md — \"The web authentication contract described in this document has been deployed to the following networks: - Pubnet: CALI6JC3MSNDGFRP7Z2OKUEPREHOJRRXKMJEWQDEFZPFGXALA45RAUTH\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 — \"An instance of this contract is deployed at CD3LA6RKF5D2FN2R2L57MWXLBRSEWWENE74YBEFZSSGNJRJGICFGQXMX on testnet.\" (observedAt 2026-10-01; supports golden.notes: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0045](sep-0045.md) | Stellar Web Authentication for Contract Accounts | Philip Liu, Marcelo Salloum, Leigh McCulloch | Draft |\" (observedAt 2026-11-02; supports golden.avoid[0-1]: confirmed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: q-sep-12-kyc, q-sep-43-web-wallet-api, q-sep-catalog-list checked; no contradiction.",
+        "truth.asOf kept at 2026-06-22 because golden.answer names that as-of date; the 2026-11-02 preamble (Draft, v0.1.1, updated 2025-12-16) is unchanged."
       ]
     },
     "origin": "raven-next q-sep-45-contract-auth",

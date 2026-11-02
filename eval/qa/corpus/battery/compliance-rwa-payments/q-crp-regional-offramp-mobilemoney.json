@@ -6,7 +6,7 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current LumenLoop corpus, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live mobile-money partner search returned 13 matches, with Zeam Money and Boss Pay among the first results.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the current LumenLoop corpus, then dates the roster so it is not presented as permanent. As of 2026-11-02, a LumenLoop directory search for \"mobile money\" returned six project entries: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, and Wave. A directory entry is a candidate, not proof of a supported cash-out corridor.\n\nThe Stellar network itself has no bank, card, or mobile-money payout rail. Anchors, wallets, payment processors, and local partners provide those rails, usually behind a SEP-24 or SEP-6 withdrawal (SEP-31 for cross-border payouts). Before integrating, check each provider's assets, countries, KYC, fees, limits, settlement times, API or SEP fit, and failed-payout handling.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -20,7 +20,7 @@
       "Do NOT answer only at the corridor-selection/cost-structure level; this question owns the last-mile payout-rail integration, including failed-payout remediation.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "2026-06-29: Sharpened to own last-mile payout-rail integration — promoted consumer-wallet-vs-builder-API split and failed-payout remediation to should_have, added a must_avoid against answering only at the corridor-selection level (that lane is owned by q-crp-anchors-by-corridor). MoneyGram USDC cash-out and HoneyCoin mobile-money lead unchanged; country/mobile-money support stays monthly-freshness.\nAlso good if the answer: Separates consumer wallet availability (a user can cash out) from builder/API availability (a separate partner/API contract, KYB, webhooks, SLAs, reconciliation). | Treats failed/partial/reversed last-mile payout (wrong number, agent-network outage, USSD failure, dormant mobile-money account) as a remediation/support requirement the builder must design for. | Maps SEP-24/6 withdrawal (and SEP-31 for cross-border) as the on-chain side that hands off to the off-chain payout partner, not the payout itself.\nGolden cites: Dated provider/anchor docs or directory entries for any named cash-out option."
+    "notes": "2026-06-29: Sharpened to own last-mile payout-rail integration — promoted consumer-wallet-vs-builder-API split and failed-payout remediation to should_have, added a must_avoid against answering only at the corridor-selection level (that lane is owned by q-crp-anchors-by-corridor). Country and mobile-money support stays monthly-freshness. The 2026-06-29 leads were MoneyGram USDC cash-out and HoneyCoin mobile money; neither appears in the 2026-11-02 LumenLoop \"mobile money\" search. On 2026-11-02, Stellar Light listed Honey Coin as an on- and off-ramp partner with mobile-money services. HoneyCoin's own stablecoin page and API docs listed no Stellar chain for its ramps: the page names Ethereum, Arbitrum, Base, Polygon, BSC, and Optimism, and the API docs add Solana, Tron, and Tempo for off-ramps. A dated, sourced mention of either provider as a candidate is not a wrong claim. Presenting HoneyCoin as a confirmed Stellar mobile-money corridor without current HoneyCoin evidence for a Stellar route falls under the first avoid item.\nAlso good if the answer: Separates consumer wallet availability (a user can cash out) from builder/API availability (a separate partner/API contract, KYB, webhooks, SLAs, reconciliation). | Treats failed/partial/reversed last-mile payout (wrong number, agent-network outage, USSD failure, dormant mobile-money account) as a remediation/support requirement the builder must design for. | Maps SEP-24/6 withdrawal (and SEP-31 for cross-border) as the on-chain side that hands off to the off-chain payout partner, not the payout itself.\nGolden cites: Dated provider/anchor docs or directory entries for any named cash-out option."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -34,7 +34,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "D",
@@ -55,6 +55,48 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'mobile money'}",
+        "note": "Raw Lumenloop call with the manifest transport: count 6; titles Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://partners.circle.com/partner/peerpesa",
+        "note": "Via Perplexity search: 'Blockchains Supported - Celo - Stellar ... Crypto-to-fiat payouts directly to mobile money wallets'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/ramps",
+        "note": "Found through Raven stellarDocs.search_docs: 'On and off-ramps (called anchors in the Stellar universe) that connect the Stellar network to traditional financial rails.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://honeycoin.app/stablecoin-payments-africa",
+        "note": "Operator page: 'HoneyCoin supports USDC and USDT on Ethereum, Arbitrum, Base, Polygon, BSC, and Optimism'; off-ramp to bank or mobile money in 18 African markets.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.honeycoin.app/docs/offramps",
+        "note": "'convert stablecoins (USDC/USDT) on supported EVM chains into fiat currency, which can be paid out to a bank account or a mobile money wallet.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp&limit=50",
+        "note": "Honey Coin (anchor-honey-coin) rampTypes on-ramp/off-ramp; services include mobile-money-on-off-ramp; freshness 'aging'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.honeycoin.app/docs/supported-blockchains-features",
+        "note": "Offramp chains ETH, ARB, BASE, MATIC, BSC, OPTIMISM, SOLANA, TRON, TEMPO; no Stellar row.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -62,48 +104,115 @@
         "claim": "As of 2026-08-29, official architecture docs assign local bank, card, mobile-money, and USSD payout rails to anchors and partners, not to the Stellar network itself.",
         "verdict": "confirmed-as-of",
         "evidence": [
-        {
-          "class": "A",
-          "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
-          "note": "Exact quote: anchors are ‘on and off-ramps that connect the Stellar network to traditional financial rails.’",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "D",
-          "ref": "https://docs.seevcash.com/docs/ramp",
-          "observedAt": "2026-08-29",
-          "note": "Dated web sweep query `Stellar mobile money off-ramp USSD partner anchor`: top primary results were Stellar Ramps (`on and off ramps provided by anchors`), Stellar cross-border payments (`local partners` provide payout), and SeevCash (`Ramp API` disburses GHS to Mobile Money). No primary result assigned a local payout rail to the network itself."
-        }
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+            "note": "Exact quote: anchors are ‘on and off-ramps that connect the Stellar network to traditional financial rails.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://docs.seevcash.com/docs/ramp",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query `Stellar mobile money off-ramp USSD partner anchor`: top primary results were Stellar Ramps (`on and off ramps provided by anchors`), Stellar cross-border payments (`local partners` provide payout), and SeevCash (`Ramp API` disburses GHS to Mobile Money). No primary result assigned a local payout rail to the network itself."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, a LumenLoop directory search for 'mobile money' returned six entries: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, and Wave (source-relative candidates, not supported corridors).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'mobile money',limit:50}",
+            "observedAt": "2026-11-02",
+            "note": "Raw call (proposer and verifier separately): 'count: 6; titles: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave'."
+          },
+          {
+            "class": "D",
+            "ref": "https://partners.circle.com/partner/peerpesa ; https://www.elementpay.net/ ; https://communityfund.stellar.org/projects",
+            "observedAt": "2026-11-02",
+            "note": "Real-world sample check via Perplexity search: PeerPesa lists Stellar and mobile-money payouts; ElementPay pays out on mobile money and Stellar; SCF lists Bloccpay, PeerPesa, ElementPay. Wave has its own site (wave.com). Not every entry has a confirmed Stellar payout footprint, so the golden frames them as candidates."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-07-11, a live mobile-money partner search returned 13 matches, with Zeam Money and Boss Pay among the first results.",
+        "verdict": "unverifiable",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "POST https://api.lumenloop.com/v1/tools/get_project {slug:'boss-pay'} / {slug:'zeam-money'}",
+            "observedAt": "2026-11-02",
+            "note": "'No project found with slug \"boss-pay\"'; Zeam Money is absent from LumenLoop."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=zeam",
+            "observedAt": "2026-11-02",
+            "note": "Total 0 exact matches. Boss Pay exists only as a Stellar Light project. The original 2026-07-11 probe's source and query are not recoverable; the example was removed from the golden."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, HoneyCoin offers stablecoin off-ramps to mobile money, but its own pages and API docs list no Stellar chain for those ramps; Stellar Light lists it as an on- and off-ramp partner.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://honeycoin.app/stablecoin-payments-africa",
+            "observedAt": "2026-11-02",
+            "note": "'HoneyCoin supports USDC and USDT on Ethereum, Arbitrum, Base, Polygon, BSC, and Optimism.' (Parallel web_fetch, cache acquired 2026-11-01)"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.honeycoin.app/docs/offramps",
+            "observedAt": "2026-11-02",
+            "note": "'convert stablecoins (USDC/USDT) on supported EVM chains into fiat currency, which can be paid out to a bank account or a mobile money wallet' (Parallel web_fetch, cache acquired 2026-10-05)"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.honeycoin.app/docs/supported-blockchains-features",
+            "observedAt": "2026-11-02",
+            "note": "Offramp chains ETH, ARB, BASE, MATIC, BSC, OPTIMISM, SOLANA, TRON, TEMPO; no Stellar row (live HTTP 200; page text has no 'stellar')."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp&limit=50",
+            "observedAt": "2026-11-02",
+            "note": "generatedAt 2026-11-02T17:37:48.062Z; anchor-honey-coin description 'settling USDC/USDT on/off-ramps across 18+ markets ... via mobile money and bank rails, including USDC cash-out at MoneyGram on Stellar'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.mariblock.com/stories/honeycoin-taps-moneygram-for-crypto-to-fiat-transactions-amid-increased-push-for-crypto-remittances-in",
+            "observedAt": "2026-11-02",
+            "note": "2023-07-27: HoneyCoin integrated MoneyGram Access on Stellar for USDC cash withdrawal; a historical cash corridor, not a mobile-money rail."
+          }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task payments-assets)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "2026-07-11 localhost:8787 search→execute probe observed: a live mobile-money partner search returned 13 matches, with Zeam Money and Boss Pay among the first results.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep mobile-money|M-Pesa|off-ramp → q-crp-anchors-by-corridor, q-crp-regional-offramp-mobilemoney, q-pay-moneygram-ramps; no contradiction",
-        "Structural re-form (long-fact): Shortened the dated-observation, payout-rail, and provider-check facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the current official provider page supplies dated, source-supported ramp observations.",
-        "Live re-check 2026-08-29: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the live provider page shows changeable asset and coverage information that needs an as-of date.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official docs state that anchors connect Stellar to traditional fiat and cash rails.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official docs assign deposits, redemptions, and off-chain rail access to anchors.",
-        "Live re-check 2026-08-29: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the provider guide documents USDC, country availability, KYC, limits, cash-out timing, and integration details.",
-        "Sibling sweep 2026-08-29: grep mobile-money|M-Pesa|off-ramp|payout rails → q-crp-anchors-by-corridor, q-anchor-moneygram-ramps, q-pay-moneygram-ramps, q-crp-regional-offramp-mobilemoney; no contradiction",
-      "Corroboration audit 2026-08-29: added 1 row(s) for external local-rail boundary; class agreement Sol+Grok",
-      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+        "Raw Lumenloop POST https://api.lumenloop.com/v1/tools/search_directory {query:'mobile money'} (manifest transport) — 'count: 6; titles: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave' (observedAt 2026-11-02, proposer and verifier separately).",
+        "Raw Lumenloop get_project {slug:'boss-pay'} — 'No project found with slug \"boss-pay\"'; https://stellarlight.xyz/api/projects/search?q=zeam — 0 exact matches. The 2026-07-11 example (13 matches; Zeam Money, Boss Pay) does not reproduce (observedAt 2026-11-02).",
+        "Class D (Perplexity search) https://partners.circle.com/partner/peerpesa — 'Blockchains Supported - Celo - Stellar ... Crypto-to-fiat payouts directly to mobile money wallets'; https://www.elementpay.net/ — mobile money and Stellar payouts (observedAt 2026-11-02).",
+        "Class A https://developers.stellar.org/docs/learn/fundamentals/anchors — 'Anchors are Stellar's on- and off-ramps to traditional financial rails, typically operated by financial institutions or fintech companies.' (observedAt 2026-11-02); class E stellarDocs.search_docs returned the same page and https://developers.stellar.org/docs/tools/ramps.",
+        "The restated anchor/SEP paragraph restores the stable distinctions that the answer's closing sentence refers to; it repeats keyFacts 3-5 and the existing notes.",
+        "Sibling sweep 2026-11-02: grep -i 'zeam|boss pay|mobile money|mobile-money|13 matches' across eval/qa/corpus/battery → q-crp-anchors-by-corridor (corridor selection; defers mobile-money payout to this case) and q-production-anchor-architecture (anchors need bank/mobile-money adapters); no other case pins the old roster; no contradiction.",
+        "Pass 2 gospel change 2026-11-02: golden.notes replace the stale 'MoneyGram USDC cash-out and HoneyCoin mobile-money lead unchanged' with a dated statement of where each lead stands; answer, keyFacts, avoid, and tags unchanged.",
+        "Live C 2026-11-02T17:38:26Z (Raven lumenloop.search_directory): {query:'mobile money', limit:50} -> count 6: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave; {query:'HoneyCoin'} -> Honeycoin ('Peer by HoneyCoin is a global, non-custodial financial super app ... primarily built on Stellar'; tags include On-Off Ramp, Moneygram) and Peer.",
+        "Live C 2026-11-02T17:37:48Z: GET https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp&limit=50 -> anchor-honey-coin services ['mobile-money-on-off-ramp','m-pesa-airtel-mtn-momo-rails','usdc-usdt-off-ramp-africa','virtual-accounts-kes-usd-ghs-ngn'], freshness 'aging'.",
+        "Live A 2026-11-02 (Parallel web_fetch): https://honeycoin.app/stablecoin-payments-africa - 'HoneyCoin supports USDC and USDT on Ethereum, Arbitrum, Base, Polygon, BSC, and Optimism'; https://docs.honeycoin.app/docs/offramps - 'stablecoins (USDC/USDT) on supported EVM chains ... paid out to a bank account or a mobile money wallet'. Live D: https://flourishventures.com/perspectives/why-we-invested-in-honeycoin (2025-08-20) names SDF among seed investors.",
+        "Sibling sweep 2026-11-02 (pass 2): grep -i 'honey ?coin' over eval/qa/corpus/battery -> q-crp-anchors-by-corridor (Honey Coin in the dated 8-partner Stellar Light roster; corridor-selection lane) only; no contradiction.",
+        "Pass 1 verification event (batch compliance-rwa-payments-03, .agents/rounds/2026-11-02-golden-audit.md) produced the earlier 2026-11-02 evidence rows and edits in this branch diff; the pass-2 rows follow.",
+        "Independent verifier 2026-11-02 (pass 2, .agents/rounds/2026-11-02-golden-audit.md, task payments-assets): https://docs.honeycoin.app/docs/supported-blockchains-features (live HTTP 200 at 2026-11-02T17:48:01Z) - 'Solana | SOLANA | ... Tron | TRON | ... Tempo | TEMPO' rows carry Offramp support and the page text has no 'stellar'; so the notes state 'no Stellar chain', not 'EVM only'. https://honeycoin.app/blog/peer-launch (2024-01-26) - 'Our partnership with MoneyGram means users in over 150+ countries can deposit and withdraw digital dollars for cash' (a historical Stellar cash link, not a mobile-money rail)."
       ],
       "rootCause": [
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "freshness-drift",
+        "Answer was reduced to a dated roster example and lost the stable distinctions its closing sentence cites.",
+        "eval-authoring: pass 1 replaced the roster but kept a 2026-06-29 notes line naming a HoneyCoin lead that the new roster omits (consistency-entities F16)."
       ]
     },
     "origin": "raven-next q-crp-regional-offramp-mobilemoney"

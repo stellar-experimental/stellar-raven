@@ -1,0 +1,772 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "yieldblox",
+ "kind": "pass2",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified the added sentence: Script3's 2026-02-22T02:53:01Z post states ~$10M in USDC and XLM; the ~$10.5M net loss is in the 2026-03-04 post-mortem. Both are attributed and dated. The as-of 2026-11-02 balance sentence is kept. No score laundering: it adds a true dated figure.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "D",
+      "ref": "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/",
+      "observedAt": "2026-11-02",
+      "quote": "> At 00:25:00 UTC the Reflector USTRY oracle was manipulated ... This resulted in a loss of ~10 million USD in a mixture of USDC and XLM from the Blend YieldBlo…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "newText": null,
+    "note": "87 characters (<=90). The 14,000 USDC borrow is a separate transaction (Horizon 01c2ba75 at 00:20:50Z; Script3 timeline). The compound 'and valuations as source-specific' predicate is carried over from the old text and not made worse.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Judge-visible and backed by contradicted corroboration[2]. Horizon shows 14000.0000000 USDC (01c2ba75) and 1000196.7040837 USDC (ae721cac) as two transactions. The text does not punish '1.01M USDC total borrowed'.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:22:09Z 1000196.7040837 USDC; account_credited GBO7VUL2... 1000196.7040837 USDC"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.avoid[2]",
+    "decision": "accept",
+    "newText": null,
+    "note": "The old avoid punished a true dated Script3 statement (~$10M, 2026-02-22). The new trap targets a verified misattribution: $10.97M is rekt.news's own 'Combined' figure, and rekt quotes Script3's ~$10M separately. iTokenly could not trace $10.97M to a citable statement. My sweep found no other Script3 loss figure, so a narrow trap is safer than a broad 'only these figures' trap.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     },
+     {
+      "class": "D",
+      "ref": "https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02",
+      "quote": "A higher figure of about $10.97 million circulates but could not be traced to a citable statement."
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: 'Script3 YieldBlox loss million', 'Script3 post mortem YieldBlox net loss', 'YieldBlox USTRY 14,000 USDC borrow' (hits: x.com/script3official/status/2025403423840141450, x.com/in_reflector/status/2025700358626877576, x.com/script3official/status/2026013344453501130, newsletter.rekt.news/p/yieldblox-rekt, cryptoreal.news/article/yieldblox-rekt, nexusmutual.io/reports/crypto_insurance_Q3_2026.pdf, avoid.net/yieldblox-stellar-oracle-manipulation-exploit-feb-2026/audit)",
+      "observedAt": "2026-11-02",
+      "quote": "No Script3 loss figure other than ~$10M (2026-02-22) and ~$10.5M net (2026-03-04) surfaced; $10.97M appears only as rekt.news's own figure and its republication…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "The appended caution is symmetric (do not penalize either Script3 figure when attributed) and is tied to a verified two-statement ambiguity. It is not an ADR-0008 partial cap. The rekt.news attribution is verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.corroboration[+] (Script3 ~$10M 2026-02-22)",
+    "decision": "accept",
+    "newText": null,
+    "note": "A (the Script3 post itself) plus independent D (protos 2026-02-23, rekt) quoting the same text. The quote and timestamp match my fxtwitter read exactly.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "D",
+      "ref": "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/",
+      "observedAt": "2026-11-02",
+      "quote": "> At 00:25:00 UTC the Reflector USTRY oracle was manipulated ... This resulted in a loss of ~10 million USD in a mixture of USDC and XLM from the Blend YieldBlo…"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.corroboration[+] (Script3 reported $10.97M: contradicted)",
+    "decision": "accept",
+    "newText": null,
+    "note": "This is legal as contradicted because it mirrors new avoid[2]. Script3's two figures are ~$10M and ~$10.5M. rekt's own figure is $10.97M; iTokenly found no citable source. My web sweep found no Script3 $10.97M statement.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     },
+     {
+      "class": "D",
+      "ref": "https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02",
+      "quote": "A higher figure of about $10.97 million circulates but could not be traced to a citable statement."
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: 'Script3 YieldBlox loss million', 'Script3 post mortem YieldBlox net loss', 'YieldBlox USTRY 14,000 USDC borrow' (hits: x.com/script3official/status/2025403423840141450, x.com/in_reflector/status/2025700358626877576, x.com/script3official/status/2026013344453501130, newsletter.rekt.news/p/yieldblox-rekt, cryptoreal.news/article/yieldblox-rekt, nexusmutual.io/reports/crypto_insurance_Q3_2026.pdf, avoid.net/yieldblox-stellar-oracle-manipulation-exploit-feb-2026/audit)",
+      "observedAt": "2026-11-02",
+      "quote": "No Script3 loss figure other than ~$10M (2026-02-22) and ~$10.5M net (2026-03-04) surfaced; $10.97M appears only as rekt.news's own figure and its republication…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "The URL and note match the live post.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "This is a bookkeeping append.",
+    "sources": []
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] (Script3 ~$10M)",
+    "decision": "accept",
+    "newText": null,
+    "note": "The quote is exact.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] (whalehub)",
+    "decision": "accept",
+    "newText": null,
+    "note": "The quote and date (2026-10-09) match. It is secondary D evidence; it repeats the post-mortem and does not replace it.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://whalehub.io/blog/reflector-oracle-explained",
+      "observedAt": "2026-11-02",
+      "quote": "Script3 put the net loss at about $10.5M; other sources give $10.2M to $11M. (publish_date 2026-10-09)"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] (rekt/itokenly)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Both quotes match the live pages.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     },
+     {
+      "class": "D",
+      "ref": "https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02",
+      "quote": "A higher figure of about $10.97 million circulates but could not be traced to a citable statement."
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] (Horizon op sequence + RequestType)",
+    "decision": "accept",
+    "newText": null,
+    "note": "I re-walked the op sequence on Horizon. It matches the hashes and times. RequestType Borrow = 4 and SupplyCollateral = 2 match blend-contracts-v2 main.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC/operations?order=asc&limit=200",
+      "observedAt": "2026-11-02",
+      "quote": "2026-02-22 invoke_host_function submit txs: 00:04:54 a1577284; 00:20:50 01c2ba75; 00:21:51 b810ba4a; 00:22:09 ae721cac; 00:24:10 81f304ae; 00:24:27 3e81a3f7 (ma…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/blend-capital/blend-contracts-v2/main/pool/src/pool/actions.rs",
+      "observedAt": "2026-11-02",
+      "quote": "pub enum RequestType { Supply = 0, Withdraw = 1, SupplyCollateral = 2, WithdrawCollateral = 3, Borrow = 4, Repay = 5, ..."
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.evidence[+] (sibling sweep)",
+    "decision": "accept",
+    "newText": null,
+    "note": "The siblings do not contradict. Correct flag: register cluster-013, cluster-126, and the 'YieldBlox borrowed XLM USDC totals' numericInvariant rule still carry the stale 'PRE-EXISTING liability' and 'unverified $10.5M' text. The orchestrator must update them and then run npm run eval:qa:register (not run here).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "repo grep eval/qa/corpus/battery (q-comp-security-disclosure-programs, q-soroban-oracle-defensive-consumption, q-defi-etherfuse-stablebonds) + eval/qa/consistency-register.json cluster-013, cluster-126, numericInvariant 'YieldBlox borrowed XLM USDC totals'",
+      "observedAt": "2026-11-02",
+      "quote": "Siblings say '~$10M, Feb 2026', '~$10M+ drain ... reports vary from about $10.2M to $10.97M', '~$10.2M'; none asserts a pre-existing 14,000 USDC liability or an…"
+     }
+    ]
+   },
+   {
+    "id": "q-comp-yieldblox-oracle-incident",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "This is an accurate eval-authoring cause: old avoid[2] trapped a true dated Script3 figure. The second clause ('avoid[1] was a presentation rule') is weak, but it is harmless.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: 01c2ba75 (14000 USDC, 00:20:50Z) came after the 00:20:27 second oracle round (Script3 timeline). It is the only borrow before ae721cac in the attacker op list, so it accounts for the PoC pre-state ~14,000 USDC d-token liability. The Script3 ~$10M (2026-02-22) and ~$10.5M net (2026-03-04) figures are attributed and dated. 'No single exact USD loss is pinned' is kept. The case stays freshn…",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:22:09Z 1000196.7040837 USDC; account_credited GBO7VUL2... 1000196.7040837 USDC"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC/operations?order=asc&limit=200",
+      "observedAt": "2026-11-02",
+      "quote": "2026-02-22 invoke_host_function submit txs: 00:04:54 a1577284; 00:20:50 01c2ba75; 00:21:51 b810ba4a; 00:22:09 ae721cac; 00:24:10 81f304ae; 00:24:27 3e81a3f7 (ma…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/DK27ss/YieldBlox-10M-PoC/main/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| USDC liability (reserve 1) | 119,028,268,790 d-tokens (~14,000 USDC) |; Liability:  1,014,196.21 USDC   = $1,014,196.21"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "newText": null,
+    "note": "This removes the false 'pre-existing liability' premise. The trap is judge-visible and mirrored by the new contradicted corroboration row. It does not punish '1.01M USDC total'.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:22:09Z 1000196.7040837 USDC; account_credited GBO7VUL2... 1000196.7040837 USDC"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "golden.avoid[2]",
+    "decision": "accept",
+    "newText": null,
+    "note": "This removes a trap that punished the true Script3 ~$10.5M attribution (post-mortem verified live). It keeps the valuation-not-quantity guard and adds the verified rekt.news $10.97M misattribution guard.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     },
+     {
+      "class": "D",
+      "ref": "https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02",
+      "quote": "A higher figure of about $10.97 million circulates but could not be traced to a citable statement."
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "Every factual change is verified. The caution is symmetric and tied to the two dated Script3 statements. There is no aggregator partial cap.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.corroboration[2]",
+    "decision": "accept",
+    "newText": null,
+    "note": "The old contradicted row documented a now-removed trap built on a misreading. The new confirmed row has A (post-mortem), F (Horizon effects and ops), and B (Blend enum, PoC pre-state). The quotes match my reads.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC/operations?order=asc&limit=200",
+      "observedAt": "2026-11-02",
+      "quote": "2026-02-22 invoke_host_function submit txs: 00:04:54 a1577284; 00:20:50 01c2ba75; 00:21:51 b810ba4a; 00:22:09 ae721cac; 00:24:10 81f304ae; 00:24:27 3e81a3f7 (ma…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/blend-capital/blend-contracts-v2/main/pool/src/pool/actions.rs",
+      "observedAt": "2026-11-02",
+      "quote": "pub enum RequestType { Supply = 0, Withdraw = 1, SupplyCollateral = 2, WithdrawCollateral = 3, Borrow = 4, Repay = 5, ..."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/DK27ss/YieldBlox-10M-PoC/main/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| USDC liability (reserve 1) | 119,028,268,790 d-tokens (~14,000 USDC) |; Liability:  1,014,196.21 USDC   = $1,014,196.21"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.corroboration[5]",
+    "decision": "accept",
+    "newText": null,
+    "note": "unverifiable becomes confirmed because the post-mortem article is readable through the fxtwitter mirror. The claim wording keeps it as an attributed estimate, not a ledger fact.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "D",
+      "ref": "https://whalehub.io/blog/reflector-oracle-explained",
+      "observedAt": "2026-11-02",
+      "quote": "Script3 put the net loss at about $10.5M; other sources give $10.2M to $11M. (publish_date 2026-10-09)"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.corroboration[+] (1,014,196.70 one tx: contradicted)",
+    "decision": "accept",
+    "newText": null,
+    "note": "It mirrors new avoid[1]. Two Horizon transactions with separate amounts were confirmed.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:22:09Z 1000196.7040837 USDC; account_credited GBO7VUL2... 1000196.7040837 USDC"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.corroboration[+] (Script3 ~$10M)",
+    "decision": "accept",
+    "newText": null,
+    "note": "Same verification as the comp case.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "D",
+      "ref": "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/",
+      "observedAt": "2026-11-02",
+      "quote": "> At 00:25:00 UTC the Reflector USTRY oracle was manipulated ... This resulted in a loss of ~10 million USD in a mixture of USDC and XLM from the Blend YieldBlo…"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.corroboration[+] (Script3 $10.97M: contradicted)",
+    "decision": "accept",
+    "newText": null,
+    "note": "It mirrors new avoid[2]. Same verification as the comp case.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     },
+     {
+      "class": "D",
+      "ref": "https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02",
+      "quote": "A higher figure of about $10.97 million circulates but could not be traced to a citable statement."
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search: 'Script3 YieldBlox loss million', 'Script3 post mortem YieldBlox net loss', 'YieldBlox USTRY 14,000 USDC borrow' (hits: x.com/script3official/status/2025403423840141450, x.com/in_reflector/status/2025700358626877576, x.com/script3official/status/2026013344453501130, newsletter.rekt.news/p/yieldblox-rekt, cryptoreal.news/article/yieldblox-rekt, nexusmutual.io/reports/crypto_insurance_Q3_2026.pdf, avoid.net/yieldblox-stellar-oracle-manipulation-exploit-feb-2026/audit)",
+      "observedAt": "2026-11-02",
+      "quote": "No Script3 loss figure other than ~$10M (2026-02-22) and ~$10.5M net (2026-03-04) surfaced; $10.97M appears only as rekt.news's own figure and its republication…"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.sources[+] (post-mortem)",
+    "decision": "accept",
+    "newText": null,
+    "note": "The source is verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.sources[+] (Horizon 01c2ba75)",
+    "decision": "accept",
+    "newText": null,
+    "note": "The source is verified.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "This is a bookkeeping append.",
+    "sources": []
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.verified.evidence",
+    "decision": "accept",
+    "newText": null,
+    "note": "The replacement drops the obsolete '[D] Script3 ~$10.5M unverifiable' row and the old sibling-sweep row. It adds the pass-2 A/F/B/D rows and a new sibling sweep. All quoted text matches my reads. The register-stale flag is correct and goes to the orchestrator.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2025403423840141450 (read via https://api.fxtwitter.com/script3official/status/2025403423840141450)",
+      "observedAt": "2026-11-02",
+      "quote": "At 00:25:00 UTC the Reflector USTRY oracle was manipulated, misreporting a significantly higher price. This resulted in a loss of ~10 million USD in a mixture o…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects",
+      "observedAt": "2026-11-02",
+      "quote": "contract_debited 2026-02-22T00:20:50Z 14000.0000000 USDC; account_credited GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC 14000.0000000 USDC"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC/operations?order=asc&limit=200",
+      "observedAt": "2026-11-02",
+      "quote": "2026-02-22 invoke_host_function submit txs: 00:04:54 a1577284; 00:20:50 01c2ba75; 00:21:51 b810ba4a; 00:22:09 ae721cac; 00:24:10 81f304ae; 00:24:27 3e81a3f7 (ma…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/blend-capital/blend-contracts-v2/main/pool/src/pool/actions.rs",
+      "observedAt": "2026-11-02",
+      "quote": "pub enum RequestType { Supply = 0, Withdraw = 1, SupplyCollateral = 2, WithdrawCollateral = 3, Borrow = 4, Repay = 5, ..."
+     },
+     {
+      "class": "D",
+      "ref": "https://whalehub.io/blog/reflector-oracle-explained",
+      "observedAt": "2026-11-02",
+      "quote": "Script3 put the net loss at about $10.5M; other sources give $10.2M to $11M. (publish_date 2026-10-09)"
+     },
+     {
+      "class": "D",
+      "ref": "https://rekt.news/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "Combined, $10.97 million drained in the time it takes to confirm two blocks.; separately quotes Script3: \"This resulted in a loss of ~10 million USD in a mixtur…"
+     },
+     {
+      "class": "D",
+      "ref": "https://itokenly.com/hacks/yieldblox",
+      "observedAt": "2026-11-02",
+      "quote": "A higher figure of about $10.97 million circulates but could not be traced to a citable statement."
+     },
+     {
+      "class": "B",
+      "ref": "repo grep eval/qa/corpus/battery (q-comp-security-disclosure-programs, q-soroban-oracle-defensive-consumption, q-defi-etherfuse-stablebonds) + eval/qa/consistency-register.json cluster-013, cluster-126, numericInvariant 'YieldBlox borrowed XLM USDC totals'",
+      "observedAt": "2026-11-02",
+      "quote": "Siblings say '~$10M, Feb 2026', '~$10M+ drain ... reports vary from about $10.2M to $10.97M', '~$10.2M'; none asserts a pre-existing 14,000 USDC liability or an…"
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "This is an accurate eval-authoring cause: the 2026-07-28 pass read the PoC pre-state as a pre-existing liability and could not reach the post-mortem.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2029289721114051073 (read via https://api.fxtwitter.com/script3official/status/2029289721114051073)",
+      "observedAt": "2026-11-02",
+      "quote": "Article 'YieldBlox USTRY Oracle Manipulation - Post Mortem' created 2026-03-04T20:15:46.000Z modified 2026-03-20T20:31:36.000Z: \"[00:20:27 UTC] Reflector oracle…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/DK27ss/YieldBlox-10M-PoC/main/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "| USDC liability (reserve 1) | 119,028,268,790 d-tokens (~14,000 USDC) |; Liability:  1,014,196.21 USDC   = $1,014,196.21"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC/operations?order=asc&limit=200",
+      "observedAt": "2026-11-02",
+      "quote": "2026-02-22 invoke_host_function submit txs: 00:04:54 a1577284; 00:20:50 01c2ba75; 00:21:51 b810ba4a; 00:22:09 ae721cac; 00:24:10 81f304ae; 00:24:27 3e81a3f7 (ma…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://api.fxtwitter.com/script3official/status/2025403423840141450",
+   "https://api.fxtwitter.com/script3official/status/2029289721114051073",
+   "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects?limit=50",
+   "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects?limit=50",
+   "https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC/operations?order=asc&limit=200",
+   "https://raw.githubusercontent.com/blend-capital/blend-contracts-v2/main/pool/src/pool/actions.rs",
+   "https://raw.githubusercontent.com/DK27ss/YieldBlox-10M-PoC/main/README.md",
+   "https://rekt.news/yieldblox-rekt",
+   "https://itokenly.com/hacks/yieldblox",
+   "https://whalehub.io/blog/reflector-oracle-explained",
+   "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/",
+   "Parallel web_search (3 queries; results listed in sources 'ws')"
+  ]
+ },
+ "applier": {}
+}

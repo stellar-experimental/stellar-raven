@@ -1,0 +1,1514 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "soroban-05",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-soroban-factory-pattern",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0]",
+     "claim": "Factory deploys children on-chain via env.deployer()",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+       "observedAt": "2026-11-02",
+       "quote": "The `env.deployer()` SDK function comes with a few deployment-related utilities."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+       "observedAt": "2026-11-02",
+       "quote": "The deployer can be created using [Env::deployer]."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer step 2/keyFacts[1]",
+     "claim": "deploy_v2 is the deployment API",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "`deploy_contract` replaces `deploy_v2`, and `update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+       "observedAt": "2026-11-02",
+       "quote": "#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>("
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+       "observedAt": "2026-11-02",
+       "quote": ".with_address(env.current_contract_address(), salt) .deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);"
+      },
+      {
+       "class": "D",
+       "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating/index.html",
+       "observedAt": "2026-11-02",
+       "quote": "`DeployerWithAddress::deploy_contract` and `Deployer::update_current_contract` replace `DeployerWithAddress::deploy_v2` and `Deployer::update_current_contract_w…"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'deploy_contract ContractExecutable factory deployer'",
+       "observedAt": "2026-11-02",
+       "quote": "deployer#code: .deploy_contract(ContractExecutable::Wasm(wasm_hash"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1]",
+     "claim": "with_current_contract and with_address remain deployer constructors",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub fn with_current_contract( ... pub fn with_address("
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+       "observedAt": "2026-11-02",
+       "quote": "may be replaced with the `env.deployer().with_current_contract(salt)` function for brevity"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2]/[3]/[4], avoid[2]",
+     "claim": "Needs uploaded Wasm hash + salt; ID derives from network ID + deployer address + salt; Wasm hash selects code, not ID",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+       "observedAt": "2026-11-02",
+       "quote": "deployed_address ... get_contract_id(self.address.to_object(), self.salt.to_object()) ... because contract addresses are deterministic."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+       "observedAt": "2026-11-02",
+       "quote": "`with_address()` accepts the `deployer` address and `salt`. Both are used to derive the address of the deployed contract deterministically."
+      }
+     ]
+    },
+    {
+     "field": "avoid[0],avoid[1]",
+     "claim": "Solidity new/CREATE2 is not the mechanism; contracts can deploy from contracts",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+       "observedAt": "2026-11-02",
+       "quote": "demonstrates how to deploy contracts using a contract"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs",
+       "observedAt": "2026-11-02",
+       "quote": ".deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "`with_current_contract(salt)` then `.deploy_contract(ContractExecutable::Wasm(wasm_hash),\n   constructor_args)` to instantiate a child. As of soroban-sdk 28 (2026-09-18), `deploy_contract`\n   replaces `deploy_v2(wasm_hash, constructor_args)`, which still works but is deprecated.",
+     "reason": "soroban-sdk 28.0.0 (2026-09-18, CAP-85) deprecates deploy_v2 for deploy_contract(ContractExecutable::Wasm(..)); live official deployer page and soroban-examples deployer now use deploy_contract."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Names deploy_contract (or deprecated deploy_v2) with with_current_contract/with_address.",
+     "reason": "A true current answer naming only deploy_contract would fail the old keyFact; accept current and deprecated names (88 chars)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Golden cites: A developers.stellar.org deployer/factory guide or soroban-examples deployer example.\nAPI note (as of 2026-11-02): soroban-sdk 28+ (CAP-85) uses `deploy_contract(ContractExecutable::Wasm(hash), args)`; `deploy_v2` is deprecated but still compiles. Accept either name; do not penalize an answer for naming only the current `deploy_contract` or only `deploy_v2` with the deprecation omitted.",
+     "reason": "Symmetric grader caution with as-of date so neither the current nor the deprecated name is penalized."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-soroban-contract-id-derivation; q-soroban-upgradeable-storage-compat; q-soroban-oz-upgradeable-macro; q-passkey-smart-account-architecture; q-sor-stale-spec-after-upgrade; q-ti-enumerate-all-contracts"
+  },
+  {
+   "id": "q-soroban-fuzz-testing",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "keyFacts[0],[1]",
+     "claim": "proptest with in-process Env; cargo-fuzz/libFuzzer with arbitrary/SorobanArbitrary",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing",
+       "observedAt": "2026-11-02",
+       "quote": "demonstrates how to fuzz test Soroban contracts with [`cargo-fuzz`] and customize the input to fuzz tests with the [`arbitrary`] crate. It also demonstrates how…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/testutils/arbitrary.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Randomized testing of contracts, with [`cargo-fuzz`], [`cargo-afl`], or [`proptest`]. ... defines the [`SorobanArbitrary`] trait"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "Use `SorobanArbitrary` prototypes with `proptest`, now documented in `testutils::proptest`."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2], avoid[0],[1]",
+     "claim": "Echidna/Foundry are EVM tooling; no vendor/prevalence claims",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing",
+       "observedAt": "2026-11-02",
+       "quote": "Soroban has built-in support for fuzzing Soroban contracts with `cargo-fuzz`."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-vuln-classes"
+  },
+  {
+   "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Official classic Claimable Balances 'Escrow-Style Payment' pattern",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment",
+       "observedAt": "2026-11-02",
+       "quote": "id=\"escrow-style-payment\" ... Escrow-Style Payment"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "stellar/soroban-examples Apache-2.0 with timelock and atomic-exchange patterns",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/soroban-examples",
+       "observedAt": "2026-11-02",
+       "quote": "license.spdx_id=Apache-2.0; root dirs include atomic_swap atomic_multiswap single_offer timelock"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Trustless Work: milestone escrow, SDF developer call, dated RV report, no in-tree license",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/meetings/2024/12/05",
+       "observedAt": "2026-11-02",
+       "quote": "Trustless Work about building an escrow service on Stellar"
+      },
+      {
+       "class": "D",
+       "ref": "https://runtimeverification.com/public-report/trustless-work",
+       "observedAt": "2026-11-02",
+       "quote": "September 12, 2025 Stellar Code Review Audit ... securing funds until clients approve milestones"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/Trustless-Work/trustlesswork-smart-contract-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "license=null; root: .github Cargo.toml README.md contracts docs report (no LICENSE); pushed_at 2026-10-25"
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/search_directory (query 'Trustless Work escrow')",
+       "observedAt": "2026-11-02",
+       "quote": "Trustless Work is a blockchain-powered Escrow-as-a-Service platform leveraging Stellar's Soroban smart contracts"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "DevAsign bounty-escrow Apache-2.0, no audit verified",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/devasignhq/bounty-escrow",
+       "observedAt": "2026-11-02",
+       "quote": "license.spdx_id=Apache-2.0; README: 'This project is licensed under the Apache 2.0 License.'; code search 'audit' total_count=0"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Raven/Scout repo rows do not expose license",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=milestone%20escrow&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "row keys: activitySignals ... topics, url (no license field) for Trustless-Work/trustlesswork-smart-contract-stellar and devasignhq/bounty-escrow"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts, avoid",
+     "claim": "Behavioral prior-art and vetting requirements",
+     "verdict": "confirmed",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02, illustrative verified categories included:",
+     "reason": "Live case due 2026-11-19; every illustrative category re-verified 2026-11-02 (claimable-balance anchor, soroban-examples Apache-2.0, TW repo license still null, RV report, DevAsign Apache-2.0, Scout rows lack license)."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-sor-build-target-wasm32v1; q-tool-greenfield-indexer-prior-art-preflight; q-sor-recurring-escrow-patterns"
+  },
+  {
+   "id": "q-soroban-instance-storage-dos",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "answer, keyFacts[0],[1], avoid[1]",
+     "claim": "Instance storage is in the instance entry, loaded with every invocation, bounded by entry size limit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+       "observedAt": "2026-11-02",
+       "quote": "Everything in `instance()` shares the contract instance's single ledger entry: it is all loaded on every invocation, it must fit the 64 KiB cap together"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage",
+       "observedAt": "2026-11-02",
+       "quote": "The total size of all the keys and values in the instance storage is limited by the ledger entry size limit."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/networks/resource-limits-fees.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "Max contract-data entry size | 65,536 B (64 KiB)"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2], avoid[0]",
+     "claim": "Over-limit write fails atomically; not a permanent brick",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-05.md",
+       "observedAt": "2026-11-02",
+       "quote": "prior verification event 2026-08-27: ledger changes are written only after successful execution"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3]",
+     "claim": "Use Persistent keys/sharding for unbounded data",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage",
+       "observedAt": "2026-11-02",
+       "quote": "Persistent | ... | Unlimited"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-storage-types; q-sor-persistent-unbounded-collection-cap; q-soroban-vuln-classes"
+  },
+  {
+   "id": "q-soroban-no-std-constraints",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "answer, keyFacts[0], avoid[0]",
+     "claim": "no_std; std unavailable; floating point unsupported; prefer SDK host types",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+       "observedAt": "2026-11-02",
+       "quote": "Floating-point arithmetic in the guest is completely prohibited. ... all floating-point code is rejected at instantiation time."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+       "observedAt": "2026-11-02",
+       "quote": "The `wasm32v1-none` target does not, by default, ship with a version of the `std` library at all."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1], notes",
+     "claim": "Allocation optional via SDK alloc feature; notes say 'no allocator'",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "The `alloc` feature is **disabled by default**."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+       "observedAt": "2026-11-02",
+       "quote": "Dynamic memory allocation within the guest is **strongly** discouraged, but not completely prohibited."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2],[3], avoid[1]",
+     "claim": "Ledger time readable; Env::prng exists but unsuitable for secrets",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/prng.rs",
+       "observedAt": "2026-11-02",
+       "quote": "**The PRNG is unsuitable for generating secrets or use in applications with"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/ledger.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub fn timestamp(&self) -> u64 {"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Verified: contracts are #![no_std], guest allocation is off by default (the SDK `alloc` feature is optional), SDK host types replace std collections, no floating point for determinism.",
+     "reason": "Note line 'no allocator' contradicts the golden answer and keyFacts[1]; SDK alloc/mod.rs says the alloc feature is disabled by default but available."
+    }
+   ],
+   "rootCause": [
+    "Eval-side note residue: a pre-correction 'no allocator' line survived the 2026-07-11 correction and contradicts the golden."
+   ],
+   "siblings": "q-soroban-wasm-language; q-soroban-wasm-size-limit; q-sor-doc-timestamping-manage-data; q-sor-recurring-escrow-patterns"
+  },
+  {
+   "id": "q-soroban-oracle-defensive-consumption",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "answer, keyFacts[0], avoid[0]",
+     "claim": "YieldBlox prices were fresh; freshness necessary not sufficient",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+       "observedAt": "2026-11-02",
+       "quote": "The manipulated price persisted across two consecutive price feed updates."
+      },
+      {
+       "class": "D",
+       "ref": "https://blocksec.com/blog/weekly-web3-security-incident-roundup-feb-23-mar-1-2026",
+       "observedAt": "2026-11-02",
+       "quote": "The price of USTRY provided by the Reflector oracle updates every five minutes based on the USTRY/USDC market on the Stellar DEX"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+       "observedAt": "2026-11-02",
+       "quote": "Reflector::prices([Stellar, USTRY], 4) → [POISONED, POISONED, normal, normal]"
+      }
+     ]
+    },
+    {
+     "field": "answer last para, avoid[1]",
+     "claim": "Five-minute VWAP; two fresh poisoned rounds passed adjacent-round max_dev check",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+       "observedAt": "2026-11-02",
+       "quote": "Blend's oracle wrapper enforced a deviation check using max_dev = 10 ... compared each new price only to the immediately preceding window. Since both consecutiv…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.bankless.com/read/news/lending-market-blend-suffers-10m-exploit",
+       "observedAt": "2026-11-02",
+       "quote": "the attack could only be executed because USTRY liquidity was temporarily removed and no other trades were made within 15 minutes"
+      }
+     ]
+    },
+    {
+     "field": "answer item 6",
+     "claim": "Blend pool oracle address is immutable",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/pool-creators/selecting-an-oracle",
+       "observedAt": "2026-11-02",
+       "quote": "Oracles CANNOT be changed after a pool is created, so please be very careful when selecting an oracle for a pool."
+      }
+     ]
+    },
+    {
+     "field": "answer item 1",
+     "claim": "SEP-40 carries timestamps",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.blend.capital/pool-creators/selecting-an-oracle",
+       "observedAt": "2026-11-02",
+       "quote": "Oracles must support the \"lastprice\" and \"decimals\" functions on the SEP-40 oracle standard"
+      }
+     ]
+    },
+    {
+     "field": "notes",
+     "claim": "Loss varies $10M–$10.8M; rubric gates on naming the incident",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://rekt.news/yieldblox-rekt",
+       "observedAt": "2026-11-02",
+       "quote": "$10.97 million gone"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+       "observedAt": "2026-11-02",
+       "quote": "approximately $10.2 million worth of XLM and USDC"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+       "observedAt": "2026-11-02",
+       "quote": "Impact: ~$10.86M drained"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "The rubric gates on the layered practices in the key facts. Naming the incident is nice-to-have, and the exact $ figure is not gated (reports vary from about $10.2M to $10.97M).",
+     "reason": "Legacy note says the rubric gates on naming the incident and lists multi-source/TWAP as sufficient-style measures, conflicting with keyFacts and the 2026-07-10 correction; loss range omits the $10.97M (Rekt) report."
+    }
+   ],
+   "rootCause": [
+    "Eval-side note residue: pre-correction note text says the rubric gates on naming the incident and lists TWAP/multi-source as standard sufficient measures, conflicting with the keyFacts and 2026-07-10 correction."
+   ],
+   "siblings": "q-comp-yieldblox-oracle-incident; q-hist-yieldblox-v2-2026-exploit; q-defi-reflector-oracle; q-defi-etherfuse-stablebonds"
+  },
+  {
+   "id": "q-soroban-oz-token",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "answer, keyFacts[0], avoid[0]",
+     "claim": "OZ maintains Rust stellar-contracts with a SEP-41 fungible base",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/fungible/fungible",
+       "observedAt": "2026-11-02",
+       "quote": "To comply with the SEP-41 specification, a contract must implement both the `FungibleToken` and `FungibleBurnable` traits."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0",
+       "observedAt": "2026-11-02",
+       "quote": "v0.8.0 published 2026-10-20 ... Fungible and non-fungible contract types: Compose<(...)> ..."
+      }
+     ]
+    },
+    {
+     "field": "answer, keyFacts[1]",
+     "claim": "Token extensions burnable, capped, allowlist, blocklist, votes; pausable/upgradeable/access separate",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/v0.8.0/packages/tokens/src/fungible/extensions",
+       "observedAt": "2026-11-02",
+       "quote": "allowlist blocklist burnable capped combinations total_supply votes"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "Utilities: Pausable ... Upgradeable ... ; Access Control: Ownable, Role-Based Access Control"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2], avoid[1]",
+     "claim": "Audits are release-scoped",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/v0.8.0/audits",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Contracts Library v0.7.0 Audit.pdf; Stellar Contracts Library v0.8.0 Audit.pdf"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of release v0.8.0 (2026-10-20), its token package provides a SEP-41 fungible base",
+     "reason": "Scheduled case lacks an as-of in golden text; v0.8.0 (2026-10-20) tree and OZ docs still show the stated fungible extensions."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-crp-oz-rwa-erc3643-trex; q-sor-skill-openzeppelin-setup; q-soroban-oz-upgradeable-macro; q-tool-passkeykit-smart-wallet"
+  },
+  {
+   "id": "q-soroban-oz-upgradeable-macro",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "answer sentence 1",
+     "claim": "OZ wraps env.deployer().update_current_contract_wasm(new_wasm_hash)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/storage.rs",
+       "observedAt": "2026-11-02",
+       "quote": "e.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash.clone()));"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.7.3/packages/contract-utils/src/upgradeable/storage.rs",
+       "observedAt": "2026-11-02",
+       "quote": "e.deployer().update_current_contract_wasm(new_wasm_hash.clone());"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "`update_current_contract` replaces `update_current_contract_wasm`; the old ones still work but are deprecated."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "the key function used is `env.deployer().update_current_contract`, which takes a `ContractExecutable` wrapping the Wasm hash"
+      },
+      {
+       "class": "D",
+       "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating/index.html",
+       "observedAt": "2026-11-02",
+       "quote": "Deployer::update_current_contract replace ... Deployer::update_current_contract_wasm, which are deprecated."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1]",
+     "claim": "Current Upgradeable trait/client/helper surface",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+       "observedAt": "2026-11-02",
+       "quote": "#[contractclient(name = \"UpgradeableClient\")] pub trait Upgradeable { fn upgrade(e: &Env, new_wasm_hash: BytesN<32>, operator: Address); }"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "Implement the [`Upgradeable`] trait directly and call [`upgrade()`] inside"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2], avoid[1]",
+     "claim": "Explicit migration or auxiliary Upgrader; no Migratable/Internal derives",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+       "observedAt": "2026-11-02",
+       "quote": "an auxiliary contract called `Upgrader` can be used to wrap both invocations, enabling an atomic upgrade-and-migrate process"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "## Why there is no `Migratable` trait"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[0], avoid[0]",
+     "claim": "In-place replacement at same address; not EVM proxy",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "`update_current_contract` will also emit a `SYSTEM` contract [event] that contains the old and new `ContractExecutable`"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "An upgrade replaces the contract's executable code while preserving all existing storage."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "OpenZeppelin's current upgrade support wraps Soroban's native in-place executable update. As of OZ v0.8.0 (2026-10-20, soroban-sdk 28) that call is `env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))`; v0.7.x used the now-deprecated `update_current_contract_wasm(new_wasm_hash)`. It is not an EVM proxy/delegatecall.",
+     "reason": "OZ v0.8.0 upgradeable::upgrade calls update_current_contract(ContractExecutable::Wasm(..)); v0.7.3 used update_current_contract_wasm, deprecated in soroban-sdk 28."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "over Soroban's native in-place executable update (`update_current_contract(ContractExecutable::Wasm(..))` from v0.8.0 on soroban-sdk 28; deprecated `update_current_contract_wasm` in v0.7.x; accept either name);",
+     "reason": "Notes repeat the drifted host-call name; make it versioned and accept both."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-soroban-upgradeable-storage-compat; q-soroban-storage-migration; q-sor-stale-spec-after-upgrade; q-soroban-contract-id-derivation; q-soroban-factory-pattern"
+  },
+  {
+   "id": "q-soroban-publish-events",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "answer, keyFacts[0], avoid[0]",
+     "claim": "#[contractevent] + publish(&env); raw env.events().publish deprecated",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+       "observedAt": "2026-11-02",
+       "quote": "#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")] ... pub fn publish<T, D>"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events",
+       "observedAt": "2026-11-02",
+       "quote": "IncrementEvent { count }.publish(&env);"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[2],[3], avoid[1]",
+     "claim": "getEvents is a bounded query API; retention provider-configured",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+       "observedAt": "2026-11-02",
+       "quote": "configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+       "observedAt": "2026-11-02",
+       "quote": "the default value is %d which corresponds to about 7 days of history ... DefaultValue: uint32(SevenDayOfLedgers)"
+      },
+      {
+       "class": "F",
+       "ref": "POST https://soroban-testnet.stellar.org and https://mainnet.sorobanrpc.com getHealth",
+       "observedAt": "2026-11-02",
+       "quote": "\"ledgerRetentionWindow\":120960"
+      }
+     ]
+    },
+    {
+     "field": "notes",
+     "claim": "Notes: 'Verified: events published via env.events().publish'; 'Retention (~7 days) is the key fact'; 'event subscriptions'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+       "observedAt": "2026-11-02",
+       "quote": "#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")]"
+      }
+     ]
+    },
+    {
+     "field": "notes caution",
+     "claim": "Cached-copy sd-023 caution (24h default, separate 7-day cap)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+       "observedAt": "2026-11-02",
+       "quote": "stock default of 120960 ledgers (about 7 days"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/events/ingest.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "the data retention window for these events is 7 days at most."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'contractevent publish getEvents retention'",
+       "observedAt": "2026-11-02",
+       "quote": "Use Stellar RPC's getEvents method for querying events, with a 7 day retention window"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Bounded, provider-configured retention is the key fact; 'forever queryable' is the trap. Verified 2026-11-02: typed #[contractevent] events with Event::publish (raw env.events().publish is deprecated), read via RPC getEvents within the history-retention-window (stock default 120960 ledgers, about 7 days).",
+     "reason": "Stale note line names the deprecated raw publish as the verified API and pins ~7 days as the key fact, contradicting the golden answer and avoid[1]."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "RPC retains queryable events for a limited window (stock default about 7 days, configurable per provider); for older events you need an external indexer. | The leading topics are indexed and used to filter getEvents queries.",
+     "reason": "'event subscriptions' wording conflicts with avoid[0] (getEvents is not a subscription); qualify 7-day figure as a configurable stock default."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Accurately quoting the official Stellar Docs events ingest guide page (docs/build/guides/events/ingest) that getEvents retention is \"7 days at most\" is not a wrong claim while that page still says so (observed 2026-11-02); grade caps at partial for that claim unless the answer independently contradicts the golden fact.",
+     "reason": "sd-023 is fixed upstream (2026-07-27) and the live getEvents page no longer carries the 24h/7d wording; retarget the canonical-page caution to the live ingest guide, which still says '7 days at most'."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side note residue: pre-correction note lines survived the 2026-07-11 typed-event correction.",
+    "Upstream docs defect to file under improvements/stellar-docs/: the events ingest guide states '7 days at most' getEvents retention"
+   ],
+   "siblings": "q-crp-export-tx-history-taxes; q-soroban-contractmeta-vs-contractevent; q-soroban-event-indexing-design; q-infra-rpc-methods-list; q-infra-rpc-provider-archive-tier; q-ti-self-host-retention-backfill; q-tool-greenfield-indexer-prior-art-preflight; q-tool-indexer-repos-discovery"
+  },
+  {
+   "id": "q-soroban-reentrancy",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "answer, keyFacts[0],[1],[2]",
+     "claim": "Ordinary calls prohibit re-entry; SelfAllowed and Allowed internal modes exist",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-env/v30.0.0/soroban-env-host/src/host/frame.rs",
+       "observedAt": "2026-11-02",
+       "quote": "/// Re-entry is completely prohibited. ... /// Re-entry is allowed, but only directly into the same contract ... /// Re-entry is fully allowed. ... \"Contract re…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+       "observedAt": "2026-11-02",
+       "quote": "If any contract calls `require_auth` for the `Address` of this contract, the Soroban host will call `__check_auth`"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[3], avoid[0],[1]",
+     "claim": "Cross-contract composition still needs risk analysis; nonReentrant not primary defense",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/conventions/cross-contract",
+       "observedAt": "2026-11-02",
+       "quote": "cross-contract guide security considerations (prior 2026-08-29 re-check; page present 2026-11-02)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-vuln-classes; q-soroban-auth-recursion-dos-audit"
+  },
+  {
+   "id": "q-soroban-require-auth",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "answer, keyFacts[0], avoid[1]",
+     "claim": "require_auth_for_args binds explicit args, not a fixed subset",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/address.rs",
+       "observedAt": "2026-11-02",
+       "quote": "The arguments don't have to match the arguments of the contract invocation. However, it's considered the best practice to have a well-defined, deterministic and…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+       "observedAt": "2026-11-02",
+       "quote": "The only difference between the functions is the ability to customize the invocation arguments."
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[1],[2],[3]",
+     "claim": "Classic host checks vs __check_auth; nonce + expiration; direct invoker implicit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+       "observedAt": "2026-11-02",
+       "quote": "Verify signature expiration. ... Verify and consume nonce. ... Call `__check_auth` of the account contract"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+       "observedAt": "2026-11-02",
+       "quote": "all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md",
+       "observedAt": "2026-11-02",
+       "quote": "prior verification row (2026-07-11)"
+      }
+     ]
+    },
+    {
+     "field": "keyFacts[4]",
+     "claim": "Authentication, authorization, business policy are distinct layers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+       "observedAt": "2026-11-02",
+       "quote": "Its responsibility is to perform the authentication via verifying the signatures and also (optionally) to apply a custom authorization policy."
+      }
+     ]
+    },
+    {
+     "field": "notes also-good",
+     "claim": "require_auth_for_args binds a specific subset of arguments",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/address.rs",
+       "observedAt": "2026-11-02",
+       "quote": "The arguments don't have to match the arguments of the contract invocation."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Tests may mock auth, but production checks must not. Keep the layers distinct: credentials authenticate the signer, `require_auth` checks that the Address authorized this invocation, and the contract's own business rules (roles, limits, ownership) still need explicit checks.",
+     "reason": "keyFacts[4] (authn/authz/business-policy layers) has no support in golden.answer; add one sentence grounded in the authorization docs."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "`require_auth_for_args` lets you bind the authorization to an explicit argument vector you choose (for example, a subset of the call's arguments).",
+     "reason": "The 'specific subset' also-good line can read as the fixed-subset mechanism that avoid[1] punishes; SDK says args need not match the invocation args."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: keyFacts[4] was added without a supporting sentence in golden.answer, and an also-good line conflicts with avoid[1]."
+   ],
+   "siblings": "q-sor-msg-sender-equivalent; q-soroban-auth-vs-authn"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (claude-opus-5-5); did not open any matrix file",
+  "decisions": [
+   {
+    "id": "q-soroban-factory-pattern",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "True and better grounded. The Wasm variant still calls create_contract_with_constructor, so address derivation and the Wasm-hash keyFacts are unchanged. Recommend the author also move tags.freshness from stable to scheduled with a reverifyBy, since the answer now carries a dated SDK version, and refresh the truth corroboration rows that still cite deploy_v2 at commit 13b9f51.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "**Deploying and upgrading take a `ContractExecutable` (CAP-85).** `deploy_contract` replaces `deploy_v2`, and `update_current_contract` replaces `update_current…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>( ... pub fn deploy_contract<A>(&self, executable: ContractExecutable, constructor_args: A) -> Ad…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/rs-soroban-sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v28.0.0 published 2026-09-18T03:34:58Z; latest stable v29.0.1 (2026-10-12); v27.0.0 deploy.rs has no deploy_contract and only #[deprecated(note = \"use deploy_v2…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+      "observedAt": "2026-11-02",
+      "quote": ".with_address(env.current_contract_address(), salt) .deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args); ... The `deploy_contract()` functio…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs",
+      "observedAt": "2026-11-02",
+      "quote": ".deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args); (Cargo.toml soroban-sdk = { version = \"28.0.0\" })"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ and https://soroban-testnet.stellar.org getVersionInfo",
+      "observedAt": "2026-11-02",
+      "quote": "mainnet current_protocol_version 29; testnet protocolVersion 29 (so SDK 28+ APIs are deployable today)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-factory-pattern",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "88 characters; passes lintGoldenAuthoring (no multi-predicate or length warning) in a local check. Accepts either name, so no possibly-true answer is punished.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+      "observedAt": "2026-11-02",
+      "quote": "let deployer = env.deployer().with_current_contract(salt); let contract_address = deployer.deploy_contract(ContractExecutable::Wasm(wasm_hash), ());"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+      "observedAt": "2026-11-02",
+      "quote": ".deployer() .with_address(env.current_contract_address(), salt) .deploy_contract(ContractExecutable::Wasm(wasm_hash), constructor_args);"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-factory-pattern",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Symmetric acceptance of both names is correct while deploy_v2 compiles with a deprecation warning. The as-of date is present. This is not score laundering.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "the old ones still work but are deprecated"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+      "observedAt": "2026-11-02",
+      "quote": "The `deploy_contract()` function performs the actual deployment using the provided executable"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-oz-upgradeable-macro",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Exact symbols are confirmed in both release tags. 'Now-deprecated' is accurate: the call was not deprecated under SDK 26.1, which v0.7.x used, but it is deprecated from SDK 28 on. The rest of the answer (Upgradeable trait, Upgrader, explicit migration) is still current in v0.8.0.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/storage.rs",
+      "observedAt": "2026-11-02",
+      "quote": "e.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash.clone()));"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.7.3/packages/contract-utils/src/upgradeable/storage.rs",
+      "observedAt": "2026-11-02",
+      "quote": "e.deployer().update_current_contract_wasm(new_wasm_hash.clone());"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/OpenZeppelin/stellar-contracts/releases; https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/Cargo.toml",
+      "observedAt": "2026-11-02",
+      "quote": "v0.8.0 published 2026-10-20T16:58:32Z; v0.8.0 Cargo.toml soroban-sdk = \"28.0.0\"; v0.7.3 soroban-sdk 26.1.0"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use update_current_contract\")] pub fn update_current_contract_wasm"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+      "observedAt": "2026-11-02",
+      "quote": "the key function used is `env.deployer().update_current_contract` , which takes a `ContractExecutable` wrapping the Wasm hash of the new contract as a parameter…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+      "observedAt": "2026-11-02",
+      "quote": "All access control and authorization checks are the implementor's responsibility. Implement this trait directly using `#[contractimpl]` and call the `upgradeabl…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-oz-upgradeable-macro",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Accept-either-name wording is symmetric. The truth.corroboration row text still says update_current_contract_wasm; the author should refresh it in the same diff.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/storage.rs",
+      "observedAt": "2026-11-02",
+      "quote": "e.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash.clone()));"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+      "observedAt": "2026-11-02",
+      "quote": "env.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash))"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-publish-events",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Change 1 of 3 (Retention ... Verified). It replaces a stale '~7 days is the key fact' and 'published via env.events().publish' line that contradicted the current keyFacts and avoid. The stock default value is source-confirmed.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar-RPC retains a bounded, ledger-denominated history of recent transactions and events, configured by a single history-retention-window setting with a stoc…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go and cmd/stellar-rpc/internal/limits/limits.go",
+      "observedAt": "2026-11-02",
+      "quote": "Name: \"history-retention-window\" ... DefaultValue: uint32(SevenDayOfLedgers), Validate: positive; OneDayOfLedgers = 17280; SevenDayOfLedgers = OneDayOfLedgers *…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+      "observedAt": "2026-11-02",
+      "quote": "#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")] pub fn publish<T, D>(&self, topics: T, data: D)"
+     },
+     {
+      "class": "F",
+      "ref": "POST https://soroban-testnet.stellar.org getHealth",
+      "observedAt": "2026-11-02",
+      "quote": "\"ledgerRetentionWindow\":120960"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-publish-events",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Change 2 of 3 (Also-good line). 'event subscriptions' -> 'getEvents queries' removes a conflict with the avoid item 'Do NOT ... call getEvents a subscription'. The 'configurable per provider' qualifier matches keyFact 4.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+      "observedAt": "2026-11-02",
+      "quote": "requests are served from within that retained range. The effective window and the ledgers currently available can be inspected via the getHealth method"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+      "observedAt": "2026-11-02",
+      "quote": "configures history retention window for transactions and events, expressed in number of ledgers, the default value is %d which corresponds to about 7 days of hi…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-publish-events",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Accurately quoting the official Stellar Docs events ingest guide page (docs/build/guides/events/ingest) that getEvents retention is \"7 days at most\" is not a wrong claim while that page still says so (observed 2026-11-02); grade caps at partial for that claim unless the answer independently contradicts the golden fact. Root cause: the 2026-07-27 sd-023 fix corrected the getEvents and getTransaction pages but not this guide, and no improvements/ finding covers it yet; remove this caution when the guide drops the fixed 7-day ceiling.",
+    "note": "Change 3 of 3. The retarget is correct: the old 24-hour/7-day wording is gone from getEvents, and the ingest guide still carries a fixed ceiling (live curl 2026-11-02). The proposed text did not name a root cause or a removal condition, which the golden-truth canonical-page caution form requires. The modified text adds both. It passes hasSymmetricCaution in a local lint check. Follow-up: file an i…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/events/ingest",
+      "observedAt": "2026-11-02",
+      "quote": "However, the data retention window for these events is 7 days at most."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+      "observedAt": "2026-11-02",
+      "quote": "DefaultValue: uint32(SevenDayOfLedgers), Validate: positive (no upper bound, so '7 days at most' is not a universal ceiling)"
+     },
+     {
+      "class": "A",
+      "ref": "improvements/resolved.json entry sd-023",
+      "observedAt": "2026-11-02",
+      "quote": "\"title\": \"The getEvents and getTransaction pages still present universal time-based retention guidance ...\", \"resolved\": \"2026-07-27\""
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-oracle-defensive-consumption",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The range is correct: $10.2M (Blockaid, SlowMist) to $10.97M (rekt, DefiLlama). SCH's $11.0M is that same figure rounded. Dropping 'naming the incident' as a gate aligns notes with the keyFacts, which never gated it, and it remains an Also-good item. This is not laundering, because the five keyFacts and three avoids are unchanged. Dollar figures are D-class only, but they are explicitly not gated,…",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+      "observedAt": "2026-11-02",
+      "quote": "used the inflated valuation to drain approximately $10.2 million worth of XLM and USDC"
+     },
+     {
+      "class": "D",
+      "ref": "https://newsletter.rekt.news/p/yieldblox-rekt",
+      "observedAt": "2026-11-02",
+      "quote": "$10.97 million gone from YieldBlox's community-managed pool on Blend V2"
+     },
+     {
+      "class": "D",
+      "ref": "https://hacked.slowmist.io/?c=Other&page=3 (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "borrowed approximately $10.2M–$10.97M worth of XLM and USDC"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.bankless.com/read/news/lending-market-blend-suffers-10m-exploit",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar's Blend was exploited for approximately $10.8M"
+     },
+     {
+      "class": "D",
+      "ref": "https://smartcontractshacking.com/reports/2026-q1",
+      "observedAt": "2026-11-02",
+      "quote": "Blend Pools V2 | Feb 22 | $11.0M ... different sources reported slightly different totals"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.search_content_semantic id 3662 (www.rekt.news, 2026-02-27)",
+      "observedAt": "2026-11-02",
+      "quote": "YieldBlox lost $10.97 million on Blend V2"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/transactions/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657",
+      "observedAt": "2026-11-02",
+      "quote": "created_at 2026-02-22T00:24:27Z, ledger 61340408, successful true (the XLM borrow tx)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-require-auth",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "This fills an answer gap: keyFact 5 (distinct authentication, authorization, and business-policy layers) had no support in the golden answer text. The wording matches the docs.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+      "observedAt": "2026-11-02",
+      "quote": "Authorization differs from *authentication*, which is the narrower problem of judging whether a person \"is who they say they are\" ... Both functions ensure that…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/address.rs",
+      "observedAt": "2026-11-02",
+      "quote": "Ensures that this Address has authorized invocation of the current contract with the provided arguments. During the on-chain execution the Soroban host will per…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-require-auth",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The old Also-good line ('a specific subset of arguments') conflicted with avoid 2 ('Do NOT call require_auth_for_args a fixed subset mechanism'). The new line removes that conflict and keeps subset as one example.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/address.rs",
+      "observedAt": "2026-11-02",
+      "quote": "The arguments don't have to match the arguments of the contract invocation. However, it's considered the best practice to have a well-defined, deterministic and…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+      "observedAt": "2026-11-02",
+      "quote": "The only difference between the functions is the ability to customize the invocation arguments."
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-no-std-constraints",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The old 'no allocator' wording contradicted the golden answer and avoid 2. The new wording matches A and B.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/Cargo.toml",
+      "observedAt": "2026-11-02",
+      "quote": "[features] alloc = []  (not in default)"
+     },
+     {
+      "class": "B",
+      "ref": "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/alloc/index.html",
+      "observedAt": "2026-11-02",
+      "quote": "The alloc feature is disabled by default. ... A contract is free to define its own global allocator by implementing GlobalAlloc"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+      "observedAt": "2026-11-02",
+      "quote": "there is no allocator and no heap memory in Soroban contracts by default (the SDK does provide an opt-in allocator through its alloc feature — see the alloc exa…"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-oz-token",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "The as-of release date is correct, and the 'such as' list still holds in v0.8.0. Adding the release date to a volatile fact is good practice. truth.asOf (2026-07-11) should move in the same diff.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/OpenZeppelin/stellar-contracts/git/trees/v0.8.0?recursive=1",
+      "observedAt": "2026-11-02",
+      "quote": "packages/tokens/src/fungible/extensions/{allowlist,blocklist,burnable,capped,combinations,total_supply,votes}; packages/{access,accounts,confidential,contract-u…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0",
+      "observedAt": "2026-11-02",
+      "quote": "published 2026-10-20T16:58:32Z; Capped is a contract type that enforces the cap on every mint path; total supply tracking is an opt-in TotalSupply extension"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/fungible/fungible",
+      "observedAt": "2026-11-02",
+      "quote": "| `Base` | Standard SEP-41 behavior. ... ## Extensions ### - Burnable ... ### - Capped ... ### - AllowList ... ### - BlockList ... ### - Votes"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "This is not a bare date bump. I re-verified every claim in the dated paragraph on 2026-11-02 across A, B, C, D, and E, including the claim that Raven repo rows expose no license. truth.asOf (2026-08-11) and reverifyBy (2026-11-19) must move in the same diff, or the dates will disagree. The gospel-change lint also requires a truth.verified update.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance",
+      "observedAt": "2026-11-02",
+      "quote": "### Escrow-Style Payment ​ Create an escrow where the recipient has 30 days to claim, otherwise it returns to sender"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/soroban-examples",
+      "observedAt": "2026-11-02",
+      "quote": "license Apache-2.0; top-level dirs include timelock, atomic_swap, atomic_multiswap"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/Trustless-Work/trustlesswork-smart-contract-stellar/contents",
+      "observedAt": "2026-11-02",
+      "quote": "root: .github .gitignore .stellar CONTRIBUTORS_GUIDELINE.md Cargo.lock Cargo.toml GIT_GUIDELINE.md README.md contracts docs report (no LICENSE file; GitHub lice…"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.runtimeverification.com/public-report/trustless-work",
+      "observedAt": "2026-11-02",
+      "quote": "September 12, 2025 Stellar Code Review Audit ... Trustless Work enables trustless payments via smart contract escrows, securing funds until clients approve mile…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_meeting_notes -> https://developers.stellar.org/meetings/2026/08/06#auditors-viewing-keys-and-the-escrow-question",
+      "observedAt": "2026-11-02",
+      "quote": "Alberto of **Trustless** **Work** (the **escrow** project) showed me a confidential-marketplace"
+     },
+     {
+      "class": "B",
+      "ref": "gh api orgs/devasignhq/repos; gh api repos/devasignhq/bounty-escrow/contents",
+      "observedAt": "2026-11-02",
+      "quote": "bounty-escrow Apache-2.0 (pushed 2026-08-01); root files .github .gitignore .vscode CODE_OF_CONDUCT.md Cargo.toml LICENSE README.md SECURITY.md public src tests…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchRepos 'trustless work escrow' (generatedAt 2026-11-02T16:38:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "repo row keys include fullName, url, description, stars, lastCommitAt, repoScore ... no license-like key"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/{v27.0.0,v28.0.0,v29.0.1}/soroban-sdk/src/deploy.rs",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/{events.rs,address.rs,lib.rs}",
+   "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/Cargo.toml",
+   "https://github.com/stellar/rs-soroban-sdk/releases (gh api) and /releases/tag/v28.0.0",
+   "https://raw.githubusercontent.com/stellar/soroban-examples/main/deployer/deployer/src/lib.rs and Cargo.toml",
+   "gh api repos/stellar/soroban-examples (+ /contents)",
+   "https://github.com/OpenZeppelin/stellar-contracts/releases (gh api) and /releases/tag/v0.8.0",
+   "gh api repos/OpenZeppelin/stellar-contracts/git/trees/{v0.8.0,v0.7.3}?recursive=1",
+   "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/{v0.8.0,v0.7.3}/packages/contract-utils/src/upgradeable/storage.rs and Cargo.toml",
+   "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+   "gh search code stellar/stellar-rpc SevenDayOfLedgers -> cmd/stellar-rpc/internal/limits/limits.go",
+   "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+   "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts",
+   "https://developers.stellar.org/docs/build/guides/events/ingest (Parallel fetch + live curl)",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+   "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+   "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world (via Parallel search)",
+   "https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/alloc/index.html (via Parallel search)",
+   "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance (via Parallel search)",
+   "https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable",
+   "https://docs.openzeppelin.com/stellar-contracts/tokens/fungible/fungible",
+   "https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://soroban-testnet.stellar.org (getVersionInfo, getHealth)",
+   "https://horizon.stellar.org/transactions/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657",
+   "Parallel web_search: YieldBlox loss (blockaid.io, blocksec.com, rekt.news, bankless.com, smartcontractshacking.com, cointelegraph.com)",
+   "Perplexity search: YieldBlox loss (hacked.slowmist.io, defillama.com/protocol/blend, github.com/DK27ss/YieldBlox-10M-PoC, blockeden.xyz)",
+   "Parallel web_search: runtimeverification.com/public-report/trustless-work, trustlesswork.com audit PDF, docs.trustlesswork.com",
+   "gh api repos/Trustless-Work/trustlesswork-smart-contract-stellar/contents (+ trees), gh search repos --owner Trustless-Work",
+   "gh api orgs/devasignhq/repos; repos/devasignhq/bounty-escrow/contents (+ trees)",
+   "Raven execute: stellarDocs.search_docs, stellarDocs.search_meeting_notes, lumenloop.find_av_passages, lumenloop.search_content_semantic, scout.searchRepos"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-soroban-factory-pattern; q-soroban-greenfield-escrow-prior-art-preflight; q-soroban-no-std-constraints; q-soroban-oracle-defensive-consumption; q-soroban-oz-token; q-soroban-oz-upgradeable-macro; q-soroban-publish-events; q-soroban-require-auth",
+  "verifiedOnly": "q-soroban-fuzz-testing; q-soroban-instance-storage-dos; q-soroban-reentrancy",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-soroban-publish-events",
+    "issue": "Upstream defect not yet filed: the Stellar Docs events ingest guide (docs/build/guides/events/ingest) still says getEvents retention is '7 days at most'; file an improvements/stellar-docs finding, then add its path to truth.verified.rootCause (the symmetric caution is already in golden.notes). The proposer also noted the EVM migration page (learn/migrate/evm/solidity-and-rust-advanced-concepts) teaches deprecated raw e.events().publish."
+   },
+   {
+    "id": "q-soroban-factory-pattern",
+    "issue": "Verifier recommended moving tags.freshness from stable to scheduled (answer now carries a dated SDK 28 API). Not applied: no proposal covered that judge-facing tag. truth.asOf was set to 2026-11-02."
+   },
+   {
+    "id": "q-soroban-wasm-language",
+    "issue": "Sibling outside this batch: its golden.notes also-good line still says '(no standard library / no allocator)', which conflicts with the optional SDK alloc feature (fixed in q-soroban-no-std-constraints)."
+   },
+   {
+    "id": "q-soroban-oz-upgradeable-macro",
+    "issue": "Lint errors 'registry caseContentSha256 is stale' for all 11 batch ids need eval:qa:compile / eval:qa:register by the orchestrator; appliers may not run them."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-soroban-factory-pattern",
+    "log": "deploy_v2 -> deploy_contract(ContractExecutable::Wasm) (SDK 28) in answer, keyFacts[1], notes (accept-either caution); new confirmed-as-of corroboration row; asOf set; verified refreshed."
+   },
+   {
+    "id": "q-soroban-oz-upgradeable-macro",
+    "log": "update_current_contract_wasm -> versioned update_current_contract(ContractExecutable::Wasm) (OZ v0.8.0) in answer and notes; corroboration claim refreshed + new row; asOf 2026-11-02; reverifyBy 2027-02-19."
+   },
+   {
+    "id": "q-soroban-publish-events",
+    "log": "Notes: residue lines fixed (typed events, configurable retention, 'getEvents queries'); stale sd-023 caution retargeted to ingest guide (verifier modify text); 2 new corroboration rows; asOf 2026-11-02; reverifyBy 2027-02-26."
+   },
+   {
+    "id": "q-soroban-oracle-defensive-consumption",
+    "log": "Notes: rubric line aligned with keyFacts (incident naming nice-to-have; $ figure ungated, range $10.2M-$10.97M); new loss-range corroboration row; verified refreshed."
+   },
+   {
+    "id": "q-soroban-require-auth",
+    "log": "Answer: added the authn/authz/business-policy layer sentence backing keyFacts[4]; notes also-good line reworded off the avoid[1] collision; corroboration row 1 got quoted evidence; verified refreshed."
+   },
+   {
+    "id": "q-soroban-no-std-constraints",
+    "log": "Notes: 'no allocator' -> 'guest allocation off by default (SDK alloc feature optional)'; added alloc evidence; verified refreshed."
+   },
+   {
+    "id": "q-soroban-oz-token",
+    "log": "Answer: added 'As of release v0.8.0 (2026-10-20)' to the token-package sentence; new confirmed-as-of corroboration row; asOf 2026-11-02; reverifyBy 2027-02-12."
+   },
+   {
+    "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+    "log": "Answer as-of date 2026-08-11 -> 2026-11-02 after full re-verification; corroboration evidence refreshed; asOf 2026-11-02; reverifyBy 2026-11-19 -> 2027-02-05."
+   },
+   {
+    "id": "q-soroban-fuzz-testing",
+    "log": "Verified only (A+B, 2026-11-02); no gospel change."
+   },
+   {
+    "id": "q-soroban-instance-storage-dos",
+    "log": "Verified only (A+B, 2026-11-02); no gospel change."
+   },
+   {
+    "id": "q-soroban-reentrancy",
+    "log": "Verified only (A+B, 2026-11-02); no gospel change."
+   }
+  ]
+ }
+}

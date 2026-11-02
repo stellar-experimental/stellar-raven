@@ -7,17 +7,18 @@
     "scout.getHackathon"
   ],
   "golden": {
-    "answer": "Resolve both current event slugs, call getHackathon detail for each, and compare hackathon.stats.totalSubmissions and hackathon.stats.winners (or explicit equivalent fields). Use compareHackathons only for fields it actually returns, distinguish null from zero, and cite generatedAt/scope.",
+    "answer": "Resolve both current event slugs, then compare explicit per-event submission and winner fields: hackathon.stats.totalSubmissions and hackathon.stats.winners from getHackathon detail, or the submissionCount and winnerCount that compareHackathons returns. Use compareHackathons only for fields it actually returns, distinguish null from zero, and cite generatedAt/scope.",
     "keyFacts": [
-      "Resolves both current slugs and uses two getHackathon detail calls.",
-      "Compares explicit totalSubmissions and winners fields.",
+      "Resolves both current slugs before reading per-event fields.",
+      "Compares explicit submission-count and winner-count fields.",
       "Treats null as unknown rather than zero.",
       "Uses compareHackathons only for its returned fields.",
       "Includes the result date and scope."
     ],
     "avoid": [
       "Uses archived submission or winner counts as current when the live comparison differs or lacks them."
-    ]
+    ],
+    "notes": "compareHackathons now returns submissionCount and winnerCount; on 2026-11-02 they matched getHackathon stats.totalSubmissions and stats.winners for both events, so either explicit source is acceptable. Scout's served submission count can differ from the DoraHacks count (getHackathon stats.upstreamSubmissions and coverageNote); a sourced figure from either is not wrong. Winner names and placements come only from getHackathon."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,7 +32,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "C",
@@ -48,6 +49,42 @@
       {
         "class": "A",
         "ref": "https://blend.capital/"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend",
+        "note": "generatedAt 2026-11-02T16:33:08.900Z; kale-reflector submissionCount 45, winnerCount 10; blend submissionCount 39, winnerCount 3",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-kale-reflector",
+        "note": "stats totalSubmissions 45, upstreamSubmissions 46, coverageNote 'DoraHacks counts 46 submissions for this event; 45 are served here.', winners 10",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+        "note": "stats totalSubmissions 39, upstreamSubmissions 39, winners 3",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellarlight.xyz/api/openapi.json",
+        "note": "info.version 1.9.116: /api/hackathons/compare response schema contains submissionCount, winnerCount, hackersCount",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/detail",
+        "note": "'[Builds 46] [Hackers 161] ... $12,000 in XLM Awards paid out over 10 winners!'",
+        "observedAt": "2026-10-15"
+      },
+      {
+        "class": "D",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/detail",
+        "note": "'awards for the top three projects. First Place: $3,000 ... Second Place: $2,000 ... Third Place: $1,000'",
+        "observedAt": "2026-10-26"
       }
     ],
     "corroboration": [
@@ -87,27 +124,56 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, compareHackathons returns submissionCount and winnerCount equal to getHackathon stats (KALE x Reflector 45 and 10; Blend 39 and 3).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend",
+            "observedAt": "2026-11-02",
+            "note": "submissionCount 45/39, winnerCount 10/3"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/api/openapi.json",
+            "observedAt": "2026-11-02",
+            "note": "OpenAPI 1.9.116 documents submissionCount and winnerCount on /api/hackathons/compare"
+          },
+          {
+            "class": "D",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/detail",
+            "observedAt": "2026-10-15",
+            "note": "Builds 46; 10 winners (Scout serves 45 of 46)"
+          },
+          {
+            "class": "D",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/detail",
+            "observedAt": "2026-10-26",
+            "note": "top three projects awarded"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task wallets-hackathons-safety)",
       "evidence": [
-        "solo://proj/49/process/3414",
-        "solo://proj/49/process/3420",
-        "catalog/manifest.json#scout.compareHackathons",
-        "https://stellar.org/blog/ecosystem/the-story-of-kale",
-        "https://blend.capital/",
-        "Structural re-form (compound-predicate): Split explicit detail fields, null handling, comparison-field scope, and result dating/scope into atomic facts; truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current catalog retained totalSubmissions and winners as explicit hackathon fields.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current catalog retained absent-versus-zero field semantics.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current catalog defined the fields returned by compareHackathons.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/ — the current Hackathons section remained a live, changing event surface that needs a result date and scope.",
-        "Sibling sweep 2026-08-27: grep compareHackathons|totalSubmissions|winners|null → q-scf-current-hackathons-compare-live, q-gap-compare-hackathons, q-gap-hackathon-winner-order; no contradiction"
+        "C 2026-11-02: https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend — generatedAt 2026-11-02T16:33:08.900Z; stellar-hacks-kale-reflector submissionCount 45, winnerCount 10; stellar-hacks-blend submissionCount 39, winnerCount 3.",
+        "C 2026-11-02: https://stellarlight.xyz/api/hackathons/stellar-hacks-kale-reflector — stats totalSubmissions 45, upstreamSubmissions 46, coverageNote 'DoraHacks counts 46 submissions for this event; 45 are served here.', winners 10.",
+        "C 2026-11-02: https://stellarlight.xyz/api/hackathons/stellar-hacks-blend — stats totalSubmissions 39, upstreamSubmissions 39, winners 3.",
+        "A 2026-11-02: https://stellarlight.xyz/api/openapi.json (info.version 1.9.116) — /api/hackathons/compare response schema contains submissionCount, winnerCount, hackersCount; the committed catalog/manifest.json (openapi 1.9.61) outputSchema still omits them.",
+        "D 2026-10-15: https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/detail — '[Builds 46] [Hackers 161] ... $12,000 in XLM Awards paid out over 10 winners!'",
+        "D 2026-10-26: https://dorahacks.io/hackathon/stellar-hacks-blend/detail — 'awards for the top three projects. First Place: $3,000 ... Second Place: $2,000 ... Third Place: $1,000'.",
+        "Sibling sweep 2026-11-02: grep getHackathon detail|totalSubmissions|compareHackathons → q-gap-hackathon-winner-order (winner placement still needs getHackathon; consistent), q-scf-current-hackathons-compare-live, q-gap-compare-hackathons; no contradiction.",
+        "Pass 2 2026-11-02: re-read https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend (generatedAt 2026-11-02T17:32:56.340Z; submissionCount 45/39, winnerCount 10/3) and /api/hackathons/{slug} (KALE x Reflector totalSubmissions 45, upstreamSubmissions 46, winners 10; Blend 39, 39, 3). golden.notes drops the fixed counts because live cases use behavioral expectations (eval/qa/README.md case schema); the counts stay in truth.sources and truth.corroboration.",
+        "Sibling sweep pass 2 2026-11-02: q-gap-compare-hackathons (now states that comparison rows carry submissionCount and winnerCount; consistent), q-gap-hackathon-winner-order, q-scf-current-hackathons-compare-live, q-scf-kale-winner-live, q-scf-blend-winners-live; no contradiction."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Eval-side authoring flaw: keyFacts[0] required a specific tool-call path (two getHackathon detail calls) instead of answer content",
+        "Eval-side authoring flaw: live-case golden.notes pinned volatile submission and winner counts (eval/qa/README.md: live cases use behavioral expectations)."
       ]
     },
     "origin": "boxy sl-hackathon-kale-vs-blend-counts"

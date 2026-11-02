@@ -1,7 +1,7 @@
 ---
 id: cs-002
 service: canonical-source
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-17
 upstreamTitle: "Aggregator docs say Phoenix and Aqua are on Testnet or coming soon; mainnet adapters are configured and unpaused"
 evidence:
@@ -18,9 +18,15 @@ evidence:
   - "2026-10-09 removal: the third-party PR 48 no longer exists. The public soroswap/docs repository remains accessible. A direct PR read returns HTTP 404. The contributor account SrvFernandes and its /claim comments no longer exist. The recorded head commit 08bccc152a4b7f3e7f8df40b467205ea8cb3f503 still resolves in soroswap/docs. This removal does not prove a deployed fix."
   - 2026-10-09 https://api.github.com/users/SrvFernandes returns HTTP 404; https://api.github.com/repos/soroswap/docs/issues/47/comments contains no contributor /claim comment.
   - 2026-10-09 https://api.github.com/repos/soroswap/docs/commits/08bccc152a4b7f3e7f8df40b467205ea8cb3f503 returns HTTP 200.
+  - "2026-11-02T17:17Z live re-check: the trigger no longer reproduces. curl https://docs.soroswap.finance/concepts/aggregator returns HTTP 308 to https://docs.soroswap.finance/. https://docs.soroswap.finance/aggregator/supported-amms returns HTTP 200 with the heading 'Supported venues' and the text 'soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex'. Neither that page nor https://docs.soroswap.finance/llms.txt contains 'currently on Testnet' or 'Coming Soon'."
+  - "2026-11-02 premise change: Soroswap rewrote the docs for Aggregator v3. https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3 names mainnet Aggregator v3 CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4 and says the previous aggregator CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO 'is deprecated. Since 2026-09-24 the Soroswap API neither quotes for it nor accepts transactions against it on /send.' The v3 hop list (Soroswap, Aquarius, SushiSwap V3, Comet) does not include Phoenix, so the old Phoenix adapter claim has no current docs surface."
+  - "2026-11-02 the owner repository is no longer public: https://api.github.com/repos/soroswap/docs and https://api.github.com/repos/soroswap/docs/issues/47 both return HTTP 404. The recorded issue URL is now dangling, so live lint will flag it, and no resolution comment can be posted. No resolving issue or PR is discoverable."
+  - "Golden consumers updated 2026-11-02 (rootCause freshness-drift): eval/qa/corpus/battery/defi-ecosystem/q-defi-soroswap-what-is.json SOURCE STATUS note; siblings q-defi-soroswap-vs-stellarx and q-eco-dex-saturation still carry the older 'stale Testnet labels (cs-002)' source notes."
 recurrences:
   - date: 2026-10-06
     evidence: "soroswap/docs main is still 1d7a3c8a85616918415056ad2a0f6d2177fc1948. concepts/aggregator.mdx lines 13-14 still mark Phoenix and Aqua (currently on Testnet). aggregator/supported-amms.mdx lines 3 and 12 still mark Aquarius coming soon. The published pages docs.soroswap.finance/concepts/aggregator and /aggregator/supported-amms return HTTP 200 with the same phrases."
+  - date: 2026-11-02
+    evidence: "No recurrence. The stale labels no longer render: concepts/aggregator redirects (HTTP 308) to the docs home, and supported-amms now lists the Aggregator v3 venues without 'currently on Testnet' or 'Coming Soon'. Status moved to fixed-upstream; a distinct reviewer must re-derive it before resolution."
 ---
 
 ## Finding

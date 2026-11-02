@@ -10,6 +10,9 @@ evidence:
   - inventory/lumenloop.json fetched 2026-07-06 declares the same results and text object for all five operations
   - Solo scratchpad 816 Lumenloop schema correction review
   - reported upstream 2026-08-19 through existing issue 35: https://github.com/lumenloop/lumenloop-backend/issues/35#issuecomment-5347713582
+recurrences:
+  - date: 2026-11-02
+    evidence: "get_related_projects {content_id: 99999999, content_type: article} at 2026-11-02T17:17:23Z returned success true with data [] (a top-level array); the same tool with content_id 10190 or 13069 returned data {content: [text blocks]}. One tool therefore has two shapes, and a nonexistent id returns success, not a not-found error. find_similar_projects_semantic {slug: blend} at 2026-11-02T17:18:47Z returned rows with only slug, title, category, tags, similarity; the tool returns text promises a description field. The output_schema of both tools still declares results. Golden cases: q-gap-related-projects-empty, q-gap-semantic-similar-projects."
 ---
 
 ## Finding

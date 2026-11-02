@@ -5,10 +5,10 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n**SEP-0057** is a **Draft v0.3.0** Stellar proposal for a T-REX/ERC-3643-style regulated-token architecture. Its normative core defines a minimal identity verifier and token/compliance hooks; it does not require one particular claim-registry implementation.\n\nThe SEP also contains an expressly **non-normative claim-based reference appendix** where functions such as add_identity appear. Separately, OpenZeppelin's current stellar-contracts RWA suite implements concrete identity registries/profiles, compliance modules, manager roles, pause/freeze/recovery, and examples. Those library helpers and authorization boundaries are implementation APIs, not automatically the SEP's stable core interface.\n\nPin both the SEP and library commit before copying signatures. Current hosted docs/examples still contain older can_transfer/can_create wording while v0.3 source uses Transferred/Created/Destroyed hooks. Treat source/spec at the selected commit as controlling. Stellar classic flags, clawback, SEP-8, and SAC remain separate mechanisms. None of these contracts creates securities-law, custody, disclosure, transfer-agent, or off-chain-rights compliance.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n**SEP-0057** is a **Draft v0.4.0** (updated 2026-09-08) Stellar proposal for a T-REX/ERC-3643-style regulated-token architecture. Its normative core defines a minimal identity verifier and token/compliance hooks; it does not require one particular claim-registry implementation.\n\nThe SEP also contains an expressly **non-normative claim-based reference appendix** where functions such as add_identity appear. Separately, OpenZeppelin's current stellar-contracts RWA suite implements concrete identity registries/profiles, compliance modules, manager roles, pause/freeze/recovery, and examples. Those library helpers and authorization boundaries are implementation APIs, not automatically the SEP's stable core interface.\n\nPin both the SEP and library commit before copying signatures. Current hosted docs/examples still contain older can_transfer/can_create wording while the v0.3+ spec and current OpenZeppelin source use transferred/created/destroyed hooks. Treat source/spec at the selected commit as controlling. Stellar classic flags, clawback, SEP-8, and SAC remain separate mechanisms. None of these contracts creates securities-law, custody, disclosure, transfer-agent, or off-chain-rights compliance.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Identifies SEP-0057 as Draft v0.3.0.",
+      "Identifies SEP-0057 as a Draft Stellar proposal.",
       "Treats the normative core and claim-based appendix as different specification layers.",
       "`add_identity` appears in the appendix and OpenZeppelin code, outside the stable core API.",
       "Treats legal compliance and off-chain rights as external to technical policy enforcement."
@@ -20,7 +20,7 @@
       "Do NOT claim the contracts alone create legal compliance.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "2026-06-29 VERIFIED against the SEP-0057 source: status Draft, title 'T-REX (Token for Regulated EXchanges)', authors OpenZeppelin + Boyan Barakov/Ozgun Ozerk/Dennis O'Connell, last updated 2026-06-11, explicitly based on ERC-3643. Real trait fns include mint/forced_transfer/set_address_frozen/set_compliance/set_identity_verifier/verify_identity/recovery_target -- so the must_avoid example 'add_identity' is correctly an INVENTED name (not in the spec). Draft + freshness keep confidence medium; re-check status/API names before treating function-level details as stable.\nAlso good if the answer: Mentions Stellar-native regulated asset tools may include authorization flags, SEP-8 approval-server patterns, SAC/Soroban token interfaces, or OZ contract libraries depending on design. | Flags freshness because contract libraries and APIs can change quickly.\nGolden cites: Current OpenZeppelin Stellar contracts docs/repository and any Stellar docs for regulated-asset patterns.\nRECONCILED 2026-07-10 (GT-10 processes 3230/3232): disregard the inherited claim that add_identity is invented. It exists in the non-normative appendix and concrete library. Grade normative-core versus appendix versus implementation boundaries and pinned-source behavior; hosted docs currently lag v0.3 hooks."
+    "notes": "2026-11-02 VERIFIED against the SEP-0057 source: status Draft, version 0.4.0, updated 2026-09-08, title 'T-REX (Token for Regulated EXchanges)', authors OpenZeppelin + Boyan Barakov/Ozgun Ozerk/Dennis O'Connell, explicitly based on ERC-3643. v0.4.0 only added the MuxedTransfer event; the v0.3.0 hook model and the non-normative appendix are unchanged. Draft status is the durable fact; the version number is volatile.\nAlso good if the answer: Mentions Stellar-native regulated asset tools may include authorization flags, SEP-8 approval-server patterns, SAC/Soroban token interfaces, or OZ contract libraries depending on design. | Flags freshness because contract libraries and APIs can change quickly.\nGolden cites: Current OpenZeppelin Stellar contracts docs/repository and any Stellar docs for regulated-asset patterns.\nRECONCILED 2026-07-10 (GT-10 processes 3230/3232): disregard the inherited claim that add_identity is invented. It exists in the non-normative appendix and concrete library. Grade normative-core versus appendix versus implementation boundaries and pinned-source behavior; hosted docs currently lag v0.3 hooks."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -34,7 +34,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
@@ -55,24 +55,54 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+        "note": "Preamble 'Status: Draft / Created: 2025-11-26 / Updated: 2026-09-08 / Version: 0.4.0'; last commit 2b45c64ef4ef 2026-09-09 'SEP-57: Add muxed address event (#2013)'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/packages/tokens/src/rwa/compliance/mod.rs",
+        "note": "main ddc327eb92d6 (2026-10-20), release v0.8.0: transferred/created/destroyed hooks with AccountSnapshot; repo code search 'fn can_transfer' returns 0 hits.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/rwa/rwa",
+        "note": "Hosted page (Parallel cache acquired 2026-09-30) still lists fn can_transfer and fn can_create.",
+        "observedAt": "2026-09-30"
       }
     ],
     "corroboration": [
       {
-        "claim": "SEP-0057 remains Draft v0.3.0; add_identity appears in its non-normative claim-based reference appendix rather than the minimal normative verifier core.",
-        "verdict": "confirmed",
+        "claim": "As of 2026-11-02, SEP-0057 is Draft version 0.4.0 (updated 2026-09-08); add_identity appears in its non-normative claim-based reference appendix rather than the minimal normative verifier core.",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "B",
-            "ref": "B: stellar-protocol@fbf05c9d ecosystem/sep-0057.md preamble/core/appendix",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+            "observedAt": "2026-11-02",
+            "note": "'Status: Draft / Created: 2025-11-26 / Updated: 2026-09-08 / Version: 0.4.0'; appendix: 'IMPORTANT NOTICE: This appendix describes a reference implementation and is NOT a part of the T-REX specification.'"
           },
           {
-            "class": "A",
-            "ref": "A: stellar-protocol ecosystem registry lists SEP-0057 Draft",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "B",
+            "ref": "gh api repos/stellar/stellar-protocol/commits/2b45c64ef4",
+            "observedAt": "2026-11-02",
+            "note": "Patch: '-Version: 0.3.0 +Version: 0.4.0'; changelog 'v0.4.0 - Add the muxed layout of the transfer event (MuxedTransfer)'."
+          },
+          {
+            "class": "C",
+            "ref": "Raven scout.searchResearch {query:'SEP-57 T-REX ERC-3643 OpenZeppelin RWA'}",
+            "observedAt": "2026-11-02",
+            "note": "Row 'T-REX (Token for Regulated EXchanges)' dated 2026-09-08; text contains 'Draft' and '0.4.0'. Scout mirrors the GitHub source; the claim does not originate from Scout."
+          },
+          {
+            "class": "E",
+            "ref": "Raven stellarDocs.search_docs {query:'SEP-0057 T-REX regulated token'} -> https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+            "observedAt": "2026-11-02",
+            "note": "Official docs name 'SEP-57 (T-REX / Token for Regulated EXchanges)'."
           }
         ]
       },
@@ -121,39 +151,41 @@
             "ref": "B: pinned spec/source uses Transferred/Created/Destroyed hooks",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/rwa/rwa",
+            "observedAt": "2026-09-30",
+            "note": "Parallel cache acquired 2026-09-30: 'fn can_transfer(e: &Env, from: Address, to: Address, amount: i128, token: Address) -> bool; ... fn can_create(...)'."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/packages/tokens/src/rwa/compliance/mod.rs",
+            "observedAt": "2026-11-02",
+            "note": "main ddc327eb92d6: 'fn transferred(...)', 'fn created(e: &Env, to: AccountSnapshot, amount: i128, token: Address)', 'fn destroyed(...)'."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task payments-assets)",
       "evidence": [
-        "Solo scratchpad 569 Batch E, 2026-07-09; direct check of SEP-0057.",
-        "Solo scratchpad 575 GT-10 primary/blind processes 3230/3232; pinned OpenZeppelin source/tests and hosted-doc conflict.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form 2026-08-27: rewrote three long or negative key facts as positive atomic forms; truth unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md — the specification still separates its minimal core from the claim-based reference architecture.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md — `add_identity` still appears outside the stable core interface.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — asset controls remain technical policy mechanisms, separate from legal and off-chain rights.",
-        "Sibling sweep 2026-08-27: grep SEP-0057|add_identity|OpenZeppelin|asset access across the QA battery; no contradiction found.",
-        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the source still exposes dated status and version fields.",
-        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the preamble remains Draft version 0.3.0.",
-        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the claim-based appendix remains outside the specification.",
-        "Live re-check 2026-08-30: https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/examples/rwa/identity-registry/src/contract.rs — current code implements add_identity.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/control-asset-access — issuer flags enforce technical access policy; legal rights remain external.",
-        "Sibling sweep 2026-08-30: grep SEP-0057|add_identity|T-REX|ERC-3643 → q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-sor-evm-to-soroban-porting; no contradiction"
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — 'Status: Draft / Created: 2025-11-26 / Updated: 2026-09-08 / Version: 0.4.0' (observedAt 2026-11-02)",
+        "gh api repos/stellar/stellar-protocol/commits/2b45c64ef4 (2026-09-09, PR #2013) — '-Updated: 2026-06-11 -Version: 0.3.0 +Updated: 2026-09-08 +Version: 0.4.0'; only MuxedTransfer was added; hook model and appendix unchanged (observedAt 2026-11-02)",
+        "Raven scout.searchResearch 2026-11-02T16:23:56Z — row 'T-REX (Token for Regulated EXchanges)' dated 2026-09-08 with 'Draft' and '0.4.0'.",
+        "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/examples/rwa/identity-registry/src/contract.rs — 'fn add_identity(' (observedAt 2026-11-02); the stale 2026-06-29 notes line calling add_identity INVENTED is removed.",
+        "https://docs.openzeppelin.com/stellar-contracts/tokens/rwa/rwa (Parallel cache 2026-09-30) still shows can_transfer/can_create; OpenZeppelin main ddc327eb92d6 uses transferred/created/destroyed (observedAt 2026-11-02).",
+        "Independent verifier accepted answer, notes, and asOf; modified keyFacts[1] to gate Draft status and require a dated version (durable-fact gating).",
+        "Sibling sweep 2026-11-02: grep SEP-0?57 across eval/qa/corpus/battery → q-rwa-tokenization-standards (already Draft v0.4.0, consistent), q-crp-tokenize-personal-rwa and q-rwa-stellar-vs-erc20-regulated (no version, consistent), q-sor-evm-to-soroban-porting (still 'Draft SEP-57 v0.3.0'; outside this batch, flagged to the round ledger).",
+        "Pass 2 gospel change 2026-11-02: keyFacts[1] keeps one predicate (Draft status, the durable fact); the version-dating requirement stays in keyFacts[0] and the dated 'Draft v0.4.0 (updated 2026-09-08)' stays in golden.answer (consistency-rubric L4; lint multi-predicate and snapshot-date warnings).",
+        "Live B 2026-11-02 (curl): https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md - 'Status: Draft' / 'Updated: 2026-09-08' / 'Version: 0.4.0'.",
+        "Pass 1 verification event (batch compliance-rwa-payments-03, .agents/rounds/2026-11-02-golden-audit.md) produced the earlier 2026-11-02 evidence rows and edits in this branch diff; the pass-2 rows follow."
       ],
       "rootCause": [
-        "Eval-side API freshness drift: absence from the minimal core trait was mistaken for nonexistence across appendix and implementation.",
-        "Normative spec, non-normative reference appendix, concrete library, and stale hosted docs were conflated.",
-        "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch E",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "freshness-drift",
+        "Stale 2026-06-29 grader-notes line kept after the 2026-07-10 reconciliation contradicted it.",
+        "eval-authoring: pass 1 keyFacts[1] joined two predicates and embedded the snapshot date (consistency-rubric L4)."
       ]
     },
     "origin": "raven-next q-crp-oz-rwa-erc3643-trex"

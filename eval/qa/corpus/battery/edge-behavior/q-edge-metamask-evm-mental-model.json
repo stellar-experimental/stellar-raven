@@ -34,7 +34,7 @@
     "domain": "mixed",
     "status": "confirmed",
     "asOf": "2026-10-01",
-    "reverifyBy": "2026-12-16",
+    "reverifyBy": "2027-05-17",
     "sources": [
       {
         "class": "A",
@@ -160,31 +160,16 @@
       }
     ],
     "verified": {
-      "date": "2026-10-01",
-      "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-02)",
       "evidence": [
-        "Owner decision C, question 6 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the case moves stable → scheduled with truth.asOf 2026-10-01 and truth.reverifyBy 2026-12-16. The re-check also found freshness drift: MetaMask now documents built-in Stellar support, so the answer, key fact 2, both avoid items, and the notes now cover the first-party pathway and keep the third-party Snap distinct. The asset-model paragraph and key facts 1, 3, 4, and 5 are unchanged.",
-        "Independent review fixes 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md, \"Review reconciliation\", findings 1 and 3): the bridge qualifier now uses the bounded description, the Docs-index statement is bound to the recorded query, and the answer's region caveat names the Buy feature, which is the only region limit the support page states.",
-        "Live check 2026-10-01 (class A): https://support.metamask.io/configure/networks/stellar/ — 'MetaMask supports Stellar as a default network, allowing you to manage XLM and other assets.'",
-        "Live check 2026-10-01 (class B): MetaMask/metamask-extension@ebd93b065869fb554d3246a13a2b73f3f749cfa5 package.json — '@metamask/stellar-wallet-snap': '^1.1.0'; MetaMask/snap-stellar-wallet README — 'The Stellar Snap allows MetaMask and dapps to support all Stellar-related networks and address types.'",
-        "Live re-check 2026-10-01: https://acl.execution.metamask.io/latest/registry.json and https://registry.npmjs.org/stellar-snap — the third-party Snap stays listed at 1.0.9; https://snaps.metamask.io/snap/npm/stellar-snap/ returns HTTP 200.",
-        "Qualifier 2026-10-01: MetaMask/core@418b73c1cd5eb251c35fe6a0d1d14eb169c93d10 bridge constants allow XlmScope.Pubnet. The default bridge ranking omits Stellar when remote configuration is unavailable. Actual client and route availability remain unverified. The extension changelog records Stellar account support behind a feature flag, so the golden attributes built-in support to MetaMask documentation and does not gate a rollout state.",
-        "Sibling sweep 2026-10-01: grep MetaMask → q-defi-bridge-evm-to-stellar-axelar (avoid item is scoped to claims without dated provider evidence; its Snap note stays true; flagged in .agents/TODO.md for its own re-verify), q-edge-ambig-best-wallet, q-eco-nft-marketplace-whitespace, q-raph-xlm-network-role, and q-soroban-contract-id-derivation (no MetaMask-Stellar support claim); no contradiction.",
-        "No saved answer was re-judged and no paid QA ran.",
-        "Solo scratchpad 575 GT-24 primary 3263 and blind 3266; blind established the current Snap and derived native SAC IDs without moving assets.",
-        "Structural re-form (long-fact): split the MetaMask pathway and asset-model distinctions into five short facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://support.metamask.io/configure/networks/how-to-use-non-evm-networks/ — MetaMask's official guidance distinguishes ordinary EVM network support from non-EVM access through Snaps.",
-        "Live re-check 2026-08-29: https://snaps.metamask.io/snap/npm/stellar-snap/ — the current MetaMask Snaps directory lists Stellar as a third-party Snap.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the official SAC page covers native XLM; stellar contract id asset --asset native derived different Pubnet and Testnet IDs in a 2026-08-29 class-F check.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — the official comparison distinguishes classic issued assets with SACs from standalone SEP-41 contract tokens.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/lumens and https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — the official sources distinguish native XLM and native burn/mint assets from EVM ERC-20 or wrapped representations.",
-        "Sibling sweep 2026-08-29: grep Stellar Snap|network-specific SAC|ERC-20|wrapped representations → q-asset-deploy-sac-cli, q-asset-issue-asset-howto, q-asset-trustline-basics, q-asset-two-account-issuer, q-defi-bridge-evm-to-stellar-axelar, q-edge-ambig-stellar-token-meaning, q-edge-metamask-evm-mental-model, q-raph-usdc-onto-stellar, q-rwa-stellar-vs-erc20-regulated, q-sor-evm-to-soroban-porting, q-soroban-oz-token, q-soroban-token-transfer-pattern; no contradiction."
-      ],
-      "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): a dated third-party product claim sat under tags.freshness stable with no truth.asOf or truth.reverifyBy",
-        "No ordinary EVM-network support was conflated with no MetaMask pathway; ERC-20 address and SAC contract ID were conflated; code+issuer was overgeneralized to XLM.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Live (class A, Parallel acquired_at 2026-10-16, cited 2026-11-02): https://support.metamask.io/configure/networks/stellar/ — 'MetaMask supports Stellar as a default network, allowing you to manage XLM and other assets ... Buying crypto in MetaMask is not available in every country or region.'",
+        "Live 2026-11-02 (class B): gh api repos/MetaMask/metamask-extension/contents/package.json (main, commit dc5a15bb 2026-11-02) — '\"@metamask/stellar-wallet-snap\": \"^2.0.0\"'.",
+        "Live 2026-11-02 (class D): https://registry.npmjs.org/@metamask/stellar-wallet-snap — dist-tags latest 2.0.0, modified 2026-10-27; https://registry.npmjs.org/stellar-snap — latest 1.0.9.",
+        "Live 2026-11-02 (class C): https://snaps.metamask.io/snap/npm/stellar-snap/ — HTTP 200; page lists the third-party 'stellar-snap'.",
+        "Live 2026-11-02 (class F): stellar 28.1.0 `stellar contract id asset --asset native` — Mainnet CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA; Testnet CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC (deterministic, network-specific).",
+        "Live 2026-11-02 (class E): stellarDocs.search_docs → https://developers.stellar.org/docs/build/guides/tokens/deploying-a-sac — serializes the native XLM asset for a SAC.",
+        "Verdict: unchanged; the golden's dated 2026-10-01 pathway text stays true, so truth.asOf stays 2026-10-01 to match the golden text. reverifyBy moved from 2026-12-16 into the 2027-05 audit window. No gospel change; no sibling sweep required beyond the proposer's sibling list, which records no contradiction."
       ]
     },
     "origin": "raven-next q-edge-metamask-evm-mental-model"

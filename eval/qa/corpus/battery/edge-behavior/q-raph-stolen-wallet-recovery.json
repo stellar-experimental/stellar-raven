@@ -83,23 +83,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-04)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
-        "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
-        "https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud",
-        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — SDF 'DOES NOT have the capability to freeze or return XLM'; class B CAP-0035 limits clawback to issuer assets.",
-        "Live re-check 2026-08-31: https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud — keep tx hashes, addresses, dates; never pay recovery services; SDF never asks for keys.",
-        "Sibling sweep 2026-08-31: grep reverse|freeze|drained|clawback|recovery agent → 85 other cases; read q-edge-validators-reverse-tx-fork-detection, q-comp-clawback-cap0035, q-n3-wallet-hacked-support-redirect, q-raph-missing-exchange-memo; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"SDF does not have the capability to freeze, access, or return tokens\" / \"DOES NOT have the capability to freeze or return XLM held in a Stellar account\" (observedAt 2026-11-02). Page still live 2026-11-02.",
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"The `ClawbackOp` and `ClawbackClaimableBalanceOp` operations only apply to assets issued by the source account.\"; ClawbackOp is malformed when `asset` is native (observedAt 2026-11-02).",
+        "https://developers.stellar.org/docs/build/apps/application-design-considerations — \"If they lose their secret key, they will also lose access to their account.\" (observedAt 2026-11-02).",
+        "https://www.finra.org/investors/investing/investment-products/crypto-assets/risks — \"Crypto assets are risky and often extremely volatile.\" / \"the risk of losing all of your investment is significant\" (observedAt 2026-11-02).",
+        "https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud — \"Almost all victims, after they lost their money, are contacted by scammers conducting recovery fraud schemes.\" (observedAt 2026-11-02).",
+        "Verification-only event: no proposal; gospel unchanged; truth.reverifyBy 2027-02-11 already inside the 2027-02 window, kept.",
+        "Sibling sweep 2026-11-02: q-n3-wallet-hacked-support-redirect, q-comp-clawback-holder-risk, q-comp-clawback-cap0035, q-raph-missing-exchange-memo, q-n3-missing-funds-account-support; no contradiction."
       ]
     },
     "origin": "raph wallet-stolen-funds-recovery"

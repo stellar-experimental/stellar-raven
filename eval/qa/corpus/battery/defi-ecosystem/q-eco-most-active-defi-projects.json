@@ -22,7 +22,7 @@
       "Do NOT call a ranking 'DeFi' without a visible inclusion rule.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "Most-active/top projects → scout_leaderboard. FRESHNESS-flagged ranking (weekly). Leaderboard sort=activity is defined by the served meta.metricDefinitions as latest-commit recency (NOT commit volume), with issues (open backlog), stars, and tvl as separate sorts; repoScore is a different, repo-level scout.searchRepos ranking signal and is not the leaderboard's activity metric. Recent commit activity shows live DeFi repos (e.g. blend-sdk-js / blend-ui committed Jun 19 2026; reflector connectors May 2026). The ranking is a moving snapshot — reward flagging that + tool-sourced metrics over a fixed list. 2026-06-29 reviewed: confirmed scout_leaderboard card exists (CARDS.md) and all DeFi names cited (Soroswap, Aquarius, Blend, Reflector, Phoenix) resolve as Live on Scout directory. Confidence kept medium (ranking shifts).\nAlso good if the answer: Surfaces DeFi-relevant projects (e.g. Soroswap, Aquarius, Blend, Reflector, Phoenix) where they rank.\nGolden cites: The leaderboard/ranking source with a freshness caveat.\nGT-19 CORRECTION 2026-07-10: exact metric/query/filter/asOf are the gate. Scout activity, GitHub commits, stars, issues, TVL, and usage are not interchangeable."
+    "notes": "Most-active/top projects → scout_leaderboard. FRESHNESS-flagged ranking (weekly). As of 2026-11-02, the served meta.metricDefinitions define leaderboard sort=activity as github.commits90d (90-day default-branch commit volume across Stellar-evidenced repos), with lastActivityAt recency as the tie-break, and issues (open backlog), stars, and tvl as separate sorts; repoScore is a different, repo-level scout.searchRepos ranking signal and is not the leaderboard's activity metric. Recent commit activity shows live DeFi repos (e.g. blend-sdk-js / blend-ui committed Jun 19 2026; reflector connectors May 2026). The ranking is a moving snapshot — reward flagging that + tool-sourced metrics over a fixed list. 2026-06-29 reviewed: confirmed scout_leaderboard card exists (CARDS.md) and all DeFi names cited (Soroswap, Aquarius, Blend, Reflector, Phoenix) resolve as Live on Scout directory. Confidence kept medium (ranking shifts).\nAlso good if the answer: Surfaces DeFi-relevant projects (e.g. Soroswap, Aquarius, Blend, Reflector, Phoenix) where they rank.\nGolden cites: The leaderboard/ranking source with a freshness caveat.\nGT-19 CORRECTION 2026-07-10: exact metric/query/filter/asOf are the gate. Scout activity, GitHub commits, stars, issues, TVL, and usage are not interchangeable."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -36,12 +36,30 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "GET https://stellarlight.xyz/api/leaderboard?sort=activity&limit=3 (meta.dataAsOf 2026-11-02T11:23:43.582Z)",
+        "note": "Golden audit 2026-11-02: \"sort=activity orders by github.commits90d: default-branch commits over the trailing 90 days summed across the project's indexed repos ... recency (github.lastActivityAt) breaking ties. ... The sum co…\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellarlight.xyz/scout/api-reference",
+        "note": "Golden audit 2026-11-02: \"activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Raven scout.getLeaderboard {sort:'activity'} (observedAt 2026-11-02T16:29:28Z)",
+        "note": "Golden audit 2026-11-02: \"same metricDefinitions.activity text as the raw read\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -62,34 +80,43 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, Scout leaderboard sort=activity is github.commits90d (90-day default-branch commit volume across Stellar-evidenced repos), with lastActivityAt recency as the tie-break.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "GET https://stellarlight.xyz/api/leaderboard?sort=activity&limit=3 (meta.dataAsOf 2026-11-02T11:23:43.582Z)",
+            "observedAt": "2026-11-02",
+            "note": "sort=activity orders by github.commits90d: default-branch commits over the trailing 90 days summed across the project's indexed repos ... recency (github.lastActivityAt) breaking ties. ... The sum counts only linked repos whose scanned cod…"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/scout/api-reference",
+            "observedAt": "2026-11-02",
+            "note": "activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL"
+          },
+          {
+            "class": "C",
+            "ref": "Raven scout.getLeaderboard {sort:'activity'} (observedAt 2026-11-02T16:29:28Z)",
+            "observedAt": "2026-11-02",
+            "note": "same metricDefinitions.activity text as the raw read"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; reviewers obtained different rosters from different reasonable DeFi filters.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live DeFi directory query returned 39 matches and showed DeFindex as live with a separately dated project TVL observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Todo 1256 corpus lane (2026-07-28, F6): the grader notes asserted 'Scout ranks repos by repoScore', which this case's own avoid clause forbids absent returned-schema evidence. catalog/manifest.json#scout.getLeaderboard and specs/super-spec.json state that meta.metricDefinitions defines activity as latest-commit recency (not commit volume), with issues/stars/tvl as separate sorts, and repoScore as a repo-level scout.searchRepos signal; the sentence now says that. Internal-consistency repair against the served schema — no new live probe.",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep scout_leaderboard|repoScore|metricDefinitions|sort=activity → q-tool-leaderboard-open-issues, q-tool-developer-leaderboard-live; no contradiction",
-        "Structural re-form (long-fact): shortened the source-support fact without changing its requirement; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100 — the executed live response supplies the source, generated-at time, data-as-of time, filters, and dated rows.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100 — the response dates its changeable ranking, activity timestamps, and measurements.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100 and https://stellarlight.xyz/api/projects/search?q=DeFi&limit=100 — the executed responses identify Blend and Reflector with dated repository activity and DeFi-relevant lending or oracle roles.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100 — meta.metricDefinitions.activity defines activity as latest default-branch commit recency, not commit volume.",
-        "Sibling sweep 2026-08-29: grep sort=activity|latest-commit recency|development activity → q-eco-most-active-defi-projects, q-tool-developer-leaderboard-live; no contradiction."
+        "C: GET https://stellarlight.xyz/api/leaderboard?sort=activity&limit=3 (meta.dataAsOf 2026-11-02T11:23:43.582Z) — \"sort=activity orders by github.commits90d: default-branch commits over the trailing 90 days summed across the project's indexed repos ... recency (github.lastActivityAt) breaking ties. ... The sum counts only linked repos whose scanned code proves Stellar use\" (observedAt 2026-11-02)",
+        "A: https://stellarlight.xyz/scout/api-reference — \"activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL\" (observedAt 2026-11-02)",
+        "C: Raven scout.getLeaderboard {sort:'activity'} (observedAt 2026-11-02T16:29:28Z) — \"same metricDefinitions.activity text as the raw read\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep 'latest-commit recency|commits90d|NOT commit volume' over the battery → this case only; leaderboard siblings q-tool-developer-leaderboard-live, q-tool-leaderboard-open-issues, q-gap-leaderboard-project-not-builder carry no activity-metric definition; no contradiction."
       ],
       "rootCause": [
-        "Metric conflation and an undefined category filter turned a live leaderboard into a fixed fact.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Grader notes retained a pre-GT-19 metric-conflation sentence (repoScore as the leaderboard's activity ranking) that the case's own avoid clause forbids.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-eco-most-active-defi-projects"

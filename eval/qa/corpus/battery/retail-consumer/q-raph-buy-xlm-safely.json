@@ -29,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-13",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -87,24 +87,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
-        "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
-        "https://support.kraken.com/articles/360000184543-memo-for-stellar-lumens-xlm-deposits",
-        "https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-scams",
-        "https://www.forbes.com/advisor/investing/cryptocurrency/best-crypto-exchanges/",
-        "2026-07-13 bounded web sweep found provider-specific buy/deposit guidance, not a durable universal cheapest-provider ranking; no judge-facing change warranted.",
-        "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol review",
-        "Structural re-form (negative-predicate): Recast the timeless-cheapest rejection as the same positive context-and-time requirement; truth unchanged",
-        "Live re-check 2026-08-27: https://www.forbes.com/advisor/investing/cryptocurrency/best-crypto-exchanges/ — the current comparison used a dated $1,000 scenario and provider-specific fees or spreads, not a timeless cheapest venue.",
-        "Sibling sweep 2026-08-27: grep cheapest|lowest fees|buy XLM|all-in cost → q-n3-xlm-personal-investment-advice, q-raph-buy-xlm-safely; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        "solo://proj/49/todo/golden-truth-review--972",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "2026-11-02 [D] https://bykaranteli.com/withdrawals/xlm (Perplexity) — \"2026-10-27 04:20 OKX XLM-STELLAR LUMENS fee changed 0.00001 -> 0.000011 XLM ... 2026-10-26 fee changed 0.000061 -> 0.000056\" (claim: golden.keyFacts[0] confirmed-as-of: Cheapest provider depends on time and situation)",
+        "2026-11-02 [D] https://www.binance.us/buy/stellar-lumens (Perplexity) — \"Debit or credit card 3.99% ... A spread applies to Buy, Sell & Convert orders.\" (claim: golden.keyFacts[0] confirmed-as-of: Cheapest provider depends on time and situation)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — \"many services still rely on them [memos]\" (claim: golden.keyFacts[1] confirmed: All-in cost plus network/memo checks are comparison criteria)",
+        "2026-11-02 [D] https://jicalabs.com/crypto/exchanges/stellar (Perplexity) — \"The price does not include each exchange's trading fee or deposit and withdrawal costs, which can change the final result.\" (claim: golden.keyFacts[1] confirmed: All-in cost plus network/memo checks are comparison criteria)",
+        "2026-11-02 [A] https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"malicious actors impersonate an SDF team member on social media ... attempt to induce the recipient to send crypto in exchange for a larger value in another token\" (claim: golden.avoid[1] contradicted: Social-media offers are not trusted on-ramps)",
+        "Sibling sweep 2026-11-02: siblings checked q-n3-xlm-personal-investment-advice; no gospel change in this case, no contradiction found."
       ]
     },
     "origin": "raph buy-xlm-where-best-rates-fees"

@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- Soroban contract storage entries have a **TTL (time-to-live, in ledgers)**; when the TTL expires the entry is **archived** rather than kept live and must be **restored before use** [1].\n- Purpose: state archival bounds the size of live state so validators don't pay forever to host unused data (sustainable state growth / rent model) [1].\n- Durability tiers behave differently: **Temporary** entries are **deleted** on expiry; **Persistent** and **Instance** entries can be **restored** [1].\n- TTL can be extended (bumped) via host functions / extend-TTL operations (CAP-0053) [1].\n- Protocol 23 (Whisk) introduced live-vs-archival state separation (CAP-0062) to support this at scale [1].",
+    "answer": "- Soroban contract storage entries have a **TTL (time-to-live, in ledgers)**; when the TTL expires the entry is **archived** rather than kept live and must be **restored before use** [1].\n- Purpose: state archival bounds the size of live state so validators don't pay forever to host unused data (sustainable state growth / rent model) [1].\n- Durability tiers behave differently: **Temporary** entries are **deleted** on expiry; **Persistent** and **Instance** entries can be **restored** [1].\n- TTL can be extended via `extend_ttl` host functions or `ExtendFootprintTTLOp` (CAP-0046-12, Protocol 20); CAP-0053 (Protocol 21) added separate instance and code TTL extension [1].\n- Protocol 23 (Whisk) introduced live-vs-archival state separation (CAP-0062) to support this at scale [1].",
     "keyFacts": [
       "Defines a TTL (time-to-live) in ledgers for Soroban contract storage entries.",
       "Treats a TTL-expired entry as archived rather than live.",
@@ -18,7 +18,7 @@
       "Do NOT claim Soroban contract data lives forever for free with no TTL/rent.",
       "Do NOT claim expired persistent entries are permanently destroyed and unrecoverable (they are archived and restorable; only Temporary entries are deleted)."
     ],
-    "notes": "State archival/TTL subtopic. Traps: 'storage is free forever' and 'expired persistent data is destroyed' (it's archived/restorable).\nAlso good if the answer: Notes the storage durability tiers (Temporary vs Persistent vs Instance) behave differently — temporary entries are deleted on expiry, persistent/instance can be restored. | Notes TTL can be extended (bumped) via host functions / extend-TTL operations (CAP-0053).\nGolden cites: The Soroban state archival / TTL docs on developers.stellar.org."
+    "notes": "State archival/TTL subtopic. Traps: 'storage is free forever' and 'expired persistent data is destroyed' (it's archived/restorable).\nAlso good if the answer: Notes the storage durability tiers (Temporary vs Persistent vs Instance) behave differently — temporary entries are deleted on expiry, persistent/instance can be restored. | Notes TTL can be extended via `extend_ttl` host functions or `ExtendFootprintTTLOp` (CAP-0046-12; CAP-0053 later split instance/code extension).\nGolden cites: The Soroban state archival / TTL docs on developers.stellar.org."
   },
   "tags": {
     "category": "protocol-core",
@@ -36,26 +36,81 @@
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md",
+        "note": "Protocol 20: TTL extension via ExtendFootprintTTLOp or extend_* host functions.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0053.md",
+        "note": "Protocol 21: separate host functions to extend TTL for contract instance and contract code.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions",
+        "note": "Protocol 21 row lists CAP-0053 as separate instance/code TTL extension.",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (compound-predicate): Split TTL units, expiry, restoration, live-state bounds, and validator storage purpose into atomic facts; truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — defined TTL as ledgers remaining until an entry is no longer live.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — showed TTL expiry archives persistent and instance entries.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — required archived entries to be restored before access.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md — bounded live Soroban state through archival and dynamic rent.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0057.md and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md — tied archival and rent to lower validator storage requirements and sustainable scale.",
-        "Sibling sweep 2026-08-27: grep state archival|TTL|rent → q-sor-p23-auto-restore-extendto, q-soroban-storage-types, q-sor-ttl-defaults-extend; no contradiction"
+        "Gospel change 2026-11-02 (golden.answer, golden.notes); the proposer matrix and an independent verifier re-derived each claim from live sources.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — 'An entry's Time To Live (TTL) is defined as how many ledgers remain until the entry is no longer live.' (claim: TTL in ledgers for contract storage; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md — 'A LIVE entry's TTL can be extended by a Soroban operation (`ExtendFootprintTTLOp`) or by a host function' (claim: TTL in ledgers for contract storage; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — 'When a Persistent or Instance entry TTL is 0, it is \"archived\" and can't be accessed until it is \"restored\".' (claim: Expired persistent/instance entries are archived and must be restored; verdict confirmed)",
+        "Live F 2026-11-02: mainnet RPC getLedgerEntries CONFIG_SETTING_STATE_ARCHIVAL — '(8,10,3110400,17280,2073600,...) maxEntryTTL 3110400, minTemporaryTTL 17280, minPersistentTTL 2073600' (claim: Expired persistent/instance entries are archived and must be restored; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — 'When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible' (claim: Temporary entries are deleted at TTL 0; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.org/protocol-upgrades — 'CAP-0062 Live state prioritization: This proposal separates archived state and live state into two separate DBs.' (claim: Archival bounds live state / rent model; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — 'All contract data has a Time To Live (TTL) that must be periodically extended.' (claim: Archival bounds live state / rent model; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.org/protocol-upgrades — 'Protocol 23 9/3/25 - CAP-0062 (Network evicts persistent entries to archive)' (claim: P23/Whisk CAP-0062 live-vs-archival separation; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.org/blog/developers/announcing-protocol-23 — 'CAP-0062 introduces the performance features of full state archival' (claim: P23/Whisk CAP-0062 live-vs-archival separation; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0053.md — 'Title: Separate host functions to extend the TTL for contract instance and contract code ... Protocol version: 21' (claim: TTL extension via host functions/ops is CAP-0053; verdict contradicted)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md — 'Title: Soroban State Archival Interface ... Protocol version: 20 ... TTL can be extended by a Soroban operation (ExtendFootprintTTLOp) or by a host function' (claim: TTL extension via host functions/ops is CAP-0053; verdict contradicted)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — 'Archived persistent entries can never be re-created. They must instead be restored.' (claim: Free-forever storage; destroyed persistent data are false; verdict confirmed)",
+        "Verifier B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-12.md — 'Protocol version: 20 ... A LIVE entry's TTL can be extended by a Soroban operation (`ExtendFootprintTTLOp`) or by a host function (`extend_*` family of functions).' (field golden.answer; decision accept)",
+        "Verifier B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0053.md — 'Title: Separate host functions to extend the TTL for contract instance and contract code ... Protocol version: 21' (field golden.answer; decision accept)",
+        "Verifier A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — 'In addition to contract-defined TTL extensions using the `extend_ttl()` function, a contract data entry's TTL can be extended via the `ExtendFootprintTTLOp` operation.' (field golden.answer; decision accept)",
+        "Verifier A 2026-11-02: https://developers.stellar.org/docs/networks/software-versions — 'Protocol 21 (Mainnet, June 18, 2024) ... Soroban host function for extending TTL of contract instance and code separately: CAP-0053' (field golden.answer; decision accept)",
+        "Sibling sweep 2026-11-02: grep 'CAP-0053|extend_ttl|ExtendFootprintTTLOp|TTL extension' → q-protocol-version-history-list (P21 row corrected in this batch to the same CAP-0053 scope), q-sor-persistent-unbounded-collection-cap, q-sor-ttl-defaults-extend; no remaining case credits TTL extension itself to CAP-0053."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Eval-side authoring flaw: TTL extension was misattributed to CAP-0053; it shipped in Protocol 20 via CAP-0046-12 (golden audit 2026-11-02, batch protocol-core-05)."
       ]
     },
-    "origin": "raven-next q-protocol-state-archival-ttl"
+    "origin": "raven-next q-protocol-state-archival-ttl",
+    "corroboration": [
+      {
+        "claim": "TTL extension (extend_ttl host functions, ExtendFootprintTTLOp) came with CAP-0046-12 in Protocol 20; CAP-0053 in Protocol 21 added separate instance and code TTL extension.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'Protocol version: 20 ... A LIVE entry's TTL can be extended by a Soroban operation (`ExtendFootprintTTLOp`) or by a host function (`extend_*` family of functions).'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0053.md",
+            "observedAt": "2026-11-02",
+            "note": "Exact title: 'Separate host functions to extend the TTL for contract instance and contract code', Protocol version: 21."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'Protocol 21 (Mainnet, June 18, 2024) ... Soroban host function for extending TTL of contract instance and code separately: CAP-0053'."
+          }
+        ]
+      }
+    ]
   }
 }

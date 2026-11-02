@@ -21,7 +21,7 @@
       "Do NOT call acceptance a fourth deliverable milestone or invent a universal results week.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "CORRECTION 2026-08-04: current Build workflow supports rolling interest → eligibility/referral → invitation/full-proposal deadline → review/possible revision → Open-only vote → selection/KYC. Roughly six weeks is a dated cadence, not a universal 2/1/1/1-week stage model."
+    "notes": "CORRECTION 2026-08-04: current Build workflow supports rolling interest → eligibility/referral → invitation/full-proposal deadline → review/possible revision → Open-only vote → selection/KYC. Roughly six weeks is a dated cadence, not a universal 2/1/1/1-week stage model.\nObserved 2026-11-02: communityfund.stellar.org/awards still says 'SCF Build Award rounds run every 6 weeks', but its 2026 submission deadlines (Feb 8, Mar 15, Apr 26, Jun 14, Aug 16, Nov 8-9) were 5-12 weeks apart, and SCF #46 listed Notification as TBD. Do not penalize an answer that reports these dated gaps beside the stated cadence."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -35,7 +35,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-04",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -51,6 +51,24 @@
         "class": "A",
         "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/budget-and-deliverable-guidelines",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards",
+        "note": "'SCF Build Award rounds run every 6 weeks.'; deadlines SCF #41 Feb 8, #42 Mar 15, #43 Apr 26, #44 Jun 14, #45 Aug 16, #46 Nov 8/9 2026.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+        "note": "SCF #46 round page: 'Build Submission | TBD - November 9, 2026 ... Panel Review | November 11, 2026 - November 18, 2026 ... Notification and Award Distribution | TBD - TBD'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026",
+        "note": "Via Raven scout.searchResearch: 'SCF #46: Full submissions are due November 8 for up to $150K XLM'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -77,35 +95,44 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "2026 Build submission deadlines were 5-12 weeks apart while the awards page states a six-week cadence; SCF #46 notification is TBD.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-11-02",
+            "note": "'SCF Build Award rounds run every 6 weeks.' plus listed deadlines Feb 8, Mar 15, Apr 26, Jun 14, Aug 16, Nov 8 2026 (gaps 5, 6, 7, 9, 12 weeks)."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+            "observedAt": "2026-11-02",
+            "note": "'Build Submission | TBD - November 9, 2026'; 'Notification and Award Distribution | TBD - TBD'."
+          },
+          {
+            "class": "C",
+            "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026",
+            "observedAt": "2026-11-02",
+            "note": "Raven scout.searchResearch: 'SCF #46: Full submissions are due November 8'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-40 processes 3301/3304, 2026-07-10.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (negative-predicate): Split multi-claim key facts and moved two traps to avoid; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — showed current, source-dated Build content.",
-        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — showed a roughly six-week Build cadence.",
-        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — listed interest, proposal, prescreen/panel review, Open voting, decision, and information collection/KYC stages.",
-        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — separated information collection, initial award distribution, and three further tranches.",
-        "Sibling sweep 2026-08-27: rolling interest|Open-only|six-week|post-award payments|per-stage → q-scf-submission-lifecycle-deadlines, q-scf-vs-sdf-enterprise-fund, q-scf-how-to-apply, q-scf-verified-members, q-scf-rfp-tooling; no contradiction.",
-        "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current workflow still began with rolling interest review.",
-        "Live re-check 2026-08-30: https://communityfund.stellar.org/awards — the live page stated that Build rounds run every six weeks.",
-        "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the workflow separated interest, eligibility, invitation, proposal, prescreen, and panel.",
-        "Live re-check 2026-08-30: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/budget-and-deliverable-guidelines.md — post-award funding remained four payments.",
-        "Live re-check 2026-08-30: https://communityfund.stellar.org/awards — six weeks remained a current round cadence, not a universal stage formula.",
-        "Sibling sweep 2026-08-30: grep six-week|rolling interest|post-award payments → q-scf-rfp-tooling, q-scf-submission-lifecycle-deadlines; no contradiction"
+        "A 2026-11-02: https://communityfund.stellar.org/awards (raw HTML) — 'SCF Build Award rounds run every 6 weeks.'; 'SCF #46 ... Deadline to submit: November 8, 2026 ... SCF #45 ... August 16, 2026 ... SCF #44 ... June 14, 2026 ... SCF #43 ... April 26, 2026 ... SCF #42 ... March 15, 2026 ... SCF #41 ... February 8, 2026' (applier re-check confirms the cadence sentence).",
+        "A 2026-11-02: https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg — 'Build Submission | TBD - November 9, 2026 ... Panel Review | November 11, 2026 - November 18, 2026 ... Notification and Award Distribution | TBD - TBD'.",
+        "C 2026-11-02: Raven scout.searchResearch -> https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 — 'SCF #46: Full submissions are due November 8 for up to $150K XLM'.",
+        "Workflow claims (rolling interest, invitation, prescreen/panel, Open-only vote, KYC, four payments) re-confirmed by the proposer against https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md (HEAD e07b4bfc, 2026-10-16) and budget-and-deliverable-guidelines.md.",
+        "Sibling sweep 2026-11-02: grep 'every 6 weeks|six-week' over eval/qa/corpus/battery -> only this case; q-scf-current-round, q-scf-how-to-apply, and q-scf-rfp-tooling carry no stage-duration claim that conflicts with the dated-gap note."
       ],
       "rootCause": [
-        "Eval-side lifecycle over-specification: the golden invented a mandatory 2/1/1/1-week stage formula.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-scf-submission-lifecycle-deadlines"

@@ -30,7 +30,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-08-12",
-    "reverifyBy": "2027-03-04",
+    "reverifyBy": "2027-03-26",
     "sources": [
       {
         "class": "A",
@@ -99,18 +99,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-12",
-      "by": "2026-08 stale-pointer repair with public-source verification",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
       "evidence": [
-        "solo://proj/49/scratchpad/784#authorization-failures-and-generated-try-clients",
-        "https://developers.stellar.org/docs/build/guides/testing/test-contract-auth",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
-        "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/auth/src/lib.rs",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-sor-testing-negative-auth-events",
-        "Sibling sweep: q-soroban-unit-testing keeps the happy-path test surface; q-sor-decode-hosterror-codes owns exact failure interpretation."
-      ],
-      "rootCause": [
-        "eval-authoring"
+        "https://developers.stellar.org/docs/build/guides/testing/unit-tests (observedAt 2026-10-09): \"let contract_id = env.register(IncrementContract, ());\"; \"The Env created at the beginning of the test is not a simulation\".",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/env.rs (observedAt 2026-11-02): \"pub fn register<'a, C, A>(&self, contract: C, constructor_args: A) -> Address\"; \"pub fn mock_auths(&self, auths: &[MockAuth])\"; \"pub fn mock_all_auths(&self)\"; \"pub fn auths(&self)\".",
+        "Raven stellarDocs.search_docs({query:'mock_all_auths unit test authorization'}) (observedAt 2026-11-02): deployer#test-code shows env.mock_all_auths.",
+        "Verification only: no gospel change. Sibling sweep 2026-11-02: q-sor-decode-hosterror-codes; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-unit-testing"

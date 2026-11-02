@@ -33,8 +33,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2027-01-28",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-18",
     "sources": [
       {
         "class": "A",
@@ -116,22 +116,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer verification, no gospel change; applier refreshed; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-06)",
       "evidence": [
-        "Solo scratchpad 575 GT-56 primary process 3394 and sealed blind process 3398 independently removed blanket SDF/community rankings and required an execution-role-first decision framework.",
-        "Sibling sweep checked q-tool-official-sdks-list, q-tool-python-sdk, q-tool-rust-soroban-sdk, q-tool-js-sdk-package, q-tool-go-sdk-ingest, q-tool-java-sdk, q-tool-flutter-mobile-sdk, and q-ti-sdk-package-rename; no sibling supplies a generic maintainer-tier SLA.",
-        "Structural re-form (long-fact): split the contract-path fact and shortened the role, comparison, and maintainer facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks — the current SDK index separates contract SDKs from client and XDR SDKs.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks/contract-sdks — the current contract catalog identifies SDF-maintained Rust `soroban-sdk` for Stellar contracts.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks/contract-sdks — the current catalog lists community Solang and AssemblyScript contract paths.",
-        "Live re-check 2026-08-29: https://github.com/stellar/js-stellar-sdk — the current repository exposes package-specific runtime, features, releases, dependencies, and tests.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks/client-sdks — the current catalog labels maintainers and capabilities without promising a blanket SLA.",
-        "Sibling sweep 2026-08-29: grep contract SDK|client SDK|maintained by SDF|community → q-tool-rust-soroban-sdk, q-tool-flutter-mobile-sdk, q-tool-js-sdk-package; no contradiction."
-      ],
-      "rootCause": [
-        "Eval-side unsupported decision guidance: maintainer attribution was promoted into a universal support SLA, safety, audience, and fitness ranking.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "A https://developers.stellar.org/docs/tools/sdks/contract-sdks (observedAt 2026-11-02): 'The Rust SDK is maintained by SDF. ... The Solang compiler is maintained by the Hyperledger community. ... The AssemblyScript SDK is maintained by dedicated community developers.'",
+        "A https://developers.stellar.org/docs/tools/sdks/client-sdks (observedAt 2026-11-02): 'The JavaScript SDK is maintained by SDF. ... The Go SDK is maintained by SDF ... Kotlin Multiplatform SDK Maintained by a dedicated community developer.'; 'All SDKs are open-source; file a GitHub issue or pull request in the specific SDK repository'.",
+        "B https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/sdks/client-sdks.mdx (observedAt 2026-11-02): '## Go **The Go SDK is maintained by SDF.** ## Java SDK **Maintained by a dedicated community developer.**'.",
+        "E Raven stellarDocs.search_docs 'client SDKs maintained by SDF community' (observedAt 2026-11-02): 'rs-stellar-rpc-client - Code Rust Stellar RPC client. Maintained by SDF.'",
+        "D Perplexity perplexity_search -> https://crates.io/crates/soroban-sdk/29.0.1 (observedAt 2026-11-02): 'The two most recent soroban-sdk major releases are supported with critical security fixes' (per-SDK policy, not a catalog SLA).",
+        "Sibling sweep 2026-11-02: q-tool-rust-soroban-sdk (now v29.0.1 as of 2026-11-02) and q-tool-go-sdk-ingest stay consistent; this golden pins no SDK version. No gospel change."
       ]
     },
     "origin": "raven-next q-tool-which-sdk-comparison"

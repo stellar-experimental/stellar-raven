@@ -32,8 +32,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-10",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-27",
     "sources": [
       {
         "class": "B",
@@ -82,21 +82,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
       "evidence": [
-        "2026-07-09 independent CAP/source/network verification in Solo scratchpad 567",
-        "Structural re-form (compound-predicate): split the CAP relationship, Mainnet date, delegated field, and address-bound field into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071.md — the current Final CAP still assigns first-class custom-account delegation to Protocol 27/CAP-0071.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — the current history still records Protocol 27 on Mainnet from 2026-07-08.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md — the current Final CAP still defines SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — the current Final CAP still defines address-bound SOROBAN_CREDENTIALS_ADDRESS_V2.",
-        "Sibling sweep 2026-08-27: grep CAP-0071|SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES|SOROBAN_CREDENTIALS_ADDRESS_V2 → q-pc-protocol-27-zipper, q-protocol-27-cap-0071, q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-version-history-list, q-protocol-cap-process; no contradiction"
-      ],
-      "rootCause": [
-        "eval-side date-contingent timing prose expired after P27 activation",
-        "solo://proj/49/todo/date-contingent-trap--831",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Proposer F 2026-11-02: https://horizon.stellar.org/ledgers/63386819 — \"63386819 2026-07-08T17:00:10Z protocol_version 27 (ledger 63386818 is protocol 26)\"",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/networks/software-versions — \"## Protocol 27 (Mainnet, July 8, 2026) ... Authentication Delegation and Address-Bound Soroban Credentials: [CAP-71]\"",
+        "Proposer claim verdict confirmed (golden.keyFacts[1]): Protocol 27 live on Mainnet since 2026-07-08 (ledger 63386819) Note: Mainnet is now protocol 29 (Horizon current_protocol_version 29); the golden does not claim P27 is latest.",
+        "Proposer B 2026-11-02: https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x — \"SOROBAN_CREDENTIALS_ADDRESS_V2 = 2, SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 3 ... struct SorobanDelegateSignature ... nestedDelegates<>\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x — \"ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS = 10\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071.md — \"Title: Authentication delegation and address-bound Soroban credentials ... Status: Final ... Protocol version: 27\"",
+        "Proposer E 2026-11-02: stellarDocs.search_protocol_concepts_docs 'CAP-71 SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES' — \"hit https://developers.stellar.org/docs/networks/software-versions#release-notes-5\"",
+        "Proposer claim verdict confirmed (golden.keyFacts[2]): SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES, SorobanDelegateSignature, ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS, SOROBAN_CREDENTIALS_ADDRESS_V2",
+        "Proposer B 2026-11-02: https://github.com/stellar/js-stellar-sdk/blob/main/CHANGELOG.md (v17.0.0) — \"CAP-71 `SOROBAN_CREDENTIALS_ADDRESS_V2` credentials are now the default, on both ends of the auth flow.\"",
+        "Proposer claim verdict confirmed (golden.answer): Clients need compatible SDK versions",
+        "Sibling sweep 2026-11-02: checked q-pc-protocol-27-zipper, q-protocol-27-cap-0071, q-protocol-cap-process, q-protocol-version-history-list, q-edge-fresh-latest-protocol-version; no contradiction found."
       ]
     },
     "origin": "raven-next q-soroban-auth-delegation-p27"

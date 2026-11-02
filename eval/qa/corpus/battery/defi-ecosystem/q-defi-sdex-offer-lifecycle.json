@@ -7,7 +7,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "For Manage Sell Offer and Manage Buy Offer, `offer_id=0` requests creation; a nonzero ID updates an existing offer; setting sell `amount=0` or buy `buy_amount=0` deletes it. Save the submitted transaction hash and operation index, then decode the transaction **result XDR/meta**: CREATED and UPDATED carry the resulting `OfferEntry`; DELETED carries no entry; claimed offers explain executions during the operation. If an order fills immediately, Core may store no offer and allocate no real offer ID, while Horizon trade resources can expose a synthetic operation-derived ID.\n\nReconcile three surfaces:\n1. transaction result/meta for the authoritative create/update/delete transition and claimed offers;\n2. current `/accounts/{id}/offers` or `/offers/{id}` for an open remainder;\n3. `/trades` and `/offers/{id}/trades`, with cursor pagination/reconnect handling, for fill history. Correlate path-payment operations and trade/claim atoms because path payments can consume SDEX liquidity.\n\nDo not rely on Horizon offer-created/updated/removed effects: current `stellar/go` marks those effect types unused, and a live successful update returned no effects even though result XDR contained the updated offer. A missing offer can reflect immediate/full execution or explicit deletion/cancellation; **Classic offers do not expire at the protocol level**. Distinguish client-scheduled cancellation and Horizon retention limits from offer expiry.",
+    "answer": "For Manage Sell Offer and Manage Buy Offer, `offer_id=0` requests creation; a nonzero ID updates an existing offer; setting sell `amount=0` or buy `buy_amount=0` deletes it. Save the submitted transaction hash and operation index, then decode the transaction **result XDR/meta**: CREATED and UPDATED carry the resulting `OfferEntry`; DELETED carries no entry; claimed offers explain executions during the operation. If an order fills immediately, Core may store no offer and allocate no real offer ID, while Horizon trade resources can expose a synthetic operation-derived ID.\n\nReconcile three surfaces:\n1. transaction result/meta for the authoritative create/update/delete transition and claimed offers;\n2. current `/accounts/{id}/offers` or `/offers/{id}` for an open remainder;\n3. `/trades` and `/offers/{id}/trades`, with cursor pagination/reconnect handling, for fill history. Correlate path-payment operations and trade/claim atoms because path payments can consume SDEX liquidity.\n\nDo not rely on Horizon offer-created/updated/removed effects: current Horizon source (`stellar/stellar-horizon`; the `stellar/go` monorepo is archived) marks those effect types unused, and a live successful update returned no effects even though result XDR contained the updated offer. A missing offer can reflect immediate/full execution or explicit deletion/cancellation; **Classic offers do not expire at the protocol level**. Distinguish client-scheduled cancellation and Horizon retention limits from offer expiry.",
     "keyFacts": [
       "Explains create/update/delete offer parameters.",
       "Parses authoritative lifecycle transitions and claimed offers from result XDR/meta.",
@@ -52,8 +52,21 @@
       },
       {
         "class": "B",
+        "ref": "https://github.com/stellar/stellar-horizon",
+        "note": "Live Horizon repo (archived:false, pushed 2026-10-30); internal/db2/history/main.go marks EffectOfferCreated/Removed/Updated (30-32) unused. Replaced the archived stellar/go ref on 2026-11-02.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/go-stellar-sdk/blob/main/protocols/horizon/effects/main.go",
+        "note": "// unused // EffectOfferCreated: \"offer_created\" ...",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
         "ref": "https://github.com/stellar/go",
-        "note": "class inferred at migration"
+        "note": "\"archived\":true, \"Archived public monorepo of go code\" (archived 2025-12-16).",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -98,26 +111,50 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, the live Horizon source (stellar/stellar-horizon) marks offer-created/updated/removed effect types unused, and the stellar/go monorepo is archived.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go",
+            "observedAt": "2026-11-02",
+            "note": "\"// unused // EffectOfferCreated occurs when an account offers to trade an asset // EffectOfferCreated EffectType = 30 ... EffectOfferRemoved = 31 ... EffectOfferUpdated = 32\"."
+          },
+          {
+            "class": "B",
+            "ref": "gh api repos/stellar/go",
+            "observedAt": "2026-11-02",
+            "note": "\"archived\":true,\"description\":\"Archived public monorepo of go code\"."
+          },
+          {
+            "class": "D",
+            "ref": "Perplexity search -> github.com/stellar/go release page",
+            "observedAt": "2026-11-02",
+            "note": "\"This repository was archived by the owner on Dec 16, 2025. It is now read-only.\""
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-17 primary process 3247 and blind process 3248, including live operation 272376861589106689 and offer/trade reads asOf 2026-07-10.",
-        "Sibling sweep: q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-defi-arbitrage-pathpayment-bots, q-asset-sdex-vs-amm, and q-defi-market-making-kelp.",
-        "Structural re-form (negative-predicate): split three compound key facts into five single-predicate facts and replaced the negative expiry wording; lifecycle truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x — ManageSellOffer parameters still encode create, update, and delete behavior.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — current operation documentation still points lifecycle interpretation to transaction results and metadata.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/offers — current offers and offer trades remain separate Horizon surfaces.",
-        "Live re-check 2026-08-27: https://github.com/stellar/go — current stellar/go remains the implementation source for immediate-fill and synthetic-trade-ID behavior.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools and https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x — path payments consume offers, and Classic OfferEntry has persistent state without an expiry field.",
-        "Sibling sweep 2026-08-27: grep Manage Buy|Manage Sell|offer_id|claimed offers|synthetic trade → q-asset-sdex-vs-amm, q-defi-market-making-kelp, and q-sor-classic-dex-from-contract; no contradiction."
+        "2026-11-02 [B] gh api repos/stellar/go — \"\"archived\":true,\"description\":\"Archived public monorepo of go code\"\" (verifier accept of golden.answer)",
+        "2026-11-02 [B] https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go — \"// unused\n// EffectOfferCreated occurs when an account offers to trade an asset\n// EffectOfferCreated EffectType = 30 ... // EffectOfferRemoved EffectType = 31 ... // EffectOfferUpdated EffectType = 32\" (verifier accept of golden.answer)",
+        "2026-11-02 [D] Perplexity search -> github.com/stellar/go release page — \"This repository was archived by the owner on Dec 16, 2025. It is now read-only.\" (verifier accept of golden.answer)",
+        "2026-11-02 [B] gh api repos/stellar/stellar-horizon — \"\"archived\":false,\"description\":\"Stellar's Horizon API service\",\"pushed_at\":\"2026-10-30T19:54:38Z\"\" (verifier accept of truth.sources[3].ref)",
+        "2026-11-02 [B] https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x — \"/* Creates, updates or deletes an offer ... // 0=create a new offer, otherwise edit an existing offer int64 offerID;\" (proposer claim, confirmed: offer_id 0 creates; nonzero updates; amount 0 deletes.)",
+        "2026-11-02 [E] Raven stellarDocs.search_docs 'manage sell offer offer id 0 create delete amount 0' — \"list-of-operations#manage-sell-offer; result-codes manage-sell-offer MANAGE_SELL_OFFER_NOT_FOUND\" (proposer claim, confirmed: offer_id 0 creates; nonzero updates; amount 0 deletes.)",
+        "2026-11-02 [B] https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go — \"// unused // EffectOfferCreated ... EffectType = 30 ... EffectOfferRemoved ... = 31 ... EffectOfferUpdated ... = 32\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
+        "2026-11-02 [B] https://github.com/stellar/go-stellar-sdk/blob/main/protocols/horizon/effects/main.go — \"// unused // EffectOfferCreated: \"offer_created\", ...\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
+        "2026-11-02 [B] https://github.com/stellar/go (README) — \"REPOSITORY DEPRECATED ... This repository has been moved to: github.com/stellar/go-stellar-sdk (repo archived:true)\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
+        "2026-11-02 [B] https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x — \"OfferEntry fields sellerID, offerID, selling, buying, amount, price, flags (no expiry field)\" (proposer claim, confirmed: Classic offers have no protocol-level expiry.)",
+        "Sibling sweep 2026-11-02: grep github.com/stellar/go across the battery → q-tool-go-sdk-ingest, q-ti-parse-raw-ledger-data, q-tool-which-sdk-comparison, and others cite stellar/go for SDK/ingest topics, not for Horizon offer-effect status; none asserts offer effects are used; no contradiction."
       ],
       "rootCause": [
-        "Stale documentation and generic API-absence caveats were promoted over current implementation behavior and invented protocol expiry.",
-        "eval-side lifecycle authoring lacked an empirical transaction/result/effects check",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-defi-sdex-offer-lifecycle"

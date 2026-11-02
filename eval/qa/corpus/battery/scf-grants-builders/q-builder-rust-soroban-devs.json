@@ -16,7 +16,7 @@
       "Do NOT claim Scout exposes populated skills/scfTier attributes or removed scfTier/featured filters.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "GT-35 CORRECTION 2026-07-10: grade a dated live-union candidate roster with direct code evidence and explicit evidence tiers. A directory match does not prove experience, seniority, deployment, or availability.\nGT-35 independently confirmed by processes 3287/3289; re-check roster and activity at answer time.\nAccurately quoting the canonical Scout source on Rust builder match provenance is not a wrong claim while a cached or older copy still shows matches without provenance before the 2026-07-14 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "GT-35 CORRECTION 2026-07-10: grade a dated live-union candidate roster with direct code evidence and explicit evidence tiers. A directory match does not prove experience, seniority, deployment, or availability.\nGT-35 independently confirmed by processes 3287/3289; re-check roster and activity at answer time.\nAccurately quoting the canonical Scout source on Rust builder match provenance is not a wrong claim while a cached or older copy still shows matches without provenance before the 2026-07-14 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fact.\n2026-11-02 re-check: a Rust builder query returned 51 matches (40 admitted by code language); neither Samuel Ogera nor Asman Malika appeared. Do not require the 2026-07-11 example names."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -30,7 +30,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "C",
@@ -71,6 +71,12 @@
         "class": "D",
         "ref": "https://github.com/G0vermind/social-forests-protocol",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/builders?skill=Rust&limit=200",
+        "note": "meta.counts {returned: 51, total: 51}; match.basis profile-text 11, code-language 40; generatedAt 2026-11-02T16:33:27.144Z; no row contains 'ogera' or 'malika'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -98,40 +104,39 @@
           }
         ],
         "note": "Legacy verdict: confirmed-with-bounds."
+      },
+      {
+        "claim": "On 2026-11-02 the Rust builder query returned 51 matches (40 by code language), and neither 2026-07-11 example name (Samuel Ogera, Asman Malika) appears in the directory",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/builders?skill=Rust&limit=200",
+            "observedAt": "2026-11-02",
+            "note": "16:33:27Z: meta.counts {returned: 51, total: 51}; basis counts {profile-text: 11, code-language: 40}. The default 50-row page (?skill=rust or ?q=rust) holds 39 code-language rows."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/builders?q=Ogera / ?q=Malika / ?q=Asman (limit=200)",
+            "observedAt": "2026-11-02",
+            "note": "16:34:58Z: meta.counts {returned: 0, total: 0} for each. Single class (the live directory itself); a dated observation, not a gospel fact."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-35 primary 3287 and blind 3289; live union and direct repository sweep 2026-07-10.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live builder directory returned five Rust matches, including Samuel Ogera and Asman Malika.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Scout copies; truth is unchanged.",
-        "Reviewed improvements/resolved.json entry sls-041 — fixed 2026-07-14; older Scout copies can omit Rust builder match provenance.",
-        "Sibling sweep 2026-08-27: grep Samuel Ogera|Asman Malika|matchBasis|codeEvidence → q-builder-rust-soroban-devs only; no contradiction",
-        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Samuel Ogera|Asman Malika|Rust builder → q-builder-rust-soroban-devs only; no contradiction",
-        "Structural re-form (negative-predicate): shortened the dated-source fact and stated the three evidence types as distinct signals; truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellarlight — the current service describes a fresh builder index for people and agents.",
-        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellarlight — the service distinguishes directory data from repository code-truth signals.",
-        "Sibling sweep 2026-08-27: grep Rust builder|direct code evidence|experience → q-builder-by-region-latam, q-builder-by-scf-tier, q-builder-rust-soroban-devs; no contradiction",
-        "Live re-check 2026-08-30: https://stellarlight.xyz/builders — the live directory showed its August 29, 2026 sync date.",
-        "Live re-check 2026-08-30: https://stellarlight.xyz/builders — the current roster and activity measurements were visibly dated.",
-        "Live re-check 2026-08-30: https://github.com/Stellar-Light/stellarlight — the service separated directory profiles, verified signals, and source-code grading.",
-        "Sibling sweep 2026-08-30: grep Samuel Ogera|Asman Malika|Rust → q-builder-rust-soroban-devs, q-defi-streaming-payments-prior-art, q-hist-soroban-launch-protocol20, q-scf-cross-reflector-rounds-current, q-sor-build-target-wasm32v1, q-sor-evm-to-soroban-porting, q-sor-scval-conversion, q-sor-skill-openzeppelin-setup, q-soroban-cli-bindings, q-soroban-deploy-cli, q-soroban-fuzz-testing, q-soroban-no-std-constraints, q-soroban-oz-token, q-soroban-sdk-macros, q-soroban-unit-testing, q-soroban-wasm-language, q-ti-cli-rust-windows-troubleshooting, q-ti-scaffold-stellar, q-tool-rust-soroban-sdk, q-tool-which-sdk-comparison; no contradiction"
+        "C 2026-11-02T16:33:27Z: https://stellarlight.xyz/api/builders?skill=Rust&limit=200 → meta.counts {returned: 51, total: 51}; match.basis {profile-text: 11, code-language: 40}; no row contains 'ogera' or 'malika'.",
+        "C 2026-11-02T16:33Z: https://stellarlight.xyz/api/builders?skill=rust and ?q=rust → meta.counts {returned: 50, total: 51} (default page cap 50; 39 code-language rows on the page).",
+        "C 2026-11-02T16:34:58Z: https://stellarlight.xyz/api/builders?q=Ogera, ?q=Malika, ?q=Asman (limit=200) → total 0 for each.",
+        "F/A 2026-11-02: https://stellarlight.xyz/api/builders?featured=true → 'Unsupported query parameter(s): featured.' supportedParams [q, skill, tech, location, limit, offset, fields]; https://stellarlight.xyz/api/openapi.json (1.9.116) says the never-populated scfTier field was removed in 1.7.19 (avoid item still holds).",
+        "Change: golden.notes adds the dated 2026-11-02 re-check and tells graders not to require the 2026-07-11 example names. Verifier decision: modify (proposer said 50 matches with 40 code-language rows, which mixed the full set and the default page; the verifier's full-set figures 51/40 were applied).",
+        "Sibling sweep 2026-11-02: grep 'Ogera|Asman Malika' over eval/qa/corpus/battery → only this case; q-builder-by-region-latam and q-builder-by-scf-tier assert no Rust roster; no contradiction."
       ],
       "rootCause": [
-        "Directory match was conflated with expertise/seniority and stale schema descriptions were copied into gospel.",
-        "improvements/stellar-light-scout/sls-041-builder-skill-match-provenance.md",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-builder-rust-soroban-devs"

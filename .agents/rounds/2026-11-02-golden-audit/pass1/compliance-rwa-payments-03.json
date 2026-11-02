@@ -1,0 +1,1369 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "compliance-rwa-payments-03",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-crp-dtcc-stellar-connection-plan",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question",
+     "claim": "DTCC announced connecting DTC's tokenization service to Stellar in May 2026",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+       "observedAt": "2026-11-02",
+       "quote": "New York/London/Hong Kong/Singapore/Sydney, May 27, 2026 – The Depository Trust & Clearing Corporation (DTCC) ... and the Stellar Development Foundation (SDF) t…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.coindesk.com/business/2026/05/27/dtcc-plans-to-bring-tokenized-assets-to-stellar-in-latest-wall-street-blockchain-push",
+       "observedAt": "2026-11-02",
+       "quote": "The Depository Trust & Clearing Corporation (DTCC), Wall Street's clearinghouse, said Wednesday it plans to connect its tokenized securities platform to the Ste…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "DTC-tokenized assets expected on Stellar in 1H 2027, not already live",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+       "observedAt": "2026-11-02",
+       "quote": "DTCC and SDF expect DTC-tokenized assets to be available on the Stellar network in the first half of 2027."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/case-studies/dtcc",
+       "observedAt": "2026-11-02",
+       "quote": "DTC-tokenized assets are expected to become available on the Stellar network in the first half of 2027."
+      },
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+       "observedAt": "2026-11-02",
+       "quote": "The service is currently integrated with the Canton Network and DTCC's private Besu network, with additional blockchain networks to be added in 2027."
+      },
+      {
+       "class": "D",
+       "ref": "https://crypto.news/dtcc-launches-tokenization-service-with-20-major-firms/",
+       "observedAt": "2026-11-02",
+       "quote": "the previously announced Stellar integration is expected to bring tokenized securities to the blockchain in the first half of 2027."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.coindesk.com/business/2026/10/28/wall-street-backbone-dtcc-brings-usd30-trillion-securities-closer-to-blockchain-with-major-banks",
+       "observedAt": "2026-11-02",
+       "quote": "The company's road map includes adding Stellar XLM and stablecoin issuer Circle Internet's Arc blockchain next year"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Announcement date May 27, 2026",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+       "observedAt": "2026-11-02",
+       "quote": "May 27, 2026"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.prnewswire.com/news-releases/dtcs-tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-its-multi-chain-strategy-302780557.html",
+       "observedAt": "2026-11-02",
+       "quote": "May 27, 2026, 09:00 ET"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Part of DTC/DTCC multi-chain strategy",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+       "observedAt": "2026-11-02",
+       "quote": "The connection with Stellar advances DTCC's standards-driven, multi-chain strategy"
+      },
+      {
+       "class": "D",
+       "ref": "https://crypto.news/dtcc-launches-tokenization-service-with-20-major-firms/",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar's involvement forms part of DTCC's multichain strategy"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Builds on DTC's December 2025 SEC no-action letter; covers tokenization and lifecycle for eligible DTC-custodied assets",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+       "observedAt": "2026-11-02",
+       "quote": "following receipt of a No-Action Letter from the U.S. Securities and Exchange Commission (SEC) in December 2025 authorizing DTC to implement and operate a new s…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities",
+       "observedAt": "2026-11-02",
+       "quote": "The Depository Trust Company no-action letter (Dec. 11, 2025), available at https://www.sec.gov/files/tm/no-action/dtc-nal-121125.pdf"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/case-studies/dtcc",
+       "observedAt": "2026-11-02",
+       "quote": "The connection supports the rapid conversion of traditional assets into tokenized form, and the full asset lifecycle—including corporate actions and reporting."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "DTC-tokenized assets were live on Stellar in May 2026 (trap)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+       "observedAt": "2026-11-02",
+       "quote": "announced plans to enable the tokenization"
+      },
+      {
+       "class": "D",
+       "ref": "https://coinpaper.com/38082/dtcc-brings-30-trillion-in-eligible-securities-to-blockchain-infrastructure",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar is not among the networks currently supporting the live service."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Turning 1H27 target into guaranteed completion (trap)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+       "observedAt": "2026-11-02",
+       "quote": "Firms anticipate DTC-tokenized assets available on the Stellar network during the 1H27"
+      }
+     ]
+    },
+    {
+     "field": "proposed golden.avoid[+]",
+     "claim": "Stellar was a live DTS network at the 2026-10-28 launch",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+       "observedAt": "2026-11-02",
+       "quote": "The service is currently integrated with the Canton Network and DTCC's private Besu network, with additional blockchain networks to be added in 2027."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.cryptotimes.io/2026/10/28/dtcc-takes-securities-tokenization-service-live-on-canton-besu/",
+       "observedAt": "2026-11-02",
+       "quote": "The service initially connects the Canton Network and DTCC's private Besu network ... additional blockchain integrations planned for 2027."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "On May 27, 2026, DTCC announced plans to connect DTC's tokenization service to the Stellar public blockchain as part of a multi-chain strategy. The announcement did not say DTC-tokenized assets were already live on Stellar: availability on Stellar was expected in the first half of 2027. The planned connection covers tokenization and lifecycle support for eligible DTC-custodied assets and builds on DTC's December 2025 SEC no-action letter. As of 2026-11-02, the DTCC Tokenization Service went live on 2026-10-28 on the Canton Network and DTCC's private Besu network; Stellar was not a live network…",
+     "reason": "Freshness drift: DTS went live 2026-10-28 on Canton and private Besu only; Stellar still targeted 1H27. A dated status line prevents a true current answer from looking contradictory."
+    },
+    {
+     "field": "golden.avoid[+]",
+     "op": "append",
+     "new": "Do NOT claim Stellar was a live DTCC Tokenization Service network at its 2026-10-28 launch.",
+     "reason": "Post-launch conflation risk: the 2026-10-28 DTS launch excludes Stellar per the DTCC release; the claim is false today and answer-visible."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Forward-looking status is scheduled. Accept newer dated primary evidence after the target window.\nAs of 2026-11-02: DTCC launched the DTCC Tokenization Service on 2026-10-28 on Canton and its private Besu network only, with more networks in 2027. Do not penalize an accurate, dated mention of that launch; calling Stellar a live DTS network is wrong.",
+     "reason": "Grader caution so an accurate dated mention of the Canton/Besu launch is not read as contradicting the not-live-on-Stellar fact."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-observed 2026-11-02."
+    },
+    {
+     "field": "truth.sources[+]",
+     "op": "append",
+     "new": {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy"
+     },
+     "reason": "Primary May 27 release; the previously cited dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain path returns HTTP 404."
+    },
+    {
+     "field": "truth.sources[+]",
+     "op": "append",
+     "new": {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live"
+     },
+     "reason": "Primary 2026-10-28 launch release naming Canton and private Besu as the live networks."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-rwa-projects-tokenizing-stellar"
+  },
+  {
+   "id": "q-crp-export-tx-history-taxes",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Horizon pagination exhausts only retained history; check history_elder_ledger",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "history_elder_ledger: 58962241; history_latest_ledger: 65269766; horizon_version 30.0.0"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring",
+       "observedAt": "2026-08-29",
+       "quote": "HISTORY_RETENTION_COUNT controls the retained historical window (prior re-check 2026-08-29)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "RPC getTransactions is retained ledger-range data, not account history",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions",
+       "observedAt": "2026-11-02",
+       "quote": "This method will return an error if startLedger is less than the oldest ledger stored in this node"
+      },
+      {
+       "class": "F",
+       "ref": "https://mainnet.sorobanrpc.com getTransactions startLedger=100",
+       "observedAt": "2026-11-02",
+       "quote": "start ledger (100) must be between the oldest ledger: 65148808 and the latest ledger: 65269767 for this rpc instance"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Hubble/BigQuery is a complete historical source",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/analytics/hubble",
+       "observedAt": "2026-11-02",
+       "quote": "Hubble is an open-source, publicly available dataset that provides a complete historical record of the Stellar network."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs index (prior session evidence)",
+       "observedAt": "2026-08-29",
+       "quote": "Hubble remains an explicitly complete historical BigQuery dataset (re-check 2026-08-29)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "CoinTracker documents CSV import for Stellar rather than direct sync (as of 2026-07-10)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.cointracker.io/integrations/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "How do I connect my Stellar account to CoinTracker? 1. Download the CSV export of your transactions from Stellar 2. Reformat those transactions into our CoinTra…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask 2026-11-02",
+       "observedAt": "2026-11-02",
+       "quote": "CoinTracker's own Stellar instructions indicate CSV import only."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Export operations, effects, events, fees beyond payments",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions",
+       "observedAt": "2026-11-02",
+       "quote": "result includes events.transactionEventsXdr per transaction"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "As of 2026-11-02, CoinTracker's Stellar page pairs a generic \"connect your Stellar wallet\" blurb with CSV-only connection steps. Accept a dated CSV-import answer or one that flags the mismatch.\nAlso good if the answer: Mentions reconciling CSV/export data with wallet/exchange records and fiat cost basis where applicable. | Notes Horizon is not the only possible data source; RPC/indexers/archive providers may be relevant for historical completeness.\nGolden cites: Stellar Horizon/RPC/indexer docs for export mechanics and dated tax-tool docs for named integrations.\nCORRECTION 2026-07-10 (GT-10 pr…",
+     "reason": "Stale procedural line replaced by the 2026-11-02 provider-page observation; the page itself mixes auto-sync marketing and CSV-only steps, so either faithful reading is graded fairly."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": ""
+  },
+  {
+   "id": "q-crp-oz-rwa-erc3643-trex",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "SEP-0057 is Draft v0.3.0",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft\nCreated: 2025-11-26\nUpdated: 2026-09-08\nVersion: 0.4.0"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "2b45c64ef4ef 2026-09-09T00:18:22Z SEP-57: Add muxed address event (#2013)"
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.searchResearch 'SEP-0057 T-REX version' (stellarlight.xyz/api/research mirror)",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft ... Updated: 2026-09-08 Version: 0.4.0"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]/[3]",
+     "claim": "Normative core vs non-normative claim-based appendix; add_identity in appendix and OZ code, outside core",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "IMPORTANT NOTICE: This appendix describes a reference implementation and is NOT a part of the T-REX specification. The T-REX standard only requires that an Iden…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/examples/rwa/identity-registry/src/contract.rs",
+       "observedAt": "2026-11-02",
+       "quote": "fn add_identity( ... identity_storage::add_identity("
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Hosted docs still contain can_transfer/can_create while source uses transferred/created/destroyed",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/rwa/rwa",
+       "observedAt": "2026-09-30",
+       "quote": "fn can_transfer(e: &Env, from: Address, to: Address, amount: i128, token: Address) -> bool; ... fn can_create(...)"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/packages/tokens/src/rwa/compliance/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "fn transferred( e, from: AccountSnapshot, to: AccountSnapshot, ..., kind: TransferKind ...); fn created(e: &Env, to: AccountSnapshot, amount: i128, token: Addre…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "add_identity is an INVENTED name (stale 2026-06-29 line)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "fn add_identity("
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/examples/rwa/identity-registry/src/contract.rs",
+       "observedAt": "2026-11-02",
+       "quote": "fn add_identity("
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Legal compliance and off-chain rights external to technical enforcement",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities",
+       "observedAt": "2026-11-02",
+       "quote": "The format in which a security is issued or the methods by which holders are recorded (e.g., onchain vs. offchain) does not affect application of the federal se…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n**SEP-0057** is a **Draft v0.4.0** (updated 2026-09-08) Stellar proposal for a T-REX/ERC-3643-style regulated-token architecture. Its normative core defines a minimal identity verifier and token/compliance hooks; it does not require one particular claim-registry implementation.\n\nThe SEP also contains an expressly **non-…",
+     "reason": "Freshness drift: SEP-0057 preamble now Version 0.4.0, Updated 2026-09-08 (commit 2b45c64ef4ef, PR #2013)."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Identifies SEP-0057 as Draft (v0.4.0, updated 2026-09-08, as of 2026-11-02).",
+     "reason": "Version drift v0.3.0 -> v0.4.0; Draft status unchanged."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "2026-11-02 VERIFIED against the SEP-0057 source: status Draft, version 0.4.0, updated 2026-09-08, title 'T-REX (Token for Regulated EXchanges)', authors OpenZeppelin + Boyan Barakov/Ozgun Ozerk/Dennis O'Connell, explicitly based on ERC-3643. v0.4.0 only added the MuxedTransfer event; the v0.3.0 hook model and the non-normative appendix are unchanged. Draft status is the durable fact; the version number is volatile.\nAlso good if the answer: Mentions Stellar-native regulated asset tools may include authorization flags, SEP-8 approval-server patterns, SAC/Soroban token interfaces, or OZ contract …",
+     "reason": "First notes line was stale (v0.3/last updated 2026-06-11) and told the judge add_identity is an INVENTED name, contradicting avoid[1] and the RECONCILED line; replaced with the current verified preamble."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-observed 2026-11-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Stale 2026-06-29 grader-notes line kept after the 2026-07-10 reconciliation contradicted it."
+   ],
+   "siblings": "q-sor-evm-to-soroban-porting; q-rwa-stellar-vs-erc20-regulated; q-crp-tokenize-personal-rwa; q-rwa-tokenization-standards"
+  },
+  {
+   "id": "q-crp-partner-detail-after-discovery",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "getPartner takes an exact slug obtained from partner discovery",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json scout.getPartner inputSchema",
+       "observedAt": "2026-11-02",
+       "quote": "{\"properties\":{\"slug\":{\"description\":\"Partner slug\",\"type\":\"string\"}},\"required\":[\"slug\"]}"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners/trustless-work",
+       "observedAt": "2026-11-02",
+       "quote": "keys: slug,name,partnerType,...,services,sectors,regions,...,docsUrl,contactEmail,...,verified,freshness,url; freshness.status 'aging'"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "paths include /api/partners and /api/partners/{slug}"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Profile carries services, sectors, regions, contact/docs links, verification, freshness, URL",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners/trustless-work",
+       "observedAt": "2026-11-02",
+       "quote": "url: https://stellarlight.xyz/partners/trustless-work"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-edge-partner-detail-soft-empty; q-gap-match-partners-degrade"
+  },
+  {
+   "id": "q-crp-regional-offramp-mobilemoney",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 a live mobile-money partner search returned 13 matches, with Zeam Money and Boss Pay among the first",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'mobile money',limit:20}",
+       "observedAt": "2026-11-02",
+       "quote": "count 6: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project {slug:'boss-pay'} / {slug:'zeam-money'}",
+       "observedAt": "2026-11-02",
+       "quote": "No project found with slug \"boss-pay\""
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=zeam",
+       "observedAt": "2026-11-02",
+       "quote": "total 0 exact; 20 semantic-only rows (ARS, KES, TinyAmm ...)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "43 partners; mobile-mentioning: Hana Wallet, Freighter, Clickspesa, Honey Coin, Fonbnk"
+      }
+     ]
+    },
+    {
+     "field": "proposed golden.answer",
+     "claim": "As of 2026-11-02 LumenLoop 'mobile money' directory search returns six entries",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'mobile money'}",
+       "observedAt": "2026-11-02",
+       "quote": "count 6 ['Blink','Bloccpay','ElementPay','Joona Pay','PeerPesa','Wave']"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project {slug:'wave'}",
+       "observedAt": "2026-11-02",
+       "quote": "Wave is a mobile money service operating in Africa, allowing users to deposit, withdraw, pay bills, and send money with minimal fees. links.website wave.com"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]/[3]",
+     "claim": "Stellar lacks local bank/card/mobile-money rails; anchors, wallets, processors, partners provide them",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors are Stellar's on- and off-ramps to traditional financial rails, typically operated by financial institutions or fintech companies."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+       "observedAt": "2026-11-02",
+       "quote": "anchors, that offer Stellar deposit & withdrawal services utilizing local payment rails"
+      },
+      {
+       "class": "D",
+       "ref": "https://docs.seevcash.com/docs/ramp",
+       "observedAt": "2026-08-29",
+       "quote": "(prior corroboration row 2026-08-29)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Check provider assets, countries, KYC, fees, limits, settlement, API/SEP fit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+       "observedAt": "2026-11-02",
+       "quote": "MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer derives its named examples and status claims from the current LumenLoop corpus, then dates the roster so it is not presented as permanent. As of 2026-11-02, a LumenLoop directory search for \"mobile money\" returned six project entries: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, and Wave. A directory entry is a candidate, not proof of a supported cash-out corridor.\n\nThe Stellar network itself has no bank, card, or mobile-money payout rail. Anchors, wallets, payment processors, and local partners provide those rails, usually behind a SEP-24 or SEP-6 withdrawal (SEP-31 for…",
+     "reason": "The 2026-07-11 example (13 matches; Zeam Money and Boss Pay) no longer reproduces: neither is in the LumenLoop directory on 2026-11-02, so it is unverifiable. The answer also lacked the stable distinctions its closing sentence refers to; they are restated from keyFacts 3-5 and the corroborated ancho…"
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-observed 2026-11-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Answer was reduced to a dated roster example and lost the stable distinctions its closing sentence cites."
+   ],
+   "siblings": "q-crp-anchors-by-corridor; q-pay-moneygram-ramps; q-anchor-moneygram-ramps"
+  },
+  {
+   "id": "q-crp-remittance-founder-advisory",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SEP rail map: SEP-1 discovery, SEP-10 auth, SEP-12 KYC, SEP-24/6 deposit-withdraw, SEP-31 cross-border, SEP-38 quotes",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-6: Programmatic Deposit and Withdrawal; SEP-24: Hosted Deposit and Withdrawal; SEP-31: Cross Border Payments API"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+       "observedAt": "2026-08-29",
+       "quote": "(prior live re-check 2026-08-29: distinct sending and receiving anchors)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "MoneyGram Access is a USDC cash-in/out integration using SEP-10 and SEP-24",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+       "observedAt": "2026-11-02",
+       "quote": "Applications seeking to integrate MoneyGram Access must implement the client side of SEP-24 ... MoneyGram needs to authenticate both the user and the applicatio…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+       "observedAt": "2026-11-02",
+       "quote": "MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]-[4]",
+     "claim": "Stellar is settlement, not a complete remittance business; stablecoin choice by issuer/liquidity/geography/redemption/regulation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors are Stellar's on- and off-ramps to traditional financial rails"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.circle.com/current/the-stablecoin-trap-issuing-a-stablecoin-without-the-infrastructure-to-run-one",
+       "observedAt": "2026-08-29",
+       "quote": "(prior live re-check 2026-08-29)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-crp-anchors-by-corridor; q-hist-remittance-corridors; q-sep6-sep24-sep31-choice"
+  },
+  {
+   "id": "q-crp-sdp-operation",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Current SDP Core implements native SEP-10/24 and its own stellar.toml; no external Anchor Platform",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/tree/develop (59538fe211cf)",
+       "observedAt": "2026-11-02",
+       "quote": "internal/serve/httphandler/sep10_handler.go, sep24_handler.go, sep45_handler.go, stellar_toml_handler.go"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "The verification process uses the SDP's native SEP-24 implementation."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[1]",
+     "claim": "Validators accept G or C, reject M encoding",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/develop/internal/serve/validators/receiver_validator.go",
+       "observedAt": "2026-11-02",
+       "quote": "rv.Check(strkey.IsValidEd25519PublicKey(address) || strkey.IsValidContractAddress(address), ..., \"invalid stellar address format\")"
+      },
+      {
+       "class": "F",
+       "ref": "prior focused validator tests (2026-07-11 corroboration row)",
+       "observedAt": "2026-07-11",
+       "quote": "focused validators/tests accept G or C direct addresses and reject encoded M input"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2] / avoid[2]",
+     "claim": "Embedded passkey C wallets use SEP-45 in SEP-24 and are fee-sponsored",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "The SDP uses SEP-45 during SEP-24 flows to verify that receivers control their embedded wallets. ... The transaction is fee-sponsored by the distribution accoun…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/releases/tag/7.1.0",
+       "observedAt": "2026-11-02",
+       "quote": "Bind sponsored transaction authorization to the caller's embedded wallet. #1236"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Muxed/sponsored/arbitrary custodial remain unsupported (stale line)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "The SDP sponsors transactions on behalf of the receiver, covering all network fees"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/releases/tag/7.1.0",
+       "observedAt": "2026-11-02",
+       "quote": "Bind sponsored transaction authorization to the caller's embedded wallet."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "2026-06-29 RESEARCH-FIX: pinned recipient account types against current SDP docs. Architecture (design-and-architecture) confirms receivers register a supported wallet via SEP-24 (phone/email -> OTP -> Wallet Registration); TSS pays those receiver wallet accounts. Embedded Wallets page + advanced-configuration (verified in stellar/stellar-docs source) confirm SDP now provisions a passkey-secured smart-contract C-address wallet per receiver, so contract-account receivers ARE documented (the old must_avoid forbidding contract accounts was outdated and is corrected). Encoded M-address input and a…",
+     "reason": "Stale 2026-06-29 notes sentence calls sponsored accounts unsupported, contradicting avoid[2], the 2026-07-10 CORRECTION line, and current docs/source (fee-sponsored embedded wallets)."
+    }
+   ],
+   "rootCause": [
+    "Stale 2026-06-29 grader-notes sentence kept after the 2026-07-10 correction reversed its sponsorship claim."
+   ],
+   "siblings": "q-anchor-sdp-vs-anchor-platform; q-anchor-sdp-what; q-pay-sdp-disbursement; q-pc-muxed-accounts; q-pc-address-types-strkey"
+  },
+  {
+   "id": "q-crp-tokenize-personal-rwa",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[1]",
+     "claim": "Token may be master record, notification, custodial entitlement, or convey no right; structures vary",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities",
+       "observedAt": "2026-11-02",
+       "quote": "The crypto asset does not convey any rights, obligations, or benefits of the security ... the transfer of the crypto asset ... operates to notify the issuer (or…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 2026-11-02 (Franklin Templeton pages)",
+       "observedAt": "2026-11-02",
+       "quote": "The Fund's transfer agent maintains the official record of share ownership via a proprietary blockchain-integrated system"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "BENJI illustrates a transfer-agent/system-of-record model",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.franklintempleton.com/press-releases/news-room/2026/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u.s.-registered-tokenized-money-market-fund",
+       "observedAt": "2026-11-02",
+       "quote": "the first U.S.-registered mutual fund to use a public blockchain as its official system of record for processing transactions and recording share ownership"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.franklintempleton.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "code=\"BENJI\" ... desc=\"1 BENJI token corresponds to 1 share of the fund.\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[2]",
+     "claim": "Stellar controls enforce policy, not title or compliance",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-08-29",
+       "quote": "(prior live re-check 2026-08-29: SAC controls limited to administration, authorization, revocation, clawback)"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "T-REX tokens are permissioned tokens"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-rwa-tokenized-freshness; q-rwa-tokenization-standards; q-defi-benji-franklin-templeton; q-crp-oz-rwa-erc3643-trex"
+  },
+  {
+   "id": "q-mpp-discovery-and-modes",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "MPP is HTTP 402; Charge = per-request SAC transfer; Session = cumulative off-chain commitments",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+       "observedAt": "2026-11-02",
+       "quote": "Each request triggers a Soroban SAC transfer settled on-chain individually. ... makes many off-chain payments by signing cumulative commitments — no per-payment…"
+      },
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/advanced/discovery",
+       "observedAt": "2026-11-02",
+       "quote": "Payment intent (charge or session)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]-[3]",
+     "claim": "OpenAPI 3.1 /openapi.json x-payment-info.offers; discovery advisory; MPPScan, mpp.dev, https://mpp.dev/mcp/services",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://mpp.dev/advanced/discovery",
+       "observedAt": "2026-11-02",
+       "quote": "Discovery documents are informational hints. The runtime 402 Challenge remains the authoritative source of payment terms. ... Agents can query the curated servi…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md",
+       "observedAt": "2026-11-02",
+       "quote": "(same-day re-verification lane)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-agent-payment-standard-choice; q-defi-x402-on-stellar-what; q-defi-agentic-payment-standards-compare"
+  },
+  {
+   "id": "q-pay-anchor-msb-licensing",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]/[2]",
+     "claim": "Duties follow entity activity/custody/control, not labels; noncustodial software alone generally not a money transmitter",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "the provider will also qualify as a money transmitter, regardless of the label the person applies to itself or its activities. ... Hosted wallet providers are a…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask 2026-11-02",
+       "observedAt": "2026-11-02",
+       "quote": "Congress had not enacted either bill into law ... the Senate's September 15, 2026 cloture vote on proceeding to the bill failed; the bill's status remained 'Pas…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Federal FinCEN MSB registration is separate from state money-transmitter licensing",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1022/section-1022.380",
+       "observedAt": "2026-10-01",
+       "quote": "(registration of money services businesses; existing source)"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask 2026-11-02",
+       "observedAt": "2026-11-02",
+       "quote": "State money-transmitter licensing is a separate question."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-crp-become-an-anchor-licensing; q-crp-custodial-vs-noncustodial-wallets; q-comp-anchor-compliance-stack"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-crp-dtcc-stellar-connection-plan",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Classes A and D agree: DTS launched 2026-10-28 on Canton and DTCC's private Besu network; Stellar not live, still expected 1H 2027. The goes-live release itself says only 'additional blockchain networks to be added in 2027'; the 1H 2027 Stellar expectation comes from the May release plus Oct 2026 press. The added sentence is dated.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+      "observedAt": "2026-11-02",
+      "quote": "Oct. 28, 2026 — The Depository Trust Company (DTC) ... today launched the DTCC Tokenization Service (DTS). ... The service is currently integrated with the Cant…"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+      "observedAt": "2026-11-02",
+      "quote": "May 27, 2026 ... DTCC and SDF expect DTC-tokenized assets to be available on the Stellar network in the first half of 2027."
+     },
+     {
+      "class": "D",
+      "ref": "https://www.techtimes.com/articles/329659/20261029/wall-street-goes-chain-dtcc-activates-tokenized-securities-20-banks.htm (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "October 28, 2026: Full commercial deployment goes live with twenty signed participants, two active blockchain networks ... Stellar Network (H1 2027): DTC-tokeni…"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.tokenpost.com/news/business/34476 (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "At launch, the service will operate on Canton and Besu ... Stellar (XLM) remains on the schedule for integration in the first half of 2027"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-dtcc-stellar-connection-plan",
+    "field": "golden.avoid[+]",
+    "decision": "accept",
+    "note": "Punishes a claim that is false per primary DTCC text; historical (pinned to the 2026-10-28 launch), so not date-contingent; answer-visible because the golden answer now states the launch networks.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+      "observedAt": "2026-11-02",
+      "quote": "Oct. 28, 2026 — The Depository Trust Company (DTC) ... today launched the DTCC Tokenization Service (DTS). ... The service is currently integrated with the Cant…"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.techtimes.com/articles/329659/20261029/wall-street-goes-chain-dtcc-activates-tokenized-securities-20-banks.htm (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "October 28, 2026: Full commercial deployment goes live with twenty signed participants, two active blockchain networks ... Stellar Network (H1 2027): DTC-tokeni…"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.canton.network/news/dtcc-tokenization-service-goes-live-marking-major-milestone-in-the-adoption-of-digital-assets (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "DTCC Tokenization Service Goes Live ... October 28, 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-dtcc-stellar-connection-plan",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Symmetric caution; accurate.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+      "observedAt": "2026-11-02",
+      "quote": "Oct. 28, 2026 — The Depository Trust Company (DTC) ... today launched the DTCC Tokenization Service (DTS). ... The service is currently integrated with the Cant…"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.tokenpost.com/news/business/34476 (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "At launch, the service will operate on Canton and Besu ... Stellar (XLM) remains on the schedule for integration in the first half of 2027"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-dtcc-stellar-connection-plan",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Matches re-observation date.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+      "observedAt": "2026-11-02",
+      "quote": "Oct. 28, 2026 — The Depository Trust Company (DTC) ... today launched the DTCC Tokenization Service (DTS). ... The service is currently integrated with the Cant…"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-dtcc-stellar-connection-plan",
+    "field": "truth.sources[+] (connect-with-stellar release)",
+    "decision": "accept",
+    "note": "URL resolves (publish_date 2026-05-27). Existing evidence cites a /news/2026/may/27/ path for the same release; orchestrator may keep one.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+      "observedAt": "2026-11-02",
+      "quote": "May 27, 2026 ... DTCC and SDF expect DTC-tokenized assets to be available on the Stellar network in the first half of 2027."
+     }
+    ]
+   },
+   {
+    "id": "q-crp-dtcc-stellar-connection-plan",
+    "field": "truth.sources[+] (goes-live release)",
+    "decision": "accept",
+    "note": "URL resolves (publish_date 2026-10-28).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+      "observedAt": "2026-11-02",
+      "quote": "Oct. 28, 2026 — The Depository Trust Company (DTC) ... today launched the DTCC Tokenization Service (DTS). ... The service is currently integrated with the Cant…"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-export-tx-history-taxes",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "As of 2026-11-02, CoinTracker's Stellar integration page pairs a generic \"connect your Stellar wallet\" blurb with CSV-only connection steps, while other CoinTracker pages imply XLM public-address sync. Accept a dated CSV-import answer, one that flags the mismatch, or a dated, CoinTracker-attributed sync claim that tells the user to confirm the method in the app.\nAlso good if the answer: Mentions reconciling CSV/export data with wallet/exchange records and fiat cost basis where applicable. | Notes Horizon is not the only possible data source; RPC/indexers/archive providers may be relevant for h…",
+    "note": "The proposer's description of the Stellar page is accurate, but other CoinTracker pages list XLM for public-address auto-sync, and a CoinTracker feedback post refers to 'syncing their Stellar Wallet'. A dated sync claim may be true; the note must not imply it is wrong. Modified text adds that symmetric acceptance. Direct curl still returns 403, so the page was read via Parallel cache (2026-09-05) …",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.cointracker.io/integrations/stellar (Parallel web_fetch, cache acquired 2026-09-05; direct curl HTTP 403 on 2026-11-02)",
+      "observedAt": "2026-09-05",
+      "quote": "The easiest way to report your Stellar taxes is to connect your Stellar wallet to CoinTracker. CoinTracker automatically imports your XLM transactions ... 1. Do…"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.cointracker.com/integrations/cryptocom-wallet (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "CoinTracker automatically syncs the transactions from a public address you add. We currently support ADA, ... XLM, XRP, XTZ, and ZEC."
+     },
+     {
+      "class": "D",
+      "ref": "https://www.cointracker.io/integrations/coinbase-wallet (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Special instructions for BCH, ETC, XLM, or XRP transactions."
+     },
+     {
+      "class": "D",
+      "ref": "https://feedback.cointracker.io/product-feedback/p/missing-xlm-transactions-on-stellar-wallet (via Perplexity search)",
+      "observedAt": "2025-02-24",
+      "quote": "Users may be missing XLM transactions when syncing their Stellar Wallet. ... Users can add their transaction history via CSV"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-oz-rwa-erc3643-trex",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Draft v0.4.0, Updated 2026-09-08 confirmed by B (source + commit patch) and C (Scout research row); E corroborates SEP-57 in official tokenization docs, and sibling q-rwa-tokenization-standards already records the official page naming Version 0.4.0. Hosted OZ docs still show can_transfer/can_create; OZ main (2026-10-20) and the spec use transferred/created/destroyed. Appendix still says it is NOT …",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/ecosystem/sep-0057.md (master; last commit 2b45c64ef4 2026-09-09 'SEP-57: Add muxed address event (#2013)')",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Created: 2025-11-26 / Updated: 2026-09-08 / Version: 0.4.0"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits/2b45c64ef4 (patch)",
+      "observedAt": "2026-11-02",
+      "quote": "-Updated: 2026-06-11 -Version: 0.3.0 +Updated: 2026-09-08 +Version: 0.4.0 ... +pub struct MuxedTransfer ... +- `v0.4.0` - Add the muxed layout of the transfer e…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchResearch {query:'SEP-57 T-REX ERC-3643 OpenZeppelin RWA'} observedAt 2026-11-02T16:23:56Z",
+      "observedAt": "2026-11-02",
+      "quote": "row 'T-REX (Token for Regulated EXchanges)' https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md date 2026-09-08, text contains 'Draft'…"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs {query:'SEP-0057 T-REX regulated token'} -> https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-57 (T-REX / Token for Regulated EXchanges)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/OpenZeppelin/stellar-contracts/contents/packages/tokens/src/rwa/compliance/mod.rs (main head ddc327eb92d6, 2026-10-20)",
+      "observedAt": "2026-11-02",
+      "quote": "Transferred, ... Created, ... Destroyed ... fn transferred( ... fn created(e: &Env, to: AccountSnapshot, amount: i128, token: Address) ... fn destroyed(e: &Env,…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/rwa/rwa (Parallel cache acquired 2026-09-30)",
+      "observedAt": "2026-09-30",
+      "quote": "fn can_transfer(e: &Env, from: Address, to: Address, amount: i128, token: Address) -> bool; fn can_create(...) ... ComplianceHook enum defines ... Transferred, …"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md#appendix-claim-based-identity-verification-reference-implementation",
+      "observedAt": "2026-11-02",
+      "quote": "IMPORTANT NOTICE: This appendix describes a reference implementation and is NOT a part of the T-REX specification. The T-REX standard only requires that an Iden…"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-oz-rwa-erc3643-trex",
+    "field": "golden.keyFacts[1]",
+    "decision": "modify",
+    "newText": "Identifies SEP-0057 as Draft; dates any version cited (v0.4.0 as of 2026-11-02).",
+    "note": "Proposed text is true (76 chars) but gates on the volatile version and the updated date, which can read as required. On a live-freshness case, gate the durable fact (Draft) and require dating of any version cited, per the durable-fact gating rule. New text is 80 chars.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/ecosystem/sep-0057.md (master; last commit 2b45c64ef4 2026-09-09 'SEP-57: Add muxed address event (#2013)')",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Created: 2025-11-26 / Updated: 2026-09-08 / Version: 0.4.0"
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchResearch {query:'SEP-57 T-REX ERC-3643 OpenZeppelin RWA'} observedAt 2026-11-02T16:23:56Z",
+      "observedAt": "2026-11-02",
+      "quote": "row 'T-REX (Token for Regulated EXchanges)' https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md date 2026-09-08, text contains 'Draft'…"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-oz-rwa-erc3643-trex",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "v0.4.0 patch only changed the preamble, added MuxedTransfer, and a changelog line; hook model and appendix unchanged. Removing the stale 'add_identity is INVENTED' paragraph removes an internal contradiction with the RECONCILED line and the avoid item.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/ecosystem/sep-0057.md (master; last commit 2b45c64ef4 2026-09-09 'SEP-57: Add muxed address event (#2013)')",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Created: 2025-11-26 / Updated: 2026-09-08 / Version: 0.4.0"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits/2b45c64ef4 (patch)",
+      "observedAt": "2026-11-02",
+      "quote": "-Updated: 2026-06-11 -Version: 0.3.0 +Updated: 2026-09-08 +Version: 0.4.0 ... +pub struct MuxedTransfer ... +- `v0.4.0` - Add the muxed layout of the transfer e…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md#appendix-claim-based-identity-verification-reference-implementation",
+      "observedAt": "2026-11-02",
+      "quote": "IMPORTANT NOTICE: This appendix describes a reference implementation and is NOT a part of the T-REX specification. The T-REX standard only requires that an Iden…"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-oz-rwa-erc3643-trex",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Matches re-observation.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/contents/ecosystem/sep-0057.md (master; last commit 2b45c64ef4 2026-09-09 'SEP-57: Add muxed address event (#2013)')",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Created: 2025-11-26 / Updated: 2026-09-08 / Version: 0.4.0"
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchResearch {query:'SEP-57 T-REX ERC-3643 OpenZeppelin RWA'} observedAt 2026-11-02T16:23:56Z",
+      "observedAt": "2026-11-02",
+      "quote": "row 'T-REX (Token for Regulated EXchanges)' https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md date 2026-09-08, text contains 'Draft'…"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-regional-offramp-mobilemoney",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Raw Lumenloop search_directory 'mobile money' returns count 6 with exactly the six named titles. Sampled real-world footprints exist (PeerPesa Circle partner page lists Stellar, ElementPay site, SCF listings). The anchor/SEP paragraph matches official docs and the existing keyFacts and notes. The roster is dated and source-scoped, with a candidate-not-corridor caution. Raven lumenloop calls were n…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'mobile money',limit:50} (raw, manifest transport)",
+      "observedAt": "2026-11-02",
+      "quote": "count: 6; titles: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave"
+     },
+     {
+      "class": "D",
+      "ref": "https://partners.circle.com/partner/peerpesa ; https://www.elementpay.net/ ; https://communityfund.stellar.org/projects (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "PeerPesa: Blockchains Supported - Celo - Stellar ... Crypto-to-fiat payouts directly to mobile money wallets; ElementPay: collect, pay out ... on mobile money, …"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/ramps ; https://developers.stellar.org/docs/learn/fundamentals/anchors#stellar-ecosystem-proposals-seps",
+      "observedAt": "2026-11-02",
+      "quote": "On and off-ramps (called anchors in the Stellar universe) that connect the Stellar network to traditional financial rails. ... SEP-24: Hosted Deposit and Withdr…"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-regional-offramp-mobilemoney",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Matches re-observation.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'mobile money',limit:50} (raw, manifest transport)",
+      "observedAt": "2026-11-02",
+      "quote": "count: 6; titles: Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave"
+     }
+    ]
+   },
+   {
+    "id": "q-crp-sdp-operation",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The old note said sponsored was unsupported, which contradicts the case's own avoid item and the official docs ('fee-sponsored by the distribution account'). The receiver validator accepts only G (Ed25519) or C (contract) strkeys, so encoded M input is rejected. The new text is consistent with the answer, avoid items, and the CORRECTION line.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-disbursement-platform-backend/contents/internal/serve/validators/receiver_validator.go (develop, pushed 2026-11-02; latest release 7.1.0 2026-10-26)",
+      "observedAt": "2026-11-02",
+      "quote": "rv.Check(strkey.IsValidEd25519PublicKey(address) || strkey.IsValidContractAddress(address), fmt.Sprintf(\"wallets[%d].address\", i), \"invalid stellar address form…"
+     },
+     {
+      "class": "B",
+      "ref": "stellar-disbursement-platform-backend CHANGELOG.md line 49",
+      "observedAt": "2026-11-02",
+      "quote": "Bind sponsored transaction authorization to the caller's embedded wallet. [#1236]"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets (Parallel cache acquired 2026-10-01)",
+      "observedAt": "2026-10-01",
+      "quote": "The transaction is fee-sponsored by the distribution account, so the receiver pays nothing ... They can view their wallet address (a Stellar C-address starting …"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs {query:'Stellar Disbursement Platform embedded wallet sponsored transactions passkey contract account'}",
+      "observedAt": "2026-11-02",
+      "quote": "embedded-wallets#step-4-receiving-funds: Asset Contract (SAC) transfer to move funds from the distribution account to the contract wallet The transaction is fee…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+   "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+   "perplexity_search: DTCC Tokenization Service goes live October 2026 Canton Besu Stellar",
+   "https://www.cointracker.io/integrations/stellar (Parallel fetch + curl 403)",
+   "perplexity_search: CoinTracker Stellar XLM wallet integration CSV import public address sync",
+   "parallel web_search: CoinTracker Stellar wallet sync public address",
+   "gh api stellar/stellar-protocol ecosystem/sep-0057.md, commits, commit 2b45c64ef4, ecosystem/README.md",
+   "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+   "https://docs.openzeppelin.com/stellar-contracts/tokens/rwa/rwa",
+   "gh api OpenZeppelin/stellar-contracts commits + packages/tokens/src/rwa/compliance/mod.rs + code search",
+   "Raven execute: stellarDocs.search_docs x6, scout.searchResearch x1",
+   "POST https://api.lumenloop.com/v1/tools/search_directory",
+   "perplexity_search: PeerPesa ElementPay Joona Pay Bloccpay mobile money stablecoin Stellar",
+   "gh api stellar/stellar-disbursement-platform-backend repo, releases, code search, wallet_validator.go, receiver_validator.go, CHANGELOG.md",
+   "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/embedded-wallets (404)",
+   "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-crp-dtcc-stellar-connection-plan; q-crp-export-tx-history-taxes; q-crp-oz-rwa-erc3643-trex; q-crp-regional-offramp-mobilemoney; q-crp-sdp-operation",
+  "verifiedOnly": "q-crp-partner-detail-after-discovery; q-crp-remittance-founder-advisory; q-crp-tokenize-personal-rwa; q-pay-anchor-msb-licensing",
+  "untouched": "q-mpp-discovery-and-modes",
+  "escalations": [
+   {
+    "id": "q-sor-evm-to-soroban-porting",
+    "issue": "Sibling outside this batch still says Draft SEP-57 v0.3.0; live source is v0.4.0 (updated 2026-09-08). Needs its own golden-truth change."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-crp-dtcc-stellar-connection-plan",
+    "log": "Applied answer (dated 2026-10-28 DTS launch on Canton/Besu, Stellar still 1H 2027), new avoid, notes caution, asOf 2026-11-02, reverifyBy 2027-04-01 -> 2027-02-09, 3 sources, 2 corroboration rows, verified."
+   },
+   {
+    "id": "q-crp-export-tx-history-taxes",
+    "log": "Applied verifier-modified golden.notes (symmetric CSV-or-dated-sync acceptance), added 3 sources and an unverifiable corroboration row for XLM public-address sync, verified; answer and asOf unchanged."
+   },
+   {
+    "id": "q-crp-oz-rwa-erc3643-trex",
+    "log": "Applied answer (Draft v0.4.0, updated 2026-09-08), verifier-modified keyFacts[1] (Draft + dated version), notes (removed stale 'add_identity INVENTED' line), asOf 2026-11-02, 3 sources, refreshed corroboration row 0 and evidence on row 2, verified."
+   },
+   {
+    "id": "q-crp-regional-offramp-mobilemoney",
+    "log": "Applied answer (2026-11-02 LumenLoop six-entry roster as candidates plus restored anchor/SEP distinctions), asOf 2026-11-02, 3 sources, 2 corroboration rows (confirmed-as-of new roster; unverifiable old example), verified."
+   },
+   {
+    "id": "q-crp-sdp-operation",
+    "log": "Applied golden.notes fix (sponsorship supported for embedded wallets; M input and pooled destinations unsupported), 3 sources, 2 evidence rows on corroboration[1], verified."
+   },
+   {
+    "id": "q-crp-partner-detail-after-discovery",
+    "log": "Verified only: refreshed truth.verified, asOf 2026-11-02, added raw Stellar Light source; no gospel change."
+   },
+   {
+    "id": "q-crp-remittance-founder-advisory",
+    "log": "Verified only: refreshed truth.verified (A docs + MoneyGram + B SEP-31); no gospel change."
+   },
+   {
+    "id": "q-crp-tokenize-personal-rwa",
+    "log": "Verified only: refreshed truth.verified (SEC, Franklin Templeton, SEP-57 source); status unverifiable kept; no gospel change."
+   },
+   {
+    "id": "q-pay-anchor-msb-licensing",
+    "log": "Verified only: refreshed truth.verified (FinCEN guidance + D sweep on 2026 legislation); no gospel change."
+   },
+   {
+    "id": "q-mpp-discovery-and-modes",
+    "log": "Untouched: already verified 2026-11-02 by the near-due reverify lane, reverifyBy 2027-02-19 already in window; proposer found no change."
+   }
+  ]
+ }
+}

@@ -32,8 +32,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-17",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-06-30",
     "sources": [
       {
         "class": "A",
@@ -49,6 +49,12 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "POST https://soroban-testnet.stellar.org getEvents topics [transfer,*,*,*]",
+        "note": "Native SAC transfer event with 4 topics, last topic String \"native\"; oldestLedger 5401819, latestLedger 5522778 (about 7 days).",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -96,23 +102,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Split one long event-schema fact into three atomic facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — SEP-41 defines custom token event topics without the SAC asset topic.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md — CAP-67 appends the SEP-11 asset string to current SAC and Classic asset-event topics.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md — CAP-67 describes direct Soroban and non-Soroban event paths in operation metadata.",
-        "Sibling sweep 2026-08-29: grep CAP-67|CAP-0067|asset-appended|event paths|SEP-41 event → q-sep-41-token-interface, q-protocol-23-whisk-caps, q-sor-evm-to-soroban-porting, q-soroban-event-indexing-design, q-soroban-token-transfer-pattern, q-ti-custodial-account-generation-c-address, q-ti-enumerate-holders-airdrop, q-ti-fetch-all-balances-classic-sac; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0067.md — \"Status: Final ... Protocol version: 23 ... topics: [\\\"transfer\\\", from:Address, to:Address, sep0011_asset:String], data: amount:i128 ... topics: [\\\"mint\\\", to:Address, sep0011_asset:String]\" (observedAt 2026-11-02).",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"Updated: 2026-08-24 Version 0.5.2 ... `v0.5.2` - Clarify that implementers may emit additional topics.\" This reinforces the topic-count avoid item (observedAt 2026-11-02).",
+        "Raven stellarDocs.search_docs (observedAt 2026-11-02T16:38:25Z) docs/build/guides/transactions/send-and-receive-payment — \"Transfer Topics Model: an array of four topics, specified in CAP-67 ... Use Stellar RPC's getEvents method ... with a 7 day retention window\".",
+        "POST https://soroban-testnet.stellar.org getEvents (observedAt 2026-11-02) — id 0023711560958480384-0000000000, contract CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC, 4 topics, last topic String \"native\".",
+        "No gospel change; independent verifier accepted the asOf and reverifyBy refresh: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-04.json.",
+        "Sibling sweep 2026-11-02: q-sep-41-token-interface, q-protocol-23-whisk-caps, q-soroban-token-transfer-pattern, q-ti-enumerate-holders-airdrop, q-ti-fetch-all-balances-classic-sac checked by the proposer; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-event-indexing-design"

@@ -19,6 +19,8 @@ recurrences:
     evidence: GT-35 primary/blind re-execution returned count 95 and reproduced africa/Africa, asia/Asia, global/Global, and mena/MENA
   - date: 2026-08-11
     evidence: `get_regions` still returns 95 values and all four capitalization-only pairs; upstream #23 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity
+  - date: 2026-11-02
+    evidence: "authenticated POST https://api.lumenloop.com/v1/tools/get_regions at 2026-11-02T17:17:23Z returned count 100 (up from 95) with six case-only duplicate pairs: africa/Africa, asia/Asia, europe/Europe, global/Global, latam/LATAM, mena/MENA. The europe/Europe and latam/LATAM pairs are new since 2026-08-11. Golden case: q-builder-lumenloop-regions-vocab."
 probe:
   type: http-text
   url: https://api.lumenloop.com/v1/tools/get_regions

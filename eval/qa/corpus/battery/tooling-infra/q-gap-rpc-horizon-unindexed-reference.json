@@ -28,7 +28,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -56,19 +56,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-01)",
       "evidence": [
-        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
-        "catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs",
-        "inventory/stellar-docs.json",
-        "Structural re-form (long-fact): shortened the documented search-index exclusion without changing its scope; truth unchanged.",
-        "Live re-check 2026-08-29: catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs — the current operation contract says auto-generated RPC-method and Horizon-endpoint reference pages are not in the search index.",
-        "Sibling sweep 2026-08-29: grep per-method/per-endpoint|unindexed search result → q-gap-rpc-horizon-unindexed-reference only; no contradiction."
-      ],
-      "rootCause": [
-        "solo://project/49/scratchpad/p4/n1-gapops",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, E); the proposer proposed no change and the verifier listed the case as no-proposal.",
+        "Class A (golden.keyFacts[0], confirmed-as-of): catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs — \"Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.\" (observedAt 2026-11-02)",
+        "Class E (golden.keyFacts[0], confirmed-as-of): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) stellarDocs.search_rpc_horizon_data_docs + search_docs for 'getLedgers', 'getTransactions method parameters', 'simulateTransact... — \"no hit under /api-reference/methods/* or /horizon/api-reference/<endpoint>; rpc_horizon soft-empty for two queries\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[0], confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers and .../horizon/api-reference/retrieve-an-account — \"both HTTP 200 (pages exist after the 2026-10-22 Mintlify migration)\" (observedAt 2026-11-02)",
+        "Class A (golden.avoid[0], contradicted): https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers — \"HTTP 200 although the search index returns no method page\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-infra-rpc-methods-list checked; no conflicting fact."
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

@@ -17,7 +17,7 @@
       "Do NOT teach raw events as the preferred current API or call getEvents a subscription.",
       "Do NOT promise permanent history or freeze a universal retention window."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Retention (~7 days) is the key fact; 'forever queryable' is the trap. Verified: events published via env.events().publish, read via RPC getEvents with a bounded retention window (~7 days).\nAlso good if the answer: RPC retains queryable events for a limited window (about 7 days); for older events you need an external indexer. | The leading topics are indexed and used to filter event subscriptions.\nGolden cites: The developers.stellar.org events / RPC getEvents documentation.\nGT-46 CORRECTION 2026-07-11: typed-event-first API and provider-configured retention replace deprecated/stale wording.\nAccurately quoting the official Stellar documentation source on a 24-hour default and separate 7-day `getEvents` cap is not a wrong claim while a cached or older copy still shows those values before the 2026-07-27 sd-023 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Bounded, provider-configured retention is the key fact; 'forever queryable' is the trap. Verified 2026-11-02: typed #[contractevent] events with Event::publish (raw env.events().publish is deprecated), read via RPC getEvents within the history-retention-window (stock default 120960 ledgers, about 7 days).\nAlso good if the answer: RPC retains queryable events for a limited window (stock default about 7 days, configurable per provider); for older events you need an external indexer. | The leading topics are indexed and used to filter getEvents queries.\nGolden cites: The developers.stellar.org events / RPC getEvents documentation.\nGT-46 CORRECTION 2026-07-11: typed-event-first API and provider-configured retention replace deprecated/stale wording.\nThe Stellar Docs events ingest guide (docs/build/guides/events/ingest) still says getEvents retention is \"7 days at most\" (observed 2026-11-02; improvements/stellar-docs/sd-068-events-ingest-retention-7-days-at-most.md). That ceiling is false: the window is the configurable history-retention-window, stock default 120960 ledgers (about 7 days). A stock or typical window of about 7 days is correct. A fixed universal 7-day maximum fires avoid[1], even when quoted from that guide; an answer that notes the guide's wording and gives the configurable window is correct. Teaching raw `env.events().publish` as current fires avoid[0], even when copied from the EVM migration page that still shows it (improvements/stellar-docs/sd-069-evm-advanced-concepts-deprecated-events-publish.md)."
   },
   "tags": {
     "category": "soroban",
@@ -31,8 +31,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-24",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-26",
     "sources": [
       {
         "class": "A",
@@ -48,6 +48,60 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-rpc",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+        "note": "stellar-rpc v30.0.0 history-retention-window default SevenDayOfLedgers",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+        "note": "SDK v29.0.1 events.rs: raw publish deprecated in favor of #[contractevent]",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/events/ingest",
+        "note": "events ingest guide: '7 days at most' (upstream wording defect; improvements/stellar-docs/sd-068-events-ingest-retention-7-days-at-most.md)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "POST https://soroban-testnet.stellar.org getHealth",
+        "note": "ledgerRetentionWindow 120960",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+        "note": "Name: \"history-retention-window\", ... \"the default value is %d which corresponds to about 7 days of history\" ... DefaultValue: uint32(limits.SevenDayOfLedgers), Validate: positive,",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "POST https://soroban-testnet.stellar.org and https://mainnet.sorobanrpc.com getHealth",
+        "note": "\"ledgerRetentionWindow\":120960 (both endpoints)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Parallel web_search \"Stellar RPC history-retention-window longer than 7 days\" -> https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+        "note": "Operators of private stellar-rpc instances can adjust this value.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "Raven stellarDocs.search_docs \"getEvents retention window 7 days at most ingest events\"",
+        "note": "docs/build/guides/events/ingest: \"the data retention window for these events is 7 days at most\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-and-rust-advanced-concepts",
+        "note": "let topics = ( symbol_short! ( \"mint\" ), admin, to); e . events () . publish (topics, amount);",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -81,26 +135,97 @@
           }
         ],
         "note": "Legacy verdict: confirmed-with-docs-live-conflict."
+      },
+      {
+        "claim": "RPC getEvents serves a bounded, provider-configured history-retention-window with a stock default of 120960 ledgers (about 7 days).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)'."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+            "observedAt": "2026-11-02",
+            "note": "Exact source: 'Name: \"history-retention-window\" ... DefaultValue: uint32(SevenDayOfLedgers)'; limits.go 'OneDayOfLedgers = 17280; SevenDayOfLedgers = OneDayOfLedgers * 7'."
+          },
+          {
+            "class": "F",
+            "ref": "POST https://soroban-testnet.stellar.org getHealth",
+            "observedAt": "2026-11-02",
+            "note": "Observed '\"ledgerRetentionWindow\":120960'."
+          }
+        ]
+      },
+      {
+        "claim": "The Stellar Docs events ingest guide still states getEvents retention is '7 days at most', a fixed ceiling that the configurable history-retention-window does not impose.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/events/ingest",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'However, the data retention window for these events is 7 days at most.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+            "observedAt": "2026-11-02",
+            "note": "history-retention-window validation requires only a positive value; no 7-day upper bound."
+          }
+        ]
+      },
+      {
+        "claim": "The EVM migration advanced-concepts page still shows raw `e.events().publish(topics, amount)`, which soroban-sdk v29.0.1 marks #[deprecated] in favor of #[contractevent].",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: '#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")] ... pub fn publish<T, D>(&self, topics: T, data: D)'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-and-rust-advanced-concepts",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'let topics = ( symbol_short! ( \"mint\" ), admin, to); e . events () . publish (topics, amount);'"
+          }
+        ],
+        "note": "Documents why avoid[0] fires on raw publish taught as current, even when copied from that page."
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task soroban-api)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329 agreed on typed-event-first/current query semantics; blind identified a docs-versus-source/live retention conflict.",
-        "Structural re-form (symmetric-caution): Added a cache-scoped grading caution; the answer and facts are unchanged.",
-        "Reviewed resolved improvement 2026-08-27: improvements/resolved.json entry sd-023 — the old docs stated a 24-hour default and separate 7-day cap before the 2026-07-27 fix.",
-        "Sibling sweep 2026-08-27: grep getEvents|history-retention-window|contractevent → q-crp-export-tx-history-taxes, q-soroban-contractmeta-vs-contractevent, q-soroban-event-indexing-design, q-soroban-publish-events, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-enumerate-all-contracts, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill, q-tool-greenfield-indexer-prior-art-preflight, q-tool-indexer-repos-discovery; no contradiction",
-        "Structural re-form (long-fact): Split event categories, querying, and retention; truth unchanged.",
-        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.0/soroban-sdk/src/env.rs — the SDK source treats contract and diagnostic events as separate event types with different stability purposes.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — the current official RPC docs define `getEvents` as a filtered event query with cursors.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — the current official RPC docs state that retention uses the configured history-retention-window.",
-        "Sibling sweep 2026-08-29: grep contractevent|getEvents|history-retention-window|diagnostic events → q-soroban-contractmeta-vs-contractevent, q-soroban-event-indexing-design, q-infra-rpc-methods-list, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill, q-tool-greenfield-indexer-prior-art-preflight, and q-soroban-publish-events; no contradiction"
+        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — \"configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)\" (observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/rpcv1/config/options.go — \"DefaultValue: uint32(SevenDayOfLedgers)\" ... \"the default value is %d which corresponds to about 7 days of history\" (observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs — \"#[deprecated(note = \\\"use the #[contractevent] macro on a contract event type\\\")] pub fn publish<T, D>\" (observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events — \"IncrementEvent { count }.publish(&env);\" (observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/build/guides/events/ingest — \"However, the data retention window for these events is 7 days at most.\" (observedAt 2026-11-02)",
+        "F: POST https://soroban-testnet.stellar.org getHealth — \"ledgerRetentionWindow\":120960 (observedAt 2026-11-02)",
+        "Independent verifier (verify/soroban-05.json): accept on notes changes 1 and 2; modify on change 3 (caution retargeted to the ingest guide, with root cause and removal condition); verifier newText applied.",
+        "Sibling sweep 2026-11-02: grep 'events().publish' → only this case; grep '7 days at most|seven-day getEvents' → q-tool-indexer-repos-discovery (truth evidence calls it a 'seven-day getEvents retention ceiling'; escalated, outside batch) and q-tool-greenfield-indexer-prior-art-preflight (quotes the ingest guide; no contradiction). q-soroban-event-indexing-design, q-infra-rpc-provider-archive-tier, q-ti-self-host-retention-backfill: no contradiction found.",
+        "https://developers.stellar.org/docs/build/guides/events/ingest — \"However, the data retention window for these events is 7 days at most.\" (class A, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — \"configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)\" (class A, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/rpcv1/config/options.go — \"Name: \"history-retention-window\", ... \"the default value is %d which corresponds to about 7 days of history\" ... DefaultValue: uint32(limits.SevenDayOfLedgers), Validate: positive,\" (class B, observedAt 2026-11-02)",
+        "POST https://soroban-testnet.stellar.org and https://mainnet.sorobanrpc.com getHealth — \"\"ledgerRetentionWindow\":120960 (both endpoints)\" (class F, observedAt 2026-11-02)",
+        "Parallel web_search \"Stellar RPC history-retention-window longer than 7 days\" -> https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction — \"Operators of private stellar-rpc instances can adjust this value.\" (class D, observedAt 2026-11-02)",
+        "Raven stellarDocs.search_docs \"getEvents retention window 7 days at most ingest events\" — \"docs/build/guides/events/ingest: \"the data retention window for these events is 7 days at most\"\" (class E, observedAt 2026-11-02)",
+        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs — \"#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")] ... pub fn publish<T, D>(&self, topics: T, data: D)\" (class B, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/learn/migrate/evm/solidity-and-rust-advanced-concepts — \"let topics = ( symbol_short! ( \"mint\" ), admin, to); e . events () . publish (topics, amount);\" (class A, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02 (pass 2): q-tool-indexer-repos-discovery and q-tool-greenfield-indexer-prior-art-preflight cite the ingest guide only in truth evidence; their golden text says to disclose provider retention and persist events (consistent). q-sor-evm-to-soroban-porting does not teach raw publish (consistent).",
+        "Pass-2 proposer matrix, proposals, and independent verifier decisions: .agents/rounds/2026-11-02-golden-audit.md, task soroban-api."
       ],
       "rootCause": [
-        "Plain SDK API drift plus hand-maintained RPC retention prose; improvements/stellar-docs/sd-023-rpc-event-retention-config-drift.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "Eval-side note residue: pre-correction note lines (raw env.events().publish, '~7 days is the key fact', 'event subscriptions') survived the 2026-07-11 typed-event correction.",
+        "improvements/stellar-docs/sd-068-events-ingest-retention-7-days-at-most.md",
+        "improvements/stellar-docs/sd-069-evm-advanced-concepts-deprecated-events-publish.md"
       ]
     },
     "origin": "raven-next q-soroban-publish-events"

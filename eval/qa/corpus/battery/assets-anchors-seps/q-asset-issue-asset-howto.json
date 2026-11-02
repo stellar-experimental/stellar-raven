@@ -9,7 +9,7 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "There is **no 'create asset' operation** — a classic asset is defined by its **`(asset_code, issuer account)`** pair and simply comes into existence the first time the issuer pays it out [1][2]. The flow:\n\n1. Create/fund the **issuing account** and a separate **distribution account** (two-account best practice) [1].\n2. Optionally set issuer **authorization flags** first (e.g. AUTH_REQUIRED/REVOCABLE, or clawback) — these only apply to trustlines created afterward [1].\n3. The **distribution account opens a trustline** to the asset via **`ChangeTrust`** [2].\n4. The **issuer sends** (a `Payment`) the desired supply to the distribution account — this is the issuance/mint [2].\n5. Publish a **`stellar.toml` (SEP-1)** so wallets can discover and identify the asset [1].\n6. Optionally cap supply by locking the issuer (set master weight to 0 / AUTH_IMMUTABLE) [1].",
+    "answer": "There is **no 'create asset' operation** — a classic asset is defined by its **`(asset_code, issuer account)`** pair and simply comes into existence the first time the issuer pays it out [1][2]. The flow:\n\n1. Create/fund the **issuing account** and a separate **distribution account** (two-account best practice) [1].\n2. Optionally set issuer **authorization flags** first (e.g. AUTH_REQUIRED/REVOCABLE, or clawback) — AUTH_REQUIRED and clawback affect trustlines created afterward; AUTH_REVOCABLE also lets the issuer revoke existing trustlines [1].\n3. The **distribution account opens a trustline** to the asset via **`ChangeTrust`** [2].\n4. The **issuer sends** (a `Payment`) the desired supply to the distribution account — this is the issuance/mint [2].\n5. Publish a **`stellar.toml` (SEP-1)** so wallets can discover and identify the asset [1].\n6. Optionally cap supply by locking the issuer (set master weight to 0 after the full issuance) [1]. AUTH_IMMUTABLE only freezes the auth flags and blocks account merge; it does not cap supply.",
     "keyFacts": [
       "A classic asset is defined by its asset code and issuing account.",
       "The asset exists after the issuer sends it to an account with a trustline.",
@@ -20,7 +20,7 @@
       "Do NOT describe issuing a Stellar asset as deploying a Solidity/ERC-20 contract.",
       "Do NOT claim there is a dedicated 'createAsset' operation on the protocol."
     ],
-    "notes": "End-to-end issuance how-to. Dossier §1.\nAlso good if the answer: Recommends the two-account (issuing + distribution) pattern and setting any needed auth flags first. | Recommends publishing a stellar.toml (SEP-1) so wallets can discover/identify the asset.\nGolden cites: An asset-issuance page on developers.stellar.org."
+    "notes": "End-to-end issuance how-to. Dossier §1.\nAlso good if the answer: Recommends the two-account (issuing + distribution) pattern and setting any needed auth flags first. | Recommends publishing a stellar.toml (SEP-1) so wallets can discover/identify the asset.\nGolden cites: An asset-issuance page on developers.stellar.org.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` can still mint. Do not penalize an answer that adds this caveat to step 6."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -44,6 +44,36 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "stellar/stellar-core src/transactions/ChangeTrustOpFrame.cpp",
+        "note": "Golden audit 2026-11-02: \"if (!isAuthRequired(issuer)) { tl.flags = AUTHORIZED_FLAG; } if (isClawbackEnabledOnAccount(issuer)) { tl.flags |= TRUSTLINE_CLAWBACK_ENABLED_FLAG; }\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "stellar/stellar-core src/transactions/SetTrustLineFlagsOpFrame.cpp",
+        "note": "Golden audit 2026-11-02: \"if ((sourceAccountEntry.current().data.account().flags & AUTH_REVOCABLE_FLAG) != 0) { return true; } ... AUTH_REVOCABLE_FLAG is not set on the account, so the three transitions below are not allowed. ... AUTHORIZED_FLAG -> 0\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "stellar/stellar-core src/transactions/SetOptionsOpFrame.cpp and MergeOpFrame.cpp",
+        "note": "Golden audit 2026-11-02: \"isImmutableAuth(sourceAccount) [blocks set/clear of auth flags] ... if (isImmutableAuth(sourceAccountEntry)) { innerResult(res).code(ACCOUNT_MERGE_IMMUTABLE_SET);\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+        "note": "'The asset issuer becomes the initial administrator ...; administrative authority is mutable and can be transferred afterwards with the SAC's set_admin function.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
+        "note": "fn mint: 'let admin = read_administrator(e)?; admin.require_auth()?;' - SAC mint is gated by the current admin, not by the issuer account's signing weight.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -64,25 +94,110 @@
             "note": "Dated web sweep query: ‘Stellar classic asset issuer balance burn create asset’. Top primary results: https://developers.stellar.org/docs/tokens/control-asset-access, https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets, https://developers.stellar.org/docs/tokens/how-to-issue-an-asset, and https://github.com/stellar/stellar-protocol/discussions/1598. Exact observed text: ‘an issuing account can’t actually hold a balance of its own asset’; ‘Sending an asset back to its issuing account is equivalent to burning it’; ‘There is no dedicated operation to create an asset on Stellar.’ No primary result contradicted the claims."
           }
         ]
+      },
+      {
+        "claim": "AUTH_REQUIRED and clawback are stamped on trustlines at creation, while AUTH_REVOCABLE lets the issuer revoke existing trustlines.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline’s authorization ... With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any *subsequent* trustlines established with this account will have clawbacks enabled.\""
+          },
+          {
+            "class": "B",
+            "ref": "stellar/stellar-core src/transactions/ChangeTrustOpFrame.cpp",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"if (!isAuthRequired(issuer)) { tl.flags = AUTHORIZED_FLAG; } if (isClawbackEnabledOnAccount(issuer)) { tl.flags |= TRUSTLINE_CLAWBACK_ENABLED_FLAG; }\""
+          },
+          {
+            "class": "B",
+            "ref": "stellar/stellar-core src/transactions/SetTrustLineFlagsOpFrame.cpp",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"if ((sourceAccountEntry.current().data.account().flags & AUTH_REVOCABLE_FLAG) != 0) { return true; } ... AUTH_REVOCABLE_FLAG is not set on the account, so the three transitions below are not allowed. ... AUTHORIZED_FLAG -> 0\""
+          }
+        ]
+      },
+      {
+        "claim": "Supply is capped by setting the issuer's master weight to 0 after full issuance; AUTH_IMMUTABLE only freezes the auth flags and blocks account merge.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"Authorization Immutable (0x4) With this setting, none of the other authorization flags (AUTH_REQUIRED_FLAG, AUTH_REVOCABLE_FLAG) can be set, and the issuing account can’t be merged. ... first set the issuing account’s master weight to 0 using the Set Options operation. ... Be sure to do this only af\""
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"This `setOptions` operation locks the issuer account so there can never be any more of the asset minted ... masterWeight: 0\""
+          },
+          {
+            "class": "B",
+            "ref": "stellar/stellar-core src/transactions/SetOptionsOpFrame.cpp and MergeOpFrame.cpp",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"isImmutableAuth(sourceAccount) [blocks set/clear of auth flags] ... if (isImmutableAuth(sourceAccountEntry)) { innerResult(res).code(ACCOUNT_MERGE_IMMUTABLE_SET);\""
+          }
+        ]
+      },
+      {
+        "claim": "Locking the issuing account caps supply only while any deployed SAC's admin is still the issuer; a SAC admin moved with set_admin can still mint.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-11-02",
+            "note": "'also make sure the admin for the contract was not updated from the default (which is the issuer) using the set_admin contract call. If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "observedAt": "2026-11-02",
+            "note": "'administrative authority is mutable and can be transferred afterwards with the SAC's set_admin function.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
+            "observedAt": "2026-11-02",
+            "note": "fn mint reads the administrator and calls admin.require_auth(); fn set_admin requires the current admin's auth."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task payments-assets)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (negative-predicate): split two compound facts into four atomic facts and removed the redundant create-operation negation; truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the asset object combines an asset code with an issuing public key.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — an issuer payment issues or mints the asset for an account with a trustline.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the distribution account establishes its trustline with ChangeTrust.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the issuer sends the supply through a Payment to the distribution account.",
-        "Sibling sweep 2026-08-27: grep create asset|ChangeTrust|Payment → q-asset-trustline-basics, q-aas-trustline-limit-lifecycle, q-protocol-operation-types-list; no contradiction",
-        "Corroboration audit 2026-08-29: added 1 row(s) for absence of a classic create-asset operation; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline’s authorization ... With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any *subsequent* trustlines established with this account will have clawbacks enabled.\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [B] stellar/stellar-core src/transactions/ChangeTrustOpFrame.cpp — \"if (!isAuthRequired(issuer)) { tl.flags = AUTHORIZED_FLAG; } if (isClawbackEnabledOnAccount(issuer)) { tl.flags |= TRUSTLINE_CLAWBACK_ENABLED_FLAG; }\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [B] stellar/stellar-core src/transactions/SetTrustLineFlagsOpFrame.cpp — \"if ((sourceAccountEntry.current().data.account().flags & AUTH_REVOCABLE_FLAG) != 0) { return true; } ... AUTH_REVOCABLE_FLAG is not set on the account, so the three transitions below are not allowed. ... AUTHORIZED_FLAG -> 0\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"Authorization Immutable (0x4) With this setting, none of the other authorization flags (AUTH_REQUIRED_FLAG, AUTH_REVOCABLE_FLAG) can be set, and the issuing account can’t be merged. ... first set the issuing account’s master weight to 0 using the Set Options operation. ... Be sure to do this only after you’ve issued all desired assets to the distribution account.\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — \"This `setOptions` operation locks the issuer account so there can never be any more of the asset minted ... masterWeight: 0\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [B] stellar/stellar-core src/transactions/SetOptionsOpFrame.cpp and MergeOpFrame.cpp — \"isImmutableAuth(sourceAccount) [blocks set/clear of auth flags] ... if (isImmutableAuth(sourceAccountEntry)) { innerResult(res).code(ACCOUNT_MERGE_IMMUTABLE_SET);\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"The issuing account creates (or mints) the asset on the network by executing a payment operation ... Any account wanting to hold the asset must first establish a trustline\" (claim: golden.keyFacts[0..3] confirmed: Asset = code+issuer; exists after issuer pays a trustline holder; ChangeTrust; Payment issues)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — \"The `changeTrust` operation creates (or alters) a trustline ... Second, the issuing account actually sends a payment using the asset.\" (claim: golden.keyFacts[0..3] confirmed: Asset = code+issuer; exists after issuer pays a trustline holder; ChangeTrust; Payment issues)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"The issuing account will always be linked to the asset’s identity.\" (claim: golden.keyFacts[0..3] confirmed: Asset = code+issuer; exists after issuer pays a trustline holder; ChangeTrust; Payment issues)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"With this setting [Authorization Immutable], none of the other authorization flags ... can be set, and the issuing account can't be merged ... To do this, first set the issuing account's master weight to 0 using the Set Options operation.\" (claim: golden.answer (step 6) contradicted: Cap supply by locking the issuer: master weight 0 / AUTH_IMMUTABLE)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — \"AUTH_IMMUTABLE_FLAG = 0x4 // Once set, causes all AUTH_* flags to be read-only\" (claim: golden.answer (step 6) contradicted: Cap supply by locking the issuer: master weight 0 / AUTH_IMMUTABLE)",
+        "2026-11-02 [E] stellarDocs.search_docs('AUTH_IMMUTABLE flag issuing account can't be merged') — \"control-asset-access#authorization-immutable-0x4\" (claim: golden.answer (step 6) contradicted: Cap supply by locking the issuer: master weight 0 / AUTH_IMMUTABLE)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline's authorization ... With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any subsequent trustlines established with this account will have clawbacks enabled.\" (claim: golden.answer (step 2) contradicted: Issuer flags only apply to trustlines created afterward)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — \"AUTH_REVOCABLE_FLAG = 0x2 ... otherwise, authorization cannot be revoked\" (claim: golden.answer (step 2) contradicted: Issuer flags only apply to trustlines created afterward)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"operation list has no create-asset operation; issuance is a payment from the issuer\" (claim: golden.avoid[1] confirmed: No dedicated createAsset operation)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"The issuing account creates (or mints) the asset on the network by executing a payment operation.\" (claim: golden.avoid[1] confirmed: No dedicated createAsset operation)",
+        "Sibling sweep 2026-11-02: grep AUTH_IMMUTABLE|created afterward over eval/qa/corpus/battery → q-comp-auth-flags-overview says AUTH_IMMUTABLE 'locks the authorization flags (and blocks account merge)', which matches the corrected text; q-comp-clawback-cap0035 and q-comp-sac-inherits-flags do not claim AUTH_IMMUTABLE caps supply; no contradiction.",
+        "Pass 2 gospel change 2026-11-02: golden.notes add the SAC-admin supply-cap caveat already in q-aas-issuer-fees-supply-cap-freeze (do-not-penalize, symmetric); answer, keyFacts, avoid, and tags unchanged.",
+        "Live A 2026-11-02 (curl): https://developers.stellar.org/docs/tokens/control-asset-access - 'If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.'; https://developers.stellar.org/docs/tokens/stellar-asset-contract - 'administrative authority is mutable and can be transferred afterwards with the SAC's set_admin function.'; https://developers.stellar.org/docs/tokens/how-to-issue-an-asset - '// This `setOptions` operation locks the issuer account // so there can never be any more of the asset minted'.",
+        "Live B 2026-11-02 (gh api): stellar/rs-soroban-env main soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs - 'pub(crate) fn mint(e: &Host, to: Address, amount: i128) ... let admin = read_administrator(e)?; admin.require_auth()?;' and 'pub(crate) fn set_admin(e: &Host, new_admin: Address) ... admin.require_auth()?;'.",
+        "Sibling sweep 2026-11-02 (pass 2): q-aas-issuer-fees-supply-cap-freeze carries the same caveat; q-pc-multisig-setup-lifecycle (master weight 0 lock risk) and q-comp-sac-inherits-flags do not claim a locked issuer caps SAC minting; no contradiction.",
+        "Pass 1 verification event (batch assets-anchors-seps-02, .agents/rounds/2026-11-02-golden-audit.md) produced the earlier 2026-11-02 evidence rows and edits in this branch diff; the pass-2 rows follow."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "eval-side authoring flaw: conflated AUTH_IMMUTABLE with the issuer lock and over-generalized flag timing to AUTH_REVOCABLE",
+        "eval-authoring: step 6 'Optionally cap supply by locking the issuer' lacked the documented SAC-admin caveat that the sibling q-aas-issuer-fees-supply-cap-freeze now carries (consistency-entities F13)."
       ]
     },
     "origin": "raven-next q-asset-issue-asset-howto"

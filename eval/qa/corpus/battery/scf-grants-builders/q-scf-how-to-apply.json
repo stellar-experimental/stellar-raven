@@ -44,29 +44,23 @@
         "class": "A",
         "ref": "https://stellar.org/enterprise-fund/apply",
         "note": "Current Enterprise application surface; re-fetched 2026-08-05."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/open-track",
+        "note": "'Submit the SCF Interest form and indicate your interest in the Open Track.' 'Eligible teams will be invited to submit to an upcoming Build round.'",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier refreshed provenance; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-03)",
       "evidence": [
-        "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award and its Open/Integration track pages, observed 2026-08-05T23:41–23:42Z, confirm the interest-form flow, three tracks, current panel names, typical 3–6 month timeline, $150K XLM cap, tranches, KYC/KYB gate, and Open-only community vote.",
-        "https://stellar.org/enterprise-fund and https://stellar.org/enterprise-fund/apply — current primary pages expose Apply Now / Submit your application, observed 2026-08-05.",
-        "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
-        "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
-        "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap.",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep Enterprise Fund|SCF Build application|interest form → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund; no contradiction",
-        "Structural re-form (long-fact): Shortened the Build-track invitation fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current handbook says qualified interest-form applicants receive an invitation to an open Build round and select a track.",
-        "Sibling sweep 2026-08-29: grep interest form|Open Integration RFP|SCF Build application → q-scf-build-tracks, q-scf-vs-sdf-enterprise-fund; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current",
-        "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award.md — 'Submit the interest form on the SCF Website ... If you meet requirements, you will be invited to submit to an open SCF round'; 'Award size: up to $150,000 worth of XLM'; 'Timeline: Typically 3–6 months per project'; 'Community Vote (for Open Track only)'.",
+        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/open-track — 'reviewed by 2 reviewers from that quarter's Open Track Delegate Panel'; integration-track page names the Category Delegate Panel.",
+        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria — 'Entities funded through the Matching Fund or Enterprise Fund are not eligible' (separate path).",
+        "D 2026-11-02: https://devgrantsdaily.com/industry/web3/ — 'Stellar Community Fund Build Award gives up to $150K in XLM ... Round SCF #46 closes on November 8, 2026'.",
+        "No gospel change. Sibling sweep: q-scf-eligibility-criteria, q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-v7-changes; no contradiction."
       ]
     },
     "origin": "raven-next q-scf-how-to-apply"

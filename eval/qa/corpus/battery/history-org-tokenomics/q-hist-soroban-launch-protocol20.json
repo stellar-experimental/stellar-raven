@@ -72,17 +72,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-27 primary 3270 and blind 3272.",
-        "Structural re-form (presentation-avoid): Reworded a date-presentation clause as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep Soroban Adoption Fund|Phase 0|March 19 → q-hist-soroban-launch-protocol20 only; no sibling contradiction",
-        "Structural re-form (negative-predicate): Split the rollout, platform, and compatibility claims into independent facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/developers/protocol-20-upgrade-guide and https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet still separate the 2024 rollout from the 2022 fund announcement.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/overview still documents Wasm execution and Rust as a supported contract language.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/migrate/evm still requires EVM contracts to adapt or compile to Wasm for Stellar.",
-        "Sibling sweep 2026-08-27: grep Protocol 20|Soroban Adoption Fund|Wasm/Rust-first across eval/qa/corpus/battery found no contradictory launch chronology or platform label."
+        "[A] golden.answer/keyFacts[0] (confirmed): https://stellar.org/blog/developers/protocol-20-upgrade-guide :: \"February 20 : Protocol 20 Upgrade Vote + Phase 0. Complete! March 19: Phase 2 Network Settings Vote. Complete!\"; \"02/27/2024 — The network is now in Phase 1.\" (observedAt 2026-11-02)",
+        "[A] golden.answer/keyFacts[0] (confirmed): https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet :: \"ROME, Italy – October 12, 2022 ... The Soroban Adoption Fund dedicates $100M to support developers\" (observedAt 2026-11-02)",
+        "[A] golden.answer/keyFacts[0] (confirmed): https://developers.stellar.org/docs/networks/software-versions :: \"Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits\" (observedAt 2026-11-02)",
+        "[D] golden.answer/keyFacts[0] (confirmed): https://www.theblock.co/amp/post/283446/smart-contracts-finally-arrive-on-stellar-network-with-soroban-launch-on-mainnet :: \"Soroban's mainnet phase 2 went live today\" (March 19, 2024) (observedAt 2026-11-02)",
+        "[D] golden.answer/keyFacts[0] (confirmed): https://www.coindesk.com/tech/2024/02/20/stellar-starts-phased-rollout-of-soroban-smart-contracts :: Published Feb 20, 2024: phased rollout began after validators voted (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[1..2] (confirmed): https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet :: \"Soroban introduces Turing-complete smart contracts to the Stellar network, built on WASM and with Rust.\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[1..2] (confirmed): https://www.cryptotimes.io/2024/03/20/stellar-launches-soroban :: \"Soroban deploys a WebAssembly (WASM) solution\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-soroban-auth-delegation-p27, q-protocol-19-preconditions-cap-0021 checked; consistent; P20 dates unchanged.",
+        "No judge-facing change; prior verification event 2026-08-27 is in git history.",
+        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
       ],
       "rootCause": [
         "Distinct activation/GA/funding events were compressed and language support was over-narrowed.",

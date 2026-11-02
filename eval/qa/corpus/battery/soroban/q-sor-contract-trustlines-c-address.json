@@ -22,7 +22,7 @@
       "Do not treat native XLM, classic issued assets, SAC balances, and custom SEP-41 tokens as the same storage/accounting model.",
       "Do not say a normal classic payment operation to a C-address is always equivalent to a G-address payment."
     ],
-    "notes": "Verified with official docs plus Scout high-confidence dev-docs result for SAC/trustline behavior. Protocol 26 SAC `trust` (CAP-0073, Implemented) wording is grounded in the current SAC integration docs. 2026-06-29 differentiation: this file owns the operational how-to lane (does a C-address need a trustline, can I send USDC directly, how does a contract send out); the exact i64-trustline vs i128-contract-storage internals are deferred to q-soroban-sac-balance-storage so the two no longer share the G-vs-C integer-width must_have.\nAlso good if the answer: Mentions Horizon/RPC monitoring of contract-account payments via SAC/unified asset events rather than only classic payment records. | Warns exchanges/memo-based services may not support payments from contract accounts.\nGolden cites: Must cite the Stellar Asset Contract docs and C-account send/receive docs."
+    "notes": "Verified with official docs plus Scout high-confidence dev-docs result for SAC/trustline behavior. Protocol 26 SAC `trust` (CAP-0073, Final; Protocol 26 is live on mainnet) wording is grounded in the current SAC integration docs. 2026-06-29 differentiation: this file owns the operational how-to lane (does a C-address need a trustline, can I send USDC directly, how does a contract send out); the exact i64-trustline vs i128-contract-storage internals are deferred to q-soroban-sac-balance-storage so the two no longer share the G-vs-C integer-width must_have.\nAlso good if the answer: Mentions Horizon/RPC monitoring of contract-account payments via SAC/unified asset events rather than only classic payment records. | Warns exchanges/memo-based services may not support payments from contract accounts.\nGolden cites: Must cite the Stellar Asset Contract docs and C-account send/receive docs."
   },
   "tags": {
     "category": "soroban",
@@ -61,35 +61,40 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/guides/tokens/stellar-asset-contract",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+        "note": "CAP index row: '| [CAP-0073](cap-0073.md) | 26 | Allow SAC to create G-account balances | Dmytro Kozhevin | Final |'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions",
+        "note": "'## Protocol 26 (Mainnet, May 6, 2026) ... Allow SAC to Create G-Account Balances: [CAP-73]'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/",
+        "note": "current_protocol_version 29 on mainnet.",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (negative-predicate): replaced long compound facts with five atomic positive facts; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — contracts still use SAC to interact with classic assets",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — C-address balances use contract storage and G-address issued-asset balances use trustlines",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts — C-address payments still use SAC transfer flows and authorization state",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — outbound SAC transfer requires spending-address authorization",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — Protocol 26 SAC trust creates an authorized G-address trustline subject to reserve",
-        "Sibling sweep 2026-08-27: grep C-address|contract storage|SAC trust → q-pc-protocol-26-yardstick, q-ti-fetch-all-balances-classic-sac, q-sor-sac-introspection; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored the default G-address trustline/reserve rule; truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — contracts still use SAC to interact with classic assets",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — C-address balances use contract storage and G-address issued-asset balances use trustlines",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts — C-address payments still use SAC transfer flows and authorization state",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — outbound SAC transfer requires spending-address authorization",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — Protocol 26 SAC trust creates an authorized G-address trustline subject to reserve",
-        "Sibling sweep 2026-08-30: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "golden.notes: CAP-0073 status 'Implemented' -> 'Final; Protocol 26 is live on mainnet'.",
+        "B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md — 'Status: Final / Protocol version: 26' (observedAt 2026-11-02).",
+        "B https://github.com/stellar/stellar-protocol/blob/master/core/README.md — '| [CAP-0073](cap-0073.md) | 26 | Allow SAC to create G-account balances | Dmytro Kozhevin | Final |' (observedAt 2026-11-02).",
+        "A https://developers.stellar.org/docs/networks/software-versions — '## Protocol 26 (Mainnet, May 6, 2026) ... Allow SAC to Create G-Account Balances: [CAP-73]' (observedAt 2026-11-02).",
+        "F GET https://horizon.stellar.org/ — 'current_protocol_version 29, core_supported_protocol_version 30' (observedAt 2026-11-02).",
+        "A https://developers.stellar.org/docs/tokens/stellar-asset-contract — 'The Stellar Asset Contract is the only way for contracts to interact with Stellar assets' and 'When a trustline is actually created, the SAC requires authorization from `addr`' (observedAt 2026-11-02): keyFacts[0..4] and avoid[0] unchanged.",
+        "Sibling sweep 2026-11-02: q-pc-protocol-26-yardstick, q-ti-fetch-all-balances-classic-sac, q-sor-sac-introspection, q-soroban-sac-balance-storage checked; no battery case still calls CAP-0073 Implemented; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-sor-contract-trustlines-c-address",
@@ -109,6 +114,30 @@
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
             "observedAt": "2026-07-11",
             "note": "Fetched CAP-0073 source defines the Protocol 26 trustline-creation path and authorization semantics."
+          }
+        ]
+      },
+      {
+        "claim": "CAP-0073 (Allow SAC to create G-account balances) is Final and shipped in Protocol 26, which is live on mainnet.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
+            "observedAt": "2026-11-02",
+            "note": "'CAP: 0073 / Title: Allow SAC to create G-account balances / Status: Final / Protocol version: 26'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-02",
+            "note": "'## Protocol 26 (Mainnet, May 6, 2026) ... Allow SAC to Create G-Account Balances: [CAP-73]'."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-02",
+            "note": "'current_protocol_version 29, core_supported_protocol_version 30, history_latest_ledger_closed_at 2026-11-02T16:34:19Z'."
           }
         ]
       }

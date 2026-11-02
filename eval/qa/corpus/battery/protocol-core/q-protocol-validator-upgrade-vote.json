@@ -36,12 +36,14 @@
       {
         "class": "A",
         "ref": "https://stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/validators/admin-guide",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -65,23 +67,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Split two upgrade-mechanics facts into five atomic facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — current docs describe arming validator nodes before an upgrade vote.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — the `upgrades` endpoint schedules a protocol-version vote for a fixed `upgradetime`.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — the current example sets `upgradetime` and `protocolversion` through `upgrades?mode=set`.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger.x — `LedgerHeader.scpValue` carries the in-band `upgrades` vector.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — validators vote after `upgradetime`, and normal consensus adopts the new value.",
-        "Sibling sweep 2026-08-29: grep upgrades?mode=set|upgradetime|protocolversion|validator consensus → q-pc-protocol-upgrade-timing, q-protocol-max-tx-set-size; no contradiction",
-        "Corroboration audit 2026-08-29: added 1 row(s) for in-band validator upgrade vote; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — 'http-command 'upgrades?mode=set&upgradetime=2018-01-31T20:00:00Z&protocolversion=9'' (claim: Operators arm with upgrades?mode=set&upgradetime=...&protocolversion=N; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.org/blog/developers/adapter-protocol-28-upgrade-guide — 'upgrades?mode=set&upgradetime=2026-09-16T17:00:00Z&protocolversion=28' (claim: Operators arm with upgrades?mode=set&upgradetime=...&protocolversion=N; verdict confirmed)",
+        "Live F 2026-11-02: https://horizon.stellar.org/ledgers/64458446 — 'protocol_version 28, closed_at 2026-09-16T17:00:06Z (prior ledger 27 at 17:00:01Z)' (claim: Operators arm with upgrades?mode=set&upgradetime=...&protocolversion=N; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — 'When the network time is later than the upgradetime ... the validator will vote ... For a new value to be adopted, the same level of consensus between nodes needs to be reached as for transaction sets.' (claim: Ledger header carries upgrades in-band; SCP flips version at scheduled time; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger.x — 'StellarValue upgrades vector carried in LedgerHeader.scpValue (prior verification 2026-08-29, unchanged)' (claim: Ledger header carries upgrades in-band; SCP flips version at scheduled time; verdict confirmed)",
+        "Live A 2026-11-02: https://stellar.org/blog/developers/adapter-protocol-28-upgrade-guide — 'August 27, 2026, 1700 UTC — Testnet upgrade vote. September 16, 2026, 1700 UTC — Mainnet upgrade vote.' (claim: 17:00 UTC mainnet votes; testnet precedes mainnet; verdict confirmed)",
+        "Live D 2026-11-02: https://status.stellar.org/ — 'Bell, Protocol 30 Testnet Upgrade Nov 3, 2026 17:00 ... Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00' (claim: 17:00 UTC mainnet votes; testnet precedes mainnet; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — 'A node can be configured to vote for upgrades using the upgrades endpoint.' (claim: Token vote / hard-fork download / off-chain switch are false; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-pc-protocol-upgrade-timing, q-protocol-max-tx-set-size checked; no contradiction."
       ]
     },
     "origin": "raven-next q-protocol-validator-upgrade-vote"

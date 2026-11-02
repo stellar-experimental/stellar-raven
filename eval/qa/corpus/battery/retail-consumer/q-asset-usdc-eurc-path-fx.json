@@ -8,17 +8,17 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "- Use a **path payment** — `PathPaymentStrictReceiveOp` (or `PathPaymentStrictSendOp`) — with **source asset USDC** and **destination asset EURC** [1].\n- The network **finds a path** through SDEX offers and/or AMM pools (e.g. USDC→XLM→EURC) and delivers EURC **atomically in one transaction**; the wallet never has to hold XLM or the intermediate hop asset [1].\n- The **recipient must hold a trustline to the asset they receive (EURC)** for the payment to land; trustlines are required for non-native assets [1].\n- Strict-receive bounds the EURC delivered while capping USDC spent via **`sendMax`** (strict-send instead fixes the USDC sent and sets a `destMin`). Settles in seconds for a low network fee [1].",
+    "answer": "- Use a **path payment** — `PathPaymentStrictReceiveOp` (or `PathPaymentStrictSendOp`) — with **source asset USDC** and **destination asset EURC** [1].\n- The wallet gets a candidate route (e.g. from Horizon `/paths/strict-receive` or `/paths/strict-send`) and lists the intermediate assets in the operation's `path`; the network then converts through SDEX offers and/or AMM pools along that path (e.g. USDC→XLM→EURC) and delivers EURC **atomically in one transaction**; the wallet never has to hold XLM or the intermediate hop asset [1].\n- The **recipient must hold a trustline to the asset they receive (EURC)** for the payment to land; trustlines are required for non-native assets [1].\n- Strict-receive fixes the exact EURC delivered while capping USDC spent via **`sendMax`** (strict-send instead fixes the USDC sent and sets a `destMin`). Settles in seconds for a low network fee [1].",
     "keyFacts": [
       "Uses PathPaymentStrictReceive or PathPaymentStrictSend from USDC to EURC.",
-      "The network finds a path through SDEX offers, AMM pools, or both.",
+      "Converts through SDEX offers, AMM pools, or both along the operation's path.",
       "The network delivers EURC atomically in one transaction."
     ],
     "avoid": [
       "Do NOT recommend an off-chain FX bridge or centralized swap as the canonical Stellar mechanism.",
       "Do NOT claim the wallet must first manually swap on an external DEX then send."
     ],
-    "notes": "Applied how-to combining path payments + stablecoins. Dossier §3.5, §4.5.\nAlso good if the answer: The sender/recipient must each hold a trustline to the asset they receive (recipient needs EURC trustline). | Settles in seconds at low fee; the wallet never has to hold XLM or the intermediate hop asset.\nGolden cites: A path-payments / SDEX page on developers.stellar.org."
+    "notes": "Applied how-to combining path payments + stablecoins. Dossier §3.5, §4.5.\nAlso good if the answer: The sender/recipient must each hold a trustline to the asset they receive (recipient needs EURC trustline). | Settles in seconds at low fee; the wallet never has to hold XLM or the intermediate hop asset.\nGolden cites: A path-payments / SDEX page on developers.stellar.org.\nPATHFINDING BOUNDARY (verified 2026-11-02): path discovery is off-chain. Horizon /paths/strict-receive and /paths/strict-send return candidate paths; the operation carries the intermediate assets in `path`, and stellar-core converts along that path. Do not penalize an answer that says the wallet or Horizon finds the path, or one that says the network routes the payment through SDEX offers and AMM pools."
   },
   "tags": {
     "category": "retail-consumer",
@@ -37,6 +37,36 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/transactions/list-of-operations.mdx (renders https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations)",
+        "note": "Golden audit 2026-11-02: \"Path | list of assets | The assets (other than `send asset` and `destination asset`) involved in the offers the path takes. For example, if you can only find a path from USD to EUR through XLM and BTC, the path would be USD -> XLM -> BTC -> EUR and the `path` field would contain XLM and BTC.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/path-payments.mdx",
+        "note": "Golden audit 2026-11-02: \"Path Payment Strict Receive: Allows a user to specify the amount of the asset received. The amount sent will vary based on the offers in the order books/liquidity pools.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/openapi/horizon/components/endpoints/paths.yml",
+        "note": "Golden audit 2026-11-02: \"The strict receive payment path endpoint lists the paths a payment can take based on the amount of an asset you want the recipient to receive. The destination asset amount stays constant\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+        "note": "Golden audit 2026-11-02: \"std::vector<Asset> fullPath; fullPath.insert(fullPath.end(), mPathPayment.path.rbegin(), mPathPayment.path.rend());\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/paths/strict-send?source_asset_type=credit_alphanum4&source_asset_code=USDC&source_asset_issuer=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&source_amount=100&destination_assets=EURC:GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2",
+        "note": "Golden audit 2026-11-02: \"destination_amount 90.6539113, path []\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -44,37 +74,97 @@
         "claim": "The wallet never has to hold XLM or the intermediate hop asset.",
         "verdict": "confirmed",
         "evidence": [
-        {
-          "class": "A",
-          "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
-          "note": "Exact quotes: ‘path payments cross through the SDEX and/or liquidity pools.’ ‘Balances are settled at the very end of the operation.’",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "B",
-          "ref": "https://github.com/stellar/stellar-protocol/blob/80a3e8547d2b93824525b4542f3bb2c951e08a05/core/cap-0038.md",
-          "observedAt": "2026-08-29",
-          "note": "Exact source: CAP-0038 says strict-send and strict-receive path-payment operations exchange assets through the order book and liquidity pools; these are operation-internal routing surfaces, not wallet-held intermediate balances."
-        }
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+            "note": "Exact quotes: ‘path payments cross through the SDEX and/or liquidity pools.’ ‘Balances are settled at the very end of the operation.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/80a3e8547d2b93824525b4542f3bb2c951e08a05/core/cap-0038.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: CAP-0038 says strict-send and strict-receive path-payment operations exchange assets through the order book and liquidity pools; these are operation-internal routing surfaces, not wallet-held intermediate balances."
+          }
+        ]
+      },
+      {
+        "claim": "Path discovery is off-chain (Horizon /paths/strict-receive and /paths/strict-send return candidate paths); the path payment operation carries the intermediate assets in `path`, and stellar-core converts along that caller-supplied path through SDEX offers and/or AMM pools.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/transactions/list-of-operations.mdx (renders https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations)",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"Path | list of assets | The assets (other than `send asset` and `destination asset`) involved in the offers the path takes. For example, if you can only find a path from USD to EUR through XLM and BTC, the path would be USD -> XLM -> BTC -> EUR and the `path` field would contain XLM and BTC.\""
+          },
+          {
+            "class": "A",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/openapi/horizon/components/endpoints/paths.yml",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"The strict receive payment path endpoint lists the paths a payment can take based on the amount of an asset you want the recipient to receive. The destination asset amount stays constant\""
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"std::vector<Asset> fullPath; fullPath.insert(fullPath.end(), mPathPayment.path.rbegin(), mPathPayment.path.rend());\""
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/paths/strict-send?source_asset_type=credit_alphanum4&source_asset_code=USDC&source_asset_issuer=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&source_amount=100&destination_assets=EURC:GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"destination_amount 90.6539113, path []\""
+          }
+        ]
+      },
+      {
+        "claim": "Strict-receive fixes the exact destination amount and caps the source amount with sendMax.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/path-payments.mdx",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"Path Payment Strict Receive: Allows a user to specify the amount of the asset received. The amount sent will vary based on the offers in the order books/liquidity pools.\""
+          },
+          {
+            "class": "D",
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/aggregations/paths/object (via Perplexity search)",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"source_amount: An estimated cost for making a payment of destination_amount on this path. Suitable for use in the `sendMax` field of a path payment operation.\""
+          }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Shortened the operation fact and split pathfinding from atomic delivery; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#path-payment-strict-receive — the operation page confirms strict-send and strict-receive use distinct send and destination assets.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/path-payments — the guide says path payments cross the SDEX, liquidity pools, or both.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/path-payments — the guide shows one path-payment operation in a transaction and says balances settle at the operation's end.",
-        "Sibling sweep 2026-08-29: grep PathPaymentStrictReceive/StrictSend|USDC.*EURC → q-asset-path-payment-ops, q-asset-usdc-eurc-issuer, q-asset-stablecoin-issuers-discovery, q-ti-testnet-usdc-faucet, q-eco-stablecoins-on-stellar, q-asset-usdc-eurc-path-fx, q-defi-cross-blend-rivool-sac, q-defi-sdex-offer-lifecycle, q-defi-arbitrage-pathpayment-bots, q-crp-remittance-founder-advisory; no contradiction",
-      "Corroboration audit 2026-08-29: added 1 row(s) for intermediate-asset holding boundary; class agreement Sol+Grok",
-      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+        "2026-11-02 [A] https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/transactions/list-of-operations.mdx (renders https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations) — \"Path | list of assets | The assets (other than `send asset` and `destination asset`) involved in the offers the path takes. For example, if you can only find a path from USD to EUR through XLM and BTC, the path would be USD -> XLM -> BTC -> EUR and the `path` field would contain XLM and BTC.\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/path-payments.mdx — \"Path Payment Strict Receive: Allows a user to specify the amount of the asset received. The amount sent will vary based on the offers in the order books/liquidity pools.\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://raw.githubusercontent.com/stellar/stellar-docs/main/openapi/horizon/components/endpoints/paths.yml — \"The strict receive payment path endpoint lists the paths a payment can take based on the amount of an asset you want the recipient to receive. The destination asset amount stays constant\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp — \"std::vector<Asset> fullPath; fullPath.insert(fullPath.end(), mPathPayment.path.rbegin(), mPathPayment.path.rend());\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [F] https://horizon.stellar.org/paths/strict-send?source_asset_type=credit_alphanum4&source_asset_code=USDC&source_asset_issuer=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&source_amount=100&destination_assets=EURC:GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 — \"destination_amount 90.6539113, path []\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [D] https://developers.stellar.org/docs/data/apis/horizon/api-reference/aggregations/paths (via Perplexity search) — \"Paths provide information about potential path payments. A path can be used to populate the necessary fields for a path payment operation.\" (claim: verifier accept golden.answer)",
+        "2026-11-02T16:30:32Z [E] Raven stellarDocs.search_docs('find payment paths strict receive horizon path field') -> https://developers.stellar.org/docs/build/apps/example-application-tutorial/payment#the-dashboardsend-page — \"The user can select to send/receive different assets and paths are queried from Horizon\" (claim: verifier accept golden.answer)",
+        "2026-11-02 [A] https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/path-payments.mdx — \"path payments cross through the SDEX and/or liquidity pools before arriving at the destination account.\" (claim: verifier accept golden.keyFacts[1])",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp — \"for (auto const& asset : mPathPayment.path)\" (claim: verifier accept golden.keyFacts[1])",
+        "2026-11-02 [A] https://raw.githubusercontent.com/stellar/stellar-docs/main/openapi/horizon/components/endpoints/paths.yml — \"Horizon loads a list of assets that the recipient can receive ... and displays the possible paths from the different source assets to the destination asset.\" (claim: verifier accept golden.notes)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp — \"PathPaymentStrictReceiveOpFrame::getPath() const { return mPathPayment.path; }\" (claim: verifier accept golden.notes)",
+        "2026-11-02 [D] https://developers.stellar.org/docs/data/apis/horizon/api-reference/aggregations/paths/object (via Perplexity search) — \"source_amount: An estimated cost for making a payment of destination_amount on this path. Suitable for use in the `sendMax` field of a path payment operation.\" (claim: verifier accept golden.notes)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/path-payments — \"path payments cross through the SDEX and/or liquidity pools before arriving at the destination account ... Balances are settled at the very end of the operation.\" (claim: golden.keyFacts[0] confirmed: Use PathPaymentStrictReceive or StrictSend from USDC to EURC)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"Path | list of assets | The assets (other than send asset and destination asset) involved in the offers the path takes. For example, if you can only find a path from USD to EUR through XLM and BTC, the path would be USD -> XLM -> BTC -> EUR\" (claim: golden.keyFacts[0] confirmed: Use PathPaymentStrictReceive or StrictSend from USDC to EURC)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp — \"// build the full path from the destination, ending with sendAsset ... fullPath.insert(fullPath.end(), mPathPayment.path.rbegin(), mPathPayment.path.rend());\" (claim: golden.keyFacts[1] contradicted: The network finds a path through SDEX offers, AMM pools, or both)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/data/apis/horizon/api-reference/aggregations/paths.md — \"Paths provide information about potential path payments. A path can be used to populate the necessary fields for a path payment operation.\" (claim: golden.keyFacts[1] contradicted: The network finds a path through SDEX offers, AMM pools, or both)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.0.1/src/horizon/server.ts — \"As part of the search, horizon will load a list of assets available to the source address and will find any payment paths from those source assets to the desired destination asset.\" (claim: golden.keyFacts[1] contradicted: The network finds a path through SDEX offers, AMM pools, or both)",
+        "2026-11-02 [B] https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — \"path payment operations exchange through the order book and liquidity pools\" (claim: golden.keyFacts[2] confirmed: EURC delivered atomically in one transaction; wallet never holds intermediate asset)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"Destination amount | integer | The amount of destination asset the destination account receives. ... Send max | integer | The maximum amount of send asset to deduct\" (claim: golden.answer bullet 4 contradicted: Strict-receive 'bounds' the EURC delivered)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools.md — \"Users can trade and convert assets on the Stellar network with the use of path payments through Stellar's decentralized exchange and liquidity pools.\" (claim: golden.avoid[0..1] contradicted: Off-chain FX bridge / external DEX manual swap is not the canonical mechanism)",
+        "Sibling sweep 2026-11-02: grep -il 'finds a path|network finds|bounds the' and path-payment wording over eval/qa/corpus/battery → only this case said the network finds the path; q-asset-path-payment-ops ('routing across the Stellar DEX orderbook and/or AMM liquidity pools to find a path'), q-raph-remittance-path-payment, q-defi-sdex-offer-lifecycle, q-defi-arbitrage-pathpayment-bots, q-asset-usdc-eurc-issuer do not contradict the corrected off-chain-discovery / on-chain-conversion split (the new note accepts either phrasing)."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Eval-side authoring flaw: golden conflated off-chain path discovery (Horizon /paths) with on-chain path execution, and used 'bounds' for strict-receive's exact destination amount."
       ]
     },
     "origin": "raven-next q-asset-usdc-eurc-path-fx"

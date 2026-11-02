@@ -1,0 +1,1342 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "assets-anchors-seps-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-ass-cross-bando-stablebonds-sac",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Bando's SCF #42 Build submission is 'Tokenized CETES for SMEs in Mexico'",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop.get_scf_submissions({slug:'bando'}) via Raven execute",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\":\"Tokenized CETES for SMEs in Mexico\",\"project\":\"Bando\",...\"round\":\"SCF #42\",...\"award_type\":\"Build\",...\"budget\":\"75000\""
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy (via Perplexity search index; live page renders client-side only)",
+       "observedAt": "2026-11-02",
+       "quote": "Tokenized CETES for SMEs in Mexico / SCF #42 / $75.0K / Build"
+      },
+      {
+       "class": "D",
+       "ref": "https://wowcryptocurrency.com/scf-42-round-recap/ (Perplexity search)",
+       "observedAt": "2026-04-25",
+       "quote": "Bando — $75,000 worth of XLM ... access tokenized CETES ... using Etherfuse's Stablebonds"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Scout describes Bando as a live, SCF-funded treasury platform",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Bando&limit=3 (raw GET)",
+       "observedAt": "2026-11-02",
+       "quote": "\"name\": \"Bando\", ... \"status\": \"Live\", \"statusAsOf\": \"2026-08-17T03:02:29.060Z\", \"statusBasis\": \"site-liveness\", ... \"scfAwarded\": true, ... \"scfAwardedRounds\":…"
+      },
+      {
+       "class": "A",
+       "ref": "https://bando.cool/",
+       "observedAt": "2026-11-02",
+       "quote": "Bando - The way to get CETES for your business ... Treasury management for modern companies."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Scout links Bando to Etherfuse Stablebonds for Mexican CETES",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Bando&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "enables Mexican companies to invest idle cash into tokenized CETES ... through the Stellar network using Etherfuse's Stablebonds"
+      },
+      {
+       "class": "A",
+       "ref": "https://bando.cool/",
+       "observedAt": "2026-11-02",
+       "quote": "the issuance of Stablebonds (tokenized Mexican government debt) ... are managed by Etherfuse Liquid Mx, S.A.P.I. de C.V."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Soroban accesses a classic asset via its deterministic SAC address",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The resulting token will have a deterministic identifier ... CONTRACT_ID_PREIMAGE_FROM_ASSET"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract id asset --asset CETES:GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC --network mainnet (stellar 28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "CAL6ER2TI6CTRAY6BFXWNWA7WTYXUXTQCHUBCIBU5O6KM3HJFG6Z6VXV"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "The SAC exposes the SEP-41 token interface",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Asset Contract (SAC) is an implementation of CAP-46-6 ... and SEP-41 Token Interface"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md",
+       "observedAt": "2026-11-02",
+       "quote": "fn set_admin / fn mint / fn clawback ... standardized asset interface"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Not every Stablebond is necessarily a classic asset",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://etherfuse.com/ (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Tokenised sovereign bonds ... CETES, Tesouros, US Treasuries, Eurobonds, and GILTs."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Etherfuse",
+       "observedAt": "2026-11-02",
+       "quote": "\"onchain\": {\"assetCode\": \"CETES\", \"issuer\": \"GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC\" ..."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "and, as observed on 2026-11-02, Scout lists Bando as a live, SCF-funded B2B treasury platform",
+     "reason": "Volatile Scout status lacks an as-of date in the golden text."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified live."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-02-12",
+     "reason": "Scheduled case; batch window 2027-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "eval-side authoring flaw: volatile Scout status stated in golden.answer without an as-of date"
+   ],
+   "siblings": "q-defi-etherfuse-stablebonds; q-defi-cross-blend-rivool-sac; q-defi-market-making-kelp; q-ass-cross-etherfuse-cetes-controls"
+  },
+  {
+   "id": "q-ass-cross-etherfuse-cetes-controls",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Anchorage Digital is named in the June 15 2026 custody announcement",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Anchorage Digital Author Jun 15, 2026 ... today announced custody support for CETES, tokenized Mexican government debt issued by Etherfuse on the Stellar blockc…"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic('Anchorage Digital custody Etherfuse CETES Stellar')",
+       "observedAt": "2026-11-02",
+       "quote": "two rows dated 2026-06-15: anchorage.com insight and https://etherfuse.com/articles/tokenized-by-etherfuse-moved-on-stellar-held-by-anchorage"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "The announcement concerns Etherfuse's tokenized Mexican government debt (CETES) on Stellar",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "CETES are short-term Mexican Federal Treasury Certificates"
+      },
+      {
+       "class": "A",
+       "ref": "https://etherfuse.com/articles/tokenized-by-etherfuse-moved-on-stellar-held-by-anchorage (via Lumenloop row)",
+       "observedAt": "2026-11-02",
+       "quote": "Anchorage Digital, an OCC-chartered bank, now provides institutional custody for Etherfuse's tokenized Mexican government debt (CETES) on Stellar."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Scout identifies live Etherfuse Stablebonds as tokenized government-treasury bonds",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=3 (raw GET)",
+       "observedAt": "2026-11-02",
+       "quote": "it issues Stablebonds — tokenized government treasury bonds (Mexican CETES, US Treasuries and others) ... and operates Etherfuse FX ... \"status\": \"Live\", \"statu…"
+      },
+      {
+       "class": "D",
+       "ref": "https://etherfuse.com/ (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Tokenised sovereign bonds for float, treasury allocation ... CETES, Tesouros, US Treasuries, Eurobonds, and GILTs."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Classic issuer controls include authorization-required and authorization-revocable/freeze",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-11-02",
+       "quote": "When AUTH_REQUIRED_FLAG is enabled, an issuer must approve an account before that account can hold its asset ... When AUTH_REVOCABLE_FLAG is enabled, an issuer …"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "AUTH_REVOCABLE_FLAG = 0x2 ... otherwise, authorization cannot be revoked"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Clawback-enabled is a regulated classic-asset control",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-11-02",
+       "quote": "With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any subsequent trustlines established with this account will have clawbacks enabled"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "AUTH_CLAWBACK_ENABLED_FLAG = 0x8 ... Trustlines are created with clawback enabled set to \"true\""
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "The announcement does not prove Etherfuse enabled every authorization or clawback flag",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC",
+       "observedAt": "2026-11-02",
+       "quote": "flags: auth_required False, auth_revocable True, auth_immutable False, auth_clawback_enabled True; home_domain etherfuse.com"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "CETES is not a stablecoin; Stablebonds differ from Etherfuse FX",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "scout.getStablecoins({limit:100}) via Raven",
+       "observedAt": "2026-11-02",
+       "quote": "41 rows; no CETES or Etherfuse row"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "CETES gives institutions tokenized exposure to a familiar sovereign debt instrument"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As observed on 2026-11-02, Scout identifies Etherfuse",
+     "reason": "Re-observed Scout content on 2026-11-02; refresh the visible as-of date."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified live."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-02-05",
+     "reason": "Scheduled case; batch window 2027-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-etherfuse-stablebonds; q-rwa-projects-tokenizing-stellar; q-comp-auth-flags-overview; q-ass-cross-bando-stablebonds-sac; q-crp-anchors-by-corridor; q-anchor-list-builders-discovery"
+  },
+  {
+   "id": "q-asset-amm-fee-reserve",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "AMM swap fee is 30 bps (0.30%)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the network fees."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "LIQUIDITY_POOL_FEE_V18 = 30 (prior verification row; SDK constant LiquidityPoolFeeV18 shown on the docs page)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Pool-share trustline consumes two base reserves",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "A pool share trustline requires 2 base reserves instead of 1."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Pool shares are not transferable; constant-product invariant",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "Pool shares are similar to other assets on Stellar but they cannot be transferred ... Stellar enforces a constant product invariant"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-sdex-vs-amm; q-asset-trustline-basics; q-asset-path-payment-ops; q-edge-1xlm-activation-fee"
+  },
+  {
+   "id": "q-asset-claimable-balance",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "A claimable balance is a ledger entry for a held amount",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "Each ClaimableBalanceEntry is a ledger entry"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "ClaimableBalanceEntry ... CreateClaimableBalanceOp / ClaimClaimableBalanceOp"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Useful when recipient has no trustline yet; claimant must still establish a trustline to claim",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "They can be used when you send a non-native asset to an account that has not yet established a trustline ... A trustline must be established by the claimant to …"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs('claimable balance each claimant base reserve')",
+       "observedAt": "2026-11-02",
+       "quote": "claimant in that entry increases the source account's minimum balance by one base reserve"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / golden.notes",
+     "claim": "The entry holds a base reserve (sponsored by the creator)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-11-02",
+       "quote": "each claimant in that entry increases the source account's minimum balance by one base reserve."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "Deduct `claimants.size() * baseReserve` of native asset ... `reserve` equal to `claimants.size() * baseReserve`"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs via Raven",
+       "observedAt": "2026-11-02",
+       "quote": "https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance — a claimable balance with one claimant ..."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "The entry **holds one base reserve per claimant** (sponsored\nby the creator) until claimed.",
+     "reason": "Reserve is one base reserve per claimant (docs + CAP-23)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "entry holds one base reserve per claimant.",
+     "reason": "Same correction in grader notes."
+    }
+   ],
+   "rootCause": [
+    "eval-side authoring flaw: claimable-balance reserve stated as a single base reserve instead of one per claimant"
+   ],
+   "siblings": "q-aas-claimable-predicates-expiry-reserves; q-aas-claim-received-claimable-balances; q-raph-claimable-balance-safety"
+  },
+  {
+   "id": "q-asset-deploy-sac-cli",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "`stellar contract asset deploy` deploys the asset's SAC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "stellar contract asset deploy --source S... --network testnet --asset USDC:GCYE..."
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract asset --help (stellar 28.1.0; latest release v28.1.0 2026-09-26 per gh api)",
+       "observedAt": "2026-11-02",
+       "quote": "deploy  Deploy builtin Soroban Asset Contract; id  ... Deprecated, use `stellar contract id asset` instead"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "calling InvokeHostFunctionOp with HOST_FUNCTION_TYPE_CREATE_CONTRACT and a CONTRACT_ID_PREIMAGE_FROM_ASSET contract ID preimage"
+      },
+      {
+       "class": "F",
+       "ref": "stellar contract id asset --asset native --network mainnet",
+       "observedAt": "2026-11-02",
+       "quote": "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA (deterministic derivation without deploy)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "After deployment the issuer is automatically the admin",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The asset issuer becomes the initial administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards wi…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md",
+       "observedAt": "2026-11-02",
+       "quote": "The admin is initally set to the issuer (except for the XLM contract ...)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-trustline-vs-sac; q-sor-sac-introspection; q-comp-sac-inherits-flags"
+  },
+  {
+   "id": "q-asset-issue-asset-howto",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..3]",
+     "claim": "Asset = code+issuer; exists after issuer pays a trustline holder; ChangeTrust; Payment issues",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-11-02",
+       "quote": "The issuing account creates (or mints) the asset on the network by executing a payment operation ... Any account wanting to hold the asset must first establish …"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+       "observedAt": "2026-11-02",
+       "quote": "The `changeTrust` operation creates (or alters) a trustline ... Second, the issuing account actually sends a payment using the asset."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-11-02",
+       "quote": "The issuing account will always be linked to the asset’s identity."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (step 6)",
+     "claim": "Cap supply by locking the issuer: master weight 0 / AUTH_IMMUTABLE",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-11-02",
+       "quote": "With this setting [Authorization Immutable], none of the other authorization flags ... can be set, and the issuing account can't be merged ... To do this, first…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "AUTH_IMMUTABLE_FLAG = 0x4 // Once set, causes all AUTH_* flags to be read-only"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs('AUTH_IMMUTABLE flag issuing account can't be merged')",
+       "observedAt": "2026-11-02",
+       "quote": "control-asset-access#authorization-immutable-0x4"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (step 2)",
+     "claim": "Issuer flags only apply to trustlines created afterward",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-11-02",
+       "quote": "When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline's authorization ... With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any subsequent…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "AUTH_REVOCABLE_FLAG = 0x2 ... otherwise, authorization cannot be revoked"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "No dedicated createAsset operation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "operation list has no create-asset operation; issuance is a payment from the issuer"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-11-02",
+       "quote": "The issuing account creates (or mints) the asset on the network by executing a payment operation."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "2. Optionally set issuer **authorization flags** first (e.g. AUTH_REQUIRED/REVOCABLE, or clawback) — AUTH_REQUIRED and clawback affect trustlines created afterward; AUTH_REVOCABLE also lets the issuer revoke existing trustlines [1].",
+     "reason": "AUTH_REVOCABLE applies to existing trustlines."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "6. Optionally cap supply by locking the issuer (set master weight to 0 after the full issuance) [1]. AUTH_IMMUTABLE only freezes the auth flags and blocks account merge; it does not cap supply.",
+     "reason": "AUTH_IMMUTABLE does not cap supply; master weight 0 does."
+    }
+   ],
+   "rootCause": [
+    "eval-side authoring flaw: conflated AUTH_IMMUTABLE with the issuer lock and over-generalized flag timing to AUTH_REVOCABLE"
+   ],
+   "siblings": "q-comp-auth-flags-overview; q-comp-clawback-cap0035; q-comp-sac-inherits-flags"
+  },
+  {
+   "id": "q-asset-path-payment-ops",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Ops: PathPaymentStrictSend and PathPaymentStrictReceive",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "Path payments use the Path Payment Strict Send or Path Payment Strict Receive operations."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "just use PathPaymentStrictReceive or PathPaymentStrictSend"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "PATH_PAYMENT_STRICT_RECEIVE = 2 / PATH_PAYMENT_STRICT_SEND = 13 (operation types)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Routes through DEX order book, AMM pools, or both",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments",
+       "observedAt": "2026-11-02",
+       "quote": "path payments cross through the SDEX and/or liquidity pools before arriving at the destination account"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Settles in about one ledger close (~5 s)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-sdex-vs-amm; q-asset-amm-fee-reserve"
+  },
+  {
+   "id": "q-asset-rwa-tokenized-freshness",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "A current tokenized-RWA value with dated source and scope can be reported",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://app.rwa.xyz/networks/stellar (via Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Distributed Asset Value $3.92B ▲ +14.00% from 30d ago ... RWA Count 84 ... as of 10/31/2026"
+      },
+      {
+       "class": "D",
+       "ref": "https://finance.yahoo.com/markets/crypto/articles/stellar-lands-securitize-climbs-tokenized-124500037.html",
+       "observedAt": "2026-10-28",
+       "quote": "As of Oct. 28, Stellar held about $3.77 billion in distributed RWA value, placing it fourth"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic('tokenized real-world assets on Stellar total value billion')",
+       "observedAt": "2026-11-02",
+       "quote": "'Tokenized RWAs on Stellar cross $4 billion as euro-denominated assets lead growth' (2026-09-02); 'Stellar sees tokenized RWAs double in Q2 ... $3.05B' (2026-08…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 corpus returned a June 2026 Messari interview with ~$2.8B",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Lumenloop corpus (prior verification 2026-07-11)",
+       "observedAt": "2026-11-02",
+       "quote": "dated historical observation"
+      },
+      {
+       "class": "D",
+       "ref": "sibling q-eco-stellar-rwa-stablecoin-volume notes: SDF President interview (2026-06-04) states RWA stack ~$2.8B",
+       "observedAt": "2026-11-02",
+       "quote": ""
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "'~4x YoY growth' and 'low-single-digit $B as of early/mid 2026'",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop: Messari 'State of Stellar: Real-world Assets' 2025-10-16",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar hosts over $533 million in real-world assets excluding stablecoins"
+      },
+      {
+       "class": "A",
+       "ref": "https://app.rwa.xyz/networks/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "$3.92B distributed (10/31/2026)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-eco-stellar-rwa-stablecoin-volume; q-rwa-projects-tokenizing-stellar; q-defi-rwa-treasury-funding-live; q-edge-noinfo-exact-tvl-figure"
+  },
+  {
+   "id": "q-asset-sdex-vs-amm",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SDEX is an on-chain order book with ManageBuyOffer/ManageSellOffer",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar uses order books to operate its decentralized exchange ... Orders in Stellar behave like limit orders"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "MANAGE_SELL_OFFER = 3, CREATE_PASSIVE_SELL_OFFER = 4, MANAGE_BUY_OFFER = 12"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..3]",
+     "claim": "Constant product; fixed 30 bps; separate from network fee",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar enforces a constant product invariant ... The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the networ…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "LIQUIDITY_POOL_FEE_V18 = 30"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Orderbook makers set tighter or wider prices",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "Orders in Stellar behave like limit orders ... the order is saved on the orderbook until it is either consumed ... or canceled"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-amm-fee-reserve; q-asset-path-payment-ops"
+  },
+  {
+   "id": "q-asset-stablecoin-issuers-discovery",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Circle (USDC and EURC) is the dominant stablecoin issuer on Stellar",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins (raw GET + scout.getStablecoins)",
+       "observedAt": "2026-11-02",
+       "quote": "dataAsOf 2026-11-02T06:26:31Z; counts.tracked 41; Circle USDC marketCapUSD 301,240,866 (largest fiat stablecoin; top row is Ondo USDY 537,627,447, a yield-beari…"
+      },
+      {
+       "class": "A",
+       "ref": "https://app.rwa.xyz/networks/stellar (via Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stablecoin Market Cap $373.09M ... Circle | 2 | $308.9M"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 a search returned 38 matches with Circle, Glo Dollar, Coins.ph first",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "prior verification 2026-07-11 (dated illustrative example)",
+       "observedAt": "2026-11-02",
+       "quote": ""
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Registry semantics (counts.total/tracked/returned, dataAsOf vs generatedAt, null = unmeasured, curated registry)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins",
+       "observedAt": "2026-11-02",
+       "quote": "counts: tracked 41, total 41, returned 10 ... coverage.basis curated-registry ... null on any metric = not measured, never 'zero'"
+      },
+      {
+       "class": "B",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "/api/stablecoins GET documented"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-eco-stablecoins-on-stellar; q-eco-stellar-rwa-stablecoin-volume; q-defi-ondo-usdy"
+  },
+  {
+   "id": "q-asset-trustline-basics",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..2]",
+     "claim": "Trustline is opt-in via ChangeTrust; payments fail without it; XLM needs none",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+       "observedAt": "2026-11-02",
+       "quote": "Accounts must establish a trustline with the issuing account to hold that issuer's asset. This is true for all assets except for the network's native token, Lum…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-11-02",
+       "quote": "PAYMENT_NO_TRUST / PAYMENT_NOT_AUTHORIZED result codes"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "struct TrustLineEntryExtensionV2 { int32 liquidityPoolUseCount; ... } (TrustLineEntry ledger type)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / notes",
+     "claim": "One base reserve per trustline; 0.5 XLM on Mainnet as of 2026-09-30",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+       "observedAt": "2026-11-02",
+       "quote": "a trustline for asset A (1 base reserve) ... A pool share trustline requires 2 base reserves instead of 1."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-amm-fee-reserve; q-edge-1xlm-activation-fee; q-hot-fee-pool-burn-deflation"
+  },
+  {
+   "id": "q-asset-trustline-vs-sac",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..3]",
+     "claim": "SAC is the protocol-reserved contract for the same classic asset; balances of accounts stay in trustlines",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "Each Stellar asset has an instance of the SAC reserved on the network ... After the contract has been deployed, users can use their classic account (for lumens)…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md",
+       "observedAt": "2026-11-02",
+       "quote": "Smart Contract Standardized Asset for classic assets"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Contract-to-contract transfers use contract data entries",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "Using Address::Account — The balance must exist in a trustline ... This means the contract will not store the balance in ContractData."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md",
+       "observedAt": "2026-11-02",
+       "quote": "`ContractDataEntry` to hold the balance, along with an `authorized` and ..."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "The issuer stays admin; mint/clawback/set_authorized are issuer-only",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The asset issuer becomes the initial administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards wi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin",
+       "observedAt": "2026-11-02",
+       "quote": "If an asset's issuer account is locked after the SAC Admin address has been changed, tokens will still be mint-able and/or clawback-able (if enabled) from the S…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md",
+       "observedAt": "2026-11-02",
+       "quote": "fn set_admin(env: Env, new_admin: Address); ... The admin is initally set to the issuer"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs('SAC set_admin initial administrator issuer')",
+       "observedAt": "2026-11-02",
+       "quote": "stellar-asset-contract#deployment: authority is mutable and can be transferred afterwards with the SAC's set_admin function"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "**issuer is the initial admin** (mint/clawback/set_authorized are admin-only, and `set_admin` can transfer the role) [1].",
+     "reason": "SAC admin is transferable via set_admin; admin functions are admin-only, not issuer-only."
+    }
+   ],
+   "rootCause": [
+    "eval-side authoring flaw: SAC admin role stated as permanently issuer-held"
+   ],
+   "siblings": "q-sor-sac-introspection; q-asset-deploy-sac-cli; q-comp-sac-inherits-flags; q-comp-clawback-holder-risk"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier lane (claude-opus-5-5), 2026-11-02; proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-ass-cross-bando-stablebonds-sac",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Adds an observation date to a volatile Scout status claim; Scout today still reports Bando Live, SCF-awarded (round 42), Etherfuse Stablebonds. Live site and official SCF award page agree. Side note (not in golden): lumenloop.com/projects/bando shows 'Total awarded $45,000' while SCF and Scout show $75,000; the golden pins no amount, so no change needed, but it is a possible improvements/ finding.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Bando&limit=5 (slug bando)",
+      "observedAt": "2026-11-02",
+      "quote": "\"status\": \"Live\", \"statusAsOf\": \"2026-08-17T03:02:29.060Z\" ... \"scfAwarded\": true, \"scfBasis\": \"official-record\" ... \"scfAwardedRounds\": [42] ... \"Bando is a B2…"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug:bando}",
+      "observedAt": "2026-11-02",
+      "quote": "'title': 'Tokenized CETES for SMEs in Mexico', 'project': 'Bando', 'round': 'SCF #42', 'award_type': 'Build' ... '**$75.0K** **Build** **Awarded**'"
+     },
+     {
+      "class": "A",
+      "ref": "https://bando.cool/",
+      "observedAt": "2026-11-02",
+      "quote": "Bando - The way to get CETES for your business ... the issuance of Stablebonds (tokenized Mexican government debt) ... are managed by Etherfuse Liquid Mx, S.A.P…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search -> https://communityfund.stellar.org/awards/recweELi12M0ftBYZ and https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy",
+      "observedAt": "2026-11-02",
+      "quote": "By Bando Tokenized CETES for SMEs in Mexico SCF #42 $75.0K Build Awarded ... By integrating Etherfuse on Stellar, Bando offers competitive-yield CETES"
+     }
+    ]
+   },
+   {
+    "id": "q-ass-cross-bando-stablebonds-sac",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-observed today; consistent with the answer's new 2026-11-02 date.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Bando&limit=5",
+      "observedAt": "2026-11-02",
+      "quote": "\"status\": \"Live\" ... \"scfAwarded\": true"
+     }
+    ]
+   },
+   {
+    "id": "q-ass-cross-bando-stablebonds-sac",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-02-12 falls inside the batch window 2027-02-01..2027-02-28 and staggers from the Etherfuse sibling (2027-02-05).",
+    "sources": []
+   },
+   {
+    "id": "q-ass-cross-etherfuse-cetes-controls",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Scout still identifies Etherfuse as a live Stablebonds issuer (CETES, US Treasuries) with a separate FX product, so moving the observation date to 2026-11-02 is supported. Lumenloop still indexes both 2026-06-15 articles. Etherfuse's own site now brands the families eYield/eFX while keeping the Stablebonds product name; the golden's wording stays true.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=5 (slug etherfuse)",
+      "observedAt": "2026-11-02",
+      "quote": "\"Etherfuse is a multi-product company on Stellar: it issues Stablebonds — tokenized government treasury bonds (Mexican CETES, US Treasuries and others) ... and …"
+     },
+     {
+      "class": "A",
+      "ref": "https://etherfuse.com/",
+      "observedAt": "2026-11-02",
+      "quote": "eYield Tokenised sovereign bonds for float, treasury allocation, and predictable returns. CETES, Tesouros, US Treasuries, Eurobonds, and GILTs. ... [Explore Sta…"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Anchorage Digital ... today announced custody support for CETES, tokenized Mexican government debt issued by Etherfuse on the Stellar blockchain."
+     },
+     {
+      "class": "C",
+      "ref": "Raven execute lumenloop.search_content_semantic(Anchorage Digital custody Etherfuse CETES Stellar)",
+      "observedAt": "2026-11-02T16:22:39Z",
+      "quote": "Anchorage Digital Supports Custody for Tokenized CETES ... date 2026-06-15; Tokenized by Etherfuse. Moved on Stellar. Held by Anchorage. ... date 2026-06-15"
+     }
+    ]
+   },
+   {
+    "id": "q-ass-cross-etherfuse-cetes-controls",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-observed today.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=5",
+      "observedAt": "2026-11-02",
+      "quote": "\"status\": \"Live\""
+     }
+    ]
+   },
+   {
+    "id": "q-ass-cross-etherfuse-cetes-controls",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-02-05 is inside the batch window and staggered from the Bando sibling.",
+    "sources": []
+   },
+   {
+    "id": "q-asset-claimable-balance",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Old text ('a base reserve') understated the reserve for multi-claimant entries; docs and core source agree on one base reserve per claimant. Answer text, not a keyFact; no avoid added.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+      "observedAt": "2026-11-02",
+      "quote": "Each ClaimableBalanceEntry is a ledger entry, and each claimant in that entry increases the source account’s minimum balance by one base reserve."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+      "observedAt": "2026-11-02",
+      "quote": "CREATE_CLAIMABLE_BALANCE_LOW_RESERVE ... For every claimant in the list, the minimum amount of XLM this account must hold will increase by baseReserve."
+     },
+     {
+      "class": "B",
+      "ref": "stellar/stellar-core src/transactions/SponsorshipUtils.cpp computeMultiplier",
+      "observedAt": "2026-11-02",
+      "quote": "case CLAIMABLE_BALANCE: return static_cast<uint32_t>( le.data.claimableBalance().claimants.size());"
+     }
+    ]
+   },
+   {
+    "id": "q-asset-claimable-balance",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Keeps notes consistent with the corrected answer.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "stellar/stellar-core src/transactions/SponsorshipUtils.cpp computeMultiplier",
+      "observedAt": "2026-11-02",
+      "quote": "case CLAIMABLE_BALANCE: return ... claimants.size()"
+     }
+    ]
+   },
+   {
+    "id": "q-asset-issue-asset-howto",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Step 2 change. AUTH_REQUIRED and clawback are stamped on a trustline at creation (ChangeTrust); AUTH_REVOCABLE is checked on the issuer at revocation time, so it covers existing trustlines. The old 'these only apply to trustlines created afterward' was wrong for AUTH_REVOCABLE.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+      "observedAt": "2026-11-02",
+      "quote": "When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline’s authorization ... With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any *subsequen…"
+     },
+     {
+      "class": "B",
+      "ref": "stellar/stellar-core src/transactions/ChangeTrustOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "if (!isAuthRequired(issuer)) { tl.flags = AUTHORIZED_FLAG; } if (isClawbackEnabledOnAccount(issuer)) { tl.flags |= TRUSTLINE_CLAWBACK_ENABLED_FLAG; }"
+     },
+     {
+      "class": "B",
+      "ref": "stellar/stellar-core src/transactions/SetTrustLineFlagsOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "if ((sourceAccountEntry.current().data.account().flags & AUTH_REVOCABLE_FLAG) != 0) { return true; } ... AUTH_REVOCABLE_FLAG is not set on the account, so the t…"
+     }
+    ]
+   },
+   {
+    "id": "q-asset-issue-asset-howto",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Step 6 change. AUTH_IMMUTABLE does not cap supply; only removing the issuer's signing power does. The old '/ AUTH_IMMUTABLE' equated the two. Optional enrichment (not required): docs also warn that a SAC admin changed via set_admin could still mint after the issuer is locked.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+      "observedAt": "2026-11-02",
+      "quote": "Authorization Immutable (0x4) With this setting, none of the other authorization flags (AUTH_REQUIRED_FLAG, AUTH_REVOCABLE_FLAG) can be set, and the issuing acc…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+      "observedAt": "2026-11-02",
+      "quote": "This `setOptions` operation locks the issuer account so there can never be any more of the asset minted ... masterWeight: 0"
+     },
+     {
+      "class": "B",
+      "ref": "stellar/stellar-core src/transactions/SetOptionsOpFrame.cpp and MergeOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "isImmutableAuth(sourceAccount) [blocks set/clear of auth flags] ... if (isImmutableAuth(sourceAccountEntry)) { innerResult(res).code(ACCOUNT_MERGE_IMMUTABLE_SET…"
+     }
+    ]
+   },
+   {
+    "id": "q-asset-trustline-vs-sac",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "'issuer stays admin ... issuer-only' was false after set_admin; new text matches docs and the host implementation.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+      "observedAt": "2026-11-02",
+      "quote": "The asset issuer becomes the *initial* administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards …"
+     },
+     {
+      "class": "B",
+      "ref": "stellar/rs-soroban-env soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
+      "observedAt": "2026-11-02",
+      "quote": "write_administrator(e, Address::from_account(e, &asset4.issuer)?)?; ... pub(crate) fn clawback(...) { ... let admin = read_administrator(e)?; admin.require_auth…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://stellarlight.xyz/api/openapi.json",
+   "https://stellarlight.xyz/api/projects?q=Bando&limit=5",
+   "https://stellarlight.xyz/api/projects?q=Etherfuse&limit=5",
+   "https://stellarlight.xyz/api/projects/search?q=Bando&limit=5",
+   "https://stellarlight.xyz/api/projects/search?q=Etherfuse&limit=5",
+   "POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug:bando}",
+   "POST https://api.lumenloop.com/v1/tools/find_content_about_project {slug:etherfuse}",
+   "Raven execute: lumenloop.find_content_about_project(slug=etherfuse) + lumenloop.search_content_semantic(Anchorage Digital custody Etherfuse CETES Stellar), observedAt 2026-11-02T16:22:39Z",
+   "https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy (web_fetch rendered shell only; content via Perplexity snippet)",
+   "https://communityfund.stellar.org/project/bando-lbi",
+   "https://bando.cool/",
+   "https://etherfuse.com/",
+   "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+   "Perplexity search: Bando treasury platform Mexican companies tokenized CETES Etherfuse Stablebonds Stellar Community Fund (hits incl. communityfund.stellar.org/awards/recweELi12M0ftBYZ, solanacompass.com/projects/bando, bando.cool/fintech3, lumenloop.com/projects/bando)",
+   "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+   "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+   "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+   "https://developers.stellar.org/docs/tokens/control-asset-access",
+   "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+   "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+   "gh api stellar/stellar-core src/transactions/CreateClaimableBalanceOpFrame.cpp",
+   "gh api stellar/stellar-core src/transactions/SponsorshipUtils.cpp",
+   "gh api stellar/stellar-core src/transactions/ChangeTrustOpFrame.cpp",
+   "gh api stellar/stellar-core src/transactions/SetTrustLineFlagsOpFrame.cpp",
+   "gh api stellar/stellar-core src/transactions/SetOptionsOpFrame.cpp",
+   "gh api stellar/stellar-core src/transactions/MergeOpFrame.cpp",
+   "gh api stellar/rs-soroban-env soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-ass-cross-bando-stablebonds-sac; q-ass-cross-etherfuse-cetes-controls; q-asset-claimable-balance; q-asset-issue-asset-howto; q-asset-trustline-vs-sac",
+  "verifiedOnly": "q-asset-amm-fee-reserve; q-asset-deploy-sac-cli; q-asset-path-payment-ops; q-asset-rwa-tokenized-freshness; q-asset-sdex-vs-amm; q-asset-stablecoin-issuers-discovery; q-asset-trustline-basics",
+  "untouched": "",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-ass-cross-bando-stablebonds-sac",
+    "log": "gospel changed (golden.answer substring replaced; truth.asOf=2026-11-02; truth.reverifyBy=2027-02-12); truth.verified, sources, corroboration refreshed"
+   },
+   {
+    "id": "q-ass-cross-etherfuse-cetes-controls",
+    "log": "gospel changed (golden.answer substring replaced; truth.asOf=2026-11-02; truth.reverifyBy=2027-02-05); truth.verified, sources, corroboration refreshed"
+   },
+   {
+    "id": "q-asset-amm-fee-reserve",
+    "log": "verified only (classes ABF); truth.verified refreshed; gospel unchanged"
+   },
+   {
+    "id": "q-asset-claimable-balance",
+    "log": "gospel changed (golden.answer substring replaced; golden.notes substring replaced); truth.verified, sources, corroboration refreshed"
+   },
+   {
+    "id": "q-asset-deploy-sac-cli",
+    "log": "verified only (classes ABF); truth.verified refreshed; gospel unchanged"
+   },
+   {
+    "id": "q-asset-issue-asset-howto",
+    "log": "gospel changed (golden.answer substring replaced; golden.answer substring replaced); truth.verified, sources, corroboration refreshed"
+   },
+   {
+    "id": "q-asset-path-payment-ops",
+    "log": "verified only (classes ABF); truth.verified refreshed; gospel unchanged"
+   },
+   {
+    "id": "q-asset-rwa-tokenized-freshness",
+    "log": "verified only (classes ACD); truth.verified refreshed; gospel unchanged"
+   },
+   {
+    "id": "q-asset-sdex-vs-amm",
+    "log": "verified only (classes AB); truth.verified refreshed; gospel unchanged"
+   },
+   {
+    "id": "q-asset-stablecoin-issuers-discovery",
+    "log": "verified only (classes ABC); truth.verified refreshed; gospel unchanged"
+   },
+   {
+    "id": "q-asset-trustline-basics",
+    "log": "verified only (classes ABF); truth.verified refreshed; gospel unchanged"
+   },
+   {
+    "id": "q-asset-trustline-vs-sac",
+    "log": "gospel changed (golden.answer substring replaced); truth.verified, sources, corroboration refreshed"
+   }
+  ]
+ }
+}

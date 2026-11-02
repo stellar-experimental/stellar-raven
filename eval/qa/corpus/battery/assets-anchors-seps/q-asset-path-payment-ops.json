@@ -48,39 +48,31 @@
         "claim": "Per the official path-payment docs, a classic path payment uses the SDEX and/or liquidity pools, not an off-chain bridge or third-party DEX router.",
         "verdict": "confirmed",
         "evidence": [
-        {
-          "class": "A",
-          "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
-          "note": "Exact quotes: ‘path payments cross through the SDEX and/or liquidity pools.’ ‘Balances are settled at the very end of the operation.’",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "B",
-          "ref": "https://github.com/stellar/stellar-protocol/blob/80a3e8547d2b93824525b4542f3bb2c951e08a05/core/cap-0038.md",
-          "observedAt": "2026-08-29",
-          "note": "Exact source: CAP-0038 says `PathPaymentStrictSendOp` and `PathPaymentStrictReceiveOp` are modified as an opaque interface for exchanging assets with the order book and liquidity pools."
-        }
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+            "note": "Exact quotes: ‘path payments cross through the SDEX and/or liquidity pools.’ ‘Balances are settled at the very end of the operation.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/80a3e8547d2b93824525b4542f3bb2c951e08a05/core/cap-0038.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: CAP-0038 says `PathPaymentStrictSendOp` and `PathPaymentStrictReceiveOp` are modified as an opaque interface for exchanging assets with the order book and liquidity pools."
+          }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): split the path-payment operation, conversion, routing, and atomicity claims; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — the official page names the strict-send and strict-receive operations.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — the official page says the received and sent assets differ.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — the official page says path payments cross the SDEX and/or liquidity pools.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — the official page says transactions are atomic.",
-        "Sibling sweep 2026-08-29: grep PathPaymentStrictSend|PathPaymentStrictReceive → q-asset-path-payment-ops only; no sibling contradiction.",
-        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): removed the added abbreviation 'SDEX' and restored 'DEX order book' and 'AMM pools' from the old fact; the encyclopedia URLs resolved 200 for the orchestrator on 2026-08-29 (reviewer saw 404), so the evidence URLs stay and https://developers.stellar.org/docs/build/guides/transactions/path-payments is added as a second live confirmation of order-book and liquidity-pool routing.",
-      "Corroboration audit 2026-08-29: added 1 row(s) for on-ledger path-payment routing; class agreement Sol+Grok",
-      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — \"Path payments use the Path Payment Strict Send or Path Payment Strict Receive operations.\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"just use PathPaymentStrictReceive or PathPaymentStrictSend\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x — \"PATH_PAYMENT_STRICT_RECEIVE = 2 / PATH_PAYMENT_STRICT_SEND = 13 (operation types)\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — \"path payments cross through the SDEX and/or liquidity pools before arriving at the destination account\" (claim: golden.keyFacts[2] confirmed: Routes through DEX order book, AMM pools, or both)",
+        "2026-11-02 [F] https://horizon.stellar.org/ledgers?order=desc&limit=5 — \"ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart\" (claim: golden.answer confirmed-as-of: Settles in about one ledger close (~5 s))",
+        "Sibling sweep 2026-11-02: proposer checked q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no gospel change in this case, so no sibling contradiction can arise from this event."
       ]
     },
     "origin": "raven-next q-asset-path-payment-ops"

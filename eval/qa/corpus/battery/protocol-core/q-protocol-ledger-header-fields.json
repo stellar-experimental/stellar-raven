@@ -5,16 +5,16 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "Protocol 27 `LedgerHeader` directly contains `ledgerVersion`, `previousLedgerHash`, `scpValue`, `txSetResultHash`, `bucketListHash`, `ledgerSeq`, `totalCoins`, `feePool`, `inflationSeq`, `idPool`, `baseFee`, `baseReserve`, `maxTxSetSize`, `skipList[4]`, and `ext`. Inside `scpValue`/`StellarValue` are `txSetHash`, `closeTime`, `upgrades`, and its extension. Keep direct and nested fields separate: `txSetHash` is not the same field as `txSetResultHash`, and BucketList state commitment is distinct from transaction-set/result commitments.",
+    "answer": "The `LedgerHeader` (identical in the stellar-xdr v27.0, v28.0, and v30.0 releases, covering Protocols 27 through 30) directly contains `ledgerVersion`, `previousLedgerHash`, `scpValue`, `txSetResultHash`, `bucketListHash`, `ledgerSeq`, `totalCoins`, `feePool`, `inflationSeq`, `idPool`, `baseFee`, `baseReserve`, `maxTxSetSize`, `skipList[4]`, and `ext`. Inside `scpValue`/`StellarValue` are `txSetHash`, `closeTime`, `upgrades`, and its extension; Protocol 30 adds a millisecond `closeTimeMs` inside that extension. Keep direct and nested fields separate: `txSetHash` is not the same field as `txSetResultHash`, and BucketList state commitment is distinct from transaction-set/result commitments.",
     "keyFacts": [
-      "Lists all direct P27 LedgerHeader fields.",
+      "Lists all direct LedgerHeader fields, ledgerVersion through ext.",
       "States scpValue nests txSetHash, closeTime, and upgrades.",
       "Treats transaction-result/BucketList-state hashes as distinct commitments."
     ],
     "avoid": [
       "Do NOT claim nested StellarValue members are direct LedgerHeader fields."
     ],
-    "notes": "List of header fields. Trap is importing EVM/PoW header fields (gas, difficulty, nonce, coinbase).\nAlso good if the answer: Notes the Upgrades field carries network-wide parameter/protocol-version changes voted via SCP. | Notes the bucket-list hash summarizes all ledger state objects.\nGolden cites: The ledgers / data-structures page on developers.stellar.org.\nGT-32 CORRECTION 2026-07-10: exhaustive direct-vs-nested structure is source-derived from P27 XDR."
+    "notes": "List of header fields. Trap is importing EVM/PoW header fields (gas, difficulty, nonce, coinbase).\nAlso good if the answer: Notes the Upgrades field carries network-wide parameter/protocol-version changes voted via SCP. | Notes the bucket-list hash summarizes all ledger state objects.\nGolden cites: The ledgers / data-structures page on developers.stellar.org.\nGT-32 CORRECTION 2026-07-10: exhaustive direct-vs-nested structure is source-derived from P27 XDR.\nRECONCILIATION 2026-11-02: the SDF Bell (Protocol 30) upgrade guide says 'Protocol 30 changes the ledger header format (CAP-88)'. That change is the new `StellarValue` extension arms (`STELLAR_VALUE_SIGNED_MS`, `STELLAR_VALUE_EMPTY_TX_SET_MS`) carrying `closeTimeMs` inside `scpValue`; the direct `LedgerHeader` fields are unchanged in stellar-xdr v30.0. Do not penalize an answer that says Protocol 30 changes the ledger header format or encoding, unless it lists `closeTimeMs` as a direct `LedgerHeader` field."
   },
   "tags": {
     "category": "protocol-core",
@@ -38,6 +38,36 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x",
+        "note": "struct LedgerHeader direct fields identical to v27.0; v30.0 adds StellarValue ext arms STELLAR_VALUE_SIGNED_MS = 3 / STELLAR_VALUE_EMPTY_TX_SET_MS = 4 with 'TimePointMs closeTimeMs; // closeTime == closeTimeMs / 1000'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "gh api repos/stellar/stellar-xdr/releases; diff of Stellar-ledger-entries.x and Stellar-ledger.x across v27.0, v28.0, v30.0",
+        "note": "No v29 tag; LedgerHeader struct byte-identical across v27.0, v28.0, v30.0.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md",
+        "note": "CAP-0088 Protocol 30: 'The existing whole-second `closeTime` field in `StellarValue` is unchanged'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/",
+        "note": "current_protocol_version 29; core_supported_protocol_version 30.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+        "note": "'The SDK upgrade is not optional this cycle. Protocol 30 changes the ledger header format (CAP-88)'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -58,26 +88,88 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02 (Mainnet protocol 29), the direct LedgerHeader fields are the same in stellar-xdr v27.0, v28.0, and v30.0; Protocol 30 (CAP-0088) adds closeTimeMs only inside the StellarValue extension.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x",
+            "observedAt": "2026-11-02",
+            "note": "'struct LedgerHeader { uint32 ledgerVersion; Hash previousLedgerHash; StellarValue scpValue; Hash txSetResultHash; Hash bucketListHash; uint32 ledgerSeq; int64 totalCoins; int64 feePool; uint32 inflationSeq; uint64 idPool; uint32 baseFee; uint32 baseReserve; uint32 maxTxSetSize; Hash skipList[4]; ... ext; };'"
+          },
+          {
+            "class": "B",
+            "ref": "gh api repos/stellar/stellar-xdr/releases; diff of Stellar-ledger-entries.x and Stellar-ledger.x across v27.0, v28.0, v30.0",
+            "observedAt": "2026-11-02",
+            "note": "v30.0 diff only adds StellarValue ext arms STELLAR_VALUE_SIGNED_MS = 3 / STELLAR_VALUE_EMPTY_TX_SET_MS = 4 carrying 'TimePointMs closeTimeMs; // closeTime == closeTimeMs / 1000'."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-02",
+            "note": "'current_protocol_version': 29, 'core_supported_protocol_version': 30."
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers#ledger-header-fields",
+            "observedAt": "2026-11-02",
+            "note": "stellarDocs.search_docs index hit for #ledger-header-fields and #scp-value sections (snippet empty)."
+          }
+        ]
+      },
+      {
+        "claim": "The Bell guide wording 'Protocol 30 changes the ledger header format (CAP-88)' refers to new StellarValue arms inside scpValue; the direct LedgerHeader fields are unchanged in stellar-xdr v30.0.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+            "observedAt": "2026-11-02",
+            "note": "'Protocol 30 changes the ledger header format (CAP-88), and an older SDK may fail to decode Protocol 30 ledgers.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x",
+            "observedAt": "2026-11-02",
+            "note": "struct LedgerHeader identical to v27.0/v28.0; v28.0 to v30.0 diff adds only 'STELLAR_VALUE_SIGNED_MS = 3, STELLAR_VALUE_EMPTY_TX_SET_MS = 4' with 'TimePointMs closeTimeMs'."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md",
+            "observedAt": "2026-11-02",
+            "note": "'adding a separate millisecond-resolution close time in the new `StellarValue` arms' ... 'StellarValue ──► LedgerHeader.scpValue'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task protocol-current)",
       "evidence": [
-        "Solo scratchpad 575 GT-32 primary 3281 and blind 3284; full agreement.",
-        "Structural re-form (presentation-avoid): Kept the false nesting claim and deleted an omission rule already enforced by a key fact; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep LedgerHeader|StellarValue|txSetResultHash|bucketListHash → q-protocol-ledger-header-fields, q-pc-bucketlist-vs-merkle-inclusion-proof, q-ti-parse-raw-ledger-data; no contradiction",
-        "Structural re-form (negative-predicate): Split the long nested-field and hash-role comparison into two atomic positive requirements; truth unchanged",
-        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-xdr/v27.0/Stellar-ledger.x — P27 XDR placed the consensus value in the direct scpValue field.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers — the current ledger page described transaction-set-result and BucketList-state hashes as different header commitments.",
-        "Sibling sweep 2026-08-27: grep LedgerHeader|StellarValue|txSetResultHash|bucketListHash → q-hot-fee-pool-burn-deflation, q-pc-bucketlist-vs-merkle-inclusion-proof, q-ti-parse-raw-ledger-data; no contradiction"
+        "Gospel change (pass 2): golden.answer drops the dated Mainnet pin and states the header release-bounded; keyFacts[0] drops '(unchanged since P27)'; golden.notes gains a symmetric do-not-penalize caution for the verified wording ambiguity (Bell guide says P30 changes the ledger header format; XDR keeps the direct fields and changes only StellarValue arms). Not a partial cap; ADR-0008 not engaged. All verifier accept.",
+        "Class B 2026-11-02 (pass-2 verifier): https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x (diffed against v27.0 and v28.0) — struct LedgerHeader identical in v27.0, v28.0, v30.0; v28.0→v30.0 diff adds only 'STELLAR_VALUE_SIGNED_MS = 3, STELLAR_VALUE_EMPTY_TX_SET_MS = 4' with 'TimePointMs closeTimeMs; // closeTime == closeTimeMs / 1000' inside StellarValue ext (observedAt 2026-11-02)",
+        "Class B 2026-11-02 (pass-2 verifier): gh api repos/stellar/stellar-xdr/releases — v30.0 2026-10-21T00:49:47Z; v28.0 2026-08-27T14:26:41Z; v27.0 2026-06-09T19:04:45Z; no v29 tag (observedAt 2026-11-02)",
+        "Class A 2026-11-02 (pass-2 verifier): https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/software-versions.mdx + https://developers.stellar.org/docs/networks/software-versions — 'Protocol 29 (Mainnet, October 1, 2026) Software Software Version XDR v28.0'; 'Protocol 28 (Mainnet, September 16, 2026) ... XDR v28.0'; 'Protocol 27 (Mainnet, July 8, 2026) ... XDR v27.0' (observedAt 2026-11-02)",
+        "Class B 2026-11-02 (pass-2 verifier): https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md — Status: Implemented; Protocol version: 30. 'whole-second `closeTime` field in `StellarValue` is unchanged' ... 'adding a separate millisecond-resolution close time in the new `StellarValue` arms' ... 'StellarValue ──► LedgerHeader.scpValue'; 'every consumer that decodes StellarValue (or anything containing it, such as ledger headers ...) needs XDR definitions that include the new arms' (observedAt 2026-11-02)",
+        "Class F 2026-11-02 (pass-2 verifier): https://horizon.stellar.org/ — current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0 (0e49751a...), history_latest_ledger 65271116 (observedAt 2026-11-02)",
+        "Class A 2026-11-02 (pass-2 verifier): https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide — The SDK upgrade is not optional this cycle. Protocol 30 changes the ledger header format (CAP-88), and an older SDK may fail to decode Protocol 30 ledgers. ... from the first ledger after the upgrade, ledger headers carry a new value type, and decoders built against older XDR will fail on it. (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02 (pass 2): q-pc-protocol-upgrade-timing (same-pass parenthetical reconciles the Bell quote), q-protocol-ledger-close-time (CAP-0088 millisecond close times; consistent), q-protocol-ledger-entry-types (same pass); no contradiction.",
+        "Pass 1 (batch protocol-core-04): Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x and v27.0/Stellar-ledger.x — the same struct LedgerHeader direct field list.",
+        "Pass 1 (batch protocol-core-04): Class B 2026-11-02: gh api repos/stellar/stellar-xdr/releases — no v29 tag; v30.0 diff only adds StellarValue ext arms carrying 'TimePointMs closeTimeMs; // closeTime == closeTimeMs / 1000'.",
+        "Pass 1 (batch protocol-core-04): Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md — 'The existing whole-second `closeTime` field in `StellarValue` is unchanged'.",
+        "Pass 1 (batch protocol-core-04): Class C 2026-11-02: https://horizon.stellar.org/ — current_protocol_version 29, core_supported_protocol_version 30.",
+        "Pass 1 (batch protocol-core-04): Class E 2026-11-02: stellarDocs.search_docs → https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers#ledger-header-fields (index hit).",
+        "Pass 1 (batch protocol-core-04): Change: answer 'Protocol 27 LedgerHeader' → dated 2026-11-02 Mainnet P29 wording naming the v27.0/v28.0/v30.0 releases, plus one clause that Protocol 30 adds closeTimeMs inside the StellarValue extension (verifier modify); keyFact 1 drops the stale 'P27' pin (verifier accept).",
+        "Pass 1 (batch protocol-core-04): Sibling sweep 2026-11-02: grep 'LedgerHeader|LedgerEntryType|closeTimeMs' over eval/qa/corpus/battery — q-protocol-ledger-entry-types (same batch), q-ti-parse-raw-ledger-data (LedgerHeaderHistoryEntry only), q-hot-fee-pool-burn-deflation, q-protocol-validator-upgrade-vote, q-protocol-max-tx-set-size; no contradiction."
       ],
       "rootCause": [
-        "Conceptual Docs headings flattened instead of reading XDR structure.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift",
+        "Eval-side authoring flaw: sibling wording conflict with q-pc-protocol-upgrade-timing, which quotes the Bell guide 'CAP-88 changes the ledger header format' while this case said the header was unchanged; both true at different layers (.agents/rounds/2026-11-02-golden-audit.md, task protocol-current)"
       ]
     },
-    "origin": "raven-next q-protocol-ledger-header-fields"
+    "origin": "raven-next q-protocol-ledger-header-fields",
+    "asOf": "2026-11-02"
   }
 }

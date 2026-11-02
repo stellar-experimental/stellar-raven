@@ -51,6 +51,18 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/fee_stats",
+        "note": "last_ledger_base_fee 100 on 2026-11-02.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "stellar fees --help (stellar 28.1.0)",
+        "note": "'stats  Fetch the feestats from the network'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -104,20 +116,15 @@
       }
     ],
     "verified": {
-      "date": "2026-09-09",
-      "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-02)",
       "evidence": [
-        ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
-        ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
-        "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
-        "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
-        "Only the dated Horizon lifecycle and search-ingestion qualifier change. Fee, surge, getFeeStats, Hubble, key facts, avoid items, and the separate sd-003 caution remain unchanged.",
-        "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
-      ],
-      "rootCause": [
-        "improvements/resolved.json entry sd-042; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
-        "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies.",
-        "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md"
+        "Verification-only event: no judge-facing field changed.",
+        "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — 'This cannot be lower than 100 stroops per operation (the network minimum) ... When network traffic exceeds the ledger limit, the network enters into surge pricing mode, and your effective base fee becomes your maximum bid' (observedAt 2026-11-02).",
+        "https://horizon.stellar.org/fee_stats — last_ledger_base_fee 100 (ledger 65269952); RPC getFeeStats on https://mainnet.sorobanrpc.com — inclusionFee min 100, p50 100 (observedAt 2026-11-02).",
+        "stellar fees --help (stellar 28.1.0) — 'Commands: stats  Fetch the feestats from the network' (observedAt 2026-11-02).",
+        "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment — 'networking layer API for Stellar RPC methods as well as the Horizon API (nearing end-of-life)' (observedAt 2026-11-02); the golden's dated 2026-09-08 wording still holds.",
+        "Sibling sweep 2026-11-02: q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement rule; consistent); no contradiction."
       ]
     },
     "origin": "raven-next q-pc-practical-fee-setting"

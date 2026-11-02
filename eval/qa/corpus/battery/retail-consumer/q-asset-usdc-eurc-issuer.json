@@ -15,7 +15,7 @@
       "Do NOT call Circle Mint Europe the current legal issuer; use Circle Internet Financial Europe SAS or omit the legal entity if not needed.",
       "Do NOT attribute USDC/EURC issuance to Tether, Paxos, or SDF."
     ],
-    "notes": "Dossier §4. Verified: Circle issues both USDC and EURC on Stellar; EURC launched on Stellar 2023-09-26, fiat-backed redeemable 1:1 for euro (stellar.org press release).\nAlso good if the answer: USDC is USD-backed and EURC is euro-backed, each redeemable 1:1. | Both are issued as classic Stellar assets (and thus get a reserved SAC).\nGolden cites: A stellar.org Circle USDC/EURC page or the EURC launch press release.\nLEGAL-ENTITY CORRECTION 2026-07-09 (todo 901): replace inherited 'Circle Mint Europe' wording with Circle Internet Financial Europe SAS, per Circle's current EURC disclosure."
+    "notes": "Dossier §4. Verified: Circle issues both USDC and EURC on Stellar; EURC launched on Stellar 2023-09-26, fiat-backed redeemable 1:1 for euro (stellar.org press release).\nAlso good if the answer: USDC is USD-backed and EURC is euro-backed, each redeemable 1:1. | Both are issued as classic Stellar assets (and thus get a reserved SAC).\nGolden cites: A stellar.org Circle USDC/EURC page or the EURC launch press release.\nLEGAL-ENTITY CORRECTION 2026-07-09 (todo 901): replace inherited 'Circle Mint Europe' wording with Circle Internet Financial Europe SAS, per Circle's current EURC disclosure.\nSAME-TICKER BOUNDARY (verified 2026-11-02): Circle's Stellar EURC issuer is GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 (circle.com stellar.toml). MyKobo also issues an asset with code EURC (issuer GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM, home domain mykobo.co; its stellar.toml lists status live and Horizon shows 12,804 authorized trustlines as of 2026-11-02). MyKobo announced a transition of its EURC holders to Circle EURC on 2024-07-04. An answer that names MyKobo's EURC as a distinct asset under its own issuer is not wrong; attributing Circle's EURC to MyKobo is wrong."
   },
   "tags": {
     "category": "retail-consumer",
@@ -44,6 +44,42 @@
         "class": "A",
         "ref": "https://stellar.org/products-and-tools/circle-usdc-eurc",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/accounts/GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM",
+        "note": "Golden audit 2026-11-02: \"home_domain: mykobo.co (last_modified_time 2026-10-25T04:31:33Z)\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/assets?asset_code=EURC&limit=50",
+        "note": "Golden audit 2026-11-02: \"GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM accounts.authorized=12804 balances.authorized=122219.6810237 toml=https://mykobo.co/.well-known/stellar.toml\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/assets?asset_code=EURC&asset_issuer=GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2",
+        "note": "Golden audit 2026-11-02: \"accounts.authorized=50781; issuer account home_domain=circle.com\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://mykobo.co/.well-known/stellar.toml",
+        "note": "Golden audit 2026-11-02: \"code=\"EURC\" issuer=\"GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM\" is_asset_anchored=true anchor_asset_type=\"fiat\" status=\"live\" anchor_asset=\"EUR\" ... name=\"EURo Coin\"\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.circle.com/.well-known/stellar.toml",
+        "note": "Golden audit 2026-11-02: \"code=\"EURC\" issuer=\"GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2\" ... desc=\"EURC is a fully collateralized euro stablecoin.\"\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://medium.com/%40myk0b0/ama-march-recap-with-ceo-co-founder-seyi-akin-olugbemi-52cf62200157",
+        "note": "Golden audit 2026-11-02: \"The EURo Coin (EURC) is an asset-backed stablecoin pegged 1:1, issued by MYKOBO UAB and built on Stellar.\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -62,22 +98,94 @@
             "ref": "A: SDF EURC launch release dates Stellar availability to 2023-09-26",
             "observedAt": "2023-09-26",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.circle.com/eurc",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France, and qualifies as an e-money token under MiCA.\""
+          },
+          {
+            "class": "D",
+            "ref": "Perplexity ask -> https://micatracker.digital-euro-association.de/emt-tracker; https://www.amf-france.org/sites/institutionnel/files/pdf/78665/en/CIRCLE_INTERNET_FINANCIAL_EUROPE_SAS.pdf",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"The licensed MiCA issuer is Circle Internet Financial Europe SAS ... EURC launched on the Stellar network on September 26, 2023\""
           }
         ],
-        "note": "Single-class limitation: Circle's own disclosure is the only source class in this matrix supporting the exact Circle Internet Financial Europe SAS legal-entity name; the SDF release independently corroborates the 2023-09-26 launch date only, not the entity attribution. Treat the exact legal entity as disclosure-bound and re-verify Circle's current page."
+        "note": "Re-verified 2026-11-02: Circle's EURC page (A) and the MiCA EMT tracker / AMF register PDF (D, via Perplexity) both name Circle Internet Financial Europe SAS; the SDF release (A) and Lumenloop-indexed The Block article (C) date the Stellar launch to 2023-09-26."
+      },
+      {
+        "claim": "A separate MyKobo-issued asset with code EURC (issuer GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM, home domain mykobo.co) exists on Stellar beside Circle's EURC (issuer GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2); MyKobo announced a transition of its holders to Circle EURC on 2024-07-04.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://mykobo.co/.well-known/stellar.toml",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"code=\"EURC\" issuer=\"GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM\" is_asset_anchored=true anchor_asset_type=\"fiat\" status=\"live\" anchor_asset=\"EUR\" ... name=\"EURo Coin\"\""
+          },
+          {
+            "class": "A",
+            "ref": "https://www.circle.com/.well-known/stellar.toml",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"code=\"EURC\" issuer=\"GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2\" ... desc=\"EURC is a fully collateralized euro stablecoin.\"\""
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/assets?asset_code=EURC&limit=50",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM accounts.authorized=12804 balances.authorized=122219.6810237 toml=https://mykobo.co/.well-known/stellar.toml\""
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/assets?asset_code=EURC&asset_issuer=GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"accounts.authorized=50781; issuer account home_domain=circle.com\""
+          },
+          {
+            "class": "D",
+            "ref": "https://medium.com/%40myk0b0/ama-march-recap-with-ceo-co-founder-seyi-akin-olugbemi-52cf62200157",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"The EURo Coin (EURC) is an asset-backed stablecoin pegged 1:1, issued by MYKOBO UAB and built on Stellar.\""
+          },
+          {
+            "class": "C",
+            "ref": "https://lumenloop.com/news/mykobo-eurc-transitioning-circle-eurc (original https://medium.com/@myk0b0/mykobo-eurc-transitioning-to-circle-eurc-dd170af34bd2)",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: \"MYKOBO announced on July 4, 2024, that its EURC stablecoin issued on the Stellar blockchain will transition to Circle's EURC on the same network.\""
+          }
+        ],
+        "note": "Volatile: MyKobo toml status and trustline counts are dated 2026-11-02; a third-party tracker labels MyKobo EURC as winding down."
       }
     ],
     "verified": {
-      "date": "2026-07-09",
-      "by": "Golden-truth sweep import — The inherited answer used the inaccurate legal-entity label 'Circle Mint Europe'. Circle's current EURC legal disclosure names Circle Internet Financial Europe SAS. The product-level issuer remains Circle.",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
       "evidence": [
-        "Solo scratchpad 569 Batch F, 2026-07-09; sibling sweep covered the stablecoin/PYUSD issuer cluster."
+        "2026-11-02 [F] https://horizon.stellar.org/accounts/GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM — \"home_domain: mykobo.co (last_modified_time 2026-10-25T04:31:33Z)\" (claim: verifier modify golden.notes)",
+        "2026-11-02 [F] https://horizon.stellar.org/assets?asset_code=EURC&limit=50 — \"GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM accounts.authorized=12804 balances.authorized=122219.6810237 toml=https://mykobo.co/.well-known/stellar.toml\" (claim: verifier modify golden.notes)",
+        "2026-11-02 [F] https://horizon.stellar.org/assets?asset_code=EURC&asset_issuer=GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 — \"accounts.authorized=50781; issuer account home_domain=circle.com\" (claim: verifier modify golden.notes)",
+        "2026-11-02 [A] https://mykobo.co/.well-known/stellar.toml — \"code=\"EURC\" issuer=\"GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM\" is_asset_anchored=true anchor_asset_type=\"fiat\" status=\"live\" anchor_asset=\"EUR\" ... name=\"EURo Coin\"\" (claim: verifier modify golden.notes)",
+        "2026-11-02 [A] https://www.circle.com/.well-known/stellar.toml — \"code=\"EURC\" issuer=\"GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2\" ... desc=\"EURC is a fully collateralized euro stablecoin.\"\" (claim: verifier modify golden.notes)",
+        "2026-11-02 [D] https://medium.com/%40myk0b0/ama-march-recap-with-ceo-co-founder-seyi-akin-olugbemi-52cf62200157 — \"The EURo Coin (EURC) is an asset-backed stablecoin pegged 1:1, issued by MYKOBO UAB and built on Stellar.\" (claim: verifier modify golden.notes)",
+        "2026-11-02 [D] https://www.eurostablecoins.xyz/issuers/mykobo — \"It issues EURC, tracked on this site. ... EURC Winding down €131K 2026-10-26\" (claim: verifier modify golden.notes)",
+        "2026-11-02 [C] https://lumenloop.com/news/mykobo-eurc-transitioning-circle-eurc (original https://medium.com/@myk0b0/mykobo-eurc-transitioning-to-circle-eurc-dd170af34bd2) — \"MYKOBO announced on July 4, 2024, that its EURC stablecoin issued on the Stellar blockchain will transition to Circle's EURC on the same network.\" (claim: verifier modify golden.notes)",
+        "2026-11-02T16:30:32Z [C] Raven lumenloop.search_directory({query:'mykobo'}) — \"MYKOBO is a financial platform that facilitates seamless Euro transactions through EURC, a Euro-backed stablecoin issued by Circle\" (claim: verifier modify golden.notes)",
+        "2026-11-02 [A] https://www.circle.com/eurc — \"EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France, and qualifies as an e-money token under MiCA.\" (claim: golden.keyFacts[0] confirmed: Circle is the product issuer of USDC and EURC on Stellar)",
+        "2026-11-02 [A] https://stellar.org/press/eurc-launches-on-the-stellar-network — \"MADRID, SPAIN – September 26, 2023 – Circle and the Stellar Development Foundation (SDF) today announced that EURC is now live on the Stellar network.\" (claim: golden.keyFacts[0] confirmed: Circle is the product issuer of USDC and EURC on Stellar)",
+        "2026-11-02 [F] https://horizon.stellar.org/accounts/GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 and /accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN — \"home_domain circle.com for both issuer accounts\" (claim: golden.keyFacts[0] confirmed: Circle is the product issuer of USDC and EURC on Stellar)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/stablecoins (via Raven scout.getStablecoins, dataAsOf 2026-11-02T06:26:31Z) — \"EURC is issued on Stellar by 2 distinct companies: attribute by issuer account, never by ticker alone. (Circle GDHU6WRG...NPP2; MyKobo GAQRF3UG...Z7NM)\" (claim: golden.keyFacts[0] confirmed: Circle is the product issuer of USDC and EURC on Stellar)",
+        "2026-11-02 [C] Lumenloop POST /v1/tools/search_content_semantic (articles) -> https://www.theblock.co/post/253051/circle-launches-eurc-stablecoin-on-stellar-network — \"Circle launches EURC stablecoin on Stellar network | 2023-09-26 19:33:00+00\" (claim: golden.keyFacts[1] confirmed: EURC launched on Stellar on September 26, 2023)",
+        "2026-11-02 [D] Perplexity ask -> https://micatracker.digital-euro-association.de/emt-tracker; https://www.amf-france.org/sites/institutionnel/files/pdf/78665/en/CIRCLE_INTERNET_FINANCIAL_EUROPE_SAS.pdf — \"The licensed MiCA issuer is Circle Internet Financial Europe SAS ... EURC launched on the Stellar network on September 26, 2023\" (claim: golden.keyFacts[1] confirmed: EURC launched on Stellar on September 26, 2023)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/agentic-payments/x402 — \"Mainnet USDC Issuer GA5ZSEJY...KZVN SEP-41 Contract CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75\" (claim: golden.answer confirmed: Both are classic Stellar assets with reserved SAC representations)",
+        "2026-11-02 [F] https://horizon.stellar.org/accounts/GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM + https://mykobo.co/.well-known/stellar.toml — \"home_domain mykobo.co; toml: code=\"EURC\" issuer=\"GAQRF3UG...\" status=\"live\" name=\"EURo Coin\"\" (claim: golden.answer (scope) confirmed: 'Circle issues both USDC and EURC on Stellar' read as exclusive for code EURC)",
+        "Sibling sweep 2026-11-02: grep -il 'mykobo|EURC' over eval/qa/corpus/battery → q-asset-stablecoin-issuers-discovery and q-eco-stablecoins-on-stellar already attribute EURC by issuer (Circle GDHU6WRG...NPP2 vs MyKobo GAQRF3UG...Z7NM); q-asset-usdc-eurc-path-fx, q-token-circle-usdc-on-stellar, q-ti-testnet-usdc-faucet, q-raph-usdc-onto-stellar, q-defi-sdex-offer-lifecycle, q-eco-pyusd-stellar-freshness, q-hist-cctp-stellar-live-announcement do not attribute EURC to MyKobo; no contradiction with the new note."
       ],
       "rootCause": [
-        "Eval-side legal-entity naming drift in an otherwise correct Circle/EURC answer.",
-        "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch F"
+        "Eval-side authoring flaw: golden scoped 'EURC' by ticker without the code+issuer identity boundary that its sibling q-asset-stablecoin-issuers-discovery carries."
       ]
     },
-    "origin": "raven-next q-asset-usdc-eurc-issuer"
+    "origin": "raven-next q-asset-usdc-eurc-issuer",
+    "asOf": "2026-11-02"
   }
 }

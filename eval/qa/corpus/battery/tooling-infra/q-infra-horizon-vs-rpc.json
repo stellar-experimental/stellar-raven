@@ -7,7 +7,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nHorizon is a REST/HAL API and indexer with curated entity/relationship resources, HAL pagination, and documented SSE streaming. Stellar RPC is the forward JSON-RPC gateway for live/current network state, recent/raw transactions and events, classic plus smart-contract queries, simulation, and submission. It is not Soroban-only and is not a full Horizon indexer. Use RPC for new smart-contract/current-state work, but keep Horizon, an indexer, Portfolio APIs, or Hubble where curated/full-history workloads require them. As of 2026-09-08, the live official pages describe Horizon as nearing end-of-life and eventually deprecated. The Docs search index can lag a deployment, so verify the rendered page before pinning its status.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nHorizon is a REST/HAL API and indexer with curated entity/relationship resources, HAL pagination, and documented SSE streaming. Stellar RPC is the forward JSON-RPC gateway for live/current network state, recent/raw transactions and events, classic plus smart-contract queries, simulation, and submission. It is not Soroban-only and is not a full Horizon indexer. Use RPC for new smart-contract/current-state work, but keep Horizon, an indexer, Portfolio APIs, or Hubble where curated/full-history workloads require them. As of 2026-11-02, the official APIs overview and Lab Horizon Endpoints page describe Horizon as nearing end-of-life and eventually deprecated. The Docs search index can lag a deployment, so verify the rendered page before pinning its status.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -20,7 +20,7 @@
       "Do NOT call Horizon already deprecated or promise universal full history.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture and date the lifecycle label.\nOn 2026-09-09, the rendered EVM guide and its positive search record agree on the nearing-end-of-life label. The pre-deploy search-index caution expired after the completed crawl. Preserve the durable architecture distinctions and date later lifecycle claims."
+    "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture and date the lifecycle label.\nOn 2026-09-09, the rendered EVM guide and its positive search record agree on the nearing-end-of-life label. The pre-deploy search-index caution expired after the completed crawl. Preserve the durable architecture distinctions and date later lifecycle claims. Canonical-page caution 2026-11-02 (sd-072): since the 2026-10-22 Mintlify migration (stellar-docs 700ed32d), the official Stellar Lab API Explorer page (https://developers.stellar.org/docs/tools/lab/api-explorer) says 'Horizon is considered deprecated.' The APIs overview and the Lab Horizon Endpoints page still say nearing end-of-life. An attributed quote of that official page is not a wrong claim; grade caps at partial for that claim unless the answer reconciles it with the APIs overview. An unattributed 'already deprecated' claim still fires the avoid. Remove this caution when sd-072 is fixed upstream and the Lab card matches the overview wording."
   },
   "tags": {
     "category": "tooling-infra",
@@ -33,8 +33,8 @@
       "reviewState": "none"
     },
     "domain": "mixed",
-    "status": "confirmed",
-    "asOf": "2026-09-08",
+    "status": "mixed",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -55,6 +55,24 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/data/apis",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+        "note": "Lab API Explorer card: 'Horizon is considered deprecated.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+        "note": "'Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-docs/commit/700ed32d0b2bac10e265cdc5fb1a4b70671ab130",
+        "note": "Mintlify migration (#2941, 2026-10-22) introduced the Lab card text; pre-migration README.mdx used <DocCardList />.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -129,22 +147,90 @@
             "note": "The corrected positive EVM record ranks first after the September 9 crawl. The old present-tense phrase is absent."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, the official Lab API Explorer card says 'Horizon is considered deprecated.', while the APIs overview, the Lab Horizon Endpoints page, and the EVM guide say Horizon is nearing end-of-life and will eventually be deprecated.",
+        "verdict": "disputed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+            "observedAt": "2026-11-02",
+            "note": "Rendered card: 'Horizon is considered deprecated.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/blob/de38543086d312eadcb69f3456d02b6aaa3e54bb/docs/tools/lab/api-explorer/index.mdx",
+            "observedAt": "2026-11-02",
+            "note": "Line 13: 'Horizon is considered deprecated.' Only commit in its history is 700ed32d (Mintlify migration)."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis",
+            "observedAt": "2026-11-02",
+            "note": "'Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+            "observedAt": "2026-11-02",
+            "note": "Same nearing-end-of-life sentence; 'it will continue to receive updates to maintain compatibility with upcoming protocol releases'."
+          },
+          {
+            "class": "D",
+            "ref": "https://chainstack.com/learn/compare/top-6-stellar-rpc-providers-for-payments/",
+            "observedAt": "2026-11-02",
+            "note": "'nearing end-of-life per Stellar's own documentation ... with no published shutdown date'"
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_docs({query:'Horizon is considered deprecated API Explorer'})",
+            "observedAt": "2026-11-02",
+            "note": "Index still serves the pre-migration api-explorer text 'nearing end-of-life'; it lags the rendered card."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-09-09",
-      "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task critic-cleanup)",
       "evidence": [
-        ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
-        ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
-        "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
-        "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
-        "Only the dated Horizon source/index agreement and expired caution change. Architecture, endpoint overlap, key facts, and avoid items remain unchanged. The September 8 conflict remains dated historical evidence.",
-        "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
+        "Gospel change 2026-11-02: golden.notes gains a canonical-page caution. The official Lab API Explorer card says 'Horizon is considered deprecated.'; the APIs overview and Lab Horizon Endpoints page say nearing end-of-life. An attributed quote of the Lab page caps at partial; an unattributed 'already deprecated' claim still fires avoid[1]. Answer, keyFacts, and avoid items are unchanged.",
+        "Verifier accept (append-text) class A: https://developers.stellar.org/docs/tools/lab/api-explorer — \"Horizon Endpoints ... Horizon is considered deprecated.\" (observedAt 2026-11-02)",
+        "Verifier accept (append-text) class A: https://developers.stellar.org/docs/data/apis — \"Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs\" (observedAt 2026-11-02)",
+        "Verifier accept (append-text) class A: https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint — \"Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs. While it will continue to receive updates to maintain compatibility with upcoming protocol releases, it won't receive new feature development.\" (observedAt 2026-11-02)",
+        "Verifier accept (append-text) class B: https://github.com/stellar/stellar-docs/blob/main/docs/tools/lab/api-explorer/index.mdx — \"<Card title=\"Horizon Endpoints\" icon=\"file-lines\" href=\"/docs/tools/lab/api-explorer/horizon-endpoint\"> Horizon is considered deprecated. </Card>\" (observedAt 2026-11-02)",
+        "Verifier accept (append-text) class B: https://github.com/stellar/stellar-docs/commit/700ed32d0b2bac10e265cdc5fb1a4b70671ab130 — \"build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941) — 2026-10-22T18:00:55Z; only commit in index.mdx history; pre-migration README.mdx used <DocCardList /> with no 'considered deprecated' text\" (observedAt 2026-11-02)",
+        "Verifier accept (append-text) class D: Perplexity search; https://developers.stellar.org/docs/data/indexers/index — \"Horizon: as mentioned above, Horizon will soon be deprecated, but for now it is the only way to get some of this data.\" (observedAt 2026-11-02)",
+        "Verifier accept (append-text) class D: https://chainstack.com/learn/compare/top-6-stellar-rpc-providers-for-payments/ — \"Horizon ... is nearing end-of-life per Stellar's own documentation — no new feature development, though it keeps receiving compatibility updates with no published shutdown date\" (observedAt 2026-11-02)",
+        "Verifier accept (append-text) class E: stellarDocs.search_docs({query:'Horizon is considered deprecated API Explorer'}) — \"both api-explorer hits return 'Horizon is nearing end-of-life and will eventually be deprecated' (index snippet does not surface the card text)\" (observedAt 2026-11-02)",
+        "Class A (golden.answer, confirmed): https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — \"Responses are JSON in the HAL format ... RPC's JSON-RPC API uses JSON-RPC 2.0\" (observedAt 2026-10-09)",
+        "Class A (golden.answer, confirmed): https://developers.stellar.org/docs/data/apis/rpc — \"A drop-in replacement for Horizon. Horizon provides several indexing features not commonly supported by RPC nodes.\" (observedAt 2026-10-22)",
+        "Class B (golden.answer, confirmed): stellar-docs@de38543 tree: docs/data/apis/horizon/api-reference/structure/streaming.mdx, response-format.mdx — \"files present\" (observedAt 2026-11-02)",
+        "Class B (golden.answer / keyFacts[4] / avoid[1], confirmed-as-of): https://raw.githubusercontent.com/stellar/stellar-docs/de38543086d312eadcb69f3456d02b6aaa3e54bb/docs/data/apis/index.mdx:30 — \"Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and [Portfolio APIs]\" (observedAt 2026-11-02)",
+        "Class B (golden.answer / keyFacts[4] / avoid[1], confirmed-as-of): stellar-docs@de38543 docs/learn/migrate/evm/smart-contract-deployment.mdx:59 — \"the Horizon API (nearing end-of-life)\" (observedAt 2026-11-02)",
+        "Class D (golden.answer / keyFacts[4] / avoid[1], confirmed-as-of): perplexity_search 'Stellar Horizon API deprecation announcement 2026 end-of-life date' -> developers.stellar.org/docs/data/apis/index (dated 2026-10-22) — \"Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs.\" (observedAt 2026-11-02)",
+        "Class E (golden.answer / keyFacts[4] / avoid[1], confirmed-as-of): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) stellarDocs.search_rpc_horizon_data_docs('Horizon nearing end-of-life deprecated in favor of Stellar RPC') — \"https://developers.stellar.org/docs/data/apis#horizon: Horizon is nearing end-of-life and will eventually be deprecated\" (observedAt 2026-11-02)",
+        "Class A (golden.avoid[1], disputed): curl https://developers.stellar.org/docs/tools/lab/api-explorer — \"<span data-as=\"p\">Horizon is considered deprecated.</span> (2 matches)\" (observedAt 2026-11-02)",
+        "Class B (golden.avoid[1], disputed): https://raw.githubusercontent.com/stellar/stellar-docs/de38543086d312eadcb69f3456d02b6aaa3e54bb/docs/tools/lab/api-explorer/index.mdx:13 — \"Horizon is considered deprecated.\" (observedAt 2026-11-02)",
+        "Class B (golden.avoid[1], disputed): https://github.com/stellar/stellar-docs/commit/700ed32d0b2bac10e265cdc5fb1a4b70671ab130 — \"build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941); pre-migration README.mdx used <DocCardList /> and horizon-endpoint.mdx said 'Horizon is nearing end-of-life...'\" (observedAt 2026-11-02)",
+        "Class D (golden.avoid[1], disputed): perplexity_search result https://developers.stellar.org/docs/tools/lab/api-explorer/index (dated 2026-10-21) — \"## Horizon Endpoints Horizon is considered deprecated.\" (observedAt 2026-11-02)",
+        "Class E (golden.avoid[1], disputed): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) stellarDocs.search_docs('Horizon is considered deprecated') — \"api-explorer record still indexes pre-migration text: Horizon is nearing end-of-life and will eventually be deprecated\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep 'considered deprecated' over eval/qa/corpus/battery finds no case; matrix siblings q-pc-practical-fee-setting, q-ti-compute-token-lp-market-data, q-infra-which-indexer, q-infra-hubble-bigquery keep the nearing-end-of-life label and do not conflict.",
+        "Pass 2 live A 2026-11-02T17:36Z: GET https://developers.stellar.org/docs/tools/lab/api-explorer (HTTP 200) -- 'Horizon Endpoints Horizon is considered deprecated. RPC Methods ...'.",
+        "Pass 2 live B 2026-11-02: stellar/stellar-docs main 7cb5e8a4 docs/tools/lab/api-explorer/index.mdx line 13 -- 'Horizon is considered deprecated.'",
+        "Finding filed: improvements/stellar-docs/sd-072-lab-api-explorer-horizon-deprecated-label.md (status verified, discovered 2026-11-02). The caution now names sd-072 and expires when sd-072 is fixed upstream and the Lab card matches the overview. The pre-migration api-explorer text that stellarDocs.search_docs returned on 2026-11-02 came from the retired Algolia adapter; it does not cause this change.",
+        "ADR-0008 scope check: this case is the accepted Horizon-lifecycle case (.agents/rounds/2026-08-29-golden-truth-session-3.md: the EVM-guide 'deprecated' partial-cap caution sat on q-infra-horizon-vs-rpc; research/decisions/0008-human-review-eval-and-playground-policy.md accepted set 'base reserve, Horizon lifecycle, and RPC pagination'). The Lab-card caution stays inside that case.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.notes: The caution is a Horizon-lifecycle canonical-page cap, which ADR-0008 accepts. The change only adds the finding id and an expiry tied to sd-072 being fixed upstream and the card matching, as the skill requires. The live Lab card still says 'Horizon is considered deprecated.' (2026-11-02T17:46Z), so the trigger is live. The text keeps the lint-canonical form ('official ... page', 'not a wrong claim', 'caps at partial').",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[1]: sd-072 exists in improvements/stellar-docs/ with matching evidence, and the quoted overview label matches the live APIs page. With an improvements/ path in rootCause, the notes' symmetric caution satisfies the lint.",
+        "Gospel change (pass 3): the golden.answer lifecycle sentence is re-dated from 2026-09-08 to the 2026-11-02 re-verification and names the two pages that carry the label, because the Lab API Explorer card now differs (sd-072 caution in golden.notes). The architecture paragraph and its 2026-07-11 basis are unchanged.",
+        "Class A 2026-11-02T18:43Z: https://developers.stellar.org/docs/data/apis - 'Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs.'; https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint - same sentence; https://developers.stellar.org/docs/tools/lab/api-explorer - 'Horizon Endpoints Horizon is considered deprecated.'",
+        "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/index.mdx line 30 and docs/tools/lab/api-explorer/horizon-endpoint.mdx line 8 - 'Horizon is nearing end-of-life and will eventually be deprecated'; docs/tools/lab/api-explorer/index.mdx line 13 - 'Horizon is considered deprecated.'"
       ],
       "rootCause": [
-        "improvements/resolved.json entry sd-042; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
-        "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
+        "freshness-drift",
+        "improvements/stellar-docs/sd-072-lab-api-explorer-horizon-deprecated-label.md: the stellar-docs Mintlify migration commit 700ed32d (#2941, 2026-10-22) put 'Horizon is considered deprecated.' on the Lab API Explorer card, which conflicts with the APIs overview label 'nearing end-of-life and will eventually be deprecated'.",
+        "Eval-side authoring flaw: the answer kept a 2026-09-08 lifecycle date and a blanket 'live official pages' claim after the 2026-11-02 re-verification found the Lab card wording differs."
       ]
     },
     "origin": "raven-next q-infra-horizon-vs-rpc"

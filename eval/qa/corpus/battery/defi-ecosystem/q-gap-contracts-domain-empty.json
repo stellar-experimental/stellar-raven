@@ -32,7 +32,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-08-18",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
@@ -43,6 +43,12 @@
         "class": "C",
         "ref": "https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5",
         "note": "The read-only probe returned HTTP success, an empty contracts array, zero returned rows, and the evidence-gated note."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5",
+        "note": "HTTP 200; meta.filters.domain 'defi-yield'; counts {returned:0,total:0}; contracts []; evidence-gated note present. Other domains return rows (defi-amm total 5).",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -66,24 +72,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-05)",
       "evidence": [
-        "Read-only listContracts domain probe returned a successful empty payload on 2026-08-18.",
-        "catalog/manifest.json#scout.listContracts defines the durable evidence-gated absence boundary.",
-        "Sibling sweep: q-ti-enumerate-all-contracts already rejects this registry as a complete deployment inventory.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
-        "Structural re-form (compound-predicate): split membership, absence scope, reporting fields, and recovery into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current manifest still separates a successful contracts payload from a soft-empty error.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current listContracts contract still defines evidence-gated membership.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current listContracts contract still limits absence to registry scope.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current service specification still defines response metadata and filters.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current service specification still distinguishes registry data from open-world discovery.",
-        "Sibling sweep 2026-08-27: grep listContracts|evidence-gated|registry absence → q-ti-enumerate-all-contracts, q-gap-hackathon-brief-evidence-boundaries, q-scout-hackathon-brief-first-hour, q-defi-oracle-landscape-live, q-sor-reflector-integration-code; no contradiction"
-      ],
-      "rootCause": [
-        "solo://proj/80/todo/author-five-new-cove--1664",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Stellar Light 2026-11-02: https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5 — HTTP 200; meta.filters.domain 'defi-yield'; generatedAt 2026-11-02T15:57:22.070Z; counts {returned:0,total:0}; contracts [].",
+        "Stellar Light 2026-11-02: same response note — \"Evidence-gated: rows exist only for contracts the scanner verified live on mainnet or on-chain enrichment attributed real activity to. Absence is NOT a claim a contract doesn't exist\".",
+        "catalog/manifest.json#scout.listContracts 2026-11-02 — \"Absence here is NOT a claim a contract doesn't exist — coverage grows as scans reach repos.\"; \"codeInUse: null = no attributed activity on record, never 'unused'\".",
+        "No gospel change: the proposer confirmed every judge-facing claim; no change was proposed.",
+        "Sibling sweep 2026-11-02: q-ti-enumerate-all-contracts, q-gap-hackathon-brief-evidence-boundaries, q-scout-hackathon-brief-first-hour; no contradiction."
       ]
     },
     "origin": "authored 2026-08 (coverage)"

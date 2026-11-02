@@ -1,0 +1,1289 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "assets-anchors-seps-03",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-asset-two-account-issuer",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Two accounts: issuing and distribution",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-10-26",
+       "quote": "It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'issuing account distribution account best practice' -> control-asset-access#issuing-and-distribution-accounts",
+       "observedAt": "2026-11-02",
+       "quote": "to create two accounts when issuing an asset"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Issuer creates supply and manages flags",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-10-26",
+       "quote": "The issuing account creates (or mints) the asset on the network by executing a payment operation."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp",
+       "observedAt": "2026-08-29",
+       "quote": "CHANGE_TRUST_SELF_NOT_ALLOWED (prior event 2026-08-29)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Distribution account is public-facing, sends to users",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-10-26",
+       "quote": "The distribution account is the first recipient of the issued asset and handles all other transactions."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[2]",
+     "claim": "Issuer cannot hold a balance of its own asset (trap)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-10-26",
+       "quote": "an issuing account can't actually hold a balance of its own asset."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "A single-account setup is acceptable only for testing",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tokens/how-to-issue-an-asset.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "Although it is not required to create a distribution account, it is best practice, so we will do so in this example."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> how-to-issue-an-asset#distribution-account-keypair",
+       "observedAt": "2026-11-02",
+       "quote": "Although it is not required to create a distribution account, it is best practice"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "- Recommended structure is **two accounts**: a separate **issuing account** and a **distribution account** [1].\n- The **issuing account** mints supply by sending the asset, but it cannot hold a balance of its own asset. It manages authorization flags, should be **locked down / cold storage**, and should be used rarely. The **distribution account** is the public-facing account that sends the asset to users and holds a working float [1].\n- Rationale is **blast-radius / segregation of duties**: if the hot distribution account is compromised, only the **float** is at risk, not the total supply, an…",
+     "reason": "Cited docs never say a single account is acceptable only for testing; how-to-issue-an-asset says a distribution account is 'not required' but 'best practice'."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: golden answer glossed an unsourced 'only for testing' limit onto the cited page."
+   ],
+   "siblings": "q-asset-issue-asset-howto; q-asset-trustline-basics"
+  },
+  {
+   "id": "q-asset-wallet-sdk-seps",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Wraps client-side SEP-1/6/10/12/24/38, not SEP-31",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+       "observedAt": "2026-10-01",
+       "quote": "Below you can find all the SEPs the anchor class currently supports: SEP-1 ... SEP-10 ... SEP-24 ... SEP-6 ... SEP-12 ... SEP-38"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts",
+       "observedAt": "2026-11-02",
+       "quote": "async sep1( / sep6(): Sep6 / async sep10() / async sep12(authToken) (no sep31)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SDF TypeScript Wallet SDK",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/typescript-wallet-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "archived:false, pushed_at 2026-10-19, 'Typescript Wallet SDK to build Stellar wallets'"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/apps/wallet/intro.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "<Tab title=\"TypeScript\"> <Tab title=\"Kotlin\"> <Tab title=\"Flutter\"> <Tab title=\"Swift\">"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "SEP-7 support is outside the anchor class",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+       "observedAt": "2026-10-01",
+       "quote": "Besides the SEPs supported by the anchor class the wallet SDK also has support for the SEP-7 protocol"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nRe-verified 2026-11-02: the anchor class still lists SEP-1/6/10/12/24/38. Also correct: the SDK separately supports SEP-7 URIs, and the docs show Kotlin (repo archived), Flutter, and Swift tabs beside TypeScript. Do not penalize these.",
+     "reason": "Wallet SDK intro page lists SEP-7 support outside the anchor class and multi-language tabs; a true answer naming them must not be penalized."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: golden omitted true SEP-7 and multi-language facts that a correct answer may state."
+   ],
+   "siblings": "q-anchor-sdp-vs-anchor-platform; q-sep-wallet-seps-list; q-anchor-platform-what"
+  },
+  {
+   "id": "q-gap-match-partners-degrade",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "matchPartners ranks partners for a need when available",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) POST /api/partners/match",
+       "observedAt": "2026-11-02",
+       "quote": "get the published partners RANKED by fit, each with a one-line reason ... returns 503 `unavailable:true` otherwise (fall back to GET /api/partners filters)"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.matchPartners need='I need a USDC off-ramp in Mexico with SEP-24'",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 502 from /api/partners/match: error code: 502"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "On 503/unavailable fall back to getPartners",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellarlight.xyz/api/openapi.json",
+       "observedAt": "2026-11-02",
+       "quote": "returns 503 `unavailable:true` otherwise (fall back to GET /api/partners filters)"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.getPartners ramps=off-ramp q=mexico",
+       "observedAt": "2026-11-02",
+       "quote": "rows: etherfuse (anchor), anchor-bitso (anchor); meta.counts.total=2"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do not claim the 503 branch observed in 'this probe'",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute scout.matchPartners x3",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 502 ... status:502"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Use `scout.matchPartners` for a plain-language ranked shortlist; a 2026-07-11 success probe returned ranked published partners with reasons. If the call fails (the documented 503 `unavailable:true`, or another error such as the HTTP 502 observed on 2026-11-02), do not invent rankings; fall back to `scout.getPartners` filters (for example `ramps=off-ramp` with `q=mexico`) and state that AI matching was unavailable.",
+     "reason": "Undated success observation; live 2026-11-02 probes return HTTP 502, not the documented 503, so the fallback must cover any failure."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "On a 503/unavailable or other error, uses getPartners without fabricating a ranking.",
+     "reason": "Today's failure mode is HTTP 502; a true fallback answer would not match the 503-only wording."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT fabricate partner rankings when matchPartners fails, or claim a failure status the run did not observe.",
+     "reason": "'this probe' is ambiguous to the judge; the trap must punish fabricated rankings or misreported status, not a truthful 503/502 report."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nRe-probe 2026-11-02: three matchPartners calls returned HTTP 502 (not the documented 503 unavailable:true); getPartners ramps=off-ramp q=mexico returned Etherfuse and Bitso. Either failure status triggers the same fallback.",
+     "reason": "Dated live observation for the judge."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: fallback keyed only to the 503 status; undated success observation in answer."
+   ],
+   "siblings": "q-anchor-list-builders-discovery; q-asset-stablecoin-issuers-discovery; q-crp-anchors-by-corridor; q-comp-finclusive-caas; q-eco-defi-projects-discovery; q-hist-remittance-corridors; q-scf-ecosystem-listing-partner-jobs"
+  },
+  {
+   "id": "q-gap-related-projects-empty",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Takes content ID/type, not a project slug",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#lumenloop.get_related_projects",
+       "observedAt": "2026-11-02",
+       "quote": "required: content_id, content_type ... The reverse direction (project -> content) is find_content_about_project."
+      },
+      {
+       "class": "F",
+       "ref": "https://api.lumenloop.com/v1/tools/get_related_projects (POST, raw) {content_id:690,content_type:article}",
+       "observedAt": "2026-11-02",
+       "quote": "\"4 project(s) mentioned by article 690\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Empty array for article 1 means no linked mentions for that content",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://api.lumenloop.com/v1/tools/get_document {id:1,collection:articles}",
+       "observedAt": "2026-11-02",
+       "quote": "No document found with ID 1 in articles"
+      },
+      {
+       "class": "F",
+       "ref": "https://api.lumenloop.com/v1/tools/get_related_projects (POST, raw) {content_id:99999999,content_type:article}",
+       "observedAt": "2026-11-02",
+       "quote": "{\"success\":true,\"data\":[]}"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute lumenloop.get_related_projects {content_id:1,content_type:article}",
+       "observedAt": "2026-11-02",
+       "quote": "data=[] caveat no-rows"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do not reverse direction or infer ecosystem-wide absence",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "catalog/manifest.json#lumenloop.get_related_projects",
+       "observedAt": "2026-11-02",
+       "quote": "The reverse direction (project -> content) is find_content_about_project."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Pass the content row's numeric ID and its content type to `get_related_projects` to obtain the directory projects that content mentions (content to projects; the reverse is `find_content_about_project`). An empty array is soft absence scoped to that ID: the content may mention no linked projects, or no content may exist at that ID. As of 2026-11-02, article IDs 1 and 99999999 both return a successful empty array, while `get_document` reports no article with either ID. Confirm the ID first; an empty result never shows ecosystem-wide absence.",
+     "reason": "Probe ID 1 does not exist (get_document: 'No document found with ID 1 in articles'), and a nonexistent ID also returns success with []; the golden's 'means no linked mentioned projects' reading is contradicted."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Treats an empty array as ID-scoped and inconclusive; confirms the content ID exists.",
+     "reason": "Empty does not distinguish 'no mentions' from 'no such content'."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "N1 live contract probe 2026-07-11: Succeeded for article id=1 with data=[]; catalog specifies content-to-mentioned-project direction.\nRe-probe 2026-11-02: article id=1 and id=99999999 both return success with data=[]; get_document reports neither article exists; article 690 returns 4 mentioned projects. Credit an answer that flags the empty result as inconclusive.",
+     "reason": "Dated evidence that the empty probe used a nonexistent ID."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: N1 probe used nonexistent article ID 1, so the empty result was misread as content-specific absence."
+   ],
+   "siblings": "q-ti-related-projects-from-content"
+  },
+  {
+   "id": "q-production-anchor-architecture",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SEP-1/10/12 and SEP-24 or SEP-6 as needed",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+       "observedAt": "2026-10-22",
+       "quote": "The Anchor Platform implements ... SEP-1 ... SEP-6 ... SEP-10 ... SEP-12 ... SEP-24 ... SEP-31 — Cross-border payment processing (receive only) ... SEP-38 ... S…"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/anchor-platform",
+       "observedAt": "2026-11-02",
+       "quote": "archived:false, pushed_at 2026-10-31"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Requires KYC, rails, treasury, reconciliation off-chain",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture",
+       "observedAt": "2026-10-01",
+       "quote": "The business server is a service that you (the business) must implement to connect the Anchor Platform with your internal systems ... provides updates to the pl…"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'Anchor Platform architecture business server' -> architecture#business-server",
+       "observedAt": "2026-11-02",
+       "quote": "must implement to connect the Anchor Platform with your internal"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "AP does not supply banking, licenses, liquidity",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture",
+       "observedAt": "2026-10-01",
+       "quote": "The SEP server will never store any sensitive information ... business server ... you (the business) must implement"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Segregated keys, monitoring, idempotency, audit logs, runbooks",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture",
+       "observedAt": "2026-10-01",
+       "quote": "Event service ... HTTP webhooks ... Payment Observer monitors the Stellar blockchain"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+       "observedAt": "2026-10-26",
+       "quote": "if the distribution account is compromised, you can freeze the account's asset balance and start with a new distribution account"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-comp-anchor-compliance-stack; q-crp-become-an-anchor-licensing; q-anchor-platform-what"
+  },
+  {
+   "id": "q-sep-1-toml",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SEP-1 defines stellar.toml (Active)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Stellar Info File / Status: Active / Version: 2.7.0 / Updated: 2025-01-16"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [SEP-0001](sep-0001.md) | Stellar Info File | SDF | Active |"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Served at https://<domain>/.well-known/stellar.toml with CORS",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+       "observedAt": "2026-11-02",
+       "quote": "https://DOMAIN/.well-known/stellar.toml ... You must enable CORS on the stellar.toml"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-anchor-endpoint-discovery; q-sep-catalog-list"
+  },
+  {
+   "id": "q-sep-12-kyc",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1-2]",
+     "claim": "PUT /customer create/update; GET status; POST /customer/files",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md",
+       "observedAt": "2026-11-02",
+       "quote": "GET /customer: Check the status of a customers info / PUT /customer: Idempotent upload of customer info / DELETE /customer/[account] / POST /customer/files"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+       "observedAt": "2026-10-22",
+       "quote": "SEP-12 — Customer KYC/AML data management"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "SEP-10 for G/M, SEP-45 for C",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anchors and clients must support at least one of SEP-10 or SEP-45 web authentication and use it for all SEP-12 endpoints."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md",
+       "observedAt": "2026-11-02",
+       "quote": "This SEP only supports C (contract) accounts. SEP-10 only supports G and M"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45",
+       "observedAt": "2026-10-01",
+       "quote": "proving control over a contract account (C...)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "SEP-9 Standard KYC Fields",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0009.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Standard KYC Fields / Status: Active / Version 1.17.0"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sep-45-contract-auth; q-comp-sep6-vs-sep12-roles; q-anchor-platform-what"
+  },
+  {
+   "id": "q-sep-31-cross-border",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0-1]",
+     "claim": "SEP-31 Cross-Border Payments API, sending to receiving anchor",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Cross-Border Payments API / Status: Active / Version 3.1.0 ... A Sending Anchor ... delivering them to the Receiving Anchor"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+       "observedAt": "2026-10-22",
+       "quote": "SEP-31 — Cross-border payment processing (receive only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2-4]",
+     "claim": "SEP-24 interactive hosted wallet-anchor flow",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Hosted Deposit and Withdrawal / Status: Active / Version 3.8.0 ... POST /transactions/deposit/interactive"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SEP-31 underpins disbursement corridors via the Stellar Disbursement Platform",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend README",
+       "observedAt": "2026-10-12",
+       "quote": "The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24"
+      },
+      {
+       "class": "B",
+       "ref": "gh api search/code q=sep31 repo:stellar/stellar-disbursement-platform-backend",
+       "observedAt": "2026-11-02",
+       "quote": "total_count 0 (sep24: 60)"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask SDP SEPs",
+       "observedAt": "2026-11-02",
+       "quote": "SDP implements SEP-10 and SEP-24; it does not appear to implement SEP-31 as an SDP flow."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "**SEP-31** is the **Cross-Border Payments API** (Status: Active): an **anchor-to-anchor** rail. A\n**sending anchor** (which has already KYC'd the sender) pushes a payment to a **receiving anchor**\nthat pays out to the end recipient — there is **no end-user-facing hosted UI**; the sending anchor\nsupplies sender KYC and receiver details programmatically [1]. **SEP-24** (\"Hosted Deposit and\nWithdrawal\", Active) is fundamentally different: it is a **wallet ↔ anchor interactive** flow where\nthe anchor serves a hosted **webview** that the end user drives to deposit/withdraw and complete\nKYC [2]. So …",
+     "reason": "SDP backend README documents native SEP-10/SEP-24 only; code search finds no sep31; siblings q-pay-sdp-disbursement and q-crp-sdp-operation avoid SDP-via-SEP-31."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: golden answer attached SDP as a SEP-31 example; contradicts siblings q-pay-sdp-disbursement and q-crp-sdp-operation."
+   ],
+   "siblings": "q-pay-sdp-disbursement; q-crp-sdp-operation; q-anchor-sdp-what; q-anchor-sdp-vs-anchor-platform; q-sep6-sep24-sep31-choice"
+  },
+  {
+   "id": "q-sep-38-quotes",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SEP-38 Anchor RFQ API (Draft)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Anchor RFQ API / Status: Draft / Version 2.5.0 / Updated: 2025-02-26 ... GET /info, GET /prices, GET /price, POST /quote, GET /quote/:id"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+       "observedAt": "2026-10-22",
+       "quote": "SEP-38 — Price quotes and exchange rate services"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sep-catalog-list; q-sep6-sep24-sep31-choice"
+  },
+  {
+   "id": "q-sep-41-token-interface",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SEP-41 v0.5.0 is current Draft",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft / Updated: 2026-08-24 / Version 0.5.2 ... v0.5.1 - Clarify ... approve overwrites ... v0.5.2 - Clarify that implementers may emit additional topic…"
+      },
+      {
+       "class": "B",
+       "ref": "gh api commits?path=ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "4db3e802b2 2026-09-15 SEP-41: permit additional event topics; 3d0e082cb3 2026-08-11 Clarify allowance behavior; 2e4e8ef8c2 2026-07-27 Add map event bodies"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search SEP-41 0.5.2",
+       "observedAt": "2026-11-02",
+       "quote": "Updated: 2026-08-24 Version 0.5.2"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "transfer to MuxedAddress; transfer_from to Address; approve live_until_ledger",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: i128); fn…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/token-interface",
+       "observedAt": "2026-11-02",
+       "quote": "The to argument of transfer is a MuxedAddress"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "SEP-41 subset of / compatible with CAP-46-6 SAC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "The interface is a subset of the Stellar Asset contract, and compatible with its descriptive and token interfaces defined in [CAP-46-6]."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Asset Contract (SAC) is an implementation of [CAP-46-6 ...] and [SEP-41 Token Interface]"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n**SEP-41 v0.5.2** (updated 2026-08-24) is the Draft Soroban Token Interface: the common fungible-token surface shared by the SAC and custom contracts. It defines allowance/approve, balance, burn/burn_from, metadata, current direct `transfer(from, to: MuxedAddress, amount)`, and `transfer_from(spender, from, to: Address, amount…",
+     "reason": "Freshness drift: master is Draft v0.5.2 (Updated 2026-08-24, merged 2026-09-15); v0.5.1/v0.5.2 only clarify allowance semantics and extra topics."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Dossier §7.1, Q18. Verified 2026-11-02: SEP-0041 'Soroban Token Interface' is Draft v0.5.2, updated 2026-08-24 (v0.5.0 was current on 2026-08-04; signatures unchanged since; do not penalize v0.5.0 or v0.5.1 when dated to an earlier observation); the spec is a subset of the SAC interface, compatible with CAP-46-6.\nAlso good if the answer: Defines common functions like transfer, allowance/approve, balance, and burn.\nGolden cites: SEP-0041 on the stellar-protocol repo or the SAC page on developers.stellar.org.",
+     "reason": "Freshness drift with a symmetric caution for correctly dated older versions."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-sor-sep41-transfer-vs-transferfrom; q-tool-sep41-status-live; q-rwa-tokenization-standards; q-sep-catalog-list; q-soroban-token-transfer-pattern"
+  },
+  {
+   "id": "q-sep-43-web-wallet-api",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2-4]",
+     "claim": "SEP-43 Standard Web Wallet API; five methods; file exists",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Standard Web Wallet API Interface / Status: Draft / Created: 2024-04-11 / Version: 1.2.1 ... getAddress ... signTransaction ... signAuthEntry ... signMes…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search SEP-43; https://brain.ckelley.dev/references/Blockchain-Wallet-Connectors",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-43 (Draft, v1.2.1) | Standard web wallet interface: getAddress, signTransaction, signAuthEntry, signMessage, getNetwork"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2024-04-11 the verified sources supported this answer",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md",
+       "observedAt": "2026-11-02",
+       "quote": "Created: 2024-04-11 / Version: 1.2.1 (v1.1.0/v1.2.0 later changes in PR #1478; 'adjust types for errors' commit 2024-07-15)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n- **SEP-43 — \"Standard Web Wallet API Interface\"** (Status: **Draft**, v1.2.1, created 2024-04-11) defines a common JavaScript API that web wallets expose to dapps so developers integrate once instead of writing per-wallet abstractions [1].\n- The interface methods are **`getAddress`, `signTransaction`, `signAuthEntry`, `signMe…",
+     "reason": "2024-04-11 is the SEP creation date, not an observation date; content re-verified 2026-11-02. Version-qualify the Draft per the golden's own dating rule; v1.2.1 per master and independent web sources."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append",
+     "new": "\nRe-verified 2026-11-02: sep-0043.md is Draft v1.2.1 with the same five methods and error codes -1 to -4; the ecosystem README table still omits SEP-43.",
+     "reason": "Dated re-verification."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: as-of date set to the SEP creation date instead of the observation date."
+   ],
+   "siblings": "q-sep-45-contract-auth; q-sep-catalog-list; q-sep53-message-signing"
+  },
+  {
+   "id": "q-sep-45-contract-auth",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2-3]",
+     "claim": "SEP-45 Web Auth for Contract Accounts, Draft v0.1.1, analog of SEP-10",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Stellar Web Authentication for Contract Accounts / Status: Draft / Updated: 2025-12-16 / Version: 0.1.1 ... This SEP is based on SEP-10, but does not rep…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45",
+       "observedAt": "2026-10-01",
+       "quote": "SEP-45 (Stellar Web Authentication for Contract Accounts) enables smart wallet applications ... proving control over a contract account (C...)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Reference web-auth contract deployed on pubnet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md",
+       "observedAt": "2026-11-02",
+       "quote": "The web authentication contract described in this document has been deployed to the following networks: - Pubnet: CALI6JC3MSNDGFRP7Z2OKUEPREHOJRRXKMJEWQDEFZPFGX…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45",
+       "observedAt": "2026-10-01",
+       "quote": "An instance of this contract is deployed at CD3LA6RKF5D2FN2R2L57MWXLBRSEWWENE74YBEFZSSGNJRJGICFGQXMX on testnet."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0-1]",
+     "claim": "Not SEP-43/SEP-10; not final",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [SEP-0045](sep-0045.md) | Stellar Web Authentication for Contract Accounts | Philip Liu, Marcelo Salloum, Leigh McCulloch | Draft |"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sep-12-kyc; q-sep-43-web-wallet-api; q-sep-catalog-list"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5), 2026-11-02",
+  "decisions": [
+   {
+    "id": "q-asset-two-account-issuer",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "The new last-bullet clause quotes the official tutorial. The old 'single-account acceptable only for testing' clause has no source support in the fetched pages. The avoid item stays consistent.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+      "observedAt": "2026-11-02 (Parallel web_fetch; cache acquired_at 2026-10-26)",
+      "quote": "Although it is not required to create a distribution account, it is best practice, so we will do so in this example."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+      "observedAt": "2026-11-02 (Parallel web_fetch; cache acquired_at 2026-10-26)",
+      "quote": "It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account. ... an issuing …"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs q='not required to create a distribution account best practice' -> https://developers.stellar.org/docs/tokens/how-to-issue-an-asset#distribution-account-keypair",
+      "observedAt": "2026-11-02",
+      "quote": "Although it is not required to create a distribution account, it is best practice"
+     }
+    ]
+   },
+   {
+    "id": "q-asset-wallet-sdk-seps",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Anchor-class SEP list, SEP-7 support, the four language tabs, and the archived Kotlin repo all confirmed. The note only stops penalties for true claims.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+      "observedAt": "2026-11-02 (Parallel web_fetch; cache acquired_at 2026-10-01)",
+      "quote": "Below you can find all the SEPs the anchor class currently supports: SEP-1 ... SEP-10 ... SEP-24 ... SEP-6 ... SEP-12 ... SEP-38 ... Besides the SEPs supported …"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs q='wallet sdk SEP-7 uri' -> https://developers.stellar.org/docs/build/apps/wallet/intro#anchor-basics",
+      "observedAt": "2026-11-02",
+      "quote": "anchor class the wallet SDK also has support for the SEP-7 protocol which is explored on URI Scheme to"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/apps/wallet/intro.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "<Tab title=\"TypeScript\"> ... <Tab title=\"Kotlin\"> ... <Tab title=\"Flutter\"> ... <Tab title=\"Swift\">"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/kotlin-wallet-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "archived: true (pushed_at 2026-07-01T17:28:43Z); stellar/typescript-wallet-sdk archived: false"
+     }
+    ]
+   },
+   {
+    "id": "q-gap-match-partners-degrade",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Confirmed: 502 on 2026-11-02 (two independent calls), documented 503 unavailable:true, and getPartners ramps=off-ramp q=mexico returns Etherfuse and Bitso. The 2026-07-11 success date is the original probe date.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven execute scout.matchPartners({need:'Mexico USDC SEP-24 off-ramp'}) and ({need:'USDC off-ramp to Mexican pesos via SEP-24'})",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 502 from /api/partners/match: error code: 502 (both calls, 2026-11-02T16:21Z)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) paths./api/partners/match.post",
+      "observedAt": "2026-11-02",
+      "quote": "Requires the service to have AI configured; returns 503 `unavailable:true` otherwise (fall back to GET /api/partners filters)."
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/partners?ramps=off-ramp&q=mexico (raw) and Raven scout.getPartners({ramps:'off-ramp',q:'mexico'})",
+      "observedAt": "2026-11-02",
+      "quote": "counts {returned:2,total:2,filteredOut:1}; partners [Etherfuse, Bitso]; matchMode 'scored' = 'ranked by the shared partner scorer over structured capability fie…"
+     }
+    ]
+   },
+   {
+    "id": "q-gap-match-partners-degrade",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "72 chars. Broadening the trigger to any failure matches the observed 502 behavior.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven execute scout.matchPartners({need:'Mexico USDC SEP-24 off-ramp'}) and ({need:'USDC off-ramp to Mexican pesos via SEP-24'})",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 502 from /api/partners/match: error code: 502 (both calls, 2026-11-02T16:21Z)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) paths./api/partners/match.post",
+      "observedAt": "2026-11-02",
+      "quote": "Requires the service to have AI configured; returns 503 `unavailable:true` otherwise (fall back to GET /api/partners filters)."
+     }
+    ]
+   },
+   {
+    "id": "q-gap-match-partners-degrade",
+    "field": "golden.avoid[0]",
+    "decision": "modify",
+    "newText": "Do NOT fabricate partner rankings when matchPartners fails or is unavailable.",
+    "note": "The clause 'claim a failure status the run did not observe' needs the judge to know the full run; the bounded evidence pack cannot prove absence, so the clause is judge-blind. Keep only the answer-visible fabrication trap.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven execute scout.matchPartners({need:'Mexico USDC SEP-24 off-ramp'}) and ({need:'USDC off-ramp to Mexican pesos via SEP-24'})",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 502 from /api/partners/match: error code: 502 (both calls, 2026-11-02T16:21Z)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarlight.xyz/api/openapi.json (v1.9.116) paths./api/partners/match.post",
+      "observedAt": "2026-11-02",
+      "quote": "Requires the service to have AI configured; returns 503 `unavailable:true` otherwise (fall back to GET /api/partners filters)."
+     }
+    ]
+   },
+   {
+    "id": "q-gap-match-partners-degrade",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "\nRe-probe 2026-11-02: repeated matchPartners calls returned HTTP 502 (not the documented 503 unavailable:true); getPartners ramps=off-ramp q=mexico returned Etherfuse and Bitso. Either failure status triggers the same fallback. getPartners returns its own scored order (matchMode 'scored'); reporting that order is not a fabricated ranking.",
+    "note": "I saw 502 on two calls, not a verified count of three. I also add a grader caution: getPartners itself returns a scored order (matchMode 'scored'), so an answer that reports that order is not fabricating.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven execute scout.matchPartners({need:'Mexico USDC SEP-24 off-ramp'}) and ({need:'USDC off-ramp to Mexican pesos via SEP-24'})",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 502 from /api/partners/match: error code: 502 (both calls, 2026-11-02T16:21Z)"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/partners?ramps=off-ramp&q=mexico (raw) and Raven scout.getPartners({ramps:'off-ramp',q:'mexico'})",
+      "observedAt": "2026-11-02",
+      "quote": "counts {returned:2,total:2,filteredOut:1}; partners [Etherfuse, Bitso]; matchMode 'scored' = 'ranked by the shared partner scorer over structured capability fie…"
+     }
+    ]
+   },
+   {
+    "id": "q-gap-related-projects-empty",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Confirmed raw and through Raven: ids 1 and 99999999 both return success with data=[], get_document soft-empties both, and article 690 returns 4 projects. 'content type' matches the real input field content_type better than 'collection type'. The reverse op name is confirmed.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_related_projects (manifest transport) content_id 1 / 99999999 / 690, content_type article",
+      "observedAt": "2026-11-02",
+      "quote": "id 1: {\"success\":true,\"data\":[]}; id 99999999: {\"success\":true,\"data\":[]}; id 690: '4 project(s) mentioned by article 690'"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.get_document({id:1|99999999, collection:'articles'})",
+      "observedAt": "2026-11-02",
+      "quote": "soft-empty: 'No document found with ID 1 in articles' / 'No document found with ID 99999999 in articles'; id 690 -> 'Monitor the Health of Soroswap on Alterscop…"
+     },
+     {
+      "class": "A",
+      "ref": "Raven codemode.describe('lumenloop.get_related_projects') / catalog/manifest.json",
+      "observedAt": "2026-11-02",
+      "quote": "Given a content item (article/av/event/research) return the directory projects it mentions ... The reverse direction (project -> content) is find_content_about_…"
+     }
+    ]
+   },
+   {
+    "id": "q-gap-related-projects-empty",
+    "field": "golden.keyFacts[1]",
+    "decision": "reject",
+    "note": "The question says the user already has a content item, so the ID exists by premise. A required 'confirms the content ID exists' step would mark a correct answer as missing a key fact. The old keyFact is still true. The new answer text keeps the ID-check advice as guidance.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_related_projects (manifest transport) content_id 1 / 99999999 / 690, content_type article",
+      "observedAt": "2026-11-02",
+      "quote": "id 1: {\"success\":true,\"data\":[]}; id 99999999: {\"success\":true,\"data\":[]}; id 690: '4 project(s) mentioned by article 690'"
+     },
+     {
+      "class": "A",
+      "ref": "Raven codemode.describe('lumenloop.get_related_projects') / catalog/manifest.json",
+      "observedAt": "2026-11-02",
+      "quote": "Given a content item (article/av/event/research) return the directory projects it mentions ... The reverse direction (project -> content) is find_content_about_…"
+     }
+    ]
+   },
+   {
+    "id": "q-gap-related-projects-empty",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The re-probe facts are confirmed. The credit line rewards a true nuance and penalizes nothing.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_related_projects (manifest transport) content_id 1 / 99999999 / 690, content_type article",
+      "observedAt": "2026-11-02",
+      "quote": "id 1: {\"success\":true,\"data\":[]}; id 99999999: {\"success\":true,\"data\":[]}; id 690: '4 project(s) mentioned by article 690'"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.get_document({id:1|99999999, collection:'articles'})",
+      "observedAt": "2026-11-02",
+      "quote": "soft-empty: 'No document found with ID 1 in articles' / 'No document found with ID 99999999 in articles'; id 690 -> 'Monitor the Health of Soroswap on Alterscop…"
+     }
+    ]
+   },
+   {
+    "id": "q-sep-31-cross-border",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "**SEP-31** is the **Cross-Border Payments API** (Status: Active): an **anchor-to-anchor** rail. A\n**sending anchor** (which has already KYC'd the sender) pushes a payment to a **receiving anchor**\nthat pays out to the end recipient — there is **no end-user-facing hosted UI**; the sending anchor\nsupplies sender KYC and receiver details programmatically [1]. **SEP-24** (\"Hosted Deposit and\nWithdrawal\", Active) is fundamentally different: it is a **wallet ↔ anchor interactive** flow where\nthe anchor serves a hosted **webview** that the end user drives to deposit/withdraw and complete\nKYC [2]. So …",
+    "note": "The old claim that SEP-31 underpins disbursement via SDP is contradicted: the SDP registers receivers through SEP-24 with SEP-10 auth, and the backend code has zero SEP-31 hits. But the SDP also exposes SEP-45 auth endpoints (CHANGELOG), so 'uses SEP-10 and SEP-24' reads as exhaustive. Reword it so the SEP list is not exhaustive.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Cross-Border Payments API / Status: Active / Updated: 2024-11-05 / Version 3.1.0"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/making-your-wallet-sdp-ready",
+      "observedAt": "2026-11-02 (Parallel web_fetch; cache acquired_at 2026-11-02)",
+      "quote": "how to start the user registration flow in the wallet using SEP-24 ... This includes using SEP-10 to authenticate the user with the SDP server."
+     },
+     {
+      "class": "B",
+      "ref": "GitHub code search repo:stellar/stellar-disbursement-platform-backend: 'sep31' / '\"SEP-31\"' / 'SEP31' / 'sep24'; raw CHANGELOG.md (develop)",
+      "observedAt": "2026-11-02",
+      "quote": "sep31: 0 hits; \"SEP-31\": 0; SEP31: 0; sep24: 60. CHANGELOG: 'Add XDR size validation (50 KB) to SEP-10 and SEP-45 auth endpoints'; no SEP-31 line"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search 'Stellar Disbursement Platform SEP-31 SEP-24 SEP-10' -> helmchart/sdp/README.md, docs design-and-architecture",
+      "observedAt": "2026-11-02",
+      "quote": "The SDP now includes native implementations of SEP10 and SEP24 protocols ... Wallet Registration ... via Stellar's SEP-24: Hosted Deposit and Withdrawal protoco…"
+     }
+    ]
+   },
+   {
+    "id": "q-sep-41-token-interface",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "v0.5.2 Draft, Updated 2026-08-24 confirmed. The transfer/transfer_from/approve signatures match the current file. The as-of date moves to the new observation.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2; fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); fn transfer_fro…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md + per-commit patches",
+      "observedAt": "2026-11-02",
+      "quote": "2e4e8ef8c2 2026-07-27 -> v0.5.0 Updated 2026-06-08; 3d0e082cb3 merged 2026-08-11 -> v0.5.1 Updated 2026-08-03; 4db3e802b2 merged 2026-09-15 -> v0.5.2 Updated 20…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search 'SEP-0041 ... 0.5.2' -> github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "Version 0.5.2 ... `v0.5.2` - Clarify that implementers may emit additional topics."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tokens/token-interface (via Perplexity result, page dated 2026-10-22)",
+      "observedAt": "2026-11-02",
+      "quote": "fn approve(env: Env, from: Address, spender: Address, amount: i128, live_until_ledger: u32);"
+     }
+    ]
+   },
+   {
+    "id": "q-sep-41-token-interface",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Commit history confirms v0.5.0 was current on 2026-08-04 (v0.5.1 merged 2026-08-11). The v0.5.1 and v0.5.2 patches change no fn signatures. The leniency for earlier dated versions is symmetric and fair.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2; fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); fn transfer_fro…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md + per-commit patches",
+      "observedAt": "2026-11-02",
+      "quote": "2e4e8ef8c2 2026-07-27 -> v0.5.0 Updated 2026-06-08; 3d0e082cb3 merged 2026-08-11 -> v0.5.1 Updated 2026-08-03; 4db3e802b2 merged 2026-09-15 -> v0.5.2 Updated 20…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search 'SEP-0041 ... 0.5.2' -> github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "Version 0.5.2 ... `v0.5.2` - Clarify that implementers may emit additional topics."
+     }
+    ]
+   },
+   {
+    "id": "q-sep-43-web-wallet-api",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Draft v1.2.1, created 2024-04-11, five methods, and error codes -1..-4 all confirmed. The as-of date now reflects the observation date, not the creation date. The creation date stays in the text.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Standard Web Wallet API Interface / Status: Draft / Created: 2024-04-11 / Version: 1.2.1; getAddress, signTransaction, signAuthEntry, signMessage, getNet…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0043.md",
+      "observedAt": "2026-11-02",
+      "quote": "latest commit d4d17e6c73 2025-06-17 (SEP process); earlier 45c7c78621 2024-07-15 'adjust types for errors'"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'SEP-0043 Standard Web Wallet API Interface version 1.2.1' -> github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0043 Title: Standard Web Wallet API Interface ... Status: Draft Created: 2024-04-11 Version: 1.2.1"
+     }
+    ]
+   },
+   {
+    "id": "q-sep-43-web-wallet-api",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "README table omission confirmed (no 0043 entry; SEP-0041 is followed by SEP-0045).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Standard Web Wallet API Interface / Status: Draft / Created: 2024-04-11 / Version: 1.2.1; getAddress, signTransaction, signAuthEntry, signMessage, getNet…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "grep '0043|SEP-43' -> no match; table lists SEP-0041 then SEP-0045"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'SEP-0043 Standard Web Wallet API Interface version 1.2.1' -> github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0043 Title: Standard Web Wallet API Interface ... Status: Draft Created: 2024-04-11 Version: 1.2.1"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md",
+   "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md",
+   "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0043.md",
+   "https://api.github.com/repos/stellar/stellar-protocol/commits/{3d0e082cb3,4db3e802b2,2e4e8ef8c2}",
+   "https://developers.stellar.org/docs/tokens/control-asset-access",
+   "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+   "https://developers.stellar.org/docs/build/apps/wallet/intro",
+   "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform",
+   "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/making-your-wallet-sdp-ready",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/apps/wallet/intro.mdx",
+   "https://api.github.com/repos/{stellar/kotlin-wallet-sdk,stellar/typescript-wallet-sdk,Soneso/stellar_flutter_sdk,Soneso/stellar-ios-mac-sdk,stellar/stellar-docs}",
+   "https://api.github.com/search/code (stellar-disbursement-platform-backend sep31/SEP-31/SEP31/sep24; typescript-wallet-sdk sep31)",
+   "https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/develop/CHANGELOG.md",
+   "https://stellarlight.xyz/api/partners?ramps=off-ramp&q=mexico",
+   "https://stellarlight.xyz/api/openapi.json",
+   "https://api.lumenloop.com/v1/tools/get_related_projects (POST, ids 1, 99999999, 690)",
+   "https://stellar.org/protocol/sep-41 (cached, stale v0.4.1)",
+   "https://stellar.org/protocol/sep-43",
+   "Raven MCP execute: scout.matchPartners x3, scout.getPartners x2, lumenloop.get_related_projects, lumenloop.get_document, stellarDocs.search_docs x8, codemode.describe",
+   "Parallel web_search (SEP-41/43 versions)",
+   "Perplexity search (SDP SEPs; SEP-41 0.5.2)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-asset-two-account-issuer; q-asset-wallet-sdk-seps; q-gap-match-partners-degrade; q-gap-related-projects-empty; q-sep-31-cross-border; q-sep-41-token-interface; q-sep-43-web-wallet-api",
+  "verifiedOnly": "q-production-anchor-architecture; q-sep-12-kyc; q-sep-38-quotes; q-sep-45-contract-auth",
+  "untouched": "q-sep-1-toml",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-asset-two-account-issuer",
+    "log": "golden.answer last bullet: replaced unsourced 'single-account acceptable only for testing' with the documented 'not strictly required, but best practice' (verifier accept); sources + verified refreshed."
+   },
+   {
+    "id": "q-asset-wallet-sdk-seps",
+    "log": "golden.notes: appended 2026-11-02 re-verification and a no-penalty note for true SEP-7 and Kotlin/Flutter/Swift claims (verifier accept)."
+   },
+   {
+    "id": "q-gap-match-partners-degrade",
+    "log": "golden.answer, keyFacts[1] (accept), avoid[0] and notes (verifier modify newText): fallback now covers any matchPartners failure incl. observed HTTP 502; dated the 2026-07-11 success probe; asOf 2026-11-02; corroboration row added."
+   },
+   {
+    "id": "q-gap-related-projects-empty",
+    "log": "golden.answer and notes (verifier accept): empty array is ID-scoped and inconclusive (probe ID 1 does not exist); 'content type' wording; keyFacts[1] proposal rejected and not applied; asOf 2026-11-02; corroboration row added."
+   },
+   {
+    "id": "q-sep-31-cross-border",
+    "log": "golden.answer (verifier modify newText): removed the contradicted 'SEP-31 underpins disbursement via SDP' clause; SDP registers receivers through SEP-24 with SEP-10 auth; corroboration row added."
+   },
+   {
+    "id": "q-sep-41-token-interface",
+    "log": "golden.answer and notes (verifier accept): SEP-41 v0.5.0 -> v0.5.2 (updated 2026-08-24), as-of 2026-11-02, leniency for earlier dated versions; asOf 2026-11-02; version corroboration row refreshed."
+   },
+   {
+    "id": "q-sep-43-web-wallet-api",
+    "log": "golden.answer and notes (verifier accept): as-of moved from the SEP creation date 2024-04-11 to the 2026-11-02 observation; adds v1.2.1; README-omission note; asOf 2026-11-02; corroboration row added."
+   },
+   {
+    "id": "q-production-anchor-architecture",
+    "log": "Verified-only (A+B+E): truth.verified refreshed; scheduled reverifyBy 2027-02-04 -> 2027-03-11; asOf kept (notes name 2026-07-11)."
+   },
+   {
+    "id": "q-sep-12-kyc",
+    "log": "Verified-only (A+B): truth.verified refreshed; no gospel change."
+   },
+   {
+    "id": "q-sep-38-quotes",
+    "log": "Verified-only (A+B): truth.verified refreshed; no gospel change."
+   },
+   {
+    "id": "q-sep-45-contract-auth",
+    "log": "Verified-only (A+B): truth.verified refreshed; asOf kept (answer names 2026-06-22; facts unchanged)."
+   },
+   {
+    "id": "q-sep-1-toml",
+    "log": "Untouched: proposer evidence is single-class (B only: sep-0001.md + README); no multi-class basis to refresh truth.verified."
+   }
+  ]
+ }
+}

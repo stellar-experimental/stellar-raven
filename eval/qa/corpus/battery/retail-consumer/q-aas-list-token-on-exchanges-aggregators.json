@@ -32,8 +32,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-06-29",
-    "reverifyBy": "2027-01-28",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-12",
     "sources": [
       {
         "class": "B",
@@ -57,28 +57,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep1",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep universal Stellar whitelist|exchange/aggregator|asset list → q-aas-list-token-on-exchanges-aggregators, q-aas-trusted-asset-list-whitelist; no contradiction",
-        "Structural re-form (long-fact): Split the prerequisite and market-infrastructure lists and shortened the venue-policy fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the official tutorial confirms asset issuance and required receiving-account trustlines.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 defines home-domain stellar.toml metadata, issuer fields, and image fields.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the official liquidity guide confirms SDEX offers and AMM pools as trading infrastructure.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 states that clients and exchanges use published metadata for listing decisions.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 leaves listing and verification decisions to clients and exchanges and links them to liquidity and reserve information.",
-        "Sibling sweep 2026-08-29: grep SDEX offers|listing/verification/liquidity → q-asset-usdc-eurc-path-fx, q-aas-list-token-on-exchanges-aggregators, q-defi-sdex-offer-lifecycle; no contradiction.",
-        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): restored the disjunctive tradability claim (SDEX offers, AMM pools, or listings) that two 'Requires' facts had made conjunctive; truth unchanged versus HEAD."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md — \"Clients and exchanges can use this information to decide whether a token should be listed.\" (claim: golden.answer confirmed: SEP-1 says clients and exchanges can use stellar.toml information to decide whether a token should be listed)",
+        "2026-11-02 [E] https://developers.stellar.org/docs/tokens/publishing-asset-info#how-to-publish-your-stellar-info-file — \"post it at the following location: https://YOUR_DOMAIN/.well-known/stellar.toml\" (claim: golden.answer confirmed: SEP-1 says clients and exchanges can use stellar.toml information to decide whether a token should be listed)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools.md — \"Users can trade and convert assets on the Stellar network with the use of path payments through Stellar's decentralized exchange and liquidity pools.\" (claim: golden.keyFacts[2] confirmed: Tradability needs SDEX offers, AMM pools, or listings)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md — \"Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list should not be considered as endorsement or recommendation of any kind.\" (claim: golden.keyFacts[3] confirmed: Venues set their own listing, verification, liquidity policies)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar-asset-lists/index/main/index.json — \"Providers: Lobstr Curated List (UltraStellar), Soroswap List, StellarExpert Top 50 ('Assets included in this list were not verified by StellarExpert team')\" (claim: golden.keyFacts[3] confirmed: Venues set their own listing, verification, liquidity policies)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar-asset-lists/index/main/README.md — \"Inclusion of any particular asset in a list should not be considered as endorsement or recommendation. ... The easiest way to utilize asset lists in your web app is a @stellar-asset-lists/sdk NPM package.\" (claim: golden.answer confirmed: SEP-42 Stellar Asset Lists catalog warns inclusion is not endorsement)",
+        "2026-11-02 [D] https://stellar.expert/asset-lists (via Perplexity search) — \"Community-managed catalogue of Stellar asset lists ... Inclusion of any particular asset in a list should not be considered as endorsement or recommendation.\" (claim: golden.answer confirmed: SEP-42 Stellar Asset Lists catalog warns inclusion is not endorsement)",
+        "Sibling sweep 2026-11-02: siblings checked q-aas-trusted-asset-list-whitelist, q-asset-usdc-eurc-path-fx, q-defi-sdex-offer-lifecycle; no gospel change in this case, no contradiction found."
       ]
     },
     "origin": "raven-next q-aas-list-token-on-exchanges-aggregators",

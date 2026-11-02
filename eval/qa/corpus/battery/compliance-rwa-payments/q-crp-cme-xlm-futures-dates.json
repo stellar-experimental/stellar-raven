@@ -90,24 +90,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-02) — verified unchanged, no gospel change",
       "evidence": [
-        "solo://proj/49/process/3417",
-        "solo://proj/49/process/3423",
-        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://www.cmegroup.com/content/dam/cmegroup/notices/ser/2026/01/ser-9663.pdf",
-        "https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/lumens.calendar.html",
-        "https://www.cmegroup.com/markets/cryptocurrencies/ada-link-lumens-futures.html",
-        "https://fxnewsgroup.com/forex-news/cryptocurrency/cme-group-reports-first-trades-for-new-cardano-chainlink-and-stellar-crypto-futures/",
-        "Live re-check 2026-08-31: https://www.cmegroup.com/content/dam/cmegroup/notices/ser/2026/01/ser-9663.pdf — 'DATE: January 15, 2026' and 'trade date Monday, February 9, 2026'; class D FX News Group (2026-01-15) repeats the February 9 launch.",
-        "Live re-check 2026-08-31: https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/lumens/specs — standard contract '250,000 Lumen'; SER-9663 states '250,000 Lumens'.",
-        "Live re-check 2026-08-31: https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/micro-lumens/specs — micro contract '12,500 Lumens'; SER-9663 states the same size.",
-        "Sibling sweep 2026-08-31: grep CME|Lumens futures|XLM futures → 2 other cases; read q-defi-perps-whitespace, q-tool-cctp-stellar-integration; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Re-verified unchanged 2026-11-02; no gospel change.",
+        "Live A 2026-11-02: https://www.cmegroup.com/media-room/press-releases/2026/1/15/cme_group_to_expandcryptoderivativessuitewithlaunchofcardanochai.html — \"CHICAGO, Jan. 15, 2026 ... launch of Cardano (ADA), Chainlink (LINK) and Stellar (Lumens) futures on February 9, pending regulatory review.\"",
+        "Live A 2026-11-02: https://investor.cmegroup.com/news-releases/news-release-details/cme-group-announces-first-trades-new-cardano-chainlink-and — \"Stellar (Lumens) futures began trading Monday, February 9\".",
+        "Live A 2026-11-02: http://www.cmegroup.com/rulebook/CME/IV/400/430.pdf — \"Chapter 430 Micro Lumens Futures ... Each contract shall be valued at 12,500 Lumens.\"; https://www.cmegroup.com/articles/faqs/frequently-asked-questions-cryptocurrency-futures.html (acquired 2026-10-19) — \"Lumens futures | XLM | 250,000 Lumens ... Micro Lumens futures | MXL | 12,500 Lumens\".",
+        "Live C 2026-11-02: lumenloop.search_content_semantic (Raven) — thedefiant.io 2026-02-09 item on the February 9 launch. Live D 2026-11-02: https://coinedition.com/cme-group-to-launch-cardano-chainlink-and-stellar-crypto-futures/ — \"Stellar futures cover 250,000 Lumens with Micro Lumens contracts sized at 12,500 tokens.\"",
+        "Sibling sweep 2026-11-02: q-defi-perps-whitespace, q-defi-named-newer-protocols; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

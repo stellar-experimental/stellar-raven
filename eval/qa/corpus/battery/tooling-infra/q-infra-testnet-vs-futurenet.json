@@ -6,7 +6,7 @@
     "stellarDocs.search_rpc_horizon_data_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-08-04, the verified sources supported this observed answer:\n\n**Testnet** and **Futurenet** are separate public test networks with fake XLM and no real-value assets. Use Testnet for stable, near-production integration testing; use Futurenet to exercise the next/pre-release protocol and features. They have different passphrases, endpoints, ledgers, accounts, assets, and contract IDs, and neither promises production availability or permanent state. Testnet resets on a planned cadence; Futurenet resets as needed and is more volatile.\n\nFriendbot can fund both **G-account and C-contract addresses** on the applicable test network. Provider coverage and live protocol versions change, so consult the current Networks/Providers pages and date any exact snapshot rather than using it to define the networks forever.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n**Testnet** and **Futurenet** are separate public test networks with fake XLM and no real-value assets. Use Testnet for stable, near-production integration testing; use Futurenet to exercise the next/pre-release protocol and features. They have different passphrases, endpoints, ledgers, accounts, assets, and contract IDs, and neither promises production availability or permanent state. Testnet resets on a planned cadence; Futurenet resets as needed and is more volatile.\n\nFriendbot can fund both **G-account and C-contract addresses** on the applicable test network. Provider coverage and live protocol versions change, so consult the current Networks/Providers pages and date any exact snapshot rather than using it to define the networks forever.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -20,7 +20,7 @@
       "Do NOT freeze provider counts or protocol versions without an as-of date.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries."
+    "notes": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries. RECHECK 2026-11-02: live RPC getNetwork reported protocol 29 on both Testnet and Futurenet (Mainnet Horizon also 29); status.stellar.org schedules the Protocol 30 Testnet upgrade for 2026-11-03 and the Mainnet vote for 2026-11-23. Futurenet's documented preview role does not guarantee a higher live protocol at every moment: a dated answer whose live probe shows Futurenet equal to or behind Testnet is correct and does not contradict that role."
   },
   "tags": {
     "category": "tooling-infra",
@@ -34,7 +34,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -45,6 +45,24 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "POST https://soroban-testnet.stellar.org getNetwork / getVersionInfo",
+        "note": "Testnet protocolVersion 29; rpc 30.0.0",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "POST https://rpc-futurenet.stellar.org getNetwork",
+        "note": "Futurenet protocolVersion 29",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://status.stellar.org/",
+        "note": "Protocol 30 Testnet upgrade 2026-11-03; Mainnet vote 2026-11-23",
+        "observedAt": "2026-10-21"
       }
     ],
     "corroboration": [
@@ -83,30 +101,67 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, Testnet, Futurenet, and Mainnet all run protocol 29; the Protocol 30 Testnet upgrade is scheduled for 2026-11-03 and the Mainnet vote for 2026-11-23",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "POST https://soroban-testnet.stellar.org getNetwork — '\"passphrase\":\"Test SDF Network ; September 2015\",\"protocolVersion\":29'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "F",
+            "ref": "POST https://rpc-futurenet.stellar.org getNetwork — '\"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":29'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "F",
+            "ref": "GET https://horizon.stellar.org/ — current_protocol_version 29, core_supported_protocol_version 30",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://status.stellar.org/ — 'Bell, Protocol 30 Testnet Upgrade Nov 3, 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23, 2026'",
+            "observedAt": "2026-10-21"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide — 'November 3, 2026, 1700 UTC—Testnet upgrade vote. November 23, 2026, 1700 UTC—Mainnet upgrade vote.'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "D",
+            "ref": "Parallel web_search: https://finance.biggo.com/news/6afe4d10-1cd5-4c21-94a6-6cd782a6ae12 — 'testnet vote on Nov. 3 and a mainnet validator vote on Nov. 23 for its Protocol 30 release'",
+            "observedAt": "2026-10-21"
+          }
+        ],
+        "note": "Live snapshot; after the 2026-11-03 Testnet upgrade Futurenet may be behind Testnet until it is upgraded."
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
       "evidence": [
-        "Solo scratchpad 575 GT-50 primary/blind matrices independently confirmed the durable roles and freshness correction.",
-        "Sibling sweep checked q-protocol-futurenet-vs-testnet, q-protocol-network-passphrases, q-ti-testnet-mainnet-migration, and q-tool-cli-testnet-identity-howto.",
-        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page dates changeable network values and tells readers to check current values.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page makes dated values visible for changeable limits and software details.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page recommends Testnet for stable development and production-like testing.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page assigns Futurenet to testing unreleased features.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page distinguishes passphrases, identifiers, reset state, and fake XLM.",
-        "Sibling sweep 2026-08-29: grep Testnet|Futurenet|network passphrase|fake XLM → q-protocol-network-passphrases-list, q-ti-friendbot-ratelimit-alternatives, q-tool-cli-testnet-identity-howto, q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet; no contradiction."
+        "Live F 2026-11-02T16:38Z: POST https://soroban-testnet.stellar.org getNetwork — '\"passphrase\":\"Test SDF Network ; September 2015\",\"protocolVersion\":29'; getVersionInfo rpc 30.0.0, captive core 30.0.0.",
+        "Live F 2026-11-02T16:38Z: POST https://rpc-futurenet.stellar.org getNetwork — '\"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":29'.",
+        "Live F 2026-11-02T16:38Z: GET https://horizon.stellar.org/ — current_protocol_version 29, core_supported_protocol_version 30.",
+        "Live A 2026-10-21: https://status.stellar.org/ — 'Bell, Protocol 30 Testnet Upgrade Nov 3, 2026 17:00 - 17:05 UTC ... Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00 - 17:05 UTC'.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/networks — 'Futurenet is a dev network for testing bleeding-edge features'; Friendbot 'Can fund both account addresses (G...) and contract addresses (C...)'.",
+        "Verifier modification: the grading clause covers Futurenet 'equal to or behind' Testnet in a dated live probe, because the Testnet upgrade on 2026-11-03 can put Futurenet behind.",
+        "Sibling sweep 2026-11-02: q-protocol-network-passphrases-list, q-infra-quickstart-local-network, q-ti-friendbot-ratelimit-alternatives; no contradiction.",
+        "Pass 2 live A 2026-11-02T17:36Z: https://developers.stellar.org/docs/networks -- 'Testnet ... doesn't connect to real money. It resets on a regular cadence, making it the best place for developers to test applications in a stable environment'; 'Futurenet is a dev network for testing bleeding-edge features. It resets whenever necessary'; 'Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet'; 'Can fund both account addresses (G…) and contract addresses (C…)'.",
+        "Pass 2 live B 2026-11-02: stellar/stellar-docs main 7cb5e8a4 docs/networks/index.mdx lines 11-12, 28, 37, 43 carry the same reset, Friendbot, and G/C funding text.",
+        "Pass 2 live F 2026-11-02T17:38Z: POST https://soroban-testnet.stellar.org getNetwork -- '\"passphrase\":\"Test SDF Network ; September 2015\",\"protocolVersion\":29'; POST https://rpc-futurenet.stellar.org getNetwork -- '\"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":29'.",
+        "Pass 2 change: golden.answer snapshot date moved from 2026-08-04 to 2026-11-02 to match the content re-verified on 2026-11-02 and truth.asOf.",
+        "Pass 2 sibling sweep 2026-11-02: q-protocol-network-passphrases-list (same strings), q-protocol-futurenet-vs-testnet, q-ti-friendbot-ratelimit-alternatives; no contradiction.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.answer: Every answer claim holds on the live Networks page (A) and live endpoints (F) on 2026-11-02. Only the snapshot date moves. The answer names no protocol version, so the 2026-11-03 Protocol 30 Testnet upgrade does not stale it; the existing notes clause already covers that window.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+]: Accurate: truth.asOf is 2026-11-02 while the answer said 'As of 2026-08-04'."
       ],
       "rootCause": [
-        "Plain freshness drift plus eval-side wording error: Friendbot was incorrectly restricted to G-account funding although current docs accept G-account and C-contract addresses.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift: Futurenet and Testnet both run protocol 29 while Protocol 30 rolls out, so a true dated answer that Futurenet is not ahead needed an explicit grading clause.",
+        "Eval-side authoring flaw: pass-1 re-verification moved truth.asOf to 2026-11-02 but left the answer's 'As of 2026-08-04' snapshot date; the answer content was re-verified live on 2026-11-02."
       ]
     },
     "origin": "raven-next q-infra-testnet-vs-futurenet"

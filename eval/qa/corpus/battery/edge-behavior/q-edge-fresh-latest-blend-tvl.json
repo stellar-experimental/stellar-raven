@@ -5,7 +5,7 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-07-11, the live research corpus returned several different dated Stellar DeFi TVL observations, including $170M in an April 2026 developer meeting.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer reports a current Blend TVL point from a named provider (for example DefiLlama's combined Blend series, https://defillama.com/protocol/blend), states the measurement basis, and makes the observation date visible. For the quarter trend, it gives same-provider points for a declared window. As of 2026-11-02, that series showed about $130M TVL, down from about $173M on 2026-10-01 (its all-time high); borrowed (about $40M) is a separate measure. Stellar-wide figures, such as the $170M DeFi TVL in Lumenloop's summary of the 2026-04-23 developer meeting, are chain measures, not Blend's TVL.\n\nThe dated examples are illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -29,27 +29,60 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
-        "class": "D",
-        "ref": "https://defillama.com/protocol/blend",
-        "note": "class inferred at migration"
-      },
-      {
-        "class": "D",
+        "class": "F",
         "ref": "https://api.llama.fi/protocol/blend",
-        "note": "class inferred at migration"
+        "note": "currentChainTvls Stellar 130038598, Stellar-borrowed 39619547; tvl 2026-10-01 = 173192824 (series max); 2026-11-02 = 130038598.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://defillama.com/protocol/blend",
+        "note": "Provider page: 'Total Value Locked $130.23m ... All-time high TVL: $173.19m on Oct 1, 2026 ... TVL is the default DefiLlama definition, which excludes Pool2 and Active Loans.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://api.llama.fi/protocol/blend-pools",
+        "note": "Blend Pools (V1 child of parent#blend) Stellar about $43.5K; blend-pools-v2 Stellar 129995081 carries the bulk of the combined series.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=blend&limit=3",
+        "note": "Scout Blend row: tvlUSD 129334939; tvlAsOf 2026-11-02T13:19:15.688Z; tvlSource defillama; tvlMethodUrl https://defillama.com/protocol/blend-pools (the V1 child, not the summed series). Scout derives from DefiLlama, so it is the same witness for the value.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'blend'}",
+        "note": "Lumenloop directory rows carry slug/title/description/category/tags/website and no TVL field, so the Lumenloop corpus cannot ground a Blend TVL value.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Raven lumenloop.find_av_passages -> https://www.youtube.com/watch?v=E6asxPAA3wU",
+        "note": "Lumenloop summary of the Stellar Developer Meeting 04/23/2026: 'Q1 2026 ecosystem metrics showing 2B RWA market cap and 170M DeFi TVL' (a chain-wide figure).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/meetings/2026/04/23",
+        "note": "Official meeting notes cite Messari State of Stellar Q1 2026 (RWA market cap $2 billion; stablecoin market cap $300 million) but do not state the $170M figure.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "D",
+        "ref": "https://bsc.news/post/stellar-tvl-200m-rwa-surge",
+        "note": "'the on-chain figure printing $197.41 million on April 24 per DefiLlama ... Blend ... sits at around $110 million in TVL' - chain and Blend figures are distinct measures.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
         "ref": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/blend-pools-v2/index.js",
-        "note": "class inferred at migration"
-      },
-      {
-        "class": "D",
-        "ref": "https://www.blend.capital/",
-        "note": "class inferred at migration"
+        "note": "Provider adapter methodology; retained from migration, not re-fetched in this audit."
       }
     ],
     "corroboration": [
@@ -89,34 +122,78 @@
           }
         ],
         "note": "Legacy verdict: confirmed-time-slice."
+      },
+      {
+        "claim": "As of 2026-11-02, DefiLlama's combined Blend series showed about $130M TVL, down from about $173M (its all-time high) on 2026-10-01; borrowed (about $40M) is a separate measure.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://api.llama.fi/protocol/blend",
+            "observedAt": "2026-11-02",
+            "note": "Stellar 130038598; Stellar-borrowed 39619547; 2026-10-01 173192824 = series max; neighbours 2026-09-30 $165.6M and 2026-10-02 $165.5M (one-day spike)."
+          },
+          {
+            "class": "A",
+            "ref": "https://defillama.com/protocol/blend",
+            "observedAt": "2026-11-02",
+            "note": "Rendered page: TVL $130.23m; all-time high $173.19m on Oct 1, 2026; TVL excludes Pool2 and Active Loans."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=blend&limit=3",
+            "observedAt": "2026-11-02",
+            "note": "Scout tvlUSD 129334939 at tvlAsOf 2026-11-02T13:19Z, sourced from DefiLlama (same witness; agrees on magnitude only)."
+          }
+        ],
+        "note": "Illustrative, non-gating example; provider/window/methodology behavior remains the gate."
+      },
+      {
+        "claim": "The $170M DeFi TVL figure tied to the 2026-04-23 developer meeting is a Stellar-wide chain measure, not Blend's TVL.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "Raven lumenloop.find_av_passages -> https://www.youtube.com/watch?v=E6asxPAA3wU and https://x.com/i/broadcasts/1mGPaLRVpvZJN",
+            "observedAt": "2026-11-02",
+            "note": "Lumenloop summaries: 'Q1 2026 ecosystem metrics showing 2B RWA market cap and 170M DeFi TVL' / 'DeFi TVL reached $170M (3x YoY)'."
+          },
+          {
+            "class": "F",
+            "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+            "observedAt": "2026-11-02",
+            "note": "Stellar chain TVL 2026-04-16 177677304; 2026-04-30 185396558, while the Blend series on 2026-04-16 was 96899917."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/2026/04/23",
+            "observedAt": "2026-11-02",
+            "note": "Notes page does not state $170M; the golden attributes the figure to Lumenloop's summary of the recording."
+          },
+          {
+            "class": "D",
+            "ref": "https://bsc.news/post/stellar-tvl-200m-rwa-surge",
+            "observedAt": "2026-11-02",
+            "note": "Reports Stellar on-chain TVL near $197M on April 24 and Blend near $110M as separate figures."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-23 primary 3264 and blind 3267; direct DefiLlama probe 2026-07-10T19:23Z.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live research corpus returned several different dated Stellar DeFi TVL observations, including $170M in an April 2026 developer meeting.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): Added one caution covering a fixed provenance gap and a provider-hosted history boundary; truth is unchanged.",
-        "Reviewed improvements/resolved.json entry sls-031 — fixed 2026-07-14; older Scout copies can omit TVL provider, time, and methodology fields.",
-        "Reviewed improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md — disputed claim: a Scout point value alone answers Blend's quarter trend.",
-        "Sibling sweep 2026-08-27: grep Blend TVL|DefiLlama|tvlMethodUrl|quarter trend → q-defi-liquid-staking-whitespace, q-eco-defi-tvl-current, q-edge-factcheck-soroswap-first-amm, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure; no contradiction",
-        "Structural re-form (long-fact): Shortened the dated-observation fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://api.llama.fi/protocol/blend — the live provider API supplies current and historical source-supported Blend TVL observations.",
-        "Live re-check 2026-08-29: https://api.llama.fi/protocol/blend — the live series attaches dates to its changeable TVL observations.",
-        "Live re-check 2026-08-29: https://api.llama.fi/protocol/blend — the provider endpoint identifies Blend and supplies dated TVL series values.",
-        "Sibling sweep 2026-08-29: grep Blend TVL|quarter trend|same-provider|tvlMethodUrl → q-eco-defi-tvl-current, q-edge-noinfo-exact-tvl-figure, q-defi-blend-what-is, q-edge-fresh-latest-blend-tvl; no contradiction"
+        "https://api.llama.fi/protocol/blend (observedAt 2026-11-02T16:27Z): currentChainTvls {'Stellar': 130038598, 'Stellar-borrowed': 39619547}; tvl 2026-10-01 = 173192824 (series max); 2026-11-02 = 130038598.",
+        "https://defillama.com/protocol/blend (observedAt 2026-11-02): 'Total Value Locked $130.23m ... All-time high TVL: $173.19m onOct 1, 2026. ... TVL is the default DefiLlama definition, which excludes Pool2 and Active Loans.'",
+        "https://stellarlight.xyz/api/projects/search?q=blend&limit=3 (observedAt 2026-11-02T16:27Z): tvlUSD 129334939; tvlSource defillama; tvlMethodUrl https://defillama.com/protocol/blend-pools (V1 child, about $43.5K per https://api.llama.fi/protocol/blend-pools), so the golden names the combined series URL directly.",
+        "POST https://api.lumenloop.com/v1/tools/search_directory {query:'blend'} (observedAt 2026-11-02T16:27Z): directory rows carry no TVL field; the old 'from the current LumenLoop corpus' basis could not ground the value.",
+        "Raven lumenloop.find_av_passages (observedAt 2026-11-02T16:29Z) -> https://www.youtube.com/watch?v=E6asxPAA3wU: 'Stellar Developers meeting covering Q1 2026 ecosystem metrics showing 2B RWA market cap and 170M DeFi TVL'; https://developers.stellar.org/meetings/2026/04/23 does not state $170M (observedAt 2026-11-02).",
+        "Independent verifier decision: modify (removed the false claim that Scout's tvlMethodUrl links the combined series; attributed $170M to Lumenloop's meeting summary; labeled 2026-10-01 as the series all-time high).",
+        "Sibling sweep 2026-11-02: grep 'Blend TVL|blend.*TVL|tvlMethodUrl' -> q-eco-defi-tvl-current, q-eco-most-active-defi-projects, q-edge-noinfo-exact-tvl-figure; q-defi-blend-what-is and q-edge-factcheck-soroswap-first-amm also read. No contradiction: q-eco-defi-tvl-current uses $170M as a Stellar-wide DeFi figure, which matches the new chain-measure label."
       ],
       "rootCause": [
-        "A generic freshness row lagged newer provider/window/methodology siblings and under-answered the explicit trend request.",
-        "improvements/stellar-light-scout/sls-031-tvl-methodology-provenance.md",
-        "improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "eval-side authoring flaw: templated freshness boilerplate shared with q-eco-defi-tvl-current named Lumenloop as the TVL source and used a chain-wide figure as the Blend example",
+        "improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md"
       ]
     },
     "origin": "raven-next q-edge-fresh-latest-blend-tvl"

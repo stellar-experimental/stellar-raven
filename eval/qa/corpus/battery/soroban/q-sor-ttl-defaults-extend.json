@@ -28,8 +28,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
-    "reverifyBy": "2026-12-10",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-25",
     "sources": [
       {
         "class": "A",
@@ -80,23 +80,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-43 processes 3311/3320; live settings 2026-07-10.",
-        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
-        "Reviewed improvements/resolved.json entry sd-007 — fixed 2026-07-27; older documentation can require separate P23 restoration before TTL extension.",
-        "Sibling sweep 2026-08-27: grep minPersistentTTL|extend_ttl|ExtendFootprintTTL|Temporary expires → q-protocol-operation-types-list, q-sor-classic-dex-from-contract, q-sor-p23-auto-restore-extendto, q-sor-ttl-defaults-extend; no contradiction",
-        "Structural re-form (negative-predicate): replaced the taxonomy negation with three atomic positive facts; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — network minimum/maximum TTL values remain network parameters and current extension methods remain documented",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — explicit extension, P23 restoration, and Temporary deletion remain distinct behaviors",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — ExtendFootprintTTLOp still uses only the read-only footprint",
-        "Sibling sweep 2026-08-27: grep minPersistentTTL|extend_ttl|ExtendFootprintTTL|Temporary expires → q-protocol-operation-types-list, q-sor-p23-auto-restore-extendto, q-protocol-state-archival-ttl; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side answer completeness; improvements/stellar-docs/sd-007-state-archival-auto-restore-ambiguity.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Proposer F 2026-11-02: stellar network settings (stellar 28.1.0) against https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org — \"mainnet state_archival max_entry_ttl 3110400, min_temporary_ttl 17280, min_persistent_ttl 2073600; testnet 3110400, 720, 120960\"",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/build/guides/storage/storage-strategies — \"Max entry TTL | 3,110,400 ledgers ... Min TTL: persistent/instance create or restore | 2,073,600 ledgers ... Min TTL: temporary create | 17,280 ledgers (Protocol 27, checked 2026-07-20)\"",
+        "Proposer D 2026-11-02: https://github.com/tomerweller/pagebook/blob/main/docs/03-soroban-constraints.md — \"minimum TTL on create/restore is 2,073,600 ledgers ... maximum is 3,110,400 ... live mainnet values, Aug 2026\"",
+        "Proposer claim verdict confirmed-as-of (golden.answer): Mainnet min persistent 2,073,600, min temporary 17,280, max 3,110,400; Testnet 120,960, 720, 3,110,400 (dated 2026-07-10) Note: Unchanged after P28 (2026-09-16) and P29 (2026-10-01). P30 Bell Mainnet vote is scheduled 2026-11-23; re-query after it.",
+        "Proposer B 2026-11-02: https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/deploy.rs — \"pub fn extend_ttl(&self, contract_address: Address, threshold: u32, extend_to: u32) ... pub fn extend_ttl_for_contract_instance( ... pub fn extend_ttl_for_code(&self, contract_address: Address, threshold: u32, extend_to: u32)\"",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — \"you can use `env.deployer().extend_ttl_for_code()` and `env.deployer().extend_ttl_for_contract_instance()` respectively.\"",
+        "Proposer claim verdict confirmed (golden.answer): Current extension APIs: instance().extend_ttl(threshold, extend_to), persistent().extend_ttl(&key, threshold, extend_to), deployer extend_ttl / extend_ttl_for_contract_instance / extend_ttl_for_code(contract, threshold, extend_to) Note: SDK 29 also has *_with_limits variants; the golden says 'include', so they are compatible beyond-golden detail.",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — \"archived `Persistent` or `Instance` contract entries can be automatically restored before a host function runs, but only if they're included in the transaction's restore list ... `ExtendFootprintTTLOp` ... will extend the live until ledger of the entries specified in the _read-only set of the footprint_.\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x — \"struct ExtendFootprintTTLOp (extendTo)\"",
+        "Proposer claim verdict confirmed (golden.answer): P23 auto-restore via simulation restore list; restoration is not extension; ExtendFootprintTTLOp uses the read-only footprint",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — \"Example: My data is archived! ... If the simulation indicated it, we perform restoration via `Operation.restoreFootprint` using its hints.\"",
+        "Proposer claim verdict confirmed-as-of (golden.notes): Caution for cached pre-2026-07-27 separate-restoration flow Note: The live page still carries a manual restore-first example, so the symmetric caution is not yet expired; keep it.",
+        "Sibling sweep 2026-11-02: checked q-sor-p23-auto-restore-extendto, q-soroban-storage-types, q-soroban-resource-limits; no contradiction found."
       ]
     },
     "origin": "raven-next q-sor-ttl-defaults-extend"

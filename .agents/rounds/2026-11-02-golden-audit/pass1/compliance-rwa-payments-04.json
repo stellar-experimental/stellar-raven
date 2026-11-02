@@ -1,0 +1,1370 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "compliance-rwa-payments-04",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-pay-moneygram-ramps",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question",
+     "claim": "MoneyGram Ramps on Stellar has an SEP, an asset, and per-transaction limits",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Transaction limits on/off ramps (production) Min Max On-ramp (cash-in) 15 USDC 950 USDC Off-ramp (cash-out) 15 USDC 2,500 USDC"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / golden.keyFacts[2]",
+     "claim": "The integration uses SEP-10 authentication and SEP-24 interactive deposit/withdrawal (presented as the integration)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model. New Stellar wallet integrations should use the widg…"
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer/getting-started",
+       "observedAt": "2026-11-02",
+       "quote": "Widget partners on Solana or Stellar use the same key model and POST /v1/sessions . You do not implement SEP-10 / SEP-24 on the widget path."
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer/guides/web-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Existing SEP-24 partners may continue on the anchor path during transition. New Stellar pilot partners should use this widget path."
+      },
+      {
+       "class": "F",
+       "ref": "https://xramps.moneygram.com/sdk/index.global.js",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200, 9955 bytes; contains createRamps, onSignTransaction, RAMPS_SIGN_TRANSACTION"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search \"MoneyGram Ramps Stellar widget SDK API keys new integrations legacy SEP-24 whitelist\" -> https://xramps.moneygram.com/stellar/",
+       "observedAt": "2026-11-02",
+       "quote": "Existing whitelist partners on the legacy SEP-10 / SEP-24 path can stay there; see the legacy SEP guide."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Operator guide Version 1.2, July 2026: 15 USDC min, 950 cash-in max, 2,500 cash-out max",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Version 1.2 · Stellar + USDC · July 2026 ... On-ramp (cash-in) 15 USDC 950 USDC Off-ramp (cash-out) 15 USDC 2,500 USDC"
+      },
+      {
+       "class": "F",
+       "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+       "observedAt": "2026-11-02",
+       "quote": "{\"deposit\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":950}},\"withdraw\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":2500}}"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / golden.notes",
+     "claim": "Live SEP-24 /info endpoint advertises a 1 USDC minimum (dispute with guide)",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+       "observedAt": "2026-11-02",
+       "quote": "\"deposit\":{\"USDC\":{\"enabled\":true,\"fee_fixed\":0,\"fee_percent\":0,\"min_amount\":1,\"max_amount\":950,...}},\"withdraw\":{\"USDC\":{\"enabled\":true,...,\"min_amount\":1,\"max…"
+      },
+      {
+       "class": "F",
+       "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+       "observedAt": "2026-11-02",
+       "quote": "min_amount 15 (deposit and withdraw)"
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Production | mgxanchor.moneygram.com | https://mgxanchor.moneygram.com/stellarsepservice/auth"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Operator guide says 170+ off-ramp countries; other surfaces use broader figures",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Coverage: 480,000+ MoneyGram locations · 170+ countries for off-ramps"
+      },
+      {
+       "class": "D",
+       "ref": "parallel web_search -> https://www.moneygram.com/ramps",
+       "observedAt": "2026-11-02",
+       "quote": "Cash-out is available in 170+ countries and territories and cash-in in 25+ countries, across 480,000+ MoneyGram locations."
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic (raw POST /v1/tools/search_content_semantic) -> https://normalfi.substack.com/p/moneygram-is-live-in-normal",
+       "observedAt": "2026-11-02",
+       "quote": "MoneyGram, one of the world's largest cash payment networks with 500,000+ locations across 200+ countries"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Off-ramp max (2,500) is not the on-ramp max (950)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+       "observedAt": "2026-11-02",
+       "quote": "deposit max_amount 950; withdraw max_amount 2500"
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "On-ramp (cash-in) 15 USDC 950 USDC Off-ramp (cash-out) 15 USDC 2,500 USDC"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[2]",
+     "claim": "MoneyGram Ramps is not SDP",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend (README, develop, pushed 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24 ... without requiring external Anchor Platform integration."
+      },
+      {
+       "class": "A",
+       "ref": "https://xramps.moneygram.com/ops/developer",
+       "observedAt": "2026-11-02",
+       "quote": "MoneyGram Ramps embeds fiat ↔ crypto flows in your app."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. MoneyGram's developer portal directs **new Stellar partners** to a **widget SDK + API-key** path: the partner server creates sessions, the widget runs the flow, and the wallet signs Stellar USDC. On that path the partner does not i…",
+     "reason": "freshness-drift: MoneyGram now labels SEP-10/24 legacy and routes new Stellar partners to a widget SDK + API-key path; the guide-named production anchor (mgxanchor) /info agrees with the 15 USDC minimum, while the older stellar.moneygram.com endpoint still says 1."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Identifies Stellar USDC, the widget/API-key path, and the legacy SEP-10/SEP-24 path.",
+     "reason": "A true current answer that leads with the widget path and names SEP-10/24 as legacy should satisfy the key fact; the old fact presented SEP-10/24 as the whole integration. 84 chars."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "CORRECTION 2026-11-02: MoneyGram's developer portal labels SEP-10/SEP-24 the legacy whitelist anchor path and directs new Stellar partners to its widget SDK + API-key path. Accept either path when the answer dates and attributes it. An answer that presents SEP-10/SEP-24 as the only current route for a new integration misses the widget path. The legacy guide's named production anchor (mgxanchor.moneygram.com) /info states a 15 USDC minimum, matching the guide; the older stellar.moneygram.com /info still states a 1 USDC minimum. Both were observed on 2026-11-02. Do not penalize either minimum wh…",
+     "reason": "Update the dispute caution to name both endpoints and add the widget-path grading caution; the maximums and trap text are unchanged."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-anchor-moneygram-ramps; q-comp-cross-moneygram-partnership-sep24; q-crp-anchors-by-corridor; q-crp-remittance-founder-advisory; q-hist-remittance-corridors; q-scf-cross-decaf-sep24; q-jutsu-cash-crypto-ramps"
+  },
+  {
+   "id": "q-pay-sdp-disbursement",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / golden.keyFacts[0]",
+     "claim": "SDP is an open-source bulk disbursement and monitoring stack",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend (latest release 7.1.0, 2026-10-26)",
+       "observedAt": "2026-11-02",
+       "quote": "The Dashboard API is the component responsible for enabling clients to interact with the SDP."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+       "observedAt": "2026-11-02",
+       "quote": "The TSS pulls payments that ready to be processed then submits them to the Stellar Network through Channel Accounts."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Current Dashboard, Core, TSS and native SEP-10/24 without Anchor Platform; SDP publishes its own stellar.toml",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24, providing wallet authentication and interactive deposit flows with…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "The verification process uses the SDP's native SEP-24 implementation."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Receivers can use registered wallets, direct Stellar accounts, or embedded passkey C-address wallets",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Embedded Wallets are Stellar smart contract accounts that are deployed on-chain when a receiver creates their passkey."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/platforms/stellar-disbursement-platform/admin-guide/getting-started",
+       "observedAt": "2026-11-02",
+       "quote": "Since version 3.0.0 , the SDP can pay directly to Stellar wallet addresses rather than directing the receivers through the registration flow."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-frontend/blob/develop/CHANGELOG.md",
+       "observedAt": "2026-11-02",
+       "quote": "Add embedded wallet provider ... Support contract addresses in receiver create."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "SDP does not sit on Anchor Platform; MoneyGram cash-out is not built in; SDP is not an issuer/DeFi/regulated actor by itself",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "without requiring external Anchor Platform integration"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "No built-in offramp: Offramping must be handled out-of-band"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-anchor-sdp-what; q-anchor-sdp-vs-anchor-platform; q-crp-sdp-operation; q-pay-travel-rule-aid-flows; q-sep-31-cross-border"
+  },
+  {
+   "id": "q-pay-travel-rule-aid-flows",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "US transmittal record/travel rules use $3,000",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1010/subpart-D/section-1010.410",
+       "observedAt": "2026-11-02",
+       "quote": "( f ) Any transmittor's financial institution or intermediary financial institution located within the United States shall include in any transmittal order for …"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask (FATF R.16 / thresholds)",
+       "observedAt": "2026-11-02",
+       "quote": "United States: The bank funds-transfer rule in 31 CFR 1010.410(f) uses a USD 3,000 threshold."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "EU self-hosted ownership/control checks above EUR 1,000",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://eur-lex.europa.eu/eli/reg/2023/1113/oj/eng",
+       "observedAt": "2026-11-02",
+       "quote": "in the case of a transfer of an amount exceeding EUR 1 000 to a self-hosted address, the crypto-asset service provider of the originator shall take adequate mea…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask",
+       "observedAt": "2026-11-02",
+       "quote": "Regulation (EU) 2023/1113 Article 14(5) requires a crypto-asset service provider to take adequate measures ... for transfers exceeding EUR 1,000."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Do not apply future FATF changes early (revised R.16)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "perplexity_ask citing https://www.fatf-gafi.org/content/dam/fatf-gafi/guidance/Updated-Guidance-VA-VASP.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "As of late 2026, FATF's revised Recommendation 16 has been adopted and published, but its changes are not yet in effect: countries are expected to implement the…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers",
+       "observedAt": "2026-10-01",
+       "quote": "(prior 2026-10-01 re-check in truth.verified) duties attach to transmittor and intermediary financial institutions by role"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts/avoid",
+     "claim": "Duty allocation by intermediary/route/custody; KYC distinct from Travel Rule; no universal threshold",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://eur-lex.europa.eu/eli/reg/2023/1113/oj/eng",
+       "observedAt": "2026-11-02",
+       "quote": "the requirements of this Regulation should apply to all transfers including transfers of crypto-assets to or from a self-hosted address, as long as there is a c…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1010/subpart-D/section-1010.410",
+       "observedAt": "2026-11-02",
+       "quote": "Any transmittor's financial institution or intermediary financial institution"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-comp-finclusive-caas; q-comp-anchor-compliance-stack; q-pay-anchor-msb-licensing; q-crp-custodial-vs-noncustodial-wallets"
+  },
+  {
+   "id": "q-rwa-projects-tokenizing-stellar",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 a live RWA search returned 15 matches incl. WisdomTree, Spydra, Metafyed",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects {type:\"RWA\",limit:100} (meta.generatedAt 2026-11-02T15:52:09Z)",
+       "observedAt": "2026-11-02",
+       "quote": "meta.counts.total=101; Live-only filter total=84"
+      },
+      {
+       "class": "C",
+       "ref": "GET https://stellarlight.xyz/api/projects/search?type=RWA&limit=100&fields=name,slug,status",
+       "observedAt": "2026-11-02",
+       "quote": "{'returned': 100, 'total': 101} ... Counter({'Live': 84, 'Development': 12, 'Inactive': 4}); DTCC status Development"
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects {q:\"RWA tokenization\"} matchMode majority",
+       "observedAt": "2026-11-02",
+       "quote": "meta.counts.total=105"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1] / golden.notes",
+     "claim": "DTCC Stellar work is planned (H1 2027), not live",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+       "observedAt": "2026-11-02",
+       "quote": "The service is currently integrated with the Canton Network and DTCC's private Besu network, with additional blockchain networks to be added in 2027."
+      },
+      {
+       "class": "A",
+       "ref": "https://dtcclearning.com/documents/dtcc-digital-assets/digital-asset-solutions/tokenization-service/5699-dtcc-tokenization-service-product-tear-sheet-and-high-level-roadmap/file.html",
+       "observedAt": "2026-11-02",
+       "quote": "Live at Launch Anticipated in 2027 Canton Network Token standard: CIP-56 Stellar Token standard: SEP-41 Besu ... Arc (Circle)"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+       "observedAt": "2026-11-02",
+       "quote": "DTCC and SDF expect DTC-tokenized assets to be available on the Stellar network in the first half of 2027."
+      },
+      {
+       "class": "D",
+       "ref": "https://crypto.news/dtcc-launches-tokenization-service-with-20-major-firms/",
+       "observedAt": "2026-11-02",
+       "quote": "the previously announced Stellar integration is expected to bring tokenized securities to the blockchain in the first half of 2027."
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic (raw) -> av \"HUGE CRYPTO NEWS! ... DTCC TOKENIZATION CANTON NETWORK\" 2026-10-29",
+       "observedAt": "2026-11-02",
+       "quote": "Wall Street's DTCC tokenization service goes live on Canton network with $30T in securities and 20 major banks signed up."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Benji, WisdomTree, USDY, YLDS appear as live Stellar RWA products",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "GET https://stellarlight.xyz/api/projects/search?type=RWA",
+       "observedAt": "2026-11-02",
+       "quote": "names include 'Benji','Ondo','WisdomTree','Etherfuse','USDY','YLDS','Figure' (status Live)"
+      },
+      {
+       "class": "A",
+       "ref": "https://ondo.finance/blog/usdy-is-now-live-on-stellar",
+       "observedAt": "2026-08-29",
+       "quote": "(re-checked 2026-08-29 per truth.verified) USDY is now live on Stellar"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As of 2026-11-02, the Stellar Scout directory's RWA type filter returned 101 project records (84 Live, 12 Development, 4 Inactive), including Benji, WisdomTree, Ondo, and Etherfuse; DTCC was listed as Development.",
+     "reason": "freshness-drift: refresh the dated illustrative roster observation; the stale 15-match figure is far below the current 101 type=RWA records. Source-scoped to Scout."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "No roster-wide SEP-8 gate.\nUPDATE 2026-11-02: the DTCC Tokenization Service went live on 2026-10-28 on the Canton Network and DTCC's private Besu network. DTCC's roadmap still lists Stellar as anticipated in 2027 (first half of 2027 per the 2026-05-27 announcement). An answer that says DTS is live on other networks while Stellar remains planned does not put DTCC Stellar work in the live bucket.",
+     "reason": "freshness-drift: DTS went live 2026-10-28 on Canton/Besu, Stellar still anticipated 2027; protects true answers from avoid[1]."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-crp-dtcc-stellar-connection-plan; q-asset-rwa-tokenized-freshness"
+  },
+  {
+   "id": "q-rwa-stellar-vs-erc20-regulated",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "CAP-35 clawback and classic flags are protocol primitives; SAC is CAP-46-6",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Asset Clawback ... Status: Final"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Smart Contract Standardized Asset (Stellar Asset Contract) ... Status: Final"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"clawback authorization required revocable flags issuer\" -> https://developers.stellar.org/docs/tokens/control-asset-access#authorization-revocable-0x2",
+       "observedAt": "2026-11-02",
+       "quote": "When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline’s authorization, thereby freezing the asset held"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[0]",
+     "claim": "SEP-8 is an off-chain approval-server workflow, not ledger-native",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Regulated Assets ... Status: Active ... Version 1.7.4"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"SEP-8 regulated assets approval server\" -> https://developers.stellar.org/docs/tokens/anatomy-of-an-asset#compliance",
+       "observedAt": "2026-11-02",
+       "quote": "SEP-8: Regulated Assets - regulated assets are assets that require an issuer’s approval"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Draft SEP-57 / OpenZeppelin RWA is a separate evolving path",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: T-REX (Token for Regulated EXchanges) Author: OpenZeppelin ... Status: Draft Updated: 2026-09-08 Version: 0.4.0"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/use-cases/tokenization",
+       "observedAt": "2026-10-06",
+       "quote": "(2026-10-06 truth.verified) the official tokenization comparison names SEP-57 T-REX (Draft)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / avoid[1]",
+     "claim": "ERC-3643/T-REX standardizes identity registry, freeze/pause, forced transfer, recovery",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/ethereum/ERCs/master/ERCS/erc-3643.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: Final ... function pause() external; function setAddressFrozen(address _userAddress, bool _freeze) external; function forcedTransfer(address _from, addr…"
+      },
+      {
+       "class": "A",
+       "ref": "https://eips.ethereum.org/EIPS/eip-3643",
+       "observedAt": "2026-08-27",
+       "quote": "(2026-08-27 truth.verified) ERC-3643 defined technical identity and compliance interfaces"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-crp-oz-rwa-erc3643-trex; q-rwa-tokenization-standards; q-sor-evm-to-soroban-porting; q-sep-8-regulated-assets; q-comp-sep8-regulated-assets-approval-server"
+  },
+  {
+   "id": "q-rwa-tokenization-standards",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[3] / [4]",
+     "claim": "SEP-56 is a Draft tokenized-vault standard, not real-world attestation",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Tokenized Vault Standard ... Status: Draft Updated: 2025-11-06 Version: 0.1.2"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-protocol/contents/ecosystem/sep-0056.md (same file, raw header read)",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/use-cases/tokenization",
+       "observedAt": "2026-10-06",
+       "quote": "(truth.verified 2026-10-06) tokenization comparison; golden does not deny SEP-57"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "SEP-41 is a token interface",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Soroban Token Interface ... Status: Draft Updated: 2026-08-24 Version 0.5.2"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Assets: Any SEP-41 token asset (defaults to USDC)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Classic authorization/clawback or Soroban compliance can restrict regulated transfers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/tokens/control-asset-access#authorization-revocable-0x2",
+       "observedAt": "2026-11-02",
+       "quote": "This setting is useful for issuers of regulated assets"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "T-REX (Token for Regulated EXchanges) Status: Draft Version: 0.4.0"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence.",
+     "reason": "freshness-drift: refresh the status as-of date after the 2026-11-02 re-read; SEP-56 still Draft 0.1.2."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-rwa-stellar-vs-erc20-regulated; q-crp-oz-rwa-erc3643-trex; q-sep-41-token-interface"
+  },
+  {
+   "id": "q-smart-wallet-fee-sponsorship",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0] / [3]",
+     "claim": "C-address holds USDC via SAC contract-data balance without trustline; G-account needs reserves unless sponsored",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "When the SAC transfers assets between contracts, it uses Contract Data ledger entries to store the balances for contracts. ... Stellar account balances for issu…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+       "observedAt": "2026-11-02",
+       "quote": "Smart contract data doesn't require base reserves; it pays rent instead. A contract account is a smart contract, so sponsored reserves don't cover its storage."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/fee-abstraction",
+       "observedAt": "2026-11-02",
+       "quote": "Another actor, called relayer, covers the XLM network fees and is compensated in the user's chosen token."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1] / [2]",
+     "claim": "Fee bumps/relayers pay fees; begin/endSponsoringFutureReserves assign reserve liability",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+       "observedAt": "2026-11-02",
+       "quote": "Use a relayer when the user has a contract account, or when the user holds no XLM to pay fees. ... The relayer rebuilds the transaction with its own G-account a…"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"beginSponsoringFutureReserves sponsored reserves trustline\" -> https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#sponsorship-source-accounts",
+       "observedAt": "2026-11-02",
+       "quote": "This relation is initiated by BeginSponsoringFutureReservesOp, where the sponsoring account is"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / golden.answer",
+     "claim": "Token-paid FeeForwarder and hosted facilitators use caps, liquidity, abuse controls",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/fee-abstraction/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "the actual execution happens through an intermediary contract called **FeeForwarder**. This contract enforces that the user is charged at most `max_fee_amount` …"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+       "observedAt": "2026-11-02",
+       "quote": "a managed relayer covers fees on its own terms."
+      }
+     ]
+    },
+    {
+     "field": "truth.sources[0].ref",
+     "claim": "Cited fee-sponsorship page is live",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "curl -L https://developers.stellar.org/docs/build/apps/smart-wallets/fee-sponsorship",
+       "observedAt": "2026-11-02",
+       "quote": "404 https://developers.stellar.org/docs/build/guides/contract-accounts/fee-sponsorship"
+      },
+      {
+       "class": "F",
+       "ref": "curl https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+       "observedAt": "2026-11-02",
+       "quote": "200 (title \"Choose a fee sponsorship approach\")"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence.",
+     "reason": "freshness-drift: re-verified 2026-11-02; refresh the dated status note."
+    },
+    {
+     "field": "truth.sources[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+     "reason": "Cited page redirects to a 404; the fee-sponsorship guide moved."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-x402-payment-verification; q-pc-sponsored-reserves"
+  },
+  {
+   "id": "q-stellar-recurring-payments",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..2]",
+     "claim": "Recurrence via app scheduling or contract-account policy; scoped session keys with expiry and allowance",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+       "observedAt": "2026-11-02",
+       "quote": "Store a record for the session key with its expiry, allowed scope, and remaining allowance; reduce the allowance on each authorized call."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts",
+       "observedAt": "2026-08-29",
+       "quote": "(truth.verified 2026-08-29) current source exposes context-rule expiry updates and removal controls"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"session keys policy signers recurring payments smart account\" -> https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "you can also use Ed25519 keys, policy signers, session keys or anything the contract can"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Stellar does not automatically repeat payments at an interval",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
+       "observedAt": "2026-08-29",
+       "quote": "(truth.verified 2026-08-29) each transaction is a separately created and submitted command"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+       "observedAt": "2026-11-02",
+       "quote": "Block execution until a specific ledger timestamp, or add a cooldown"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-recurring-escrow-patterns; q-smart-account-scoped-policy-signers; q-raph-merchant-payments; q-defi-streaming-payments-prior-art"
+  },
+  {
+   "id": "q-tw-escrow-api-auth-custody",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0] / notes",
+     "claim": "Pinned skill says x-api-key on every request; Core API docs and SDK also accept Authorization: Bearer <jwt>",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/constitution.md",
+       "observedAt": "2026-11-02",
+       "quote": "**[ENFORCED]** `x-api-key` header on **every** request — including read-only indexer queries. ... Never `Authorization: Bearer` for the API-key requirement."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+       "observedAt": "2026-11-02",
+       "quote": "Every request carries either an API key or a wallet-session token: x-api-key: <id>.<secret> Authorization: Bearer <jwt>"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/main/src/transport/http-transport.ts (HEAD f95b5b1a, 2026-09-28)",
+       "observedAt": "2026-11-02",
+       "quote": "headers[\"x-api-key\"] = this.apiKey; ... headers.Authorization = `Bearer ${token}`;"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..3] / avoid[1]",
+     "claim": "API returns unsigned XDR; wallet signs locally; submit via /helper/send-transaction (V1) or /stellar/send-transaction (V2/current); API never signs",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+       "observedAt": "2026-11-02",
+       "quote": "**The API never signs anything.** Every endpoint that changes on-chain state returns an *unsigned* transaction. Your wallet signs it. You submit it. ... 3. SUBM…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md",
+       "observedAt": "2026-11-02",
+       "quote": "3. **Submit** — `POST /stellar/send-transaction` with the signed XDR. > The submit route differs from V1, which documents `/helper/send-transaction`."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-greenfield-escrow-prior-art-preflight; q-crp-partner-detail-after-discovery"
+  },
+  {
+   "id": "q-x402-payment-verification",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Clients sign exact SAC-transfer auth entries for facilitator submission",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "The authorization entry contains: Contract ID : The USDC token contract Function : transfer Arguments : from (payer), to (recipient), amount Expiration"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/coinbase/x402/blob/main/typescript/packages/mechanisms/stellar/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "ExactStellarScheme - Client implementation using Soroban token transfers ... Facilitators currently always sponsor transaction fees (areFeesSponsored: true)."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Verify scheme, network, auth, expiry, simulation, effects, finality, replay",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Validates the x402 protocol version, scheme, and network Decodes the transaction XDR and checks it is an invokeHostFunction calling transfer Confirms the amount…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/coinbase/x402/tree/main/typescript/packages/mechanisms/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "ExactStellarScheme - Facilitator for payment verification and settlement"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts[3]",
+     "claim": "As of 2026-07-11 Built on Stellar hosted + OpenZeppelin self-hosted facilitators",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "You can use a facilitator to verify and settle x402 payments. Two options are available for Stellar: Coinbase x402 Facilitator Coinbase’s x402 facilitator suppo…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "If you want to run your own instance of the facilitator instead of using the hosted service, you can deploy the OpenZeppelin Relayer with the x402 Facilitator P…"
+      },
+      {
+       "class": "F",
+       "ref": "https://www.x402.org/facilitator/supported",
+       "observedAt": "2026-11-02",
+       "quote": "{\"x402Version\":2,\"scheme\":\"exact\",\"network\":\"stellar:testnet\",\"extra\":{\"areFeesSponsored\":true}} (no stellar:pubnet kind)"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.cdp.coinbase.com/x402/network-support",
+       "observedAt": "2026-11-02",
+       "quote": "x402.org Testnet Facilitator ... For testnet use only"
+      }
+     ]
+    },
+    {
+     "field": "truth.sources[0].ref",
+     "claim": "Cited x402 docs page is live",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "curl -L https://developers.stellar.org/docs/build/apps/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "404"
+      },
+      {
+       "class": "F",
+       "ref": "curl https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "200"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Any tx hash or asset-code/amount-only check is insufficient",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Confirms the amount and recipient match the payment requirements Verifies the authorization entries are properly signed by the payer"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/coinbase/x402/blob/main/typescript/packages/mechanisms/stellar/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Supports Soroban tokens implementing SEP-41: Any Soroban token contract with transfer(from, to, amount) function"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As of 2026-11-02, Stellar Docs list Built on Stellar's hosted facilitator (OpenZeppelin Relayer x402 plugin, also self-hostable) and Coinbase's x402.org facilitator for stellar:testnet only; neither is mandatory.",
+     "reason": "freshness-drift: the current Stellar Docs facilitator roster names the Coinbase x402.org facilitator (stellar:testnet only) next to the Built on Stellar/OpenZeppelin relayer."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence.",
+     "reason": "freshness-drift: refresh the dated status note."
+    },
+    {
+     "field": "truth.sources[0].ref",
+     "op": "replace",
+     "new": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+     "reason": "Cited page returns 404; the x402 page moved."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-x402-on-stellar-what; q-soroban-x402-auth-entry-signing; q-ti-openzeppelin-relayer; q-hist-x402-stellar-announcement; q-agent-payment-standard-choice; q-smart-wallet-fee-sponsorship"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5); did not open the proposer matrix",
+  "decisions": [
+   {
+    "id": "q-pay-moneygram-ramps",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Every new claim re-derived: widget + API-key path for new partners, legacy whitelist SEP-10/SEP-24 path, mgxanchor /info = 15/950/2500 matching the guide, stellar.moneygram.com /info still 1/950/2500. The as-of date is kept; the minimum stays attributed, not pinned. The widget path is primary (A) plus not contradicted by a D sweep; limits are A + F.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Version 1.2 · Stellar + USDC · July 2026 ... **Legacy integration path.** This guide is for partners on the **Stellar whitelist + SEP-10 / SEP-24 anchor** model…"
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/getting-started",
+      "observedAt": "2026-11-02",
+      "quote": "Widget partners on Solana or Stellar use the same key model and POST /v1/sessions . You do not implement SEP-10 / SEP-24 on the widget path."
+     },
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/guides/web-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Existing SEP-24 partners may continue on the anchor path during transition. New Stellar pilot partners should use this widget path."
+     },
+     {
+      "class": "F",
+      "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+      "observedAt": "2026-11-02",
+      "quote": "{\"deposit\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":950}},\"withdraw\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":2500}}"
+     },
+     {
+      "class": "F",
+      "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+      "observedAt": "2026-11-02",
+      "quote": "\"deposit\":{\"USDC\":{...\"min_amount\":1,\"max_amount\":950...}},\"withdraw\":{\"USDC\":{...\"min_amount\":1,\"max_amount\":2500}}"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: MoneyGram Ramps Stellar widget SDK API keys legacy SEP-24",
+      "observedAt": "2026-11-02",
+      "quote": "Only re-surfaced MoneyGram's own pages (same class A witness); no contradicting source."
+     }
+    ]
+   },
+   {
+    "id": "q-pay-moneygram-ramps",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "84 characters (under 90). The official portal names both paths, so the requirement is grounded. It does not punish a true claim: the notes still accept SEP-10/SEP-24 for the legacy path.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/developer/chains/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar · widget SDK + API keys ... Partners already on the Stellar whitelist integrate via SEP-10 and SEP-24, not the widget SDK."
+     }
+    ]
+   },
+   {
+    "id": "q-pay-moneygram-ramps",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The notes keep the symmetric no-penalty rule for either attributed minimum and keep the SEP trap. They add no avoid item.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "New partners: use the Stellar widget hub instead."
+     },
+     {
+      "class": "F",
+      "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+      "observedAt": "2026-11-02",
+      "quote": "min_amount\":15"
+     },
+     {
+      "class": "F",
+      "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+      "observedAt": "2026-11-02",
+      "quote": "min_amount\":1"
+     }
+    ]
+   },
+   {
+    "id": "q-rwa-projects-tokenizing-stellar",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "As of 2026-11-02, the Stellar Scout directory's RWA type filter returned 101 project records (84 Live, 12 Development, 5 Inactive), including Benji, WisdomTree, Ondo, and Etherfuse; DTCC was listed as Development.",
+    "note": "The proposal said 4 Inactive. The live status filter returns 5, and 84+12+4 does not sum to 101. The case is corpus-grounded (the golden names Scout as its basis), so a Scout count is the correct witness for a dated directory observation. The as-of date is kept.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?type=RWA&limit=1",
+      "observedAt": "2026-11-02T16:25Z",
+      "quote": "\"counts\": {\"returned\": 1, \"total\": 101}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?type=RWA&status=Live|Development|Inactive|Pre-Release",
+      "observedAt": "2026-11-02",
+      "quote": "Live total 84; Development total 12; Inactive total 5; Pre-Release total 0"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?type=RWA&limit=100&offset=0,100&fields=name,slug,status",
+      "observedAt": "2026-11-02",
+      "quote": "Benji benji Live; Ondo ondo Live; WisdomTree wisdomtree Live; Etherfuse etherfuse Live; DTCC dtcc Development; Inactive: Stellar Token Launchpad, Aerochain, STO…"
+     }
+    ]
+   },
+   {
+    "id": "q-rwa-projects-tokenizing-stellar",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Launch date, networks, and the Stellar 2027 timing are confirmed by primary DTCC text plus independent press (Parallel and Perplexity sweeps). The H1 2027 detail is attributed to the 2026-05-27 announcement, which is consistent with the existing source and crypto.news. The note keeps DTCC Stellar out of the live bucket, consistent with the existing avoid item.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+      "observedAt": "2026-11-02",
+      "quote": "Oct 28, 2026 ... The service is currently integrated with the Canton Network and DTCC's private Besu network, with additional blockchain networks to be added in…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communications.dtcc.com/rs/669-QIL-921/images/DTCC%20Tokenization%20Service%20At-a-Glance.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "Live at Launch Anticipated in 2027 Canton Network Token standard: CIP-56 Stellar Token standard: SEP-41 Besu DTCC's private network ERC-20 Arc (Circle)"
+     },
+     {
+      "class": "D",
+      "ref": "https://crypto.news/dtcc-launches-tokenization-service-with-20-major-firms/",
+      "observedAt": "2026-11-02",
+      "quote": "the previously announced Stellar integration is expected to bring tokenized securities to the blockchain in the first half of 2027."
+     },
+     {
+      "class": "D",
+      "ref": "https://www.coindesk.com/business/2026/10/28/wall-street-backbone-dtcc-brings-usd30-trillion-securities-closer-to-blockchain-with-major-banks",
+      "observedAt": "2026-11-02",
+      "quote": "In addition to adding Stellar and Arc in 2027, DTCC plans to add tools for settling transactions with digital cash"
+     }
+    ]
+   },
+   {
+    "id": "q-rwa-tokenization-standards",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The re-dated status claims still hold. SEP-56 is still Draft and is a vault interface. SEP-41 is still the token interface. The date bump is backed by a fresh check, so it is not score laundering.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0056.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0056 Title: Tokenized Vault Standard ... Status: Draft ... Version: 0.1.2"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP: 0041 Title: Soroban Token Interface ... Updated: 2026-08-24 Version 0.5.2"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'SEP-56 tokenized vault standard draft' -> https://developers.stellar.org/docs/tools/openzeppelin-contracts#audited-modules-available",
+      "observedAt": "2026-11-02T16:26Z",
+      "quote": "The Fungible Token Vault extends the Fungible Token and implements SEP-56 Tokenized Vault Standard"
+     }
+    ]
+   },
+   {
+    "id": "q-smart-wallet-fee-sponsorship",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The answer's mechanisms are re-confirmed as of 2026-11-02: fee-bump, sponsored reserves, relayer, and a token-paid FeeForwarder with a capped fee. The date bump is supported.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+      "observedAt": "2026-11-02",
+      "quote": "Compare fee-bump transactions, sponsored reserves, and relayers ... contract accounts can't sign transaction envelopes, so a separate G-account must act as the …"
+     },
+     {
+      "class": "B",
+      "ref": "OpenZeppelin/stellar-contracts:packages/fee-abstraction/README.md; OpenZeppelin/openzeppelin-relayer:src/constants/stellar_transaction.rs",
+      "observedAt": "2026-11-02",
+      "quote": "an intermediary contract called **FeeForwarder**. This contract enforces that the user is charged at most `max_fee_amount` ... FeeForwarder: Contract that enabl…"
+     }
+    ]
+   },
+   {
+    "id": "q-smart-wallet-fee-sponsorship",
+    "field": "truth.sources[0].ref",
+    "decision": "accept",
+    "note": "The old URL is dead. The new URL is live, indexed, and covers smart-wallet (contract-account) sponsorship.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L https://developers.stellar.org/docs/build/apps/smart-wallets/fee-sponsorship",
+      "observedAt": "2026-11-02",
+      "quote": "404 (redirects to /docs/build/guides/contract-accounts/fee-sponsorship, which also 404s)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+      "observedAt": "2026-11-02",
+      "quote": "200, title 'Choose a fee sponsorship approach'"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'choose a fee sponsorship approach relayer fee-bump sponsored reserves'",
+      "observedAt": "2026-11-02T16:26Z",
+      "quote": "top hit https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship#combining-approaches"
+     }
+    ]
+   },
+   {
+    "id": "q-x402-payment-verification",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "As of 2026-11-02, Stellar Docs list Built on Stellar's hosted facilitator (OpenZeppelin Relayer x402 plugin, also self-hostable; testnet and mainnet), Coinbase's x402.org facilitator (stellar:testnet only), and community facilitators; none is mandatory.",
+    "note": "The proposal is accurate but implies only two listed options. The live page also has a 'Community Facilitators' section (Vellar, testnet only). The modified text adds that section generically, so the list is not read as complete. It changes 'neither' to 'none'. It names no community project, because the Varial/Vellar naming on that page is in flux: the wallets list says 'Varial', and the facilitat…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "Coinbase's x402 facilitator supports Stellar on **Testnet** with sponsored fees ... This x402 facilitator service is available on Testnet and Mainnet ... ### Co…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar.md",
+      "observedAt": "2026-11-02",
+      "quote": "## Self-hosting If you want to run your own instance of the facilitator instead of using the hosted service, you can deploy the OpenZeppelin Relayer with the x4…"
+     },
+     {
+      "class": "C",
+      "ref": "https://www.x402.org/facilitator/supported",
+      "observedAt": "2026-11-02",
+      "quote": "{\"x402Version\": 2, \"scheme\": \"exact\", \"network\": \"stellar:testnet\", \"extra\": {\"areFeesSponsored\": true}} (only Stellar kind listed)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/OpenZeppelin/relayer-plugin-x402-facilitator",
+      "observedAt": "2026-11-02",
+      "quote": "\"description\":\"OpenZeppelin Relayer - x402 Facilitator plugin\",\"archived\":false,\"pushed_at\":\"2026-10-28T11:07:33Z\""
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/cli/agent-cli/guides/pay-for-apis-x402#facilitators",
+      "observedAt": "2026-11-02T16:26Z",
+      "quote": "Coinbase's hosted facilitator supports Stellar on testnet only."
+     }
+    ]
+   },
+   {
+    "id": "q-x402-payment-verification",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The date bump is consistent with the re-verified answer sentence above.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "x402 Facilitators You can use a facilitator to verify and settle x402 payments."
+     }
+    ]
+   },
+   {
+    "id": "q-x402-payment-verification",
+    "field": "truth.sources[0].ref",
+    "decision": "accept",
+    "note": "The old URL is dead and the new URL is live.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L https://developers.stellar.org/docs/build/apps/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "404"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://developers.stellar.org/docs/build/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "200"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+   "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+   "https://mgxanchor.moneygram.com/.well-known/stellar.toml",
+   "https://stellar.moneygram.com/.well-known/stellar.toml",
+   "https://xramps.moneygram.com/ops/dev/stellar",
+   "https://xramps.moneygram.com/ops/developer/getting-started",
+   "https://xramps.moneygram.com/ops/developer/chains/stellar",
+   "https://xramps.moneygram.com/ops/developer/guides/web-stellar",
+   "https://www.moneygram.com/ramps",
+   "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide.md",
+   "https://stellarlight.xyz/api/projects/search?type=RWA (all, status=Live|Development|Inactive|Pre-Release, fields=name,slug,status)",
+   "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+   "https://communications.dtcc.com/rs/669-QIL-921/images/DTCC%20Tokenization%20Service%20At-a-Glance.pdf",
+   "https://www.coindesk.com/business/2026/10/28/wall-street-backbone-dtcc-brings-usd30-trillion-securities-closer-to-blockchain-with-major-banks",
+   "https://crypto.news/dtcc-launches-tokenization-service-with-20-major-firms/",
+   "https://developers.stellar.org/docs/build/apps/smart-wallets/fee-sponsorship",
+   "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+   "https://developers.stellar.org/docs/learn/encyclopedia/sponsored-reserves",
+   "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+   "https://developers.stellar.org/docs/build/apps/agentic-payments/x402",
+   "https://developers.stellar.org/docs/build/agentic-payments/x402 (.md)",
+   "https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar.md",
+   "https://www.x402.org/facilitator/supported",
+   "gh api repos/OpenZeppelin/relayer-plugin-x402-facilitator",
+   "gh api repos/Vellar-Wallet/vellar-facilitator",
+   "gh search code FeeForwarder --owner OpenZeppelin",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0056.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+   "Raven stellarDocs.search_docs x4 (SEP-56; fee sponsorship; x402 facilitators; MoneyGram Ramps)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-pay-moneygram-ramps; q-rwa-projects-tokenizing-stellar; q-rwa-tokenization-standards; q-smart-wallet-fee-sponsorship; q-x402-payment-verification",
+  "verifiedOnly": "q-pay-sdp-disbursement; q-pay-travel-rule-aid-flows; q-rwa-stellar-vs-erc20-regulated; q-stellar-recurring-payments; q-tw-escrow-api-auth-custody",
+  "untouched": "",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-pay-moneygram-ramps",
+    "log": "Applied accepted answer/keyFacts[2]/notes (widget + API-key path for new partners; SEP-10/24 legacy; mgxanchor 15 vs stellar.moneygram 1 minimum); status stays disputed; asOf 2026-11-02; sources, corroboration, and verified refreshed."
+   },
+   {
+    "id": "q-rwa-projects-tokenizing-stellar",
+    "log": "Applied verifier-modified answer (Scout RWA 101 = 84 Live/12 Development/5 Inactive, applier re-read) and accepted DTCC go-live note; added C/A/D sources and two corroboration rows; asOf 2026-11-02."
+   },
+   {
+    "id": "q-rwa-tokenization-standards",
+    "log": "Applied accepted golden.notes as-of bump to 2026-11-02; asOf 2026-11-02; reverifyBy 2027-02-16 -> 2027-03-16; added B/E sources and evidence; verified refreshed."
+   },
+   {
+    "id": "q-smart-wallet-fee-sponsorship",
+    "log": "Applied accepted notes as-of bump and moved truth.sources[0].ref to /docs/build/guides/transactions/fee-sponsorship; asOf 2026-11-02; reverifyBy 2026-12-01 -> 2027-03-23; added B source and corroboration evidence."
+   },
+   {
+    "id": "q-x402-payment-verification",
+    "log": "Applied verifier-modified answer (Built on Stellar hosted/self-hostable, Coinbase x402.org testnet only, community facilitators; none mandatory) and accepted notes bump and moved source URL; asOf 2026-11-02; reverifyBy 2027-01-28 -> 2027-03-30; added A/B/C/E sources and a corroboration row."
+   },
+   {
+    "id": "q-tw-escrow-api-auth-custody",
+    "log": "Metadata-only re-verification (no gospel change): asOf 2026-11-02; reverifyBy 2026-12-16 -> 2027-03-26; added 80e2467f pin and SDK HEAD sources and 2026-11-02 evidence to both sides of the disputed row; kept rootCause."
+   },
+   {
+    "id": "q-pay-sdp-disbursement",
+    "log": "Verified-only refresh (A+B, no gospel change); truth.verified date/by/evidence replaced; rootCause omitted because gospel did not change."
+   },
+   {
+    "id": "q-pay-travel-rule-aid-flows",
+    "log": "Verified-only refresh (A+D, no gospel change); truth.verified date/by/evidence replaced; rootCause omitted."
+   },
+   {
+    "id": "q-rwa-stellar-vs-erc20-regulated",
+    "log": "Verified-only refresh (B+E, no gospel change); truth.verified date/by/evidence replaced; rootCause omitted."
+   },
+   {
+    "id": "q-stellar-recurring-payments",
+    "log": "Verified-only refresh (A+E, no gospel change); truth.verified date/by/evidence replaced; rootCause omitted."
+   }
+  ]
+ }
+}

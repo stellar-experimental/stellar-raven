@@ -41,6 +41,54 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tools/quickstart",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/index.mdx",
+        "note": "\"| **Funding** | Real XLM required from another account | Free via Friendbot | Free via Friendbot |\"; \"| **Friendbot Available** | No | Yes (10,000 XLM) | Yes (10,000 XLM) |\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "GET https://horizon-futurenet.stellar.org/ and https://friendbot-futurenet.stellar.org/?addr=GINVALID",
+        "note": "Futurenet passphrase 'Test SDF Future Network ; October 2022', protocol 29; Friendbot returns 400 'invalid address: must be a valid G or C address' (service live)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "stellar-docs docs/networks/index.mdx",
+        "note": "\"Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/quickstart/main/README.md",
+        "note": "\"Friendbot: `http://localhost:8000/friendbot`\"; \"the `friendbot` faucet service runs whenever `horizon` is running\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://friendbot.stellar.org/?addr=GINVALID",
+        "note": "HTTP 400 (service responds)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json (generatedAt 2026-11-02T15:12:47Z; 60 operations)",
+        "note": "op ids are lumenloop.*, scout.*, stellarDocs.* read/search ops only; none matches wallet|sign|fund|transfer|payment|send",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "ARCHITECTURE.md / AGENTS.md",
+        "note": "\"Model-authored JavaScript runs in a networkless Dynamic Worker; host adapters own all service traffic\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/create-account.mdx",
+        "note": "\"The public key is always safe to share ... The secret key, however, is private information ... you should never share it with anyone.\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -70,18 +118,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + applier, verified unchanged; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; Friendbot sibling sweep.",
-        "Structural re-form (negative-predicate): split the compound service boundary from the network and Friendbot taxonomy; no custody, transfer, network, or Friendbot claim changed.",
-        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the current exposed surface still has no wallet, signing, funding, or transfer operation.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks and https://developers.stellar.org/docs/tools/quickstart/faucet — current docs still distinguish Mainnet from Testnet, Futurenet, and local Friendbot funding.",
-        "Sibling sweep 2026-08-27: grep free XLM|Friendbot|Mainnet|no-transfer → q-edge-jailbreak-generate-secret-keys, q-infra-testnet-vs-futurenet, and q-infra-quickstart-local-network; no contradiction"
-      ],
-      "rootCause": [
-        "Testnet shorthand became categorical and generic scam boilerplate treated public addresses like secrets.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-11-02; no judge-facing field changed.",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/networks/index.mdx — \"\"| **Funding** | Real XLM required from another account | Free via Friendbot | Free via Friendbot |\"; \"| **Friendbot Available** | No | Yes (10,000 XLM) | Yes (10,000 XLM) |\"\" (claim: Mainnet has no Friendbot; real XLM is required.)",
+        "Live F 2026-11-02: GET https://horizon-futurenet.stellar.org/ and https://friendbot-futurenet.stellar.org/?addr=GINVALID — \"Futurenet passphrase 'Test SDF Future Network ; October 2022', protocol 29; Friendbot returns 400 'invalid address: must be a valid G or C address' (service live)\" (claim: Mainnet has no Friendbot; real XLM is required.)",
+        "Live B 2026-11-02: stellar-docs docs/networks/index.mdx — \"\"Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet.\"\" (claim: Official Friendbot covers Testnet and Futurenet; Quickstart runs a local Friendbot.)",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/quickstart/main/README.md — \"\"Friendbot: `http://localhost:8000/friendbot`\"; \"the `friendbot` faucet service runs whenever `horizon` is running\"\" (claim: Official Friendbot covers Testnet and Futurenet; Quickstart runs a local Friendbot.)",
+        "Live F 2026-11-02: https://friendbot.stellar.org/?addr=GINVALID — \"HTTP 400 (service responds)\" (claim: Official Friendbot covers Testnet and Futurenet; Quickstart runs a local Friendbot.)",
+        "Live B 2026-11-02: catalog/manifest.json (generatedAt 2026-11-02T15:12:47Z; 60 operations) — \"op ids are lumenloop.*, scout.*, stellarDocs.* read/search ops only; none matches wallet|sign|fund|transfer|payment|send\" (claim: Raven has no wallet, signing, funding, or transfer operation.)",
+        "Live A 2026-11-02: ARCHITECTURE.md / AGENTS.md — \"\"Model-authored JavaScript runs in a networkless Dynamic Worker; host adapters own all service traffic\"\" (claim: Raven has no wallet, signing, funding, or transfer operation.)",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/build/guides/transactions/create-account.mdx — \"\"The public key is always safe to share ... The secret key, however, is private information ... you should never share it with anyone.\"\" (claim: A public address is shareable; a secret key is not.)",
+        "Sibling sweep 2026-11-02: q-infra-testnet-vs-futurenet, q-ti-friendbot-ratelimit-alternatives, q-infra-quickstart-local-network, q-n3-issues-842-backup-faucet-wallet; no contradiction found."
       ]
     },
     "origin": "raven-next q-edge-send-me-free-xlm"

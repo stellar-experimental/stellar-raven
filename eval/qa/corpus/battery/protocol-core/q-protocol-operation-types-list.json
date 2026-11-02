@@ -39,6 +39,12 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-transaction.x",
+        "note": "OperationType enum byte-identical to v27.0; no TRANSFER/MINT/BURN.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -62,22 +68,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): split the payment, DEX, and trustline operation lists; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — the current list defines Payment and CreateAccount.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — the current list defines both strict path-payment operations.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — the current list defines ManageBuyOffer and ManageSellOffer.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — the current list defines ChangeTrust and SetTrustLineFlags.",
-        "Sibling sweep 2026-08-29: grep PathPaymentStrictSend|SetTrustLineFlags|ManageBuyOffer → q-asset-path-payment-ops, q-asset-sdex-vs-amm, q-sep-clawback-prereq-flag, q-defi-arbitrage-pathpayment-bots, q-asset-usdc-eurc-path-fx, and q-protocol-operation-types-list; no contradiction",
-        "Corroboration audit 2026-08-29: added 1 row(s) for absence of ERC-style classic operation names; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-transaction.x — 'enum OperationType { CREATE_ACCOUNT = 0, PAYMENT = 1, PATH_PAYMENT_STRICT_RECEIVE = 2, ...' with no TRANSFER, MINT, or BURN member; v30.0 is byte-identical to v27.0.",
+        "Class A 2026-10-24: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — sections Payment, Path payment strict receive, Manage buy offer, Change trust, Account merge, Invoke Host Function, Extend Footprint TTL, Restore Footprint.",
+        "Class A 2026-10-28: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — 'Transactions can have up to 100 operations per transaction except for transactions that execute a smart contract.'",
+        "No gospel change. Sibling sweep: q-asset-path-payment-ops, q-sep-clawback-prereq-flag, q-defi-arbitrage-pathpayment-bots, q-asset-usdc-eurc-path-fx — consistent."
       ]
     },
     "origin": "raven-next q-protocol-operation-types-list"

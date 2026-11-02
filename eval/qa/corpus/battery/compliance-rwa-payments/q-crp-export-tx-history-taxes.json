@@ -21,7 +21,7 @@
       "Do NOT export payments only or give definitive tax advice.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "CoinTracker support was verified through search extraction but curl returned 403; Phase 3 should browser-check provider support if exact tax-tool wording matters.\nAlso good if the answer: Mentions reconciling CSV/export data with wallet/exchange records and fiat cost basis where applicable. | Notes Horizon is not the only possible data source; RPC/indexers/archive providers may be relevant for historical completeness.\nGolden cites: Stellar Horizon/RPC/indexer docs for export mechanics and dated tax-tool docs for named integrations.\nCORRECTION 2026-07-10 (GT-10 processes 3230/3232): gate retention-aware source selection, not volatile ledger numbers. Horizon/RPC pagination exhausts retained data only; RPC getTransactions is ledger-range."
+    "notes": "As of 2026-11-02, CoinTracker's Stellar integration page pairs a generic \"connect your Stellar wallet\" blurb with CSV-only connection steps, while other CoinTracker pages imply XLM public-address sync. Accept a dated CSV-import answer, one that flags the mismatch, or a dated, CoinTracker-attributed sync claim that tells the user to confirm the method in the app.\nAlso good if the answer: Mentions reconciling CSV/export data with wallet/exchange records and fiat cost basis where applicable. | Notes Horizon is not the only possible data source; RPC/indexers/archive providers may be relevant for historical completeness.\nGolden cites: Stellar Horizon/RPC/indexer docs for export mechanics and dated tax-tool docs for named integrations.\nCORRECTION 2026-07-10 (GT-10 processes 3230/3232): gate retention-aware source selection, not volatile ledger numbers. Horizon/RPC pagination exhausts retained data only; RPC getTransactions is ledger-range."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -61,6 +61,24 @@
         "class": "D",
         "ref": "https://www.cointracker.io/integrations/stellar",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/",
+        "note": "Root resource: history_elder_ledger 58962241, history_latest_ledger 65269766, horizon_version 30.0.0; public Horizon does not retain from genesis.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://mainnet.sorobanrpc.com getTransactions startLedger=100",
+        "note": "Error: 'start ledger (100) must be between the oldest ledger: 65148808 and the latest ledger: 65269767 for this rpc instance'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.cointracker.com/integrations/cryptocom-wallet",
+        "note": "Via Perplexity search: 'CoinTracker automatically syncs the transactions from a public address you add. We currently support ADA, ... XLM, XRP, XTZ, and ZEC.'",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -117,31 +135,44 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, CoinTracker offers direct Stellar (XLM) public-address wallet sync.",
+        "verdict": "unverifiable",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.cointracker.io/integrations/stellar",
+            "observedAt": "2026-09-05",
+            "note": "Parallel web_fetch cache acquired 2026-09-05 (direct curl HTTP 403 on 2026-11-02): 'connect your Stellar wallet to CoinTracker. CoinTracker automatically imports your XLM transactions' next to CSV-only steps '1. Download the CSV export ... 2. Reformat ... 3. Import your CSV export'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.cointracker.com/integrations/cryptocom-wallet",
+            "observedAt": "2026-11-02",
+            "note": "Via Perplexity search: public-address auto-sync list includes XLM."
+          },
+          {
+            "class": "D",
+            "ref": "https://feedback.cointracker.io/product-feedback/p/missing-xlm-transactions-on-stellar-wallet",
+            "observedAt": "2025-02-24",
+            "note": "Via Perplexity search, post dated 2025-02-24: 'Users may be missing XLM transactions when syncing their Stellar Wallet. ... Users can add their transaction history via CSV'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-10 primary and blind matrices",
-        "Sibling sweep matched Hubble/retention goldens",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened three export-source facts without changing their claims.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon — the current official Horizon page supplies the dated API source.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring — HISTORY_RETENTION_COUNT controls the retained historical window.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/analytics/hubble — Hubble remains an explicitly complete historical BigQuery dataset.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — the method scans a provider-retained ledger range.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/analytics and https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/events — official data sources distinguish operations, events, and fee metadata beyond payments.",
-        "Sibling sweep 2026-08-29: grep history_elder_ledger|HISTORY_RETENTION_COUNT|getTransactions|Hubble|Galexie|transaction history → retention, Hubble, RPC, indexer, and account-history cases; no contradiction"
+        "https://www.cointracker.io/integrations/stellar (Parallel web_fetch cache acquired 2026-09-05; direct curl HTTP 403 on 2026-11-02) — 'The easiest way to report your Stellar taxes is to connect your Stellar wallet to CoinTracker. CoinTracker automatically imports your XLM transactions' and steps '1. Download the CSV export of your transactions from Stellar 2. Reformat those transactions into our CoinTracker CSV format 3. Import your CSV export'.",
+        "Class D (Perplexity search, observedAt 2026-11-02) https://www.cointracker.com/integrations/cryptocom-wallet — 'CoinTracker automatically syncs the transactions from a public address you add. We currently support ADA, ... XLM'. The independent verifier modified the proposed note to accept a dated sync claim as well as a CSV answer.",
+        "Class F (observedAt 2026-11-02) https://horizon.stellar.org/ — history_elder_ledger 58962241, history_latest_ledger 65269766; https://mainnet.sorobanrpc.com getTransactions startLedger=100 — 'start ledger (100) must be between the oldest ledger: 65148808 and the latest ledger: 65269767'.",
+        "Class A https://developers.stellar.org/docs/data/analytics/hubble — 'Hubble is an open-source, publicly available dataset that provides a complete historical record of the Stellar network.' (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep -i cointracker across eval/qa/corpus/battery → only this case; no contradiction."
       ],
       "rootCause": [
-        "Collection pagination was mistaken for datastore retention.",
-        "A ledger-range RPC method was mistaken for an account-filtered export.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-crp-export-tx-history-taxes"

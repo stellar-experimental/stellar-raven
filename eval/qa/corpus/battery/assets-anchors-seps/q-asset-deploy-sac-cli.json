@@ -136,27 +136,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): split the CLI-or-SDK deployment rule from the no-new-contract rule; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract — the official guide uses `stellar contract asset deploy` for the reserved SAC.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract — the official guide says that SAC deployment does not require a new token contract.",
-        "Historical conflict detected 2026-08-29: the key fact named `CONTRACT_ID_FROM_ASSET`, but https://developers.stellar.org/docs/tokens/stellar-asset-contract names `CONTRACT_ID_PREIMAGE_FROM_ASSET`; resolved by the later conflict-resolution lines.",
-        "Sibling sweep 2026-08-29: grep CONTRACT_ID_FROM_ASSET|stellar contract asset deploy → q-asset-deploy-sac-cli only; no sibling contradiction.",
-        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): reviewer reported the CLI guide URL as 404; it resolved 200 for the orchestrator on 2026-08-29, and https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract shows `stellar contract asset deploy`; the identifier conflict was queued for this lane.",
-        "Conflict resolution 2026-08-29: https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x defines `CONTRACT_ID_PREIMAGE_FROM_ASSET = 1`.",
-        "Conflict resolution 2026-08-29: https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs uses `ContractIdPreimage::Asset(asset)`.",
-        "Sibling sweep 2026-08-29: grep CONTRACT_ID_FROM_ASSET|CONTRACT_ID_PREIMAGE_FROM_ASSET → q-asset-deploy-sac-cli, q-sor-sac-introspection; the sibling uses the correct spelling.",
-        "Corroboration audit 2026-08-29: added 2 row(s) for built-in SAC and permissionless deployment; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        "eval-authoring transcription",
-        "Live primary-source conflict in the exact SAC contract ID preimage constant name.",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract — \"stellar contract asset deploy --source S... --network testnet --asset USDC:GCYE...\" (claim: golden.keyFacts[0] confirmed: `stellar contract asset deploy` deploys the asset's SAC)",
+        "2026-11-02 [F] stellar contract asset --help (stellar 28.1.0; latest release v28.1.0 2026-09-26 per gh api) — \"deploy Deploy builtin Soroban Asset Contract; id ... Deprecated, use `stellar contract id asset` instead\" (claim: golden.keyFacts[0] confirmed: `stellar contract asset deploy` deploys the asset's SAC)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"calling InvokeHostFunctionOp with HOST_FUNCTION_TYPE_CREATE_CONTRACT and a CONTRACT_ID_PREIMAGE_FROM_ASSET contract ID preimage\" (claim: golden.keyFacts[2] confirmed: SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET)",
+        "2026-11-02 [F] stellar contract id asset --asset native --network mainnet — \"CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA (deterministic derivation without deploy)\" (claim: golden.keyFacts[2] confirmed: SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"The asset issuer becomes the initial administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards with the SAC's set_admin function.\" (claim: golden.answer confirmed: After deployment the issuer is automatically the admin)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md — \"The admin is initally set to the issuer (except for the XLM contract ...)\" (claim: golden.answer confirmed: After deployment the issuer is automatically the admin)",
+        "Sibling sweep 2026-11-02: proposer checked q-asset-trustline-vs-sac, q-sor-sac-introspection, q-comp-sac-inherits-flags; no gospel change in this case, so no sibling contradiction can arise from this event."
       ]
     },
     "origin": "raven-next q-asset-deploy-sac-cli"

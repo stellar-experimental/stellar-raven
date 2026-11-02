@@ -20,7 +20,7 @@
       "Do NOT call a community skill SDF-endorsed or claim official skill text is fully reviewed when its source says manual review remains.",
       "Do NOT install or execute unreviewed skill content or ignore stale versions embedded in its instructions."
     ],
-    "notes": "Todo 1248 correction 2026-07-28: `soroban` is no longer a current Scout skill slug. Grade live topic-to-slug resolution, then exact detail retrieval and the full provenance/safety review—not a stale alias or a mandatory catalog call after resolution."
+    "notes": "Todo 1248 correction 2026-07-28: `soroban` is no longer a current Scout skill slug. Grade live topic-to-slug resolution, then exact detail retrieval and the full provenance/safety review—not a stale alias or a mandatory catalog call after resolution. Re-verified 2026-11-02: /api/skills/soroban still returns 404 and the SDF slug is `smart-contracts`; skills.stellar.org still serves an unlisted legacy /skills/soroban/SKILL.md, which is not a current catalog slug."
   },
   "tags": {
     "category": "tooling-infra",
@@ -34,8 +34,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-09-03",
-    "reverifyBy": "2026-12-24",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-28",
     "sources": [
       {
         "class": "C",
@@ -61,6 +61,24 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-dev-skill/tree/main/skills",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/skills/soroban",
+        "note": "HTTP 404 {\"error\":\"unknown skill: soroban\"}.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/skills/smart-contracts",
+        "note": "200; meta.operator 'Stellar Development Foundation', source https://skills.stellar.org/skills/smart-contracts/SKILL.md, generatedAt 2026-11-02T16:41:01Z.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://skills.stellar.org/skills/soroban/SKILL.md",
+        "note": "Still HTTP 200 with 'name: soroban', although https://skills.stellar.org/ and /llms.txt list no skills/soroban entry.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -79,6 +97,18 @@
             "ref": "https://github.com/stellar/stellar-dev-skill/tree/main/skills/smart-contracts",
             "observedAt": "2026-07-28",
             "note": "Current canonical repository directory agrees on the smart-contracts slug."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/skills/soroban and https://stellarlight.xyz/api/skills",
+            "observedAt": "2026-11-02",
+            "note": "404 'unknown skill: soroban'; 82 skills listed, 'smart-contracts' present, 'soroban' absent."
+          },
+          {
+            "class": "B",
+            "ref": "gh api repos/stellar/stellar-dev-skill/contents/skills and https://skills.stellar.org/llms.txt",
+            "observedAt": "2026-11-02",
+            "note": "Directory lists smart-contracts and no soroban; legacy /skills/soroban/SKILL.md still served unlisted."
           }
         ]
       },
@@ -102,25 +132,18 @@
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-06)",
       "evidence": [
-        "C returned a `soroban` soft-empty and current `smart-contracts` detail. A/B confirmed the slug and files.",
-        "Sibling sweep 2026-09-03: q-tool-cli-skills-discovery remains the broad catalog lane; no contradiction found.",
-        "C: https://stellarlight.xyz/api/skills/soroban returned a 404 soft-empty on 2026-08-05, while the source=sdf list and /api/skills/smart-contracts returned the current Smart Contracts detail whose text explicitly covers anything called Soroban and names development.md, testing.md, and security.md.",
-        "B: https://github.com/stellar/stellar-dev-skill lists smart-contracts among the seven current skill directories and was pushed 2026-08-05; its source agrees with Scout.",
-        "Sibling sweep: q-gap-scout-get-skill-detail remains valid for a known exact slug; q-tool-cli-skills-discovery owns broad catalog discovery.",
-        "Structural re-form (long-fact): Split one slug-resolution fact and shortened three detail, installation, and review facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-dev-skill/tree/main/skills — the current official skill tree exposes smart-contracts as the exact Soroban-topic slug.",
-        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live getSkill contract provides direct detail lookup after exact-name resolution.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-dev-skill/tree/main/skills/smart-contracts — the current official directory contains SKILL.md and its required companion files.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/building-with-ai — the official guide gives different installation routes and directories for supported agent hosts.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-dev-skill/blob/main/README.md — the current source states that the skill remains under manual review and exposes executable install steps for inspection.",
-        "Sibling sweep 2026-08-29: grep stellar-dev-skill|scout.getSkill|skill detail|manual review → q-tool-skill-detail-install, q-gap-scout-get-skill-detail, q-tool-cli-skills-discovery, q-soroban-deploy-cli, q-sor-cross-warmancer-zk-stack; no contradiction."
+        "C https://stellarlight.xyz/api/skills/soroban (observedAt 2026-11-02): 'HTTP 404 {\"error\":\"unknown skill: soroban\"}'.",
+        "C https://stellarlight.xyz/api/skills/smart-contracts (generatedAt 2026-11-02T16:41:01Z): 200; meta.operator 'Stellar Development Foundation', source https://skills.stellar.org/skills/smart-contracts/SKILL.md.",
+        "C https://stellarlight.xyz/api/skills (observedAt 2026-11-02): 82 skills; 'soroban' not among slugs; 'smart-contracts' present.",
+        "B https://skills.stellar.org/ and https://skills.stellar.org/llms.txt (observedAt 2026-11-02): index lists skills/smart-contracts and skills/soroban-common-mistakes but no skills/soroban; https://skills.stellar.org/skills/soroban/SKILL.md still returns 200 with 'name: soroban'.",
+        "B gh api repos/stellar/stellar-dev-skill/contents/skills (observedAt 2026-11-02): 'agentic-payments assets cross-chain dapp data smart-contracts standards zk-proofs'.",
+        "Sibling sweep 2026-11-02: q-gap-scout-get-skill-detail and q-gap-scout-list-skill-directory do not treat soroban as a current slug; no contradiction."
       ],
       "rootCause": [
-        "scheduled freshness re-verification found no semantic drift and refreshed live slug/detail provenance",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "improvements/skills/sk-027-scout-skill-stale-skills-catalog.md (legacy unlisted skills/soroban/SKILL.md still published after the slug became smart-contracts)"
       ]
     },
     "origin": "raven-next q-tool-skill-detail-install"

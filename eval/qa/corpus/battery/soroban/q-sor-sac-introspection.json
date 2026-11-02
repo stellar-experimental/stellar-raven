@@ -31,8 +31,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-11-26",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-11",
     "sources": [
       {
         "class": "A",
@@ -82,23 +82,35 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-43 primary 3311 and blind 3320.",
-        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
-        "Reviewed improvements/resolved.json entry sd-020 — fixed 2026-07-31; older documentation can show obsolete SAC XDR names or immutable issuer/admin identity.",
-        "Sibling sweep 2026-08-27: grep CONTRACT_EXECUTABLE_STELLAR_ASSET|CONTRACT_EXECUTABLE_TOKEN|CONTRACT_ID_PREIMAGE_FROM_ASSET|set_admin → q-comp-sac-inherits-flags, q-sor-sac-introspection; no contradiction",
-        "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the current official guide says a verified SAC's name and symbol report wrapped-asset identity.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the current official guide says SEP-41 has no generic asset or issuer accessor.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the current official guide says the issuer is initial admin and set_admin can transfer authority.",
-        "Sibling sweep 2026-08-29: grep CONTRACT_EXECUTABLE_STELLAR_ASSET|generic SEP-41.*issuer|set_admin|SAC name → q-comp-sac-inherits-flags, q-sor-sac-introspection; no contradiction."
+        "Proposed golden.notes change rejected by the independent verifier 2026-11-02; gospel kept. Reason: The developers.stellar.org page, the docs repo and the docs index are clean, so the sd-020 docs condition is met. But CAP-0046-06 still names the SAC executable CONTRACT_EXECUTABLE_TOKEN. That CAP is Final, live, and is listed in this case's own truth.sources. An answer that quotes it would then hit the avoid item with no cap. The caution's protective condition ('an older copy still shows those values') still holds in substance, so removing it punishes an attributable quote. Keep the caution as is. Follow-up: file an improvements/ finding against stellar/stellar-protocol CAP-0046-06 (design-era XDR name). Re-form or remove the caution after that finding resolves. Naming CAP-0046-06 as a new canonical-page conflict needs the ADR-0008 owner decision, so I do not propose that edit here. Also, removal while rootCause still cites improvements/stellar-docs/sd-020-... would raise the lint-corpus symmetric-caution warning.",
+        "Verifier A 2026-11-02: https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"A deployed SAC can be identified on-chain from its contract instance: its `SCContractInstance.executable` is `CONTRACT_EXECUTABLE_STELLAR_ASSET` rather than a Wasm hash.\"",
+        "Verifier B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tokens/stellar-asset-contract.mdx (clone of stellar/stellar-docs main de38543, 2026-10-29) — \"The asset issuer becomes the _initial_ administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function.\"",
+        "Verifier B 2026-11-02: grep of stellar/stellar-docs main (de38543) *.md/*.mdx for CONTRACT_EXECUTABLE_TOKEN|ContractExecutableToken — \"zero matches; only stellar-transaction.mdx and stellar-asset-contract.mdx carry CONTRACT_EXECUTABLE_STELLAR_ASSET\"",
+        "Verifier B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-contract.x — \"CONTRACT_EXECUTABLE_WASM = 0, CONTRACT_EXECUTABLE_STELLAR_ASSET = 1, CONTRACT_EXECUTABLE_EXTERNAL_REF = 2\"",
+        "Verifier B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md (Status: Final; last commit 3bc9054e 2025-03-19) — \"The `CreateContractArgs` under that will contain a `ContractExecutable` of type `CONTRACT_EXECUTABLE_TOKEN`, and a `ContractIDPreimage` of type `CONTRACT_ID_PREIMAGE_FROM_ASSET`\"",
+        "Verifier E 2026-11-02T16:37:26Z: Raven stellarDocs.search_docs queries 'CONTRACT_EXECUTABLE_TOKEN', 'SAC contract executable stellar asset identify', 'SAC issuer admin set_admin' — \"stellar-asset-contract#deployment: 'its SCContractInstance.executable is CONTRACT_EXECUTABLE_STELLAR_ASSET rather than'; no indexed hit shows CONTRACT_EXECUTABLE_TOKEN\"",
+        "Verifier B 2026-11-02: improvements/resolved.json sd-020 (worktree) — \"resolved: 2026-07-31 ... stellar-transaction shows CONTRACT_EXECUTABLE_STELLAR_ASSET ... with zero CONTRACT_EXECUTABLE_TOKEN\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/stellar-xdr/blob/curr/Stellar-contract.x — \"CONTRACT_EXECUTABLE_WASM = 0, CONTRACT_EXECUTABLE_STELLAR_ASSET = 1, CONTRACT_EXECUTABLE_EXTERNAL_REF = 2\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x — \"CONTRACT_ID_PREIMAGE_FROM_ADDRESS = 0, CONTRACT_ID_PREIMAGE_FROM_ASSET = 1 ... case ENVELOPE_TYPE_CONTRACT_ID:\"",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"its `SCContractInstance.executable` is `CONTRACT_EXECUTABLE_STELLAR_ASSET` rather than a Wasm hash.\"",
+        "Proposer F 2026-11-02: @stellar/stellar-sdk 17.4.0 Asset.contractId(Networks.PUBLIC) — \"native -> CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA; USDC:GA5Z... -> CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75\"",
+        "Proposer claim verdict confirmed (golden.answer): SAC address derives from ENVELOPE_TYPE_CONTRACT_ID + network ID + CONTRACT_ID_PREIMAGE_FROM_ASSET; deployed SAC has CONTRACT_EXECUTABLE_STELLAR_ASSET Note: CAP-85 (P28) added a third executable type; the SAC-identity test is unchanged.",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"there is no generic SEP-41 `asset()`/`issuer()` accessor to rely on ... The asset issuer becomes the _initial_ administrator ... administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function.\"",
+        "Proposer E 2026-11-02: stellarDocs.search_asset_token_docs 'identify SAC CONTRACT_EXECUTABLE_STELLAR_ASSET executable' — \"hit https://developers.stellar.org/docs/tokens/stellar-asset-contract#deployment snippet 'EXECUTABLE_STELLAR_ASSET rather than a Wasm hash'\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/stellar-asset-contract.mdx — \"To use the SAC reserved for an asset, the instance just needs to be deployed.\"",
+        "Proposer claim verdict confirmed (golden.answer): name()/symbol() give asset identity after SAC check; no generic asset()/issuer(); issuer is initial admin and set_admin makes admin mutable; built-in instance deployed on demand",
+        "Proposer B 2026-11-02: gh code search 'CONTRACT_EXECUTABLE_TOKEN repo:stellar/stellar-docs' — \"total_count 0\"",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"current page states CONTRACT_EXECUTABLE_STELLAR_ASSET and set_admin mutability\"",
+        "Proposer E 2026-11-02: stellarDocs.search_asset_token_docs — \"the docs index snippet shows the current executable wording\"",
+        "Proposer B 2026-11-02: improvements/resolved.json sd-020 — \"resolved 2026-07-31; liveRecheck '... zero CONTRACT_EXECUTABLE_TOKEN/CONTRACT_ID_FROM_ASSET'\"",
+        "Proposer claim verdict contradicted (golden.notes): Cached/older official copy may still show CONTRACT_EXECUTABLE_TOKEN or immutable admin (pre-2026-07-31) -> partial cap caution Note: golden-truth Step 1: remove a canonical-page caution when the finding is fixed-upstream and the live page no longer carries the wording. Both conditions hold. Verdict 'contradicted' here means the caution's premise (a live official copy with stale values) no longer holds.",
+        "Sibling sweep 2026-11-02: checked no topical siblings named by the proposer; no contradiction found."
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-020-sac-xdr-introspection-admin-drift.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "improvements/stellar-docs/sd-020-sac-xdr-introspection-admin-drift.md"
       ]
     },
     "origin": "raven-next q-sor-sac-introspection"

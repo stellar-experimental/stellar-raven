@@ -11,7 +11,7 @@
     "lumenloop.search_documents"
   ],
   "golden": {
-    "answer": "**Hana** is a non-custodial multichain wallet with Stellar support. Yes: official SCF records show **$50,000 awarded in SCF #22 plus $82,000 in SCF #25, totaling $132,000**. Do not include the unsuccessful SCF #21 submission. Use the current **hana.money** operator surface for present product/network claims and keep old application promises separate from verified current functionality.",
+    "answer": "**Hana** is a non-custodial multichain wallet with Stellar support. Yes: official SCF records show **$50,000 awarded in SCF #22 plus $82,000 in SCF #25, totaling $132,000**. Do not include the unsuccessful SCF #21 submission. Use the current **hanawallet.io** operator surface for present product/network claims (as of 2026-11-02, hana.money redirects to the Wend remittance site) and keep old application promises separate from verified current functionality.",
     "keyFacts": [
       "Identifies Hana as a non-custodial multichain wallet.",
       "Derives Hana's $132,000 total from two official awarded rows."
@@ -19,12 +19,12 @@
     "avoid": [
       "Do NOT count the non-awarded SCF #21 submission, call Hana Stellar-only, or infer current features from an old application/legacy domain."
     ],
-    "notes": "lumenloop_get_scf_submissions. VERIFIED on Scout: Hana is scfAwarded with scfTotalAwardedUSD = $132,000 (dossier attributes this to rounds 22 & 25); a non-custodial MULTI-chain wallet (browser ext + mobile) with Stellar support. Gate on 'is SCF-awarded + cite the record + multi-chain'; treat the $132K as tool-sourced.\nAlso good if the answer: Reports Hana's SCF funding (approximately $132,000 across SCF rounds 22 and 25) from the source data, or honestly states what is in the corpus.\nGolden cites: The SCF submission record for Hana (or an explicit note of what's in the corpus).\nGT-19 UPDATE 2026-07-10: exact official arithmetic is SCF #22 $50K + #25 $82K = $132K; #21 was not awarded. Current operator domain is hana.money."
+    "notes": "lumenloop_get_scf_submissions. VERIFIED on Scout: Hana is scfAwarded with scfTotalAwardedUSD = $132,000 (dossier attributes this to rounds 22 & 25); a non-custodial MULTI-chain wallet (browser ext + mobile) with Stellar support. Gate on 'is SCF-awarded + cite the record + multi-chain'; treat the $132K as tool-sourced.\nAlso good if the answer: Reports Hana's SCF funding (approximately $132,000 across SCF rounds 22 and 25) from the source data, or honestly states what is in the corpus.\nGolden cites: The SCF submission record for Hana (or an explicit note of what's in the corpus).\nGT-19 UPDATE 2026-07-10: exact official arithmetic is SCF #22 $50K + #25 $82K = $132K; #21 was not awarded. The 2026-07-10 operator domain was hana.money; as of 2026-11-02 the wallet site is hanawallet.io, and hana.money redirects to wendmoney.com.au (Wend)."
   },
   "tags": {
     "category": "defi-ecosystem",
     "service": "lumenloop",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -53,6 +53,60 @@
         "class": "D",
         "ref": "https://www.hana.money/",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "F",
+        "ref": "curl -sIL https://hana.money and https://www.hana.money",
+        "note": "Golden audit 2026-11-02: \"HTTP/2 307 location: https://www.wendmoney.com.au/\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "curl -sIL https://news.hana.money",
+        "note": "Golden audit 2026-11-02: \"HTTP/2 308 location: https://news.hanawallet.io/\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.hanawallet.io/",
+        "note": "Golden audit 2026-11-02: \"<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title> ... 19 chains. One wallet on Chrome. ... Stellar\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.hana.money/",
+        "note": "Golden audit 2026-11-02: \"Wend | Send money to GCash or Maya in minutes\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Raven lumenloop.search_directory {query:'hana wallet'} -> slug hana",
+        "note": "Golden audit 2026-11-02: \"website: [\"hanawallet.io\"]\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "curl -sIL https://hana.money",
+        "note": "Golden audit 2026-11-02: \"HTTP/2 307 location: https://www.wendmoney.com.au/\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.wendmoney.com.au/",
+        "note": "Golden audit 2026-11-02: \"<title>Wend | Send money to GCash or Maya in minutes</title>\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Parallel web_search 'hana.money Wend remittance' -> https://www.hana.money/",
+        "note": "Golden audit 2026-11-02: \"Wend gets you the real exchange rate, with fees shown upfront. Send to GCash or Maya in minutes\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://support.hanawallet.io/en/articles/11045736-hana-wallet-stellar-integration-guide",
+        "note": "Golden audit 2026-11-02: \"Back to hanawallet.io Download Hana Wallet\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -79,23 +133,103 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, the Hana wallet operator site is hanawallet.io; hana.money redirects to wendmoney.com.au (Wend remittance) and news.hana.money forwards to news.hanawallet.io.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "curl -sIL https://hana.money and https://www.hana.money",
+            "observedAt": "2026-11-02",
+            "note": "HTTP/2 307 location: https://www.wendmoney.com.au/"
+          },
+          {
+            "class": "F",
+            "ref": "curl -sIL https://news.hana.money",
+            "observedAt": "2026-11-02",
+            "note": "HTTP/2 308 location: https://news.hanawallet.io/"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.hanawallet.io/",
+            "observedAt": "2026-11-02",
+            "note": "<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title> ... 19 chains. One wallet on Chrome. ... Stellar"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.hana.money/",
+            "observedAt": "2026-11-02",
+            "note": "Wend | Send money to GCash or Maya in minutes"
+          },
+          {
+            "class": "C",
+            "ref": "Raven lumenloop.search_directory {query:'hana wallet'} -> slug hana",
+            "observedAt": "2026-11-02",
+            "note": "website: [\"hanawallet.io\"]"
+          },
+          {
+            "class": "F",
+            "ref": "curl -sIL https://hana.money",
+            "observedAt": "2026-11-02",
+            "note": "HTTP/2 307 location: https://www.wendmoney.com.au/"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.wendmoney.com.au/",
+            "observedAt": "2026-11-02",
+            "note": "<title>Wend | Send money to GCash or Maya in minutes</title>"
+          },
+          {
+            "class": "D",
+            "ref": "Parallel web_search 'hana.money Wend remittance' -> https://www.hana.money/",
+            "observedAt": "2026-11-02",
+            "note": "Wend gets you the real exchange rate, with fees shown upfront. Send to GCash or Maya in minutes"
+          },
+          {
+            "class": "A",
+            "ref": "https://support.hanawallet.io/en/articles/11045736-hana-wallet-stellar-integration-guide",
+            "observedAt": "2026-11-02",
+            "note": "Back to hanawallet.io Download Hana Wallet"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task defi-protocols)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258.",
-        "Structural re-form (long-fact): split the wallet description from the award arithmetic; truth unchanged.",
-        "Live re-check 2026-08-29: https://www.hana.money/ — Hana's current operator page states that the wallet is non-custodial and shows support for both Stellar and Bitcoin.",
-        "Live re-check 2026-08-29: https://communityfund.stellar.org/project/hana-wallet-x9e — the official SCF page reports $132,000 total and awarded rows of $50,000 in SCF #22 and $82,000 in SCF #25.",
-        "Sibling sweep 2026-08-29: grep Hana Wallet|hana.money|$132,000 → q-eco-hana-wallet-scf only; no contradiction."
+        "F: curl -sIL https://hana.money and https://www.hana.money — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (observedAt 2026-11-02)",
+        "F: curl -sIL https://news.hana.money — \"HTTP/2 308 location: https://news.hanawallet.io/\" (observedAt 2026-11-02)",
+        "A: https://www.hanawallet.io/ — \"<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title> ... 19 chains. One wallet on Chrome. ... Stellar\" (observedAt 2026-11-02)",
+        "A: https://www.hana.money/ — \"Wend | Send money to GCash or Maya in minutes\" (observedAt 2026-11-02)",
+        "C: Raven lumenloop.search_directory {query:'hana wallet'} -> slug hana — \"website: [\"hanawallet.io\"]\" (observedAt 2026-11-02)",
+        "F: curl -sIL https://hana.money — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (observedAt 2026-11-02)",
+        "A: https://www.wendmoney.com.au/ — \"<title>Wend | Send money to GCash or Maya in minutes</title>\" (observedAt 2026-11-02)",
+        "D: Parallel web_search 'hana.money Wend remittance' -> https://www.hana.money/ — \"Wend gets you the real exchange rate, with fees shown upfront. Send to GCash or Maya in minutes\" (observedAt 2026-11-02)",
+        "A: https://support.hanawallet.io/en/articles/11045736-hana-wallet-stellar-integration-guide — \"Back to hanawallet.io Download Hana Wallet\" (observedAt 2026-11-02)",
+        "Upstream defects noted by the proposer, filed as improvements/stellar-light-scout/sls-100-hana-website-repurposed-domain.md (website) and tracked in improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md (Freighter rename): Stellar Light project hana links.website is https://hana.money/, which now redirects to the Wend site; its shortDescription still names the Freighter API after the Freighter-to-Varial rename (https://stellarlight.xyz/api/projects/search?q=hana).",
+        "Sibling sweep 2026-11-02: grep hana.money over the battery → this case only; proposer siblings q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-soroban-x402-auth-entry-signing, q-defi-phoenix-what-is; no contradiction. No case in this batch names Freighter or Varial.",
+        "Pass 2 (.agents/rounds/2026-11-02-golden-audit.md, task defi-protocols) evidence follows; pass-1 lines above remain the provenance for the pass-1 diff.",
+        "2026-11-02 [F] curl -sSI https://hana.money/ and https://www.hana.money/ — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (pass-2 verifier accept on tags.freshness)",
+        "2026-11-02 [A] https://www.hanawallet.io/ (curl -sSIL https://hanawallet.io/: HTTP/2 308 -> https://www.hanawallet.io/, HTTP/2 200) — \"<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title>\" (pass-2 verifier accept on tags.freshness)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=hana&limit=3 — \"hana | Live | statusAsOf 2026-08-28 | links.website https://hana.money/ | statusSourceUrl https://www.hana.money/ | lifecycle.note 'live wallet app; hanawallet.io 308s to hana.money' | shortDescription '... via Stellar Wallets Kit and the Freighter API'\" (pass-2 verifier accept on truth.verified.evidence[9])",
+        "2026-11-02 [F] curl -sSI https://hana.money/ and https://www.hana.money/ — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (pass-2 verifier accept on truth.verified.evidence[9])",
+        "2026-11-02 [A] https://www.hanawallet.io/ (curl -sSIL https://hanawallet.io/: HTTP/2 308 -> https://www.hanawallet.io/, HTTP/2 200) — \"<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title>\" (pass-2 verifier accept on truth.verified.evidence[9])",
+        "2026-11-02 [A] https://www.wendmoney.com.au/ — \"<title>Wend | Send money to GCash or Maya in minutes</title>\" (pass-2 verifier accept on truth.verified.evidence[9])",
+        "2026-11-02 [B] improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md — \"Prevalence: q=freighter returned 6 rows (freighter, hana, ...). ... the other five are prose references to a renamed product.\" (pass-2 verifier accept on truth.verified.evidence[9])",
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=hana&limit=3 — \"hana | Live | statusAsOf 2026-08-28 | links.website https://hana.money/ | statusSourceUrl https://www.hana.money/ | lifecycle.note 'live wallet app; hanawallet.io 308s to hana.money' | shortDescription '... via Stellar Wallets Kit and the Freighter API'\" (pass-2 verifier accept on truth.verified.rootCause)",
+        "2026-11-02 [F] curl -sSI https://hana.money/ and https://www.hana.money/ — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (pass-2 verifier accept on truth.verified.rootCause)",
+        "Pass 2 change: tags.freshness stable → scheduled because the answer carries the dated 2026-11-02 hana.money redirect observation; truth.reverifyBy 2027-03-17; evidence[9] now cites the filed findings sls-100 and sls-095; rootCause adds sls-100. The $132,000 SCF arithmetic is stable historical fact and is unchanged. Question, answer, keyFacts, avoid, and notes unchanged.",
+        "Pass 2 sibling sweep 2026-11-02: grep hana.money over the battery → this case only; q-eco-stellar-wallets-list has no hana.money reference; cluster-012 Hana $132K unchanged; no contradiction."
       ],
       "rootCause": [
-        "Aggregator total lacked row-level provenance and legacy/application surfaces were treated as current product evidence.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "improvements/stellar-light-scout/sls-100-hana-website-repurposed-domain.md"
       ]
     },
-    "origin": "raven-next q-eco-hana-wallet-scf"
+    "origin": "raven-next q-eco-hana-wallet-scf",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-17"
   }
 }

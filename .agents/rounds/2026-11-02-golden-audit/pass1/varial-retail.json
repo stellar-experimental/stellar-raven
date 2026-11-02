@@ -1,0 +1,2039 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "varial-retail",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-eco-freighter-wallet",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question",
+     "claim": "User asks about Freighter by old name",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/master/README.md (commit 8186584326, PR #3055 merged 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/freighter (page title \"Varial Wallet - Stellar Developer Docs\")",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Freighter was renamed Varial; same product; public launch 2026-10-29",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/master/README.md (commit 8186584326, PR #3055 merged 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/pull/3048 (merged 2026-10-28T21:22:14Z)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. ... **Unchanged by design:** extension IDs, the `@stellar/freighter-api` package and its postMessage wire protocol, storage keys, a…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS pubDate Thu, 29 Oct 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... Your private keys will continue to stay on your device"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/freighter (page title \"Varial Wallet - Stellar Developer Docs\")",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/ (docs.freighter.app 307 -> docs.varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged ... Varial is developed by the Stellar Development Foundation"
+      },
+      {
+       "class": "C",
+       "ref": "Chrome Web Store bcacfldlkkdogcmkkibnjlakofdplcbk; itunes.apple.com/lookup?id=6743947720; play.google.com org.stellar.freighterwallet; addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "Chrome: \"Varial Wallet\" 5.51.0; App Store: trackName \"Varial Wallet\" 1.28.29, seller Stellar Development Foundation (2026-10-29); Google Play: \"Varial Wallet\"; …"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 ; https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Perplexity + Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (published Oct 29, 2026)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores, with a new description"
+      },
+      {
+       "class": "C",
+       "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026 (surfaced via Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "SDF's browser extension wallet Freighter was rebranded to Varial"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SDF-maintained, open-source, self-custody",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://varialwallet.com/ (freighter.app and www.freighter.app 301 -> varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. You control your wallet and private keys. ... Available on iOS and Android. ... Chro…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/ (docs.freighter.app 307 -> docs.varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged ... Varial is developed by the Stellar Development Foundation"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/freighter (page title \"Varial Wallet - Stellar Developer Docs\")",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/master/README.md (commit 8186584326, PR #3055 merged 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Browser-extension and iOS/Android surfaces as of date",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Chrome Web Store bcacfldlkkdogcmkkibnjlakofdplcbk; itunes.apple.com/lookup?id=6743947720; play.google.com org.stellar.freighterwallet; addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "Chrome: \"Varial Wallet\" 5.51.0; App Store: trackName \"Varial Wallet\" 1.28.29, seller Stellar Development Foundation (2026-10-29); Google Play: \"Varial Wallet\"; …"
+      },
+      {
+       "class": "A",
+       "ref": "https://varialwallet.com/ (freighter.app and www.freighter.app 301 -> varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. You control your wallet and private keys. ... Available on iOS and Android. ... Chro…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Signs Stellar transactions including smart-contract interactions",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/@stellar/freighter-api/src/index.ts",
+       "observedAt": "2026-11-02",
+       "quote": "exports getAddress, addToken, signTransaction, signMessage, signAuthEntry, isConnected, getNetwork, getNetworkDetails, isAllowed, setAllowed, requestAccess, dis…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/ (docs.freighter.app 307 -> docs.varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged ... Varial is developed by the Stellar Development Foundation"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Custodial / Ultra Stellar / broadly multi-chain are false",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://varialwallet.com/ (freighter.app and www.freighter.app 301 -> varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. You control your wallet and private keys. ... Available on iOS and Android. ... Chro…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS pubDate Thu, 29 Oct 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... Your private keys will continue to stay on your device"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Scout record quote (2026-06-22) with freighter.app",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/resolve?q=varial and ?q=freighter",
+       "observedAt": "2026-11-02",
+       "quote": "varial: found false, \"No project in this directory is named \\\"varial\\\"\"; freighter: name \"Freighter\", website https://freighter.app/, statusAsOf 2026-08-29"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project {slug:freighter}",
+       "observedAt": "2026-11-02",
+       "quote": "title \"Freighter\", other_names [], links.website [\"freighter.app\"]"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "**Freighter** (renamed **Varial** at its 2026-10-29 public launch; both names mean the same product) is an open-source, self-custody Stellar wallet provided and maintained by the Stellar Development Foundation. As of **2026-11-02**, official sources showed browser-extension and iOS/Android surfaces. It signs Stellar transactions, including smart-contract interactions. Treat store listing names, specific browsers, security integrations, swaps, NFT handling, biometrics, and multi-address support as current feature/platform claims that must be rechecked rather than durable identity facts.",
+     "reason": "Rename confirmed by primary A+B plus D; platform surfaces re-verified 2026-11-02 (Chrome/Firefox/iOS/Android listings live)."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "Identifies Freighter (now Varial) as SDF-maintained, open-source, and self-custody.",
+     "reason": "Accept both names; the keyFact otherwise names only the retired brand."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT describe Freighter or Varial as custodial, an Ultra Stellar product, or broadly multi-chain.",
+     "reason": "Trap must bind on the current name too; claims stay false for Varial (SDF site: non-custodial; Stellar wallet; EVM deposit addresses are announced as future)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GROUNDED 2026-06-22: Scout confirms Freighter (User-Facing App, type Wallet, Live, NOT SCF-awarded, freighter.app): 'the Stellar Development Foundation's official non-custodial Stellar wallet: a browser extension (Chrome, Firefox, Brave) and iOS/Android apps. Users self-custody their private keys...' Per-project identity → lumenloop_get_project. SDF authorship + non-custodial + Stellar/Soroban.\nAlso good if the answer: It signs Stellar/Soroban transactions in the browser and supports features like Blockaid scam protection, DEX swaps, and NFT management.\nGolden cites: A source identifying Freig…",
+     "reason": "Symmetric two-name grader caution with rename date and primary sources."
+    },
+    {
+     "field": "tags.freshness",
+     "op": "replace",
+     "new": "scheduled",
+     "reason": "Rename transition is in flight (Firefox listing still Freighter; old npm package not deprecated); platform facts are dated volatile facts."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Volatile platform and name facts re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-02-02",
+     "reason": "Scheduled case requires reverifyBy; batch window."
+    },
+    {
+     "field": "truth.sources[1].ref",
+     "op": "replace",
+     "new": "https://varialwallet.com/",
+     "reason": "freighter.app 301-redirects to varialwallet.com."
+    },
+    {
+     "field": "truth.sources[2].ref",
+     "op": "replace",
+     "new": "https://docs.varialwallet.com/",
+     "reason": "docs.freighter.app 307-redirects to docs.varialwallet.com."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-freighter-wallet; q-ti-find-export-secret-key; q-eco-stellar-wallets-list; q-edge-ambig-best-wallet; q-ti-connect-wallet-button-code; q-ti-freighter-localhost-not-detected; q-ti-bindings-to-nextjs-integration; q-soroban-x402-auth-entry-signing; q-ti-stellar-lab-usage-and-new-ui; q-tool-wallets-comparison; q-defi-aquarius-what-is; q-ti-friendbot-ratelimit-alternatives"
+  },
+  {
+   "id": "q-eco-xbull-wallet",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "xBull is Creit-Tech's open-source non-custodial Stellar wallet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xbull.app/",
+       "observedAt": "2026-11-02",
+       "quote": "Passkeys and a new interface are coming with xBull Wallet v2 ... Created by Creit Tech"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/Creit-Tech/xBull-Wallet",
+       "observedAt": "2026-11-02",
+       "quote": "A powerful but easy to use extension wallet to interact with the Stellar Network; 32 stars; latest release v1.40.0 (2025-08-12)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=xbull",
+       "observedAt": "2026-11-02",
+       "quote": "xBull is an open-source, non-custodial Stellar wallet by Creit Tech, available as a browser extension and web app."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "V2 passkey hybrid still forthcoming",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xbull.app/",
+       "observedAt": "2026-11-02",
+       "quote": "Passkeys and a new interface are coming with xBull Wallet v2"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/Creit-Tech/xBull-Wallet/releases",
+       "observedAt": "2026-11-02",
+       "quote": "latest v1.40.0 published 2025-08-12; repo pushed_at 2025-08-13"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity search (wallet.xbull.app)",
+       "observedAt": "2026-11-02",
+       "quote": "xBull Wallet 1.40.0"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "iOS App Store surface current",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://itunes.apple.com/lookup?id=6705122563 (country us,gb,de,ar,br,es,bj,ng,in,fr)",
+       "observedAt": "2026-11-02",
+       "quote": "resultCount 0"
+      },
+      {
+       "class": "D",
+       "ref": "https://apps.apple.com/us/app/xbull-wallet/id6705122563 and /bj/ variant",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=xbull",
+       "observedAt": "2026-11-02",
+       "quote": "Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13)."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Android availability absent at checked URL",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://play.google.com/store/apps/details?id=app.xbull.wallet",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404"
+      },
+      {
+       "class": "C",
+       "ref": "Scout xbull record",
+       "observedAt": "2026-11-02",
+       "quote": "formerly listed iOS and Android store apps are no longer available"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Chrome/Firefox extension and web surfaces",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://chromewebstore.google.com/detail/xbull-wallet/omajpeaffjgmlpmhbfdjepdejoemifpe",
+       "observedAt": "2026-11-02",
+       "quote": "xBull Wallet - Chrome Web Store; 1.40.0"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/xbull-wallet/",
+       "observedAt": "2026-11-02",
+       "quote": "name xBull Wallet, version 1.22.0, last_updated 2024-06-18"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "\"Also good if the answer: Notes its V2 introduced a passkey-based hybrid\"",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://xbull.app/",
+       "observedAt": "2026-11-02",
+       "quote": "Passkeys and a new interface are coming with xBull Wallet v2"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "**xBull** is an open-source, non-custodial Stellar wallet built by **Creit-Tech**. As of **2026-11-02**, current evidence supported the Chrome/Firefox extension and web/PWA surfaces, with the public repo/release still on the v1.x line (v1.40.0). The project's own page described the passkey-based hybrid **V2 as coming**, not already introduced. The checked App Store and Google Play URLs both returned 404, so do not claim current iOS or Android store availability without a fresh listing.\n\nRe-check platform availability, maintained release, signing/Soroban features, and integrations before recomm…",
+     "reason": "iOS listing drift: App Store id6705122563 returns 404 and Apple lookup API returns 0 results in 6 storefronts; Scout independently reports store apps gone since 2026-07-13; xbull.app links only the Chrome extension."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "replace",
+     "new": "Treats iOS and Android store availability as unverified/absent at checked URLs.",
+     "reason": "Extends the existing Android treatment to iOS after the drift."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT say V2/passkeys were already introduced or claim iOS or Android store availability from code/directory metadata alone.",
+     "reason": "Trap now binds on the iOS claim that is false at the checked listing."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Per-project identity → lumenloop_get_project. Verified on Scout (2026-11-02): xBull = open-source non-custodial Stellar wallet (browser extension + web app) by Creit Tech; Scout says its former iOS/Android store apps are no longer available (store listings checked 2026-07-13); repo Creit-Tech/xBull-Wallet (TypeScript, ~32 stars, repoScore 61). Creit-Tech (CreitTech) also runs a Reflector oracle node — but xBull is the wallet. V2 = passkey-based hybrid.\nAlso good if the answer: Notes that the passkey-based hybrid V2 is announced as coming.\nGolden cites: A source identifying xBull / Creit-Tech.\n…",
+     "reason": "Remove stale Scout iOS/Android paraphrase; the \"Also good\" line rewarded a shipped-V2 claim that avoid[0] punishes (authoring contradiction); freshness tag now overridable."
+    },
+    {
+     "field": "tags.freshness",
+     "op": "replace",
+     "new": "scheduled",
+     "reason": "Platform availability drifted within 3 days of the last check; the case carries dated volatile facts."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-02-23",
+     "reason": "Scheduled case; batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "eval-side authoring flaw: a stale \"Also good\" note rewarded a shipped-V2 claim that avoid[0] punishes"
+   ],
+   "siblings": "q-eco-stellar-wallets-list; q-edge-ambig-best-wallet; q-ti-connect-wallet-button-code; q-tool-wallets-comparison; q-builder-by-scf-tier; q-defi-reflector-oracle"
+  },
+  {
+   "id": "q-raph-hardware-wallet",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Hardware wallet keeps key on device; cannot stop phrase disclosure or malicious approval",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/locales/en/translation.json",
+       "observedAt": "2026-11-02",
+       "quote": "Ledger will not display the transaction details in the device display prior to signing so make sure you only interact with applications you know and trust."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/LedgerHQ/app-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar app for Ledger Nano S; pushed_at 2026-11-02"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md",
+       "observedAt": "2026-11-02",
+       "quote": "allowing users to hold keys in hardware wallets"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "No universal dollar threshold; phrase never safe to share",
+     "verdict": "confirmed",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-restore-wallet; q-raph-lobstr-legitimacy"
+  },
+  {
+   "id": "q-raph-lobstr-legitimacy",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "LOBSTR active Ultra Stellar third-party wallet",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://ultrastellar.com/",
+       "observedAt": "2026-11-02",
+       "quote": "Ultra Stellar ... our products LOBSTR StellarX LOBSTR Vault StellarTerm"
+      },
+      {
+       "class": "C",
+       "ref": "https://itunes.apple.com/lookup?id=1404357892",
+       "observedAt": "2026-11-02",
+       "quote": "trackName \"LOBSTR Wallet: Buy XLM & XRP\", version 16.2.0, currentVersionReleaseDate 2026-10-26T07:48:06Z, sellerName \"ULTRA STELLAR, LLC\""
+      },
+      {
+       "class": "A",
+       "ref": "https://lobstr.co/",
+       "observedAt": "2026-11-02",
+       "quote": "LOBSTR for iOS (itunes.apple.com/us/app/lobstr-stellar-wallet/id1404357892) ... LOBSTR for Android (com.lobstr.client)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Keys stored locally on-device plus encrypted server copy LOBSTR cannot decrypt",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+       "observedAt": "2026-11-02",
+       "quote": "We store the encrypted version of the Recovery phrase/Secret key on our server. Your Stellar Secret key is generated on the device, is encrypted client-side ...…"
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/lobstr-wallet-guide (2026-10-08, via Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "Your Stellar secret key and recovery phrase are encrypted on your device before being uploaded, using xsalsa20-poly1305 per LOBSTR"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Encryption with user-password participation",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+       "observedAt": "2026-11-02",
+       "quote": "LOBSTR currently supports two types of accounts: Passkey accounts, available in the LOBSTR mobile apps. Email-based accounts, available through the LOBSTR Web A…"
+      },
+      {
+       "class": "A",
+       "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000231572-passkey-accounts-on-lobstr",
+       "observedAt": "2026-11-02",
+       "quote": "PRF is a Passkey (WebAuthn) protocol extension that allows LOBSTR to generate a unique encryption key for your account."
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/lobstr-wallet-guide",
+       "observedAt": "2026-11-02",
+       "quote": "LOBSTR's help centre describes passkey accounts in the mobile apps and email-based accounts on the web."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Pre-2020-09-01 unmigrated-account exception",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key-",
+       "observedAt": "2026-11-02",
+       "quote": "If your account was created before LOBSTR switched to local key storage (before September 1, 2020) and you haven’t migrated your account to on-device key storag…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "12-word Recovery Phrase / 10-word Recovery Code; LOBSTR cannot reconstruct",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key-",
+       "observedAt": "2026-11-02",
+       "quote": "Recovery code is a 10-word code ... Recovery Phrase is a 12-word backup phrase ... We (the LOBSTR team) do not have access to users' Recovery phrases, Secret ke…"
+      },
+      {
+       "class": "A",
+       "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000231572-passkey-accounts-on-lobstr",
+       "observedAt": "2026-11-02",
+       "quote": "If your Passkey is deleted ... LOBSTR will not be able to recover access to your encrypted account data."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "All four traps punish false claims",
+     "verdict": "confirmed",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-11-02; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are generated and encrypted on-device, with the password (email-based web accounts) or a passkey-derived key (mobile Passkey accounts) taking part, are stored locally on-device for decryption and signing, and also exist as an encrypted copy on LOBSTR servers that LOBSTR says it cannot…",
+     "reason": "Apple listing re-verified 2026-11-02 (v16.2.0, 2026-10-26, ULTRA STELLAR, LLC); current LOBSTR docs describe two account types, and Passkey accounts derive the encryption key via WebAuthn PRF, so password-only participation is incomplete."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-02-25",
+     "reason": "Due date reached in this pass; new date in batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-eco-lobstr-wallet; q-raph-restore-wallet; q-raph-claimable-balance-safety; q-edge-ambig-best-wallet"
+  },
+  {
+   "id": "q-raph-restore-wallet",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Secret key controls account; recovery phrases are wallet-specific / derivation-path dependent",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md",
+       "observedAt": "2026-11-02",
+       "quote": "The following path should be used to generate keys: m/44'/148'/x'. ... BIP-0039 should be used to derive binary seed from a mnemonic code."
+      },
+      {
+       "class": "A",
+       "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key-",
+       "observedAt": "2026-11-02",
+       "quote": "Recovery code is a 10-word code ... applicable to one certain Stellar wallet"
+      },
+      {
+       "class": "B",
+       "ref": "stellar/freighter translation.json",
+       "observedAt": "2026-11-02",
+       "quote": "Varial supports one backup phrase imported at a time"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "Do not promise universal phrase import; never send phrase to support",
+     "verdict": "confirmed",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-lobstr-legitimacy; q-ti-find-export-secret-key"
+  },
+  {
+   "id": "q-ti-find-export-secret-key",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "G address cannot be reversed to a secret",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/create-account#create-a-keypair",
+       "observedAt": "2026-08-29",
+       "quote": "(re-read not repeated; Ed25519 public key cannot derive secret — protocol invariant)"
+      },
+      {
+       "class": "F",
+       "ref": "stellar CLI 28.1.0 local help",
+       "observedAt": "2026-11-02",
+       "quote": "public-key  Given an identity return its address (public key)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Stellar CLI exports secret/recovery phrase locally for supported identities",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar keys secret --help (stellar 28.1.0, latest release v28.1.0 2026-09-26)",
+       "observedAt": "2026-11-02",
+       "quote": "secret  Output an identity's secret key ... --phrase  Output seed phrase instead of private key"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/keys/secret.rs",
+       "observedAt": "2026-11-02",
+       "quote": "#[error(\"identity is not tied to a seed phrase\")] ... /// Output seed phrase instead of private key"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Freighter/Varial password-gated Show recovery phrase flow",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/views/DisplayBackupPhrase/index.tsx",
+       "observedAt": "2026-11-02",
+       "quote": "t(\"Show recovery phrase\") ... label={t(\"Password\")} ... type=\"password\""
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter-mobile/blob/HEAD/src/i18n/locales/en/translations.json",
+       "observedAt": "2026-11-02",
+       "quote": "\"securityScreen\": {\"title\": \"Security\", \"showRecoveryPhrase\": \"Show recovery phrase\"; \"passwordInputPlaceholder\": \"Enter your password\", \"showPhrase\": \"Show rec…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Imported raw secret not recoverable from the mnemonic",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/locales/en/translation.json",
+       "observedAt": "2026-11-02",
+       "quote": "Varial can’t recover your imported secret key using your recovery phrase."
+      },
+      {
+       "class": "B",
+       "ref": "freighter-mobile translations.json importSecretKeyScreen",
+       "observedAt": "2026-11-02",
+       "quote": "I'm aware Varial can't recover the imported secret key and storing it is my responsibility."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "No imported-key export menu (negative)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh search code \"Your Stellar secret key\" repo:stellar/freighter",
+       "observedAt": "2026-11-02",
+       "quote": "only extension/src/popup/views/AddAccount/ImportAccount/index.tsx (import input) and locale files"
+      },
+      {
+       "class": "B",
+       "ref": "freighter-mobile translations.json",
+       "observedAt": "2026-11-02",
+       "quote": "\"showSecretKey\": \"Show secret key\" appears only inside \"importSecretKeyScreen\" (input visibility toggle)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A public Stellar `G...` address and on-chain data **cannot be reversed** into its secret. Recovery/export is possible only from an existing wallet/CLI keystore, recovery phrase/backup, or custody provider—and only through that product's documented local flow.\n\nCurrent Stellar CLI provides a local secret/recovery export for supported stored identities; use it only on the trusted local machine and never paste, echo, screenshot, log, commit, or enter the result into chat, tickets, web forms, or shell history. Current Freighter (renamed Varial at its 2026-10-29 public launch) provides a password-g…",
+     "reason": "Rename; the negative export claim gets an as-of date (re-checked in current extension and mobile source)."
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "op": "replace",
+     "new": "Freighter/Varial's recovery phrase applies only to mnemonic-derived accounts.",
+     "reason": "Accept both names."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "replace",
+     "new": "Do NOT imply a G address is reversible or invent a Freighter/Varial imported-key export menu.",
+     "reason": "Trap binds on either name; still false in current source."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Freighter's exact export UI can change, so the durable rubric gates on protocol truth and safe wallet-specific guidance rather than fixed menu labels.\nAlso good if the answer: Mentions that testnet/hot-wallet examples may use .env secret keys, but that is not a production custody recommendation.\nGolden cites: Primary Stellar docs for keypair/public-key/secret-key behavior.\nGT-52 SECURITY CORRECTION 2026-07-11: wallet UI is version-sensitive. Hard gates are irreversibility, product-scoped recovery, and zero disclosure of real secret material.\nVARIAL RENAME (verified 2026-11-02): SDF renamed Fre…",
+     "reason": "Symmetric two-name caution."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-02-16",
+     "reason": "Rename transition; batch window."
+    },
+    {
+     "field": "truth.sources[2].ref",
+     "op": "replace",
+     "new": "https://varialwallet.com/terms",
+     "reason": "freighter.app/terms 301-redirects to varialwallet.com/terms."
+    },
+    {
+     "field": "truth.sources[3].ref",
+     "op": "replace",
+     "new": "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/views/DisplayBackupPhrase/index.tsx",
+     "reason": "Re-pin to the post-rename master commit read on 2026-11-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-eco-freighter-wallet; q-tool-freighter-wallet; q-raph-restore-wallet; q-raph-lobstr-legitimacy"
+  },
+  {
+   "id": "q-tool-freighter-wallet",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Freighter renamed Varial, same SDF product",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/master/README.md (commit 8186584326, PR #3055 merged 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/pull/3048 (merged 2026-10-28T21:22:14Z)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. ... **Unchanged by design:** extension IDs, the `@stellar/freighter-api` package and its postMessage wire protocol, storage keys, a…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS pubDate Thu, 29 Oct 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... Your private keys will continue to stay on your device"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/freighter (page title \"Varial Wallet - Stellar Developer Docs\")",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/ (docs.freighter.app 307 -> docs.varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged ... Varial is developed by the Stellar Development Foundation"
+      },
+      {
+       "class": "C",
+       "ref": "Chrome Web Store bcacfldlkkdogcmkkibnjlakofdplcbk; itunes.apple.com/lookup?id=6743947720; play.google.com org.stellar.freighterwallet; addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "Chrome: \"Varial Wallet\" 5.51.0; App Store: trackName \"Varial Wallet\" 1.28.29, seller Stellar Development Foundation (2026-10-29); Google Play: \"Varial Wallet\"; …"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 ; https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Perplexity + Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (published Oct 29, 2026)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SDF-provided, open-source (stellar/freighter), noncustodial",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://varialwallet.com/ (freighter.app and www.freighter.app 301 -> varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. You control your wallet and private keys. ... Available on iOS and Android. ... Chro…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/master/README.md (commit 8186584326, PR #3055 merged 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/freighter (page title \"Varial Wallet - Stellar Developer Docs\")",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Users control keys and sign transactions",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/ (docs.freighter.app 307 -> docs.varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged ... Varial is developed by the Stellar Development Foundation"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/@stellar/freighter-api/src/index.ts",
+       "observedAt": "2026-11-02",
+       "quote": "exports getAddress, addToken, signTransaction, signMessage, signAuthEntry, isConnected, getNetwork, getNetworkDetails, isAllowed, setAllowed, requestAccess, dis…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS pubDate Thu, 29 Oct 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... Your private keys will continue to stay on your device"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Browser/mobile client scope dated",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Chrome Web Store bcacfldlkkdogcmkkibnjlakofdplcbk; itunes.apple.com/lookup?id=6743947720; play.google.com org.stellar.freighterwallet; addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "Chrome: \"Varial Wallet\" 5.51.0; App Store: trackName \"Varial Wallet\" 1.28.29, seller Stellar Development Foundation (2026-10-29); Google Play: \"Varial Wallet\"; …"
+      },
+      {
+       "class": "A",
+       "ref": "https://varialwallet.com/ (freighter.app and www.freighter.app 301 -> varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. You control your wallet and private keys. ... Available on iOS and Android. ... Chro…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Stellar Wallets Kit is a separate community (Creit-Tech) integration layer",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit README + commits 2026-10-28",
+       "observedAt": "2026-11-02",
+       "quote": "Licensed under the MIT License, Copyright © 2023-present Creit Technologies LLP. ... - Varial, formerly Freighter (extension and mobile); commit \"Updates to mov…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/",
+       "observedAt": "2026-11-02",
+       "quote": "If you want to support multiple Stellar wallets — not just Varial — take a look at Stellar Wallets Kit"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Not the network-exclusive official wallet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/ (docs.freighter.app 307 -> docs.varialwallet.com)",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged ... Varial is developed by the Stellar Development Foundation"
+      },
+      {
+       "class": "C",
+       "ref": "Stellar Developer meeting 2026-08-20 (developers.stellar.org/meetings/2026/08/20)",
+       "observedAt": "2026-11-02",
+       "quote": "The kit bundles the extension and hardware wallets — Freighter, Albedo, xBull, LOBSTR, Hana, Rabet, Ledger..."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As of **2026-11-02**, **Freighter (renamed Varial at its 2026-10-29 public launch; same product) is an official SDF-provided Stellar wallet product**: open source at `stellar/freighter`, noncustodial, and available through browser and mobile clients. Users control their keys and use Freighter to hold Stellar assets, sign transactions, and connect to Stellar/Soroban applications. SDF does not custody the user's seed merely because it provides the product.\n\nThat does **not** make Freighter the Stellar network's one exclusive 'official wallet' or the only valid wallet. Stellar supports a multi-wa…",
+     "reason": "Rename confirmed by primary A+B plus D; identity and client scope re-verified 2026-11-02."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "Identifies Freighter (now Varial) as an SDF-provided, open-source, noncustodial wallet.",
+     "reason": "Accept both names."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Freighter = SDF wallet; the trap is confusing it with the (Creit-Tech) Wallets Kit.\nAlso good if the answer: Its source is open (github.com/stellar/freighter).\nGolden cites: developers.stellar.org Freighter docs or the stellar/freighter repo.\nGT-55 CORRECTION 2026-07-11: accept 'official SDF-provided wallet product' only with noncustodial and non-exclusive qualification. Browser/mobile scope is dated; Freighter is not Stellar Wallets Kit.\nVARIAL RENAME (verified 2026-11-02): SDF renamed Freighter to Varial; the public launch was 2026-10-29 (SDF blog; extension 5.50.0). The stellar/freighter RE…",
+     "reason": "Symmetric two-name caution; prevents a judge from reading Varial as an \"other wallet\"."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-02-09",
+     "reason": "Rename transition in flight; batch window."
+    },
+    {
+     "field": "truth.sources[1].ref",
+     "op": "replace",
+     "new": "https://varialwallet.com/",
+     "reason": "www.freighter.app 301-redirects to varialwallet.com."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-eco-freighter-wallet; q-tool-wallets-comparison; q-eco-stellar-wallets-list; q-ti-connect-wallet-button-code; q-edge-ambig-best-wallet"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5), did not read the proposer matrix",
+  "decisions": [
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "**Freighter** (renamed **Varial** on 2026-10-29; both names mean the same product) is an open-source, self-custody Stellar wallet provided and maintained by the Stellar Development Foundation. As of **2026-11-02**, official sources showed browser-extension and iOS/Android surfaces. It signs Stellar transactions, including smart-contract interactions. Treat store listing names, specific browsers, security integrations, swaps, NFT handling, biometrics, and multi-address support as current feature/platform claims that must be rechecked rather than durable identity facts.",
+    "note": "Replace 'renamed Varial at its 2026-10-29 public launch' with 'renamed Varial on 2026-10-29': 'its public launch' can be read as the wallet launching in 2026; SDF says Freighter launched in 2020. Platform surfaces as of 2026-11-02 confirmed: extension (Chrome 'Varial Wallet', Firefox still 'Freighter'), iOS and Android 'Varial Wallet' by SDF. Rename date confirmed 2026-10-29 by SDF blog RSS (A), G…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/rss.xml",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now Varial: Your wallet for discovering Stellar  Published: Thu, 29 Oct 2026 00:00:00 GMT"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/freighter",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/freighter/releases/tags/5.50.0",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z)"
+     },
+     {
+      "class": "D",
+      "ref": "https://x.com/BuildOnStellar/status/2115766545284731330 (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now @VarialWallet ... Same wallet, same keys, new name ... Announced at #Meridian2026"
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (via Parallel search)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar (XLM)'s Freighter wallet has rebranded as Varial ... blog post published on 2026-10-29"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/search?term=varial+wallet&entity=software&country=us",
+      "observedAt": "2026-11-02",
+      "quote": "6743947720 Varial Wallet | Stellar Development Foundation | 1.28.29 | 2026-10-29"
+     },
+     {
+      "class": "F",
+      "ref": "https://play.google.com/store/apps/details?id=org.stellar.freighterwallet&hl=en_US",
+      "observedAt": "2026-11-02",
+      "quote": "og:title 'Varial Wallet - Apps on Google Play'"
+     },
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. ... Available on iOS and Android. ... Chrome Firefox Brave Get extension"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged — dapps on @stellar/freighter-api ... are unaffected."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "golden.keyFacts[0]",
+    "decision": "modify",
+    "newText": "Identifies Freighter/Varial as SDF-maintained, open-source, and self-custody.",
+    "note": "Proposed '(now Varial)' can be read as a required mention of the rename, which would penalize a correct Freighter-only answer and break the symmetric-caution goal. The slash form accepts either name. 77 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/freighter",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+     },
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. ... Available on iOS and Android. ... Chrome Firefox Brave Get extension"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "Answer-visible; extends the same trap to the new name. Not judge-blind.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. ... Available on iOS and Android. ... Chrome Firefox Brave Get extension"
+     },
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/terms",
+      "observedAt": "2026-11-02",
+      "quote": "Nothing in this Agreement creates a custodial arrangement ... We don't hold your assets"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Every claim in the added VARIAL RENAME paragraph re-derived: README wording, freighter.app redirect, repo still stellar/freighter, Firefox listing 'Freighter' 5.49.0 on 2026-11-02. Symmetric caution is correct. Optional improvement for the author: the case surface is Lumenloop, and both Lumenloop and Scout still say 'Freighter' at freighter.app (observed 2026-11-02); the caution already covers tha…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/freighter/releases/tags/5.50.0",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://freighter.app/ and https://www.freighter.app",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://docs.freighter.app/",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://docs.varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "F",
+      "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+      "observedAt": "2026-11-02",
+      "quote": "name {'en-US': 'Freighter'}, version 5.49.0, last_updated 2026-10-06"
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchProjects q=freighter; lumenloop.search_directory query=freighter/varial",
+      "observedAt": "2026-11-02",
+      "quote": "Scout row 'Freighter' (statusAsOf 2026-08-29); Lumenloop 'Freighter' website freighter.app; no 'varial' match in either corpus (corpus lags the rename)"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "Store names and platform claims changed within weeks; scheduled freshness is correct and the case now carries asOf and reverifyBy.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://chromewebstore.google.com/detail/freighter/bcacfldlkkdogcmkkibnjlakofdplcbk",
+      "observedAt": "2026-11-02",
+      "quote": "<title>Varial Wallet - Chrome Web Store</title>; version 5.51.0"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/search?term=varial+wallet&entity=software&country=us",
+      "observedAt": "2026-11-02",
+      "quote": "6743947720 Varial Wallet | Stellar Development Foundation | 1.28.29 | 2026-10-29"
+     },
+     {
+      "class": "F",
+      "ref": "https://play.google.com/store/apps/details?id=org.stellar.freighterwallet&hl=en_US",
+      "observedAt": "2026-11-02",
+      "quote": "og:title 'Varial Wallet - Apps on Google Play'"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Observation date of the re-verification.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/search?term=varial+wallet&entity=software&country=us",
+      "observedAt": "2026-11-02",
+      "quote": "6743947720 Varial Wallet | Stellar Development Foundation | 1.28.29 | 2026-10-29"
+     },
+     {
+      "class": "F",
+      "ref": "https://play.google.com/store/apps/details?id=org.stellar.freighterwallet&hl=en_US",
+      "observedAt": "2026-11-02",
+      "quote": "og:title 'Varial Wallet - Apps on Google Play'"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-02-02 is inside the batch window 2027-02-01..2027-02-28.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "truth.sources[1].ref",
+    "decision": "accept",
+    "note": "freighter.app redirects to varialwallet.com. Consider class A (owner site) rather than the migrated D.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L https://freighter.app/ and https://www.freighter.app",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. ... Available on iOS and Android. ... Chrome Firefox Brave Get extension"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-freighter-wallet",
+    "field": "truth.sources[2].ref",
+    "decision": "accept",
+    "note": "docs.freighter.app redirects to docs.varialwallet.com.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L https://docs.freighter.app/",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://docs.varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged — dapps on @stellar/freighter-api ... are unaffected."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-xbull-wallet",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "iOS removal confirmed across F (App Store 404 + empty iTunes lookup in 6 regions), C (Scout) and D (AppBrain); V2 still 'coming'; v1.40.0 still latest. Not part of the Varial lane but true and better grounded. Note: the Firefox add-on exists but was last updated 2024-06-18.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L -A Chrome https://apps.apple.com/us/app/xbull-wallet/id6705122563 (also /es and /gb)",
+      "observedAt": "2026-11-02",
+      "quote": "404"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/lookup?id=6705122563&country={us,es,gb,de,in,br}",
+      "observedAt": "2026-11-02",
+      "quote": "resultCount 0 in every region"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://play.google.com/store/apps/details?id=app.xbull.wallet and id=app.xbull.mobile",
+      "observedAt": "2026-11-02",
+      "quote": "404 for both package ids"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.appbrain.com/app/xbull-wallet/app.xbull.mobile (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "This app is currently not available on Google Play."
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchProjects q=xbull (generatedAt 2026-11-02)",
+      "observedAt": "2026-11-02",
+      "quote": "Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13)."
+     },
+     {
+      "class": "A",
+      "ref": "https://xbull.app/",
+      "observedAt": "2026-11-02",
+      "quote": "Passkeys and a new interface are coming with xBull Wallet v2 ... Looking for our chrome extension? • Created by Creit Tech"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/Creit-Tech/xBull-Wallet/releases",
+      "observedAt": "2026-11-02",
+      "quote": "latest v1.40.0 published 2025-08-12; stargazers_count 32"
+     },
+     {
+      "class": "F",
+      "ref": "https://chromewebstore.google.com/detail/xbull-wallet/omajpeaffjgmlpmhbfdjepdejoemifpe; https://addons.mozilla.org/api/v5/addons/addon/xbull-wallet/",
+      "observedAt": "2026-11-02",
+      "quote": "Chrome 200; Firefox 'xBull Wallet' 1.22.0 (last_updated 2024-06-18)"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-xbull-wallet",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "79 chars. Store absence is confirmed at the checked URLs and is phrased source-relative, as the negative-claim bar requires.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L -A Chrome https://apps.apple.com/us/app/xbull-wallet/id6705122563 (also /es and /gb)",
+      "observedAt": "2026-11-02",
+      "quote": "404"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/lookup?id=6705122563&country={us,es,gb,de,in,br}",
+      "observedAt": "2026-11-02",
+      "quote": "resultCount 0 in every region"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://play.google.com/store/apps/details?id=app.xbull.wallet and id=app.xbull.mobile",
+      "observedAt": "2026-11-02",
+      "quote": "404 for both package ids"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.appbrain.com/app/xbull-wallet/app.xbull.mobile (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "This app is currently not available on Google Play."
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchProjects q=xbull (generatedAt 2026-11-02)",
+      "observedAt": "2026-11-02",
+      "quote": "Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13)."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-xbull-wallet",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "Answer-visible; extends the existing Android trap to iOS, which is now equally contradicted. It binds only claims from code/directory metadata alone, so a dated live-listing claim is not punished.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L -A Chrome https://apps.apple.com/us/app/xbull-wallet/id6705122563 (also /es and /gb)",
+      "observedAt": "2026-11-02",
+      "quote": "404"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/lookup?id=6705122563&country={us,es,gb,de,in,br}",
+      "observedAt": "2026-11-02",
+      "quote": "resultCount 0 in every region"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://play.google.com/store/apps/details?id=app.xbull.wallet and id=app.xbull.mobile",
+      "observedAt": "2026-11-02",
+      "quote": "404 for both package ids"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.appbrain.com/app/xbull-wallet/app.xbull.mobile (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "This app is currently not available on Google Play."
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchProjects q=xbull (generatedAt 2026-11-02)",
+      "observedAt": "2026-11-02",
+      "quote": "Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13)."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-xbull-wallet",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removes the contradicted 'V2 introduced' also-good line (it conflicted with the GT-20 correction) and replaces stale Scout paraphrase with the current Scout wording. Keeps the sls-024 partial-cap caution.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven scout.searchProjects q=xbull (generatedAt 2026-11-02)",
+      "observedAt": "2026-11-02",
+      "quote": "Its formerly listed iOS and Android store apps are no longer available on either app store (store listings checked 2026-07-13)."
+     },
+     {
+      "class": "A",
+      "ref": "https://xbull.app/",
+      "observedAt": "2026-11-02",
+      "quote": "Passkeys and a new interface are coming with xBull Wallet v2 ... Looking for our chrome extension? • Created by Creit Tech"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-xbull-wallet",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "Platform availability changed between snapshots; scheduled is correct.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L -A Chrome https://apps.apple.com/us/app/xbull-wallet/id6705122563 (also /es and /gb)",
+      "observedAt": "2026-11-02",
+      "quote": "404"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/lookup?id=6705122563&country={us,es,gb,de,in,br}",
+      "observedAt": "2026-11-02",
+      "quote": "resultCount 0 in every region"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://play.google.com/store/apps/details?id=app.xbull.wallet and id=app.xbull.mobile",
+      "observedAt": "2026-11-02",
+      "quote": "404 for both package ids"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-xbull-wallet",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Observation date.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L -A Chrome https://apps.apple.com/us/app/xbull-wallet/id6705122563 (also /es and /gb)",
+      "observedAt": "2026-11-02",
+      "quote": "404"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/lookup?id=6705122563&country={us,es,gb,de,in,br}",
+      "observedAt": "2026-11-02",
+      "quote": "resultCount 0 in every region"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-xbull-wallet",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-02-23 is inside the batch window.",
+    "sources": []
+   },
+   {
+    "id": "q-raph-lobstr-legitimacy",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-11-02; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are generated and encrypted on-device, with the account password or, for Passkey accounts, a passkey-derived (PRF) key taking part, are stored locally on-device for decryption and signing, and also exist as an encrypted copy on LOBSTR servers that LOBSTR says it cannot decrypt; accoun…",
+    "note": "The passkey nuance is real (PRF-derived key), but the proposed platform mapping is stale: LOBSTR announced passkey account creation on the web on 2026-10-14, and lobstr.co 'Get Started' links to /authorization/signup/passkey/. The Freshdesk security article (modified 26 Jun) still says passkey = mobile, email = web, so the docs lag the product. Use platform-neutral wording so neither the doc-faith…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+      "observedAt": "2026-11-02",
+      "quote": "LOBSTR currently supports two types of accounts: Passkey accounts, available in the LOBSTR mobile apps. Email-based accounts, available through the LOBSTR Web A…"
+     },
+     {
+      "class": "A",
+      "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000231572-passkey-accounts-on-lobstr",
+      "observedAt": "2026-11-02",
+      "quote": "PRF is a Passkey (WebAuthn) protocol extension that allows LOBSTR to generate a unique encryption key for your account."
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/lobstr/status/2110361044829057488",
+      "observedAt": "2026-11-02",
+      "quote": "New on LOBSTR web: you can create an account with a Passkey and skip email sign-up and passwords entirely. (Oct 14, 2026)"
+     },
+     {
+      "class": "D",
+      "ref": "https://lobstr.co/ (via Parallel search excerpt)",
+      "observedAt": "2026-11-02",
+      "quote": "[Get Started](https://lobstr.co/authorization/signup/passkey/)"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/lookup?id=1404357892&country=us",
+      "observedAt": "2026-11-02",
+      "quote": "LOBSTR Wallet: Buy XLM & XRP | ULTRA STELLAR, LLC | 16.2.0 | 2026-10-26"
+     },
+     {
+      "class": "A",
+      "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key-",
+      "observedAt": "2026-11-02",
+      "quote": "User passwords take part in the process of encryption/decryption of secret keys. ... before September 1, 2020"
+     }
+    ]
+   },
+   {
+    "id": "q-raph-lobstr-legitimacy",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Observation date.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/lookup?id=1404357892&country=us",
+      "observedAt": "2026-11-02",
+      "quote": "LOBSTR Wallet: Buy XLM & XRP | ULTRA STELLAR, LLC | 16.2.0 | 2026-10-26"
+     }
+    ]
+   },
+   {
+    "id": "q-raph-lobstr-legitimacy",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-02-25 is inside the batch window; LOBSTR docs and passkey rollout are moving, so a quarter is right.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "A public Stellar `G...` address and on-chain data **cannot be reversed** into its secret. Recovery/export is possible only from an existing wallet/CLI keystore, recovery phrase/backup, or custody provider—and only through that product's documented local flow.\n\nCurrent Stellar CLI provides a local secret/recovery export for supported stored identities; use it only on the trusted local machine and never paste, echo, screenshot, log, commit, or enter the result into chat, tickets, web forms, or shell history. Current Freighter (renamed Varial on 2026-10-29) provides a password-gated **Show recove…",
+    "note": "Replace 'renamed Varial at its 2026-10-29 public launch' with 'renamed Varial on 2026-10-29': 'its public launch' can be read as the wallet launching in 2026; SDF says Freighter launched in 2020. The 'no imported-key export path' statement is re-derived: neither the extension (master 5c6956b) nor the mobile app strings expose a secret-key export; the imported-key warning is confirmed.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/rss.xml",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now Varial: Your wallet for discovering Stellar  Published: Thu, 29 Oct 2026 00:00:00 GMT"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/views/DisplayBackupPhrase/index.tsx",
+      "observedAt": "2026-11-02",
+      "quote": "200; password field (type=\"password\") gating t(\"Show recovery phrase\")"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/locales/en/translation.json",
+      "observedAt": "2026-11-02",
+      "quote": "\"Varial can’t recover your imported secret key using your recovery phrase.\"; only key-reveal string is \"Show recovery phrase\""
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/search/code?q=%22Show+private+key%22+repo:stellar/freighter; tree grep for PrivateKey/ExportKey views",
+      "observedAt": "2026-11-02",
+      "quote": "no matches; 'Your Stellar secret key' appears only in AddAccount/ImportAccount"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter-mobile/main/src/i18n/locales/en/translations.json",
+      "observedAt": "2026-11-02",
+      "quote": "importSecretKeyScreen.responsibilityNote = I'm aware Varial can't recover the imported secret key ...; securityScreen.showRecoveryPhrase = Show recovery phrase;…"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/freighter/commits/master",
+      "observedAt": "2026-11-02",
+      "quote": "sha 5c6956b29a39f6f13a7aedf81b437b2f289f5881, date 2026-10-30T19:37:38Z"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "field": "golden.keyFacts[2]",
+    "decision": "accept",
+    "note": "77 chars; slash form accepts either name.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/locales/en/translation.json",
+      "observedAt": "2026-11-02",
+      "quote": "\"Varial can’t recover your imported secret key using your recovery phrase.\"; only key-reveal string is \"Show recovery phrase\""
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter-mobile/main/src/i18n/locales/en/translations.json",
+      "observedAt": "2026-11-02",
+      "quote": "importSecretKeyScreen.responsibilityNote = I'm aware Varial can't recover the imported secret key ...; securityScreen.showRecoveryPhrase = Show recovery phrase;…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Answer-visible; the source confirms no export menu exists under either name.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://api.github.com/search/code?q=%22Show+private+key%22+repo:stellar/freighter; tree grep for PrivateKey/ExportKey views",
+      "observedAt": "2026-11-02",
+      "quote": "no matches; 'Your Stellar secret key' appears only in AddAccount/ImportAccount"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter-mobile/main/src/i18n/locales/en/translations.json",
+      "observedAt": "2026-11-02",
+      "quote": "importSecretKeyScreen.responsibilityNote = I'm aware Varial can't recover the imported secret key ...; securityScreen.showRecoveryPhrase = Show recovery phrase;…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Same verified rename caution as the sibling cases.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/freighter/releases/tags/5.50.0",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://freighter.app/ and https://www.freighter.app",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://docs.freighter.app/",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://docs.varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "F",
+      "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+      "observedAt": "2026-11-02",
+      "quote": "name {'en-US': 'Freighter'}, version 5.49.0, last_updated 2026-10-06"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Observation date.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/freighter/commits/master",
+      "observedAt": "2026-11-02",
+      "quote": "sha 5c6956b29a39f6f13a7aedf81b437b2f289f5881, date 2026-10-30T19:37:38Z"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-02-16 is inside the batch window; earlier than 2027-03-11 is justified because the UI is being redesigned (5.50.0 and 5.51.0 regrouped Settings).",
+    "sources": []
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "field": "truth.sources[2].ref",
+    "decision": "accept",
+    "note": "Terms moved with the domain; content is SDF's.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L https://freighter.app/terms",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://varialwallet.com/terms"
+     },
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/terms",
+      "observedAt": "2026-11-02",
+      "quote": "This User Agreement (\"Agreement\") is between you and the Stellar Development Foundation ... the Varial browser extension, mobile application"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "field": "truth.sources[3].ref",
+    "decision": "accept",
+    "note": "File exists at the current master head and still renders the password-gated Show recovery phrase flow.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/views/DisplayBackupPhrase/index.tsx",
+      "observedAt": "2026-11-02",
+      "quote": "200; password field (type=\"password\") gating t(\"Show recovery phrase\")"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/freighter/commits/master",
+      "observedAt": "2026-11-02",
+      "quote": "sha 5c6956b29a39f6f13a7aedf81b437b2f289f5881, date 2026-10-30T19:37:38Z"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-freighter-wallet",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "As of **2026-11-02**, **Freighter (renamed Varial on 2026-10-29; same product) is an official SDF-provided Stellar wallet product**: open source at `stellar/freighter`, noncustodial, and available through browser and mobile clients. Users control their keys and use Freighter to hold Stellar assets, sign transactions, and connect to Stellar/Soroban applications. SDF does not custody the user's seed merely because it provides the product.\n\nThat does **not** make Freighter the Stellar network's one exclusive 'official wallet' or the only valid wallet. Stellar supports a multi-wallet ecosystem wit…",
+    "note": "Replace 'renamed Varial at its 2026-10-29 public launch' with 'renamed Varial on 2026-10-29': 'its public launch' can be read as the wallet launching in 2026; SDF says Freighter launched in 2020. SDF provision, open source at stellar/freighter, noncustodial, browser + mobile clients all confirmed as of 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/rss.xml",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now Varial: Your wallet for discovering Stellar  Published: Thu, 29 Oct 2026 00:00:00 GMT"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/freighter",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/freighter/releases/tags/5.50.0",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z)"
+     },
+     {
+      "class": "D",
+      "ref": "https://x.com/BuildOnStellar/status/2115766545284731330 (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now @VarialWallet ... Same wallet, same keys, new name ... Announced at #Meridian2026"
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (via Parallel search)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar (XLM)'s Freighter wallet has rebranded as Varial ... blog post published on 2026-10-29"
+     },
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/search?term=varial+wallet&entity=software&country=us",
+      "observedAt": "2026-11-02",
+      "quote": "6743947720 Varial Wallet | Stellar Development Foundation | 1.28.29 | 2026-10-29"
+     },
+     {
+      "class": "F",
+      "ref": "https://play.google.com/store/apps/details?id=org.stellar.freighterwallet&hl=en_US",
+      "observedAt": "2026-11-02",
+      "quote": "og:title 'Varial Wallet - Apps on Google Play'"
+     },
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. ... Available on iOS and Android. ... Chrome Firefox Brave Get extension"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged — dapps on @stellar/freighter-api ... are unaffected."
+     }
+    ]
+   },
+   {
+    "id": "q-tool-freighter-wallet",
+    "field": "golden.keyFacts[0]",
+    "decision": "modify",
+    "newText": "Identifies Freighter/Varial as an SDF-provided, open-source, noncustodial Stellar wallet.",
+    "note": "Proposed text drops 'Stellar' and uses '(now Varial)', which can read as a required rename mention. Slash form accepts either name and keeps 'Stellar'. 89 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/freighter",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+     },
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. ... Available on iOS and Android. ... Chrome Firefox Brave Get extension"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-freighter-wallet",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "All added claims re-derived, including Stellar Wallets Kit 2.8.0 FreighterModule -> VarialModule.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/freighter/releases/tags/5.50.0",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://freighter.app/ and https://www.freighter.app",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://docs.freighter.app/",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://docs.varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "F",
+      "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+      "observedAt": "2026-11-02",
+      "quote": "name {'en-US': 'Freighter'}, version 5.49.0, last_updated 2026-10-06"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/Creit-Tech/Stellar-Wallets-Kit/releases (v2.8.0)",
+      "observedAt": "2026-11-02",
+      "quote": "### 2.8.0 (2026-10-28) ### Change - Migrate FreighterModule to VarialModule"
+     },
+     {
+      "class": "D",
+      "ref": "https://registry.npmjs.org/@creit.tech/stellar-wallets-kit",
+      "observedAt": "2026-11-02",
+      "quote": "dist-tags latest 2.8.0, published 2026-10-28T21:58:19Z"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-freighter-wallet",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Observation date.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://itunes.apple.com/search?term=varial+wallet&entity=software&country=us",
+      "observedAt": "2026-11-02",
+      "quote": "6743947720 Varial Wallet | Stellar Development Foundation | 1.28.29 | 2026-10-29"
+     },
+     {
+      "class": "F",
+      "ref": "https://play.google.com/store/apps/details?id=org.stellar.freighterwallet&hl=en_US",
+      "observedAt": "2026-11-02",
+      "quote": "og:title 'Varial Wallet - Apps on Google Play'"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-freighter-wallet",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-02-09 is inside the batch window.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-freighter-wallet",
+    "field": "truth.sources[1].ref",
+    "decision": "accept",
+    "note": "www.freighter.app redirects to varialwallet.com.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L https://freighter.app/ and https://www.freighter.app",
+      "observedAt": "2026-11-02",
+      "quote": "200 https://varialwallet.com/ (redirect)"
+     },
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation. Open source and non-custodial. ... Available on iOS and Android. ... Chrome Firefox Brave Get extension"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+   "https://api.github.com/repos/stellar/freighter",
+   "https://api.github.com/repos/stellar/freighter/commits?path=README.md",
+   "https://api.github.com/repos/stellar/freighter/releases",
+   "https://api.github.com/repos/stellar/freighter/commits/master",
+   "https://raw.githubusercontent.com/stellar/freighter/master/extension/public/static/manifest/v3.json",
+   "https://www.freighter.app",
+   "https://freighter.app/",
+   "https://docs.freighter.app/",
+   "https://freighter.app/terms",
+   "https://varialwallet.com/",
+   "https://docs.varialwallet.com/",
+   "https://varialwallet.com/terms",
+   "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+   "https://stellar.org/blog/rss.xml",
+   "https://stellar.org/blog/foundation-news",
+   "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory",
+   "https://www.tokenpost.com/news/technology/43511",
+   "https://varialwallet.com/changelog",
+   "https://x.com/BuildOnStellar/status/2115766545284731330",
+   "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+   "https://chromewebstore.google.com/detail/freighter/bcacfldlkkdogcmkkibnjlakofdplcbk",
+   "https://itunes.apple.com/search?term=freighter+wallet",
+   "https://itunes.apple.com/search?term=varial+wallet",
+   "https://play.google.com/store/apps/details?id=org.stellar.freighterwallet",
+   "https://api.github.com/repos/stellar/freighter-mobile",
+   "https://raw.githubusercontent.com/stellar/freighter-mobile/main/README.md",
+   "https://raw.githubusercontent.com/stellar/freighter-mobile/main/src/i18n/locales/en/translations.json",
+   "https://raw.githubusercontent.com/stellar/freighter/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/views/DisplayBackupPhrase/index.tsx",
+   "https://raw.githubusercontent.com/stellar/freighter/0f08d9ee973f6f79582d8c6003a8cc75f8a473a2/extension/src/popup/views/DisplayBackupPhrase/index.tsx",
+   "https://raw.githubusercontent.com/stellar/freighter/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/locales/en/translation.json",
+   "https://api.github.com/search/code (stellar/freighter: 'Your Stellar secret key', 'Show private key', showPrivateKey)",
+   "https://api.github.com/repos/Creit-Tech/Stellar-Wallets-Kit/releases",
+   "https://registry.npmjs.org/@creit.tech/stellar-wallets-kit",
+   "https://registry.npmjs.org/@stellar/varial-sdk",
+   "https://registry.npmjs.org/@stellar/freighter-api",
+   "https://developers.stellar.org/docs/build/guides/freighter",
+   "Raven execute: scout.searchProjects(varial|freighter|xbull), lumenloop.search_directory(varial|freighter), stellarDocs.search_docs",
+   "https://apps.apple.com/us/app/xbull-wallet/id6705122563",
+   "https://apps.apple.com/es/app/xbull-wallet/id6705122563",
+   "https://apps.apple.com/gb/app/xbull-wallet/id6705122563",
+   "https://itunes.apple.com/lookup?id=6705122563 (us,es,gb,de,in,br)",
+   "https://itunes.apple.com/search?term=xbull",
+   "https://play.google.com/store/apps/details?id=app.xbull.wallet",
+   "https://play.google.com/store/apps/details?id=app.xbull.mobile",
+   "https://xbull.app/",
+   "https://wallet.xbull.app/",
+   "https://chromewebstore.google.com/detail/xbull-wallet/omajpeaffjgmlpmhbfdjepdejoemifpe",
+   "https://addons.mozilla.org/api/v5/addons/addon/xbull-wallet/",
+   "https://api.github.com/repos/Creit-Tech/xBull-Wallet/releases",
+   "Perplexity search: xBull iOS/Android availability; Freighter renamed Varial",
+   "https://itunes.apple.com/lookup?id=1404357892",
+   "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+   "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key-",
+   "https://lobstr.freshdesk.com/support/solutions/articles/151000231572-passkey-accounts-on-lobstr",
+   "https://x.com/lobstr/status/2110361044829057488",
+   "https://lobstr.co/authorization/signup/passkey/ (403)",
+   "Parallel search: LOBSTR passkey accounts"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-eco-freighter-wallet; q-eco-xbull-wallet; q-raph-lobstr-legitimacy; q-ti-find-export-secret-key; q-tool-freighter-wallet",
+  "verifiedOnly": "q-raph-hardware-wallet; q-raph-restore-wallet",
+  "untouched": "",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-eco-freighter-wallet",
+    "log": "fields applied: golden.answer, golden.keyFacts[0], golden.avoid[0], golden.notes, tags.freshness, truth.asOf, truth.reverifyBy, truth.sources[1].ref, truth.sources[2].ref; Rename to Varial: answer names both (renamed 2026-10-29), keyFacts[0] Freighter/Varial, avoid[0] binds both names, symmetric VARIAL RENAME caution in notes; freshness stable→scheduled; asOf 2026-11-02, reverifyBy 2027-02-02; freighter.app/docs sources moved to varialwallet.com (class A); 2 corroboration rows; verified refreshed."
+   },
+   {
+    "id": "q-eco-xbull-wallet",
+    "log": "fields applied: golden.answer, golden.keyFacts[3], golden.avoid[0], golden.notes, tags.freshness, truth.asOf, truth.reverifyBy; iOS store listing removed: answer as of 2026-11-02 drops iOS and names v1.40.0, keyFacts[3] and avoid[0] cover iOS and Android store claims, notes drop the contradicted 'V2 introduced' also-good line and quote current Scout; freshness stable→scheduled; asOf 2026-11-02, reverifyBy 2027-02-23; sources and corroboration row added; verified refreshed."
+   },
+   {
+    "id": "q-raph-hardware-wallet",
+    "log": "fields applied: none; Verified only (no gospel change): Freighter docs source note updated for the Varial title; LedgerHQ app-stellar and SEP-5 sources added; verified refreshed; asOf/reverifyBy (2027-02-04) kept."
+   },
+   {
+    "id": "q-raph-lobstr-legitimacy",
+    "log": "fields applied: golden.answer, truth.asOf, truth.reverifyBy; Passkey drift: answer as of 2026-11-02 adds the passkey-derived (PRF) key alongside the password with platform-neutral wording; asOf 2026-11-02, reverifyBy 2026-11-30→2027-02-25; 3 sources and 2 corroboration rows added; verified refreshed."
+   },
+   {
+    "id": "q-raph-restore-wallet",
+    "log": "fields applied: none; Verified only (no gospel change): Freighter docs source note updated for the Varial title; SEP-5, LOBSTR recovery-code, and Varial locale sources added; verified refreshed; asOf/reverifyBy (2027-02-11) kept."
+   },
+   {
+    "id": "q-ti-find-export-secret-key",
+    "log": "fields applied: golden.answer, golden.keyFacts[2], golden.avoid[1], golden.notes, truth.asOf, truth.reverifyBy, truth.sources[2].ref, truth.sources[3].ref; Rename to Varial: answer names both (renamed 2026-10-29) and dates the no-export finding to 2026-11-02, keyFacts[2] and avoid[1] Freighter/Varial, symmetric caution in notes; asOf 2026-11-02, reverifyBy 2027-03-11→2027-02-16; terms source to varialwallet.com, source file pinned to master 5c6956b; 2 corroboration rows; verified refreshed."
+   },
+   {
+    "id": "q-tool-freighter-wallet",
+    "log": "fields applied: golden.answer, golden.keyFacts[0], golden.notes, truth.asOf, truth.reverifyBy, truth.sources[1].ref; Rename to Varial: answer names both (renamed 2026-10-29) with as-of 2026-11-02, keyFacts[0] Freighter/Varial, symmetric caution plus Wallets Kit VarialModule note; asOf 2026-11-02, reverifyBy 2027-03-18→2027-02-09; www.freighter.app source moved to varialwallet.com (class A); 2 corroboration rows; verified refreshed."
+   }
+  ]
+ }
+}

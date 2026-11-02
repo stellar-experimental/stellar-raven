@@ -35,7 +35,7 @@
     },
     "domain": "real-world",
     "status": "mixed",
-    "asOf": "2026-07-28",
+    "asOf": "2026-11-02",
     "reverifyBy": "2027-02-05",
     "sources": [
       {
@@ -275,16 +275,19 @@
       }
     ],
     "verified": {
-      "date": "2026-10-27",
-      "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
       "evidence": [
-        "Live re-check 2026-10-27 (F): https://iris-api.circle.com/v2/burn/USDC/fees/27/0 returned minimumFee 0 for finality 1000 and 2000; /fees/0/27 returned 1 (finality 1000) and 0 (finality 2000) — identical to the dated 2026-07-11 values.",
-        "Live re-check 2026-10-27 (A): https://developers.circle.com/cctp/references/stellar — domain 27, CctpForwarder required as both mintRecipient and destinationCaller (wrong values strand funds), 7-decimal Stellar USDC vs 6-decimal message amount with the seventh decimal staying on Stellar.",
-        "Live re-check 2026-10-27 (A): https://developers.circle.com/release-notes/cctp-2026 — 2026.05.18 'Added support for Stellar mainnet', unchanged.",
-        "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
-      ],
-      "rootCause": [
-        "freshness-drift"
+        "Proposer golden.keyFacts[0] [confirmed]: Live re-check 2026-11-02: https://developers.circle.com/release-notes/cctp-2026 — \"2026.05.18 Added support for Stellar mainnet.\" (class A)",
+        "Proposer golden.keyFacts[0] [confirmed]: Live re-check 2026-11-02: https://x.com/StellarOrg/status/2056797748264116265 (via Perplexity) — \".@circle CCTP is live on Stellar. ... 6:02 PM · May 19, 2026\" (class D)",
+        "Proposer golden.keyFacts[0] [confirmed]: Live re-check 2026-11-02: Lumenloop research via Perplexity: https://lumenloop.com/research/stellar-weekly-roundup-week-15-2026 — \"Circle's Cross-Chain Transfer Protocol went live on Stellar on May 19\" (class C)",
+        "Proposer golden.keyFacts[1..2] [confirmed]: Live re-check 2026-11-02: https://developers.circle.com/cctp/references/stellar — \"On the source burn, both `mintRecipient` and `destinationCaller` must be set to the `CctpForwarder`\" (class A)",
+        "Proposer golden.keyFacts[1..2] [confirmed]: Live re-check 2026-11-02: https://developers.circle.com/cctp/references/stellar — \"Regardless of direction, the `amount` field in a CCTP message is always in six-decimal subunits.\" (class A)",
+        "Proposer golden.keyFacts[1..2] [confirmed]: Live re-check 2026-11-02: https://developers.circle.com/cctp/references/stellar code sample — \"destinationDomain: 27\" (class F)",
+        "Proposer golden.keyFacts[3] [confirmed-as-of]: Live re-check 2026-11-02: https://iris-api.circle.com/v2/burn/USDC/fees/27/0 — \"[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]\" (class F)",
+        "Proposer golden.keyFacts[3] [confirmed-as-of]: Live re-check 2026-11-02: https://iris-api.circle.com/v2/burn/USDC/fees/0/27 — \"[{\"finalityThreshold\":1000,\"minimumFee\":1},{\"finalityThreshold\":2000,\"minimumFee\":0}]\" (class F)",
+        "Sibling sweep 2026-11-02: proposer checked q-hist-cctp-stellar-live-announcement, q-tool-cctp-stellar-integration, q-token-circle-usdc-on-stellar, q-defi-bridge-evm-to-stellar-axelar; no judge-facing field changed in this case, and no sibling contradicts the confirmed claims.",
+        "reverifyBy kept at 2027-02-05: eval/qa/consistency-register.json disposition names 'q-cctp-v2-usdc-stellar reverifyBy 2027-02-05'; the register is a shared file outside this batch."
       ]
     },
     "origin": "kaan cctp-usdc-stellar-crosschain"

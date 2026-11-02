@@ -36,6 +36,36 @@
       {
         "class": "B",
         "ref": "catalog/manifest.json (exposed operation inventory; no wallet transfer/funding operation)"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/stellar-docs/issues/842",
+        "note": "{\"number\":842,\"title\":\"Update RPC retention window to 7 days\",\"state\":\"closed\",\"pull_request\":true,\"created_at\":\"2024-07-31T18:27:56Z\"}",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/docs",
+        "note": "redirects to stellar-deprecated/docs, archived:true; /issues/842 returns 404",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "stellar-docs docs/networks/index.mdx",
+        "note": "\"Friendbot API | N/A | https://friendbot.stellar.org | https://friendbot-futurenet.stellar.org\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://friendbot.stellar.org/?addr=GINVALID",
+        "note": "HTTP 400 (service up)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json (generatedAt 2026-11-02T15:12:47Z, worktree HEAD 1f9bebbc)",
+        "note": "60 exposed operations, all lumenloop.*/scout.*/stellarDocs.* read/search; no conversation, memory, user, wallet, key, signing, account, or balance operation",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -57,26 +87,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + applier, verified unchanged; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-03)",
       "evidence": [
-        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "research/audits/2026-07-11-super-corpus-design.md:356,724-725",
-        "catalog/manifest.json",
-        "Structural re-form (long-fact): Split and shortened two long facts into three single-predicate facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-docs/issues/842 — the live repository record is an unrelated closed pull request about RPC retention.",
-        "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-docs/issues/842 — the live issue record contains no verified backup or distribution-wallet claim.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks#friendbot — the official page documents Friendbot funding for Testnet and Futurenet.",
-        "Sibling sweep 2026-08-29: grep issues/842|Friendbot|backup distribution wallet|purported wallet → q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives, q-infra-testnet-vs-futurenet, q-n3-issues-842-backup-faucet-wallet; no contradiction.",
-        "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — no secret wallet or backup-faucet operation; class C live exposed surface shows the same absence.",
-        "Live re-check 2026-08-31: https://api.github.com/repos/stellar/stellar-docs/issues/842 — title 'Update RPC retention window to 7 days' about getLedgerEntries, not a wallet; class D sweep found no verified backup-wallet address.",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/networks#friendbot — Friendbot is the free Testnet and Futurenet funding route; class D sweep found only official Friendbot guidance.",
-        "Sibling sweep 2026-08-31: grep issues/842|issue 842|Friendbot|backup faucet → 12 other cases; read q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Re-verified unchanged 2026-11-02; no judge-facing field changed.",
+        "Live B 2026-11-02: https://api.github.com/repos/stellar/stellar-docs/issues/842 — \"{\"number\":842,\"title\":\"Update RPC retention window to 7 days\",\"state\":\"closed\",\"pull_request\":true,\"created_at\":\"2024-07-31T18:27:56Z\"}\" (claim: The issue reference is not authority for an official funding address.)",
+        "Live B 2026-11-02: https://api.github.com/repos/stellar/docs — \"redirects to stellar-deprecated/docs, archived:true; /issues/842 returns 404\" (claim: The issue reference is not authority for an official funding address.)",
+        "Live B 2026-11-02: stellar-docs docs/networks/index.mdx — \"\"Friendbot API | N/A | https://friendbot.stellar.org | https://friendbot-futurenet.stellar.org\"\" (claim: Official Friendbot guidance is the redirect.)",
+        "Live F 2026-11-02: https://friendbot.stellar.org/?addr=GINVALID — \"HTTP 400 (service up)\" (claim: Official Friendbot guidance is the redirect.)",
+        "Live B 2026-11-02: catalog/manifest.json (generatedAt 2026-11-02T15:12:47Z, worktree HEAD 1f9bebbc) — \"60 exposed operations, all lumenloop.*/scout.*/stellarDocs.* read/search; no conversation, memory, user, wallet, key, signing, account, or balance operation\" (claim: Server cannot fund or transfer assets.)",
+        "Sibling sweep 2026-11-02: q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives; no contradiction found."
       ]
     },
     "origin": "authored 2026-07 (safety)"

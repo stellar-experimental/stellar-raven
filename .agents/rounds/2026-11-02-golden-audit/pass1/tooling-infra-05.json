@@ -1,0 +1,1479 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "tooling-infra-05",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-tool-cli-testnet-identity-howto",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "`stellar keys generate <name> --network testnet` generates a named identity",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local `stellar keys generate --help`, stellar 28.1.0 (c0f4d0da)",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: stellar keys generate [OPTIONS] <NAME> ... --fund  Fund generated key pair ... -n, --network <NETWORK>  Name of network to use from config"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_sdk_cli_tools_docs 'stellar keys generate --fund testnet identity' -> https://developers.stellar.org/docs/tools/cli/agent-cli/quickstart#step-3-create-a-key-for-your-agent",
+       "observedAt": "2026-11-02",
+       "quote": "stellar keys generate agent-1 --network testnet --fund ... Pass --fund"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/stellar-cli/releases/latest",
+       "observedAt": "2026-11-02",
+       "quote": "tag v28.1.0 published 2026-09-26T16:33:53Z (matches local binary)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "--fund funds the new testnet account via Friendbot",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local `stellar keys generate --help` / `stellar keys --help` (28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "--fund  Fund generated key pair; fund  Fund an identity on a test network"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet ... Friendbot Available | No | Yes (10,000 XLM) | Yes (10,000 XLM)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "`stellar keys address <name>` inspects the public key",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local `stellar keys --help` (28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "public-key  Given an identity return its address (public key) [alias: address]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / golden.notes",
+     "claim": "--source-account is canonical; --source is an alias",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local `stellar contract invoke --help` (28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "-s, --source-account <SOURCE_ACCOUNT>  Account that where transaction originates from. Alias `source`."
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-sign#tx-send",
+       "observedAt": "2026-11-02",
+       "quote": "--source alice ... (docs examples use both spellings)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "the `soroban` binary is not the current CLI name",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "local `stellar --version`",
+       "observedAt": "2026-11-02",
+       "quote": "stellar 28.1.0"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+       "observedAt": "2026-11-02",
+       "quote": "current manual documents `stellar` commands"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "a new testnet account is not usable without funding",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "Mainnet ... requires XLM to cover minimum balances; Testnet funding: Free via Friendbot"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "sk-001 symmetric caution",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sk-001",
+       "observedAt": "2026-11-02",
+       "quote": "resolved 2026-07-15 upstream fix"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-deploy-cli; q-ti-secret-key-vs-mnemonic-derivation; q-edge-jailbreak-generate-secret-keys; q-infra-friendbot-fund-testnet"
+  },
+  {
+   "id": "q-tool-developer-leaderboard-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "explicit sort/range accepted and current rows returned",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "meta.source https://stellarlight.xyz/leaderboard; generatedAt 2026-11-02T16:18:22.201Z; docs https://stellarlight.xyz/scout/api-reference; row keys rank,id,name…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getLeaderboard",
+       "observedAt": "2026-11-02",
+       "quote": "Ranks PROJECTS, not people → use getBuilders."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "rows carry meta.source/meta.docs; per-row GitHub fields only; no project URL field",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "meta.source https://stellarlight.xyz/leaderboard; generatedAt 2026-11-02T16:18:22.201Z; docs https://stellarlight.xyz/scout/api-reference; row keys rank,id,name…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getLeaderboard",
+       "observedAt": "2026-11-02",
+       "quote": "Ranks PROJECTS, not people → use getBuilders."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "projects, not people, are ranked",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getLeaderboard",
+       "observedAt": "2026-11-02",
+       "quote": "Ranks PROJECTS, not people → use getBuilders."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "meta.source https://stellarlight.xyz/leaderboard; generatedAt 2026-11-02T16:18:22.201Z; docs https://stellarlight.xyz/scout/api-reference; row keys rank,id,name…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "no permanent most-active developer",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "metricDefinitions.activity: orders by github.commits90d ... `range` filters MEMBERSHIP by last-commit recency"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getLeaderboard",
+       "observedAt": "2026-11-02",
+       "quote": "Ranks PROJECTS, not people → use getBuilders."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-leaderboard-project-not-builder; q-eco-most-active-defi-projects; q-tool-leaderboard-open-issues"
+  },
+  {
+   "id": "q-tool-flutter-mobile-sdk",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "stellar_wallet_flutter_sdk is the wallet layer built on stellar_flutter_sdk",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "Perplexity search -> https://pub.dev/packages/stellar_wallet_flutter_sdk",
+       "observedAt": "2026-11-02",
+       "quote": "stellar_wallet_flutter_sdk 1.1.8 ... Latest stable release: dependencies: stellar_wallet_flutter_sdk: ^1.1.8 stellar_flutter_sdk: ^3.10.0"
+      },
+      {
+       "class": "C",
+       "ref": "https://pub.dev/api/packages/stellar_wallet_flutter_sdk",
+       "observedAt": "2026-11-02",
+       "quote": "latest 1.1.8 published 2026-10-25T19:59:19Z; dependencies.stellar_flutter_sdk ^3.10.0; versions 1.1.3 (2026-06-24), 1.1.4 (2026-08-25), 1.1.5, 1.1.6, 1.1.7 (202…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "The `stellar-flutter-sdk` is an open source Stellar SDK for Flutter developers. It provides APIs to build transactions and connect to Horizon ... deploy and inv…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "both Soneso/community maintained, not SDF",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "Flutter SDK ... Maintained by a dedicated community developer. ... The Flutter Stellar SDK is maintained by dedicated community developer, Soneso."
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/Soneso/stellar_wallet_flutter_sdk",
+       "observedAt": "2026-11-02",
+       "quote": "pushed_at 2026-10-25T19:59:24Z, archived false"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / golden.answer",
+     "claim": "current versions are wallet 1.1.3 and general 3.2.1 (June 2026)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://pub.dev/api/packages/stellar_wallet_flutter_sdk",
+       "observedAt": "2026-11-02",
+       "quote": "latest 1.1.8 published 2026-10-25T19:59:19Z; dependencies.stellar_flutter_sdk ^3.10.0; versions 1.1.3 (2026-06-24), 1.1.4 (2026-08-25), 1.1.5, 1.1.6, 1.1.7 (202…"
+      },
+      {
+       "class": "C",
+       "ref": "https://pub.dev/api/packages/stellar_flutter_sdk",
+       "observedAt": "2026-11-02",
+       "quote": "latest 3.10.0 published 2026-10-25T09:15:14Z; 3.3.0 (2026-07-13) ... 3.9.0 (2026-10-16), 3.10.0"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity search -> https://pub.dev/packages/stellar_wallet_flutter_sdk",
+       "observedAt": "2026-11-02",
+       "quote": "stellar_wallet_flutter_sdk 1.1.8 ... Latest stable release: dependencies: stellar_wallet_flutter_sdk: ^1.1.8 stellar_flutter_sdk: ^3.10.0"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/Soneso/stellar_wallet_flutter_sdk",
+       "observedAt": "2026-11-02",
+       "quote": "pushed_at 2026-10-25T19:59:24Z, archived false"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / golden.notes",
+     "claim": "official tutorial still shows stale ^1.0.6 / ^2.1.3 pair (sd-032)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/blob/main/snippets/wallet/dart/install.mdx (main de385430; file last commit 700ed32d 2026-10-22)",
+       "observedAt": "2026-11-02",
+       "quote": "stellar_wallet_flutter_sdk: ^1.0.6\nstellar_flutter_sdk: ^2.1.3"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity search -> https://developers.stellar.org/docs/build/apps/wallet/intro (date 2026-10-22)",
+       "observedAt": "2026-11-02",
+       "quote": "stellar_wallet_flutter_sdk: ^1.0.6 stellar_flutter_sdk: ^2.1.3"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/issues/2606",
+       "observedAt": "2026-11-02",
+       "quote": "state open, updated 2026-08-04"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "conflation, SDF-maintained, frozen version, safety ranking traps",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "Maintained by a dedicated community developer."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "For a **wallet app**, start with Soneso's **`stellar_wallet_flutter_sdk`**. It provides wallet-oriented abstractions and SEP flows and builds on Soneso's **`stellar_flutter_sdk`**. Use `stellar_flutter_sdk` directly when you need the lower-level transaction/XDR, Horizon, Stellar RPC/Soroban, or SEP APIs without the wallet layer.\n\nBoth packages are **community-maintained by Soneso** and are documented by Stellar; neither is SDF-maintained merely because it appears in official docs. As of **2026-11-02**, pub.dev reported `stellar_wallet_flutter_sdk` **1.1.8** (published 2026-10-25, declaring `st…",
+     "reason": "Dated version sentence drifted; refresh to 2026-11-02 pub.dev values (C pub.dev API + D Perplexity + B Soneso repo push)."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "replace",
+     "new": "Dates any version it cites (2026-11-02 pub.dev: wallet 1.1.8, general 3.10.0).",
+     "reason": "A true current answer reporting 1.1.8/3.10.0 fails the pinned June-2026 keyFact; gate the durable dating behavior with an as-of example."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-wallets-comparison; q-sep53-message-signing"
+  },
+  {
+   "id": "q-tool-go-sdk-ingest",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "current official module github.com/stellar/go-stellar-sdk, SDF-maintained",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "The Go SDK is maintained by SDF. This SDK is split up into separate packages, all of which you can find in the [Go SDK](https://github.com/stellar/go-stellar-sd…"
+      },
+      {
+       "class": "B",
+       "ref": "https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@latest",
+       "observedAt": "2026-11-02",
+       "quote": "{\"Version\":\"v0.8.0\",\"Time\":\"2026-10-20T21:30:21Z\"}"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "/ingest parses ledger data; /ingest/ledgerbackend supplies source backends",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_rpc_horizon_data_docs 'go-stellar-sdk ingest ledgerbackend' -> https://developers.stellar.org/docs/data/indexers/build-your-own/ingest-sdk/examples/changes",
+       "observedAt": "2026-11-02",
+       "quote": "github.com/stellar/go-stellar-sdk/ingest\" \"github.com/stellar/go-stellar-sdk/ingest/ledgerbackend\""
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers",
+       "observedAt": "2026-11-02",
+       "quote": "Ingest SDK: A set of Golang packages ... which can acquire and parse ledger meta data and ledger entries from Stellar network."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "raw ingestion distinct from Horizon polling",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon Client ... web client for interfacing with Horizon server REST endpoints; Ingest SDK: acquire and parse data from the Stellar network."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / golden.avoid[0]",
+     "claim": "old github.com/stellar/go path deprecated after October 2025 split",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/go (gh api: archived true, pushed 2025-12-10)",
+       "observedAt": "2026-11-02",
+       "quote": "⚠️ REPOSITORY DEPRECATED ⚠️ This repository has been moved to: github.com/stellar/go-stellar-sdk"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel search -> https://pkg.go.dev/github.com/stellar/go-stellar-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "This repo previously served as the Go Monorepo for all SDF Go projects. As of October 2025, it has been refactored to focus exclusively on developer-facing SDK …"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-11 the split SDK release was v0.6.0",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "Parallel search -> https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.8.0?tab=versions",
+       "observedAt": "2026-11-02",
+       "quote": "v0.8.0 Oct 20, 2026; v0.7.3 Aug 20, 2026; ... v0.6.1 Aug 10, 2026; v0.6.0 Jun 9, 2026"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/go-stellar-sdk/releases/latest",
+       "observedAt": "2026-11-02",
+       "quote": "tag v0.8.0 published 2026-10-20T21:30:48Z"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "SDF-maintained SDKs ... Go SDK v0.8.0"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Use SDF's current Go module **`github.com/stellar/go-stellar-sdk`**. For a ledger-streaming/ingestion service, import **`github.com/stellar/go-stellar-sdk/ingest`** to parse raw ledger XDR into higher-level models and use **`github.com/stellar/go-stellar-sdk/ingest/ledgerbackend`** for the selected ledger source. Backend choice is architecture-specific: Captive Core, history/data-lake/Galexie, or supported RPC/archive inputs have different retention and operating costs.\n\nThe module also contains `txnbuild`, `clients/horizonclient`, and `clients/rpcclient`, but Horizon API polling is not the sa…",
+     "reason": "Dated release sentence drifted (v0.6.0 -> v0.8.0, B GitHub release + B Go proxy + D pkg.go.dev + A SDF Protocol 30 guide)."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-which-sdk-comparison; q-ti-parse-raw-ledger-data; q-tool-sdk-repos-discovery; q-tool-indexer-repos-discovery; q-tool-greenfield-indexer-prior-art-preflight; q-soroban-contract-build-verification"
+  },
+  {
+   "id": "q-tool-greenfield-indexer-prior-art-preflight",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "bounded prior-art pass before choosing architecture (<=3 candidates)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven MCP search tool contract (observed 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "For a design-stage request to create a new artifact, include one bounded prior-art pass ... at most two Scout repo/project discovery calls, one focused detail c…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "data skill + official docs as authority; repos for role comparison",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven search kind=skill 'indexer event ingestion history data skill'",
+       "observedAt": "2026-11-02",
+       "quote": "skills.stellar-dev.data ... Hubble/Galexie for deep history ... building any indexer/analytics workflow"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers",
+       "observedAt": "2026-11-02",
+       "quote": "Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang package…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "RPC polling, exporter/data lake, ingest library, ETL, indexer, hosted client are distinct roles",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers",
+       "observedAt": "2026-11-02",
+       "quote": "Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang package…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/events/ingest",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar RPC provides a getEvents method ... However, the data retention window for these events is 7 days at most. If you need access to a longer-lived record o…"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/{stellar/stellar-ledger-data-indexer,stellar/stellar-galexie,stellar/stellar-etl,stellar/go-stellar-sdk}",
+       "observedAt": "2026-11-02",
+       "quote": "archived false for all; pushed_at 2026-10-30, 2026-10-29, 2026-10-28, 2026-10-31"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=indexer",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:129}; stellar/stellar-ledger-data-indexer 92, stellar/stellar-galexie 92, stellar/stellar-etl 90, stellar/go-stellar-sdk 100, subquery…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / golden.avoid[4]",
+     "claim": "Raven has no repo-license field; license/audit/deployment/compatibility unknown",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=indexer",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:129}; stellar/stellar-ledger-data-indexer 92, stellar/stellar-galexie 92, stellar/stellar-etl 90, stellar/go-stellar-sdk 100, subquery…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "RPC getEvents is not durable history; Galexie is not a serving index",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/events/ingest",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar RPC provides a getEvents method ... However, the data retention window for these events is 7 days at most. If you need access to a longer-lived record o…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers",
+       "observedAt": "2026-11-02",
+       "quote": "Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang package…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/releases/tag/v30.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "`getEvents` no longer returns the `inSuccessfulContractCall` field ... Added Protocol 30 support (no retention or new events-method change)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[3]",
+     "claim": "exact Scout zero result is not proof of absence",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence."
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_fetch https://developers.stellar.org/docs/data/indexers",
+       "observedAt": "2026-11-02",
+       "quote": "lists SubQuery, Mercury, OBSRVR Flow, Goldsky, Allium, Space and Time as external providers"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-indexer-repos-discovery; q-ti-self-host-retention-backfill; q-soroban-greenfield-escrow-prior-art-preflight; q-tool-go-sdk-ingest"
+  },
+  {
+   "id": "q-tool-indexer-repos-discovery",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "fresh directly verified role-labeled table with URL/activity/maturity/provenance",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=indexer",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:129}; stellar/stellar-ledger-data-indexer 92, stellar/stellar-galexie 92, stellar/stellar-etl 90, stellar/go-stellar-sdk 100, subquery…"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/{stellar/stellar-ledger-data-indexer,stellar/stellar-galexie,stellar/stellar-etl,stellar/go-stellar-sdk}",
+       "observedAt": "2026-11-02",
+       "quote": "archived false for all; pushed_at 2026-10-30, 2026-10-29, 2026-10-28, 2026-10-31"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2] / golden.avoid[2]",
+     "claim": "roles distinct; Galexie not a query index; RPC events not complete history",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers",
+       "observedAt": "2026-11-02",
+       "quote": "Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang package…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/events/ingest",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar RPC provides a getEvents method ... However, the data retention window for these events is 7 days at most. If you need access to a longer-lived record o…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/releases/tag/v30.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "`getEvents` no longer returns the `inSuccessfulContractCall` field ... Added Protocol 30 support (no retention or new events-method change)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / golden.avoid[1]",
+     "claim": "repoScore/stars navigation only",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=indexer",
+       "observedAt": "2026-11-02",
+       "quote": "meta.note: Code references graded by repoScore (0-100) = the repo's own merit (code we read: tests, CI, releases, live SDK pin; plus adoption and freshness) lif…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / golden.keyFacts[4] / golden.notes",
+     "claim": "exact alias recall can fail (sls-025)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=stellar-subql-starter&limit=5 and ?q=subquery%2Fstellar-subql-starter",
+       "observedAt": "2026-11-02",
+       "quote": "matchMode strict, first row subquery/stellar-subql-starter (total 42); owner/name query matchMode partial, first row subquery/stellar-subql-starter"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sls-025 (upstream https://github.com/Stellar-Light/stellarlight/issues/512)",
+       "observedAt": "2026-11-02",
+       "quote": "resolved 2026-07-14; liveRecheck: exact repo queries smart-account-kit, passkey-kit, ERC-8004, x402 and subquery/stellar-subql-starter return exact hits"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "SubQuery/OBSRVR/Mercury not a timeless required roster",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=mercury / ?q=obsrvr",
+       "observedAt": "2026-11-02",
+       "quote": "mercury total 18 (xycloo/mercury-light-client, paltalabs/mercury-sdk ...); obsrvr total 6 (withObsrvr/...)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers",
+       "observedAt": "2026-11-02",
+       "quote": "Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake. ... Ingest SDK: A set of Golang package…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[3]",
+     "claim": "exact Scout zero is not proof of absence",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence."
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/subquery/stellar-subql-starter",
+       "observedAt": "2026-11-02",
+       "quote": "archived false, pushed 2026-01-22"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Treat this as **answer-time repository discovery**. Query `scout.searchRepos` with several role-specific and alias variations, inspect the raw rows, then open each returned repository before including it. Return a table with the exact GitHub URL, verified role, source of discovery, last activity/release, archive status, maturity/deployment caveats, and why it fits contract-event or ledger indexing.\n\nKeep roles separate: a turnkey/narrow indexer, a Galexie-style ledger-data exporter, the Go Ingest library, an ETL/export pipeline, a hosted-service client SDK, and community prior art are not inte…",
+     "reason": "sls-025 resolved 2026-07-14; exact queries now hit (C live + B resolved record)."
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "op": "replace",
+     "new": "Labels any directly verified external supplement as outside the Scout result.",
+     "reason": "Miss-conditioned keyFact rarely triggers after the fix; keep the durable labeling behavior."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Code-shaped discovery → scout_repos is the designed surface. Fabricated repos are the trap.\nAlso good if the answer: Distinguishes code/repo discovery from conceptual docs lookups.\nGolden cites: Scout repo results (stellarlight.xyz/api/repos) and/or the GitHub repos returned.\nGT-55 CORRECTION 2026-07-11: grade fresh verified role-labeled rows, not a frozen roster. repoScore/stars/rank are discovery metadata, not quality proof. Exact SubQuery owner/name recall failed on 2026-07-11 while direct GitHub verification succeeded; sls-025 recorded it and was resolved 2026-07-14 (as of 2026-11-02 exact…",
+     "reason": "Record the dated failure and its resolution instead of an open recurrence."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/resolved.json entry sls-025 — fixed upstream 2026-07-14"
+   ],
+   "siblings": "q-defi-streaming-payments-prior-art; q-tool-greenfield-indexer-prior-art-preflight; q-tool-sdk-repos-discovery; q-tool-go-sdk-ingest; q-ti-parse-raw-ledger-data"
+  },
+  {
+   "id": "q-tool-js-sdk-package",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "@stellar/stellar-sdk is official and SDF-maintained",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "The JavaScript SDK is maintained by SDF."
+      },
+      {
+       "class": "C",
+       "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "dist-tags latest 17.4.0 (2026-10-25), lts-16 16.4.1"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "npm/pnpm/yarn install",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/js-stellar-sdk README",
+       "observedAt": "2026-11-02",
+       "quote": "npm install --save @stellar/stellar-sdk ... pnpm add @stellar/stellar-sdk ... yarn add @stellar/stellar-sdk"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "Horizon + RPC; tx build/sign/XDR",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
+       "observedAt": "2026-11-02",
+       "quote": "A networking layer API for Stellar RPC methods and the Horizon API. Facilities for building and signing transactions"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "v16 folded @stellar/stellar-base into @stellar/stellar-sdk",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/js-stellar-sdk README",
+       "observedAt": "2026-11-02",
+       "quote": "### Migrating from @stellar/stellar-base — `@stellar/stellar-base` is now folded into `@stellar/stellar-sdk`."
+      },
+      {
+       "class": "C",
+       "ref": "https://registry.npmjs.org/@stellar/stellar-base/latest",
+       "observedAt": "2026-11-02",
+       "quote": "15.0.0; deprecated: This package is now rolled into @stellar/stellar-sdk."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "unscoped stellar-sdk is legacy",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://registry.npmjs.org/stellar-sdk/latest",
+       "observedAt": "2026-11-02",
+       "quote": "13.3.0; deprecated: This package has moved to @stellar/stellar-sdk!"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-which-sdk-comparison; q-tool-sdk-repos-discovery; q-sor-deploy-invoke-from-js-sdk; q-ti-bindings-to-nextjs-integration"
+  },
+  {
+   "id": "q-tool-lab-what-is",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Stellar Lab at lab.stellar.org builds/signs/simulates/submits; contract, API, XDR",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab",
+       "observedAt": "2026-11-02",
+       "quote": "Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Test…"
+      },
+      {
+       "class": "F",
+       "ref": "curl -sI https://lab.stellar.org",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP/2 200"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/laboratory",
+       "observedAt": "2026-11-02",
+       "quote": "archived false, pushed 2026-11-01"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "account creation on Mainnet/Testnet/Futurenet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab",
+       "observedAt": "2026-11-02",
+       "quote": "Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Test…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / golden.avoid[0]",
+     "claim": "Friendbot only Testnet/Futurenet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab",
+       "observedAt": "2026-11-02",
+       "quote": "Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Test…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "Friendbot Available | No | Yes (10,000 XLM) | Yes (10,000 XLM)"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_sdk_cli_tools_docs 'Stellar Lab build sign submit transactions Friendbot'",
+       "observedAt": "2026-11-02",
+       "quote": "Developers can use Stellar Lab to build and submit transactions"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-stellar-lab-usage-and-new-ui; q-ti-secret-key-vs-mnemonic-derivation"
+  },
+  {
+   "id": "q-tool-leaderboard-open-issues",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0] / golden.avoid[0]",
+     "claim": "route /api/leaderboard via scout.getLeaderboard sort=issues; repo search ignores sort",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match Gi…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getLeaderboard",
+       "observedAt": "2026-11-02",
+       "quote": "Ranks PROJECTS, not people → use getBuilders."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?sort=issues&limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "warnings: Unknown parameter(s) ignored: sort. Results are NOT filtered by them."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "generatedAt, filters/range/category, rank, openIssuesTotal, repoCount, lastActivityAt",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match Gi…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3] / golden.avoid[2]",
+     "claim": "issue volume is backlog, not activity/quality",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match Gi…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getLeaderboard",
+       "observedAt": "2026-11-02",
+       "quote": "Ranks PROJECTS, not people → use getBuilders."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / golden.avoid[3]",
+     "claim": "GitHub REST open_issues_count includes PRs",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "gh api repos/stellar/js-stellar-sdk (open_issues_count) vs search is:issue / is:pr",
+       "observedAt": "2026-11-02",
+       "quote": "open_issues_count 153 = 135 open issues + 18 open PRs"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match Gi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.github.com/en/rest/repos/repos#get-a-repository",
+       "observedAt": "2026-11-02",
+       "quote": "open_issues_count includes pull requests (GitHub REST docs, as cited in truth.sources)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-developer-leaderboard-live; q-gap-leaderboard-project-not-builder; q-eco-most-active-defi-projects"
+  },
+  {
+   "id": "q-tool-oracle-repo-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "explicit repoScore comparison over response order; paginate or scope",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=oracle",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:386}; order: reflector-network/reflector-contract 88, bp-ventures/lightecho-stellar-oracle 54 (versionStatus deprecated, dormant), dia…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos (offset)",
+       "observedAt": "2026-11-02",
+       "quote": "Page until offset + meta.counts.returned >= meta.counts.total."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "codeVerified/codeDepth, deployability, version signals distinct",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=oracle",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:386}; order: reflector-network/reflector-contract 88, bp-ventures/lightecho-stellar-oracle 54 (versionStatus deprecated, dormant), dia…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4] / golden.avoid[1]",
+     "claim": "repoScore ranks/navigates only; not audit/correctness proof",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=oracle",
+       "observedAt": "2026-11-02",
+       "quote": "meta.note: Code references graded by repoScore (0-100) = the repo's own merit (code we read: tests, CI, releases, live SDK pin; plus adoption and freshness) lif…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "deprecated repo leading an archived 3-row result is not the recommendation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=oracle",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:386}; order: reflector-network/reflector-contract 88, bp-ventures/lightecho-stellar-oracle 54 (versionStatus deprecated, dormant), dia…"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/reflector-network/reflector-contract",
+       "observedAt": "2026-11-02",
+       "quote": "archived false, pushed 2026-10-14"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-passkey-repo-live; q-tool-zk-repo-live; q-tool-sdk-repos-discovery; q-tool-smart-wallet-repos-discovery"
+  },
+  {
+   "id": "q-tool-passkey-repo-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "current rows + explicit scores; paginate or scope",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=passkey",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:168}; stellar/passkey-kit 92 high, justmert/soropass 48, jes-labs/stellar-passkeyui 44 ... kalepail/soroban-passkey 22 (versionStatus …"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3] / golden.avoid[1]",
+     "claim": "repoScore ordering is not correctness/security/audit/maintenance proof",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.searchRepos",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=passkey",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:168}; stellar/passkey-kit 92 high, justmert/soropass 48, jes-labs/stellar-passkeyui 44 ... kalepail/soroban-passkey 22 (versionStatus …"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "no permanently best passkey repo from archived corpus",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/search?q=passkey",
+       "observedAt": "2026-11-02",
+       "quote": "counts {returned:20,total:168}; stellar/passkey-kit 92 high, justmert/soropass 48, jes-labs/stellar-passkeyui 44 ... kalepail/soroban-passkey 22 (versionStatus …"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/kalepail/passkey-kit and stellar/passkey-kit",
+       "observedAt": "2026-11-02",
+       "quote": "kalepail/passkey-kit archived true; stellar/passkey-kit archived false, pushed 2026-10-27"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-tool-smart-wallet-repos-discovery; q-tool-passkeykit-smart-wallet; q-tool-oracle-repo-live"
+  },
+  {
+   "id": "q-tool-passkey-wallet-recovery",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "sole lost passkey may be irrecoverable; recovery needs a preconfigured surviving signer/policy that can rotate signers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/smart-account-kit README",
+       "observedAt": "2026-11-02",
+       "quote": "Signers — an on-chain Signer is either Delegated(G-address) ... or External(verifier, keyData) ... addPasskey(contextRuleId, ...) ... await kit.signAndSubmitAdm…"
+      },
+      {
+       "class": "D",
+       "ref": "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+       "observedAt": "2026-11-02",
+       "quote": "Context rules ... specify scope, lifetime, and the conditions (signers and policies) that must be satisfied before execution proceeds."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "They hold assets and enforce authorization in `__check_auth` instead of a single secret key. Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, …"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3] / golden.avoid[1..2]",
+     "claim": "credential sync, relaying, indexing/discovery distinct from on-chain authorization",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Keys stay on the device or synced across devices through cloud providers."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/smart-account-kit README",
+       "observedAt": "2026-11-02",
+       "quote": "Treat every discovery row as an unverified candidate. ... discoverContractsByCredential(credentialId) Find contracts by credential ID via the indexer"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / golden.avoid[3]",
+     "claim": "SEP-30 is classic G-account recovery",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md (v0.8.1, last commit 2025-06-17)",
+       "observedAt": "2026-11-02",
+       "quote": "Account Recovery: multi-party recovery of Stellar accounts ... add those servers as signers of the account"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_wallet_dapp_docs 'SEP-30 account recovery' -> https://developers.stellar.org/docs/build/apps/wallet/sep30",
+       "observedAt": "2026-11-02",
+       "quote": "The Sep-30 standard defines the standard way for an individual (e.g., a user or wallet) to regain access to their Stellar account after losing"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-aas-sep30-recoverable-wallets; q-soroban-add-signer-smart-wallet-howto; q-infra-secp256r1-passkeys; q-soroban-auth-delegation-p27"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-tool-flutter-mobile-sdk",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Versions, dates, and dependency constraint confirmed across registry API, GitHub tags/pubspec, and web search. Release cadence (1.1.3->1.1.8 and 3.2.1->3.10.0 since June) supports 'release often'. As-of date kept in text.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://pub.dev/api/packages/stellar_wallet_flutter_sdk",
+      "observedAt": "2026-11-02",
+      "quote": "latest 1.1.8 published 2026-10-25T19:59:19Z; pubspec dependencies stellar_flutter_sdk: ^3.10.0"
+     },
+     {
+      "class": "C",
+      "ref": "https://pub.dev/api/packages/stellar_flutter_sdk",
+      "observedAt": "2026-11-02",
+      "quote": "latest 3.10.0 published 2026-10-25T09:15:14Z"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/Soneso/stellar_wallet_flutter_sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v1.1.8 2026-10-25T19:58:45Z; v1.1.7 2026-10-16"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/Soneso/stellar_flutter_sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "3.10.0 2026-10-25T09:13:40Z; 3.9.0 2026-10-16"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/Soneso/stellar_wallet_flutter_sdk/v1.1.8/pubspec.yaml",
+      "observedAt": "2026-11-02",
+      "quote": "version: 1.1.8 ... stellar_flutter_sdk: ^3.10.0"
+     },
+     {
+      "class": "D",
+      "ref": "https://pub.dev/packages/stellar_wallet_flutter_sdk/changelog (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "1.1.8 25.Oct.2026. * update to stellar_flutter_sdk 3.10.0"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-flutter-mobile-sdk",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "78 chars. Behavior-based (dates any cited version) with a dated example; does not punish a newer version cited at answer time; consistent with the existing avoid 'Do NOT freeze versions'.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://pub.dev/api/packages/stellar_wallet_flutter_sdk",
+      "observedAt": "2026-11-02",
+      "quote": "1.1.8 2026-10-25"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/Soneso/stellar_flutter_sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "3.10.0 2026-10-25"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-go-sdk-ingest",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "v0.8.0 dated 2026-10-20 confirmed by GitHub release, Go module proxy, and pkg.go.dev. stellar/go archived still true. As-of date retained.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/go-stellar-sdk/releases",
+      "observedAt": "2026-11-02",
+      "quote": "v0.8.0 2026-10-20T21:30:48Z prerelease=false (latest); v0.7.3 2026-08-24"
+     },
+     {
+      "class": "F",
+      "ref": "https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@latest",
+      "observedAt": "2026-11-02",
+      "quote": "{\"Version\":\"v0.8.0\",\"Time\":\"2026-10-20T21:30:21Z\"}"
+     },
+     {
+      "class": "D",
+      "ref": "https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.8.0?tab=versions (via Parallel web_search)",
+      "observedAt": "2026-11-02",
+      "quote": "v0.8.0 Oct 20, 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/stellar/go",
+      "observedAt": "2026-11-02",
+      "quote": "archived: true"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-indexer-repos-discovery",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "Treat this as **answer-time repository discovery**. Query `scout.searchRepos` with several role-specific and alias variations, inspect the raw rows, then open each returned repository before including it. Return a table with the exact GitHub URL, verified role, source of discovery, last activity/release, archive status, maturity/deployment caveats, and why it fits contract-event or ledger indexing.\n\nKeep roles separate: a turnkey/narrow indexer, a Galexie-style ledger-data exporter, the Go Ingest library, an ETL/export pipeline, a hosted-service client SDK, and community prior art are not inte…",
+    "note": "The historical framing is true (issue #512 closed 2026-07-14; live exact queries now hit). Modified to keep a general 'exact miss is not absence' caution so the answer stays aligned with the existing avoid item and does not imply exact recall is now guaranteed.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/Stellar-Light/stellarlight/issues/512",
+      "observedAt": "2026-11-02",
+      "quote": "state closed, closed_at 2026-07-14T00:13:10Z, 'Repo search misses exact smart-account-kit alias despite indexed public repository'"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=subquery/stellar-subql-starter&limit=5",
+      "observedAt": "2026-11-02",
+      "quote": "first row subquery/stellar-subql-starter https://github.com/subquery/stellar-subql-starter"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=stellar-subql-starter&limit=5",
+      "observedAt": "2026-11-02",
+      "quote": "first row subquery/stellar-subql-starter"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-025)",
+      "observedAt": "2026-11-02",
+      "quote": "resolved 2026-07-14; liveRecheck '2026-07-14 exact repo queries smart-account-kit, passkey-kit, ERC-8004, x402 and subquery/stellar-subql-starter return exact h…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-indexer-repos-discovery",
+    "field": "golden.keyFacts[4]",
+    "decision": "accept",
+    "note": "77 chars. Removes the now-stale premise that exact-alias recall misses; keeps the labeling behavior. Not judge-blind; no punishment of a true claim.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=subquery&limit=5",
+      "observedAt": "2026-11-02",
+      "quote": "rows include subquery/subql-stellar, subquery/stellar-subql-starter, subquery/stellar-subql-dictionaries"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-indexer-repos-discovery",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Dated history plus dated current recheck; both facts confirmed. Scout probe is the service's own behavior (empirical), corroborated by the closed upstream issue.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/Stellar-Light/stellarlight/issues/512",
+      "observedAt": "2026-11-02",
+      "quote": "closed_at 2026-07-14T00:13:10Z"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/repos/search?q=subquery/stellar-subql-starter&limit=5",
+      "observedAt": "2026-11-02",
+      "quote": "subquery/stellar-subql-starter returned as first row"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://pub.dev/api/packages/stellar_wallet_flutter_sdk",
+   "https://pub.dev/api/packages/stellar_flutter_sdk",
+   "https://api.github.com/repos/Soneso/stellar_flutter_sdk/releases",
+   "https://api.github.com/repos/Soneso/stellar_flutter_sdk/tags",
+   "https://api.github.com/repos/Soneso/stellar_wallet_flutter_sdk/releases",
+   "https://api.github.com/repos/Soneso/stellar_wallet_flutter_sdk/tags",
+   "https://raw.githubusercontent.com/Soneso/stellar_wallet_flutter_sdk/v1.1.8/pubspec.yaml",
+   "https://api.github.com/repos/stellar/go-stellar-sdk/releases",
+   "https://api.github.com/repos/stellar/go-stellar-sdk/releases/tags/v0.8.0",
+   "https://api.github.com/repos/stellar/go",
+   "https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@latest",
+   "https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@v/list",
+   "https://api.github.com/repos/Stellar-Light/stellarlight/issues/512",
+   "https://stellarlight.xyz/api/repos/search?q=subquery/stellar-subql-starter",
+   "https://stellarlight.xyz/api/repos/search?q=stellar-subql-starter",
+   "https://stellarlight.xyz/api/repos/search?q=subquery",
+   "Parallel web_search: pub.dev changelogs/versions, pkg.go.dev go-stellar-sdk versions"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-tool-flutter-mobile-sdk; q-tool-go-sdk-ingest; q-tool-indexer-repos-discovery",
+  "verifiedOnly": "q-tool-cli-testnet-identity-howto; q-tool-developer-leaderboard-live; q-tool-greenfield-indexer-prior-art-preflight; q-tool-js-sdk-package; q-tool-lab-what-is; q-tool-leaderboard-open-issues; q-tool-oracle-repo-live; q-tool-passkey-repo-live; q-tool-passkey-wallet-recovery",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-tool-leaderboard-open-issues",
+    "issue": "Upstream defect noted by proposer (no case change needed): Scout project row is still named Freighter with no Varial (formerly Freighter) alias (https://stellarlight.xyz/api/projects/search?q=freighter); needs an improvements/stellar-light-scout finding, which is outside this applier scope."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-tool-cli-testnet-identity-howto",
+    "log": "verified-only refresh; truth.verified 2026-11-02 (F/E/B/A: stellar 28.1.0 help, docs quickstart, CLI release); +10 sources"
+   },
+   {
+    "id": "q-tool-developer-leaderboard-live",
+    "log": "verified-only refresh; truth.verified 2026-11-02 (C/B: live leaderboard + manifest); asOf 2026-11-02"
+   },
+   {
+    "id": "q-tool-flutter-mobile-sdk",
+    "log": "gospel: golden.answer + keyFacts[3] (verifier accept) refreshed to wallet 1.1.8 / general 3.10.0 as of 2026-11-02; +12 sources; +1 confirmed-as-of corroboration row; rootCause freshness-drift; asOf 2026-11-02; reverifyBy 2027-04-08"
+   },
+   {
+    "id": "q-tool-go-sdk-ingest",
+    "log": "gospel: golden.answer (verifier accept) refreshed to v0.8.0 (2026-10-20) as of 2026-11-02; +12 sources; +1 corroboration row; rootCause freshness-drift; asOf 2026-11-02; reverifyBy 2027-04-12"
+   },
+   {
+    "id": "q-tool-greenfield-indexer-prior-art-preflight",
+    "log": "verified-only refresh; truth.verified 2026-11-02; +7 sources; asOf 2026-11-02; reverifyBy 2027-04-01 (was 2026-11-26)"
+   },
+   {
+    "id": "q-tool-indexer-repos-discovery",
+    "log": "gospel: golden.answer (verifier modify newText), keyFacts[4] and notes (accept): sls-025 recorded as fixed 2026-07-14, exact miss still not absence; +13 sources; +1 corroboration row; rootCause freshness-drift + improvements/resolved.json sls-025; asOf 2026-11-02; reverifyBy 2027-04-22 (was 2026-12-10)"
+   },
+   {
+    "id": "q-tool-js-sdk-package",
+    "log": "verified-only refresh; truth.verified 2026-11-02; +4 sources"
+   },
+   {
+    "id": "q-tool-lab-what-is",
+    "log": "verified-only refresh; truth.verified 2026-11-02; +4 sources; asOf 2026-11-02; reverifyBy 2027-04-29"
+   },
+   {
+    "id": "q-tool-leaderboard-open-issues",
+    "log": "verified-only refresh; truth.verified 2026-11-02; +4 sources; asOf 2026-11-02; reverifyBy 2027-04-05 (was 2026-12-17)"
+   },
+   {
+    "id": "q-tool-oracle-repo-live",
+    "log": "verified-only refresh; truth.verified 2026-11-02; +2 sources; asOf 2026-11-02"
+   },
+   {
+    "id": "q-tool-passkey-repo-live",
+    "log": "verified-only refresh; truth.verified 2026-11-02; +1 source; asOf 2026-11-02"
+   },
+   {
+    "id": "q-tool-passkey-wallet-recovery",
+    "log": "verified-only refresh; truth.verified 2026-11-02; +3 sources; asOf 2026-11-02; reverifyBy 2027-04-15"
+   }
+  ]
+ }
+}

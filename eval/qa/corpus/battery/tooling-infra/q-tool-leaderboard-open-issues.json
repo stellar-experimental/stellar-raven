@@ -34,8 +34,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-09-03",
-    "reverifyBy": "2026-12-17",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-05",
     "sources": [
       {
         "class": "C",
@@ -61,6 +61,30 @@
         "class": "D",
         "ref": "https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5",
+        "note": "issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match GitHub's REST open_issues_count, which includes PRs). This is a BACKLOG snapshot, not an activity or quality ranking. filters {sort: issues, range: all, category: null}; counts.total 905",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.getLeaderboard",
+        "note": "Ranks PROJECTS, not people → use getBuilders.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/repos/search?sort=issues&limit=2",
+        "note": "warnings: Unknown parameter(s) ignored: sort. Results are NOT filtered by them.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "gh api repos/stellar/js-stellar-sdk (open_issues_count) vs search is:issue / is:pr",
+        "note": "open_issues_count 153 = 135 open issues + 18 open PRs",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -110,26 +134,19 @@
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
       "evidence": [
-        "C defined issue-only totals and backlog semantics. D confirmed GitHub issue and pull-request distinctions.",
-        "Sibling sweep 2026-09-03: q-tool-developer-leaderboard-live keeps backlog separate from activity; no contradiction found.",
-        "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 at 2026-08-05T20:45:09.140Z returned 880 project rows in scope, dataAsOf 2026-08-05T19:33:42.232Z, and rank/openIssuesTotal/repoCount/lastActivityAt fields with explicit metric definitions.",
-        "A/F: GitHub issue-search semantics and a live keybase/client sample independently separated 4,046 open issues from 210 open pull requests while REST open_issues_count reported 4,257, confirming that the REST field is not issue-only.",
-        "Uncertainty remains scope-bound: Scout confirms its cached included-repository rollup, not every project aggregate or a live GitHub census.",
-        "Sibling sweep: q-tool-developer-leaderboard-live and q-gap-leaderboard-project-not-builder preserve project scope and keep issue backlog distinct from activity, quality, and people directories.",
-        "Structural re-form (compound-predicate): Split route scope and recast three facts as single-predicate field lists; truth is unchanged.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 — the live route still used scout.getLeaderboard semantics with sort=issues.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 — the response still carried generatedAt and filter/range/category scope.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 — current cached project values still included rank, openIssuesTotal, repoCount, and lastActivityAt.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/leaderboard — issue volume remained a backlog signal separate from issues, stars, and activity sorts.",
-        "Live re-check 2026-08-27: https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests and https://docs.github.com/en/rest/repos/repos#get-a-repository — issue-only search and open_issues_count PR inclusion still required scope/cache caveats.",
-        "Sibling sweep 2026-08-27: grep openIssuesTotal|open_issues_count|sort=issues|lastActivityAt → q-tool-leaderboard-open-issues; no contradiction"
-      ],
-      "rootCause": [
-        "freshness-recheck",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5 — \"issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match GitHub's REST open_issues_count, which includes PRs). This is a BACKLOG snapshot, not an activity or quality ranking. filters {sort: issues, range: all, category: null}; counts.total 905\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0] / golden.avoid[0]",
+        "B: catalog/manifest.json#scout.getLeaderboard — \"Ranks PROJECTS, not people → use getBuilders.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0] / golden.avoid[0]",
+        "C: https://stellarlight.xyz/api/repos/search?sort=issues&limit=2 — \"warnings: Unknown parameter(s) ignored: sort. Results are NOT filtered by them.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0] / golden.avoid[0]",
+        "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5 — \"issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match GitHub's REST open_issues_count, which includes PRs). This is a BACKLOG snapshot, not an activity or quality ranking. filters {sort: issues, range: all, category: null}; counts.total 905\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1..2]",
+        "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5 — \"issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match GitHub's REST open_issues_count, which includes PRs). This is a BACKLOG snapshot, not an activity or quality ranking. filters {sort: issues, range: all, category: null}; counts.total 905\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[2]",
+        "B: catalog/manifest.json#scout.getLeaderboard — \"Ranks PROJECTS, not people → use getBuilders.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[2]",
+        "F: gh api repos/stellar/js-stellar-sdk (open_issues_count) vs search is:issue / is:pr — \"open_issues_count 153 = 135 open issues + 18 open PRs\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[4] / golden.avoid[3]",
+        "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=5 — \"issues: github.openIssuesTotal = sum of OPEN issues ... an issue-only count (GitHub GraphQL issues(states:OPEN); EXCLUDES pull requests, so it will not match GitHub's REST open_issues_count, which includes PRs). This is a BACKLOG snapshot, not an activity or quality ranking. filters {sort: issues, range: all, category: null}; counts.total 905\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[4] / golden.avoid[3]",
+        "A: https://docs.github.com/en/rest/repos/repos#get-a-repository — \"open_issues_count includes pull requests (GitHub REST docs, as cited in truth.sources)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[4] / golden.avoid[3]",
+        "Sibling sweep 2026-11-02: q-tool-developer-leaderboard-live, q-gap-leaderboard-project-not-builder, q-eco-most-active-defi-projects; no contradiction found by the proposer matrix."
       ]
     },
     "origin": "raven-next q-tool-leaderboard-open-issues"

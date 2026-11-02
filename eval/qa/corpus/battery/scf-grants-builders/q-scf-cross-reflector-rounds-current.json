@@ -7,7 +7,7 @@
     "scout.resolveProject"
   ],
   "golden": {
-    "answer": "Lumenloop returns four Reflector awards: the original SCF #15 decentralized price-feed oracle grid, SCF #20 expansion, SCF #26 CEX price feeds, and SCF #29 Reflector DAO with public feeds and customizable subscriptions. As observed on 2026-07-11, Scout lists Reflector as a live decentralized price-oracle/data-feed network, credits Stellar Expert as the builder, and surfaces `reflector-network/reflector-contract` as a Rust code reference (alongside DAO and subscription contracts). The historical submission sequence comes from Lumenloop; the current builder/status/repository facts come from Scout, so neither service alone completes the match.",
+    "answer": "Lumenloop returns four Reflector awards: the original SCF #15 decentralized price-feed oracle grid, SCF #20 expansion, SCF #26 CEX price feeds, and SCF #29 Reflector DAO with public feeds and customizable subscriptions. As observed on 2026-11-02, Scout lists Reflector as a live decentralized price-oracle/data-feed network, credits Stellar Expert as the builder, and surfaces `reflector-network/reflector-contract` as a Rust code reference (alongside other reflector-network repositories, such as the DAO contract and JS client). The historical submission sequence comes from Lumenloop; the current builder/status/repository facts come from Scout, so neither service alone completes the match.",
     "keyFacts": [
       "SCF #15 funded the original decentralized price-feed oracle grid.",
       "Maps SCF #20 to expansion and SCF #26 to CEX price feeds.",
@@ -33,8 +33,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-11-26",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-14",
     "sources": [
       {
         "class": "C",
@@ -51,6 +51,36 @@
       {
         "class": "B",
         "ref": "https://github.com/reflector-network/reflector-contract"
+      },
+      {
+        "class": "C",
+        "ref": "https://api.lumenloop.com/v1/tools/get_scf_submissions (POST {slug:reflector})",
+        "note": "count 4: SCF #15 'Decentralized price feed oracle grid for Stellar DeFi smart contracts'; SCF #20 'Reflector | Expansion'; SCF #26 'Reflector | CEX price feeds'; SCF #29 'Reflector DAO' ('DAO-governed oracle with publicprice feed and customizable subscriptions')",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/project/reflector-5w2",
+        "note": "embedded page data: 'Total awarded $444.8K*'; 'Awarded Submissions 4'; SCF #29 'Reflector DAO' Awarded",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=reflector&limit=3",
+        "note": "builtBy Stellar Expert; status Live; repos reflector-contract (Rust), contract-client-js, reflector-node, dao-client, reflector-dao-contract; scfAwardedRounds [15,20,26,29]",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/project/reflector",
+        "note": "HTML page lists reflector-contract, reflector-dao-contract, contract-client-js, dao-client, subscription repos; the API row lists reflector-node instead of subscription repos, so the golden names no repo set beyond reflector-contract",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "gh api repos/reflector-network/reflector-contract",
+        "note": "language Rust, archived false, pushed_at 2026-10-14T15:05:05Z",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -68,6 +98,18 @@
             "ref": "https://communityfund.stellar.org/submissions/receZeLlUlVSruadg",
             "observedAt": "2026-07-11",
             "note": "SCF #29 public submission; earlier returned submission URLs are recorded in evidence-matrix.md"
+          },
+          {
+            "class": "C",
+            "ref": "https://api.lumenloop.com/v1/tools/get_scf_submissions (POST {slug:reflector})",
+            "observedAt": "2026-11-02",
+            "note": "count 4; rounds 15, 20, 26, 29"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/project/reflector-5w2",
+            "observedAt": "2026-11-02",
+            "note": "'Awarded Submissions 4'; 'Total awarded $444.8K*'"
           }
         ]
       },
@@ -89,27 +131,43 @@
             "class": "B",
             "ref": "https://github.com/reflector-network/reflector-contract",
             "observedAt": "2026-07-11"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=reflector&limit=3",
+            "observedAt": "2026-11-02",
+            "note": "builtBy Stellar Expert; status Live; reflector-contract (Rust)"
+          },
+          {
+            "class": "A",
+            "ref": "https://reflector.network/",
+            "observedAt": "2026-11-02",
+            "note": "'Decentralized price oracle for Stellar Network'; support mailto:info@stellar.expert"
+          },
+          {
+            "class": "B",
+            "ref": "gh api repos/reflector-network/reflector-contract",
+            "observedAt": "2026-11-02",
+            "note": "language Rust, archived false"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-03)",
       "evidence": [
-        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
-        "Sibling sweep: Reflector SCF/builder/repository cases reviewed; no contradictory builder attribution found",
-        "Structural re-form (long-fact): Split the four grant stages and shortened the Scout facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://communityfund.stellar.org/submissions/receZeLlUlVSruadg — the official project history includes the original SCF #15 Reflector award.",
-        "Live re-check 2026-08-29: https://communityfund.stellar.org/submissions/receZeLlUlVSruadg — the official project history maps SCF #20 to Expansion and SCF #26 to CEX price feeds.",
-        "Live re-check 2026-08-29: https://communityfund.stellar.org/submissions/receZeLlUlVSruadg — the SCF #29 submission describes the DAO, public feeds, and customizable subscriptions.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/project/reflector — the live Scout page lists Reflector as live and links Stellar Expert as its entity.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/project/reflector — the live Scout page surfaces `reflector-network/reflector-contract` as a Rust repository.",
-        "Sibling sweep 2026-08-29: grep Reflector|Stellar Expert|reflector-contract → q-defi-reflector-oracle, q-sor-reflector-integration-code, q-tool-oracle-repo-live, q-scf-cross-reflector-rounds-current, and related oracle cases; no contradiction"
+        "C 2026-11-02: POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug:reflector} — count 4; SCF #29 'Reflector DAO' 'DAO-governed oracle with publicprice feed and customizable subscriptions'; SCF #26 'Reflector | CEX price feeds'; SCF #20 'Reflector | Expansion'; SCF #15 'Decentralized price feed oracle grid for Stellar DeFi smart contracts'.",
+        "A 2026-11-02: https://communityfund.stellar.org/project/reflector-5w2 — 'Total awarded $444.8K*'; 'Awarded Submissions 4'.",
+        "C 2026-11-02: https://stellarlight.xyz/api/projects/search?q=reflector&limit=3 — builtBy {name: 'Stellar Expert'}; status Live; repos reflector-contract (Rust), contract-client-js, reflector-node, dao-client, reflector-dao-contract; scfAwardedRounds [15,20,26,29].",
+        "C 2026-11-02: https://stellarlight.xyz/project/reflector (HTML) lists subscription repos and no reflector-node, so the answer parenthetical now names only repo classes true on both Scout surfaces.",
+        "C 2026-11-02: https://stellarlight.xyz/api/projects/resolve?q=reflector — found true, status Live, statusAsOf 2026-10-27T11:56:36.248Z, statusBasis onchain-activity.",
+        "A 2026-11-02: https://reflector.network/ — 'Decentralized price oracle for Stellar Network' with support mailto:info@stellar.expert.",
+        "B 2026-11-02: gh api repos/reflector-network/reflector-contract — language Rust, archived false, pushed_at 2026-10-14T15:05:05Z.",
+        "Sibling sweep 2026-11-02: grep Reflector + subscription|reflector-contract|Stellar Expert → q-defi-reflector-oracle, q-sor-reflector-integration-code, q-tool-oracle-repo-live, q-defi-oracle-landscape-live; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "authored 2026-07 (cross-service)"

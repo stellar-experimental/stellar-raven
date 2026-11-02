@@ -1,0 +1,1191 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "scf-grants-builders-05",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-scf-sdf-marketing-grant",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Grants are up to $500,000",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "SDF offers marketing grants of up to $500,000 ... Funding for a marketing grant is up to $500k."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding",
+       "observedAt": "2026-11-02",
+       "quote": "SDF offers Marketing Grants of up to $500,000 awarded in USD, USDC, or XLM"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.web3grant.com/grants/stellar-sdf-marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "Up to $500K ... Paid in USD, USDC or XLM"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Being live is not a universal prerequisite (new and existing projects)",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding",
+       "observedAt": "2026-11-02",
+       "quote": "For both new and existing projects with a live product built on the Stellar network"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/marketing-grants (page JSON, Traction card)",
+       "observedAt": "2026-11-02",
+       "quote": "Is the project live with traction or preparing to launch soon?"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "Marketing grants go to both new and existing projects with clear use cases and concrete timelines"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.web3grant.com/grants/stellar-sdf-marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "New or existing projects with a live product on the Stellar network"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Funding index lists USD, USDC, or XLM",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding",
+       "observedAt": "2026-11-02",
+       "quote": "awarded in USD, USDC, or XLM"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.web3grant.com/ecosystems/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "USD, USDC or XLM"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Growth uses: media, incentives, communications, agencies, tools; exclusions on manipulation/investment promotion",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "Paid digital media ... In-app incentives ... External resources, such as marketing agencies, tools, and services. ... Speculation, wash trading, or market manip…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.perplexity.ai (search: SDF Stellar marketing grants up to $500,000)",
+       "observedAt": "2026-11-02",
+       "quote": "It cannot be used for anything that promotes speculation or the price of XLM"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Separate SDF-direct application, not an SCF Build track",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "To apply for a Stellar Development Foundation Marketing Grant, please complete all the fields in the form"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding",
+       "observedAt": "2026-11-02",
+       "quote": "Grow Award: ... funding for marketing through SDF Marketing Fund"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop search_content_semantic (articles)",
+       "observedAt": "2026-11-02",
+       "quote": "The Marketing Grants Program's First Million ... SDF's Marketing Grants Program has distributed over 1 million dollars"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do NOT say only already-live/post-launch projects qualify.",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding",
+       "observedAt": "2026-11-02",
+       "quote": "For both new and existing projects with a live product built on the Stellar network"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Marketing is not an SCF Build track; no approval promise",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-11-02",
+       "quote": "SCF Build consists of 3 distinct tracks: Open, Integration, and RFP."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "reserved for qualified teams with proven capability"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "The dedicated current page controls over older shorthand.",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding",
+       "observedAt": "2026-11-02",
+       "quote": "For both new and existing projects with a live product"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "Is the project live with traction or preparing to launch soon?"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02, the verified sources supported this observed answer:",
+     "reason": "Dated example now reflects the 2026-11-02 observation of both pages."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": ". Official pages differ on pre-launch scope: the funding index says **new and existing projects with a live product**, while the dedicated page's Traction criterion asks whether the project is **live with traction or preparing to launch soon**.",
+     "reason": "Official pages disagree on pre-launch scope; encode the dispute instead of pinning one side."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT say an already-launched project is ineligible for a Marketing Grant.",
+     "reason": "Old trap punished the funding index's 'with a live product' wording; new trap is false under both pages."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Sources disagree on pre-launch scope (observed 2026-11-02): stellar.org/grants-and-funding says 'with a live product'; the dedicated page's Traction card says 'live with traction or preparing to launch soon'. Do not penalize either attributed wording; an already-launched project qualifies under both.",
+     "reason": "Replace the pinned resolution with a symmetric dispute caution."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-observed."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: the golden resolved a live conflict between two official SDF pages by pinning the dedicated page and made the other page's wording an avoid trap."
+   ],
+   "siblings": "q-scf-vs-sdf-enterprise-fund"
+  },
+  {
+   "id": "q-scf-skill-stellar-scout",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Stellar Scout playbook routes by user type and has conversational vs deep-dive/specialized modes (SCF pitch, audit firm, RFP comparison)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/9f77b3f9433be8b57b2b78a7c14b94855779f4fe/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "### Step 0: Disambiguate the user type first ... ## Two modes ... ### 1. Conversational Mode (default) ... ### 2. Deep Dive Mode ... ## Specialized workflows ..…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven production execute codemode.skill.read('skills.stellar-light.stellar-scout') url=https://raw.githubusercontent.com/Stellar-Light/stellar-scout/9f77b3f9433be8b57b2b78a7c14b94855779f4fe/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Four structured workflows for high-stakes moments. Like Deep Dive, run every step in order"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Grounds landscape in Scout endpoints with explicit coverage limits",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/9f77b3f9433be8b57b2b78a7c14b94855779f4fe/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Do not speculate. If a step can't be answered from the endpoints below, say so explicitly."
+      },
+      {
+       "class": "C",
+       "ref": "Raven skill.read same id",
+       "observedAt": "2026-11-02",
+       "quote": "## Evidence floor\n\n**Do not speculate.**"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "No full gap from one zero-result endpoint; never invent builders/RFPs/partners",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/9f77b3f9433be8b57b2b78a7c14b94855779f4fe/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "That doesn't mean nothing exists on Stellar; it means we don't have it indexed. Worth a manual GitHub search before assuming a full gap. ... Recommend only part…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-rwa-scf-similar; q-tool-cli-skills-discovery"
+  },
+  {
+   "id": "q-scf-skill-submission-radar",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Recipe: NL query of similar submissions, award_type separation, team profiles, expand from a submission, live competitors, category vocabulary, positioning brief; does not submit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Lead with the idea as a natural-language `query` ... Scan `award_type` and `description` to separate **funded** prior art ... from **proposed-but-not-awarded** …"
+      },
+      {
+       "class": "C",
+       "ref": "Raven production execute codemode.skill.read('skills.lumenloop.scf-submission-radar') url=https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "it does not submit anything to SCF. It runs entirely on LumenLoop's free, read-only Stellar ecosystem MCP"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-rwa-scf-similar; q-scf-history-soroswap"
+  },
+  {
+   "id": "q-scf-submission-lifecycle-deadlines",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Rolling interest form; eligibility/referral review; only invited teams get a full-proposal deadline",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-11-02",
+       "quote": "These inquiries are reviewed on a rolling basis. ... If your project is eligible and aligned, you'll receive an invitation via email to submit a full SCF Build …"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/scf-awards/build-award/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "These inquiries are reviewed on a rolling basis. If you meet requirements, you will be invited to submit to an open SCF round and given the round deadline via e…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Prescreen, panel review, possible revision, Open-only community vote, selection, KYC/KYB",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-11-02",
+       "quote": "Prescreen ... Panel Review ... Revision Window ... Community Vote (for Open Track only) ... complete a KYC (Know Your Customer) or KYB"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/scf-awards/build-award/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "4. **Community Vote (for Open Track only)**"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Official materials describe roughly six-week Build rounds",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02",
+       "quote": "SCF Build Award rounds run every 6 weeks."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/governance/verified-members/how-to-become-verified",
+       "observedAt": "2026-11-02",
+       "quote": "each round's Community Vote phase, which occurs twice per quarter"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards (round list)",
+       "observedAt": "2026-11-02",
+       "quote": "SCF #41 Ended February 8, 2026; #42 March 15; #43 April 26; #44 June 14; #45 August 16; #46 Submission November 9, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+       "observedAt": "2026-11-02",
+       "quote": "\"round\": 46, \"phase\": \"Submission\", \"submissionDeadline\": \"2026-11-09\""
+      },
+      {
+       "class": "D",
+       "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026",
+       "observedAt": "2026-11-02",
+       "quote": "SCF Build Award applications close November 8"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "No universal 2/1/1/1-week stage formula or guaranteed results week",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+       "observedAt": "2026-11-02",
+       "quote": "Build Submission TBD - November 9, 2026 Panel Review November 11, 2026 - November 18, 2026 Community Vote November 23, 2026 - December 3, 2026 Notification and …"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/scf-awards/build-award/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "(absence check) The Build Review Process lists Prescreen, Panel Review, Revision Window, and Community Vote with no per-stage week durations."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Acceptance payment and KYC distinct from deliverable payments (four payments)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/budget-and-deliverable-guidelines.md",
+       "observedAt": "2026-11-02",
+       "quote": "You'll receive your total budget amount in 4 separate payments. You'll receive your first payment upon award acceptance. The following 3 are tied to deliverable…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-11-02",
+       "quote": "you will need to complete a compliance and identity verification process before funds can be issued"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "CORRECTION 2026-08-04: current Build workflow supports rolling interest → eligibility/referral → invitation/full-proposal deadline → review/possible revision → Open-only vote → selection/KYC. Roughly six weeks is a dated cadence, not a universal 2/1/1/1-week stage model.\nObserved 2026-11-02: communityfund.stellar.org/awards still says 'SCF Build Award rounds run every 6 weeks', but its 2026 submission deadlines (Feb 8, Mar 15, Apr 26, Jun 14, Aug 16, Nov 8-9) were 5-12 weeks apart, and SCF #46 listed Notification as TBD. Do not penalize an answer that reports these dated gaps beside the stated…",
+     "reason": "Freshness drift: observed 2026 deadline spacing diverges from the stated six-week cadence; add a dated grader note."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-observed."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-scf-how-to-apply; q-scf-eligibility-criteria; q-scf-rfp-tooling; q-scf-v7-changes; q-scf-vs-sdf-enterprise-fund; q-scf-current-round"
+  },
+  {
+   "id": "q-scf-total-distributed",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "No single safe public scalar; dated basis matrix (reconstructed vs awarded vs paid)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "Counts distinct PROJECTS with scf.awarded=true (not awarded submissions; SDF's own counters count submissions, so totals differ by design). Dollar totals are in…"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "42M Awarded in XLM ... 656 Awarded Submissions"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02",
+       "quote": "504 Previously Awarded Submissions"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.perplexity.ai (search: Stellar Community Fund total awarded to date 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "(sweep summary, not a quote) No official cumulative SCF total found; top hit: 'SCF #45 distributed approximately $4.04M in XLM to 40 projects.'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "As of 2026-07-10/11 funding-v2 reconstructed $39,851,645.13 across 391 projects",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "scfTotalDistributedUSD = 58585451.99000002; scfAwardedProjects = 582; snapshotAsOf 2026-10-24T13:59:04.410Z; methodologyVersion funding-v2 (2026-07-05)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Public banners still show incompatible 42M/656 and 504 figures",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "42M Awarded in XLM / 656 Awarded Submissions"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02",
+       "quote": "504 Previously Awarded Submissions"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "Traps on permanence, count-basis/denomination conflation, SDF treasury confusion",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "countBasis ... not awarded submissions"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "Awarded in XLM"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Dossier §11. scout_analyze funding dimension is the exact card ('how much has SCF distributed'). Re-verified live 2026-06-29: scout_analyze ?dimension=funding returned scfTotalDistributedUSD ~$19.97M, scfAwardedProjects 223, meanAwardUSD ~$89.5K (DOWN from the 2026-06-22 $21.36M/239 — the live metric recomputes and drifts in both directions). communityfund.stellar.org/awards counter showed 504 'Previously Awarded Submissions'. RECONCILED: two count bases (distinct funded projects ~223 vs awarded submissions ~504, since a project can win multiple rounds) and two denominations (USD analytics vs …",
+     "reason": "Freshness drift: notes carried only stale project counts; add the dated 2026-11-02 observation so graders accept current basis-labeled figures."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-observed."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-scf-funding-by-category; q-defi-category-funding-ratio-live; q-scf-current-round; q-scf-round-43-results; q-scf-vs-sdf-enterprise-fund"
+  },
+  {
+   "id": "q-scf-v7-changes",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SCF v7 launched January 2026 around SCF #41",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7 (page JSON)",
+       "observedAt": "2026-11-02",
+       "quote": "\"date\":\"2026-01-16\" ... The SCF #41 Build Award submission deadline is February 1st, 2026"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "SCF 7.0 officially launched in January 2026."
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop search_content_semantic (articles)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar SCF 7.0: Grants & Funding Tracks for Web3 Builders | https://stellar.org/blog/ecosystem/introducing-scf-v7"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Three Build tracks, unified interest/referral entry, Instawards evolution of Kickstart, mainnet/UX readiness",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-11-02",
+       "quote": "Three clear SCF build award tracks ... unified submission and referral system ... Instawards are a decentralized evolution of SCF Kickstart ... projects must de…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "SCF Build is split into 3 tracks ... Implementation of a robust referral program"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Four payments / three deliverable tranches (10/20/30/40)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/budget-and-deliverable-guidelines.md",
+       "observedAt": "2026-11-02",
+       "quote": "You'll receive your total budget amount in 4 separate payments. ... #0 n/a (paid upon award acceptance) 10% ... #1 MVP 20% ... #2 Testnet 30% ... #3 Mainnet Lau…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-11-02",
+       "quote": "10% upon award ... 20% ... 30% ... 40% at verified mainnet launch + UX readiness"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "v7 described plural post-launch growth pathways, not one Growth track",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-11-02",
+       "quote": "Eligible teams may access a set of **post-launch growth pathways**, including: Follow-on Build Awards ... Growth Hack ... Audit Bank ... Accelerators ... Distri…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "participate in supporting programs like the Audit Bank, Liquidity Award, Growth Hack, accelerator programs"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Also good: supporting programs consolidated into a unified Growth track; UX audits added to Build evaluation",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-11-02",
+       "quote": "a set of post-launch growth pathways"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "awarded Build teams may receive a UX audit and rigorous user testing as part of the award process"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Also good if the answer: A Referral Program was added. | UX readiness gates the final 40% tranche, and awarded Build teams may receive a UX audit and user testing.",
+     "reason": "Remove the self-contradicting unified-Growth-track nice-to-have and correct where UX audits sit."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: a legacy nice-to-have note kept the unified Growth track claim that the golden's own avoid item punishes."
+   ],
+   "siblings": "q-edge-scf-v7-centralization-myths; q-scf-instawards; q-scf-ambassador-program; q-scf-build-award-cap; q-scf-hackathons-active; q-scf-how-to-apply"
+  },
+  {
+   "id": "q-scf-verified-members",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Four tiers: Verified view access; Pathfinder delegation; Navigator active Open voting; Pilot active vote + delegate + governance proposals",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/governance/verified-members",
+       "observedAt": "2026-11-02",
+       "quote": "Access to #verified-panel ... to view discussions [Verified+] ... Delegate votes ... [Pathfinder+] ... Vote actively for projects [Navigator+] ... Become a quar…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/governance/verified-members/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "<td>Become a quarterly delegate for the SCF Build Award; be included in exclusive structure discussions; and propose, contribute, and vote for governance propos…"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/governance",
+       "observedAt": "2026-11-02",
+       "quote": "Verified 696 | Pathfinder 634 | Navigator 103 | Pilot 91"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Public Goods has its own Pilot rules",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/public-goods-award/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Proposing Projects: Community Members with SCF Pilot Role ... Voting: Pilots"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook",
+       "observedAt": "2026-11-02",
+       "quote": "apply for Public Goods Awards"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Governance verification separate from payout KYC/KYB",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-11-02",
+       "quote": "you will need to complete a compliance and identity verification process before funds can be issued"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/governance/verified-members/how-to-become-verified",
+       "observedAt": "2026-11-02",
+       "quote": "Both Verified and Pathfinder roles are granted automatically based on verifying information in the SCF Dashboard."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Also good: Verified status feeds NQG weight and the ability to be nominated to Track Delegate Panels",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/governance/verified-members/how-to-become-verified",
+       "observedAt": "2026-11-02",
+       "quote": "Pilot | Everything in Navigator, plus the ability to become a Quarterly Delegate ... influenced by: Acquired Discord roles"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/blob/main/additional-support/faq.md",
+       "observedAt": "2026-11-02",
+       "quote": "Anyone can become an SCF Delegate Panelist by earning the Pilot Role"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Also good if the answer: Tier roles feed NQG voting power, and only Pilots can become quarterly SCF Build delegates.",
+     "reason": "Nice-to-have note contradicted the tier matrix and avoid[0]; correct to Pilot-only quarterly delegates."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: a legacy nice-to-have note used retired 'Track Delegate Panels' wording and attributed delegate eligibility to basic Verified status."
+   ],
+   "siblings": "q-scf-nqg-voting; q-builder-by-scf-tier; q-scf-build-award-cap; q-scf-ambassador-program"
+  },
+  {
+   "id": "q-scf-vs-sdf-enterprise-fund",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SCF Build up to $150K XLM; interest form then invitation; Open-only community vote",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02",
+       "quote": "$150K in XLM* Max. Award Amount"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/scf-awards/build-award/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Community Vote (for Open Track only)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Marketing Grants separate direct path, up to $500K",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "up to $500k"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.web3grant.com/grants/stellar-sdf-marketing-grants",
+       "observedAt": "2026-11-02",
+       "quote": "Up to $500K"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Enterprise pages say Apply Now / Submit your application while funding index says no application (official conflict)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/enterprise-fund",
+       "observedAt": "2026-11-02",
+       "quote": "[Apply Now](https://stellar.org/enterprise-fund/apply)"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/enterprise-fund/apply",
+       "observedAt": "2026-11-02",
+       "quote": "## Submit your application"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding",
+       "observedAt": "2026-11-02",
+       "quote": "There is no application for these programs; we find promising enterprises and engage with them. ### Enterprise fund"
+      },
+      {
+       "class": "D",
+       "ref": "https://parallel.ai web_search (Stellar Enterprise Fund apply application)",
+       "observedAt": "2026-11-02",
+       "quote": "we are open for business, so please reach out. [Apply Now]"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Matching Fund: pre-seed to Series B, lead term sheet, 1:1, $200K-$500K",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/grants-and-funding/matching-fund",
+       "observedAt": "2026-11-02",
+       "quote": "funds will be matched 1:1 up to US $500,000, with a minimum check size of US $200,000 ... Term sheet or SAFE from lead investor ... (Pre-seed to Series B)"
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/blog/foundation-news/announcing-the-matching-fund",
+       "observedAt": "2026-11-02",
+       "quote": "Funds will be matched up to $500K (minimum check size: $200K)."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-org-sdf-enterprise-fund; q-scf-how-to-apply; q-scf-ecosystem-listing-partner-jobs; q-scf-sdf-marketing-grant; q-scf-total-distributed"
+  },
+  {
+   "id": "q-scout-hackathon-brief-first-hour",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Brief blocks vet/builds/startFrom/liveContracts/funding/whatNotToClaim with generatedAt; rails and RFPs not bundled; no verdicts",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.hackathonBrief (provenance openapi 1.9.61, fetchedAt 2026-10-02)",
+       "observedAt": "2026-11-02",
+       "quote": "vet ... builds ... startFrom ... liveContracts (... empty = no verified contract on record, never nothing on mainnet), funding (live SCF round + funded peers), …"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+       "observedAt": "2026-11-02",
+       "quote": "meta.generatedAt 2026-11-02T16:12:10.847Z; report keys idea, vertical, vet, builds, startFrom, liveContracts, funding, whatNotToClaim; 'Rails (stablecoins/partn…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-hackathon-brief-evidence-boundaries"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5); proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-scf-sdf-marketing-grant",
+    "field": "golden.answer (as-of date)",
+    "decision": "accept",
+    "note": "Re-observed today; the volatile parts still hold, so moving the as-of date to 2026-11-02 is supported.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+      "observedAt": "2026-11-02",
+      "quote": "SDF offers marketing grants of up to $500,000 to fuel the growth and user acquisition efforts of projects built on the Stellar network."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-sdf-marketing-grant",
+    "field": "golden.answer (pre-launch scope sentence)",
+    "decision": "accept",
+    "note": "Both quoted official wordings are verbatim and live. The old text asserted that being live is not a prerequisite, but the funding index says 'with a live product'; the new text states the visible conflict instead of picking a side. The core answer (an already-launched project qualifies) holds under both. Applier: record both sides as corroboration rows in truth (sub-claim dispute), since the skill…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding",
+      "observedAt": "2026-11-02",
+      "quote": "For both new and existing projects with a live product built on the Stellar network"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/marketing-grants (raw HTML Traction card description)",
+      "observedAt": "2026-11-02",
+      "quote": "Is the project live with traction or preparing to launch soon?"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+      "observedAt": "2026-11-02",
+      "quote": "Marketing grants go to both new and existing projects with clear use cases and concrete timelines"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search -> https://stellar.org/blog/foundation-news/the-marketing-grants-programs-first-million",
+      "observedAt": "2026-11-02",
+      "quote": "Traction: Is the project live with traction or preparing to launch soon?"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-sdf-marketing-grant",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "The old avoid item punished a possibly-true claim: an answer that cites the index's 'live product' wording would trip it. The new item targets only the claim that is false under every source (that a launched project is ineligible). It is answer-visible, not judge-blind.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding",
+      "observedAt": "2026-11-02",
+      "quote": "For both new and existing projects with a live product built on the Stellar network"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-sdf-marketing-grant",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Grader caution matches the skill's dispute pattern ('do not penalize either').",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding",
+      "observedAt": "2026-11-02",
+      "quote": "with a live product"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+      "observedAt": "2026-11-02",
+      "quote": "Is the project live with traction or preparing to launch soon?"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-sdf-marketing-grant",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Matches the re-observation date above.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-submission-lifecycle-deadlines",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Gaps compute to 5, 6, 7, 9, and 12 weeks, so '5-12 weeks apart' is correct. 'Nov 8-9' reflects the list (Nov 8) vs the round page (Nov 9). Notification TBD confirmed. The leniency covers only a true, dated observation, so it is not score laundering. The note is judge-facing and keeps dates.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards (raw HTML)",
+      "observedAt": "2026-11-02",
+      "quote": "SCF Build Award rounds run every 6 weeks."
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46 ... Deadline to submit: November 8, 2026 ... SCF #45 ... August 16, 2026 ... SCF #44 ... June 14, 2026 ... SCF #43 ... April 26, 2026 ... SCF #42 ... Ma…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg (SCF #46 round page, raw HTML)",
+      "observedAt": "2026-11-02",
+      "quote": "Build Submission | TBD - November 9, 2026 ... Panel Review | November 11, 2026 - November 18, 2026 ... Notification and Award Distribution | TBD - TBD"
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.searchResearch -> https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026",
+      "observedAt": "2026-11-02",
+      "quote": "SCF #46: Full submissions are due November 8 for up to $150K XLM"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-submission-lifecycle-deadlines",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Matches the 2026-11-02 observation.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-total-distributed",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Every figure verified verbatim. The 'accept any dated, basis-labeled current figure' clause matches the existing behavioral grading and keeps the as-of dates. Nit for the applier: the 391 figure is in golden.answer, not in the notes 'above'; consider 'The ~223/398 figures above and the 391 figure in the answer are historical snapshots'. Also, golden.answer still dates its example 2026-07-10 while …",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; computedA…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "42M Awarded in XLM ... 656 Awarded Submissions"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02",
+      "quote": "504 Previously Awarded Submissions"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Matches the live observation.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-v7-changes",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Also good if the answer: A Referral Program was added. | At launch, v7 tied the final 40% tranche to mainnet launch plus UX readiness; awarded Build teams may receive a UX audit and user testing.",
+    "note": "Removing the old 'unified Growth track' nice-to-have is correct: it contradicted the answer and avoid[2]. The proposed present-tense 'UX readiness gates the final 40% tranche' freezes launch terms as current, which avoid[2] forbids. The current Integration Track final tranche now releases on an onchain metric. The modified text frames the UX gate as a launch-time term.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md (HEAD e07b4bfc 2026-10-16)",
+      "observedAt": "2026-11-02",
+      "quote": "Implementation of a robust referral program to sharpen selection processes ... awarded Build teams may receive a UX audit and rigorous user testing as part of t…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+      "observedAt": "2026-11-02",
+      "quote": "40% at verified mainnet launch + UX readiness ... To receive the final tranche, projects must demonstrate UX readiness"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track",
+      "observedAt": "2026-11-02",
+      "quote": "For Integration Track awards, the final tranche (#3, 40% of the award) releases when your project reaches its committed, panel-ratified onchain metric — not on …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-verified-members",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "The old note was wrong for the basic Verified tier: it has NQG tier weight 0.0 and cannot be nominated to a delegate panel. The new text is correct. SDF-employee delegates skip the nomination process but receive the role from an admin, and the panel is defined as 'with the SCF Pilot role'. 'Only Pilots' therefore holds.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/governance/neural-quorum-governance/components-and-parameters",
+      "observedAt": "2026-11-02",
+      "quote": "Assigned Reputation (Verified Tier & Discord Roles) Neuron ... SCF Verified 0.0 | SCF Pathfinder 1.0 | SCF Navigator 2.0 | SCF Pilot 3.0 ... Delegate: User with…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/quarterly-governance-process",
+      "observedAt": "2026-11-02",
+      "quote": "Track Delegate Panels—groups of subject-matter experts with the SCF Pilot role ... Hold an active SCF Pilot role at the time of nomination and throughout the qu…"
+     },
+     {
+      "class": "B",
+      "ref": "github.com/stellar/scf-handbook governance/verified-members/README.md (via Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "Become a quarterly delegate for the SCF Build Award; be included in exclusive structure discussions; and propose, contribute, and vote for governance proposals …"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search -> stellar.gitbook.io how-to-become-verified",
+      "observedAt": "2026-11-02",
+      "quote": "Nominated and selected quarterly delegates ... that work at the Stellar Development Foundation ... are exempt from the Nomination and Approval process) and can …"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://stellar.org/grants-and-funding (Parallel web_fetch + raw curl)",
+   "https://stellar.org/grants-and-funding/marketing-grants (Parallel web_fetch full_content + raw curl)",
+   "https://communityfund.stellar.org/ (Parallel web_fetch)",
+   "https://communityfund.stellar.org/awards (Parallel web_fetch + raw curl)",
+   "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg (raw curl; SCF #46 round page)",
+   "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo (Parallel web_fetch; client-rendered, no content)",
+   "https://stellarlight.xyz/api/analyze?dimension=funding (raw GET)",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md (handbook HEAD e07b4bfc, 2026-10-16)",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+   "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/budget-and-deliverable-guidelines.md",
+   "Parallel web_search: stellar.org/blog/ecosystem/introducing-scf-v7; stellar.gitbook.io/scf-handbook (README, build-award, integration-track, budget-and-deliverable-guidelines, governance/verified-members, how-to-become-verified, NQG components-and-parameters, quarterly-governance-process); communityfund.stellar.org/governance",
+   "Perplexity perplexity_search x2: stellar.org/blog/foundation-news/the-marketing-grants-programs-first-million; stellar.gitbook.io NQG components-and-parameters; quarterly-governance-process; github.com/stellar/scf-handbook governance/verified-members/README.md",
+   "Raven execute: scout.searchResearch (lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026), lumenloop.search_content_semantic"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-scf-sdf-marketing-grant; q-scf-submission-lifecycle-deadlines; q-scf-total-distributed; q-scf-v7-changes; q-scf-verified-members",
+  "verifiedOnly": "q-scf-skill-stellar-scout; q-scf-skill-submission-radar; q-scf-vs-sdf-enterprise-fund; q-scout-hackathon-brief-first-hour",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-scf-sdf-marketing-grant",
+    "issue": "Upstream SDF site conflict not yet filed in improvements/: stellar.org/grants-and-funding says Marketing Grants are 'for both new and existing projects with a live product', while stellar.org/grants-and-funding/marketing-grants Traction card asks 'live with traction or preparing to launch soon?' (observed 2026-11-02). Encoded as truth.status mixed with both-side disputed corroboration rows; golden-truth Step 5 asks for an improvements/ finding, which this applier may not create."
+   },
+   {
+    "id": "q-scf-total-distributed",
+    "issue": "Upstream Stellar Light defect not yet filed: GET https://stellarlight.xyz/api/analyze?dimension=funding returns previousSnapshot with 0 projects / $0 (projectSetHash of empty input), so snapshotDelta reports all 582 projects added (+$58,585,451.99) instead of marking the delta unavailable (observed 2026-11-02). Related resolved finding sls-013 recorded deltaUnavailable support on 2026-07-14."
+   },
+   {
+    "id": "all-9-cases",
+    "issue": "Lint errors '[lifecycle-registry] registry caseContentSha256 is stale' for all nine cases need npm run eval:qa:register (and eval:qa:compile), which this applier is forbidden to run; the orchestrator must run them once all appliers finish."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-scf-sdf-marketing-grant",
+    "log": "Answer re-dated to 2026-11-02 and states both official pre-launch wordings; avoid[0] retargeted to 'launched project ineligible'; dispute grader caution in notes; status mixed with both-side corroboration rows; asOf, sources, verified refreshed."
+   },
+   {
+    "id": "q-scf-submission-lifecycle-deadlines",
+    "log": "Added a dated 2026-11-02 grader note on 5-12 week deadline gaps vs the stated six-week cadence; asOf, sources, corroboration, verified refreshed."
+   },
+   {
+    "id": "q-scf-total-distributed",
+    "log": "Appended a 2026-11-02 observation note (582 projects / $58,585,451.99; 42M XLM / 656 / 504) and marked 223/391/398 as historical; asOf, sources, corroboration, verified refreshed."
+   },
+   {
+    "id": "q-scf-v7-changes",
+    "log": "Notes nice-to-have: removed the self-contradicting 'unified Growth track' and framed the UX gate as a launch-time term (verifier newText); asOf, sources, corroboration, verified refreshed."
+   },
+   {
+    "id": "q-scf-verified-members",
+    "log": "Notes nice-to-have corrected to 'tier roles feed NQG voting power; only Pilots can become quarterly SCF Build delegates'; asOf, sources, corroboration, verified refreshed."
+   },
+   {
+    "id": "q-scf-skill-stellar-scout",
+    "log": "Verification refresh only (no gospel change): truth.verified date/by/evidence replaced with 2026-11-02 multi-class evidence."
+   },
+   {
+    "id": "q-scf-skill-submission-radar",
+    "log": "Verification refresh only (no gospel change): truth.verified date/by/evidence replaced with 2026-11-02 multi-class evidence."
+   },
+   {
+    "id": "q-scf-vs-sdf-enterprise-fund",
+    "log": "Verification refresh only (no gospel change): truth.verified date/by/evidence replaced with 2026-11-02 multi-class evidence; asOf 2026-11-02."
+   },
+   {
+    "id": "q-scout-hackathon-brief-first-hour",
+    "log": "Verification refresh only (no gospel change): truth.verified date/by/evidence replaced with 2026-11-02 multi-class evidence; asOf 2026-11-02."
+   }
+  ]
+ }
+}

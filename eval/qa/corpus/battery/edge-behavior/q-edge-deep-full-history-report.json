@@ -5,7 +5,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "I can provide a **bounded, dated history**, but not honestly claim that one response leaves nothing out. Define the period and source universe, cite primary archives, identify gaps, and offer staged eras or a narrower follow-up. The July 31, 2014 SDF launch article describes development led by Jed McCaleb and the foundation led by Joyce Kim; use that narrower contemporaneous wording unless a primary source supports a stronger founder formulation. Thorough free research is allowed—the requirement is honest scope and provenance, not refusal triggered by the phrase 'deep research.'",
+    "answer": "I can provide a **bounded, dated history**, but not honestly claim that one response leaves nothing out. Define the period and source universe, cite primary archives, identify gaps, and offer staged eras or a narrower follow-up. The July 31, 2014 SDF launch article describes development led by Jed McCaleb and David Mazières and the foundation led by Joyce Kim as Executive Director; use that narrower contemporaneous wording unless a primary source supports a stronger founder formulation. Thorough free research is allowed—the requirement is honest scope and provenance, not refusal triggered by the phrase 'deep research.'",
     "keyFacts": [
       "Provides sourced history with scope/as-of limits and staged or narrower coverage.",
       "Does not claim exhaustiveness or overstate the 2014 primary record."
@@ -32,12 +32,31 @@
       {
         "class": "A",
         "ref": "https://stellar.org/blog/foundation-news/introducing-stellar",
-        "note": "class inferred at migration"
+        "note": "Page dated 2014-07-31: 'Stellar Development is led by Jed McCaleb ... and Professor David Mazières ... The Foundation is led by Joyce Kim as Executive Director'.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://stellar.org/foundation",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/first-year",
+        "note": "'Stellar.org grew from a scrappy pair of cofounders— Jed McCaleb and Joyce Kim ... Chief Scientist David Mazières released a white paper' - later founder wording varies, so the golden keeps the 2014 role wording.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://steemit.com/cryptocurrency/@lightmansam/an-in-depth-background-of-the-stellar-development-foundation-and-stellar-lumens-part-1",
+        "note": "(2018-05-04) 'The development of the network was initially lead by Jed McCaleb and Prof. David Mazières, while the foundation was led by Joyce Kim as executive director.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://en.wikipedia.org/wiki/Stellar_(payment_network)",
+        "note": "Perplexity search result: 'Stellar was founded in July 2014 by Jed McCaleb, David Mazières, and Joyce Kim' - founder lists vary across secondary sources.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -64,20 +83,39 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "The July 31, 2014 SDF launch article names Jed McCaleb and David Mazières as development leads and Joyce Kim as the foundation's Executive Director.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/introducing-stellar",
+            "observedAt": "2026-11-02",
+            "note": "'Stellar Development is led by Jed McCaleb (resuming development of the open-source technology he created at Ripple) and Professor David Mazières (head of Stanford's Secure Computer Systems group, creator of SFS and bcrypt). The Foundation is led by Joyce Kim as Executive Director'."
+          },
+          {
+            "class": "D",
+            "ref": "https://steemit.com/cryptocurrency/@lightmansam/an-in-depth-background-of-the-stellar-development-foundation-and-stellar-lumens-part-1",
+            "observedAt": "2026-11-02",
+            "note": "Independent restatement of the same roles (Perplexity search)."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-22 primary 3262 and blind 3265; SDF/history sibling sweep.",
-        "Structural re-form (long-fact): Shortened the bounded-history fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/introducing-stellar — the dated primary article supplies bounded contemporaneous history and specific leadership roles.",
-        "Sibling sweep 2026-08-29: grep complete history|Introducing Stellar|Joyce Kim|Jed McCaleb|bounded history → q-org-sdf-board-directors, q-edge-open-world-recovery-after-narrow-miss, q-edge-deep-full-history-report; no contradiction"
+        "https://stellar.org/blog/foundation-news/introducing-stellar (Parallel web_fetch, observedAt 2026-11-02): 'Stellar Development is led by Jed McCaleb ... and Professor David Mazières ... The Foundation is led by Joyce Kim as Executive Director'.",
+        "https://steemit.com/cryptocurrency/@lightmansam/an-in-depth-background-of-the-stellar-development-foundation-and-stellar-lumens-part-1 (Perplexity search, observedAt 2026-11-02): 'initially lead by Jed McCaleb and Prof. David Mazières, while the foundation was led by Joyce Kim as executive director.'",
+        "https://stellar.org/blog/foundation-news/first-year (observedAt 2026-11-02): 'a scrappy pair of cofounders— Jed McCaleb and Joyce Kim'; founder lists vary, so the golden keeps role wording and adds no founder claim.",
+        "catalog/manifest.json (worktree, 2026-11-02): request_research occurrences 0; free research ids exposed are lumenloop.list_research and scout.searchResearch.",
+        "Independent verifier decision: accept.",
+        "Sibling sweep 2026-11-02: grep 'Mazières|Joyce Kim' -> q-org-mazieres-chief-scientist, q-hist-scp-rewrite-2015, q-protocol-scp-consensus-algorithm; no contradiction (q-org-mazieres-chief-scientist already lists Mazières among early leaders)."
       ],
       "rootCause": [
-        "Scope honesty was conflated with a blanket research ban, and a convenient founder formulation exceeded its cited primary source.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "eval-side authoring flaw: paraphrase of the 2014 launch article dropped co-lead David Mazières and Joyce Kim's Executive Director title"
       ]
     },
     "origin": "raven-next q-edge-deep-full-history-report"

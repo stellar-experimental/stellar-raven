@@ -1,0 +1,1209 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "protocol-core-04",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-protocol-bls12-381-cap59",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "BLS12-381 host functions landed in Protocol 22 via CAP-0059",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0059.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Host functions for BLS12-381 ... Status: Final ... Protocol version: 22"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/announcing-protocol-22",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 22, which introduces constructors for Soroban and support of BLS12-381 ... go up for Mainnet validator vote December 5"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'Protocol 22 upgrade BLS12-381 CAP-0059' -> https://developers.stellar.org/docs/networks/software-versions#core",
+       "observedAt": "2026-11-02",
+       "quote": "Soroban host functions for BLS12-381: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Mainnet ~2024-12-05)",
+     "claim": "Protocol 22 activated on Mainnet around 2024-12-05",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-22-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "December 5: Mainnet upgrade vote. Complete! ... upgrades?mode=set&upgradetime=2024-12-05T17:00:00Z&protocolversion=22"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 22 12/5/2024 - CAP-0058 ..., CAP-0059 (BLS12-381 host functions)."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "Pairing and curve operations; BLS signatures and Groth16/zk-SNARK verification",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0059.md",
+       "observedAt": "2026-11-02",
+       "quote": "11 new host functions are proposed for performing field and curve operations on BLS12-381 ... such as BLS signature verification, or verification of zk-SNARKs"
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/build/apps/privacy#zk-cryptographic-primitives",
+       "observedAt": "2026-11-02",
+       "quote": "BLS12-381 (CAP-59) – pairing-friendly elliptic curve with 128"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Wrong CAP (46/51/63) or protocol (P20/P21/P25), or confusing with BN254/Poseidon P25, is false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [CAP-0074](cap-0074.md) | 25 | Host functions for BN254 | ... | Final | ... | [CAP-0075](cap-0075.md) | 25 | Cryptographic Primitives for Poseidon/Poseidon2 H…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/protocol-upgrades",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 21 6/18/2024 - CAP-0051 (Support secp256r1 verification) ... Protocol 23 ... CAP-0063 (Parallel smart contract transaction processing)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-zk-host-functions-status; q-protocol-version-history-list; q-protocol-bn254-poseidon-xray; q-sor-cross-warmancer-zk-stack"
+  },
+  {
+   "id": "q-protocol-bn254-poseidon-xray",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer (P25 Mainnet 2026-01-22 17:00 UTC)",
+     "claim": "Protocol 25 X-Ray activated on Mainnet 2026-01-22 at 17:00 UTC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/stellar-x-ray-protocol-25-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "January 22, 2026 at 1700 UTC: Mainnet upgrade vote. Completed! ... upgrades?mode=set&upgradetime=2026-01-22T17:00:00Z&protocolversion=25"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.bitget.com/news/detail/12560605165361 (CryptoNewsFlash, via Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "The upgrade was scheduled for a network vote on January 22 at 17:00 UTC, after which it took effect immediately once validators approved the change."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "CAP-0074 adds exactly bn254_g1_add, bn254_g1_mul, bn254_multi_pairing_check at P25",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0074.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final ... Protocol version: 25 ... \"name\": \"bn254_g1_add\" ... \"name\": \"bn254_g1_mul\" ... \"name\": \"bn254_multi_pairing_check\""
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/announcing-stellar-x-ray-protocol-25",
+       "observedAt": "2026-11-02",
+       "quote": "bn254_g1_add / bn254_g1_mul / bn254_multi_pairing_check"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3], golden.avoid[0]",
+     "claim": "CAP-0075 exposes two configurable permutations (poseidon_permutation, poseidon2_permutation) over BLS12_381 or BN254 field, not turnkey hash helpers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0075.md",
+       "observedAt": "2026-11-02",
+       "quote": "Two new functions with export names `p` and `q` ... \"name\": \"poseidon_permutation\" ... `field`: `BLS12_381` or `BN254` ... \"name\": \"poseidon2_permutation\""
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/stellar-x-ray-protocol-25-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "X-Ray introduces new host functions for BN254, and Poseidon and Poseidon2 permutation primitives"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Both CAPs Final)",
+     "claim": "CAP-0074 and CAP-0075 are Final",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [CAP-0074](cap-0074.md) | 25 | Host functions for BN254 | Siddharth Suresh | Final |"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'Protocol 25 X-Ray BN254 Poseidon mainnet' -> https://developers.stellar.org/docs/networks/software-versions#release-notes-8",
+       "observedAt": "2026-11-02",
+       "quote": "New features in X-Ray, Protocol 25: ... BN254 Elliptic Curve Operations: CAP-74 ... Poseidon/Poseidon2 Permutation Primitives: CAP"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1..3]",
+     "claim": "P22 attribution, 'pending after 2026-01-22', and default-privacy claims are false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version: 29"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "## Protocol 29 (Mainnet, October 1, 2026)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-zk-host-functions-status; q-protocol-bls12-381-cap59; q-zk-poseidon-input-encoding; q-sor-confidential-tokens; q-edge-noinfo-stellar-native-privacy-default"
+  },
+  {
+   "id": "q-protocol-cap-process",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1], golden.avoid[0]",
+     "claim": "Draft -> Awaiting Decision -> FCP (accept/reject or back to Draft) -> Accepted -> Implemented -> Final; no Implementation Review status",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "Awaiting Decision — ... a vote will take place that will move the CAP to Final Comment Period state, or back into a Draft state. ... the CAP will move to Accept…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Implemented ... Protocol version: 30 (live example of Implemented-not-Final while Mainnet runs P29)"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version: 29"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3], golden.avoid[1..2]",
+     "claim": "Status, implementation, and activation are distinct; activation is a scheduled validator upgrade externalized by SCP",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026. ... The upgrade takes effect if they approve."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [CAP-0084](cap-0084.md) | 30 | Muxed Contract Addresses | Jake Urban | Implemented |"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4], golden.avoid[3]",
+     "claim": "CAPs are core protocol; SEPs are ecosystem standards",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAPs deal with changes to the core protocol of the Stellar network. ... SEPs deal with changes to the standards, protocols, and methods used in the ecosystem bu…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-cap-vs-sep; q-protocol-validator-upgrade-vote"
+  },
+  {
+   "id": "q-protocol-cap-vs-sep",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0], golden.notes",
+     "claim": "CAPs = core protocol (core/), SEPs = ecosystem interoperability (ecosystem/) in stellar/stellar-protocol",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAPs deal with changes to the core protocol of the Stellar network. Please see [the process for CAPs](core/README.md). SEPs deal with changes to the standards, …"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar/stellar-protocol/contents/",
+       "observedAt": "2026-11-02",
+       "quote": "... core ecosystem ... sep-template.md cap-template.md"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+       "observedAt": "2026-08-30",
+       "quote": "(re-read in prior event 2026-08-30) SEPs defined ecosystem standards above the network, unlike core-protocol CAPs"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1], golden.avoid[0]",
+     "claim": "CAP acceptance is not activation; validators vote the upgrade into effect",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-22-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "here's the command to arm your nodes for the upgrade: upgrades?mode=set&upgradetime=2024-12-05T17:00:00Z&protocolversion=22"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [CAP-0087](cap-0087.md) | 30 | Host functions for ML-DSA signature verification | Jay Geng | Implemented |"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version: 29, core_supported_protocol_version: 30"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-cap-process"
+  },
+  {
+   "id": "q-protocol-ledger-close-time",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer, golden.keyFacts[0]",
+     "claim": "Mainnet closes a ledger about every 5 seconds; target setting 5000 ms",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+       "observedAt": "2026-11-02",
+       "quote": "199 deltas over ledgers 65269731-65269930 (last closed 2026-11-02T16:03:54Z, protocol 29): min 5 max 5 mean 5.0; Counter({5.0: 199})"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/64460000 and /ledgers/65269965",
+       "observedAt": "2026-11-02",
+       "quote": "64460000 closed 2026-09-16T19:09:36Z (protocol 28); 65269965 closed 2026-11-02T16:06:49Z; mean 5.0000099 s over 809,965 ledgers"
+      },
+      {
+       "class": "C",
+       "ref": "https://mainnet.sorobanrpc.com getLedgerEntries key AAAACAAAABA= (ConfigSetting scp_timing), latestLedger 65269933",
+       "observedAt": "2026-11-02",
+       "quote": "\"scp_timing\": {\"ledger_target_close_time_milliseconds\": 5000, ...}, \"lastModifiedLedgerSeq\": 58762517"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "In September, Adapter (Protocol 28) brought mainnet ledger close times down from about 5.7 seconds to 5 seconds."
+      },
+      {
+       "class": "D",
+       "ref": "https://thechainobserver.com/stellar-unveils-bell-upgrade-with-post-quantum-signature-support/ (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar reported reduced mainnet ledger close times from approximately 5.7 seconds to five seconds."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Protocol 28 activated 2026-09-16)",
+     "claim": "Protocol 28 activated on Mainnet 2026-09-16",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-10-31",
+       "quote": "## Protocol 28 (Mainnet, September 16, 2026)"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers/64460000",
+       "observedAt": "2026-11-02",
+       "quote": "closed_at 2026-09-16T19:09:36Z, protocol_version 28"
+      },
+      {
+       "class": "D",
+       "ref": "https://simplify.jobs/p/994ce0b1-e432-465b-a369-25dc2a9c408a/Director--Research (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 28 hit Mainnet September 16, 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Docs still say 5-7 s)",
+     "claim": "Official Docs pages still say every 5-7 seconds",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+       "observedAt": "2026-10-27",
+       "quote": "Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/validators",
+       "observedAt": "2026-10-27",
+       "quote": "Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds."
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'ledger close time seconds'",
+       "observedAt": "2026-11-02",
+       "quote": "roughly 30 days (averaging 5 second ledger close times) ... approximately 180 days at today's ~5-second ledger close time"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (closeTime semantics)",
+     "claim": "closeTime is consensus-agreed, strictly monotonic, may lag a few seconds or run up to 60 s ahead",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+       "observedAt": "2026-11-01",
+       "quote": "SCP may confirm a close time that lags a few seconds behind or up to 60 seconds ahead. It's strictly monotonic"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md",
+       "observedAt": "2026-11-02",
+       "quote": "The existing whole-second `closeTime` field in `StellarValue` is unchanged"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (proposed CAP-0088 caution)",
+     "claim": "CAP-0088 (P30, Implemented) adds millisecond close time but does not change the 5000 ms target; Mainnet vote 2026-11-23",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Millisecond-Resolution Close Times ... Status: Implemented ... Protocol version: 30 ... prevents non whole-second ledger targets (e.g. moving from a 5,00…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Does Bell, Protocol 30 make Stellar produce blocks faster than 5s? Not by itself. ... November 23, 2026, 1700 UTC—Mainnet upgrade vote."
+      },
+      {
+       "class": "D",
+       "ref": "https://cryptoticker.io/en/stellar-protocol-30-bell-vote/ (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The gaps between two ledgers do not get shorter for the moment; the five-second target stays."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Close time is a fixed protocol constant or guaranteed per ledger: false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0070.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Configurable SCP Timing Parameters ... Status: Final ... Protocol version: 23"
+      },
+      {
+       "class": "C",
+       "ref": "https://mainnet.sorobanrpc.com getLedgerEntries scp_timing",
+       "observedAt": "2026-11-02",
+       "quote": "ledger_target_close_time_milliseconds: 5000 (an on-ledger, validator-upgradable setting)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As of **2026-11-02**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-11-02 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds, and official Docs pages still say every 5–7 seconds. CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-…",
+     "reason": "Refresh dated observation to 2026-11-02 (freshness-drift); values unchanged."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30, Mainnet vote scheduled 2026-11-23) adds millisecond close times but keeps the 5000 ms target; mentioning it is not wrong. Official Docs pages still say every 5–7 seconds, which matched samples before Protocol 28. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not me…",
+     "reason": "Refresh as-of date; add CAP-0088 grader caution so a true mention of the scheduled P30 millisecond clock is not penalized."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-edge-fresh-latest-protocol-version; q-quickstart-manual-ledger-close; q-ti-tx-too-late-resubmit; q-sor-doc-timestamping-manage-data"
+  },
+  {
+   "id": "q-protocol-ledger-entry-types",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer, golden.keyFacts[0]",
+     "claim": "LedgerEntryType has ten variants ACCOUNT..TTL",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "enum LedgerEntryType { ACCOUNT = 0, TRUSTLINE = 1, OFFER = 2, DATA = 3, CLAIMABLE_BALANCE = 4, LIQUIDITY_POOL = 5, CONTRACT_DATA = 6, CONTRACT_CODE = 7, CONFIG_…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "byte-identical to v27.0 and v28.0 (diff empty)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-10-31",
+       "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... | XDR | `v28.0` |"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'LedgerEntryType ledger entries' -> https://developers.stellar.org/docs/learn/glossary#ledgerkey",
+       "observedAt": "2026-11-02",
+       "quote": "LedgerKey holds information to identify a specific ledgerEntry. It is a union that can be any one of"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer ('Current Protocol 27')",
+     "claim": "Protocol 27 is current",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "'current_protocol_version': 29, 'core_version': 'stellar-core 30.0.0 ...'"
+      },
+      {
+       "class": "C",
+       "ref": "https://mainnet.sorobanrpc.com getNetwork",
+       "observedAt": "2026-11-02",
+       "quote": "\"protocolVersion\":29"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-10-31",
+       "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... ## Protocol 28 (Mainnet, September 16, 2026)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1], golden.avoid[0]",
+     "claim": "Account vs trustline vs Soroban-era entries are distinct",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "CONTRACT_DATA = 6, CONTRACT_CODE = 7, CONFIG_SETTING = 8, TTL = 9"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As of 2026-11-02, the current XDR (unchanged from Protocol 27 through Protocol 29) defines ten `LedgerEntryType` variants: `ACCOUNT`, `TRUSTLINE`, `OFFER`, `DATA`, `CLAIMABLE_BALANCE`, `LIQUIDITY_POOL`, `CONTRACT_DATA`, `CONTRACT_CODE`, `CONFIG_SETTING`, and `TTL`. Trustlines represent non-native asset balances/authorization rather than a generic balance entry; native XLM lives on Account entries. Contract code/data, configuration, and TTL are distinct Soroban-era entries. If giving only examples, label them as examples rather than an exhaustive list.",
+     "reason": "'Current Protocol 27' is stale: Mainnet runs P29 since 2026-10-01 with XDR v28.0; enum unchanged."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "Enumerates all ten current ledger-entry variants (unchanged since P27).",
+     "reason": "Drop stale 'current P27' pin; keep the list stable across P27-P29."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-23-whisk-caps; q-soroban-wasm-size-limit; q-zk-verification-resource-budget; q-protocol-ledger-header-fields"
+  },
+  {
+   "id": "q-protocol-ledger-header-fields",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer, golden.keyFacts[0]",
+     "claim": "Direct LedgerHeader fields: ledgerVersion..skipList[4], ext",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-ledger.x",
+       "observedAt": "2026-11-02",
+       "quote": "struct LedgerHeader { uint32 ledgerVersion; Hash previousLedgerHash; StellarValue scpValue; Hash txSetResultHash; Hash bucketListHash; uint32 ledgerSeq; int64 t…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x",
+       "observedAt": "2026-11-02",
+       "quote": "LedgerHeader struct identical to v27.0/v28.0; only StellarValue ext arms and a comment changed"
+      },
+      {
+       "class": "F",
+       "ref": "https://api.stellar.expert/explorer/public/ledger/65269900",
+       "observedAt": "2026-11-02",
+       "quote": "protocol: 29 ... xdr: AAAAHXuGArcw... (header decodes with the same layout; ledgerVersion 0x1d = 29)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "scpValue (StellarValue) nests txSetHash, closeTime, upgrades, ext",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-ledger.x",
+       "observedAt": "2026-11-02",
+       "quote": "struct StellarValue { Hash txSetHash; TimePoint closeTime; UpgradeType upgrades<6>; union switch (StellarValueType v) { case STELLAR_VALUE_BASIC ... case STELLA…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+       "observedAt": "2026-11-01",
+       "quote": "## Ledger header fields ### Close time The close time is a UNIX timestamp indicating when the ledger closes."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2], golden.avoid[0]",
+     "claim": "txSetResultHash vs bucketListHash vs nested txSetHash are distinct",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-ledger.x",
+       "observedAt": "2026-11-02",
+       "quote": "Hash txSetResultHash; // the TransactionResultSet that led to this ledger  Hash bucketListHash; // hash of the ledger state"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As of 2026-11-02, the current `LedgerHeader` (unchanged from Protocol 27 through Protocol 29) directly contains `ledgerVersion`, `previousLedgerHash`, `scpValue`, `txSetResultHash`, `bucketListHash`, `ledgerSeq`, `totalCoins`, `feePool`, `inflationSeq`, `idPool`, `baseFee`, `baseReserve`, `maxTxSetSize`, `skipList[4]`, and `ext`. Inside `scpValue`/`StellarValue` are `txSetHash`, `closeTime`, `upgrades`, and its extension. Keep direct and nested fields separate: `txSetHash` is not the same field as `txSetResultHash`, and BucketList state commitment is distinct from transaction-set/result commit…",
+     "reason": "Same label drift as entry-types: Mainnet runs P29 (XDR v28.0); header unchanged since P27."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "Lists all direct LedgerHeader fields (unchanged since P27).",
+     "reason": "Drop the P27 version pin from the key fact; content unchanged."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-ledger-entry-types; q-pc-bucketlist-vs-merkle-inclusion-proof; q-protocol-validator-upgrade-vote; q-ti-parse-raw-ledger-data; q-hot-fee-pool-burn-deflation; q-protocol-max-tx-set-size"
+  },
+  {
+   "id": "q-protocol-max-tx-set-size",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer, golden.keyFacts[0]",
+     "claim": "Mainnet classic limit 1,000 operations per ledger (maxTxSetSize counts operations)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+       "observedAt": "2026-11-02",
+       "quote": "all 200 ledgers 65269731-65269930 (protocol 29): max_tx_set_size 1000"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-10-28",
+       "quote": "on Mainnet, as of July 2026, 1,000 non-smart-contract operations and 2,000 smart contract transactions"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-10-21",
+       "quote": "| **Operations per Ledger** | 1,000* | 200* | 1,000* | | **Smart Contract Transactions per Ledger** | Max 2,000* |"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Mainnet ledgerMaxTxCount 2,000 smart-contract transactions",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://mainnet.sorobanrpc.com getLedgerEntries key AAAACAAAAAs= latestLedger 65269933",
+       "observedAt": "2026-11-02",
+       "quote": "\"contract_execution_lanes\": {\"ledger_max_tx_count\": 2000}, \"lastModifiedLedgerSeq\": 60993066"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-10-28",
+       "quote": "2,000 smart contract transactions"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer, golden.keyFacts[1]",
+     "claim": "ledgerMaxTxCount is a separate schema setting with no numeric value in XDR",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-contract-config-setting.x",
+       "observedAt": "2026-11-02",
+       "quote": "struct ConfigSettingContractExecutionLanesV0 { // maximum number of Soroban transactions per ledger  uint32 ledgerMaxTxCount; };"
+      },
+      {
+       "class": "C",
+       "ref": "https://mainnet.sorobanrpc.com getLedgerEntries",
+       "observedAt": "2026-11-02",
+       "quote": "value lives in an on-ledger ConfigSetting entry"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-protocol-ledger-header-fields"
+  },
+  {
+   "id": "q-protocol-network-passphrases-list",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1], golden.answer",
+     "claim": "Public 'Public Global Stellar Network ; September 2015'; Testnet 'Test SDF Network ; September 2015'; Futurenet 'Test SDF Future Network ; October 2022'",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-10-21",
+       "quote": "Mainnet: ' `Public Global Stellar Network ; September 2015`' Testnet: ' `Test SDF Network ; September 2015`' Futurenet: ' `Test SDF Future Network ; October 202…"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/ , https://horizon-testnet.stellar.org/ , https://horizon-futurenet.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "network_passphrase: 'Public Global Stellar Network ; September 2015' / 'Test SDF Network ; September 2015' / 'Test SDF Future Network ; October 2022'"
+      },
+      {
+       "class": "C",
+       "ref": "https://mainnet.sorobanrpc.com getNetwork",
+       "observedAt": "2026-11-02",
+       "quote": "\"passphrase\":\"Public Global Stellar Network ; September 2015\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (cross-reference)",
+     "claim": "Rationale is covered by sibling case q-protocol-network-passphrases",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "eval/qa/corpus/migration-ledger.json (sourceId q-protocol-network-passphrases)",
+       "observedAt": "2026-11-02",
+       "quote": "Documented drop under ABSORB-TRIAGE: absorb: q-protocol-network-passphrases-list ..."
+      },
+      {
+       "class": "B",
+       "ref": "find eval/qa/corpus/battery -name 'q-protocol-network-passphrases.json'",
+       "observedAt": "2026-11-02",
+       "quote": "no file; the case is not in the battery"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Garbled strings or a separate 'mainnet' passphrase are false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-10-31",
+       "quote": "| Mainnet Network Passphrase | `Public Global Stellar Network ; September 2015` |"
+      },
+      {
+       "class": "C",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "network_passphrase: 'Public Global Stellar Network ; September 2015'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Exact passphrase string per network [1][2]:\n\n- **Public network**: `Public Global Stellar Network ; September 2015`\n- **Testnet**: `Test SDF Network ; September 2015`\n- **Futurenet**: `Test SDF Future Network ; October 2022`\n\nThere is no separate \"mainnet\" passphrase distinct from the public-network one.",
+     "reason": "Remove judge-facing reference to q-protocol-network-passphrases, which was dropped at migration (migration-ledger ABSORB-TRIAGE)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Bare per-network enumeration: the network-id/replay/signing rationale is not required. Strings verified against developers.stellar.org/docs/networks. Trap = garbling the strings.\nAlso good if the answer: Gives the futurenet passphrase exactly ('Test SDF Future Network ; October 2022').\nGolden cites: A networks / network-passphrase page on developers.stellar.org.",
+     "reason": "Same stale sibling reference in grader notes."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: cross-reference to sibling q-protocol-network-passphrases left after migration dropped that case."
+   ],
+   "siblings": "q-protocol-futurenet-vs-testnet; q-ti-testnet-mainnet-migration; q-tool-cli-testnet-identity-howto"
+  },
+  {
+   "id": "q-protocol-operation-types-list",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..4], golden.answer",
+     "claim": "Classic operation set (CreateAccount..RestoreFootprint, plus legacy AllowTrust)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "enum OperationType { CREATE_ACCOUNT = 0, PAYMENT = 1, PATH_PAYMENT_STRICT_RECEIVE = 2, MANAGE_SELL_OFFER = 3, CREATE_PASSIVE_SELL_OFFER = 4, SET_OPTIONS = 5, CH…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "byte-identical to v27.0 (diff empty)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+       "observedAt": "2026-10-24",
+       "quote": "## Payment ... ## Path payment strict receive ... ## Manage buy offer ... ## Change trust ... ## Account merge ... ## Invoke Host Function ... ## Extend Footpri…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "No classic Transfer/Mint/Burn operations; operations are bundled in transactions",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "OperationType has no TRANSFER, MINT, or BURN member"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-10-28",
+       "quote": "Transactions can have up to 100 operations per transaction except for transactions that execute a smart contract."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-asset-path-payment-ops; q-sep-clawback-prereq-flag; q-defi-arbitrage-pathpayment-bots; q-asset-usdc-eurc-path-fx"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-protocol-ledger-close-time",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Re-derived: 2026-11-02 Horizon sample 199 deltas all 5 s; target 5000 ms; SDF blog confirms P28 moved Mainnet from ~5.7 s to 5 s. Date bump only; as-of kept. Proposer must also move truth.asOf and stagger truth.reverifyBy in the same diff.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+      "observedAt": "2026-11-02",
+      "quote": "ledgers 65270052-65270251, closed_at 2026-11-02T16:14:04Z..16:30:39Z; 199 deltas, Counter({5.0: 199}), mean 5.0 s, protocol_version 29"
+     },
+     {
+      "class": "F",
+      "ref": "stellar network settings --network mainnet (stellar-cli 28.1.0)",
+      "observedAt": "2026-11-02",
+      "quote": "scp_timing\":{\"ledger_target_close_time_milliseconds\":5000,..."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "November 23, 2026, 1700 UTC—Mainnet upgrade vote. ... In September, Adapter (Protocol 28) brought mainnet ledger close times down from about 5.7 seconds to 5 se…"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs 'ledger close time every 5 seconds' -> https://developers.stellar.org/docs/build/guides/storage/storage-strategies#strategy-5-ttl-management--bump-on-access",
+      "observedAt": "2026-11-02",
+      "quote": "approximately 180 days at today's ~5-second ledger close time"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-ledger-close-time",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. Official Docs pages still say every 5–7 seconds, which matched samples before Protocol 28. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired …",
+    "note": "P30 number, CAP-0088 scope, and the 2026-11-23 vote date confirmed across A, B, D. 'keeps the 5000 ms target' overstates: CAP-0088 does not set the target (a CAP-0070 validator-voted setting); it only enables non-whole-second targets later. Reworded to 'does not itself change'. The added grader caution protects a true claim, so it is not score laundering.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Millisecond-Resolution Close Times ... Status: Implemented ... Protocol version: 30 ... prevents non whole-second ledger targets (e.g. moving from a 5,00…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "Millisecond-resolution close times (MS_CLOSE_TIME, vnext) by @SirTyson in #5423 (CAP-0088; enabled in protocol 30)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "November 23, 2026, 1700 UTC—Mainnet upgrade vote. ... In September, Adapter (Protocol 28) brought mainnet ledger close times down from about 5.7 seconds to 5 se…"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search 'Stellar Protocol 30 mainnet upgrade vote date' -> https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30; https://cryptoticker.io/en/stellar-protocol-30-bell-vote/",
+      "observedAt": "2026-11-02",
+      "quote": "The mainnet upgrade vote follows on November 23, 2026 at 17:00 UTC ... Blocks do not get faster on their own yet."
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search -> https://www.kucoin.com/news/flash/stellar-prepares-bell-upgrade-for-protocol-30-with-new-contract-addresses-and-quantum-resistant-features",
+      "observedAt": "2026-11-02",
+      "quote": "mainnet voting is set for November 23 at 17:00 UTC ... with no change to the current block interval"
+     },
+     {
+      "class": "F",
+      "ref": "stellar network settings --network mainnet (stellar-cli 28.1.0)",
+      "observedAt": "2026-11-02",
+      "quote": "scp_timing\":{\"ledger_target_close_time_milliseconds\":5000,..."
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-ledger-entry-types",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "As of 2026-11-02 (Mainnet on Protocol 29), the XDR defines ten `LedgerEntryType` variants, the same in the stellar-xdr v27.0, v28.0, and v30.0 releases: `ACCOUNT`, `TRUSTLINE`, `OFFER`, `DATA`, `CLAIMABLE_BALANCE`, `LIQUIDITY_POOL`, `CONTRACT_DATA`, `CONTRACT_CODE`, `CONFIG_SETTING`, and `TTL`. Trustlines represent non-native asset balances/authorization rather than a generic balance entry; native XLM lives on Account entries. Contract code/data, configuration, and TTL are distinct Soroban-era entries. If giving only examples, label them as examples rather than an exhaustive list.",
+    "note": "Stale 'Current Protocol 27' fix is right (Mainnet is P29). 'through Protocol 29' is under-scoped: stellar-xdr has no v29 tag, and the v30.0 enum is identical. The eval window (2027-03) falls after the P30 vote, so name the releases checked.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger-entries.x",
+      "observedAt": "2026-11-02",
+      "quote": "enum LedgerEntryType { ACCOUNT = 0, TRUSTLINE = 1, OFFER = 2, DATA = 3, CLAIMABLE_BALANCE = 4, LIQUIDITY_POOL = 5, CONTRACT_DATA = 6, CONTRACT_CODE = 7, CONFIG_…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-xdr/releases; diff of Stellar-ledger-entries.x and Stellar-ledger.x across v27.0, v28.0, v30.0",
+      "observedAt": "2026-11-02",
+      "quote": "releases 27.0 (2026-06-09), 28.0 (2026-08-27), 30.0 (2026-10-21); no v29 tag. LedgerEntryType enum and LedgerHeader struct are byte-identical across the three; …"
+     },
+     {
+      "class": "C",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "'current_protocol_version': 29, 'core_supported_protocol_version': 30, 'core_version': 'stellar-core 30.0.0'"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/glossary#ledgerkey",
+      "observedAt": "2026-11-02",
+      "quote": "the LedgerEntryTypes (ACCOUNT, TRUSTLINE, OFFER, DATA, CLAIMABLE_BALANCE, Liquidity Pool, Contract Data, Contract Code, Config Setting or TTL)."
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-ledger-entry-types",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "True through v30.0; 69 characters.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v27.0/Stellar-ledger-entries.x",
+      "observedAt": "2026-11-02",
+      "quote": "enum LedgerEntryType { ACCOUNT = 0, TRUSTLINE = 1, OFFER = 2, DATA = 3, CLAIMABLE_BALANCE = 4, LIQUIDITY_POOL = 5, CONTRACT_DATA = 6, CONTRACT_CODE = 7, CONFIG_…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger-entries.x",
+      "observedAt": "2026-11-02",
+      "quote": "enum LedgerEntryType { ACCOUNT = 0, TRUSTLINE = 1, OFFER = 2, DATA = 3, CLAIMABLE_BALANCE = 4, LIQUIDITY_POOL = 5, CONTRACT_DATA = 6, CONTRACT_CODE = 7, CONFIG_…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-xdr/releases; diff of Stellar-ledger-entries.x and Stellar-ledger.x across v27.0, v28.0, v30.0",
+      "observedAt": "2026-11-02",
+      "quote": "releases 27.0 (2026-06-09), 28.0 (2026-08-27), 30.0 (2026-10-21); no v29 tag. LedgerEntryType enum and LedgerHeader struct are byte-identical across the three; …"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-ledger-header-fields",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "As of 2026-11-02 (Mainnet on Protocol 29), the `LedgerHeader` (the same in the stellar-xdr v27.0, v28.0, and v30.0 releases) directly contains `ledgerVersion`, `previousLedgerHash`, `scpValue`, `txSetResultHash`, `bucketListHash`, `ledgerSeq`, `totalCoins`, `feePool`, `inflationSeq`, `idPool`, `baseFee`, `baseReserve`, `maxTxSetSize`, `skipList[4]`, and `ext`. Inside `scpValue`/`StellarValue` are `txSetHash`, `closeTime`, `upgrades`, and its extension; Protocol 30 adds a millisecond `closeTimeMs` inside that extension. Keep direct and nested fields separate: `txSetHash` is not the same field a…",
+    "note": "Direct fields are identical in v27.0/v28.0/v30.0. P30 (CAP-0088) adds closeTimeMs only inside the StellarValue extension, so the nested-field sentence stays true; one clause added so a March 2027 answer that names closeTimeMs is not penalized.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x",
+      "observedAt": "2026-11-02",
+      "quote": "struct LedgerHeader { uint32 ledgerVersion; Hash previousLedgerHash; StellarValue scpValue; Hash txSetResultHash; Hash bucketListHash; uint32 ledgerSeq; int64 t…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-xdr/releases; diff of Stellar-ledger-entries.x and Stellar-ledger.x across v27.0, v28.0, v30.0",
+      "observedAt": "2026-11-02",
+      "quote": "releases 27.0 (2026-06-09), 28.0 (2026-08-27), 30.0 (2026-10-21); no v29 tag. LedgerEntryType enum and LedgerHeader struct are byte-identical across the three; …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Millisecond-Resolution Close Times ... Status: Implemented ... Protocol version: 30 ... prevents non whole-second ledger targets (e.g. moving from a 5,00…"
+     },
+     {
+      "class": "C",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "'current_protocol_version': 29, 'core_supported_protocol_version': 30, 'core_version': 'stellar-core 30.0.0'"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers#ledger-header-fields",
+      "observedAt": "2026-11-02",
+      "quote": "(index hit for #ledger-header-fields and #scp-value sections; snippet empty)"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-ledger-header-fields",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "True through v30.0; 59 characters.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v27.0/Stellar-ledger.x",
+      "observedAt": "2026-11-02",
+      "quote": "struct LedgerHeader { uint32 ledgerVersion; Hash previousLedgerHash; StellarValue scpValue; Hash txSetResultHash; Hash bucketListHash; uint32 ledgerSeq; int64 t…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x",
+      "observedAt": "2026-11-02",
+      "quote": "struct LedgerHeader { uint32 ledgerVersion; Hash previousLedgerHash; StellarValue scpValue; Hash txSetResultHash; Hash bucketListHash; uint32 ledgerSeq; int64 t…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-xdr/releases; diff of Stellar-ledger-entries.x and Stellar-ledger.x across v27.0, v28.0, v30.0",
+      "observedAt": "2026-11-02",
+      "quote": "releases 27.0 (2026-06-09), 28.0 (2026-08-27), 30.0 (2026-10-21); no v29 tag. LedgerEntryType enum and LedgerHeader struct are byte-identical across the three; …"
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-network-passphrases-list",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Strings re-confirmed across A, F, E. The removed parenthetical pointed at q-protocol-network-passphrases, which the migration ledger records as dropped; a judge-facing cross-reference to a retired case adds nothing.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Mainnet: ' Public Global Stellar Network ; September 2015' Testnet: ' Test SDF Network ; September 2015' Futurenet: ' Test SDF Future Network ; October 2022'"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://horizon-futurenet.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "network_passphrase: 'Public Global Stellar Network ; September 2015' | 'Test SDF Network ; September 2015' | 'Test SDF Future Network ; October 2022'"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/networks#network-passphrases",
+      "observedAt": "2026-11-02",
+      "quote": "Testnet: 'Test SDF Network ; September 2015' Futurenet: 'Test SDF Future Network ; October 2022'"
+     },
+     {
+      "class": "B",
+      "ref": "eval/qa/corpus/migration-ledger.json (sourceId q-protocol-network-passphrases)",
+      "observedAt": "2026-11-02",
+      "quote": "Documented drop under ABSORB-TRIAGE: absorb: q-protocol-network-passphrases-list must gain ..."
+     }
+    ]
+   },
+   {
+    "id": "q-protocol-network-passphrases-list",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removes dated review history and the retired-case reference; keeps the trap, the futurenet nice-to-have, and the cite. The new 'rationale is not required' line matches the question scope and adds no avoid item.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Mainnet: ' Public Global Stellar Network ; September 2015' Testnet: ' Test SDF Network ; September 2015' Futurenet: ' Test SDF Future Network ; October 2022'"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://horizon-futurenet.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "network_passphrase: 'Public Global Stellar Network ; September 2015' | 'Test SDF Network ; September 2015' | 'Test SDF Future Network ; October 2022'"
+     },
+     {
+      "class": "B",
+      "ref": "eval/qa/corpus/migration-ledger.json (sourceId q-protocol-network-passphrases)",
+      "observedAt": "2026-11-02",
+      "quote": "Documented drop under ABSORB-TRIAGE: absorb: q-protocol-network-passphrases-list must gain ..."
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-protocol-ledger-close-time; q-protocol-ledger-entry-types; q-protocol-ledger-header-fields; q-protocol-network-passphrases-list",
+  "verifiedOnly": "q-protocol-bls12-381-cap59; q-protocol-bn254-poseidon-xray; q-protocol-cap-process; q-protocol-cap-vs-sep; q-protocol-max-tx-set-size; q-protocol-operation-types-list",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-protocol-cap-process",
+    "issue": "Proposer flag, not a change: stellar-protocol core/README.md words Final as 'accepted by a majority of validators (nodes) on the network'; avoid[1] (activation is not a simple validator majority) could catch an attributed quote of that canonical page. No caution added because ADR-0008 caps canonical-page cautions at three cases; owner decision."
+   },
+   {
+    "id": "q-protocol-network-passphrases-list",
+    "issue": "rootCause names an eval-side authoring flaw via '.agents/TODO.md'; the applier may edit only case files, so the orchestrator should add or confirm a matching .agents/TODO.md entry (or the round ledger) for the retired-sibling cross-reference."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-protocol-ledger-close-time",
+    "log": "Moved answer/notes as-of date to 2026-11-02, added verifier-modified CAP-0088 caution to notes, asOf 2026-11-02, reverifyBy 2027-03-09, 3 sources + 2 corroboration rows, new verified event."
+   },
+   {
+    "id": "q-protocol-ledger-entry-types",
+    "log": "Answer re-dated to 2026-11-02 (Mainnet P29; XDR v27.0/v28.0/v30.0 identical), keyFact 1 drops 'current P27', asOf 2026-11-02, 4 sources + 1 corroboration row, new verified event."
+   },
+   {
+    "id": "q-protocol-ledger-header-fields",
+    "log": "Answer re-dated to 2026-11-02 (Mainnet P29; header identical in v27.0/v28.0/v30.0; P30 closeTimeMs in StellarValue ext), keyFact 1 drops 'P27', asOf 2026-11-02, 4 sources + 1 corroboration row, new verified event."
+   },
+   {
+    "id": "q-protocol-network-passphrases-list",
+    "log": "Removed retired-case cross-reference from answer, replaced dated review history in notes with scope line, 2 sources + 1 corroboration row, new verified event (rootCause authoring flaw)."
+   },
+   {
+    "id": "q-protocol-bls12-381-cap59",
+    "log": "No gospel change; refreshed truth.verified (2026-11-02, multi-class evidence), added 3 sources."
+   },
+   {
+    "id": "q-protocol-bn254-poseidon-xray",
+    "log": "No gospel change; refreshed truth.verified (2026-11-02, multi-class evidence), added 2 sources, asOf 2026-11-02."
+   },
+   {
+    "id": "q-protocol-cap-process",
+    "log": "No gospel change; refreshed truth.verified (2026-11-02, multi-class evidence), added 2 sources."
+   },
+   {
+    "id": "q-protocol-cap-vs-sep",
+    "log": "No gospel change; refreshed truth.verified (2026-11-02, multi-class evidence), added 2 sources."
+   },
+   {
+    "id": "q-protocol-max-tx-set-size",
+    "log": "No gospel change; refreshed truth.verified (2026-11-02, multi-class evidence), added 2 sources, asOf 2026-11-02, reverifyBy 2027-03-23."
+   },
+   {
+    "id": "q-protocol-operation-types-list",
+    "log": "No gospel change; refreshed truth.verified (2026-11-02, multi-class evidence), added 1 sources."
+   }
+  ]
+ }
+}

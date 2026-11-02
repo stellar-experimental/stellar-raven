@@ -36,7 +36,9 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery"
+        "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+        "note": "Admin-held recovery role, guardian policy signer, cooldown after key rotation, event emission. Replaces the dead recovery page (308 to a 404 on 2026-11-02).",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
@@ -45,6 +47,12 @@
       {
         "class": "B",
         "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/master/packages/accounts"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+        "note": "Seedless passkeys, Ed25519 and policy signers, public key stored in contract state, cloud-synced passkeys.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -54,8 +62,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+            "observedAt": "2026-11-02",
+            "note": "'You want a passkey or hardware key experience without exposing seed phrases.' / 'Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, policy signers, session keys or anything the contract can verify.'"
           },
           {
             "class": "A",
@@ -75,8 +84,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+            "observedAt": "2026-11-02",
+            "note": "'Separate roles (admin vs. standard) so daily use can be delegated while upgrades or recovery stay with admins.' Supports admin-held recovery only; the unrecoverable consequence rests on the __check_auth model and the OpenZeppelin source row."
           },
           {
             "class": "A",
@@ -96,8 +106,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+            "observedAt": "2026-11-02",
+            "note": "'add a cooldown after actions like key rotation or large transfers.' / 'require the end user plus a policy signer' for changing signers / 'emit an event'. Notifications and cancellation are not stated on this page."
           },
           {
             "class": "A",
@@ -117,8 +128,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+            "observedAt": "2026-11-02",
+            "note": "'A policy signer exists to approve or deny specific actions (for example, an auditor key, a guardian key, ...)'. No disclosure duty is stated; design guidance, not a quoted rule."
           },
           {
             "class": "A",
@@ -138,8 +150,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+            "observedAt": "2026-11-02",
+            "note": "'Keys stay on the device or synced across devices through cloud providers.'"
           },
           {
             "class": "A",
@@ -159,8 +172,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+            "observedAt": "2026-11-02",
+            "note": "'Registration: use WebAuthn to create a device keypair; store the public key (and optional credential ID) in contract state.' The contract address cannot recreate a private credential."
           },
           {
             "class": "A",
@@ -180,8 +194,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
+            "observedAt": "2026-11-02",
+            "note": "'Separate roles (admin vs. standard) so daily use can be delegated while upgrades or recovery stay with admins.' Recovery authority must exist before loss."
           },
           {
             "class": "A",
@@ -201,8 +216,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+            "observedAt": "2026-11-02",
+            "note": "'Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, policy signers, session keys or anything the contract can verify.'"
           },
           {
             "class": "A",
@@ -218,21 +234,21 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
-        "https://developers.google.com/identity/passkeys/supported-environments",
-        "https://github.com/OpenZeppelin/stellar-contracts/tree/master/packages/accounts",
-        "Structural re-form (compound-predicate): Recast four compound or long recovery facts with single predicates; every recovery claim is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/passkey-kit — the current wallet supports passkey, Ed25519, and policy signers plus pre-loss signer management.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — smart-wallet authority still comes from contract-defined signers and policy.",
-        "Live re-check 2026-08-27: https://docs.openzeppelin.com/stellar-contracts/accounts/policies — current policies still support thresholds, time restrictions, and configurable controls.",
-        "Live re-check 2026-08-27: https://developers.google.com/identity/passkeys/supported-environments — provider sync remains availability behavior, not Stellar contract authority.",
-        "Sibling sweep 2026-08-27: grep passkey|recovery signer|guardian → q-passkey-smart-account-architecture, q-passkey-platform-constraints, q-smart-account-scoped-policy-signers, q-tool-passkey-wallet-recovery; no contradiction"
+        "Provenance-only correction; judge-facing fields unchanged.",
+        "F curl https://developers.stellar.org/docs/build/apps/smart-wallets/recovery — '308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)' (observedAt 2026-11-02).",
+        "B https://developers.stellar.org/sitemap.xml — contract-accounts pages listed: (index), advanced-patterns, examples, smart-wallets; no recovery page (observedAt 2026-11-02). stellar/stellar-docs redirects.json maps '/docs/build/apps/smart-wallets/:slug*' to '/docs/build/guides/contract-accounts/:slug*'.",
+        "A https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — 'Separate roles (admin vs. standard) so daily use can be delegated while upgrades or recovery stay with admins.' and 'add a cooldown after actions like key rotation or large transfers.' (observedAt 2026-11-02).",
+        "A https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — 'Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, policy signers, session keys or anything the contract can verify.' and 'Keys stay on the device or synced across devices through cloud providers.' (observedAt 2026-11-02).",
+        "B https://raw.githubusercontent.com/kalepail/passkey-kit/main/README.md — 'A wallet is a Soroban smart contract whose signers can be secp256r1 passkeys, Ed25519 keys, or policy contracts.' (observedAt 2026-11-02): keyFacts[0] confirmed.",
+        "B https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/smart_account/mod.rs — 'Rule 1: Admin group - 3 of 3 signers ... optional expiration (valid_until)' (observedAt 2026-11-02): keyFacts[1..2] confirmed.",
+        "A https://developers.google.com/identity/passkeys/supported-environments — HTTP 200; passkey sync is a provider/platform feature (observedAt 2026-11-02): keyFacts[4] confirmed.",
+        "Sibling sweep 2026-11-02: q-passkey-smart-account-architecture, q-passkey-platform-constraints, q-smart-account-scoped-policy-signers, q-tool-passkey-wallet-recovery checked; no battery case still cites the dead recovery URL; no contradiction."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Eval-side provenance flaw: truth.sources and all eight corroboration rows cited https://developers.stellar.org/docs/build/apps/smart-wallets/recovery, which resolves to a 404 on 2026-11-02 and has no commit history in stellar/stellar-docs; refs now point at the live contract-accounts pages."
       ]
     },
     "origin": "kaan passkey-wallet-recovery"

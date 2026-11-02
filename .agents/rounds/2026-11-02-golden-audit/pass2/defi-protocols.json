@@ -1,0 +1,1215 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "defi-protocols",
+ "kind": "pass2",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-defi-flash-loans",
+   "claims": [
+    {
+     "claim": "slender.fi, app.slender.fi, and www.slender.fi do not resolve",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "dig slender.fi / app.slender.fi / www.slender.fi @1.1.1.1 and @8.8.8.8",
+       "observedAt": "2026-11-02",
+       "quote": "status: NXDOMAIN (all six lookups)"
+      },
+      {
+       "class": "F",
+       "ref": "whois slender.fi (whois.fi)",
+       "observedAt": "2026-11-02",
+       "quote": "Domain not found"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_fetch https://slender.fi/",
+       "observedAt": "2026-08-08",
+       "quote": "Flash loans Borrow and repay in the same block with no collateral (acquired_at 2026-08-08T00:00:00Z, cached copy only)"
+      }
+     ]
+    },
+    {
+     "claim": "Slender has a real flash-loan association in code",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api search/code?q=flash_loan+repo:eq-lab/slender",
+       "observedAt": "2026-11-02",
+       "quote": "36 hits: contracts/pool/src/methods/flash_loan.rs, contracts/pool/src/lib.rs, interfaces/pool-interface/src/lib.rs"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/eq-lab/slender",
+       "observedAt": "2026-11-02",
+       "quote": "archived false, pushed_at 2025-10-03T10:46:09Z"
+      }
+     ]
+    },
+    {
+     "claim": "Scout marks Slender Inactive and XycLoans Live on a frontend-bundle basis",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=slender&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "slender Inactive statusAsOf 2026-07-09 human-verified https://defillama.com/protocol/slender"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=xycloans&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "xycloans Live 2026-09-04 product-integration https://main.xycloans.app/_next/static/chunks/eef1a047-8f44bfe5d78759e9.js"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Slender bullet said operator marketing 'claims' flash loans in present tense; the domain is unregistered on 2026-11-02, so the bullet now says 'claimed', dates the domain lapse, and names the code-level flash_loan evidence that keeps avoid[0] true. keyFacts and avoid unchanged."
+    },
+    {
+     "field": "truth.sources[+]",
+     "reason": "Class B code evidence for the Slender flash-loan association."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Add freshness-drift (domain lapse) and sls-024 (pass-1 notes record the Scout XycLoans Live label on a frontend bundle, the sls-024 2026-11-02 recurrence names this case)."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md"
+   ],
+   "siblings": "q-defi-blend-alternatives (already dates slender.fi NXDOMAIN 2026-11-02; consistent); q-defi-named-newer-protocols (no Slender flash-loan claim)"
+  },
+  {
+   "id": "q-defi-etherfuse-stablebonds",
+   "claims": [
+    {
+     "claim": "Scout labels OrbitCDP Inactive; operator site says Live on Stellar with empty stats",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=etherfuse&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "orbitcdp Inactive 2026-09-05 human-verified; lifecycle.note 'Owner verdict 2026-09-05: dead ... the 'Live on Stellar' banner is marketing copy'"
+      },
+      {
+       "class": "A",
+       "ref": "https://orbitcdp.finance/",
+       "observedAt": "2026-11-02",
+       "quote": "Live on Stellar ... oUSD Minted — Collateral Locked — Borrow APY —"
+      }
+     ]
+    },
+    {
+     "claim": "OrbitCDP SCF total differs across aggregators (dropped from the note)",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Scout orbitcdp row",
+       "observedAt": "2026-11-02",
+       "quote": "scfTotalAwardedUSD 280000, scfAsOf 2026-09-04"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project {slug:orbitcdp}",
+       "observedAt": "2026-11-02",
+       "quote": "awarded_total 330000"
+      }
+     ]
+    },
+    {
+     "claim": "OrbitCDP record still ties USTRY/CETES to Etherfuse",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Scout orbitcdp shortDescription",
+       "observedAt": "2026-11-02",
+       "quote": "Users lock collateral (XLM and Etherfuse tokenized bonds like the USTRY US Treasury token and CETES Mexican T-bills)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "F11: the note called OrbitCDP 'Live' as a live Scout confirmation, contradicting q-defi-blend-alternatives, q-defi-named-newer-protocols, q-defi-rwa-scf-similar. Drop the stale Live label and the conflicting $280K figure; keep the Etherfuse collateral grounding."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Gospel change now exists; Scout relabeled OrbitCDP Inactive on 2026-09-05 (freshness-drift). The applier must also replace the pass-1 'No gospel change' evidence line."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-blend-alternatives; q-defi-named-newer-protocols; q-defi-rwa-scf-similar; cluster-013 YieldBlox members unaffected"
+  },
+  {
+   "id": "q-defi-soroswap-what-is",
+   "claims": [
+    {
+     "claim": "Aggregator v3 CARVQX…DDC4 is mainnet; CAYP3…TXTO deprecated since 2026-09-24",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3.md",
+       "observedAt": "2026-11-02",
+       "quote": "| Aggregator v3 | `CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4` | ... The previous aggregator, `CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY6…"
+      },
+      {
+       "class": "F",
+       "ref": "pass-1 mainnet getEvents (recorded in case)",
+       "observedAt": "2026-11-02",
+       "quote": "v3 641 swap events, CAYP3 0 events"
+      }
+     ]
+    },
+    {
+     "claim": "API venue list is soroswap, aqua, sushi, comet, sdex",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+       "observedAt": "2026-11-02",
+       "quote": "soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar classic DEX, quoted only when listed) (sha256 ccccaa2e…491f)"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/soroswap/sdk/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "// Returns: ['sdex', 'soroswap', 'phoenix', 'aqua', 'comet', 'sushi'] (SDK example; Phoenix ambiguity is contract/SDK vs API venue list)"
+      }
+     ]
+    },
+    {
+     "claim": "Scout Soroswap row still lists venues (Soroswap, Phoenix, Aquarius)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution"
+      }
+     ]
+    },
+    {
+     "claim": "github.com/soroswap/docs is gone",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/soroswap/docs ; https://api.github.com/repos/soroswap/docs ; pinned blob 1d7a3c8a…/concepts/aggregator.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404 (all three)"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/concepts/aggregator",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 308 -> https://docs.soroswap.finance/"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Qualify the 2026-06-22 Scout quote whose venue list is stale (sls-099); replace the internal 'cs-002 stale pages' reference with a plain description, since cs-002 is fixed-upstream and its trigger has expired."
+    },
+    {
+     "field": "tags.freshness",
+     "reason": "M6: the answer pins dated aggregator contract addresses and a venue set; a stable tag with a reverifyBy is inconsistent."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "reason": "The aggregator moved to v3 on 2026-09-24; re-check sooner than 2027-06-24. 2027-01-20 lands in a light month (2 cases in 2027-01)."
+    },
+    {
+     "field": "truth.corroboration[1].evidence[2].note",
+     "reason": "Record that the 2026-09-17 source is now HTTP 404 and name the live replacements; the historical ref stays because it records what was observed."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Pass-1 notes change came from the cs-002 upstream fix and the stale Scout venue list (sls-099)."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md",
+    "improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md"
+   ],
+   "siblings": "q-defi-soroswap-vs-stellarx; q-defi-phoenix-what-is; q-eco-dex-saturation; q-defi-provide-liquidity-impermanent-loss; q-edge-factcheck-soroswap-first-amm (already repointed to soroswap/sdk); clusters 012, 014, 038, 046"
+  },
+  {
+   "id": "q-defi-soroswap-vs-stellarx",
+   "claims": [
+    {
+     "claim": "On-chain aggregator is Soroban-only; API quotes may add SDEX as a classic path",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+       "observedAt": "2026-11-02",
+       "quote": "SDEX is quoted alongside as a separate classic path."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/api/sdex.md",
+       "observedAt": "2026-11-02",
+       "quote": "executes as a classic path payment from a G... account, and cannot pay a C... address."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.corroboration[2].evidence[2].note",
+     "reason": "Dead pinned blob (HTTP 404) annotated with live replacement sources. sources[0] was already repointed in pass 1. Judge-facing text unchanged."
+    }
+   ],
+   "rootCause": [],
+   "siblings": "q-defi-soroswap-what-is; q-eco-dex-saturation; cluster-014; cluster-022"
+  },
+  {
+   "id": "q-eco-dex-saturation",
+   "claims": [
+    {
+     "claim": "The 2026-10-01 soroswap/docs pinned source is now HTTP 404",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/soroswap/docs/blob/1d7a3c8a85616918415056ad2a0f6d2177fc1948/concepts/aggregator.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404"
+      }
+     ]
+    },
+    {
+     "claim": "Soroswap aggregator Soroban-only vs API SDEX split still holds",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+       "observedAt": "2026-11-02",
+       "quote": "execute in a single atomic transaction through Aggregator v3. SDEX is quoted alongside as a separate classic path."
+      },
+      {
+       "class": "C",
+       "ref": "Scout soroswap row",
+       "observedAt": "2026-11-02",
+       "quote": "Its swap Route API returns quotes and optimal routing across Stellar DEXs, including the Stellar classic DEX (SDEX)."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.corroboration[1].evidence[2].note",
+     "reason": "Annotate dead ref with live replacements."
+    },
+    {
+     "field": "truth.sources[+]",
+     "reason": "Live class-A source for the layer split in golden.notes."
+    }
+   ],
+   "rootCause": [],
+   "siblings": "q-defi-soroswap-vs-stellarx; q-defi-comet-what-is; q-eco-defi-market-map"
+  },
+  {
+   "id": "q-defi-provide-liquidity-impermanent-loss",
+   "claims": [
+    {
+     "claim": "Scout says Soroswap aggregates Phoenix; operator venue list omits Phoenix",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=phoenix&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "One of the AMM liquidity sources aggregated by Soroswap."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+       "observedAt": "2026-11-02",
+       "quote": "soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Re-date the 2026-06-29 Scout aggregation line as a then-reading, add the 2026-11-02 operator venue list, attribute 'first' wording (cluster-014 consistency), and state that a Phoenix aggregation claim is not required."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Gospel change caused by venue drift and the stale Scout record."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md"
+   ],
+   "siblings": "q-defi-soroswap-what-is; q-defi-phoenix-what-is; q-asset-sdex-vs-amm; q-asset-amm-fee-reserve"
+  },
+  {
+   "id": "q-defi-blend-alternatives",
+   "claims": [
+    {
+     "claim": "Scout labels: Slender Inactive, Laina Pre-Release, K2 Lend Live, Peridot Live, OrbitCDP Inactive",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q={slender,laina,k2,peridot,orbit}&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "slender Inactive 2026-07-09; laina Pre-Release 2026-08-27; k2-lend Live 2026-08-17 site-liveness; peridot-finance Live 2026-10-27 onchain-activity; orbitcdp Ina…"
+      }
+     ]
+    },
+    {
+     "claim": "Laina operator says testnet only",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "Parallel web_fetch https://laina-de.fi/",
+       "observedAt": "2026-10-05",
+       "quote": "Laina is currently in the early development stage and is only operating on the Stellar Testnet. (acquired 2026-10-05; live HTML is a client-rendered shell)"
+      },
+      {
+       "class": "C",
+       "ref": "Scout laina lifecycle.note",
+       "observedAt": "2026-11-02",
+       "quote": "app targets TESTNET only (horizon.ts pins horizon-testnet + Networks.TESTNET; no mainnet branch)"
+      }
+     ]
+    },
+    {
+     "claim": "Slender ordinary borrowing is over-collateralized; Lumenloop record says 'without collateral'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://www.certora.com/reports/slender",
+       "observedAt": "2026-11-02",
+       "quote": "Users are able to borrow assets from the protocol via an over-collateralized loan which issues them a dToken (debt token)."
+      },
+      {
+       "class": "D",
+       "ref": "https://api.llama.fi/protocol/slender",
+       "observedAt": "2026-11-02",
+       "quote": "Slender is a noncustodial overcollateralized lending protocol on Soroban (Stellar)."
+      },
+      {
+       "class": "C",
+       "ref": "Scout slender row",
+       "observedAt": "2026-11-02",
+       "quote": "borrow against their collateral"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project {slug:slender} (the defective witness)",
+       "observedAt": "2026-11-02",
+       "quote": "enabling users to lend and borrow assets without collateral."
+      }
+     ]
+    },
+    {
+     "claim": "slender.fi does not resolve",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "dig @1.1.1.1/@8.8.8.8; whois.fi",
+       "observedAt": "2026-11-02",
+       "quote": "NXDOMAIN; Domain not found"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "Remove the 2026-06-29 'answer = near-single backbone' and 'canonical money-market' framing and the Also-good line that credits 'near-single backbone'; they contradict the answer and avoid[2]. Add the verified Slender collateral fact that supports the new avoid."
+    },
+    {
+     "field": "golden.avoid[+]",
+     "reason": "ll-033: Lumenloop's slender record (this case's service) says 'without collateral'; B audit + D DefiLlama + C Scout show regular loans are over-collateralized. Concrete false-content trap; flash-loan wording excluded by 'regular borrowing'."
+    },
+    {
+     "field": "tags.freshness",
+     "reason": "M6: dated Scout lifecycle labels and a dead-domain observation in the answer."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "reason": "Lifecycle labels are volatile (K2 launched 2026-07-24); 2027-01-27 is staggered from the 2027-01-20 Soroswap date."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Add ll-033 for the new avoid and the authoring-flaw entry for the notes cleanup."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
+    "improvements/lumenloop/ll-033-slender-record-collateral-misstatement.md",
+    "eval-side authoring flaw (stale 2026-06-29 notes)"
+   ],
+   "siblings": "q-defi-flash-loans; q-defi-named-newer-protocols; q-defi-rwa-scf-similar; q-defi-etherfuse-stablebonds; q-defi-lending-landscape-live; cluster-012"
+  },
+  {
+   "id": "q-defi-phoenix-what-is",
+   "claims": [
+    {
+     "claim": "Scout Phoenix row says 'aggregated by Soroswap'; operator API venue list omits Phoenix; v3 Hop enum and SDK README include Phoenix",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=phoenix&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "One of the AMM liquidity sources aggregated by Soroswap."
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+       "observedAt": "2026-11-02",
+       "quote": "soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3.md",
+       "observedAt": "2026-11-02",
+       "quote": "pub enum Hop { ... Phoenix(PhoenixHop), ... }"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/soroswap/sdk/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "// Returns: ['sdex', 'soroswap', 'phoenix', 'aqua', 'comet', 'sushi']"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Pass-1 notes change (do not require Phoenix as a Soroswap venue) was caused by the stale Scout record filed as sls-099. Judge-facing text already handles the ambiguity; no pass-2 gospel edit."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md"
+   ],
+   "siblings": "q-defi-soroswap-what-is; q-defi-provide-liquidity-impermanent-loss; cluster-012; cluster-030"
+  },
+  {
+   "id": "q-eco-hana-wallet-scf",
+   "claims": [
+    {
+     "claim": "hana.money redirects to Wend; hanawallet.io is the wallet site",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' https://hana.money/ https://www.hana.money/ https://hanawallet.io/ https://news.hana.money/",
+       "observedAt": "2026-11-02",
+       "quote": "307 https://www.wendmoney.com.au/ ; 307 https://www.wendmoney.com.au/ ; 308 https://www.hanawallet.io/ ; 308 https://news.hanawallet.io/"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.hanawallet.io/",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title>"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=hana&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "links.website https://hana.money/; lifecycle.note 'hanawallet.io 308s to hana.money' (stale, sls-100)"
+      }
+     ]
+    },
+    {
+     "claim": "SCF #22 $50,000 + #25 $82,000 = $132,000; #21 Not Awarded",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/project/hana-wallet-x9e",
+       "observedAt": "2026-11-02",
+       "quote": "recQxCaMDVhJL85AO SCF #22 Awarded budget 50000; recryJTSYRWHf1GqJ SCF #25 Awarded budget 82000; recubEkbU5ZcocOPu SCF #21 Not Awarded; totalAwarded 132000. Head…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "tags.freshness",
+     "reason": "M6/F16: the answer carries a dated domain-redirect observation."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "reason": "Domain state is volatile but slower-moving; 2027-03-17 staggered."
+    },
+    {
+     "field": "truth.verified.evidence[9]",
+     "reason": "Replace 'not yet filed' with the filed finding paths."
+    },
+    {
+     "field": "truth.verified.rootCause",
+     "reason": "Pass-1 domain change matches the stale Scout website link filed as sls-100."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-100-hana-website-repurposed-domain.md"
+   ],
+   "siblings": "q-eco-stellar-wallets-list (no hana.money reference); cluster-012"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-defi-flash-loans",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified live: slender.fi and app.slender.fi are NXDOMAIN; Scout still marks Slender Inactive; the eq-lab/slender pool contract defines flash_loan. The edit adds a dated 2026-11-02 observation, keeps the evidence tiers, and stays consistent with avoid[0] (association real) and avoid[1] (code is not deployment proof). Out of scope here: the case is tagged freshness 'live' although the answer carrie…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/eq-lab/slender/blob/master/contracts/pool/src/methods/flash_loan.rs",
+      "observedAt": "2026-11-02",
+      "quote": "pub fn flash_loan(  (HTTP 200 on master at 2b4aa3c323b367629607e20c1df4311d04f15ef9; the /blob/main/ URL returns HTTP 404, branch main does not exist)"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/eq-lab/slender/blob/master/interfaces/pool-interface/src/lib.rs",
+      "observedAt": "2026-11-02",
+      "quote": "line 111: fn flash_loan("
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/eq-lab/slender",
+      "observedAt": "2026-11-02",
+      "quote": "archived False, pushed_at 2025-10-03T10:46:09Z, default_branch master"
+     },
+     {
+      "class": "F",
+      "ref": "dig slender.fi @1.1.1.1 / @8.8.8.8; dig app.slender.fi @1.1.1.1; curl https://slender.fi/",
+      "observedAt": "2026-11-02",
+      "quote": "status: NXDOMAIN (both resolvers, both hosts); curl: (6) Could not resolve host: slender.fi"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=slender&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "slender | Inactive | statusAsOf 2026-07-09 | human-verified ... borrow against their collateral ... It also supports same-block flash loans."
+     },
+     {
+      "class": "D",
+      "ref": "https://slender.fi/ (Parallel web_search cached excerpt; live host NXDOMAIN)",
+      "observedAt": "2026-11-02",
+      "quote": "Flash loans Borrow and repay in the same block with no collateral"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-flash-loans",
+    "field": "truth.sources[+]",
+    "decision": "modify",
+    "newText": {
+     "class": "B",
+     "ref": "https://github.com/eq-lab/slender/blob/2b4aa3c323b367629607e20c1df4311d04f15ef9/contracts/pool/src/methods/flash_loan.rs",
+     "note": "Slender pool contract defines 'pub fn flash_loan(' and interfaces/pool-interface/src/lib.rs declares fn flash_loan (master 2b4aa3c, 2025-10-03); repo not archived. Code presence only, not deployment proof.",
+     "observedAt": "2026-11-02"
+    },
+    "note": "The proposed ref uses /blob/main/, which returns HTTP 404: the repo default branch is master and no main branch exists. The '36 hits' code-search count was not re-derived, so it is dropped. Pinned the commit instead.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/eq-lab/slender/blob/master/contracts/pool/src/methods/flash_loan.rs",
+      "observedAt": "2026-11-02",
+      "quote": "pub fn flash_loan(  (HTTP 200 on master at 2b4aa3c323b367629607e20c1df4311d04f15ef9; the /blob/main/ URL returns HTTP 404, branch main does not exist)"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/eq-lab/slender/blob/master/interfaces/pool-interface/src/lib.rs",
+      "observedAt": "2026-11-02",
+      "quote": "line 111: fn flash_loan("
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/eq-lab/slender",
+      "observedAt": "2026-11-02",
+      "quote": "archived False, pushed_at 2025-10-03T10:46:09Z, default_branch master"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-flash-loans",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "newText": null,
+    "note": "freshness-drift fits the slender.fi NXDOMAIN change; sls-024 names q-defi-flash-loans as a golden consumer of the Scout/operator lifecycle conflict. The paths exist in the branch.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "dig slender.fi @1.1.1.1 / @8.8.8.8; dig app.slender.fi @1.1.1.1; curl https://slender.fi/",
+      "observedAt": "2026-11-02",
+      "quote": "status: NXDOMAIN (both resolvers, both hosts); curl: (6) Could not resolve host: slender.fi"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
+      "observedAt": "2026-11-02",
+      "quote": "Golden consumers: q-defi-flash-loans, q-defi-allbridge-what-is, q-defi-blend-alternatives, q-defi-named-newer-protocols."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-etherfuse-stablebonds",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: Scout OrbitCDP is Inactive (statusAsOf 2026-09-05) while orbitcdp.finance still shows 'Live on Stellar'; the Scout collateral sentence quoted in the notes is unchanged. Removing the stale 'Live' label and not grading lifecycle is a symmetric treatment of a verified conflict; no cap is added.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=orbitcdp&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "orbitcdp | Inactive | statusAsOf 2026-09-05 | human-verified ... (XLM and Etherfuse tokenized bonds like the USTRY US Treasury token and CETES Mexican T-bills);…"
+     },
+     {
+      "class": "A",
+      "ref": "https://orbitcdp.finance/",
+      "observedAt": "2026-11-02",
+      "quote": "Live on Stellar (HTTP 200)"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-etherfuse-stablebonds",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "newText": null,
+    "note": "Notes change is a judge-facing change and the case had no rootCause; freshness-drift is correct (OrbitCDP moved Live to Inactive after 2026-06-22).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=orbitcdp&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "orbitcdp | Inactive | statusAsOf 2026-09-05 | human-verified ... (XLM and Etherfuse tokenized bonds like the USTRY US Treasury token and CETES Mexican T-bills);…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: the Scout venue list '(Soroswap, Phoenix, Aquarius)' is unchanged on 2026-11-02 and differs from the operator venue list (no Phoenix; adds SushiSwap V3 and Comet). concepts/aggregator 308-redirects to the docs home. The rewording only clarifies which labels no longer render; no grading change.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "with an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     },
+     {
+      "class": "F",
+      "ref": "curl https://docs.soroswap.finance/concepts/aggregator",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 308 -> https://docs.soroswap.finance/"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "newText": null,
+    "note": "The answer pins dated volatile values (Aggregator v3 contract id, venue set, 2026-09-24 cutoff 'As of 2026-11-02'), so 'scheduled' is the correct tag; truth.asOf is 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-01-20 is after 2026-11-10 and staggered against the sibling dates in this task (2027-01-27, 2027-03-17). An earlier date than 2027-06-24 suits a venue set that changed within one quarter.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "truth.corroboration[1].evidence[2].note",
+    "decision": "modify",
+    "newText": "used only for the SDEX layer split: the aggregator page said 'Stellar SDEX is not included'; the API page quoted across 'Soroswap, Phoenix, Aqua and SDEX'. That aggregator page carried stale '(currently on Testnet)' labels for Phoenix and Aqua (cs-002), so it is not evidence for adapter status. The soroswap/docs repository returned HTTP 404 on 2026-11-02 (api.github.com/repos/soroswap/docs); cs-002 is fixed-upstream and the live venue and SDEX split now read at https://docs.soroswap.finance/aggregator/supported-amms.md and https://docs.soroswap.finance/api/sdex.md.",
+    "note": "In this case the ref is the unpinned repo 'https://github.com/soroswap/docs (concepts/aggregator.mdx, api/index.mdx)', not a pinned blob, so 'this pinned blob' is inaccurate. Past tense also fits pages that no longer render. Facts otherwise verified: repo API 404, cs-002 fixed-upstream, both replacement pages HTTP 200.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/soroswap/docs",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: fixed-upstream"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/api/sdex.md",
+      "observedAt": "2026-11-02",
+      "quote": "An SDEX quote has platform sdex and decimal amounts in rawTrade, executes as a classic path payment from a G... account, and cannot pay a C... address."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-what-is",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "newText": null,
+    "note": "sls-099 (Scout venue list stale) and cs-002 (operator docs drift) both exist and both describe defects this case records. The symmetric-caution lint warning that improvements/ rootCauses raise must not be silenced with a partial cap (ADR-0008).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "with an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: fixed-upstream"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-soroswap-vs-stellarx",
+    "field": "truth.corroboration[2].evidence[2].note",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified: the pinned blob at 1d7a3c8 and the repo both return HTTP 404; both replacement pages return HTTP 200 and carry the venue list and the SDEX classic-path split. 'Carries' stays accurate for an immutable pinned blob.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/soroswap/docs/blob/1d7a3c8a85616918415056ad2a0f6d2177fc1948/concepts/aggregator.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404 (also api.github.com contents at that ref: 404)"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/soroswap/docs",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: fixed-upstream"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/api/sdex.md",
+      "observedAt": "2026-11-02",
+      "quote": "An SDEX quote has platform sdex and decimal amounts in rawTrade, executes as a classic path payment from a G... account, and cannot pay a C... address."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-dex-saturation",
+    "field": "truth.corroboration[1].evidence[2].note",
+    "decision": "accept",
+    "newText": null,
+    "note": "Same verified facts as the q-defi-soroswap-vs-stellarx note; the ref is the same pinned blob.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/soroswap/docs/blob/1d7a3c8a85616918415056ad2a0f6d2177fc1948/concepts/aggregator.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404 (also api.github.com contents at that ref: 404)"
+     },
+     {
+      "class": "B",
+      "ref": "https://api.github.com/repos/soroswap/docs",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 404"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: fixed-upstream"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/api/sdex.md",
+      "observedAt": "2026-11-02",
+      "quote": "An SDEX quote has platform sdex and decimal amounts in rawTrade, executes as a classic path payment from a G... account, and cannot pay a C... address."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-dex-saturation",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "The quote matches line 16 of the live page as rendered text (the markdown link around 'Aggregator v3' is dropped). Class A operator docs, observed 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "Soroban routes can split one trade across several venues, hop by hop, and execute in a single atomic transaction through [Aggregator v3](...). SDEX is quoted al…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-provide-liquidity-impermanent-loss",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Do not preserve any APY/TVL number without a date. Phase 3 should re-check protocol UIs/DeFiLlama if a numeric yield/TVL claim appears. REVIEWED 2026-06-29: re-verified named LP/swap venues live on Scout — Soroswap (self-described first Soroban DEX/aggregator, Live), Aquarius (AMM/AQUA, Live), Phoenix (DeFi Hub AMM, PHO, Live); Scout said, and on 2026-11-02 still says, that Soroswap aggregates Soroswap/Phoenix/Aquarius liquidity (stale against the operator; sls-099). As of 2026-11-02, Soroswap's own supported-venues page lists Soroswap, Aquarius, SushiSwap V3, Comet, and SDEX, so do not requir…",
+    "note": "'Scout then said' implies Scout changed; the live Scout record still carries the Phoenix/Aquarius venue list on 2026-11-02. The 'do not require a Phoenix aggregation claim' line is a non-requirement, not a loosening, and matches the verified API-versus-contract scope ambiguity in sls-099 (v3 defines a Phoenix hop; the API venue list omits Phoenix). No cap is added.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "with an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=phoenix&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "One of the AMM liquidity sources aggregated by Soroswap."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-provide-liquidity-impermanent-loss",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "newText": null,
+    "note": "The notes change needs a rootCause and the case had none; freshness-drift plus sls-099 matches the stale Scout venue list.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "with an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-blend-alternatives",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "DIFFERENTIATED 2026-06-29: this file OWNS the 'are there DIRECT money-market substitutes for Blend' lane (find_similar_projects_semantic; the 2026-06-29 near-single-backbone reading is superseded by the 2026-07-10 correction below). DISTINCT from q-defi-lending-scf-flagships (scout_projects; 'who built lending + which have SCF backing' landscape roster). Added must_avoid against drifting into the SCF-roster lane. Inherited 2026-06-29 Scout grounding: Blend is a major Soroban money market; closest 'alternatives' are Blend-derived (YieldBlox built ON Blend) or Blend-routing (DeFindex vaults), pl…",
+    "note": "Verified across classes B (Certora), D (DefiLlama) and C (Scout 'borrow against their collateral'): regular Slender borrowing is over-collateralized. The proposed 'its' was ambiguous (Slender, its site, or the Lumenloop record); slender.fi is NXDOMAIN, so the site wording is past tense, and the incorrect source is named. The rest of the rewrite (canonical -> major; backbone reading superseded) ali…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://www.certora.com/reports/slender",
+      "observedAt": "2026-11-02",
+      "quote": "May 22, 2024 ... Users are able to borrow assets from the protocol via an over-collateralized loan which issues them a dToken (debt token)."
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/protocol/slender",
+      "observedAt": "2026-11-02",
+      "quote": "Slender is a noncustodial overcollateralized lending protocol on Soroban (Stellar)."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=slender&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "slender | Inactive | statusAsOf 2026-07-09 | human-verified ... borrow against their collateral ... It also supports same-block flash loans."
+     },
+     {
+      "class": "D",
+      "ref": "https://slender.fi/ (Parallel web_search cached excerpt; live host NXDOMAIN)",
+      "observedAt": "2026-11-02",
+      "quote": "Flash loans Borrow and repay in the same block with no collateral"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_project {\"slug\":\"slender\"}",
+      "observedAt": "2026-11-02",
+      "quote": "Slender is a decentralized lending protocol built on the Stellar blockchain, enabling users to lend and borrow assets without collateral"
+     },
+     {
+      "class": "F",
+      "ref": "dig slender.fi @1.1.1.1 / @8.8.8.8; dig app.slender.fi @1.1.1.1; curl https://slender.fi/",
+      "observedAt": "2026-11-02",
+      "quote": "status: NXDOMAIN (both resolvers, both hosts); curl: (6) Could not resolve host: slender.fi"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-blend-alternatives",
+    "field": "golden.avoid[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Plain wrong-claim avoid (no cap; ADR-0008-compliant). The claim is answer-visible and verified false in three independent classes; the Lumenloop record that would mislead an agent is itself the ll-033 defect. It does not punish a possibly true claim: flash loans are excluded by 'regular borrowing'.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://www.certora.com/reports/slender",
+      "observedAt": "2026-11-02",
+      "quote": "May 22, 2024 ... Users are able to borrow assets from the protocol via an over-collateralized loan which issues them a dToken (debt token)."
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/protocol/slender",
+      "observedAt": "2026-11-02",
+      "quote": "Slender is a noncustodial overcollateralized lending protocol on Soroban (Stellar)."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=slender&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "slender | Inactive | statusAsOf 2026-07-09 | human-verified ... borrow against their collateral ... It also supports same-block flash loans."
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_project {\"slug\":\"slender\"}",
+      "observedAt": "2026-11-02",
+      "quote": "Slender is a decentralized lending protocol built on the Stellar blockchain, enabling users to lend and borrow assets without collateral"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-blend-alternatives",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "newText": null,
+    "note": "The answer pins dated Scout lifecycle labels and operator observations 'As of 2026-11-02'; truth.asOf is 2026-11-02. 'scheduled' is required.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=slender&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "slender | Inactive | statusAsOf 2026-07-09 | human-verified ... borrow against their collateral ... It also supports same-block flash loans."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-blend-alternatives",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-01-27 is after 2026-11-10 and staggered one week from q-defi-soroswap-what-is.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-blend-alternatives",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "newText": null,
+    "note": "ll-033 is reproduced live (Lumenloop get_project slender says 'without collateral'). The free-text authoring-flaw entry follows the q-eco-dex-saturation precedent that cites the round ledger, which exists at .agents/rounds/2026-11-02-golden-audit.md.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_project {\"slug\":\"slender\"}",
+      "observedAt": "2026-11-02",
+      "quote": "Slender is a decentralized lending protocol built on the Stellar blockchain, enabling users to lend and borrow assets without collateral"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-phoenix-what-is",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "newText": null,
+    "note": "The case notes already record the Scout 'aggregated by Soroswap' versus the operator venue-page conflict; sls-099 names this case as a consumer. Provenance-only change.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=phoenix&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "One of the AMM liquidity sources aggregated by Soroswap."
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+      "observedAt": "2026-11-02",
+      "quote": "The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar c…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-hana-wallet-scf",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "newText": null,
+    "note": "The answer carries a dated volatile observation ('as of 2026-11-02, hana.money redirects to the Wend remittance site'); truth.asOf is 2026-11-02, so 'scheduled' is correct. The $132,000 SCF arithmetic stays stable historical fact.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -sSI https://hana.money/ and https://www.hana.money/",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 307 location: https://www.wendmoney.com.au/"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.hanawallet.io/ (curl -sSIL https://hanawallet.io/: HTTP/2 308 -> https://www.hanawallet.io/, HTTP/2 200)",
+      "observedAt": "2026-11-02",
+      "quote": "<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title>"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-hana-wallet-scf",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-03-17 is after 2026-11-10 and staggered from the other dates in this task.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-hana-wallet-scf",
+    "field": "truth.verified.evidence[9]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified live: the Scout hana row links hana.money, which 307-redirects to wendmoney.com.au; its lifecycle note claims the reverse redirect; its shortDescription names the Freighter API. sls-100 covers the website, and sls-095 lists the hana row among the Freighter prose references.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=hana&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "hana | Live | statusAsOf 2026-08-28 | links.website https://hana.money/ | statusSourceUrl https://www.hana.money/ | lifecycle.note 'live wallet app; hanawallet.…"
+     },
+     {
+      "class": "F",
+      "ref": "curl -sSI https://hana.money/ and https://www.hana.money/",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 307 location: https://www.wendmoney.com.au/"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.hanawallet.io/ (curl -sSIL https://hanawallet.io/: HTTP/2 308 -> https://www.hanawallet.io/, HTTP/2 200)",
+      "observedAt": "2026-11-02",
+      "quote": "<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title>"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.wendmoney.com.au/",
+      "observedAt": "2026-11-02",
+      "quote": "<title>Wend | Send money to GCash or Maya in minutes</title>"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md",
+      "observedAt": "2026-11-02",
+      "quote": "Prevalence: q=freighter returned 6 rows (freighter, hana, ...). ... the other five are prose references to a renamed product."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-hana-wallet-scf",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "newText": null,
+    "note": "sls-100 exists and reproduces; it is the upstream defect behind the dated hana.money note.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=hana&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "hana | Live | statusAsOf 2026-08-28 | links.website https://hana.money/ | statusSourceUrl https://www.hana.money/ | lifecycle.note 'live wallet app; hanawallet.…"
+     },
+     {
+      "class": "F",
+      "ref": "curl -sSI https://hana.money/ and https://www.hana.money/",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 307 location: https://www.wendmoney.com.au/"
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "escalations": [
+   "cluster-012 note text \"OrbitCDP $280K\" no longer has a carrier: q-defi-etherfuse-stablebonds notes dropped the figure (Scout 280000 vs Lumenloop 330000).",
+   "sls-099 Golden consumers line omits q-defi-provide-liquidity-impermanent-loss, which now cites sls-099.",
+   "ll-033 evidence quotes slender.fi as read 2026-11-02, but slender.fi is NXDOMAIN on 2026-11-02; only a 2026-08-08 cached copy exists.",
+   "Sentinel suggestions not applied (source-sentinels.json outside edit set): soroswap-aggregator-v3-address (q-defi-soroswap-what-is) and hana wallet title (q-eco-hana-wallet-scf).",
+   "q-defi-flash-loans and q-defi-etherfuse-stablebonds stay tagged freshness live while golden text carries values dated 2026-07-10."
+  ]
+ }
+}

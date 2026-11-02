@@ -1,0 +1,1262 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "protocol-core-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-gap-scout-changelog-envelope",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "getChangelog returns a latest-first, contract-affecting feed with entries, filter metadata, and inner payload ok",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute scout.getChangelog({limit:3})",
+       "observedAt": "2026-11-02",
+       "quote": "keys ok,service,version,generatedAt,meta,entries; ok=true; entries dated 2026-11-01, 2026-11-01, 2026-10-31; meta.total=351"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/changelog?limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "\"meta\":{...\"filters\":{\"since\":null,\"limit\":2},\"note\":\"Curated feed of contract-affecting changes (endpoints, tools, params, descriptions). Latest-first.\"}"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getChangelog",
+       "observedAt": "2026-11-02",
+       "quote": "Not for: the actual ecosystem data -> use the relevant search endpoint; current health / source freshness / version -> use scout.getStatus. ... payload carries …"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "payload ok, Raven envelope, and ecosystem data are distinct",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getChangelog",
+       "observedAt": "2026-11-02",
+       "quote": "Catalog note: the upstream payload carries its own ok flag at data.ok - distinct from the envelope call-status ok."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "A changelog entry is not current project/builder/market data",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/changelog?limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "Curated feed of contract-affecting changes (endpoints, tools, params, descriptions)."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-scout-changelog-contract-check; q-gap-scout-status-envelope"
+  },
+  {
+   "id": "q-gap-scout-status-envelope",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "getStatus payload under data carries its own ok, apiVersion, generatedAt, endpoints, and source freshness",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute scout.getStatus({})",
+       "observedAt": "2026-11-02",
+       "quote": "envelope ok=true; data keys ok,service,version,apiVersion,generatedAt,sources,usage,endpoints,docs,skill; data.ok=true; apiVersion 1.9.116; 41 endpoints"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/status",
+       "observedAt": "2026-11-02",
+       "quote": "{\"ok\":true,\"service\":\"Stellar Scout\",\"version\":\"scout-1.0.0\",\"apiVersion\":\"1.9.116\",\"generatedAt\":\"2026-11-02T16:00:22.243Z\",\"sources\":[{\"name\":\"projects\",\"coun…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getStatus",
+       "observedAt": "2026-11-02",
+       "quote": "the upstream payload carries its own ok health/status flag at data.ok - distinct from the envelope call-status ok."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Do not read payload fields from envelope root or infer success solely from data.ok",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getStatus",
+       "observedAt": "2026-11-02",
+       "quote": "distinct from the envelope call-status ok"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-explain-repo-payload-status; q-history-ecosystem-index-freshness-live; q-gap-scout-changelog-envelope"
+  },
+  {
+   "id": "q-pc-account-activation-not-found",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "CreateAccount creates the ledger entry; a keypair alone is not an account",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/create-account",
+       "observedAt": "2026-11-02",
+       "quote": "A valid keypair alone does not make an account."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "PAYMENT_NO_DESTINATION = -5,     // destination account does not exist"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Unsponsored minimum is two base reserves = 1 XLM at 0.5 XLM base reserve (dated)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "One base reserve is currently 0.5 XLM. ... An account must always maintain a minimum balance of two base reserves (currently 1 XLM)."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269900 closed 2026-11-02T16:01:24Z base_reserve_in_stroops=5000000 protocol_version=29"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "CAP-0033 sponsored CreateAccount with startingBalance=0",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
+       "observedAt": "2026-11-02",
+       "quote": "a brand-new account can be created with a startingBalance of 0: wrap the CreateAccount operation in a BeginSponsoringFutureReserves/EndSponsoringFutureReserves …"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final; Protocol version: 14/15"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-edge-1xlm-activation-fee; q-pc-sponsored-reserves; q-pc-account-merge-reclaim-reserve"
+  },
+  {
+   "id": "q-pc-account-merge-reclaim-reserve",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Merge requires no non-signer subentries; remaining signers (incl. sponsored) removed during merge",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/MergeOpFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "if (sourceAccount.numSubEntries != sourceAccount.signers.size()) ... ACCOUNT_MERGE_HAS_SUB_ENTRIES ... while (!sourceAccount.signers.empty()) removeSignerWithPo…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge",
+       "observedAt": "2026-11-02",
+       "quote": "Signers are *not* a blocker — they (including sponsored signers) are removed automatically during the merge."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Providing sponsorship blocks merge; being sponsored does not",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "MergeOpFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "if (getNumSponsoring(sourceAccountEntry.current()) > 0) ... ACCOUNT_MERGE_IS_SPONSOR"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge",
+       "observedAt": "2026-11-02",
+       "quote": "Merely being sponsored by another account is not a blocker."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Canonical-page caution for pre-fix sd-013 wording",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge",
+       "observedAt": "2026-11-02",
+       "quote": "Signers are *not* a blocker"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs('account merge signers removed sub entries')",
+       "observedAt": "2026-11-02",
+       "quote": "snippet: '(including sponsored signers) are removed automatically during the merge'"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sd-013",
+       "observedAt": "2026-11-02",
+       "quote": "resolved 2026-07-27, resolvingRefs stellar/stellar-docs PR 2657"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-29 CORRECTION 2026-07-10: current Core allows signer-only subentries and deletes remaining signers during merge. Clear non-signer entries and resolve sponsorship obligations the source provides; do not collapse sponsor and sponsored states.\nGT-29 independently confirmed by processes 3276/3278; sd-013 owns the Docs gap.",
+     "reason": "Remove expired canonical-page caution: sd-013 resolved 2026-07-27; live page and Docs index carry the fixed wording on 2026-11-02."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-pc-account-activation-not-found; q-pc-sponsored-reserves; q-edge-1xlm-activation-fee"
+  },
+  {
+   "id": "q-pc-address-types-strkey",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "G/S/M/C map to pubkey/seed/muxed/contract; version byte top 5 bits; CRC16; RFC4648 base32 no padding; muxed appends 8-byte ID",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "| STRKEY_PUBKEY | 6 << 3 | G | ... | STRKEY_MUXED | 12 << 3 | M | ... | STRKEY_PRIVKEY | 18 << 3 | S | ... | STRKEY_CONTRACT | 2 << 3 | C |; 'append an 8-byte I…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-08-29",
+       "quote": "(prior verified source; unchanged)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Other prefixes are T/X/P/L/B",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "| STRKEY_MUXED_CONTRACT    | 22 << 3    | W          | yes   | Hash |"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/commits/master/ecosystem/sep-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "2026-10-14 'SEP-23: add muxed contract strkey (W…) for CAP-84 (#2020)'"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0084.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Implemented ... Protocol version: 30"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "protocol_version=29"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "SEP-0023 is the canonical StrKey source. It also documents other prefixes (T/X/P/L/B and, since SEP-0023 v1.4.0, W for CAP-0084 muxed contracts, a Protocol 30 feature; Mainnet ran Protocol 29 on 2026-11-02), but this golden focuses on G/C/M/S.\nAlso good if the answer: Mentions other StrKey prefixes only if relevant and avoids overloading C with EVM contracts.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.",
+     "reason": "SEP-0023 v1.4.0 added the W muxed-contract prefix (CAP-0084, Protocol 30); the notes' prefix list would make a true W mention look fabricated."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-pc-muxed-accounts; q-soroban-contract-id-derivation; q-ti-custodial-account-generation-c-address; q-ti-secret-key-vs-mnemonic-derivation; q-pc-memos-reference"
+  },
+  {
+   "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "bucketListHash commits ledger state; txSetHash in SCP value; txSetResultHash commits TransactionResultSet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x",
+       "observedAt": "2026-11-02",
+       "quote": "Hash txSetHash;      // transaction set to apply to previous ledger ... Hash txSetResultHash;    // the TransactionResultSet that led to this ledger\n    Hash bu…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+       "observedAt": "2026-11-02",
+       "quote": "Transaction set hash: Hash of the transaction set applied to the previous ledger. ... Bucket list hash: Hash of all the objects in this ledger."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "No standard compact one-call per-transaction proof; sd-014 open",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/issues/2611",
+       "observedAt": "2026-11-02",
+       "quote": "state OPEN, updatedAt 2026-07-21"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_search 'Stellar transaction inclusion proof light client' (3 queries)",
+       "observedAt": "2026-11-02",
+       "quote": "No result describes a standard compact Stellar per-transaction inclusion proof API; results are ledger docs, XDR, CAP-0083, RPC methods."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "(new) CAP-0083 empty-tx-set ledgers carry txSetHash 0x0",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0083.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final ... Protocol version: 28 ... When the network votes to drop a transaction set, validators will externalize a StellarValue with fields set as follo…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x",
+       "observedAt": "2026-11-02",
+       "quote": "case STELLAR_VALUE_EMPTY_TX_SET: ... proposedValue"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "Protocol 28 (Mainnet, September 16, 2026); Protocol 29 (Mainnet, October 1, 2026)"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "protocol_version=29"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-29 CORRECTION 2026-07-10: verify full transaction-set/result XDR hashes, header chain, and SCP/quorum finality. BucketList commits state; retrieval rows are not self-authenticating, and no standard compact one-call per-transaction proof was found in the audited surfaces.\nGT-29 independently confirmed by processes 3276/3278; sd-014 owns the missing verification guide.\nAccurately quoting the canonical Stellar documentation on Bucket List state commitments without a full-XDR inclusion recipe is not a wrong claim while sd-014 stands; grade caps at partial for that claim unless the answer contra…",
+     "reason": "Protocol 28 (CAP-0083) added an empty-transaction-set StellarValue with txSetHash 0x0; note it so a true mention is not graded as wrong."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-ledger-header-fields; q-edge-validators-reverse-tx-fork-detection; q-protocol-ledger-entry-types"
+  },
+  {
+   "id": "q-pc-cross-redstone-sep40",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "June 2026 article is RedStone's 2026-06-04 'Reliability at Scale' piece",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/",
+       "observedAt": "2026-11-02",
+       "quote": "# Reliability at Scale: RedStone and the Data Standard for Stellar's RWA Moment\nJune 4, 2026 ... RedStone has implemented the SEP-40 oracle standard on Stellar"
+      },
+      {
+       "class": "C",
+       "ref": "Raven lumenloop.search_content_semantic('RedStone SEP-40 data standard Stellar RWA moment')",
+       "observedAt": "2026-11-02",
+       "quote": "title 'Reliability at Scale: RedStone and the Data Standard for Stellar's RWA Moment', 2026-06-04 12:52:52+00; other RedStone SEP-40 posts dated 2026-08-26"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity search 'RedStone SEP-40 Stellar RWA June 2026 nine assets live'",
+       "observedAt": "2026-11-02",
+       "quote": "BY Wolf • JUNE 4, 2026 ... Nine assets are now live under SEP-40"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Scout lists Redstone Finance as a live Stellar/Soroban modular price oracle implementing SEP-40",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects({q:'Redstone Finance'})",
+       "observedAt": "2026-11-02",
+       "quote": "status Live, statusAsOf 2026-07-14, category Infrastructure; shortDescription 'Modular price oracle live on Stellar/Soroban mainnet (since March 2026) ... Launc…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers#redstone",
+       "observedAt": "2026-11-02",
+       "quote": "Deployed RedStone contracts: CBMGLKUQZVSAIL5CPDDAWSUY7MAKXISHMOZEVLMBUWBMFGHRJSR4WYRF | SEP-40 price oracle (supported Stellar assets) | Mainnet"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Official Stellar docs describe SEP-40-compatible feeds for contract consumers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+       "observedAt": "2026-11-02",
+       "quote": "A single SEP-40-compliant contract that serves the supported Stellar assets through the standard lastprice, price, and prices interface. Protocols already integ…"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs('SEP-40 oracle providers price feeds')",
+       "observedAt": "2026-11-02",
+       "quote": "top hit oracle-providers#redstone"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft; Version: 0.1.0 (Oracle Consumer Interface)"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Counts differ across sources; no single reconciled count",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "blog.redstone.finance 2026-06-04 article",
+       "observedAt": "2026-11-02",
+       "quote": "Nine assets are now live under SEP-40 ... USST | STBL | In Progress"
+      },
+      {
+       "class": "C",
+       "ref": "Scout redstone-finance",
+       "observedAt": "2026-11-02",
+       "quote": "Launched with 10 feeds"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+       "observedAt": "2026-11-02",
+       "quote": "On Stellar, RedStone delivers price feeds for XLM, BTC, ETH, USDC, EURC, PYUSD, USDT0, ... (about 30 named assets)"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.redstone.finance/research/next-phase-rwa-stellar-2026/",
+       "observedAt": "2026-11-02",
+       "quote": "In our August report, 18 of the 47 Stellar feeds were implemented with the SEP-40 standard. As of late October, that count is at 21 feeds."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Not Reflector/DIA/Band",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "RedStone 2026-06-04 article",
+       "observedAt": "2026-11-02",
+       "quote": "RedStone has implemented the SEP-40 oracle standard on Stellar"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "As observed on 2026-07-11, the article is RedStone's 2026-06-04 piece, 'Reliability at Scale: RedStone and the Data Standard for Stellar's RWA Moment.' Scout identifies Redstone Finance as a live modular price oracle on Stellar/Soroban that implements SEP-40 and delivers price feeds to contracts. The official Stellar oracle-provider docs describe public price-oracle feeds as compatible with the SEP-40 ecosystem interface, so consumers such as lending or derivatives contracts can integrate a common feed interface instead of a provider-specific one. The live records use different counts for asse…",
+     "reason": "Three or more live records now carry different counts (article nine, Scout 10, Docs page longer list, RedStone research 21 SEP-40 feeds)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Cross-service grading is strict: an answer with only the article/project identity or only the SEP-40 explanation is incomplete. The count discrepancy is intentionally not a key fact.\nLive re-check 2026-11-02: the article still lists nine live assets (USST in progress); Scout says it launched with 10 feeds; the oracle-providers page now has a RedStone section naming a SEP-40-compliant Mainnet contract and a longer asset list. Any one dated, attributed count is acceptable.",
+     "reason": "Dated count observations so a true dated count from any record is not graded as wrong; Docs now has a RedStone section."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-reflector-oracle; q-sor-reflector-integration-code; q-eco-defi-market-map; q-scf-cross-reflector-rounds-current"
+  },
+  {
+   "id": "q-pc-doc-category-validator-search",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "search_docs_in_category(query quorum, category validators) returns validator-area hits",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven stellarDocs.search_docs_in_category({query:'quorum',category:'validators'})",
+       "observedAt": "2026-11-02",
+       "quote": "nbHits 56, clientFiltered present; all 5 hits under https://developers.stellar.org/docs/validators/admin-guide/..."
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs({query:'quorum'})",
+       "observedAt": "2026-11-02",
+       "quote": "unfiltered top hit is /docs/learn/fundamentals/stellar-consensus-protocol#quorum (cross-area), confirming the mixing premise"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Category restriction is adapter-side because hierarchy.lvl0 is not facetable; validators is a supported category",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "specs/stellar-docs.json",
+       "observedAt": "2026-11-02",
+       "quote": "facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#stellarDocs.search_docs_in_category",
+       "observedAt": "2026-11-02",
+       "quote": "enum: build, learn, tokens, data, tools, platforms, validators, networks, meetings"
+      },
+      {
+       "class": "F",
+       "ref": "npx vitest run test/adapters.test.ts -t 'URL-prefix' (worktree)",
+       "observedAt": "2026-11-02",
+       "quote": "Test Files 1 passed; Tests 1 passed | 95 skipped"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-pc-fee-bump-channel-accounts-feepool",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Outer fee source signs and pays; inner source sequence consumed; fee source sequence not used",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "This account will incur the fee instead of the source account specified in the inner transaction. The sequence number is still taken from the source account, ho…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final; Protocol version: 13"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Effective op count = inner ops + 1; outer fee >= inner fee rule",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/FeeBumpTransactionFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "return mInnerTx->getNumOperations() + 1;"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "The fee must be greater than or equal to the network minimum fee for the number of operations in the inner transaction, plus one for the fee bump. The fee must …"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Outer fee field is total maximum bid",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "struct FeeBumpTransaction { MuxedAccount feeSource; int64 fee; ..."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+       "observedAt": "2026-11-02",
+       "quote": "Fee: The maximum per-operation fee you're willing to pay for the fee-bump transaction."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/js-stellar-base/blob/master/src/transaction_builder.js",
+       "observedAt": "2026-11-02",
+       "quote": "@param {string} baseFee - max fee willing to pay per operation"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Channel accounts are separate tx-source accounts consuming their own sequence",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/channel-accounts",
+       "observedAt": "2026-11-02",
+       "quote": "the assets will come out of the base account, and the sequence number and fees will be consumed by the channel account."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Fees go to the protocol fee pool, not validator rewards",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x",
+       "observedAt": "2026-11-02",
+       "quote": "int64 feePool;       // fees burned since last inflation run"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "The Fee Pool is where network fees collect. The lumens do not belong to any particular account. No one has access to the fee pool, so these lumens are non-circu…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Reviewed 2026-06-29: differentiated (D3) — dropped the surge-fee-choice clause from the q and downgraded the surge must_have to should_have so surge/fee-selection is owned by q-pc-practical-fee-setting; this question keeps the fee-bump-specific 'why fees look doubled' as a must_have. Fee-bump and channel-account mechanics verified against official docs and CAP-0015. Fee-pool wording verified 2026-11-02 against LedgerHeader.feePool (XDR: 'fees burned since last inflation run') and the Lumens page: no account can access the pool, and fees are not validator rewards.\nAlso good if the answer: Notes…",
+     "reason": "Replace unverified fee-pool hedge with verified XDR+Docs wording; add fee-layer clarification (docs/SDK per-op vs XDR total) so a correct per-op description is not graded as contradicting the golden."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: notes left an unverified fee-pool hedge and did not reconcile the Docs per-operation 'Fee' wording with the XDR total fee field."
+   ],
+   "siblings": "q-hot-fee-pool-burn-deflation; q-pc-practical-fee-setting; q-pc-sequence-numbers-ordering-replace; q-ti-channel-accounts-throughput; q-ti-java-sdk-wallet-feebump"
+  },
+  {
+   "id": "q-pc-l2-payment-channels-starlight",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Starlight is archived experimental SDF work",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar-deprecated/starlight",
+       "observedAt": "2026-11-02",
+       "quote": "archived: true, pushed_at 2024-03-04T21:22:46Z"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/glossary#starlight",
+       "observedAt": "2026-11-02",
+       "quote": "An experimental layer 2 payment channel protocol for Stellar that allowed for bi-directional payment channels. The project is no longer maintained, and its repo…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "CAP-0021 and CAP-0040 are Final protocol primitives",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final; Protocol version: 19"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0040.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final; Protocol version: 19"
+      },
+      {
+       "class": "A",
+       "ref": "https://github.com/stellar-deprecated/starlight (README)",
+       "observedAt": "2026-11-02",
+       "quote": "Prototypes here are dependent on Protocol 19 and ... CAP-21 and CAP-40"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Perun: active SCF-backed code, local/standalone, no verified Mainnet deployment",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/perun-network/perun-stellar-backend",
+       "observedAt": "2026-11-02",
+       "quote": "we will describe how to run our Payment Channels on a local instance of the Stellar blockchain ... this backend is customized to run on a local Stellar blockcha…"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity search 'Perun payment channels Stellar Soroban mainnet deployment 2026'",
+       "observedAt": "2026-11-02",
+       "quote": "No Mainnet deployment evidence found; results are repos and SCF pages."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Scout's Centaurus row is Live+Unverified",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects({q:'Centaurus'})",
+       "observedAt": "2026-11-02",
+       "quote": "status Inactive, statusAsOf 2026-07-13, statusBasis human-verified; lifecycle note 'Confirmed inactive 2026-07-13 (sls-024 recheck) ... The previous Live label …"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/centaurus-project/centaurus",
+       "observedAt": "2026-11-02",
+       "quote": "pushed_at 2022-01-05T17:49:58Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "(new) MPP session uses an experimental one-way payment-channel Soroban contract",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide",
+       "observedAt": "2026-11-02",
+       "quote": "The session intent is implemented using a one-way payment channel Soroban contract ... you need a deployed one-way-channel contract on Stellar Testnet or Mainne…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar-experimental/one-way-channel",
+       "observedAt": "2026-11-02",
+       "quote": "description 'An experimental one-way-channel Stellar contract.'; README: 'The contracts in this repository have not been audited.'; created 2026-03-19, pushed 2…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Canonical-page caution for Starlight live wording (sd-015) and Centaurus Live label (sls-024)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/glossary#starlight",
+       "observedAt": "2026-11-02",
+       "quote": "The project is no longer maintained"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs('Starlight layer 2 payment channel')",
+       "observedAt": "2026-11-02",
+       "quote": "glossary#starlight snippet: 'An experimental layer 2 payment channel protocol ... The project is no'"
+      },
+      {
+       "class": "C",
+       "ref": "Scout centaurus",
+       "observedAt": "2026-11-02",
+       "quote": "status Inactive"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n**As of 2026-07-10**, Starlight is historical SDF payment-channel research/protocol work and its `stellar-deprecated/starlight` reference repository is archived. It pursued Lightning-like repeated off-chain updates with on-chain settlement, but used Stellar accounts/transactions rather than Bitcoin's unchanged UTXO/HTLC stack.…",
+     "reason": "Scout changed Centaurus to Inactive on 2026-07-13; keep the dated 2026-07-10 observation and state the current label."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-29 CORRECTION 2026-07-10: Starlight is archived experimental work; CAP-21/40 are active primitives, not deployment evidence. Perun is active local/standalone code without verified Mainnet deployment; Centaurus's 2026-07-10 Live+Unverified label conflicted with stale repos; Scout has marked it Inactive since 2026-07-13.\nsd-015 captures glossary lifecycle ambiguity; sls-024 captures project-status conflicts.\nLive re-check 2026-11-02: the Docs glossary calls Starlight experimental, no longer maintained, and archived. Stellar Docs' MPP session guide uses the unaudited stellar-experimental one-w…",
+     "reason": "Update Centaurus status, remove expired sd-015/sls-024 canonical caution, add dated note on the Docs-referenced experimental one-way-channel contract."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-19-preconditions-cap-0021; q-pc-sequence-numbers-ordering-replace; q-protocol-accounts-signers-thresholds; q-mpp-discovery-and-modes; q-agent-payment-standard-choice; q-defi-streaming-payments-prior-art"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-pc-account-merge-reclaim-reserve",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "sd-013 is resolved (fixed upstream) and the live result-codes page, list-of-operations page, and Docs index no longer carry the pre-fix wording, so the golden-truth expiry rule for a canonical-page caution is met. Removal is correct; remaining notes unchanged.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge",
+      "observedAt": "2026-10-11 (Parallel cache, fetched 2026-11-02)",
+      "quote": "The source account still has non-signer subentries (trustlines, offers, or data entries). Signers are not a blocker — they are removed automatically as part of …"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/MergeOpFrame.cpp",
+      "observedAt": "2026-11-02",
+      "quote": "if (sourceAccount.numSubEntries != sourceAccount.signers.size()) ... ACCOUNT_MERGE_HAS_SUB_ENTRIES; if (getNumSponsoring(...) > 0) ... ACCOUNT_MERGE_IS_SPONSOR;…"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs(query=\"account merge has sub entries signers removed\") via Raven execute",
+      "observedAt": "2026-11-02",
+      "quote": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge: 'The source account still has non-signer subentries (trust…"
+     },
+     {
+      "class": "A",
+      "ref": "improvements/resolved.json sd-013 (repo record, not live evidence)",
+      "observedAt": "2026-11-02",
+      "quote": "resolved 2026-07-27 via stellar/stellar-docs#2590 / PR #2657"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-address-types-strkey",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "All parts verified: SEP-0023 v1.4.0 added W for CAP-0084; CAP-0084 targets Protocol 30; Mainnet ran Protocol 29 on 2026-11-02 (P30 Mainnet vote scheduled 2026-11-23). Dated, permissive, no keyFact change. Local stellar CLI 28.1.0 rejects the SEP-23 W vector (pre-P30 build), which is consistent with W being new.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0023.md",
+      "observedAt": "2026-11-02",
+      "quote": "Version: 1.4.0 ... | STRKEY_MUXED_CONTRACT | 22 << 3 | W | ... muxed contracts (introduced in [CAP-84])"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0023.md",
+      "observedAt": "2026-11-02",
+      "quote": "f2d36490 2026-10-14 'SEP-23: add muxed contract strkey (W…) for CAP-84 (#2020)'"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP: 0084 Title: Muxed Contract Addresses ... Status: Implemented ... Protocol version: 30"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ and POST https://mainnet.sorobanrpc.com getLatestLedger",
+      "observedAt": "2026-11-02",
+      "quote": "Horizon: current_protocol_version 29, core_supported_protocol_version 30, closed_at 2026-11-02T16:29:09Z; RPC getLatestLedger protocolVersion 29 sequence 652702…"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "A contract address can now carry a 64-bit ID, written as a new address format that starts with W. ... The testnet vote is on November 3, 2026 and the mainnet vo…"
+     },
+     {
+      "class": "D",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide (via Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-84 ... with a new strkey prefix W, defined in SEP-23."
+     }
+    ]
+   },
+   {
+    "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Accept. Primary + empirical ledger data fix Mainnet P28 at 2026-09-16 (a press item saying Sept 17 is wrong). The XDR curr branch also adds STELLAR_VALUE_EMPTY_TX_SET_MS for Protocol 30; the note is dated and only states that mentioning the edge case is correct, so it punishes nothing.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Final ... Protocol version: 28 ... txSetHash : Set to 0x0 ... ext : Set to STELLAR_VALUE_EMPTY_TX_SET ... ledgers containing a STELLAR_VALUE_EMPTY_TX_SE…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x",
+      "observedAt": "2026-11-02",
+      "quote": "STELLAR_VALUE_EMPTY_TX_SET = 2, STELLAR_VALUE_SIGNED_MS = 3, STELLAR_VALUE_EMPTY_TX_SET_MS = 4"
+     },
+     {
+      "class": "A",
+      "ref": "https://status.stellar.org/incidents/b0j6rd8gtsvb",
+      "observedAt": "2026-11-02",
+      "quote": "Mainnet Adapter, Protocol 28 Upgrade Vote ... The scheduled maintenance has been completed. Posted Sep 16, 2026 - 17:05 UTC"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers/64458445 and /ledgers/64458446",
+      "observedAt": "2026-11-02",
+      "quote": "ledger 64458445 protocol_version 27 closed 2026-09-16T17:00:01Z; ledger 64458446 protocol_version 28 closed 2026-09-16T17:00:06Z"
+     },
+     {
+      "class": "D",
+      "ref": "https://coinmarketcal.com/news/stellar-activates-protocol-28-as-record-throughput-and-rwa-value-climb (Parallel search)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar activated Protocol 28 on Sept. 17, one day after validators approved the mainnet upgrade. (secondary; contradicted by ledger data, which shows 2026-09-1…"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-cross-redstone-sep40",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Wording-only change: three live records now carry different counts (article 9 live, Scout 10 feeds, Docs a longer list), so 'two' became inaccurate. Count stays out of keyFacts; avoid unchanged.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+      "observedAt": "2026-10-27 (Parallel cache, fetched 2026-11-02)",
+      "quote": "A single SEP-40-compliant contract that serves the supported Stellar assets through the standard lastprice, price, and prices interface. ... CBMGLKUQZVSAIL5CPDD…"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/projects/resolve?q=redstone-finance",
+      "observedAt": "2026-11-02",
+      "quote": "shortDescription: 'Modular price oracle live on Stellar/Soroban mainnet (since March 2026) ... Launched with 10 feeds'"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-cross-redstone-sep40",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Each count is quoted from its owner and dated. 'Any one dated, attributed count is acceptable' is consistent with the avoid (which forbids a single reconciled count), so this is not score laundering.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/",
+      "observedAt": "2026-09-20 (Parallel cache, fetched 2026-11-02)",
+      "quote": "Nine assets are now live under SEP-40 ... | USST | STBL | In Progress |"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/projects/search?q=redstone and /api/projects/resolve?q=redstone-finance",
+      "observedAt": "2026-11-02",
+      "quote": "status Live, statusAsOf 2026-07-14, statusBasis human-verified; 'Launched with 10 feeds including BTC, ETH, USDC, PYUSD and Franklin Templeton's BE...'"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+      "observedAt": "2026-10-27 (Parallel cache, fetched 2026-11-02)",
+      "quote": "On Stellar, RedStone delivers price feeds for XLM, BTC, ETH, USDC, EURC, PYUSD, USDT0, Ethena's USDe and sUSDe, and a growing set of tokenized assets ..."
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs(query=\"RedStone SEP-40 oracle provider\") via Raven execute",
+      "observedAt": "2026-11-02",
+      "quote": "top hit https://developers.stellar.org/docs/data/oracles/oracle-providers#redstone"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-fee-bump-channel-accounts-feepool",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Reviewed 2026-06-29: differentiated (D3) — dropped the surge-fee-choice clause from the q and downgraded the surge must_have to should_have so surge/fee-selection is owned by q-pc-practical-fee-setting; this question keeps the fee-bump-specific 'why fees look doubled' as a must_have. Fee-bump and channel-account mechanics verified against official docs and CAP-0015. Fee-pool wording verified 2026-11-02 against LedgerHeader.feePool (XDR: 'fees burned since last inflation run'), the Lumens page ('No one has access to the fee pool'), and SDF's fees FAQ (fees go to neither SDF nor validators).\nAls…",
+    "note": "Facts true, two fixes: (1) the proposed text attributed 'fees are not validator rewards' to the Lumens page, which does not say it; the modify attributes it to SDF's fees FAQ and quotes the Lumens page exactly. (2) js-stellar-base adds the inner Soroban resource fee on top of baseFee*(ops+1); the modify states that so the layer note stays exact. The symmetric 'either layer is not wrong' rule prote…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x",
+      "observedAt": "2026-11-02",
+      "quote": "int64 feePool;       // fees burned since last inflation run"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+      "observedAt": "2026-10-31 (Parallel cache, fetched 2026-11-02)",
+      "quote": "The lumens do not belong to any particular account. No one has access to the fee pool, so these lumens are non-circulating."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/transaction-submission-timeouts-and-dynamic-fees-faq",
+      "observedAt": "2026-10-01 (Parallel cache, fetched 2026-11-02)",
+      "quote": "Fees do not go to the Stellar Development Foundation or to network validators: they go into the fee pool, which is tracked in the ledger header."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+      "observedAt": "2026-10-16 (Parallel cache)",
+      "quote": "they will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees."
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_ask (fee pool / validator rewards)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar validators receive no share of transaction fees or protocol rewards ... No one can access or spend it under the current protocol"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+      "observedAt": "2026-10-26 (Parallel cache)",
+      "quote": "Fee: The maximum per-operation fee you're willing to pay for the fee-bump transaction. The fee-bump transaction is one operation. Therefore, the total number of…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-base/master/src/transaction_builder.js",
+      "observedAt": "2026-11-02",
+      "quote": "@param {string} baseFee - max fee willing to pay per operation in inner transaction ... fee: xdr.Int64.fromString(base.times(innerOps + 1).plus(resourceFee).toS…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x",
+      "observedAt": "2026-11-02",
+      "quote": "struct FeeBumpTransaction { MuxedAccount feeSource; int64 fee; ..."
+     }
+    ]
+   },
+   {
+    "id": "q-pc-l2-payment-channels-starlight",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Scout's own label is the authority for what Scout says; the 2026-07-10 label is kept as dated history and the current Inactive label is dated. 'Neither label is deployment proof' is consistent with the stale repo. Dates preserved; avoid unchanged.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/projects/search?q=centaurus",
+      "observedAt": "2026-11-02",
+      "quote": "slug centaurus, status Inactive, statusAsOf 2026-07-13T00:00:00.000Z, statusBasis human-verified, statusSourceUrl https://github.com/centaurus-project/centaurus…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/centaurus-project/centaurus",
+      "observedAt": "2026-11-02",
+      "quote": "archived false, pushed_at 2022-01-05T17:49:58Z"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md (repo record of the 2026-07-10 state)",
+      "observedAt": "2026-11-02",
+      "quote": "Centaurus was Live plus Unverified while linked repositories had no activity after 2021"
+     }
+    ]
+   },
+   {
+    "id": "q-pc-l2-payment-channels-starlight",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "GT-29 CORRECTION 2026-07-10: Starlight is archived experimental work; CAP-21/40 are active primitives, not deployment evidence. Perun is active local/standalone code without verified Mainnet deployment; Centaurus's 2026-07-10 Live+Unverified label conflicted with stale repos; Scout has marked it Inactive since 2026-07-13.\nsd-015 captures glossary lifecycle ambiguity; sls-024 captures project-status conflicts.\nAccurately quoting the canonical Stellar or Scout source on Starlight's old live wording or Centaurus's unqualified Live label is not a wrong claim while a cached Docs copy still shows th…",
+    "note": "Two fixes. (1) The proposal deleted the canonical-page caution. The golden-truth expiry rule needs the finding fixed upstream; sd-015 is, but sls-024 is still reported-upstream, and the caution names both. Keep the caution verbatim until sls-024 resolves. (2) The MPP guide says users deploy the contract on Testnet or Mainnet. The modify says so, so a true 'can deploy on Mainnet' claim is not punis…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/glossary",
+      "observedAt": "2026-10-27 (Parallel cache, fetched 2026-11-02)",
+      "quote": "Starlight: An experimental layer 2 payment channel protocol for Stellar that allowed for bi-directional payment channels. The project is no longer maintained, a…"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs(query=\"Starlight payment channel glossary\") via Raven execute",
+      "observedAt": "2026-11-02",
+      "quote": "https://developers.stellar.org/docs/learn/glossary#starlight — same wording"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide",
+      "observedAt": "2026-10-01 (Parallel cache)",
+      "quote": "The session intent is implemented using a one-way payment channel Soroban contract ... you need a deployed one-way-channel contract on Stellar Testnet or Mainne…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar-experimental/one-way-channel (gh api + raw README)",
+      "observedAt": "2026-11-02",
+      "quote": "description 'An experimental one-way-channel Stellar contract.'; README: '> [!WARNING] The contracts in this repository have not been audited.'"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/projects/search?q=centaurus",
+      "observedAt": "2026-11-02",
+      "quote": "status Inactive, statusAsOf 2026-07-13"
+     },
+     {
+      "class": "A",
+      "ref": "improvements/INDEX.md + improvements/resolved.json (repo records)",
+      "observedAt": "2026-11-02",
+      "quote": "sd-015 resolved 2026-07-27 (fixed upstream); sls-024 status reported-upstream (still open)"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0023.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0083.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0015.md",
+   "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/MergeOpFrame.cpp",
+   "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x",
+   "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x",
+   "https://raw.githubusercontent.com/stellar/js-stellar-base/master/src/transaction_builder.js",
+   "https://raw.githubusercontent.com/stellar-experimental/one-way-channel/main/README.md",
+   "gh api repos/stellar/stellar-protocol/commits (sep-0023, cap-0084)",
+   "gh api repos/stellar-experimental/one-way-channel",
+   "gh api repos/centaurus-project/centaurus",
+   "gh search code stellar/stellar-docs op_has_sub_entries",
+   "https://horizon.stellar.org/",
+   "https://horizon.stellar.org/ledgers/{64000000..65270233 bisection; 64458445, 64458446}",
+   "https://horizon-testnet.stellar.org/",
+   "https://mainnet.sorobanrpc.com (getLatestLedger)",
+   "https://stellarlight.xyz/api/projects/search?q=centaurus",
+   "https://stellarlight.xyz/api/projects/search?q=redstone",
+   "https://stellarlight.xyz/api/projects/resolve?q=redstone-finance",
+   "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge",
+   "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+   "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+   "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+   "https://developers.stellar.org/docs/learn/glossary",
+   "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide",
+   "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+   "https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/",
+   "https://stellar.org/blog/developers/transaction-submission-timeouts-and-dynamic-fees-faq",
+   "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+   "https://status.stellar.org/incidents/b0j6rd8gtsvb (Parallel search)",
+   "https://stellar.org/blog/developers/adapter-protocol-28-upgrade-guide (Parallel search)",
+   "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar (Perplexity search)",
+   "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide (Perplexity search)",
+   "https://github.com/stellar/go-stellar-sdk/pull/6015 (Perplexity search)",
+   "Raven stellarDocs.search_docs x6 (observedAt 2026-11-02T16:32:13Z)",
+   "Perplexity perplexity_ask fee pool"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-pc-account-merge-reclaim-reserve; q-pc-address-types-strkey; q-pc-bucketlist-vs-merkle-inclusion-proof; q-pc-cross-redstone-sep40; q-pc-fee-bump-channel-accounts-feepool; q-pc-l2-payment-channels-starlight",
+  "verifiedOnly": "q-gap-scout-changelog-envelope; q-gap-scout-status-envelope; q-pc-account-activation-not-found; q-pc-doc-category-validator-search",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-ti-custodial-account-generation-c-address",
+    "issue": "Sibling outside this batch still carries an sd-013 cached-copy grading caution; this batch removed the same expired caution from q-pc-account-merge-reclaim-reserve (sd-013 fixed upstream 2026-07-27, live pages carry fixed wording 2026-11-02). Its owner should review removal for consistency."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-gap-scout-changelog-envelope",
+    "log": "Verified only (classes BC); truth.verified refreshed; no gospel change."
+   },
+   {
+    "id": "q-gap-scout-status-envelope",
+    "log": "Verified only (classes BC); truth.verified refreshed; no gospel change."
+   },
+   {
+    "id": "q-pc-account-activation-not-found",
+    "log": "Verified only (classes ABF); truth.verified refreshed; no gospel change."
+   },
+   {
+    "id": "q-pc-account-merge-reclaim-reserve",
+    "log": "Gospel changed: golden.notes (accept); truth.verified refreshed; sources and one corroboration row added."
+   },
+   {
+    "id": "q-pc-address-types-strkey",
+    "log": "Gospel changed: golden.notes (accept); truth.verified refreshed; sources and one corroboration row added."
+   },
+   {
+    "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+    "log": "Gospel changed: golden.notes (accept); truth.verified refreshed; sources and one corroboration row added."
+   },
+   {
+    "id": "q-pc-cross-redstone-sep40",
+    "log": "Gospel changed: golden.answer (accept); golden.notes (accept); truth.verified refreshed; sources and one corroboration row added; asOf 2026-11-02; reverifyBy 2027-01-26 -> 2027-05-14."
+   },
+   {
+    "id": "q-pc-doc-category-validator-search",
+    "log": "Verified only (classes BCEF); truth.verified refreshed; no gospel change."
+   },
+   {
+    "id": "q-pc-fee-bump-channel-accounts-feepool",
+    "log": "Gospel changed: golden.notes (verifier modify); truth.verified refreshed; sources and one corroboration row added."
+   },
+   {
+    "id": "q-pc-l2-payment-channels-starlight",
+    "log": "Gospel changed: golden.answer (accept); golden.notes (verifier modify); truth.verified refreshed; sources and one corroboration row added; asOf 2026-11-02."
+   }
+  ]
+ }
+}

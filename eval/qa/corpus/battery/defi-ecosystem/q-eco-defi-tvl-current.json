@@ -5,7 +5,7 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-07-11, the live research results included a 2026-04-23 developer meeting reporting $170M of DeFi TVL; older results reported different figures, demonstrating why provider and date matter.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer takes current chain DeFi TVL from a named, dated TVL provider such as DeFiLlama's Stellar chain endpoints, states the measurement basis, and makes the observation date visible. Directory, research, and news sources supply secondary figures; keep each figure's provider, scope, and date. As of 2026-07-11, the live research results included a 2026-04-23 developer meeting reporting $170M of DeFi TVL; older results reported different figures, demonstrating why provider and date matter.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names the provider used for the reported TVL.",
@@ -17,7 +17,7 @@
       "Do NOT pin May 30 as the record, give an undated current scalar, sum overlapping rows, or compare contributors from mismatched snapshots/methods.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "FRESHNESS item, RE-VERIFIED LIVE 2026-06-29 (perplexity/DeFiLlama): figure is HIGHLY volatile and the dossier's ~$227M is stale. Record = ~$242M on May 30 2026 (confirmed via CryptoCompass/BSCNews). Live DeFiLlama chain reads have since ranged DOWN — mid-June 2026 reads near ~$200M, and the 2026-06-29 DeFiLlama read is ~$137.84M (matching the 06-22 scrape). So the gate MUST be on 'cite a dated source + flag staleness + confirm live', NOT a fixed number. Two distinct figures (record vs live snapshot) must not be merged. Confidence: low (volatile).\nAlso good if the answer: Attributes the figure to a specific dated source (DeFiLlama, SDF blog, or dated news) rather than a bare number. | Notes the live DeFiLlama snapshot moves substantially (it has ranged from a ~$242M May-2026 record down toward ~$140-200M since) — i.e. confirm against the live source.\nGolden cites: A dated TVL source (DeFiLlama / SDF / dated news) with a freshness caveat.\nGT-19 CORRECTION 2026-07-10: the June 19 historical point exceeds May 30. Gate provider/endpoint/asOf/definition and chain-vs-protocol separation, never one record/current scalar.\nAccurately quoting the canonical Scout documentation on DeFindex TVL methodology is not a wrong claim while a cached or older copy still omits the provider, `tvlAsOf`, `llamaSlugs`, or `tvlMethodUrl` fields added by the 2026-07-14 fix; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "FRESHNESS item, RE-VERIFIED LIVE 2026-06-29 (perplexity/DeFiLlama): figure is HIGHLY volatile and the dossier's ~$227M is stale. DeFiLlama's daily history changes between reads (revisions or method changes), so record labels and dates move: on 2026-11-02 its historicalChainTvl series showed a $272.8M daily-close high dated 2026-10-01 (some news dates it 2026-10-02), above the $242.7M point on 2026-05-30, and about $221M for 2026-11-02, while the /v2/chains live figure read about $227M the same day. So the gate MUST be on 'cite a dated source + flag staleness + confirm live', NOT a fixed number. Two distinct figures (record vs live snapshot) must not be merged. Confidence: low (volatile).\nAlso good if the answer: Attributes the figure to a specific dated source (DeFiLlama, SDF blog, or dated news) rather than a bare number. | Notes the live DeFiLlama snapshot moves substantially (as of 2026-11-02, DeFiLlama daily history ran from about $194M on 2026-06-29 to a $272.8M high on 2026-10-01) — i.e. confirm against the live source.\nGolden cites: A dated TVL source (DeFiLlama / SDF / dated news) with a freshness caveat.\nGT-19 CORRECTION 2026-07-10: the DeFiLlama history read on 2026-07-11 put June 19 above May 30; the 2026-11-02 read reverses that order, so never grade a record date. Gate provider/endpoint/asOf/definition and chain-vs-protocol separation, never one record/current scalar.\nSource routing 2026-11-02: Lumenloop search_directory and get_project records carried no TVL field; Lumenloop content supplies only dated secondary TVL mentions, not a current provider value."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -31,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "D",
@@ -47,6 +47,36 @@
         "class": "D",
         "ref": "https://defillama.com/chain/stellar",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+        "note": "Golden audit 2026-11-02: \"max ('2026-10-01', 272841590); 2026-05-30 242671595; 2026-06-19 238715806; 2026-06-29 194179178 (lowest point since 2026-06-29); 2026-11-02 220967151\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://api.llama.fi/v2/chains",
+        "note": "Golden audit 2026-11-02: \"'tvl': 227292727.19807118, ... 'name': 'Stellar'\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://defillama.com/chain/stellar",
+        "note": "Golden audit 2026-11-02: \"Total Value Locked in DeFi as of Oct 31, 2026 $223.4m\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://whalehub.io/blog/stellar-defi-tvl-2026",
+        "note": "Golden audit 2026-11-02: \"Stellar DeFi TVL stood at $271.6M on 6 October 2026, according to DefiLlama, after a record $272.8M on 1 October.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://blockonomi.com/stellar-defi-hits-new-tvl-record-as-active-wallets-near-100000/",
+        "note": "Golden audit 2026-11-02: \"The Stellar DeFi ecosystem reached a record total value locked of nearly $273 million on October 2, according to DeFiLlama.\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -67,33 +97,63 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "On 2026-11-02, DeFiLlama's Stellar historicalChainTvl series showed a $272.8M daily-close high dated 2026-10-01, $242.7M on 2026-05-30, $238.7M on 2026-06-19, and about $221M on 2026-11-02, while /v2/chains read about $227M the same day.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+            "observedAt": "2026-11-02",
+            "note": "max ('2026-10-01', 272841590); 2026-05-30 242671595; 2026-06-19 238715806; 2026-06-29 194179178 (lowest point since 2026-06-29); 2026-11-02 220967151"
+          },
+          {
+            "class": "C",
+            "ref": "https://api.llama.fi/v2/chains",
+            "observedAt": "2026-11-02",
+            "note": "'tvl': 227292727.19807118, ... 'name': 'Stellar'"
+          },
+          {
+            "class": "A",
+            "ref": "https://defillama.com/chain/stellar",
+            "observedAt": "2026-11-02",
+            "note": "Total Value Locked in DeFi as of Oct 31, 2026 $223.4m"
+          },
+          {
+            "class": "D",
+            "ref": "https://whalehub.io/blog/stellar-defi-tvl-2026",
+            "observedAt": "2026-11-02",
+            "note": "Stellar DeFi TVL stood at $271.6M on 6 October 2026, according to DefiLlama, after a record $272.8M on 1 October."
+          },
+          {
+            "class": "D",
+            "ref": "https://blockonomi.com/stellar-defi-hits-new-tvl-record-as-active-wallets-near-100000/",
+            "observedAt": "2026-11-02",
+            "note": "The Stellar DeFi ecosystem reached a record total value locked of nearly $273 million on October 2, according to DeFiLlama."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task scf-population-staking)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; live 2026-07-10 reads moved around $229.1M intraday.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live research results included a 2026-04-23 developer meeting reporting $170M of DeFi TVL; older results reported different figures, demonstrating why provider and date matter.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sls-031; the TVL methodology facts are unchanged.",
-        "Improvements review 2026-08-27: improvements/resolved.json entry sls-031 records the 2026-07-14 fix; the disputed claim is whether older Scout DeFindex TVL records expose provider and methodology fields.",
-        "Sibling sweep 2026-08-27: grep sls-031|tvlMethodUrl → q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure; no contradiction",
-        "Live re-check 2026-08-30: https://api.llama.fi/v2/historicalChainTvl/Stellar — the latest completed Stellar point carries date 1788048000 and TVL 230223262.",
-        "Live re-check 2026-08-30: https://api-docs.defillama.com/ — identifies the provider's current-chain and historical-chain TVL endpoints.",
-        "Live re-check 2026-08-30: https://github.com/DefiLlama/DefiLlama-Adapters/blob/master/README.md — says TVL adapters compute from blockchain data.",
-        "Live re-check 2026-08-30: https://api.llama.fi/v2/chains — returned Stellar TVL 236574470.37832046 at retrieval time.",
-        "Live re-check 2026-08-30: https://api-docs.defillama.com/ — separates chain TVL, protocol TVL, stablecoin, RWA, DEX-volume, and pool-yield endpoints.",
-        "Sibling sweep 2026-08-30: grep TVL|total value locked|DeFiLlama → q-asset-rwa-tokenized-freshness, q-defi-aquarius-what-is, q-defi-blend-what-is, q-defi-comet-what-is, q-defi-defindex-honest, q-defi-liquid-staking-whitespace, q-defi-phoenix-what-is, q-defi-provide-liquidity-impermanent-loss, q-eco-defi-market-map, q-eco-defi-projects-discovery, q-eco-defi-tvl-current, q-eco-dex-saturation, q-eco-most-active-defi-projects, q-eco-stellar-rwa-stablecoin-volume, q-edge-factcheck-soroswap-first-amm, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure, q-scf-eligibility-criteria, q-ti-compute-token-lp-market-data; no contradiction"
+        "C: https://api.llama.fi/v2/historicalChainTvl/Stellar — \"max ('2026-10-01', 272841590); 2026-05-30 242671595; 2026-06-19 238715806; 2026-06-29 194179178 (lowest point since 2026-06-29); 2026-11-02 220967151\" (observedAt 2026-11-02)",
+        "C: https://api.llama.fi/v2/chains — \"'tvl': 227292727.19807118, ... 'name': 'Stellar'\" (observedAt 2026-11-02)",
+        "A: https://defillama.com/chain/stellar — \"Total Value Locked in DeFi as of Oct 31, 2026 $223.4m\" (observedAt 2026-11-02)",
+        "D: https://whalehub.io/blog/stellar-defi-tvl-2026 — \"Stellar DeFi TVL stood at $271.6M on 6 October 2026, according to DefiLlama, after a record $272.8M on 1 October.\" (observedAt 2026-11-02)",
+        "D: https://blockonomi.com/stellar-defi-hits-new-tvl-record-as-active-wallets-near-100000/ — \"The Stellar DeFi ecosystem reached a record total value locked of nearly $273 million on October 2, according to DeFiLlama.\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep '242M|June 19|272.8' over the battery → only this case carries the TVL record figures (q-builder-content-by-person's 'June 19' is an unrelated event date); proposer siblings q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure, q-asset-rwa-tokenized-freshness, q-eco-defi-market-map; no contradiction.",
+        "Live C 2026-11-02 (pass 2): POST https://api.lumenloop.com/v1/tools/search_directory {query:'DeFi TVL'} -> 20 rows with keys category, description, similarity, slug, tags, title, website only; POST /v1/tools/get_project {slug:'blend'|'defindex'} -> data keys based_in, category, description, links, mainnet, operating_region, other_names, parent, scf, slug, tags, title; no TVL field or TVL text.",
+        "Live 2026-11-02 (pass 2): https://api.llama.fi/v2/chains Stellar tvl 227638623.88; https://api.llama.fi/v2/historicalChainTvl/Stellar max 2026-10-01 272841590, 2026-05-30 242671595, 2026-06-19 238715806, 2026-06-29 194179178, 2026-11-02 221313047; notes values hold.",
+        "Pass 2 2026-11-02: removed the sls-031 cached-copy partial-cap caution. sls-031 was fixed upstream on 2026-07-14 (improvements/resolved.json#sls-031), and live GET https://stellarlight.xyz/api/projects/search?q=defindex returns tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15.688Z, tvlSource 'defillama', llamaSlugs ['defindex'], tvlMethodUrl https://defillama.com/protocol/defindex; the trigger expired, and it was an aggregator partial cap outside the three ADR-0008 cases.",
+        "Sibling sweep 2026-11-02 (pass 2): the same 'from the current LumenLoop corpus' template sentence appears in q-asset-rwa-tokenized-freshness, q-crp-regional-offramp-mobilemoney, q-eco-stablecoins-on-stellar, q-eco-stellar-rwa-stablecoin-volume, q-edge-fresh-latest-blend-tvl, q-edge-fresh-most-recent-news, q-builder-lumenloop-regions-vocab (not edited here; flagged to the round ledger). q-edge-fresh-latest-blend-tvl and q-edge-noinfo-exact-tvl-figure name sls-031 and may carry the same expired caution; no TVL figure here contradicts them."
       ],
       "rootCause": [
-        "A volatile third-party scalar and record label were frozen; chain and protocol TVL definitions were under-specified.",
-        "improvements/stellar-light-scout/sls-031-tvl-methodology-provenance.md",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "freshness-drift",
+        "eval-authoring: the migration template sentence named the LumenLoop corpus as the TVL source, but Lumenloop directory and project records carry no TVL field (verified 2026-11-02)",
+        "improvements/resolved.json#sls-031 — fixed upstream 2026-07-14; the cached-copy partial-cap caution expired and is removed"
       ]
     },
     "origin": "raven-next q-eco-defi-tvl-current"

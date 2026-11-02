@@ -34,7 +34,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -105,35 +105,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-49 primary 3335 and blind 3341.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-infra-hubble-vs-rpc-layer",
-        "https://developers.stellar.org/docs/data/apis/rpc",
-        "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring",
-        "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/data-lake-integration",
-        "https://developers.stellar.org/docs/data/analytics/hubble",
-        "Solo scratchpad 575 GT-49 primary 3335 and blind 3341; deduped to sd-023.",
-        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (negative-predicate): Shortened a sourcing fact and replaced a negative use restriction with its positive workload definition; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble — showed a public historical BigQuery dataset for analytic workloads.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble — showed that Hubble is read-only and cannot submit transactions or serve real-time retrieval.",
-        "Sibling sweep 2026-08-27: grep crypto-stellar.crypto_stellar|Hubble|intraday batches → q-crp-export-tx-history-taxes, q-infra-hubble-bigquery, q-infra-which-indexer, q-ti-compute-token-lp-market-data, q-ti-enumerate-all-contracts, q-ti-historical-pointintime-balances; no contradiction",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/analytics/hubble — showed a public historical BigQuery dataset for analytic workloads.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/analytics/hubble — showed that Hubble is read-only and cannot submit transactions or serve real-time retrieval.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/analytics/hubble — the live source supports names the public BigQuery dataset path and historical analytics workload.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/analytics/hubble — the live source supports defines Hubble as read-only historical analytics.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/analytics/hubble — the live source supports qualifies cadence/schema freshness.",
-        "Sibling sweep 2026-08-30: grep crypto-stellar.crypto_stellar|Hubble|intraday batches → q-crp-export-tx-history-taxes, q-infra-hubble-bigquery, q-infra-which-indexer, q-ti-compute-token-lp-market-data, q-ti-enumerate-all-contracts, q-ti-historical-pointintime-balances; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, B, D); the proposer proposed no change and the verifier listed the case as no-proposal.",
+        "Class B (golden.keyFacts[2], confirmed): stellar-docs@de38543 docs/data/analytics/hubble/developer-guide/connecting-to-bigquery/index.mdx:20,79 — \"open the [crypto-stellar.crypto_stellar] dataset ... dataset_id = 'crypto-stellar.crypto_stellar'\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[2], confirmed): curl https://developers.stellar.org/docs/data/analytics/hubble/developer-guide/connecting-to-bigquery — \"crypto-stellar.crypto_stellar\" (observedAt 2026-11-02)",
+        "Class D (golden.keyFacts[2], confirmed): perplexity_search (excluding developers.stellar.org) -> https://stellar.org/blog/developers/beyond-the-blockchain-unlocking-the-power-of-analytics-with-hubble — \"Users with a Google Cloud Project can follow the link to the dataset `crypto-stellar.crypto_stellar`\" (observedAt 2026-11-02)",
+        "Class B (golden.keyFacts[3] / avoid[0], confirmed): stellar-docs@de38543 docs/data/analytics/hubble/index.mdx:8,20 — \"Hubble should not be used for real-time data retrieval and cannot submit transactions to the network. ... Hubble is read-only; it cannot interact with the Stellar Network.\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[3] / avoid[0], confirmed): curl https://developers.stellar.org/docs/data/analytics/hubble — \"read-only; it cannot interact with the Stellar Ne...\" (observedAt 2026-11-02)",
+        "Class B (golden.keyFacts[4], confirmed-as-of): stellar-docs@de38543 docs/data/analytics/hubble/index.mdx:21 — \"The database is updated in intraday batches. There is no guarantee for same-day data availability.\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[4], confirmed-as-of): curl https://developers.stellar.org/docs/data/analytics/hubble — \"intraday batches. There is no guarantee for same-day data availability.\" (observedAt 2026-11-02)",
+        "Class D (golden.keyFacts[4], confirmed-as-of): stellar.org blog (2023-07-11) via perplexity_search — \"Hubble stays up-to-date through intraday batches that execute every 30 minutes.\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-infra-which-indexer, q-ti-historical-pointintime-balances, q-crp-export-tx-history-taxes, q-ti-enumerate-all-contracts checked; no conflicting fact."
       ]
     },
     "origin": "raven-next q-infra-hubble-bigquery"

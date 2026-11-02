@@ -93,22 +93,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): split the surge abuse and defense lists; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — higher maximum fee bids receive priority during constrained capacity.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the page documents spam resistance, surge delays, and fee-bump replacement mechanisms underlying the abuse patterns.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling and https://developers.stellar.org/docs/build/guides/transactions/channel-accounts — official guidance confirms fee adjustment, retry backoff, timebounds, and channel accounts.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — official guidance distinguishes pending, expired, retry, and result-code states for monitoring and status handling.",
-        "Sibling sweep 2026-08-29: grep surge pricing|fee-bump|retry/backoff|channel accounts|tx_insufficient_fee → q-pc-fee-bump-channel-accounts-feepool, q-pc-practical-fee-setting, q-pc-sequence-numbers-ordering-replace, q-ti-channel-accounts-throughput, q-ti-classic-submission-errors, and related fee cases; no contradiction",
-        "Corroboration audit 2026-08-29: added 2 row(s) for fee-surge threat and retry boundaries; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
+        "Live re-check 2026-11-02 (confirmed): Surge pricing prioritizes higher fee bids when capacity is exceeded; fees are not fixed regardless of load — A https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering 'During this time, the network uses market dynamics to decide which transactions to include in the ledger. Transactions that offer a higher maximum base fee bid make it to the ledger first.'; D https://chainscorelabs.com/protocol/stellar/governance-and-parameter-changes/soroban-resource-pricing-and-limits 'general-web context: resource pricing and limits depend on validator-accepted parameters (Parallel search 2026-11-02)'",
+        "Live re-check 2026-11-02 (confirmed): Wallet docs: simple submit path doesn't handle fee surge gracefully; rebuild/re-sign with increased fee — A https://developers.stellar.org/docs/build/apps/wallet/stellar#submit-transaction 'the method above doesn't handle fee surge pricing in the network gracefully. ... Every 30 seconds this function will re-construct this transaction with a new fee (increased by 100 stroops)'",
+        "Live re-check 2026-11-02 (confirmed): fee-bump replacement, tx_insufficient_fee, time/ledger bounds as defenses — A https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering 'replacing the first transaction if and only if the fee bid of the second transaction is at least 10x ... found in the `fee_charged` field of the transaction response under the `tx_insufficient_fee` error case.'",
+        "Sibling sweep 2026-11-02: no matrix-listed sibling; fee-bump 10x replacement and surge-priority wording unchanged on the live fees page."
       ]
     },
     "origin": "raven-next q-pc-surge-griefing-threat-model"

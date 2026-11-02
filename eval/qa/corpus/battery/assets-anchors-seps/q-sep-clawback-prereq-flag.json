@@ -104,15 +104,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Corroboration audit 2026-08-29: added 3 row(s) for clawback prerequisite, retroactivity, and XLM boundaries; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 3 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "[A] https://developers.stellar.org/docs/build/guides/transactions/clawbacks#set-options — \"If an issuing account wants to set the `AUTH_CLAWBACK_ENABLED_FLAG`, it must have the `AUTH_REVOCABLE_FLAG` set.\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md — \"SET_OPTIONS_AUTH_REVOCABLE_REQUIRED = -10 // auth revocable is required for clawback\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[E] stellarDocs.search_docs 'AUTH_CLAWBACK_ENABLED_FLAG must have AUTH_REVOCABLE_FLAG set' (2026-11-02T15:51:10Z) — \"clawbacks#set-options hit with the same sentence\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[A] https://developers.stellar.org/docs/build/guides/transactions/clawbacks — \"This causes every subsequent trustline established ... to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically ... you cannot retroactively enable clawback on existing trustlines.\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/control-asset-access — \"any *subsequent* trustlines established with this account will have clawbacks enabled ... Note that this flag requires that revocable is also set.\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md — \"// ASSET_TYPE_NATIVE is not allowed ... `asset` is native. (invalid)\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: checked q-comp-clawback-cap0035, q-comp-auth-flags-overview, q-comp-sep8-regulated-assets-approval-server; no contradiction with this case's facts."
       ]
     },
     "origin": "raven-next q-sep-clawback-prereq-flag"

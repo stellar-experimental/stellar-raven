@@ -5,7 +5,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSCF payment terms and Stellar Mainnet authority are separate. As of **2026-07-10**, the published Build Award schedule is **10% on award acceptance, 20% after MVP, 30% after Testnet/equivalent, and 40% after verified Mainnet launch plus UX readiness**. Later payments require verified deliverables. Current public guidelines require each completion form within 90 calendar days of the preceding payment and allow SDF, absent timely written delay notice and acknowledgement, to deem unpaid tranches forfeited and the award terminated. Project-specific agreements and future terms may differ.\n\nThat structure shifts execution and cash-flow risk to recipients; whether it is 'predatory' or fair is an evaluative judgment, not established by the 10% fact alone. SDF can administer, suspend, modify, or end its grants and control its sites/branding. That does **not** create a unilateral protocol switch to delete an independently operated Mainnet contract/app, though an app can depend on its own admins, issuers, front end, SDF-operated services, and network/quorum choices.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\nSCF payment terms and Stellar Mainnet authority are separate. As of **2026-11-02**, the published Build Award schedule is **10% on award acceptance, 20% after MVP, 30% after Testnet/equivalent, and 40% after verified Mainnet launch plus UX readiness**; for Integration Track awards, the final 40% instead releases when the project meets its committed, panel-ratified onchain metric, not on Mainnet launch alone. Later payments require verified deliverables. Current public guidelines require each completion form within 90 calendar days of the preceding payment and allow SDF, absent timely written delay notice and acknowledgement, to deem unpaid tranches forfeited and the award terminated. If a participant breaches the Official Rules' use-of-funds terms (Sections 3 and 3A) or the Program Policies, SDF may, at its sole discretion, rescind the award or require repayment of disbursed funds; that is not automatic clawback. Project-specific agreements and future terms may differ.\n\nThat structure shifts execution and cash-flow risk to recipients; whether it is 'predatory' or fair is an evaluative judgment, not established by the 10% fact alone. SDF can administer, suspend, modify, or end its grants and control its sites/branding. That does **not** create a unilateral protocol switch to delete an independently operated Mainnet contract/app, though an app can depend on its own admins, issuers, front end, SDF-operated services, and network/quorum choices.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -17,7 +17,7 @@
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
       "Do NOT use an unsupported memory claim as a current SCF v7 fact."
     ],
-    "notes": "GT-26 2026-07-10: grade the dated 10/20/30/40 schedule, current 90-day/unpaid-tranche term, normative fairness caution, and grant-versus-protocol authority distinction. Current-round facts belong to the dedicated SCF-round cases.\nGT-26 CORRECTION 2026-07-10: replace current-round scope creep with the actual Build payment/forfeiture terms and durable grant-versus-network distinction."
+    "notes": "GT-26 2026-07-10: grade the dated 10/20/30/40 schedule, current 90-day/unpaid-tranche term, normative fairness caution, and grant-versus-protocol authority distinction. Current-round facts belong to the dedicated SCF-round cases.\nGT-26 CORRECTION 2026-07-10: replace current-round scope creep with the actual Build payment/forfeiture terms and durable grant-versus-network distinction.\n2026-11-02 RE-VERIFICATION: the SCF handbook update of 2026-08-14 (stellar/scf-handbook commit 0d5dbc1269) ties the Integration Track final 40% to a committed, panel-ratified onchain metric and adds a discretionary remedy for breaches of the use-of-funds rules or Program Policies (rescind, or repay disbursed funds). An answer that states either term as dated and conditional is not a wrong claim; an 'automatically clawed back' claim still fires the avoid."
   },
   "tags": {
     "category": "edge-behavior",
@@ -31,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -52,6 +52,48 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/budget-and-deliverable-guidelines.md",
+        "note": "For Integration Track awards, tranche #3 (40%) releases against a committed, panel-ratified onchain metric (NAV, cumulative volume, or an equivalent measure), not on mainnet launch alone. Tranches #0–#2 are unchanged.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track.md",
+        "note": "For Integration Track awards, the final tranche (#3, 40% of the award) releases when your project reaches its committed, panel-ratified onchain metric — not on mainnet launch alone. Tranches #0–#2 (10% on award acceptance / 20% MVP / 30% testnet) are unchanged",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions.md",
+        "note": "(a) For Integration Track Awards, release of the final tranche (tranche #3) is conditioned on the Participant achieving the onchain metric threshold proposed by the Participant and ratified or adjusted by the review panel at the time of Award ... Completion of a mainnet launch alone does not entitle a Participant to release of the final tranche.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/scf-handbook/commit/0d5dbc1269 (gh api repos/stellar/scf-handbook/commits?path=scf-awards/official-rules-for-submissions.md)",
+        "note": "0d5dbc1269 2026-08-14T15:19:57Z GITBOOK-236; patch adds '+**3A. Outcome-Based Tranche Conditions (Integration Track)**' and '+(f) Without limiting any other right or remedy available to SDF, if a Participant breaches this Section 3A, Section 3, or the Program Policies'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md",
+        "note": "August 2026 ... Integration Track Updates: The final tranche (#3) now releases against a committed, panel-ratified onchain metric (NAV or volume) rather than on mainnet launch alone.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "Stellar Raven execute lumenloop.search_content_semantic('SCF Integration Track final tranche ... onchain metric')",
+        "note": "Confirms the Integration Track is a live SCF 7.0 track; does not itself state the metric rule.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Parallel web_search 'SCF Integration Track final tranche onchain metric' -> https://stellar.gitbook.io/scf-handbook (What's New)",
+        "note": "Web sweep found no contradicting source; it resurfaces the owner page.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -85,24 +127,76 @@
           }
         ],
         "note": "Legacy verdict: confirmed-time-slice."
+      },
+      {
+        "claim": "As of 2026-11-02, Integration Track awards release the final 40% tranche on a committed, panel-ratified onchain metric, not on Mainnet launch alone (added 2026-08-14).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track.md",
+            "observedAt": "2026-11-02",
+            "note": "For Integration Track awards, the final tranche (#3, 40% of the award) releases when your project reaches its committed, panel-ratified onchain metric — not on mainnet launch alone."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions.md",
+            "observedAt": "2026-11-02",
+            "note": "Section 3A(a): Completion of a mainnet launch alone does not entitle a Participant to release of the final tranche."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/commit/0d5dbc1269",
+            "observedAt": "2026-11-02",
+            "note": "2026-08-14T15:19:57Z GITBOOK-236 adds Section 3A Outcome-Based Tranche Conditions (Integration Track)."
+          },
+          {
+            "class": "D",
+            "ref": "Perplexity perplexity_ask (SCF Integration Track final tranche)",
+            "observedAt": "2026-11-02",
+            "note": "that final 40% depends on meeting a committed, panel-ratified onchain metric ... not on mainnet launch alone."
+          }
+        ]
+      },
+      {
+        "claim": "Already-paid SCF funds are automatically clawed back (mirrored in golden.avoid[0]); the Official Rules give only a discretionary remedy after a Section 3/3A or Program Policies breach.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions.md",
+            "observedAt": "2026-11-02",
+            "note": "Section 3A(f): if a Participant breaches this Section 3A, Section 3, or the Program Policies, SDF may, in its sole discretion: (i) rescind the Award ...; (ii) require the Participant to repay (claw back) any Award funds already disbursed."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/commit/0d5dbc1269",
+            "observedAt": "2026-11-02",
+            "note": "The 'claw back' line first appears in this 2026-08-14 commit; absent in prior commits 6a274a99, fe280c7f, d3d65e25."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; current 90-day/unpaid-tranche terms checked 2026-07-10.",
-        "Preserved the 2026-07-10 payment-schedule and network-authority observation; this event does not claim a later re-observation of those facts.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816 — primary and blind adversarial reviews required removal of the unrelated stale SCF #45 Submission row.",
-        "Sibling sweep covered q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, and the three live RFP cases; current-round facts now stay in the dedicated cases.",
-        "Structural re-form (negative-predicate): tightened the observation fact, moved its unsupported-memory trap to avoid, and recast the grant-versus-protocol taxonomy positively; no claim changed.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — the official SCF v7 page remains a dated primary source for current or dated claims.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 and https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — current sources still assign grant decisions to SDF and ledger consensus to trusted nodes.",
-        "Sibling sweep 2026-08-27: grep SCF v7|grant administration|protocol erasure|unsupported memory → q-scf-v7-changes and q-scf-instawards; no contradiction"
+        "Gospel change 2026-11-02: golden.answer re-dated to 2026-11-02 and adds the Integration Track onchain-metric final tranche and the discretionary Section 3/3A or Program Policies breach remedy; golden.notes records the re-verification. Verifier decision: modify (both fields).",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/budget-and-deliverable-guidelines.md — \"For Integration Track awards, tranche #3 (40%) releases against a committed, panel-ratified onchain metric (NAV, cumulative volume, or an equivalent measure), not on mainnet launch alone. Tranches #0–#2 are unchanged.\"",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/budget-and-deliverable-guidelines.md — \"| #0 | n/a (paid upon award acceptance) | 10% | ... | #3 | Mainnet Launch (or equivalent) | 40% | ... You must submit each tranche completion form within 90 calendar days of receiving your previous tranche payment.\"",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track.md — \"For Integration Track awards, the final tranche (#3, 40% of the award) releases when your project reaches its committed, panel-ratified onchain metric — not on mainnet launch alone. Tranches #0–#2 (10% on award acceptance / 20% MVP / 30% testnet) are unchanged\"",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions.md — \"(a) For Integration Track Awards, release of the final tranche (tranche #3) is conditioned on the Participant achieving the onchain metric threshold proposed by the Participant and ratified or adjusted by the review panel at the time of Award ... Completion of a mainnet launch alone does not entitle a Participant to release of the final tranche.\"",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions.md — \"(f) Without limiting any other right or remedy available to SDF, if a Participant breaches this Section 3A, Section 3, or the Program Policies, SDF may, in its sole discretion: (i) rescind the Award, including any undisbursed tranches; (ii) require the Participant to repay (claw back) any Award funds already disbursed\"",
+        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions.md — \"5.8 ... SDF may, in its sole discretion, deem the remaining unpaid tranches forfeited and the Award terminated, with no further obligation to make any payments.\"",
+        "Live A 2026-11-02: https://stellar.org/blog/ecosystem/introducing-scf-v7 — \"10% upon award; 20% at mid-development milestones (MVP); 30% at advanced product readiness (Testnet); 40% at verified mainnet launch + UX readiness\"",
+        "Live B 2026-11-02: https://github.com/stellar/scf-handbook/commit/0d5dbc1269 (gh api repos/stellar/scf-handbook/commits?path=scf-awards/official-rules-for-submissions.md) — \"0d5dbc1269 2026-08-14T15:19:57Z GITBOOK-236; patch adds '+**3A. Outcome-Based Tranche Conditions (Integration Track)**' and '+(f) Without limiting any other right or remedy available to SDF, if a Participant breaches this Section 3A, Section 3, or the Program Policies'\"",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md — \"August 2026 ... Integration Track Updates: The final tranche (#3) now releases against a committed, panel-ratified onchain metric (NAV or volume) rather than on mainnet launch alone.\"",
+        "Live C 2026-11-02: Stellar Raven execute lumenloop.search_content_semantic('SCF Integration Track final tranche ... onchain metric') — \"SCF #45 Round Recap (2026-09-28): 40 projects awarded ... The Integration Track awarded 28 projects\"",
+        "Live D 2026-11-02: Parallel web_search 'SCF Integration Track final tranche onchain metric' -> https://stellar.gitbook.io/scf-handbook (What's New) — \"Integration Track Updates: The final tranche (#3) now releases against a committed, panel-ratified onchain metric (NAV or volume) rather than on mainnet launch alone.\"",
+        "Sibling sweep 2026-11-02: q-scf-v7-changes, q-scf-build-award-cap, q-scf-submission-lifecycle-deadlines, q-scf-how-to-apply, q-scf-eligibility-criteria, q-scf-build-tracks (grep 'Integration track', 'tranche', 'claw'); none states a contrary Integration Track tranche or clawback rule; no contradiction."
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-edge-scf-v7-centralization-myths"

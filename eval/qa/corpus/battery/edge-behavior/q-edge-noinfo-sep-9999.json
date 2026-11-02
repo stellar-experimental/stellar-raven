@@ -13,7 +13,7 @@
     "avoid": [
       "Do NOT invent SEP-9999 or claim the registry permanently ends near SEP-0050/0051."
     ],
-    "notes": "Honest-no-info: SEP-9999 does not exist (verified: the SEP catalog runs to ~SEP-0050/0051; there is no SEP-9999). The trap is hallucinating a spec for a real-looking SEP number. Strict profile because fabrication is the failure mode.\nAlso good if the answer: Offers to help with a real SEP if the user had a different number in mind. | Notes SEPs live in the stellar/stellar-protocol repo as where to verify.\nGolden cites: If referencing the SEP catalog, point to the stellar-protocol SEP index.\nGT-21 SIBLING CORRECTION 2026-07-10: remove the stale SEP-0050/0051 ceiling; gate on dated official-registry absence, not a maximum number."
+    "notes": "Honest-no-info: SEP-9999 is absent from the official registry (verified 2026-11-02 against stellar/stellar-protocol ecosystem/ at commit f2d36490: no SEP-9999 file or index entry). The trap is hallucinating a spec for a real-looking SEP number. Strict profile because fabrication is the failure mode.\nAlso good if the answer: Offers to help with a real SEP if the user had a different number in mind. | Notes SEPs live in the stellar/stellar-protocol repo as where to verify.\nGolden cites: If referencing the SEP catalog, point to the stellar-protocol SEP index.\nGT-21 SIBLING CORRECTION 2026-07-10: remove the stale SEP-0050/0051 ceiling; gate on dated official-registry absence, not a maximum number."
   },
   "tags": {
     "category": "edge-behavior",
@@ -33,6 +33,30 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "gh api repos/stellar/stellar-protocol/contents/ecosystem?ref=f2d364902615af726b3533021403c8b225aa6e5d",
+        "note": "highest files sep-0059.md, sep-0060.md, sep-0061.md; no sep-9999 file; f2d36490 (2026-10-14T23:36:06Z) is the latest commit touching ecosystem/",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/0da06899c02f818be0132f42cea1f45d6396e20a/ecosystem/README.md",
+        "note": "repo master 0da06899 (2026-11-02): no SEP-9999 index entry",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "Raven stellarDocs.search_docs({query:'SEP-9999'})",
+        "note": "only adjacent anchor-platform sep6 and sep45 guide pages; no SEP-9999 page",
+        "observedAt": "2026-11-02T16:28:34Z"
+      },
+      {
+        "class": "D",
+        "ref": "Perplexity search \"SEP-9999\" Stellar Ecosystem Proposal",
+        "note": "results return the generic SEP index and stellar-protocol repo; no SEP-9999 specification",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -59,18 +83,54 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, SEP-9999 is absent from the official stellar/stellar-protocol registry (ecosystem/ runs to SEP-0061; no SEP-9999 file or index entry)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "gh api repos/stellar/stellar-protocol/contents/ecosystem?ref=f2d36490 and ?ref=0da06899",
+            "observedAt": "2026-11-02",
+            "note": "highest files sep-0059.md..sep-0061.md; 0 names contain 9999; README has no 9999 entry"
+          },
+          {
+            "class": "B",
+            "ref": "gh api search/code?q=SEP-9999+repo:stellar/stellar-protocol; gh search issues SEP-9999 --repo stellar/stellar-protocol",
+            "observedAt": "2026-11-02",
+            "note": "no SEP-9999 file; only unrelated issue #180 'Allow buy offers'"
+          },
+          {
+            "class": "E",
+            "ref": "Raven stellarDocs.search_docs({query:'SEP-9999'})",
+            "observedAt": "2026-11-02",
+            "note": "no SEP-9999 page; only adjacent sep6/sep45 hits"
+          },
+          {
+            "class": "D",
+            "ref": "Perplexity search \"SEP-9999\" Stellar Ecosystem Proposal",
+            "observedAt": "2026-11-02",
+            "note": "no-contradiction web sweep: no SEP-9999 specification anywhere"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The no-fabrication core is correct, but the inherited approximate SEP-0050/0051 catalog ceiling is stale. Current registry provenance supports the nonexistence conclusion without pinning a brittle maximum number.",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-21 blind 3261; sibling sweep q-edge-deep-comprehensive-sep-audit/q-sep-catalog-list"
+        "Live 2026-11-02 (class B): gh api repos/stellar/stellar-protocol/contents/ecosystem?ref=f2d364902615af726b3533021403c8b225aa6e5d — highest files sep-0059.md, sep-0060.md, sep-0061.md; no sep-9999 file. gh api repos/stellar/stellar-protocol/commits?path=ecosystem&per_page=1 — f2d36490 2026-10-14T23:36:06Z is the latest ecosystem/ commit.",
+        "Live 2026-11-02 (class B): https://raw.githubusercontent.com/stellar/stellar-protocol/0da06899c02f818be0132f42cea1f45d6396e20a/ecosystem/README.md — repo master has no SEP-9999 index entry.",
+        "Live 2026-11-02T16:28:34Z (class E): Raven stellarDocs.search_docs({query:'SEP-9999'}) — only adjacent anchor-platform sep6 and sep45 pages.",
+        "Live 2026-11-02 (class D): Perplexity search \"SEP-9999\" Stellar Ecosystem Proposal — no SEP-9999 specification; only the generic SEP index.",
+        "Independent verifier accepted the golden.notes change; .agents/rounds/2026-11-02-golden-audit/pass1/edge-behavior-02.json.",
+        "Sibling sweep 2026-11-02: grep 'SEP-0050|SEP-0051|SEP-9999' over eval/qa/corpus/battery → only q-edge-noinfo-sep-9999; proposer siblings q-sep-catalog-list, q-edge-deep-comprehensive-sep-audit, q-sep53-message-signing carry no catalog ceiling that contradicts SEP-0061; no contradiction."
       ],
       "rootCause": [
-        "A freshness-sensitive registry ceiling was embedded in an otherwise durable nonexistence case."
+        "Eval-side authoring flaw: the 2026-07-10 GT-21 correction removed the SEP-0050/0051 ceiling from answer and avoid but left it in golden.notes as a verified fact, contradicting the registry (now SEP-0061) and the case's own avoid item."
       ]
     },
-    "origin": "raven-next q-edge-noinfo-sep-9999"
+    "origin": "raven-next q-edge-noinfo-sep-9999",
+    "asOf": "2026-11-02"
   }
 }

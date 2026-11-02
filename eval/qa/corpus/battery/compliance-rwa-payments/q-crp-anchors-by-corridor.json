@@ -7,7 +7,7 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current LumenLoop corpus, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live partner query requiring both on- and off-ramp capability returned six matches, including Etherfuse, CLPX, and FinClusive.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives named corridor examples from a current, dated directory source and dates the roster so it is not presented as permanent. As of 2026-11-02, the Stellar Light partner directory filtered to both on- and off-ramp capability returned eight partners, including Etherfuse, CLPX, FinClusive, Bitso, and MoneyGram. Confirm each country or currency pairing against the anchor's own dated documentation or its SEP-24/SEP-38 info and quote endpoints.\n\nAnchor-to-anchor cost depends on each anchor's fees and FX quotes, payout rails and partners, liquidity, and the bilateral terms between anchors; there is no universal per-transaction cost. SEP APIs standardize the interface but do not guarantee liquidity, licensing, or coverage. Integrating an existing anchor is usually the lower-risk first launch. Build your own anchor only when you can carry licensing and compliance, banking and payout relationships, liquidity or float, and SEP/API implementation and operations.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -23,7 +23,7 @@
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements.",
       "Do NOT claim an unsupported memory account is source-supported corridor evidence."
     ],
-    "notes": "2026-06-29: Differentiated to own corridor SELECTION + anchor-to-anchor cost structure + build-vs-integrate; dropped mobile-money lane (now owned by q-crp-regional-offramp-mobilemoney) and added a must_avoid against collapsing into a last-mile payout how-to. MoneyGram Ramps uses Stellar USDC with SEP-10/24. As of 2026-08-14, its 2,500 USDC cash-out maximum remains corroborated, while the minimum is disputed: the live operator guide states 15 USDC, and the live SEP-24 /info endpoint states 1 USDC. Both official layers were observed on 2026-08-14. This corridor case does not grade a transaction minimum. Corridor/provider coverage stays monthly-freshness.\nAlso good if the answer: Names candidate discovery surfaces such as ecosystem directories, anchor docs, or specific anchor quote/info/interactive endpoints to compare corridors. | Avoids giving universal per-transaction costs without querying dated anchor quote sources.\nGolden cites: Dated anchor directory or anchor documentation for any named corridor; SEP docs for API flow claims.\nAvoid list re-armed 2026-07-03 (todo 826 residual), deep-verified same day per the golden-truth skill (todo 828): dated-citation guard is answer-visible (and satisfiable — matchPartners returns dated, freshness-stamped corridor matches); the conflation trap is triangulated across MoneyGram dev docs (174, exact), MoneyGram marketing (170+), SDF material (180+), and corporate boilerplate (200+ all-rails). Accept any Stellar-off-ramp figure in the 170-180 band with a MoneyGram/SDF source; punish 185+ and 200+ attributed to the Stellar cash-out network (unsourced anywhere). The conflation framing resists rot better than a bare number: the corporate footprint always exceeds off-ramp coverage. Secondary caution: the ON-ramp is only 30+ countries — don't let candidates conflate on-ramp and off-ramp coverage."
+    "notes": "2026-06-29: Differentiated to own corridor SELECTION + anchor-to-anchor cost structure + build-vs-integrate; dropped mobile-money lane (now owned by q-crp-regional-offramp-mobilemoney) and added a must_avoid against collapsing into a last-mile payout how-to. MoneyGram Ramps settles in Stellar USDC. As of 2026-11-02, MoneyGram labels its SEP-10/SEP-24 anchor path legacy for allowlisted partners and directs new Stellar wallets to its widget SDK with API keys; accept either path when the answer dates and attributes it. On 2026-11-02, every observed MoneyGram surface stated a 2,500 USDC cash-out maximum. The minimum differs by host: the operator guide and its named production anchor (mgxanchor.moneygram.com) /info state 15 USDC, and the older stellar.moneygram.com /info states 1 USDC. This corridor case does not grade a transaction minimum. Corridor/provider coverage stays monthly-freshness.\nAlso good if the answer: Names candidate discovery surfaces such as ecosystem directories, anchor docs, or specific anchor quote/info/interactive endpoints to compare corridors. | Avoids giving universal per-transaction costs without querying dated anchor quote sources.\nGolden cites: Dated anchor directory or anchor documentation for any named corridor; SEP docs for API flow claims.\nAvoid list re-armed 2026-07-03 (todo 826 residual), deep-verified same day per the golden-truth skill (todo 828): dated-citation guard is answer-visible (and satisfiable — matchPartners returns dated, freshness-stamped corridor matches); the conflation trap is triangulated across MoneyGram dev docs (174, exact), MoneyGram marketing (170+), SDF material (180+), and corporate boilerplate (200+ all-rails). Accept any Stellar-off-ramp figure in the 170-180 band with a MoneyGram/SDF source; punish 185+ and 200+ attributed to the Stellar cash-out network (unsourced anywhere). The conflation framing resists rot better than a bare number: the corporate footprint always exceeds off-ramp coverage. Secondary caution: the ON-ramp is only 30+ countries — don't let candidates conflate on-ramp and off-ramp coverage.\nRe-observed 2026-11-02: Stellar Light partners with ramps=on-ramp,off-ramp returned 8 rows (all freshness 'aging'). MoneyGram's operator guide says 170+ off-ramp countries with 15/2,500 USDC cash-out limits."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -37,7 +37,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -67,7 +67,32 @@
       {
         "class": "F",
         "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
-        "note": "Observed 2026-08-14: withdraw.USDC min_amount 1 and max_amount 2500."
+        "note": "Observed 2026-11-02 (and 2026-08-14): withdraw.USDC min_amount 1 and max_amount 2500.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp&limit=50",
+        "note": "Observed 2026-11-02: 8 partners with both on- and off-ramp capability; all freshness 'aging'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform#supported-seps",
+        "note": "stellarDocs.search_docs hit: SEP-38 price quotes.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+        "note": "Guide-named production anchor /info: withdraw.USDC min_amount 15, max_amount 2500.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/ops/developer/getting-started",
+        "note": "'Widget partners on Solana or Stellar use the same key model and POST /v1/sessions . You do not implement SEP-10 / SEP-24 on the widget path.'",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -132,7 +157,31 @@
         ]
       },
       {
-        "claim": "MoneyGram's live operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum; both layers support the 2,500 USDC cash-out maximum.",
+        "claim": "As of 2026-11-02, the Stellar Light partner directory filtered to both on- and off-ramp capability returned eight partners, including Etherfuse, CLPX, FinClusive, Bitso, and MoneyGram.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp&limit=50",
+            "observedAt": "2026-11-02",
+            "note": "counts {returned: 8, total: 8}; Etherfuse, CLPX, FinClusive, Zeam Money, Anclap, Honey Coin, Bitso, Moneygram."
+          },
+          {
+            "class": "D",
+            "ref": "https://stellar.org/solutions/cross-border-payments (via Perplexity search)",
+            "observedAt": "2026-11-02",
+            "note": "Etherfuse, MoneyGram, and Bitso listed with ramp/corridor roles."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "observedAt": "2026-11-02",
+            "note": "MoneyGram SEP-24 withdraw USDC enabled."
+          }
+        ]
+      },
+      {
+        "claim": "On 2026-11-02, the operator guide and the guide-named mgxanchor.moneygram.com SEP-24 /info state a 15 USDC minimum, the older stellar.moneygram.com /info states 1 USDC, and all three state a 2,500 USDC cash-out maximum.",
         "verdict": "disputed",
         "evidence": [
           {
@@ -146,30 +195,50 @@
             "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
             "observedAt": "2026-08-14",
             "note": "The live endpoint advertised withdraw.USDC min_amount 1 and max_amount 2500."
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "observedAt": "2026-11-02",
+            "note": "'Version 1.2 · Stellar + USDC · July 2026 Legacy integration path ... Off-ramp (cash-out) 15 USDC 2,500 USDC'; production stellar.toml https://mgxanchor.moneygram.com/.well-known/stellar.toml."
+          },
+          {
+            "class": "F",
+            "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+            "observedAt": "2026-11-02",
+            "note": "withdraw.USDC min_amount 15, max_amount 2500; deposit.USDC min_amount 15, max_amount 950."
+          },
+          {
+            "class": "F",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "observedAt": "2026-11-02",
+            "note": "withdraw.USDC min_amount 1, max_amount 2500; deposit.USDC min_amount 1, max_amount 950."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task payments-assets)",
       "evidence": [
-        "https://xramps.moneygram.com/ops/dev/stellar",
-        "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
-        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
-        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
-        "Sibling sweep: q-pay-moneygram-ramps now carries the dated minimum dispute; q-anchor-moneygram-ramps and q-hist-remittance-corridors state no transaction minimum.",
-        "Structural re-form (compound-predicate): Split two long compound key facts into four atomic facts and moved the unsupported-memory contrast to avoid; all source, dating, integration-risk, licensing/compliance, banking/payout, liquidity/float, and SEP/API claims remain unchanged.",
-        "Live re-check 2026-08-27: https://anchors.stellar.org/ — showed the current anchor directory as a source basis for dated corridor observations.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/anchors — showed existing anchor services and Anchor Platform integration paths for a first launch.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — showed bilateral agreements, licensing, fees, and banking/payout responsibilities for anchor operation.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration — showed liquidity, FX, status, rail, and SEP/API integration responsibilities.",
-        "Sibling sweep 2026-08-27: grep anchor corridor|build anchor|existing anchor → q-crp-become-an-anchor-licensing, q-crp-remittance-founder-advisory, q-anchor-platform-what, q-hist-remittance-corridors, q-crp-regional-offramp-mobilemoney, q-anchor-list-builders-discovery; no contradiction"
+        "Live C 2026-11-02: GET https://stellarlight.xyz/api/partners?ramps=on-ramp,off-ramp&limit=50 — meta.generatedAt 2026-11-02T16:25:23.749Z; counts {returned: 8, total: 8}; Etherfuse, CLPX, FinClusive, Zeam Money, Anclap, Honey Coin, Bitso, Moneygram; each rampTypes ['on-ramp','off-ramp']; freshness.status 'aging'.",
+        "Live D 2026-11-02 (Perplexity search → https://stellar.org/solutions/cross-border-payments): \"Etherfuse: Tokenized sovereign bonds and USD to MXN; MoneyGram: Cash to USDC and back at retail locations; Bitso: Local payments and LatAm stablecoins\" — named roster members have real-world footprints.",
+        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md — \"facilitated by two business entities, the Sending and Receiving Anchors, who have the necessary licenses in their respective jurisdictions. ... The Sending and Receiving Anchors must create bi-lateral agreements to interoperate with each other.\"",
+        "Live E 2026-11-02: stellarDocs.search_docs → https://developers.stellar.org/docs/platforms/anchor-platform#supported-seps — \"SEP-38 — Price quotes and exchange rate services\".",
+        "Live A/F 2026-11-02: https://stellar.moneygram.com/stellaradapterservice/sep24/info — \"withdraw\":{\"USDC\":{\"enabled\":true,\"fee_fixed\":0,\"fee_percent\":0,\"min_amount\":1,\"max_amount\":2500}}; https://xramps.moneygram.com/ops/dev/stellar — \"Coverage: 480,000+ MoneyGram locations · 170+ countries for off-ramps ... Off-ramp (cash-out) 15 USDC 2,500 USDC\".",
+        "Sibling sweep 2026-11-02: grep 'matchPartners|on- and off-ramp|Etherfuse, CLPX' over eval/qa/corpus/battery → q-pay-moneygram-ramps, q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-gap-match-partners-degrade, q-comp-anchor-compliance-stack, q-comp-finclusive-caas, q-crp-remittance-founder-advisory; no contradiction with the dated 8-partner roster or the restored cost/build-vs-integrate paragraph.",
+        "Pass 2 gospel change 2026-11-02: golden.notes replace 'MoneyGram Ramps uses Stellar USDC with SEP-10/24' and the 2026-08-14 single-endpoint minimum with the dated widget/legacy split and the per-host minimum; answer, keyFacts, avoid, and tags unchanged.",
+        "Live A 2026-11-02T17:37Z: https://xramps.moneygram.com/ops/dev/stellar - 'Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model. New Stellar wallet integrations should use the widget + API keys path'; production table 'Off-ramp (cash-out) 15 USDC 2,500 USDC'; production stellar.toml https://mgxanchor.moneygram.com/.well-known/stellar.toml.",
+        "Live A 2026-11-02: https://xramps.moneygram.com/ops/developer - 'Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24.'; https://xramps.moneygram.com/ops/developer/guides/web-stellar - 'Existing SEP-24 partners may continue on the anchor path during transition. New Stellar pilot partners should use this widget path.'",
+        "Live F 2026-11-02T17:36:52Z: https://mgxanchor.moneygram.com/stellarsepservice/sep24/info - '\"withdraw\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":2500}}'; https://stellar.moneygram.com/stellaradapterservice/sep24/info - '\"withdraw\":{\"USDC\":{\"enabled\":true,\"fee_fixed\":0,\"fee_percent\":0,\"min_amount\":1,\"max_amount\":2500}}'; both stellar.toml files advertise WEB_AUTH_ENDPOINT and TRANSFER_SERVER_SEP0024.",
+        "Live D sweep 2026-11-02 (Parallel web_search 'MoneyGram Ramps widget SDK Stellar'; perplexity_search 'MoneyGram Ramps Stellar widget SDK API keys legacy SEP-24 whitelist partners'): only MoneyGram-owned pages surfaced, so the sweep shows no contradiction but adds no independent class. Owner page found: https://www.moneygram.com/ramps (redirects to https://xramps.moneygram.com/) - 'Solana and Stellar both use the widget SDK and API keys. Existing Stellar whitelist partners can keep the legacy SEP path.'",
+        "Sibling sweep 2026-11-02 (pass 2): cluster-016 members q-pay-moneygram-ramps and q-anchor-moneygram-ramps already carry the widget/legacy split and (q-pay) the per-host minimum; q-hist-remittance-corridors states no minimum; q-scf-cross-decaf-sep24 dates the legacy label; no contradiction. tags.service 'lumenloop' and surface left unchanged: eval/qa/README.md uses tags.service for sample selection only and sets no rule that it name the answer's source.",
+        "Pass 1 verification event (batch compliance-rwa-payments-02, .agents/rounds/2026-11-02-golden-audit.md) produced the earlier 2026-11-02 evidence rows and edits in this branch diff; the pass-2 rows follow."
       ],
       "rootCause": [
         "freshness-drift",
-        "eval-authoring: the sibling notes retained a stale 5 USDC minimum after the source layers diverged.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "eval-authoring: a structural re-form left the answer with only the dated example and a dangling 'stable distinctions above' reference, and attributed the roster to the LumenLoop corpus instead of the Stellar Light partner directory.",
+        "eval-authoring: pass 1 refreshed the MoneyGram path and minimum in q-pay-moneygram-ramps and q-anchor-moneygram-ramps but left this sibling's notes on the single-path, single-endpoint wording (consistency-entities F10)."
       ]
     },
     "origin": "raven-next q-crp-anchors-by-corridor"

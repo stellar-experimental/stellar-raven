@@ -28,7 +28,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "B",
@@ -39,23 +39,23 @@
         "class": "C",
         "ref": "http://localhost:8787/mcp",
         "note": "Live localhost search→execute probe."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/partners/trustless-work",
+        "note": "Raw GET; profile carries services, sectors, regions, docs/contact links, verified, freshness, and url.",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03; verification only, no gospel change)",
       "evidence": [
-        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; getPartners supplied slug trustless-work and getPartner returned its published detail envelope.",
-        "catalog/manifest.json exists and supports the behavioral golden.",
-        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (compound-predicate): Reworded one compound key fact with one predicate; capabilities, freshness, returned-profile presence, and report-only scope remain unchanged.",
-        "Live re-check 2026-08-27: https://raven.stellar.buzz/mcp — the current catalog exposed scout.getPartner by exact slug with published profile fields and freshness.",
-        "Sibling sweep 2026-08-27: grep getPartner|partner discovery|published profile → q-edge-partner-detail-soft-empty, q-gap-match-partners-degrade, q-scf-ecosystem-listing-partner-jobs, q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "catalog/manifest.json scout.getPartner inputSchema — '{\"properties\":{\"slug\":{\"description\":\"Partner slug\",\"type\":\"string\"}},\"required\":[\"slug\"]}' (observedAt 2026-11-02).",
+        "Raw Stellar Light GET https://stellarlight.xyz/api/partners/trustless-work — keys include slug, name, partnerType, services, sectors, regions, docsUrl, contactEmail, verified, freshness, url; freshness.status 'aging'; url 'https://stellarlight.xyz/partners/trustless-work' (observedAt 2026-11-02).",
+        "https://stellarlight.xyz/api/openapi.json — paths include /api/partners and /api/partners/{slug} (observedAt 2026-11-02).",
+        "Raven scout.getPartners returned 43 partners; the first slug, trustless-work, resolved through scout.getPartner (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-edge-partner-detail-soft-empty, q-gap-match-partners-degrade; no contradiction. No gospel change."
       ]
     },
     "origin": "authored 2026-07 (coverage)"

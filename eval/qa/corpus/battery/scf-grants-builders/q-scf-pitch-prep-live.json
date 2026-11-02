@@ -88,26 +88,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-04)",
       "evidence": [
-        "Read-only scfPitch probe for a streaming-payments idea on 2026-08-18.",
-        "https://communityfund.stellar.org/awards inspected directly on 2026-08-18.",
-        "catalog/manifest.json#scout.scfPitch defines the round-source and evidence boundaries.",
-        "Sibling sweep: current-round cases remain outside this case; this case pins no round number, phase, count, or amount.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep scfPitch|deterministic angles|funding decision → q-scf-pitch-prep-live, q-gap-vet-pitch-vertical-null; no contradiction",
-        "Structural re-form (long-fact): Split the round-source fallback and shortened the pitch-evidence list; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts — the current source defines `round.source` as `live` or `unavailable`.",
-        "Live re-check 2026-08-29: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts — the unavailable branch directs users to verify the round on communityfund.stellar.org.",
-        "Live re-check 2026-08-29: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts — the composite returns funded peers, funding basis, competitor maturity, prior art, and deterministic angles.",
-        "Sibling sweep 2026-08-29: grep scfPitch|round.source|deterministic angles → q-gap-vet-pitch-vertical-null, q-scf-pitch-prep-live; no contradiction"
-      ],
-      "rootCause": [
-        "solo://proj/80/todo/author-five-new-cove--1664",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer re-derived the claims from two or more source classes (no change proposed, so no verifier pass).",
+        "Live B 2026-11-02: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts — 'source: \"live\" | \"unavailable\"; note: \"Live round check failed. Verify at https://communityfund.stellar.org before assuming anything about round state.\"' (claim: round.source is live|unavailable; unavailable routes to communityfund.stellar.org; verdict confirmed)",
+        "Live C 2026-11-02: https://stellarlight.xyz/api/scf-pitch?q=streaming%20recurring%20payments%20contract%20on%20Soroban — '\"round\": {\"source\": \"live\", \"open\": [{\"round\": 46, \"phase\": \"Submission\", \"submissionDeadline\": \"2026-11-09\"}]}; meta.generatedAt 2026-11-02T16:10:00.100Z' (claim: round.source is live|unavailable; unavailable routes to communityfund.stellar.org; verdict confirmed)",
+        "Live A 2026-11-02: https://communityfund.stellar.org/awards — 'SCF #46 Submission Deadline to submit: November 9, 2026' (claim: round.source is live|unavailable; unavailable routes to communityfund.stellar.org; verdict confirmed)",
+        "Live B 2026-11-02: catalog/manifest.json#scout.scfPitch — 'composite performs no prose generation (prior verification)' (claim: Composite returns funded peers, funding bar, maturity, prior art, deterministic angles; not a funding decision; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-gap-vet-pitch-vertical-null checked by the proposer; no contradiction (no gospel change)."
       ]
     },
     "origin": "authored 2026-08 (coverage)"

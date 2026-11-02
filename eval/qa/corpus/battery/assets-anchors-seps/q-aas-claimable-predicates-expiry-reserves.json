@@ -135,24 +135,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (presentation-avoid): Deleted a required-content avoid item already enforced by a key fact; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep claimable balance|reserve per claimant → q-aas-claimable-predicates-expiry-reserves, q-aas-claim-received-claimable-balances, q-asset-claimable-balance, q-sor-contract-as-claimable-arbiter; no contradiction",
-        "Structural re-form (compound-predicate): Split claimant eligibility and compressed the time-predicate fact; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — paired each claimant with a claim predicate.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — required a matching claimant with a satisfied predicate.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — showed absolute and relative time predicates for expiry/reclaim windows.",
-        "Sibling sweep 2026-08-27: grep claimable balance|ClaimPredicate|base reserve|reclaim window → q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-raph-claimable-balance-safety, q-protocol-base-reserve-min-balance; no contradiction",
-        "Corroboration audit 2026-08-29: added 4 row(s) for expiry, reclaim, predicate, and clawback boundaries; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 4 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — 'Claimant claimants<10>; CLAIM_PREDICATE_UNCONDITIONAL = 0, CLAIM_PREDICATE_AND = 1, CLAIM_PREDICATE_OR = 2, CLAIM_PREDICATE_NOT = 3, CLAIM_PREDICATE_BEFORE_ABSOLUTE_TIME = 4, CLAIM_PREDICATE_BEFORE_RELATIVE_TIME = 5' (claim: Up to 10 claimants; predicate types unconditional/AND/OR/NOT/before-absolute/before-relative.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md — 'let aCanReclaim = StellarSdk.Claimant.predicateNot(StellarSdk.Claimant.predicateBeforeAbsoluteTime(soon.toString()))' (claim: Up to 10 claimants; predicate types unconditional/AND/OR/NOT/before-absolute/before-relative.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md — 'Each ClaimableBalanceEntry is a ledger entry, and each claimant in that entry increases the source account's minimum balance by one base reserve.' (claim: Each claimant raises the creator's minimum balance by one base reserve while the entry exists.; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — '// Amount of native asset to pay the reserve  int64 reserve;' (claim: Each claimant raises the creator's minimum balance by one base reserve while the entry exists.; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md — 'if a claimable balance isn't claimed, it sits on the ledger forever ... there is no recovery mechanism for a claimable balance in general — if none of the predicates can be fulfilled, the balance cannot be recovered.' (claim: No automatic expiry; no at-will creator reclaim; balances can be stranded.; verdict confirmed)",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — 'struct Claimant ... ClaimPredicate predicate; // Claimable if predicate is true' (claim: No automatic expiry; no at-will creator reclaim; balances can be stranded.; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-asset-claimable-balance, q-raph-claimable-balance-safety, q-comp-clawback-cap0035 checked; no contradiction."
       ]
     },
     "origin": "raven-next q-aas-claimable-predicates-expiry-reserves"

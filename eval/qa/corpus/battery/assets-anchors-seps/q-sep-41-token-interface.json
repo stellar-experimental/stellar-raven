@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-08-04, the verified sources supported this observed answer:\n\n**SEP-41 v0.5.0** is the Draft Soroban Token Interface: the common fungible-token surface shared by the SAC and custom contracts. It defines allowance/approve, balance, burn/burn_from, metadata, current direct `transfer(from, to: MuxedAddress, amount)`, and `transfer_from(spender, from, to: Address, amount)`. Approve's absolute expiry is named `live_until_ledger` in SEP-41 and `expiration_ledger` in some SDK/SAC docs; they are one mechanism. SEP-41 is explicitly a subset of and compatible with the CAP-46-6 SAC interface, so the SAC implements it while layering admin-specific functions. Mint/clawback are standardized events rather than required generic function names. Because SEP-41 remains Draft and signatures evolved, version-qualify current code.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n**SEP-41 v0.5.2** (updated 2026-08-24) is the Draft Soroban Token Interface: the common fungible-token surface shared by the SAC and custom contracts. It defines allowance/approve, balance, burn/burn_from, metadata, current direct `transfer(from, to: MuxedAddress, amount)`, and `transfer_from(spender, from, to: Address, amount)`. Approve's absolute expiry is named `live_until_ledger` in SEP-41 and `expiration_ledger` in some SDK/SAC docs; they are one mechanism. SEP-41 is explicitly a subset of and compatible with the CAP-46-6 SAC interface, so the SAC implements it while layering admin-specific functions. Mint/clawback are standardized events rather than required generic function names. Because SEP-41 remains Draft and signatures evolved, version-qualify current code.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -18,7 +18,7 @@
       "Do NOT misnumber/misclassify SEP-41, assume SAC-only admin functions are required generic methods, or freeze old signatures.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Dossier §7.1, Q18. Verified 2026-08-04: SEP-0041 'Soroban Token Interface' is Draft v0.5.0, updated 2026-06-08; the spec is a subset of the SAC interface, compatible with CAP-46-6.\nAlso good if the answer: Defines common functions like transfer, allowance/approve, balance, and burn.\nGolden cites: SEP-0041 on the stellar-protocol repo or the SAC page on developers.stellar.org."
+    "notes": "Dossier §7.1, Q18. Verified 2026-11-02: SEP-0041 'Soroban Token Interface' is Draft v0.5.2, updated 2026-08-24 (v0.5.0 was current on 2026-08-04; signatures unchanged since; do not penalize v0.5.0 or v0.5.1 when dated to an earlier observation); the spec is a subset of the SAC interface, compatible with CAP-46-6.\nAlso good if the answer: Defines common functions like transfer, allowance/approve, balance, and burn.\nGolden cites: SEP-0041 on the stellar-protocol repo or the SAC page on developers.stellar.org."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -32,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
+    "asOf": "2026-11-02",
     "reverifyBy": "2027-02-04",
     "sources": [
       {
@@ -49,24 +49,48 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+        "note": "Preamble: Status Draft / Updated 2026-08-24 / Version 0.5.2",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md",
+        "note": "v0.5.1 merged 2026-08-11 (3d0e082cb3); v0.5.2 line 4db3e802b2 2026-09-15",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
-        "claim": "Current SEP-41 v0.5.0 interface",
-        "verdict": "confirmed",
+        "claim": "Current SEP-41 v0.5.2 interface (Draft, updated 2026-08-24)",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-            "observedAt": "2026-08-04",
-            "note": "SEP-41 is Draft v0.5.0, updated 2026-06-08."
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-11-02",
+            "note": "Status: Draft / Updated: 2026-08-24 / Version 0.5.2; fn transfer(env, from: Address, to: MuxedAddress, amount: i128); fn transfer_from(env, spender, from, to: Address, amount)"
           },
           {
-            "class": "F",
-            "ref": "F: GT-43 interface-semantics review",
-            "observedAt": "2026-07-11",
-            "note": "Historical blind review supports the interface relationship and signatures observed then, not the later v0.5.0 metadata recheck."
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md",
+            "observedAt": "2026-11-02",
+            "note": "3d0e082cb3 2026-08-11 Clarify allowance behavior (v0.5.1); 4db3e802b2 2026-09-15 permit additional event topics (v0.5.2); no fn signature change"
+          },
+          {
+            "class": "D",
+            "ref": "perplexity_search 'SEP-41 0.5.2'",
+            "observedAt": "2026-11-02",
+            "note": "Updated: 2026-08-24 Version 0.5.2"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/token-interface",
+            "observedAt": "2026-11-02",
+            "note": "The to argument of transfer is a MuxedAddress"
           }
         ]
       },
@@ -93,29 +117,27 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-43 blind 3320.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-asset-sac-cap-sep",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-        "SEP-41 Draft v0.5.0 / updated 2026-06-08 observed 2026-08-04.",
-        "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
-        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened two long facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the current source provides direct interface and status evidence for SEP-41.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the current source remains Draft and defines current transfer and allowance signatures.",
-        "Sibling sweep 2026-08-29: grep SEP-41|SEP-0041|CAP-0046-06|Soroban Token Interface → q-sep-41-token-interface, q-sep-catalog-list, q-rwa-tokenization-standards, q-sor-sep41-transfer-vs-transferfrom, q-soroban-token-transfer-pattern, q-tool-sep41-status-live; no contradiction."
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"Status: Draft / Updated: 2026-08-24 / Version 0.5.2 ... v0.5.1 - Clarify ... approve overwrites ... v0.5.2 - Clarify that implementers may emit additional topics.\" (observedAt 2026-11-02; supports golden.answer: confirmed-as-of)",
+        "[B] gh api commits?path=ecosystem/sep-0041.md — \"4db3e802b2 2026-09-15 SEP-41: permit additional event topics; 3d0e082cb3 2026-08-11 Clarify allowance behavior; 2e4e8ef8c2 2026-07-27 Add map event bodies\" (observedAt 2026-11-02; supports golden.answer: confirmed-as-of)",
+        "[D] perplexity_search SEP-41 0.5.2 — \"Updated: 2026-08-24 Version 0.5.2\" (observedAt 2026-11-02; supports golden.answer: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: i128); fn approve(... live_until_ledger: u32)\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/token-interface — \"The to argument of transfer is a MuxedAddress\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"The interface is a subset of the Stellar Asset contract, and compatible with its descriptive and token interfaces defined in [CAP-46-6].\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"The Stellar Asset Contract (SAC) is an implementation of [CAP-46-6 ...] and [SEP-41 Token Interface]\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2; fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: i128); fn approve(..., live_until_ledger: u32)\" (observedAt 2026-11-02; supports golden.answer: verifier accept)",
+        "[B] gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md + per-commit patches — \"2e4e8ef8c2 2026-07-27 -> v0.5.0 Updated 2026-06-08; 3d0e082cb3 merged 2026-08-11 -> v0.5.1 Updated 2026-08-03; 4db3e802b2 merged 2026-09-15 -> v0.5.2 Updated 2026-08-24; no 'fn ' signature lines changed in the v0.5.1 or v0.5.2 patches\" (observedAt 2026-11-02; supports golden.answer: verifier accept)",
+        "[D] Perplexity search 'SEP-0041 ... 0.5.2' -> github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — \"Version 0.5.2 ... `v0.5.2` - Clarify that implementers may emit additional topics.\" (observedAt 2026-11-02; supports golden.answer: verifier accept)",
+        "[A] https://developers.stellar.org/docs/tokens/token-interface (via Perplexity result, page dated 2026-10-22) — \"fn approve(env: Env, from: Address, spender: Address, amount: i128, live_until_ledger: u32);\" (observedAt 2026-11-02; supports golden.answer: verifier accept)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"Status: Draft / Created: 2023-09-22 / Updated: 2026-08-24 / Version 0.5.2; fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: i128); fn approve(..., live_until_ledger: u32)\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
+        "[B] gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md + per-commit patches — \"2e4e8ef8c2 2026-07-27 -> v0.5.0 Updated 2026-06-08; 3d0e082cb3 merged 2026-08-11 -> v0.5.1 Updated 2026-08-03; 4db3e802b2 merged 2026-09-15 -> v0.5.2 Updated 2026-08-24; no 'fn ' signature lines changed in the v0.5.1 or v0.5.2 patches\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
+        "[D] Perplexity search 'SEP-0041 ... 0.5.2' -> github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — \"Version 0.5.2 ... `v0.5.2` - Clarify that implementers may emit additional topics.\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
+        "Sibling sweep 2026-11-02: grep SEP-41 versions -> q-tool-sep41-status-live (dated 'As observed 2026-08-04 ... version 0.5.0', a dated observation, not a contradiction; owned by another batch), q-sor-sep41-transfer-vs-transferfrom, q-rwa-tokenization-standards, q-defi-agentic-payment-standards-compare, q-sep-catalog-list; no signature contradiction."
       ],
       "rootCause": [
-        "freshness-drift",
-        "A sibling retained SEP-41 v0.4.1 after v0.5.0 was already current.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-sep-41-token-interface"

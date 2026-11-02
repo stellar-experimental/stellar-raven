@@ -1,1 +1,147 @@
-{"id":"q-scf-blend-winners-live","question":"Who does the current event record list as winners of Stellar Hacks: Blend, and what did each build?","surface":["scout.getHackathon","scout.getHackathons"],"golden":{"answer":"Resolve the exact current Blend event slug through getHackathons before calling getHackathon. Report winner names/descriptions only from exact event detail, keep missing detail missing, and infer ordinal rank only from explicit placement fields—not array order.","keyFacts":["Resolves the exact event slug with getHackathons before retrieving detail.","Resolves and fetches the current event record.","Cites the event source and reports winner/project fields only when returned.","States generated-at and explicitly handles missing winner detail."],"avoid":["Reconstructs a winner roster from the archived Boxy answer when the live record is empty or changed."]},"tags":{"category":"scf-grants-builders","service":"scout","freshness":"live"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/hackathons"},{"class":"B","ref":"catalog/manifest.json#scout.getHackathon"},{"class":"A","ref":"https://blend.capital/"}],"corroboration":[{"claim":"Winner answers must come from current event detail with source and generated-at, and missing detail stays missing.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/hackathons","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.getHackathon","observedAt":"2026-07-11"},{"class":"A","ref":"https://blend.capital/","observedAt":"2026-07-11"}]},{"claim":"The archived Blend winner roster may be reconstructed when live detail is absent.","verdict":"contradicted","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/hackathons","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","catalog/manifest.json#scout.getHackathon","https://blend.capital/"],"rootCause":["freshness-drift"]},"origin":"boxy sl-hackathon-blend-winners"}}
+{
+  "id": "q-scf-blend-winners-live",
+  "question": "Who does the current event record list as winners of Stellar Hacks: Blend, and what did each build?",
+  "surface": [
+    "scout.getHackathon",
+    "scout.getHackathons"
+  ],
+  "golden": {
+    "answer": "Resolve the exact current Blend event slug through getHackathons before calling getHackathon. Report winner names/descriptions only from exact event detail, keep missing detail missing, and infer ordinal rank only from explicit placement fields—not array order.",
+    "keyFacts": [
+      "Resolves the exact event slug with getHackathons before retrieving detail.",
+      "Resolves and fetches the current event record.",
+      "Cites the event source and reports winner/project fields only when returned.",
+      "States generated-at and explicitly handles missing winner detail."
+    ],
+    "avoid": [
+      "Do NOT report winners or placements that the current event record does not return."
+    ],
+    "notes": "Live event-record case. As of 2026-11-02, scout.getHackathon(\"stellar-hacks-blend\") returns winnersRanked: true with placementRank 1-3: Blend Pool Creator (a tool for creating Blend lending pools), Comet x Hoops Finance (a swap UI for Blend's backstop), and YieldBack.Cash (a Blend coupon bond). The winner rows' prizeUsd and award fields are null; the event's prizeTiers list $3,000, $2,000, and $1,000 in XLM. DoraHacks' winner announcement and a July 2025 r/Stellar winners post list the same three placements. Grade a later answer against the record it observes."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-11-02",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.getHackathon"
+      },
+      {
+        "class": "A",
+        "ref": "https://blend.capital/"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+        "note": "winnersRanked: true; placementRank 1 Blend Pool Creator, 2 Comet x Hoops Finance, 3 YieldBack.Cash; winner prizeUsd/award null; event prizePoolUSD 6000; generatedAt 2026-11-02T16:07:24.713Z",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://staging.tophacker.com/hackathon/stellar-hacks-blend/winner",
+        "note": "DoraHacks winner page mirror, via Perplexity: \"1st Place ($3,000 XLM): Blend Pool Creator ... 2nd Place ($2,000 XLM): Comet x Hoops Finance ... 3rd Place ($1,000 XLM): YieldBack.Cash\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend/",
+        "note": "July 2025 post: \"1st Place: Blend Pool Creator ... 2nd Place: Comet x Hoops Finance ... 3rd Place: YieldBack.Cash\"",
+        "observedAt": "2026-11-02"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Winner answers must come from current event detail with source and generated-at, and missing detail stays missing.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getHackathon",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://blend.capital/",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "Winners or placements that the current event record does not return may be reported.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+            "observedAt": "2026-11-02",
+            "note": "Record returns exactly three ranked winners (placementRank 1-3) with explicit placement fields; prizeUsd/award null."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, the event record ranks Blend Pool Creator 1st, Comet x Hoops Finance 2nd, and YieldBack.Cash 3rd, with null winner prizeUsd/award fields.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+            "observedAt": "2026-11-02",
+            "note": "Exact: Blend Pool Creator \"simplifies launching custom lending pools\" placementRank 1; Comet x Hoops Finance \"Fully functional UI to do Swaps in Blend's Backstop\" placementRank 2; YieldBack.Cash \"Blend Coupon Bond\" placementRank 3; \"prizeUsd\": null, \"award\": null."
+          },
+          {
+            "class": "D",
+            "ref": "https://staging.tophacker.com/hackathon/stellar-hacks-blend/winner",
+            "observedAt": "2026-11-02",
+            "note": "DoraHacks mirror via Perplexity: same three placements with $3,000/$2,000/$1,000 XLM tiers."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend/",
+            "observedAt": "2026-11-02",
+            "note": "Same three placements (post 2025-07-14)."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-02)",
+      "evidence": [
+        "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend (observedAt 2026-11-02, generatedAt 2026-11-02T16:07:24.713Z): winnersRanked: true; placementRank 1 Blend Pool Creator \"simplifies launching custom lending pools\"; 2 Comet x Hoops Finance \"Fully functional UI to do Swaps in Blend's Backstop\"; 3 YieldBack.Cash \"Blend Coupon Bond\"; winner prizeUsd/award null; meta.source https://dorahacks.io/hackathon/stellar-hacks-blend/detail",
+        "https://stellarlight.xyz/api/hackathons?q=blend (observedAt 2026-11-02): \"slug\":\"stellar-hacks-blend\", \"status\":\"completed\", \"prizePoolUSD\":6000",
+        "https://staging.tophacker.com/hackathon/stellar-hacks-blend/winner via Perplexity (observedAt 2026-11-02): \"1st Place ($3,000 XLM): Blend Pool Creator by ELDEVODE 2nd Place ($2,000 XLM): Comet x Hoops Finance ... 3rd Place ($1,000 XLM): YieldBack.Cash by KBenster\"",
+        "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend/ (observedAt 2026-11-02): \"1st Place: Blend Pool Creator ... 2nd Place: Comet x Hoops Finance ... 3rd Place: YieldBack.Cash\"",
+        "Independent verifier: modified avoid[0] (dropped 'or projects') and notes (winner-row-only null fields; event prizeTiers; r/Stellar post named instead of 'SDF announcement'); accepted asOf.",
+        "Sibling sweep 2026-11-02: grep 'Blend Pool Creator|stellar-hacks-blend|Hacks: Blend' -> q-scf-hackathon-compare-live; no contradiction."
+      ],
+      "rootCause": [
+        "Eval-side authoring flaw: golden.avoid[0] cited the archived Boxy answer, which the judge never sees (judge-blind avoid); rewritten to a judge-checkable test against the event record."
+      ]
+    },
+    "origin": "boxy sl-hackathon-blend-winners"
+  }
+}

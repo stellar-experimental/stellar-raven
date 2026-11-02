@@ -33,7 +33,7 @@
     },
     "domain": "mixed",
     "status": "mixed",
-    "asOf": "2026-08-30",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "D",
@@ -188,37 +188,17 @@
       }
     ],
     "verified": {
-      "date": "2026-10-01",
-      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
       "evidence": [
-        "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3): removed the legacy partner list 'Partner names (MoneyGram, Bitso, Biccos, Kado, Nium) per SDF/anchor materials', which avoid item 4 forbids. The SDF article line and the also-good line now carry the 2020 date that key fact 2 requires. Answer, keyFacts, and avoid are unchanged.",
-        "Live re-check 2026-10-01 (class A): https://stellar.org/blog/policy/drive-inclusion-through-compliance — published 2020-09-11; names Biccos as the use case; the recorded text search found no MoneyGram, Bitso, Kado, or Nium.",
-        "Live re-check 2026-10-01 (class A): https://finclusive.com/company/operating-provisions — 'not a bank ... not a licensed Money Services Business ... an exempt third party services provider'.",
-        "Live re-check 2026-10-01 (class A): https://finclusive.com/products/compliance-as-a-service — the product page still markets Compliance as a Service with KYC/KYB coverage.",
-        "Sibling sweep 2026-10-01: grep FinClusive|Biccos → q-crp-anchors-by-corridor names FinClusive only as one dated live partner-query match and makes no CaaS partner claim; q-pay-anchor-msb-licensing and q-pay-travel-rule-aid-flows keep the same entity and activity scope; no contradiction.",
-        "Solo scratchpad 575 GT-07 primary and blind matrices",
-        "Current FinCEN registry exact-name probe was inconclusive and is not used to infer licensing",
-        "Structural re-form (negative-predicate): shortened three facts, used positive taxonomy wording, and kept the CaaS-guarantee trap in golden.avoid; truth is unchanged.",
-        "Live re-check 2026-08-27: https://finclusive.com/products/compliance-as-a-service — FinClusive still markets KYC/KYB orchestration and reusable FinCID credentials.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/policy/drive-inclusion-through-compliance — SDF's dated story still presents Biccos as the documented FinClusive use case.",
-        "Live re-check 2026-08-27: https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — Travel Rule duties still vary by role and covered activity.",
-        "Sibling sweep 2026-08-27: grep FinClusive|Biccos|Travel Rule → q-comp-anchor-compliance-stack, q-crp-become-an-anchor-licensing, q-comp-finclusive-caas; no contradiction",
-        "Live re-check 2026-08-30: https://finclusive.com/company/operating-provisions — TPSP, not a bank, not a licensed MSB, exempt third-party services provider (quoted in truth.corroboration).",
-        "Live re-check 2026-08-30: https://finclusive.com/products/compliance-as-a-service and https://finclusive.com/products/caas-gateway — current marketing of full-stack FCC, KYC/KYB, FinCID, and 'compliant routing'.",
-        "Live re-check 2026-08-30: https://stellar.org/blog/policy/drive-inclusion-through-compliance — the dated SDF article still names Biccos as the use case.",
-        "Live re-check 2026-08-30: https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — duties attach by institution role, covered transmittal, and the $3,000 threshold.",
-        "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same TPSP quote, same marketing claims, Biccos confirmed.",
-        "Sibling sweep 2026-08-30: grep FinClusive|Biccos|CaaS → q-comp-finclusive-caas, q-crp-anchors-by-corridor; no contradiction",
-        "Second class 2026-08-31: class D web sweep ('FinClusive compliance-as-a-service third party service provider', 'FinClusive not a bank money services business', 'FinClusive Stellar anchor compliance rail') → the DFPI-hosted 2022-08-01 comment letter corroborates the Regtech/Fintech TPSP description and records a dated FinCEN MSB registration statement; added to the 2026-08-30 corroboration row. No judge-facing change."
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
-        "Historical partnership content became timeless product/legal authority.",
-        "Unrelated ecosystem relationships were conflated with FinClusive partnerships.",
-        "Technical anchor and legal regulated-person roles were collapsed.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Review five round-specific golden-truth candidates",
-        ".agents/TODO.md — Close two metadata gaps found by the 2026-08-31 verification"
+        "Proposer golden.keyFacts[0] [confirmed-as-of]: Live re-check 2026-11-02: https://finclusive.com/products/compliance-as-a-service — \"FinCID: Compliance-Backed Verifiable Credentials ... Global know-your-customer/business (KYC/KYB) coverage\" (class A)",
+        "Proposer golden.keyFacts[0] [confirmed-as-of]: Live re-check 2026-11-02: https://finclusive.com/products/caas-gateway — \"Access US banking through FinClusive's nodes across multiple blockchain and Defi networks (Stellar, Algorand, Cardano, Celo and more).\" (class A)",
+        "Proposer golden.keyFacts[0] [confirmed-as-of]: Live re-check 2026-11-02: https://stellarlight.xyz/api/partners?q=FinClusive&all=1&limit=20 — \"\"Compliance-first banking-as-a-service with SEP-6/24/31 rails on Stellar\"\" (class C)",
+        "Proposer golden.answer (TPSP self-description) [confirmed-as-of]: Live re-check 2026-11-02: https://finclusive.com/company/operating-provisions — \"FinClusive is not a bank, does not have a banking charter and is not a licensed Money Services Business. Rather FinClusive is an exempt third party services provider\" (class A)",
+        "Proposer golden.answer (TPSP self-description) [confirmed-as-of]: Live re-check 2026-11-02: https://finclusive.com/products/caas-gateway — \"FinClusive does not receive, store, custody, or transmit monetary value/currency/payment instruments.\" (class A)",
+        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://stellar.org/blog/policy/drive-inclusion-through-compliance — \"FinClusive CEO Amit Sharma joined SDF's General Counsel in a webinar on Sep. 9, 2020. ... Use Case: Biccos\" (class A)",
+        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://stellar.org/blog/policy/drive-inclusion-through-compliance — \"they can do a near-instant verification validation of these clients across the network as a shared utility.\" (class A)",
+        "Sibling sweep 2026-11-02: proposer checked q-crp-anchors-by-corridor, q-comp-anchor-compliance-stack, q-comp-cross-bitso-sep31, q-pay-anchor-msb-licensing, q-pay-travel-rule-aid-flows; no judge-facing field changed in this case, and no sibling contradicts the confirmed claims."
       ]
     },
     "origin": "raven-next q-comp-finclusive-caas"

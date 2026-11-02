@@ -5,12 +5,12 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. As of **2026-09-02**, official Channels terms said the service was free under a fair-use stroop limit that resets after 24 hours. The hosted service publishes no generic top-up address, while a self-hosted Relayer still needs a funded account. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-09-02**, the repository's latest release was **v1.8.0**, published 2026-08-19, while rendered documentation still labeled 1.5.x as stable and had no 1.7.x or 1.8.x path. A hosted endpoint's authentication response proves reachability rather than successful relaying. The public Channels Statuspage was inactive on that date, so recheck the current release, supported networks, funding terms, and official service status before production use.",
+    "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. As of **2026-11-02**, official Channels terms said the service was free under a fair-use stroop limit that resets 24 hours after the first transaction. The hosted service publishes no generic top-up address, while a self-hosted Relayer still needs a funded account. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-11-02**, the repository's latest release was **v1.9.0**, published 2026-10-22, while rendered documentation labeled 1.8.x as the latest stable version and had no 1.9.x path. A hosted endpoint's authentication response proves reachability rather than successful relaying. On that date, the Channels status host that the Stellar Docs Relayer page links did not resolve, and the matching Statuspage page said it was deleted, so no public Channels status feed was observed. Recheck the current release, supported networks, funding terms, and official service status before production use.",
     "keyFacts": [
       "Treats self-hosted OpenZeppelin Relayer and managed OpenZeppelin Channels as distinct.",
       "Covers Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support.",
       "Explains each product's funding model.",
-      "Reports the observed v1.8.0-versus-rendered-1.5.x documentation mismatch.",
+      "Dates any release-versus-rendered-docs mismatch (2026-11-02: v1.9.0 vs 1.8.x stable).",
       "Dates each version or provider-health claim to an observation date."
     ],
     "avoid": [
@@ -20,7 +20,7 @@
       "Do NOT interpret HTTP 401 as downtime or one reachable request as successful full service health.",
       "Do NOT pin release, network support, or provider health without an as-of date."
     ],
-    "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-09-02, repository v1.8.0 and rendered 1.5.x docs disagreed. The public Channels Statuspage was inactive. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally. On 2026-09-09, the official Stellar Docs Tools pages and their indexed records distinguish the self-hosted Relayer from managed Channels. The old product-alias source caution no longer applies. The separately dated version and service-health observations remain unchanged."
+    "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-11-02, repository v1.9.0 (published 2026-10-22) and rendered 1.8.x stable docs disagreed; on 2026-09-02 the observed pair was v1.8.0 and 1.5.x. Either dated observation is correct. On 2026-11-02 the status host linked from the Stellar Docs Relayer page (status.channels.openzeppelin.com) did not resolve, and the matching Statuspage page said it was deleted. The OpenZeppelin docs top navigation still linked /relayer/1.5.x on that date, so an answer that reports that link is not wrong. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally. On 2026-09-09, the official Stellar Docs Tools pages and their indexed records distinguish the self-hosted Relayer from managed Channels. The old product-alias source caution no longer applies. The version and service-health observations were refreshed on 2026-11-02."
   },
   "tags": {
     "category": "tooling-infra",
@@ -34,8 +34,8 @@
     },
     "domain": "mixed",
     "status": "disputed",
-    "asOf": "2026-09-02",
-    "reverifyBy": "2026-11-24",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-15",
     "sources": [
       {
         "class": "A",
@@ -58,9 +58,28 @@
         "note": "OpenZeppelin Relayer release record"
       },
       {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.9.0",
+        "note": "Latest release v1.9.0, published 2026-10-22T08:08:29Z (gh api releases/latest).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.openzeppelin.com/relayer/1.8.x",
+        "note": "Rendered docs label v1.8.x as latest stable; /relayer/1.9.x returns HTTP 404.",
+        "observedAt": "2026-11-02"
+      },
+      {
         "class": "C",
-        "ref": "https://relayerchannelsmainnet.statuspage.io/inactive",
-        "note": "Inactive live Statuspage surface"
+        "ref": "https://relayerchannelsmainnet.statuspage.io/",
+        "note": "Redirects to /page-deleted: 'This Statuspage was deleted'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "dig status.channels.openzeppelin.com",
+        "note": "NOERROR with zero answers; curl cannot resolve the status host linked from the Stellar Docs Relayer page.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -103,6 +122,18 @@
             "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.8.0",
             "observedAt": "2026-09-02",
             "note": "The latest release is v1.8.0, published 2026-08-19."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.openzeppelin.com/relayer",
+            "observedAt": "2026-11-02",
+            "note": "Banner: 'For production use, see the latest stable version (v1.8.x)'; /relayer/1.9.x returns HTTP 404."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.9.0",
+            "observedAt": "2026-11-02",
+            "note": "The latest release is v1.9.0, published 2026-10-22; v1.8.0 was published 2026-08-19."
           }
         ]
       },
@@ -121,6 +152,18 @@
             "ref": "https://channels.openzeppelin.com",
             "observedAt": "2026-09-02",
             "note": "The authenticated service endpoint was reachable; no generic top-up address was published."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide",
+            "observedAt": "2026-11-02",
+            "note": "'The limit resets automatically 24 hours after your first transaction'; exceeding it returns FEE_LIMIT_EXCEEDED until the reset."
+          },
+          {
+            "class": "C",
+            "ref": "https://channels.openzeppelin.com/",
+            "observedAt": "2026-11-02",
+            "note": "HTTP 401 without credentials; reachable, no generic top-up address published."
           }
         ]
       },
@@ -139,6 +182,24 @@
             "ref": "https://relayerchannelsmainnet.statuspage.io/inactive",
             "observedAt": "2026-09-02",
             "note": "The page states that it is inactive and only visible to team members."
+          },
+          {
+            "class": "F",
+            "ref": "dig status.channels.openzeppelin.com; curl https://status.channels.openzeppelin.com/",
+            "observedAt": "2026-11-02",
+            "note": "No DNS answer; curl could not resolve the host that the Stellar Docs Relayer page links."
+          },
+          {
+            "class": "C",
+            "ref": "https://relayerchannelsmainnet.statuspage.io/",
+            "observedAt": "2026-11-02",
+            "note": "Redirects to /page-deleted: 'This Statuspage was deleted'."
+          },
+          {
+            "class": "D",
+            "ref": "Perplexity search 'OpenZeppelin Stellar Channels service status page'",
+            "observedAt": "2026-11-02",
+            "note": "No alternative public Channels status page found."
           }
         ]
       },
@@ -174,19 +235,36 @@
       }
     ],
     "verified": {
-      "date": "2026-09-09",
-      "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
       "evidence": [
-        ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
-        ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
-        "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
-        "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
-        "Only the expired official-Docs product-alias caution changes. The answer, key facts, avoid items, September 2 version/health observations, disputed status, asOf, and reverifyBy remain unchanged.",
-        "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
+        "Gospel change 2026-11-02: golden.answer (modify); golden.keyFacts[3] (accept); golden.notes (modify). The independent verifier re-derived each change without reading the proposer matrix.",
+        "Class B (verifier): gh api repos/OpenZeppelin/openzeppelin-relayer/releases/latest (https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.9.0) — \"{\"tag_name\":\"v1.9.0\",\"published_at\":\"2026-10-22T08:08:29Z\"}; previous v1.8.0 published 2026-08-19T13:58:23Z\" (observedAt 2026-11-02)",
+        "Class B (verifier): https://github.com/OpenZeppelin/openzeppelin-relayer/blob/main/CHANGELOG.md — \"1.9.0 (2026-10-22) ... Add docs for 1.6.x, 1.7.x and 1.8.x (#895)\" (observedAt 2026-11-02)",
+        "Class A (verifier): https://docs.openzeppelin.com/relayer — \"You're viewing documentation for unreleased features from the main branch. For production use, see the latest stable version (v1.8.x). [top nav Relayer link: href=\"/relayer/1.5.x\"]\" (observedAt 2026-11-02)",
+        "Class A (verifier): https://docs.openzeppelin.com/relayer/1.8.x — \"v1.8.x (latest stable)\" (observedAt 2026-11-02)",
+        "Class F (verifier): curl https://docs.openzeppelin.com/relayer/1.9.x ; /1.8.x ; /1.7.x ; /1.6.x ; /1.5.x — \"1.9.x -> HTTP 404; 1.8.x, 1.7.x, 1.6.x, 1.5.x -> HTTP 200\" (observedAt 2026-11-02)",
+        "Class A (verifier): https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide (also /relayer/1.8.x/guides/stellar-channels-guide) — \"Each API key has a fee consumption limit (measured in stroops) The limit resets automatically 24 hours after your first transaction If you exceed the limit, requests return FEE_LIMIT_EXCEEDED until the reset\" (observedAt 2026-11-02)",
+        "Class A (verifier): https://developers.stellar.org/docs/tools/openzeppelin-relayer — \"To see the live status of Stellar Channels, visit the Stellar Channels status page. [href=\"https://status.channels.openzeppelin.com/\"]\" (observedAt 2026-11-02)",
+        "Class F (verifier): dig status.channels.openzeppelin.com; nslookup via 1.1.1.1; curl https://status.channels.openzeppelin.com/ — \"status: NOERROR, ANSWER: 0; \"Can't find status.channels.openzeppelin.com: No answer\"; curl HTTP 000\" (observedAt 2026-11-02)",
+        "Class C (verifier): https://relayerchannelsmainnet.statuspage.io/ (redirects to /page-deleted) — \"Statuspage deleted This Statuspage was deleted Are you the owner? The Statuspage can still be recovered, but it will be permanently deleted soon.\" (observedAt 2026-11-02)",
+        "Class D (verifier): Parallel web_search 'openzeppelin-relayer v1.9.0 release' — \"Release list v1.9.0 [Latest] ... latest stable version (v1.8.x)\" (observedAt 2026-11-02)",
+        "Class D (verifier): Perplexity search 'OpenZeppelin Stellar Channels service status page' — \"No alternative OpenZeppelin Channels status page found; results point to status.channels.openzeppelin.com (cached 2026-02-05) and the Stellar Docs link. status.openzeppelin.com also has no DNS answer.\" (observedAt 2026-11-02)",
+        "Class B (proposer, golden.answer, confirmed): https://api.github.com/repos/OpenZeppelin/openzeppelin-relayer — \"license.spdx_id AGPL-3.0\" (observedAt 2026-11-02)",
+        "Class A (proposer, golden.answer, confirmed): https://developers.stellar.org/docs/tools/openzeppelin-relayer — \"OpenZeppelin Relayer is an open source (AGPL-3.0) framework ... If you run your own instance, you control the signer and you fund the accounts that pay the fees.\" (observedAt 2026-11-02)",
+        "Class A (proposer, golden.answer, confirmed-as-of): https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide — \"Each API key has a fee consumption limit (measured in stroops) The limit resets automatically 24 hours after your first transaction\" (observedAt 2026-11-02)",
+        "Class A (proposer, golden.answer, confirmed-as-of): https://developers.stellar.org/docs/tools/index (via Perplexity, dated 2026-10-21) — \"Stellar Channels, the managed service OpenZeppelin operates ... covers the fees under a fair use policy\" (observedAt 2026-11-02)",
+        "Class C (proposer, golden.answer, confirmed-as-of): https://channels.openzeppelin.com/ — \"HTTP 401\" (observedAt 2026-11-02)",
+        "Class B (proposer, golden.answer/keyFacts[3], contradicted): https://api.github.com/repos/OpenZeppelin/openzeppelin-relayer/releases — \"v1.9.0 2026-10-22T08:08:29Z; v1.8.0 2026-08-19T13:58:23Z\" (observedAt 2026-11-02)",
+        "Class A (proposer, golden.answer/keyFacts[3], contradicted): https://docs.openzeppelin.com/relayer — \"You're viewing documentation for unreleased features from the main branch. For production use, see the latest stable version (v 1.8.x )\" (observedAt 2026-11-02)",
+        "Class A (proposer, golden.answer/keyFacts[3], contradicted): https://docs.openzeppelin.com/relayer/1.9.x — \"HTTP 404\" (observedAt 2026-11-02)",
+        "Class A (proposer, golden.answer/keyFacts[3], contradicted): https://docs.openzeppelin.com/relayer/1.7.x — \"You're viewing an older version (v 1.7.x )\" (observedAt 2026-11-02)",
+        "Class F (proposer, golden.answer, contradicted): https://status.channels.openzeppelin.com/ — \"curl: Could not resolve host: status.channels.openzeppelin.com\" (observedAt 2026-11-02)",
+        "Class C (proposer, golden.answer, contradicted): https://relayerchannelsmainnet.statuspage.io/ — \"Statuspage - Statuspage deleted This Statuspage was deleted\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: grep openzeppelin-relayer|Relayer v1.x|1.5.x|statuspage|status.channels and OpenZeppelin+Channels version/fair-use/status wording across the battery -> q-x402-payment-verification, q-smart-wallet-fee-sponsorship, q-soroban-x402-auth-entry-signing, q-defi-x402-on-stellar-what, q-infra-rpc-methods-list checked; none pins a Relayer release, docs version, or Statuspage state; no contradiction."
       ],
       "rootCause": [
-        "improvements/resolved.json entry sd-039; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
-        "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-ti-openzeppelin-relayer"

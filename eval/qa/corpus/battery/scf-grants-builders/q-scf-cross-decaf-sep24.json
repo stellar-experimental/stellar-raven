@@ -7,7 +7,7 @@
     "stellarDocs.search_anchor_sep_docs"
   ],
   "golden": {
-    "answer": "Decaf Pay's SCF #17 application says its international-payment product had built a MoneyGram integration using SEP-24 and planned to reuse that integration pattern with other anchors. As observed on 2026-07-11, Scout describes Decaf as a live, non-custodial wallet on Stellar and Solana for cross-border money movement, using MoneyGram and partner ramps to move between fiat and USDC and cash out without a bank account. Official Stellar docs define SEP-24 as the hosted, interactive deposit-and-withdrawal flow: the wallet opens the anchor's experience and the anchor collects the information/KYC needed to complete the transaction. SEP-24 is therefore the bridge between the historical proposal detail and today's wallet/ramp record.",
+    "answer": "Decaf Pay's SCF #17 application says its international-payment product had built a MoneyGram integration using SEP-24 and planned to reuse that integration pattern with other anchors. As observed on 2026-11-02, Scout describes Decaf as a live, non-custodial wallet on Stellar and Solana for cross-border money movement, using MoneyGram and partner ramps to move between fiat and USDC and cash out without a bank account. Official Stellar docs define SEP-24 as the hosted, interactive deposit-and-withdrawal flow: the wallet opens the anchor's experience and the anchor collects the information/KYC needed to complete the transaction. SEP-24 explains the proposal's MoneyGram integration. As of 2026-11-02, MoneyGram's Ramps site labels SEP-10/SEP-24 a legacy path that existing allowlisted Stellar partners may keep, and directs new Stellar wallets to its widget SDK; no source shows which path Decaf uses today.",
     "keyFacts": [
       "Decaf Pay's SCF #17 application names a MoneyGram integration using SEP-24.",
       "Scout lists Decaf as a live non-custodial cross-border wallet.",
@@ -19,7 +19,7 @@
       "Do NOT misidentify SEP-31 as the MoneyGram wallet-hosted deposit/withdrawal flow in the proposal.",
       "Do NOT describe Decaf as a custodial bank account or as a MoneyGram-owned wallet."
     ],
-    "notes": "Grant application, current directory record, and SEP semantics must all appear."
+    "notes": "Grant application, current directory record, and SEP semantics must all appear.\nUPDATE 2026-11-02: an answer may say, with attribution, that MoneyGram now offers a Ramps widget SDK and calls SEP-10/SEP-24 legacy, or that Decaf also sells Decaf Business accounts (USD accounts on OwlPay Harbor, 2026-10-14). Neither statement fires the custodial or MoneyGram-owned avoid. Do not require either. A claim that Decaf still uses SEP-24 with MoneyGram today is unverified, not wrong."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -33,8 +33,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-03",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-22",
     "sources": [
       {
         "class": "C",
@@ -51,6 +51,42 @@
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal"
+      },
+      {
+        "class": "C",
+        "ref": "Raven lumenloop.get_scf_submissions {slug:'decaf'}",
+        "note": "Decaf Pay, SCF #17: \"Sep24 - we have built this integration with MoneyGram, we were the first\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=decaf",
+        "note": "\"Decaf is a non-custodial wallet on the Solana and Stellar networks for cross-border money movement ... Users on/off-ramp between fiat and USDC via MoneyGram and partner ramps ... cash out crypto to local fiat without a bank account\"; status Live; generatedAt 2026-11-02T16:32:41.947Z",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/",
+        "note": "\"USDC on Solana and Stellar. Both chains use the Ramps widget SDK and API keys. Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 path.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+        "note": "\"Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model. New Stellar wallet integrations should use the widget + API keys path\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html",
+        "note": "\"Decaf ... has embedded OwlPay Harbor as regulated payment infrastructure behind Decaf Business ... It combines non-custodial wallets and stablecoin settlement with bank, card and cash payment partners.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.sec.gov/Archives/edgar/data/2025416/000119312526421071/owls-ex99_1.htm",
+        "note": "OWLS EX-99.1: \"Decaf Business, Decaf's company account product, has been in production on Harbor since August 2026.\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -72,6 +108,24 @@
             "class": "A",
             "ref": "https://decaf.so/",
             "observedAt": "2026-07-11"
+          },
+          {
+            "class": "C",
+            "ref": "Raven lumenloop.get_scf_submissions {slug:'decaf'}",
+            "observedAt": "2026-11-02",
+            "note": "Decaf Pay, SCF #17: \"Sep24 - we have built this integration with MoneyGram, we were the first\"."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=decaf",
+            "observedAt": "2026-11-02",
+            "note": "Same Scout description; status Live; generatedAt 2026-11-02T16:32:41.947Z."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.newsfilecorp.com/release/161302/Decaf-Integrates-with-Global-CryptotoCash-Service-Powered-by-MoneyGram-and-Stellar",
+            "observedAt": "2026-11-02",
+            "note": "Via Perplexity: \"Decaf ... is proud to announce an integration with the global on/off-ramp service for digital wallets powered by MoneyGram and the Stellar Development Foundation (SDF).\""
           }
         ]
       },
@@ -90,25 +144,72 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02, MoneyGram's Ramps site labels SEP-10/SEP-24 a legacy path that existing allowlisted Stellar partners may keep and directs new Stellar wallets to its widget SDK; no source shows which path Decaf uses today.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/",
+            "observedAt": "2026-11-02",
+            "note": "Exact: \"Both chains use the Ramps widget SDK and API keys. Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 path.\""
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+            "observedAt": "2026-11-02",
+            "note": "Exact: \"Legacy integration path. ... New Stellar wallet integrations should use the widget + API keys path\""
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/blob/main/meetings/2026/04/23.mdx",
+            "observedAt": "2026-11-02",
+            "note": "Exact: \"launched the MoneyGram Ramps API so developers can plug into the network directly\""
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=decaf",
+            "observedAt": "2026-11-02",
+            "note": "Scout names MoneyGram and partner ramps but no integration path."
+          }
+        ]
+      },
+      {
+        "claim": "Decaf also offers Decaf Business accounts with USD accounts on OwlPay Harbor (announced 2026-10-14).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html",
+            "observedAt": "2026-11-02",
+            "note": "Exact: \"has embedded OwlPay Harbor as regulated payment infrastructure behind Decaf Business ... now opening U.S. dollar account access to eligible companies\""
+          },
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/Archives/edgar/data/2025416/000119312526421071/owls-ex99_1.htm",
+            "observedAt": "2026-11-02",
+            "note": "Exact: \"Decaf Business, Decaf's company account product, has been in production on Harbor since August 2026.\""
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-02)",
       "evidence": [
-        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
-        "Sibling sweep: Decaf, MoneyGram, and SEP-24 battery cases reviewed; no SEP-number contradiction found",
-        "Structural re-form (long-fact): Split the Decaf, ramp, and SEP-24 descriptions into atomic facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://communityfund.stellar.org/submissions/recp4q5jA9dXq7to6 — the official SCF #17 application says Decaf built a MoneyGram SEP-24 integration.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/project/decaf — the live Scout page lists Decaf as a non-custodial cross-border wallet.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/project/decaf — the live Scout page lists MoneyGram and partner ramps between fiat and USDC.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal — current official docs define SEP-24 as anchor-hosted interactive deposit and withdrawal.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal — current official docs say the anchor collects the user's required information and KYC.",
-        "Sibling sweep 2026-08-29: grep Decaf|MoneyGram|SEP-24 → q-anchor-moneygram-ramps, q-comp-cross-moneygram-partnership-sep24, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, and q-scf-cross-decaf-sep24; no contradiction"
+        "Raven lumenloop.get_scf_submissions {slug:'decaf'} (observedAt 2026-11-02): Decaf Pay, SCF #17: \"Sep24 - we have built this integration with MoneyGram, we were the first\"",
+        "https://stellarlight.xyz/api/projects/search?q=decaf (observedAt 2026-11-02, generatedAt 2026-11-02T16:32:41.947Z): \"Decaf is a non-custodial wallet on the Solana and Stellar networks for cross-border money movement ... Users on/off-ramp between fiat and USDC via MoneyGram and partner ramps\"; status Live",
+        "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/integration via Raven stellarDocs.search_docs (observedAt 2026-11-02): \"SEP-24: Hosted Deposit and Withdrawal - Interactive deposit/withdrawal flow\"; \"The first step of the deposit flow after starting the deposit itself is collecting KYC.\"",
+        "https://xramps.moneygram.com/ (observedAt 2026-11-02): \"Both chains use the Ramps widget SDK and API keys. Existing Stellar whitelist partners can continue on the legacy SEP-10 / SEP-24 path.\"",
+        "https://xramps.moneygram.com/ops/developer/guides/stellar (observedAt 2026-11-02): \"Legacy integration path. ... New Stellar wallet integrations should use the widget + API keys path\"",
+        "https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html (observedAt 2026-11-02) and https://www.sec.gov/Archives/edgar/data/2025416/000119312526421071/owls-ex99_1.htm (observedAt 2026-11-02): Decaf Business on OwlPay Harbor",
+        "Independent verifier: modified answer (path unknown, not 'do not assume SEP-24') and notes (current SEP-24 use is unverified, not wrong); accepted asOf and reverifyBy 2027-04-22.",
+        "Sibling sweep 2026-11-02: grep 'Decaf' -> q-anchor-moneygram-ramps and q-pay-moneygram-ramps (both already say SEP-10/SEP-24 is legacy for existing allowlisted partners and new wallets use the widget path; consistent), q-crp-custodial-vs-noncustodial-wallets (Decaf non-custodial; consistent); no contradiction."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "The final answer sentence implied that Decaf's current ramp still uses SEP-24, which no source shows; MoneyGram now labels SEP-10/SEP-24 legacy."
       ]
     },
     "origin": "authored 2026-07 (cross-service)"

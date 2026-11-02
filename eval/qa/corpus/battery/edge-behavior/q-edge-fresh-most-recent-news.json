@@ -84,31 +84,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-23 primary 3264 and blind 3267; ll-006 recurrence. July 6 UNDP/SDF and July 8 P27 are illustrative, not gating.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live research search returned a 2026-06-26 LumenLoop item, `Constellations: how the Stellar ecosystem connects`, among its dated results.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (negative-predicate): tightened the dated-observation fact, moved the unsupported-memory trap to avoid, and recast the retrieval and significance requirements as atomic positive facts; no claim changed.",
-        "Live re-check 2026-08-27: https://stellar.org/blog — the current official feed presents source-owned posts with publication dates for dated observations.",
-        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the current semantic-search contract exposes date bounds and date-field labels, while similarity controls result order.",
-        "Live re-check 2026-08-27: https://stellar.org/blog — the current feed exposes a recency sort, while the question's editorial significance criterion remains separate.",
-        "Sibling sweep 2026-08-27: grep most recent|chronological post-sort|editorial significance|non-exhaustive → q-edge-fresh-latest-protocol-version and q-edge-exhaustive-defi-deep-report; no contradiction",
-        "Live re-check 2026-08-30: https://stellar.org/blog — the official feed showed dated current posts.",
-        "Live re-check 2026-08-30: https://stellar.org/blog — each visible current post carried a publication date.",
-        "Live re-check 2026-08-30: https://github.com/stellar-experimental/stellar-raven — the manifest exposed date bounds, date labels, and similarity order.",
-        "Live re-check 2026-08-30: https://stellar.org/blog — the feed exposed chronology, while significance still required a separate rationale.",
-        "Live re-check 2026-08-30: https://stellar.org/blog — the feed showed 562 results, so a short digest is non-exhaustive.",
-        "Sibling sweep 2026-08-30: grep most recent|recency|non-exhaustive → q-eco-most-active-defi-projects, q-eco-stablecoins-on-stellar, q-edge-exhaustive-defi-deep-report, q-edge-fresh-most-recent-news, q-hot-sdf-transparency-wallets-reports, q-infra-rpc-provider-archive-tier, q-soroban-vuln-classes, q-tool-wallets-comparison; no contradiction"
-      ],
-      "rootCause": [
-        "Prior-art routing metadata leaked into gospel and a generic freshness template treated relevance rank as sufficiently recent.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Live 2026-11-02 (class C): Lumenloop search_content_semantic {query:'Constellations how the Stellar ecosystem connects'} — research row 2026-06-26T17:44:24.327Z 'Constellations: how the Stellar ecosystem connects' still present (dated illustrative example, not gating).",
+        "Live 2026-11-02 (class C): Lumenloop search_content_semantic {query:'Stellar ecosystem news', date_start:'2026-10-26', date_end:'2026-11-02'} — av rows carry only created_at (ingestion), events carry start_at, articles carry publishing_date; order follows similarity, not recency.",
+        "Live 2026-11-02 (class B): catalog/manifest.json#lumenloop.search_content_semantic — 'date_field: For articles only ... Default is COALESCE(publishing_date, created_at)'.",
+        "Live 2026-11-02 (class A): https://stellar.org/blog/developers — dated posts, e.g. 'September 28, 2026 • Leigh McCulloch Soroban Rust SDK v28'.",
+        "Live 2026-11-02 (class D): Parallel search stellar.org press October 2026 — Curve Finance launch 2026-10-29; Taurus, WalletConnect, Marketnode press 2026-10-28/29 (recency differs from similarity rank).",
+        "Verdict: unchanged; behavioral gate holds. No gospel change; no sibling sweep required beyond the proposer's sibling list, which records no contradiction."
       ]
     },
     "origin": "raven-next q-edge-fresh-most-recent-news"

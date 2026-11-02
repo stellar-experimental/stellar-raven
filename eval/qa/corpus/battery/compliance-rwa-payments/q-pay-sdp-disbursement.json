@@ -94,20 +94,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
-        "https://github.com/stellar/stellar-disbursement-platform-backend/tree/03e44fbedceab188cb91c77a181d8c734ffbd822",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Shortened the current SDP architecture fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md — the current source defines Dashboard, Core, TSS, and native SEP-10/24 without external Anchor Platform integration.",
-        "Sibling sweep 2026-08-29: grep Stellar Disbursement Platform|Dashboard/Core/TSS|SEP-10/24|Anchor Platform → q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, q-pay-sdp-disbursement; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md (observedAt 2026-11-02; latest release 7.1.0, 2026-10-26): \"The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24, providing wallet authentication and interactive deposit flows without requiring external Anchor Platform integration.\"",
+        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture (observedAt 2026-11-02): \"The TSS pulls payments that ready to be processed then submits them to the Stellar Network through Channel Accounts.\"",
+        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets (observedAt 2026-11-02): \"Embedded Wallets are Stellar smart contract accounts that are deployed on-chain when a receiver creates their passkey.\"; \"No built-in offramp: Offramping must be handled out-of-band\".",
+        "https://developers.stellar.org/platforms/stellar-disbursement-platform/admin-guide/getting-started (observedAt 2026-11-02): \"Since version 3.0.0 , the SDP can pay directly to Stellar wallet addresses rather than directing the receivers through the registration flow.\"",
+        "Observation (no truth change): the SDP Registration API reference still says wallets authenticate through Anchor Platform endpoints on a different host; primary source code and the Embedded Wallets page outrank it.",
+        "Sibling sweep 2026-11-02: q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, q-pay-travel-rule-aid-flows, q-sep-31-cross-border; no contradiction."
       ]
     },
     "origin": "raven-next q-pay-sdp-disbursement"

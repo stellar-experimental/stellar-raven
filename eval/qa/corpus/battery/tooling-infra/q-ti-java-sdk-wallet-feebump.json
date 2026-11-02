@@ -7,7 +7,7 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "As of **2026-08-04**, use **`network.lightsail:stellar-sdk:4.0.1`**; Maven Central metadata and the 2026-07-16 GitHub release agree. Recheck the current Maven/release record rather than treating that number as timeless.\n\nA fee bump wraps a **fully signed inner transaction** in a separately signed outer fee-bump envelope. With Java SDK 4.0.1, parse/build the signed inner `Transaction`, then call `FeeBumpTransaction.createWithBaseFee(feeSource, baseFee, inner)` or `createWithFee(...)`; the old `FeeBumpTransaction.Builder` is removed. The inner source still supplies sequence, time bounds, and required signatures. The fee-source account pays/signs the outer and needs the applicable low-threshold authorization/XLM; verify the total fee for the inner operation count plus wrapper and preserve Soroban resource fees.\n\nFor an external wallet, send only the XDR that wallet-controlled role should sign—usually inner XDR to the user wallet, then outer fee-bump XDR to the fee payer if it controls that account. Never export a wallet secret into Java. Submit/poll the final fee-bump envelope and handle inner failure separately.",
+    "answer": "As of **2026-11-02**, use **`network.lightsail:stellar-sdk:6.0.0`**; Maven Central metadata and the 2026-10-28 GitHub release agree. Recheck the current Maven/release record rather than treating that number as timeless.\n\nA fee bump wraps a **fully signed inner transaction** in a separately signed outer fee-bump envelope. With Java SDK 6.0.0 (fee-bump API unchanged since 4.0.1), parse/build the signed inner `Transaction`, then call `FeeBumpTransaction.createWithBaseFee(feeSource, baseFee, inner)` or `createWithFee(...)`; the old `FeeBumpTransaction.Builder` is removed. The inner source still supplies sequence, time bounds, and required signatures. The fee-source account pays/signs the outer and needs the applicable low-threshold authorization/XLM; verify the total fee for the inner operation count plus wrapper and preserve Soroban resource fees.\n\nFor an external wallet, send only the XDR that wallet-controlled role should sign—usually inner XDR to the user wallet, then outer fee-bump XDR to the fee payer if it controls that account. Never export a wallet secret into Java. Submit/poll the final fee-bump envelope and handle inner failure separately.",
     "keyFacts": [
       "Dates current Maven coordinates and version.",
       "Names current fee-bump factories.",
@@ -20,7 +20,7 @@
       "Do NOT use the fee payer's sequence, remove inner signatures, or sign the outer with an unrelated inner signer.",
       "Do NOT invent buildFeeBumpTransaction/use removed Builder or expose a wallet secret to Java."
     ],
-    "notes": "Freshness-sensitive. As observed 2026-08-04, Maven Central and the GitHub release record identify 4.0.1, published 2026-07-16. Keep exact-version claims dated and source-specific.\nGolden cites: Current Java SDK repo/release or Maven Central plus official fee-bump transaction docs.\nGT-52: require createWithBaseFee/createWithFee, inner/outer role separation, safe wallet XDR flow, and no claim that the blocked local Java test passed."
+    "notes": "Freshness-sensitive. As observed 2026-11-02, Maven Central and the GitHub release record identify 6.0.0, published 2026-10-28; 4.0.1 (2026-07-16) and 5.0.0 (2026-09-01) are superseded. An answer that dates an older release to its own observation time is not wrong on that point. Keep exact-version claims dated and source-specific.\nGolden cites: Current Java SDK repo/release or Maven Central plus official fee-bump transaction docs.\nGT-52: require createWithBaseFee/createWithFee, inner/outer role separation, safe wallet XDR flow, and no claim that the blocked local Java test passed."
   },
   "tags": {
     "category": "tooling-infra",
@@ -34,8 +34,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
-    "reverifyBy": "2027-01-07",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-11",
     "sources": [
       {
         "class": "D",
@@ -61,24 +61,42 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases/tag/6.0.0",
+        "note": "6.0.0 released 2026-10-28; 5.0.0 2026-09-01; 4.0.1 2026-07-16.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/lightsail-network/java-stellar-sdk/blob/6.0.0/src/main/java/org/stellar/sdk/FeeBumpTransaction.java",
+        "note": "Byte-identical to 4.0.1; createWithFee/createWithBaseFee, no Builder.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
-        "claim": "As of 2026-08-04 the current Lightsail artifact is network.lightsail:stellar-sdk:4.0.1 and exposes createWithBaseFee/createWithFee rather than the old Builder.",
-        "verdict": "confirmed",
+        "claim": "As of 2026-11-02 the current Lightsail artifact is network.lightsail:stellar-sdk:6.0.0 (released 2026-10-28) and exposes createWithBaseFee/createWithFee rather than the old Builder.",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "B",
-            "ref": "B: Maven Central metadata, 4.0.1 release, and version-pinned FeeBumpTransaction source",
-            "observedAt": "2026-08-04",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "C",
+            "ref": "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml",
+            "observedAt": "2026-11-02",
+            "note": "<latest>6.0.0</latest> <release>6.0.0</release> <lastUpdated>20261028085328</lastUpdated>."
           },
           {
-            "class": "F",
-            "ref": "F: source tests inspected; local execution was blocked by missing JRE and no pass claimed",
-            "observedAt": "2026-07-11",
-            "note": "Historical source-test inspection; no 2026-08-04 local execution is claimed."
+            "class": "B",
+            "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases/tag/6.0.0",
+            "observedAt": "2026-11-02",
+            "note": "GitHub releases: 6.0.0 2026-10-28T08:27Z; 5.0.0 2026-09-01; 4.0.1 2026-07-16."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/lightsail-network/java-stellar-sdk/blob/6.0.0/src/main/java/org/stellar/sdk/FeeBumpTransaction.java",
+            "observedAt": "2026-11-02",
+            "note": "FeeBumpTransaction.java byte-identical between 4.0.1 and 6.0.0; createWithFee/createWithBaseFee, no Builder."
           }
         ]
       },
@@ -102,21 +120,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch varial-dev)",
       "evidence": [
-        "Solo scratchpad 575 GT-52 primary/blind matrices established the current factories and role boundaries; Todo 1347 correction verification refreshed the release to 4.0.1.",
-        "Sibling sweep checked q-tool-java-sdk, q-pc-fee-bump-channel-accounts-feepool, and secret-custody cases.",
-        "Structural re-form (negative-predicate): split the dated dependency fact, expressed inner/outer roles positively, and removed the Builder rejection already held in avoid; truth is unchanged",
-        "Live re-check 2026-08-27: https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml — current Maven coordinates and version remain dated provider observations",
-        "Live re-check 2026-08-27: https://github.com/lightsail-network/java-stellar-sdk/blob/4.0.1/src/main/java/org/stellar/sdk/FeeBumpTransaction.java — current fee-bump factory names remain version-specific",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions — fully signed inner authorization/sequence and outer fee-source roles remain distinct",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md — fee-source signature/payment, fee calculation, and Soroban resource-fee preservation remain required",
-        "Sibling sweep 2026-08-27: grep network.lightsail|FeeBumpTransaction|createWithBaseFee|fee-source → q-pc-fee-bump-channel-accounts-feepool; no contradiction"
+        "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml — \"<latest>6.0.0</latest> <release>6.0.0</release> <lastUpdated>20261028085328</lastUpdated>\" (observedAt 2026-11-02).",
+        "https://github.com/lightsail-network/java-stellar-sdk/releases — 6.0.0 2026-10-28, 5.0.0 2026-09-01, 4.0.1 2026-07-16; FeeBumpTransaction.java diff 4.0.1..6.0.0 is empty (createWithFee/createWithBaseFee, no Builder) (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-tool-java-sdk, q-pc-fee-bump-channel-accounts-feepool, q-tool-which-sdk-comparison checked for the Java SDK version; the Freighter mention in this case is in its wallet-role text only."
       ],
       "rootCause": [
-        "Plain SDK release drift plus eval-side external-wallet/fee-bump procedure incompleteness.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-ti-java-sdk-wallet-feebump"

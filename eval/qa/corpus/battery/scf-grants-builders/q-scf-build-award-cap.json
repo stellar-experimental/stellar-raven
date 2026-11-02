@@ -65,22 +65,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-36 primary 3290 and blind 3291.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live SCF Handbook result stated an award size of up to $150,000 worth of XLM, paid through milestone-based tranches.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): Shortened one long fact into one one-predicate fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current official Build Award page confirms the cap and milestone-tranche payment model.",
-        "Sibling sweep 2026-08-29: grep Build Award|$150,000|milestone-based tranches → q-scf-ambassador-program, q-scf-build-award-cap, q-scf-build-tracks, q-scf-how-to-apply, q-scf-vs-sdf-enterprise-fund; no contradiction."
-      ],
-      "rootCause": [
-        "Eval answer accreted stale sibling program details around a stable narrow fact.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14; observedAt 2026-11-02): \"Award size: up to $150,000 worth of XLM\"; \"Structure: Milestone-based funding (paid in tranches)\"",
+        "https://communityfund.stellar.org/awards (observedAt 2026-10-22): \"$150K in XLM* Max. Award Amount\"",
+        "https://github.com/stellar/scf-handbook/blob/main/.gitbook/includes/xlm-award-valuation-disclaimer.md (observedAt 2026-11-02): \"The USD valuation of XLM for any particular Award shall be calculated using the CF Stellar Lumens-Dollar Settlement Price ... on the day such Award is scheduled to be paid.\"",
+        "https://stellar.org/blog/ecosystem/introducing-scf-v7 (observedAt 2026-10-25): \"up to $300K in total funding over the project’s full lifecycle\"",
+        "Raven scout.searchResearch(q=\"SCF Build Award maximum award XLM tranches\") (observedAt 2026-11-02T16:12:44Z): \"Award size: up to $150,000 worth of XLM* - Structure: Milestone-based funding (paid in tranches)\"",
+        "Proposer verdict: all claims confirmed; no gospel change. Independent verifier: unchanged."
       ]
     },
     "origin": "raven-next q-scf-build-award-cap"

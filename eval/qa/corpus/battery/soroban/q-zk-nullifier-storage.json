@@ -19,8 +19,9 @@
       "Nullifiers may silently expire or be forgotten after TTL expiry while their notes remain spendable.",
       "An off-chain database alone is sufficient to enforce double-spend prevention.",
       "An unbounded nullifier map should be stored in one instance value or checked by scanning the full set.",
-      "Archived or expired state is automatically restored without an explicit restoration and TTL plan."
-    ]
+      "Expired Temporary nullifiers can be restored, or auto-restore needs no restore list or fees."
+    ],
+    "notes": "Since Protocol 23 (CAP-0066), archived Persistent entries in a transaction's restore list are restored automatically, with normal rent and fees; archived Persistent entries cannot be re-created, and expired Temporary entries are deleted permanently. Do not penalize an answer that states this."
   },
   "tags": {
     "category": "soroban",
@@ -50,6 +51,24 @@
       {
         "class": "D",
         "ref": "https://zips.z.cash/protocol/protocol.pdf"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+        "note": "Current URL of the state-archival page (the older storage-state-archival path returned 404 on 2026-11-02). Protocol 23 auto-restore needs a restore list; expired Temporary entries are deleted permanently.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md",
+        "note": "CAP-0066 Status: Final, Protocol version: 23; automatic restoration via InvokeHostFunctionOp for keys declared in archivedSorobanEntries, with normal rent and write fees.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/NethermindEth/stellar-private-payments/blob/main/contracts/pool/src/pool.rs",
+        "note": "Production privacy pool stores each spent nullifier as a persistent DataKey::Nullifier(U256) entry.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -236,48 +255,55 @@
         ]
       },
       {
-        "claim": "Archived or expired state is automatically restored without an explicit restoration and TTL plan.",
+        "claim": "Expired Temporary nullifiers can be restored, or auto-restore needs no restore list or fees.",
         "verdict": "contradicted",
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/storing-data",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage-state-archival",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+            "observedAt": "2026-11-02",
+            "note": "'archived Persistent or Instance contract entries can be automatically restored before a host function runs, but only if they're included in the transaction's restore list ... normal rent and fees still apply.' and 'Permanently deleted when TTL goes to 0, cannot be restored.'"
           },
           {
             "class": "B",
-            "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/storage/index.html",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md",
+            "observedAt": "2026-11-02",
+            "note": "'All archived keys must be declared in the archivedEntries vector ... Restored state is still subject to the same minimum rent and write fees'"
+          }
+        ]
+      },
+      {
+        "claim": "Since Protocol 23 (CAP-0066), archived Persistent entries in a transaction's restore list are restored automatically with normal rent and fees; archived Persistent entries cannot be re-created; expired Temporary entries are deleted permanently.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+            "observedAt": "2026-11-02",
+            "note": "'Archived persistent entries can never be re-created. They must instead be restored.' and 'If you build a transaction manually without running simulation ... automatic restoration will not occur and the transaction will fail'"
           },
           {
-            "class": "D",
-            "ref": "https://zips.z.cash/protocol/protocol.pdf",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md",
+            "observedAt": "2026-11-02",
+            "note": "'Status: Final ... Protocol version: 23 ... This also proposes automatic restoration for archived entries via InvokeHostFunctionOp.'"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-07)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/smart-contracts/getting-started/storing-data",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage-state-archival",
-        "https://docs.rs/soroban-sdk/latest/soroban_sdk/storage/index.html",
-        "https://zips.z.cash/protocol/protocol.pdf",
-        "Structural re-form (long-fact): shortened the exact-set storage fact and split the authenticated-root proof and availability claims; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage — persistent storage supports independent keys and TTLs, while instance storage has one limited shared entry.",
-        "Live re-check 2026-08-29: https://github.com/TONresistor/zk-resistor-contracts/blob/main/PROTOCOL.md — the source protocol requires nullifier-set non-membership and insertion proofs against a root transition.",
-        "Live re-check 2026-08-29: https://zips.z.cash/zip-0307 — the official light-client protocol requires maintained witnesses and recent tree history for root-relative proofs.",
-        "Sibling sweep 2026-08-29: grep nullifier|non-membership|witness/history|instance map → q-sor-persistent-unbounded-collection-cap, q-sor-cross-warmancer-zk-stack, q-zk-nullifier-storage, and q-zk-poseidon-input-encoding; no contradiction."
+        "Gospel change: avoid[3] reworded to bind only the false claims (Temporary restore; auto-restore without a restore list or fees); golden.notes added as a Protocol 23 leniency note. Verifier decisions accept (both).",
+        "A https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival \u2014 'archived Persistent or Instance contract entries can be automatically restored before a host function runs, but only if they're included in the transaction's restore list ... normal rent and fees still apply.' (observedAt 2026-11-02).",
+        "A https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival \u2014 'When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible' (observedAt 2026-11-02).",
+        "B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md \u2014 'Status: Final ... Protocol version: 23'; 'All archived keys must be declared in the archivedEntries vector'; 'Restored state is still subject to the same minimum rent and write fees' (observedAt 2026-11-02).",
+        "B https://github.com/NethermindEth/stellar-private-payments/blob/main/contracts/pool/src/pool.rs \u2014 'Spent nullifier marker keyed by nullifier (presence-only; value unused). Nullifier(U256),' (observedAt 2026-11-02).",
+        "Sibling sweep 2026-11-02: q-soroban-storage-types, q-sor-p23-auto-restore-extendto, q-protocol-state-archival-ttl, q-sor-ttl-defaults-extend, q-sor-persistent-unbounded-collection-cap, q-sor-cross-warmancer-zk-stack, q-infra-simulate-transaction-howto checked; the old avoid[3] conflicted with siblings that require stating Protocol 23 auto-restore; the new wording agrees with all of them."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Eval-side authoring flaw: avoid[3] was written without Protocol 23 (CAP-0066) automatic restoration, so it bound a true claim that sibling goldens require; recorded in .agents/rounds/2026-11-02-golden-audit.md (batch soroban-07)."
       ]
     },
     "origin": "kaan privacy-pool-nullifier-storage"

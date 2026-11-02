@@ -30,8 +30,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-12",
-    "reverifyBy": "2026-12-31",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-20",
     "sources": [
       {
         "class": "A",
@@ -85,26 +85,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
       "evidence": [
-        "solo://proj/49/scratchpad/784#event-assertion-ordering",
-        "Sibling sweep: q-soroban-publish-events owns publication and RPC retention; q-sor-decode-hosterror-codes owns failed-call rollback and diagnostics. Neither owns nested-call ordering.",
-        "Structural re-form (presentation-avoid): deleted the omission avoid item because an existing key fact already requires nested events in order; the trap target remains enforced.",
-        "No live re-check was required because the avoid deletion does not change the required content.",
-        "Sibling sweep 2026-08-27: grep nested-call events|filter_by_contract|env.events().all → q-soroban-publish-events, q-sor-decode-hosterror-codes; no contradiction",
-        "Structural re-form (compound-predicate): split invocation scope, ordering, filtering, assertion timing, and replacement into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events — the current guide still scopes env.events().all() to the last successful invocation.",
-        "Live re-check 2026-08-27: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/tests/contract_event.rs — the SDK test still verifies ordered A, B, A nested-call events.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events — the current guide still documents filter_by_contract for one contract.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events — the current examples still assert events immediately after each client call.",
-        "Live re-check 2026-08-27: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/_migrating/v25_event_testing.rs — the current migration example still defines per-invocation event replacement.",
-        "Sibling sweep 2026-08-27: grep nested-call events|filter_by_contract|env.events().all → q-soroban-publish-events, q-sor-decode-hosterror-codes, q-sor-require-auth-propagation, q-soroban-auth-delegation-p27; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Proposer B 2026-11-02: https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/testutils.rs — \"Returns all contract events that have been published by the last contract invocation. If the last contract invocation failed, no events are returned. Events are returned in the order they were published\"",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events — \"`env.events().all()` returns a `ContractEvents` value containing all the events published by the last contract invocation\"",
+        "Proposer F 2026-11-02: cargo test --offline, soroban-sdk 28.0.0 (A emits, calls B which emits, A emits) — \"after a(): total=3 onlyA=2; read again: total=3; after 3x inc: total=1\"",
+        "Proposer claim verdict confirmed (golden.keyFacts[0]): env.events().all() exposes events from the last successful top-level invocation, including nested calls, in order",
+        "Proposer F 2026-11-02: cargo test --offline, soroban-sdk 28.0.0 — \"after three top-level inc() calls env.events().all() holds 1 event\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/rs-soroban-sdk/blob/v30.0.0-rc.1/soroban-sdk/src/testutils.rs — \"same 'published by the last contract invocation' doc in the v30 rc\"",
+        "Proposer claim verdict contradicted (golden.avoid[0]): env.events().all() accumulates events from every top-level call (punished) Note: The trap is valid. But the official guide https://developers.stellar.org/docs/build/guides/testing/test-contract-events still says '// Get all events published since the Env was created.' and asserts three events after three calls. This is an upstream docs defect; no golden caution is proposed because canonical-page cautions are capped by ADR-0008.",
+        "Upstream defect observed (not a golden error): stellar-docs: Test Events guide says env.events().all() returns all events 'since the Env was created' and asserts 3 events after 3 top-level calls; soroban-sdk 25+ returns only the last invocation's events (F: sdk 28 test gives 1) — https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/testing/test-contract-events.mdx",
+        "Sibling sweep 2026-11-02: checked q-sor-decode-hosterror-codes, q-soroban-publish-events; no contradiction found."
       ]
     },
     "origin": "authored 2026-08 (event-testing coverage closure)"

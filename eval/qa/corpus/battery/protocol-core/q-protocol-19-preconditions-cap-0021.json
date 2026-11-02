@@ -43,22 +43,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
       "evidence": [
-        "https://stellar.org/blog/developers/announcing-protocol-19",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Split the Protocol 19 fact into three single-predicate facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/protocol-upgrades — the official history dates Protocol 19 to 2022-06-08.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/developers/announcing-protocol-19 — the official announcement assigns generalized preconditions to Protocol 19 and CAP-0021.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md — the Final CAP defines time bounds, ledger bounds, minimum sequence number, age, gap, and extra signers.",
-        "Sibling sweep 2026-08-29: grep Protocol 19|CAP-0021|minSeqAge|extraSigners → q-protocol-version-history-list, q-pc-l2-payment-channels-starlight, q-pc-sequence-numbers-ordering-replace; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
+        "Live re-check 2026-11-02 (confirmed): Protocol 19 activated 2022-06-08 with CAP-0021 (and CAP-0040) — A https://stellar.org/protocol-upgrades 'Protocol 19 6-8-2022 - CAP-0021 (Generalized transaction conditions and timelocks.), CAP-0040 (Shared transaction signing for contracts.)'; B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md 'Status: Final ... Protocol version: 19'; D https://stellar.org/blog/developers/protocol-19-upgrade-complete (via Perplexity search) 'Today, June 8, 2022 at 15:00 UTC, the Stellar public network successfully upgraded to Protocol 19!'",
+        "Live re-check 2026-11-02 (confirmed): CAP-0021 adds time/ledger bounds, minSeqNum/age/gap, extra signers — B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md 'sequence number n satisfies minSeqNum <= n < tx.seqNum ... `extraSigners`'; A https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions 'Minimum sequence number ... Minimum sequence age ... Minimum sequence ledger gap ... Ledger bounds'",
+        "Live re-check 2026-11-02 (confirmed): Soroban is Protocol 20, not 19 — B https://github.com/stellar/stellar-protocol/blob/master/core/README.md '| [CAP-0046](cap-0046.md) | 20 |Soroban smart contract system overview |'; A https://developers.stellar.org/docs/networks/software-versions 'Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)'",
+        "Sibling sweep 2026-11-02: q-protocol-accounts-signers-thresholds uses the same minSeqNum <= S < tx.seqNum rule; no contradiction."
       ]
     },
     "origin": "raven-next q-protocol-19-preconditions-cap-0021",

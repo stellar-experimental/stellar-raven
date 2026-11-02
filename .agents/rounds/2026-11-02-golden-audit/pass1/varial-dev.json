@@ -1,0 +1,3094 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "varial-dev",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-defi-aquarius-what-is",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Aquarius is a Stellar/Soroban liquidity layer and AMM.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.aqua.network/welcome-to-aquarius.md",
+       "observedAt": "2026-11-02",
+       "quote": "Aquarius is the liquidity layer of the Stellar network — an AMM protocol governed by AQUA holders. ... It runs on its own Soroban smart-contract AMM"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Treats ICE, upvoteICE, and governICE as non-transferable tokens with distinct roles.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits.md",
+       "observedAt": "2026-11-02",
+       "quote": "Locking mints three non-transferable tokens to your wallet: ICE ... upvoteICE ... governICE ... A fourth token, downvoteICE, was used for downvoting markets. It…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "ICE family non-transferable; no blanket emissions for holding/governance; not a lender/oracle/bridge",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits.md",
+       "observedAt": "2026-11-02",
+       "quote": "ICE cannot be sent, traded, or deposited anywhere."
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (also-good wallets)",
+     "claim": "Integrates with wallets such as LOBSTR, StellarX, Freighter, StellarTerm.",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.aqua.network/llms.txt",
+       "observedAt": "2026-11-02",
+       "quote": "Docs index lists no wallet-compatibility page; 0 occurrences of \"freighter\""
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Integrates with wallets such as LOBSTR, StellarX, Varial (formerly Freighter), StellarTerm.",
+     "reason": "Rename: Freighter is now Varial (2026-10-29); accept either name."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+     "reason": "Symmetric grader caution for the rename."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-eco-freighter-wallet; q-tool-freighter-wallet"
+  },
+  {
+   "id": "q-eco-stellar-wallets-list",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer (dated example)",
+     "claim": "As of 2026-08-30 keyword total 183; 64 unique Wallet-typed; Lobstr, xBull, Freighter first",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T15:58:51Z; counts total 191; first rows Lobstr, xBull, Freighter, Hana; 71 of 100 rows include Wallet"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0..2]",
+     "claim": "dated source evidence, as-of dates, duplicate handling",
+     "verdict": "confirmed",
+     "sources": []
+    },
+    {
+     "field": "golden.notes (Freighter record)",
+     "claim": "Directory wallet records include Freighter",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=freighter&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "name \"Freighter\", slug \"freighter\", links.website \"https://freighter.app/\", identity null, generatedAt 2026-11-02T15:51:59Z; q=varial returns no wallet record"
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_project {slug:\"freighter\"}",
+       "observedAt": "2026-11-02",
+       "quote": "title \"Freighter\", other_names [], links.website [\"freighter.app\"]"
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. As of 2026-11-02 the Scout directory record is still slug `freighter`, name Freighter; an answer that reports the record as Freighter, Varial, or both is not wrong.",
+     "reason": "Corpus record lags the real-world rename; symmetric caution."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Stellar Light/Scout directory record lags the Freighter-to-Varial rename (upstream finding candidate)"
+   ],
+   "siblings": "q-tool-wallets-comparison; q-eco-freighter-wallet; q-edge-ambig-best-wallet"
+  },
+  {
+   "id": "q-edge-ambig-best-wallet",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..4]",
+     "claim": "clarify use case; criteria; passkey/smart wallet; Stellar context; no single best",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer example list",
+     "claim": "(e.g. Freighter, Lobstr, Hana, xBull)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "(e.g. Varial (formerly Freighter), Lobstr, Hana, xBull)",
+     "reason": "Rename."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "(e.g. Varial (formerly Freighter), Lobstr, Hana, xBull)",
+     "reason": "Rename."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+     "reason": "Symmetric grader caution."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-eco-stellar-wallets-list; q-tool-wallets-comparison; q-eco-freighter-wallet"
+  },
+  {
+   "id": "q-soroban-x402-auth-entry-signing",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer p1 / keyFacts[0] / avoid[0]",
+     "claim": "Payer signs auth entries; facilitator rebuilds, sponsors, verifies, signs, submits",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "On Stellar, x402 works with Soroban authorization so that clients can pay for API requests via signed auth entries"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p2 (roster)",
+     "claim": "As of **2026-07-28**, the official Stellar x402 page lists Freighter Browser Extension, Albedo, Hana, HOT, Klever, and OneKey and says Freighter Mobile is unsupported, but that roster is **disputed** …",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "The following wallets support auth-entry signing: Varial Browser Extension Varial Mobile (through WalletConnect) Albedo Hana HOT Klever OneKey Scopuly"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: list Varial mobile as x402 compatible through WalletConnect ... Replace the \"mobile doesn't support x402\" notes"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/mobile-walletconnect/signing.md",
+       "observedAt": "2026-11-02",
+       "quote": "### `stellar_signAuthEntry` ... methods: [\"stellar_signXDR\", \"stellar_signAndSubmitXDR\", \"stellar_signMessage\", \"stellar_signAuthEntry\"]"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/signing",
+       "observedAt": "2026-11-02",
+       "quote": "Signing an Auth Entry signAuthEntry() Sign an authorization entry preimage and receive the signed hash back as a base64 string."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1] / avoid[1]",
+     "claim": "Official roster is disputed; do not repeat it as independently verified",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "The following wallets support auth-entry signing: Varial Browser Extension Varial Mobile (through WalletConnect) Albedo Hana HOT Klever OneKey Scopuly"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/9db6b363f678eb7ba95b6349d4a32a60d5b1253b/src/sdk/modules/albedo.module.ts",
+       "observedAt": "2026-11-02",
+       "quote": "async signAuthEntry() ... throw { code: -3, message: 'Albedo does not support the \"signAuthEntry\" function' }"
+      },
+      {
+       "class": "B",
+       "ref": "npm @albedo-link/intent@0.13.0 README.MD (latest; registry modified 2025-06-13)",
+       "observedAt": "2026-11-02",
+       "quote": "Intents: public_key, sign_message, tx, pay, trust, exchange, implicit_flow, manage_account, batch — no auth-entry intent"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Identifies the specific Freighter/Albedo evidence conflict.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "The following wallets support auth-entry signing: Varial Browser Extension Varial Mobile (through WalletConnect) Albedo Hana HOT Klever OneKey Scopuly"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: list Varial mobile as x402 compatible through WalletConnect ... Replace the \"mobile doesn't support x402\" notes"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/mobile-walletconnect/signing.md",
+       "observedAt": "2026-11-02",
+       "quote": "### `stellar_signAuthEntry` ... methods: [\"stellar_signXDR\", \"stellar_signAndSubmitXDR\", \"stellar_signMessage\", \"stellar_signAuthEntry\"]"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/signing",
+       "observedAt": "2026-11-02",
+       "quote": "Signing an Auth Entry signAuthEntry() Sign an authorization entry preimage and receive the signed hash back as a base64 string."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/9db6b363f678eb7ba95b6349d4a32a60d5b1253b/src/sdk/modules/albedo.module.ts",
+       "observedAt": "2026-11-02",
+       "quote": "async signAuthEntry() ... throw { code: -3, message: 'Albedo does not support the \"signAuthEntry\" function' }"
+      },
+      {
+       "class": "B",
+       "ref": "npm @albedo-link/intent@0.13.0 README.MD (latest; registry modified 2025-06-13)",
+       "observedAt": "2026-11-02",
+       "quote": "Intents: public_key, sign_message, tx, pay, trust, exchange, implicit_flow, manage_account, batch — no auth-entry intent"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p3 / keyFacts[4] / avoid[2]",
+     "claim": "Hosted provider is Build on Stellar Relayer with OZ x402 Plugin over Channels; hosted setup needs API key; Coinbase Testnet-only",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "Coinbase’s x402 facilitator supports Stellar on Testnet with sponsored fees ... Build on Stellar Relayer (with OpenZeppelin x402 Plugin) ... To use the facilita…"
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of **2026-11-02**, the official Stellar x402 page lists the Varial (formerly Freighter) Browser Extension, Varial Mobile through WalletConnect, Albedo, Hana, HOT, Klever, OneKey, and Scopuly. Varial's owner documentation exposes `signAuthEntry` for the extension and `stellar_signAuthEntry` for mobile over WalletConnect, which matches the page. The roster stays **disputed** for Albedo: Stellar Wallets Kit explicitly throws that Albedo does not support `signAuthEntry`, and Albedo's intent library has no auth-entry intent. Wallets Kit contains auth-entry adapters for Hana, HOT, Klever, OneKey,…",
+     "reason": "Official roster drifted (Varial rename, Varial Mobile via WalletConnect, Scopuly); dispute narrows to Albedo."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "set",
+     "new": "Flags the Albedo conflict: listed officially, yet Wallets Kit rejects signAuthEntry.",
+     "reason": "Freighter side of the conflict is resolved upstream; keep the surviving Albedo conflict."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Freshness:true — wallet/facilitator support is moving. 2026-11-02 re-verification: on 2026-10-29 the official page renamed Freighter to Varial and added Varial Mobile through WalletConnect, so it now agrees with Varial owner documentation; its Albedo listing still conflicts with the Stellar Wallets Kit Albedo module and Albedo's intent library. An answer that reports the earlier \"Freighter Mobile unsupported\" wording as a dated historical page state is not wrong.",
+     "reason": "Dated re-verification note."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+     "reason": "Symmetric rename caution."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-03-04",
+     "reason": "Staggered within batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Stellar Docs x402 page lists Albedo as auth-entry capable, but Stellar Wallets Kit albedo.module.ts throws on signAuthEntry and @albedo-link/intent 0.13.0 has no auth-entry intent (upstream finding candidate; no improvements/ entry exists yet)"
+   ],
+   "siblings": "q-defi-x402-on-stellar-what; q-x402-payment-verification; q-agent-payment-standard-choice; q-defi-agentic-payment-standards-compare; q-hist-x402-stellar-announcement; q-sep-43-web-wallet-api; q-tool-wallets-comparison"
+  },
+  {
+   "id": "q-ti-bindings-to-nextjs-integration",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0] / answer p1",
+     "claim": "stellar contract bindings typescript; generated Client",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/tree/v28.1.0/cmd/soroban-cli/src/commands/contract/bindings/typescript.rs ; cmd/crates/soroban-spec-typescript/src/lib.rs",
+       "observedAt": "2026-11-02",
+       "quote": "export class Client extends ContractClient {{"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-cli/releases",
+       "observedAt": "2026-11-02",
+       "quote": "v28.1.0 published 2026-09-26T16:33:53Z (latest non-prerelease)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/guestbook/bindings",
+       "observedAt": "2026-08-27",
+       "quote": "uses `stellar contract bindings typescript` (re-read in prior 2026-08-27 check; command unchanged in v28.1.0 source)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p2 / keyFacts[1] / avoid[1]",
+     "claim": "Freighter in a use-client component; network validation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide",
+       "observedAt": "2026-11-02",
+       "quote": "\"use client\" ; import React from \"react\" ; import { setAllowed } from \"@stellar/varial-sdk\""
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation.md",
+       "observedAt": "2026-11-02",
+       "quote": "`@stellar/varial-sdk` is the same SDK under its new name, continuing from version 7.0.0. Swap the package and change the import path — method names, parameters …"
+      },
+      {
+       "class": "B",
+       "ref": "npm tarballs @stellar/varial-sdk@7.0.0 vs @stellar/freighter-api@6.0.1 (src/ diff)",
+       "observedAt": "2026-11-02",
+       "quote": "Only differences: added src/disconnect.ts and its export in src/index.ts; isConnected/isAllowed/setAllowed/requestAccess/getAddress/getNetwork/getNetworkDetails…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3..4] / avoid[3]",
+     "claim": "Tx.fee = inclusion + resource fee; refundable vs non-refundable distinct",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+       "observedAt": "2026-08-27",
+       "quote": "re-read 2026-08-27; protocol fee model unchanged"
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    },
+    {
+     "field": "(lane) package",
+     "claim": "@stellar/varial-sdk 7.0.0 (2026-10-28) is the renamed @stellar/freighter-api; same method names/params/returns; freighter-api 6.0.1 keeps working, no new releases; only disconnect() is new.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://registry.npmjs.org/@stellar/varial-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "created 2026-10-28T23:51:09.694Z; dist-tags latest 7.0.0; description \"Utility functions to interact with the Varial extension\"; repo stellar/freighter; same ma…"
+      },
+      {
+       "class": "B",
+       "ref": "https://registry.npmjs.org/@stellar/freighter-api",
+       "observedAt": "2026-11-02",
+       "quote": "dist-tags latest 6.0.1 (2025-12-03); no deprecated flag on 6.0.1"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation.md",
+       "observedAt": "2026-11-02",
+       "quote": "`@stellar/varial-sdk` is the same SDK under its new name, continuing from version 7.0.0. Swap the package and change the import path — method names, parameters …"
+      },
+      {
+       "class": "B",
+       "ref": "npm tarballs @stellar/varial-sdk@7.0.0 vs @stellar/freighter-api@6.0.1 (src/ diff)",
+       "observedAt": "2026-11-02",
+       "quote": "Only differences: added src/disconnect.ts and its export in src/index.ts; isConnected/isAllowed/setAllowed/requestAccess/getAddress/getNetwork/getNetworkDetails…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "current v28 output (Stellar CLI 28.1.0 as of 2026-11-02) exports a typed **`Client`** and network metadata",
+     "reason": "CLI version drift."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "In a Next.js App Router app, keep Freighter (now Varial; `@stellar/freighter-api` or `@stellar/varial-sdk`) in a **`\"use client\"`** component.",
+     "reason": "Rename; both packages valid."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "set",
+     "new": "Do NOT call the Freighter/Varial SDK during SSR/server rendering or hard-code a mismatched network/passphrase.",
+     "reason": "Same trap, both names."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. Its SDK now ships as `@stellar/varial-sdk` 7.0.0 (2026-10-28) with the same method names; `@stellar/freighter-api` 6.0.1 keeps working, and only the new package adds `disconnect()`. Accept either package.",
+     "reason": "Symmetric rename caution."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-03-11",
+     "reason": "Staggered."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-soroban-cli-bindings; q-sor-deploy-invoke-from-js-sdk; q-ti-connect-wallet-button-code"
+  },
+  {
+   "id": "q-ti-connect-wallet-button-code",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0] / avoid[0]",
+     "claim": "isConnected returns a structured result for installation detection",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "@stellar/varial-sdk@7.0.0 src/isConnected.ts",
+       "observedAt": "2026-11-02",
+       "quote": "Promise<{ isConnected: boolean } & { error?: FreighterApiError }>"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/connecting",
+       "observedAt": "2026-11-02",
+       "quote": "isConnected() checks whether the Varial extension is installed."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1] / avoid[1]",
+     "claim": "requestAccess on click; getAddress silent read; setAllowed valid but not only",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/connecting",
+       "observedAt": "2026-11-02",
+       "quote": "requestAccess() Prompt the user to add your dapp to Varial's Allow List and return their public key in one call. This is the recommended way to connect"
+      },
+      {
+       "class": "B",
+       "ref": "@stellar/varial-sdk@7.0.0 src/index.ts",
+       "observedAt": "2026-11-02",
+       "quote": "exports getAddress, isAllowed, setAllowed, requestAccess, disconnect, getNetwork, getNetworkDetails ..."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[2]",
+     "claim": "Wallets Kit public modules, not DOM hacks",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/9db6b363f678eb7ba95b6349d4a32a60d5b1253b/src/sdk/modules/varial.module.ts",
+       "observedAt": "2026-11-02",
+       "quote": "@deprecated - Freighter is now Varial, use `VarialModule` from `@creit-tech/stellar-wallets-kit/modules/varial` instead. ... export class FreighterModule extend…"
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    },
+    {
+     "field": "(lane) package",
+     "claim": "@stellar/varial-sdk 7.0.0 (2026-10-28) is the renamed @stellar/freighter-api; same method names/params/returns; freighter-api 6.0.1 keeps working, no new releases; only disconnect() is new.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://registry.npmjs.org/@stellar/varial-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "created 2026-10-28T23:51:09.694Z; dist-tags latest 7.0.0; description \"Utility functions to interact with the Varial extension\"; repo stellar/freighter; same ma…"
+      },
+      {
+       "class": "B",
+       "ref": "https://registry.npmjs.org/@stellar/freighter-api",
+       "observedAt": "2026-11-02",
+       "quote": "dist-tags latest 6.0.1 (2025-12-03); no deprecated flag on 6.0.1"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation.md",
+       "observedAt": "2026-11-02",
+       "quote": "`@stellar/varial-sdk` is the same SDK under its new name, continuing from version 7.0.0. Swap the package and change the import path — method names, parameters …"
+      },
+      {
+       "class": "B",
+       "ref": "npm tarballs @stellar/varial-sdk@7.0.0 vs @stellar/freighter-api@6.0.1 (src/ diff)",
+       "observedAt": "2026-11-02",
+       "quote": "Only differences: added src/disconnect.ts and its export in src/index.ts; isConnected/isAllowed/setAllowed/requestAccess/getAddress/getNetwork/getNetworkDetails…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Compile against the installed package types; a missing export means version skew, not permission to invent an API. As of 2026-11-02, Freighter is now Varial and the same API ships as `@stellar/varial-sdk` 7.0.0; `@stellar/freighter-api` 6.0.1 keeps working, and only the new package adds `disconnect()`.",
+     "reason": "Package rename is the current version-skew fact."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. Its SDK now ships as `@stellar/varial-sdk` 7.0.0 (2026-10-28) with the same method names; `@stellar/freighter-api` 6.0.1 keeps working, and only the new package adds `disconnect()`. Accept either package. In Stellar Wallets Kit 2.8.0 (2026-10-28), `VarialModule` replaces `FreighterModule`, which remains a deprecated alias; accept either.",
+     "reason": "Symmetric rename caution."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-ti-freighter-localhost-not-detected; q-tool-freighter-wallet; q-tool-wallets-kit; q-sep-43-web-wallet-api"
+  },
+  {
+   "id": "q-ti-freighter-localhost-not-detected",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question premise",
+     "claim": "window.freighterApi undefined on localhost",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "@stellar/varial-sdk@7.0.0 webpack.common.js and build/index.min.js",
+       "observedAt": "2026-11-02",
+       "quote": "library: \"freighterApi\", libraryTarget: \"umd\" ... r.freighterApi=e()"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation.md",
+       "observedAt": "2026-11-02",
+       "quote": "Then access the API via `window.freighterApi` (the global keeps its previous name)"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/connecting",
+       "observedAt": "2026-11-02",
+       "quote": "The injected window.stellar.provider value is still \"freighter\" , the app's old name — it was kept unchanged so existing wallet detection keeps working."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/master/extension/src/contentScript/helpers/redirectMessagesToBackground.ts",
+       "observedAt": "2026-11-02",
+       "quote": "content script only relays window.postMessage to the background; no window.freighterApi assignment"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p2 / keyFacts[3]",
+     "claim": "HTTP localhost and 127.0.0.1 are secure contexts per official guide",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide",
+       "observedAt": "2026-11-02",
+       "quote": "Varial wallet requires a secure connection to interact with your dapp. Browsers treat http://localhost and http://127.0.0.1 as secure contexts per the W3C Secur…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p2 (manifest)",
+     "claim": "Manifest matches <all_urls> at document_start, no all_frames",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/public/static/manifest/v3.json",
+       "observedAt": "2026-11-02",
+       "quote": "\"name\": \"Varial Wallet\", \"version\": \"5.51.0\" ... \"matches\": [\"<all_urls>\"], \"js\": [\"contentScript.min.js\"], \"run_at\": \"document_start\" (no all_frames)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p1 / keyFacts[1]",
+     "claim": "isConnected install, isAllowed allowed state, requestAccess permission flow",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/connecting",
+       "observedAt": "2026-11-02",
+       "quote": "isAllowed() Check if the user has previously authorized your app ... requestAccess() ... return their public key in one call."
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    },
+    {
+     "field": "(lane) package",
+     "claim": "@stellar/varial-sdk 7.0.0 (2026-10-28) is the renamed @stellar/freighter-api; same method names/params/returns; freighter-api 6.0.1 keeps working, no new releases; only disconnect() is new.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://registry.npmjs.org/@stellar/varial-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "created 2026-10-28T23:51:09.694Z; dist-tags latest 7.0.0; description \"Utility functions to interact with the Varial extension\"; repo stellar/freighter; same ma…"
+      },
+      {
+       "class": "B",
+       "ref": "https://registry.npmjs.org/@stellar/freighter-api",
+       "observedAt": "2026-11-02",
+       "quote": "dist-tags latest 6.0.1 (2025-12-03); no deprecated flag on 6.0.1"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation.md",
+       "observedAt": "2026-11-02",
+       "quote": "`@stellar/varial-sdk` is the same SDK under its new name, continuing from version 7.0.0. Swap the package and change the import path — method names, parameters …"
+      },
+      {
+       "class": "B",
+       "ref": "npm tarballs @stellar/varial-sdk@7.0.0 vs @stellar/freighter-api@6.0.1 (src/ diff)",
+       "observedAt": "2026-11-02",
+       "quote": "Only differences: added src/disconnect.ts and its export in src/index.ts; isConnected/isAllowed/setAllowed/requestAccess/getAddress/getNetwork/getNetworkDetails…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Use **`@stellar/freighter-api`** (since 2026-10-28 also published as `@stellar/varial-sdk`; Freighter is now Varial) in a browser/client context after mount and inspect the structured `isConnected()` result/error. `window.freighterApi` is the global that the library's script-tag build defines (the name is unchanged in `@stellar/varial-sdk`); the extension does not inject it, so with an npm import or a missing script tag it stays undefined.",
+     "reason": "Rename and accurate window.freighterApi provenance."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "set",
+     "new": "Uses supported client-side Freighter/Varial SDK APIs.",
+     "reason": "Accept both names."
+    },
+    {
+     "field": "golden.avoid[1]",
+     "op": "set",
+     "new": "Do NOT claim localhost needs a Freighter/Varial allowlist entry, that HTTP always works, or that HTTPS always fixes detection.",
+     "reason": "Same trap, both names."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. Its SDK now ships as `@stellar/varial-sdk` 7.0.0 (2026-10-28) with the same method names; `@stellar/freighter-api` 6.0.1 keeps working, and only the new package adds `disconnect()`. Accept either package. The script-tag global keeps the name `window.freighterApi`.",
+     "reason": "Symmetric rename caution."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-03-18",
+     "reason": "Staggered."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "eval-side authoring flaw: answer did not explain that window.freighterApi is the library script-tag global, not an extension injection"
+   ],
+   "siblings": "q-ti-connect-wallet-button-code; q-ti-bindings-to-nextjs-integration; q-tool-freighter-wallet"
+  },
+  {
+   "id": "q-ti-friendbot-ratelimit-alternatives",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer p1 / keyFacts[0..1]",
+     "claim": "Friendbot rate-limited, no official numeric quota; fund one then create many",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "Requests are rate limited, so use wisely Provides 10,000 fake XLM ... For multiple accounts: fund your first account with Friendbot, then use that ac[count]"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2] / avoid[1]",
+     "claim": "Quickstart testnet/futurenet modes proxy public faucets; local mode local Friendbot",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+       "observedAt": "2026-11-02",
+       "quote": "In local network mode, a local Friendbot is running. In testnet and futurenet network modes, requests to the local :8000/friendbot endpoint will be proxied to t…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p2 / keyFacts[3]",
+     "claim": "Validation Cloud advertises a Stellar Testnet XLM faucet",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://www.validationcloud.io/multi-chain-faucets (Parallel fetch, cached 2026-10-19)",
+       "observedAt": "2026-10-19",
+       "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / avoid[2]",
+     "claim": "Circle faucet gives test USDC not XLM",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://faucet.circle.com/",
+       "observedAt": "2026-11-02",
+       "quote": "Send testnet USDC, EURC, and cirBTC ... Stellar Testnet ... Developers can request 20 USDC on testnet every 2 hours"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Lab/Freighter is not an independent faucet",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/tree/master/extension/src/popup/components/account/NotFundedMessage",
+       "observedAt": "2026-11-02",
+       "quote": "Varial unfunded-account flow calls the network Friendbot URL from @shared/constants/stellar.ts"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "You can request XLM from Friendbot using the Stellar Lab or with various SDKs."
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.avoid[1]",
+     "op": "set",
+     "new": "Do NOT call Lab/Varial (Freighter) an independent faucet or say Quickstart Testnet mode avoids public limits.",
+     "reason": "Rename; same trap."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+     "reason": "Symmetric rename caution."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-03-25",
+     "reason": "Re-verified 2026-11-02; staggered."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-infra-quickstart-local-network; q-ti-testnet-usdc-faucet; q-n3-issues-842-backup-faucet-wallet; q-edge-send-me-free-xlm"
+  },
+  {
+   "id": "q-ti-java-sdk-wallet-feebump",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer p1 / keyFacts[0]",
+     "claim": "network.lightsail:stellar-sdk:4.0.1 is current",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml",
+       "observedAt": "2026-11-02",
+       "quote": "<latest>6.0.0</latest> <release>6.0.0</release> <lastUpdated>20261028085328</lastUpdated>"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases/tag/6.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "published 2026-10-28T08:27:04Z: This release adds support for Protocol 30."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p2 / keyFacts[1] / avoid[2]",
+     "claim": "FeeBumpTransaction.createWithBaseFee/createWithFee; Builder removed",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/lightsail-network/java-stellar-sdk/blob/6.0.0/src/main/java/org/stellar/sdk/FeeBumpTransaction.java",
+       "observedAt": "2026-11-02",
+       "quote": "public static FeeBumpTransaction createWithFee( @NonNull String feeSource, long fee, @NonNull Transaction innerTransaction) ... public static FeeBumpTransaction…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..4] / avoid[1]",
+     "claim": "inner/outer roles; fee-source signs/pays; resource fee preserved",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/lightsail-network/java-stellar-sdk/blob/6.0.0/src/main/java/org/stellar/sdk/FeeBumpTransaction.java",
+       "observedAt": "2026-11-02",
+       "quote": "innerSorobanResourceFee = innerTransaction.getSorobanData().getResourceFee().getInt64();"
+      }
+     ]
+    },
+    {
+     "field": "(rename)",
+     "claim": "Case has no judge-facing Freighter reference",
+     "verdict": "confirmed",
+     "sources": []
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of **2026-11-02**, use **`network.lightsail:stellar-sdk:6.0.0`**; Maven Central metadata and the 2026-10-28 GitHub release agree.",
+     "reason": "Release drift."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "With Java SDK 6.0.0 (unchanged since 4.0.1), parse/build the signed inner `Transaction`",
+     "reason": "Release drift; factories unchanged."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "As observed 2026-11-02, Maven Central and the GitHub release record identify 6.0.0, published 2026-10-28; 4.0.1 (2026-07-16) and 5.0.0 (2026-09-01) are superseded. An answer that dates an older release to its own observation time is not wrong on that point.",
+     "reason": "Release drift; dated, symmetric."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-03-11",
+     "reason": "Staggered."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-java-sdk; q-pc-fee-bump-channel-accounts-feepool; q-tool-which-sdk-comparison"
+  },
+  {
+   "id": "q-ti-stellar-lab-usage-and-new-ui",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question (sign with Freighter)",
+     "claim": "Lab signer has a Freighter option",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/laboratory/blob/main/src/components/SignTransactionXdr/index.tsx (main a9bd4ee49c9d, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "<LabelHeading size=\"md\">Sign with wallet extension</LabelHeading> ... label={`Sign with ${... \"wallet\"}`} ... label=\"Sign with hardware wallet\""
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/freighter/sign-soroban-xdrs",
+       "observedAt": "2026-11-02",
+       "quote": "On the Lab’s transaction signer ... Under Sign with wallet extension , click Sign with wallet . Varial will open with the details of the XDR."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p2 / keyFacts[2] / avoid[0]",
+     "claim": "Saved Keypairs Testnet/Futurenet only; reversible obfuscation; legacy plaintext",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/laboratory/commits/main/src/helpers/localStorageSavedKeypairs.ts",
+       "observedAt": "2026-11-02",
+       "quote": "last commit 624d40ff29ca 2025-09-04 (unchanged since the 2026-09-30 verification)"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer p4 / keyFacts[4] / avoid[3]",
+     "claim": "contract asset deploy vs contract id asset",
+     "verdict": "confirmed",
+     "sources": []
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.avoid[1]",
+     "op": "set",
+     "new": "Do NOT assert hosted/self-hosted Lab universally never transmits secrets or require Freighter/Varial as the only signer.",
+     "reason": "Rename; same trap."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. As of 2026-11-02, Lab's signer has no dedicated Freighter button: under \"Sign with wallet extension\" it shows \"Sign with wallet\", which opens Varial or another kit wallet.",
+     "reason": "Symmetric rename caution; dated UI fact."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-03-25",
+     "reason": "Staggered."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-asset-deploy-sac-cli; q-sor-sac-introspection; q-tool-cli-testnet-identity-howto"
+  },
+  {
+   "id": "q-tool-wallets-comparison",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer (Freighter SDF product)",
+     "claim": "Freighter is an SDF-provided noncustodial product;",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1] / avoid[0]",
+     "claim": "Ledger/Trezor hardware wallets; WalletConnect connectivity",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Wallets Kit role)",
+     "claim": "Wallets Kit is a community multi-wallet adapter over modules",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/9db6b363f678eb7ba95b6349d4a32a60d5b1253b/src/sdk/modules/varial.module.ts",
+       "observedAt": "2026-11-02",
+       "quote": "@deprecated - Freighter is now Varial, use `VarialModule` from `@creit-tech/stellar-wallets-kit/modules/varial` instead. ... export class FreighterModule extend…"
+      }
+     ]
+    },
+    {
+     "field": "(lane) rename",
+     "claim": "SDF renamed the Freighter wallet to Varial; announced 2026-10-29; extension 5.50.0 is the first release under the new name; domains freighter.app and docs.freighter.app redirect to varialwallet.com an…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+       "observedAt": "2026-11-02",
+       "quote": "Today, Freighter becomes Varial, with a new name and a new focus: helping you find and use the best of the Stellar ecosystem."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+       "observedAt": "2026-11-02",
+       "quote": "Freighter is now **Varial**. This is the first release under the new name. (published_at 2026-10-29T20:32:42Z; also: Listed as \"Varial Wallet\" on the stores)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (README, commit 818658432668, 2026-10-30)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension ... Varial wallet’s codebase is open sourced here: https://github.com/stellar/freighter"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-docs/commit/de38543086 (#2956, 2026-10-29)",
+       "observedAt": "2026-11-02",
+       "quote": "docs: rename Freighter to Varial and switch to @stellar/varial-sdk ... Left as they are: URL slugs and paths, redirects ..."
+      },
+      {
+       "class": "F",
+       "ref": "curl -I https://www.freighter.app ; https://docs.freighter.app",
+       "observedAt": "2026-11-02",
+       "quote": "www.freighter.app -> HTTP 301 location https://varialwallet.com/ ; docs.freighter.app -> HTTP 307 location https://docs.varialwallet.com/"
+      },
+      {
+       "class": "D",
+       "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar (XLM)’s Freighter wallet has rebranded as Varial ... according to a Stellar Foundation blog post published on 2026-10-29."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/news/technology/43511 (Perplexity search)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation has renamed its Freighter wallet Varial (dated 2026-10-29)"
+      },
+      {
+       "class": "A",
+       "ref": "https://chromewebstore.google.com/detail/bcacfldlkkdogcmkkibnjlakofdplcbk",
+       "observedAt": "2026-11-02",
+       "quote": "<title>Varial Wallet - Chrome Web Store</title>; Version 5.51.0; Updated October 28, 2026"
+      },
+      {
+       "class": "C",
+       "ref": "https://addons.mozilla.org/api/v5/addons/addon/freighter/",
+       "observedAt": "2026-11-02",
+       "quote": "name {\"en-US\": \"Freighter\"}, current_version 5.49.0, homepage https://freighter.app (Firefox listing not yet renamed)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Varial (formerly Freighter) is an SDF-provided noncustodial product;",
+     "reason": "Rename."
+    },
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+     "reason": "Symmetric rename caution."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-03-18",
+     "reason": "Staggered."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-eco-stellar-wallets-list; q-raph-hardware-wallet; q-tool-freighter-wallet; q-soroban-x402-auth-entry-signing"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (claude-opus-5-5), 2026-11-02; proposer matrix not read",
+  "decisions": [
+   {
+    "id": "q-defi-aquarius-what-is",
+    "field": "golden.notes (replace-substring wallets)",
+    "decision": "accept",
+    "note": "Pure rename of an existing nice-to-have; rename confirmed 2026-10-29 across A/B/D.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-aquarius-what-is",
+    "field": "golden.notes (append RENAME)",
+    "decision": "accept",
+    "note": "Symmetric caution; date and first-release claim confirmed. Rename date/sources should also land in truth.verified.evidence (not proposed here).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L https://www.freighter.app, https://docs.freighter.app",
+      "observedAt": "2026-11-02",
+      "quote": "www.freighter.app -> https://varialwallet.com/ ; docs.freighter.app -> https://docs.varialwallet.com/"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list",
+    "field": "golden.notes (append RENAME + Scout record)",
+    "decision": "modify",
+    "newText": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. As of 2026-11-02 the Scout and Lumenloop records are still slug `freighter`, name Freighter; an answer that names this wallet Freighter, Varial, or both is not wrong.",
+    "note": "Scout and Lumenloop records are still slug freighter, name Freighter (2026-11-02). 'Reports the record as Varial' would excuse a false claim about the record name; scope the caution to naming the wallet.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     },
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/projects/resolve?q=freighter; Raven scout.searchProjects",
+      "observedAt": "2026-11-02",
+      "quote": "\"subject\": {\"slug\": \"freighter\", \"name\": \"Freighter\", \"status\": \"Live\"}"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_project {slug:freighter}",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is a non-custodial browser extension wallet developed by the Stellar Development Foundation"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-ambig-best-wallet",
+    "field": "golden.answer (replace-substring examples)",
+    "decision": "accept",
+    "note": "Rename only; examples stay illustrative.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-ambig-best-wallet",
+    "field": "golden.notes (replace-substring examples)",
+    "decision": "accept",
+    "note": "Rename only.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-ambig-best-wallet",
+    "field": "golden.notes (append RENAME)",
+    "decision": "accept",
+    "note": "Symmetric caution.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-x402-auth-entry-signing",
+    "field": "golden.answer (replace roster paragraph)",
+    "decision": "accept",
+    "note": "Live page roster matches exactly (page says 'Varial Browser Extension'; '(formerly Freighter)' is an accurate gloss). Mobile conflict resolved by docs commit de38543 on 2026-10-29. Albedo conflict confirmed by Wallets Kit throw and Albedo intent 0.13.0 / master with no auth-entry intent. Scopuly adapter has signAuthEntry. Disputed status stays correct.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "Varial Browser Extension; Varial Mobile (through WalletConnect); Albedo; Hana; HOT; Klever; OneKey; Scopuly"
+     },
+     {
+      "class": "B",
+      "ref": "stellar/stellar-docs docs/build/agentic-payments/x402/index.mdx commits de38543 (2026-10-29) and 700ed32 (2026-10-22)",
+      "observedAt": "2026-11-02",
+      "quote": "de38543 'docs: rename Freighter to Varial and switch to @stellar/varial-sdk (#2956)'; prior text: 'Freighter Mobile does not currently support x402'"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'x402 compatible wallets auth-entry signing'",
+      "observedAt": "2026-11-02",
+      "quote": "https://developers.stellar.org/docs/build/agentic-payments/x402#x402-compatible-wallets indexed"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged ... `stellar_signAuthEntry` ... from v2.3.0"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/extension-varial-sdk/signing",
+      "observedAt": "2026-11-02",
+      "quote": "### `signAuthEntry()` Sign an authorization entry preimage"
+     },
+     {
+      "class": "B",
+      "ref": "Creit-Tech/Stellar-Wallets-Kit src/sdk/modules/albedo.module.ts; scopuly.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "'Albedo does not support the \"signAuthEntry\" function'; ScopulyModule.signAuthEntry calls provider.signAuthEntry"
+     },
+     {
+      "class": "B",
+      "ref": "npm @albedo-link/intent@0.13.0 src/intent-interface.js; github stellar-expert/albedo master intent/src/intent-interface.js",
+      "observedAt": "2026-11-02",
+      "quote": "intents: public_key, sign_message, tx, pay, trust, exchange, implicit_flow, manage_account, batch (no auth-entry intent)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-x402-auth-entry-signing",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "82 chars; names the surviving conflict; Freighter half is resolved.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "Varial Browser Extension; Varial Mobile (through WalletConnect); Albedo; Hana; HOT; Klever; OneKey; Scopuly"
+     },
+     {
+      "class": "B",
+      "ref": "Creit-Tech/Stellar-Wallets-Kit src/sdk/modules/albedo.module.ts; scopuly.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "'Albedo does not support the \"signAuthEntry\" function'; ScopulyModule.signAuthEntry calls provider.signAuthEntry"
+     },
+     {
+      "class": "B",
+      "ref": "npm @albedo-link/intent@0.13.0 src/intent-interface.js; github stellar-expert/albedo master intent/src/intent-interface.js",
+      "observedAt": "2026-11-02",
+      "quote": "intents: public_key, sign_message, tx, pay, trust, exchange, implicit_flow, manage_account, batch (no auth-entry intent)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-x402-auth-entry-signing",
+    "field": "golden.notes (replace freshness sentence)",
+    "decision": "accept",
+    "note": "Dated history plus symmetric caution for the earlier page wording; accurate.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "stellar/stellar-docs docs/build/agentic-payments/x402/index.mdx commits de38543 (2026-10-29) and 700ed32 (2026-10-22)",
+      "observedAt": "2026-11-02",
+      "quote": "de38543 'docs: rename Freighter to Varial and switch to @stellar/varial-sdk (#2956)'; prior text: 'Freighter Mobile does not currently support x402'"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "Varial Browser Extension; Varial Mobile (through WalletConnect); Albedo; Hana; HOT; Klever; OneKey; Scopuly"
+     },
+     {
+      "class": "B",
+      "ref": "Creit-Tech/Stellar-Wallets-Kit src/sdk/modules/albedo.module.ts; scopuly.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "'Albedo does not support the \"signAuthEntry\" function'; ScopulyModule.signAuthEntry calls provider.signAuthEntry"
+     },
+     {
+      "class": "B",
+      "ref": "npm @albedo-link/intent@0.13.0 src/intent-interface.js; github stellar-expert/albedo master intent/src/intent-interface.js",
+      "observedAt": "2026-11-02",
+      "quote": "intents: public_key, sign_message, tx, pay, trust, exchange, implicit_flow, manage_account, batch (no auth-entry intent)"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-x402-auth-entry-signing",
+    "field": "golden.notes (append RENAME)",
+    "decision": "accept",
+    "note": "Symmetric caution.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-x402-auth-entry-signing",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Whole roster, facilitator list (Coinbase Testnet; Build on Stellar Relayer with OZ plugin present in page TOC) re-read 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "Varial Browser Extension; Varial Mobile (through WalletConnect); Albedo; Hana; HOT; Klever; OneKey; Scopuly"
+     },
+     {
+      "class": "B",
+      "ref": "stellar/stellar-docs docs/build/agentic-payments/x402/index.mdx commits de38543 (2026-10-29) and 700ed32 (2026-10-22)",
+      "observedAt": "2026-11-02",
+      "quote": "de38543 'docs: rename Freighter to Varial and switch to @stellar/varial-sdk (#2956)'; prior text: 'Freighter Mobile does not currently support x402'"
+     }
+    ]
+   },
+   {
+    "id": "q-soroban-x402-auth-entry-signing",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-04 falls in the batch window; volatile roster was re-verified.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+      "observedAt": "2026-11-02",
+      "quote": "Varial Browser Extension; Varial Mobile (through WalletConnect); Albedo; Hana; HOT; Klever; OneKey; Scopuly"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "golden.answer (replace v27 output substring)",
+    "decision": "modify",
+    "newText": "current Stellar CLI 28.1.0 output (as of 2026-11-02) exports a typed **`Client`** and network metadata; 28.1.0 also marks `stellar contract bindings typescript` deprecated in favor of the JS SDK generator (`npx @stellar/stellar-sdk generate`)",
+    "note": "Version 28.1.0 (2026-09-26) is current and its output still exports Client + networks, but 28.1.0 deprecates `stellar contract bindings typescript` in favor of the JS SDK generator. Pinning v28 as 'current' without the deprecation would harden a stale claim. FOLLOW-UP (not proposed): answer sentence 1, keyFacts[0] and avoid[0] still require the CLI command; a later change should accept both genera…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0; cmd/soroban-cli/src/commands/contract/bindings/typescript.rs@v28.1.0; soroban-spec-typescript/src/lib.rs",
+      "observedAt": "2026-11-02",
+      "quote": "TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli; `export class Client …"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "`typescript` — Deprecated, use the JavaScript Stellar SDK instead"
+     },
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 28.1.0"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/js-stellar-sdk README#cli; npm @stellar/stellar-sdk 17.4.0 bin",
+      "observedAt": "2026-11-02",
+      "quote": "npx @stellar/stellar-sdk generate ... bin stellar-js, stellar-contract-bindings-typescript"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "golden.answer (replace Freighter client-component substring)",
+    "decision": "accept",
+    "note": "Both packages valid; same API.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+      "observedAt": "2026-11-02",
+      "quote": "`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/…"
+     },
+     {
+      "class": "C",
+      "ref": "https://registry.npmjs.org/@stellar/varial-sdk ; https://registry.npmjs.org/@stellar/freighter-api",
+      "observedAt": "2026-11-02",
+      "quote": "varial-sdk created 2026-10-28T23:51:09Z latest 7.0.0; freighter-api latest 6.0.1 (2025-12-03), not deprecated"
+     },
+     {
+      "class": "B",
+      "ref": "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 build/@stellar/freighter-api/src/index.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "identical export lists except varial-sdk adds `disconnect`"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Rename only; answer-visible behavior; isBrowser guard returns a Node error server-side.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+      "observedAt": "2026-11-02",
+      "quote": "`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/…"
+     },
+     {
+      "class": "B",
+      "ref": "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 build/@stellar/freighter-api/src/index.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "identical export lists except varial-sdk adds `disconnect`"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "golden.notes (append RENAME + packages)",
+    "decision": "accept",
+    "note": "All package facts confirmed from tarballs and owner docs.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     },
+     {
+      "class": "C",
+      "ref": "https://registry.npmjs.org/@stellar/varial-sdk ; https://registry.npmjs.org/@stellar/freighter-api",
+      "observedAt": "2026-11-02",
+      "quote": "varial-sdk created 2026-10-28T23:51:09Z latest 7.0.0; freighter-api latest 6.0.1 (2025-12-03), not deprecated"
+     },
+     {
+      "class": "B",
+      "ref": "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 build/@stellar/freighter-api/src/index.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "identical export lists except varial-sdk adds `disconnect`"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+      "observedAt": "2026-11-02",
+      "quote": "`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Versioned claims re-verified 2026-11-02 (with the modified deprecation text).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0; cmd/soroban-cli/src/commands/contract/bindings/typescript.rs@v28.1.0; soroban-spec-typescript/src/lib.rs",
+      "observedAt": "2026-11-02",
+      "quote": "TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli; `export class Client …"
+     },
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/stellar-cli",
+      "observedAt": "2026-11-02",
+      "quote": "max_stable_version 28.1.0"
+     },
+     {
+      "class": "C",
+      "ref": "https://registry.npmjs.org/@stellar/varial-sdk ; https://registry.npmjs.org/@stellar/freighter-api",
+      "observedAt": "2026-11-02",
+      "quote": "varial-sdk created 2026-10-28T23:51:09Z latest 7.0.0; freighter-api latest 6.0.1 (2025-12-03), not deprecated"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-11 in window.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0; cmd/soroban-cli/src/commands/contract/bindings/typescript.rs@v28.1.0; soroban-spec-typescript/src/lib.rs",
+      "observedAt": "2026-11-02",
+      "quote": "TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli; `export class Client …"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-connect-wallet-button-code",
+    "field": "golden.answer (append rename/package sentence)",
+    "decision": "accept",
+    "note": "Confirmed; dated.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+      "observedAt": "2026-11-02",
+      "quote": "`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/…"
+     },
+     {
+      "class": "C",
+      "ref": "https://registry.npmjs.org/@stellar/varial-sdk ; https://registry.npmjs.org/@stellar/freighter-api",
+      "observedAt": "2026-11-02",
+      "quote": "varial-sdk created 2026-10-28T23:51:09Z latest 7.0.0; freighter-api latest 6.0.1 (2025-12-03), not deprecated"
+     },
+     {
+      "class": "B",
+      "ref": "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 build/@stellar/freighter-api/src/index.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "identical export lists except varial-sdk adds `disconnect`"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-connect-wallet-button-code",
+    "field": "golden.notes (append RENAME + packages + VarialModule)",
+    "decision": "accept",
+    "note": "Wallets Kit 2.8.0 VarialModule and deprecated FreighterModule alias confirmed in source. Note: VarialModule still imports @stellar/freighter-api, consistent with 'keeps working'.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     },
+     {
+      "class": "C",
+      "ref": "https://registry.npmjs.org/@stellar/varial-sdk ; https://registry.npmjs.org/@stellar/freighter-api",
+      "observedAt": "2026-11-02",
+      "quote": "varial-sdk created 2026-10-28T23:51:09Z latest 7.0.0; freighter-api latest 6.0.1 (2025-12-03), not deprecated"
+     },
+     {
+      "class": "B",
+      "ref": "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 build/@stellar/freighter-api/src/index.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "identical export lists except varial-sdk adds `disconnect`"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit releases v2.8.0 + src/sdk/modules/varial.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "2.8.0 (2026-10-28) Migrate FreighterModule to VarialModule; `@deprecated - Freighter is now Varial, use VarialModule` / `export class FreighterModule extends Va…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-connect-wallet-button-code",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "requestAccess/getAddress/isConnected structured results re-read in 7.0.0 and 6.0.1 typings.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 build/@stellar/freighter-api/src/index.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "identical export lists except varial-sdk adds `disconnect`"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit releases v2.8.0 + src/sdk/modules/varial.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "2.8.0 (2026-10-28) Migrate FreighterModule to VarialModule; `@deprecated - Freighter is now Varial, use VarialModule` / `export class FreighterModule extends Va…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-freighter-localhost-not-detected",
+    "field": "golden.answer (replace first sentence + window.freighterApi)",
+    "decision": "modify",
+    "newText": "Use **`@stellar/freighter-api`** (renamed `@stellar/varial-sdk` from 7.0.0 on 2026-10-28; Freighter is now Varial) in a browser/client context after mount and inspect the structured `isConnected()` result/error. `window.freighterApi` is the global that the library's script-tag build defines (the name is unchanged in `@stellar/varial-sdk`); the extension does not inject it, so with an npm import or a missing script tag it stays undefined.",
+    "note": "Facts confirmed: UMD library global is freighterApi in both packages; owner docs say the global keeps its name; content script only relays messages. 'also published as' is imprecise: owner docs say varial-sdk is the same SDK under its new name from 7.0.0 and freighter-api gets no new releases.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+      "observedAt": "2026-11-02",
+      "quote": "`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/…"
+     },
+     {
+      "class": "C",
+      "ref": "https://registry.npmjs.org/@stellar/varial-sdk ; https://registry.npmjs.org/@stellar/freighter-api",
+      "observedAt": "2026-11-02",
+      "quote": "varial-sdk created 2026-10-28T23:51:09Z latest 7.0.0; freighter-api latest 6.0.1 (2025-12-03), not deprecated"
+     },
+     {
+      "class": "B",
+      "ref": "varial-sdk@7.0.0 webpack.common.js; stellar/freighter extension/src/contentScript/helpers/redirectMessagesToBackground.ts",
+      "observedAt": "2026-11-02",
+      "quote": "library: \"freighterApi\", libraryTarget: \"umd\"; content script only forwards window.postMessage to background"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-freighter-localhost-not-detected",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "Rename-tolerant; under 90 chars.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+      "observedAt": "2026-11-02",
+      "quote": "`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/…"
+     },
+     {
+      "class": "B",
+      "ref": "npm tarballs @stellar/varial-sdk@7.0.0 and @stellar/freighter-api@6.0.1 build/@stellar/freighter-api/src/index.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "identical export lists except varial-sdk adds `disconnect`"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-freighter-localhost-not-detected",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Rename only.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-freighter-localhost-not-detected",
+    "field": "golden.notes (append RENAME + global)",
+    "decision": "accept",
+    "note": "Confirmed.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/extension-varial-sdk/installation",
+      "observedAt": "2026-11-02",
+      "quote": "`@stellar/freighter-api` stays at 6.0.1 with no new releases: dapps already using it keep working, but new methods such as `disconnect()` are only in `@stellar/…"
+     },
+     {
+      "class": "B",
+      "ref": "varial-sdk@7.0.0 webpack.common.js; stellar/freighter extension/src/contentScript/helpers/redirectMessagesToBackground.ts",
+      "observedAt": "2026-11-02",
+      "quote": "library: \"freighterApi\", libraryTarget: \"umd\"; content script only forwards window.postMessage to background"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-freighter-localhost-not-detected",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Current manifest still <all_urls>/document_start without all_frames; docs index still carries the localhost secure-context guidance.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "stellar/freighter master extension/public/static/manifest/v3.json",
+      "observedAt": "2026-11-02",
+      "quote": "\"matches\": [\"<all_urls>\"], \"run_at\": \"document_start\" (no all_frames)"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'localhost secure context' -> developers.stellar.org/docs/build/guides/dapps/frontend-guide#setup-https-on-localhost",
+      "observedAt": "2026-11-02",
+      "quote": "treat http://localhost and http://127.0.0.1 as secure contexts per the W3C Secure Contexts specification"
+     },
+     {
+      "class": "B",
+      "ref": "varial-sdk@7.0.0 webpack.common.js; stellar/freighter extension/src/contentScript/helpers/redirectMessagesToBackground.ts",
+      "observedAt": "2026-11-02",
+      "quote": "library: \"freighterApi\", libraryTarget: \"umd\"; content script only forwards window.postMessage to background"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-freighter-localhost-not-detected",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-18 in window.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "stellar/freighter master extension/public/static/manifest/v3.json",
+      "observedAt": "2026-11-02",
+      "quote": "\"matches\": [\"<all_urls>\"], \"run_at\": \"document_start\" (no all_frames)"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Rename only.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives",
+    "field": "golden.notes (append RENAME)",
+    "decision": "accept",
+    "note": "Symmetric caution.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives",
+    "field": "truth.reverifyBy",
+    "decision": "reject",
+    "note": "The rename lane did not re-verify the volatile Friendbot, Quickstart, and provider claims (answer still dated 2026-09-01; truth.asOf unchanged). Extending reverifyBy without that re-verification defers staleness unearned. A one-provider web hit (validationcloud.io/multi-chain-faucets still lists Stellar Testnet) is not enough.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-java-sdk-wallet-feebump",
+    "field": "golden.answer (replace version sentence)",
+    "decision": "accept",
+    "note": "6.0.0, GitHub release 2026-10-28T08:27Z, Maven lastUpdated 20261028; B + C agree.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases (6.0.0 2026-10-28, 5.0.0 2026-09-01, 4.0.1 2026-07-16); FeeBumpTransaction.java diff 4.0.1..6.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "FeeBumpTransaction.java byte-identical between 4.0.1 and 6.0.0; createWithFee/createWithBaseFee, no Builder"
+     },
+     {
+      "class": "C",
+      "ref": "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml",
+      "observedAt": "2026-11-02",
+      "quote": "<latest>6.0.0</latest> <release>6.0.0</release> <lastUpdated>20261028085328</lastUpdated>"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-java-sdk-wallet-feebump",
+    "field": "golden.answer (replace 'With Java SDK 4.0.1')",
+    "decision": "modify",
+    "newText": "With Java SDK 6.0.0 (fee-bump API unchanged since 4.0.1), parse/build the signed inner `Transaction`",
+    "note": "FeeBumpTransaction.java is byte-identical 4.0.1..6.0.0, but the SDK itself is not unchanged (5.0.0 broke auth defaults). Scope the parenthetical to the fee-bump API.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases (6.0.0 2026-10-28, 5.0.0 2026-09-01, 4.0.1 2026-07-16); FeeBumpTransaction.java diff 4.0.1..6.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "FeeBumpTransaction.java byte-identical between 4.0.1 and 6.0.0; createWithFee/createWithBaseFee, no Builder"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-java-sdk-wallet-feebump",
+    "field": "golden.notes (replace observation sentence)",
+    "decision": "accept",
+    "note": "Dates of 4.0.1, 5.0.0, 6.0.0 confirmed; symmetric caution for dated older versions.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases (6.0.0 2026-10-28, 5.0.0 2026-09-01, 4.0.1 2026-07-16); FeeBumpTransaction.java diff 4.0.1..6.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "FeeBumpTransaction.java byte-identical between 4.0.1 and 6.0.0; createWithFee/createWithBaseFee, no Builder"
+     },
+     {
+      "class": "C",
+      "ref": "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml",
+      "observedAt": "2026-11-02",
+      "quote": "<latest>6.0.0</latest> <release>6.0.0</release> <lastUpdated>20261028085328</lastUpdated>"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-java-sdk-wallet-feebump",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases (6.0.0 2026-10-28, 5.0.0 2026-09-01, 4.0.1 2026-07-16); FeeBumpTransaction.java diff 4.0.1..6.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "FeeBumpTransaction.java byte-identical between 4.0.1 and 6.0.0; createWithFee/createWithBaseFee, no Builder"
+     },
+     {
+      "class": "C",
+      "ref": "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml",
+      "observedAt": "2026-11-02",
+      "quote": "<latest>6.0.0</latest> <release>6.0.0</release> <lastUpdated>20261028085328</lastUpdated>"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-java-sdk-wallet-feebump",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-03-11 in window.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml",
+      "observedAt": "2026-11-02",
+      "quote": "<latest>6.0.0</latest> <release>6.0.0</release> <lastUpdated>20261028085328</lastUpdated>"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui",
+    "field": "golden.avoid[1]",
+    "decision": "accept",
+    "note": "Rename only.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui",
+    "field": "golden.notes (append RENAME + Lab signer)",
+    "decision": "modify",
+    "newText": "\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. As of 2026-11-02, Lab source has no dedicated Freighter or Varial button: under \"Sign with wallet extension\" a \"Sign with wallet\" button opens the Stellar Wallets Kit picker, which Lab pins at 2.5.0 and which still labels the extension Freighter.",
+    "note": "Lab source: heading 'Sign with wallet extension', button 'Sign with wallet' (or the connected short address). Lab pins Wallets Kit 2.5.0 whose module label is still 'Freighter', so the picker does not show 'Varial' yet.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     },
+     {
+      "class": "B",
+      "ref": "stellar/laboratory main src/components/SignShell/index.tsx, SignTransactionXdr/index.tsx, WalletKitContextProvider.tsx, pnpm-lock.yaml",
+      "observedAt": "2026-11-02",
+      "quote": "'Sign with wallet extension' heading; label `Sign with ${publicKey ? short : \"wallet\"}`; imports FreighterModule; lock @creit.tech/stellar-wallets-kit 2.5.0 (pr…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui",
+    "field": "truth.asOf",
+    "decision": "reject",
+    "note": "Only the signer UI was rechecked. Saved Keypairs storage (dated 2026-09-09) and other capability claims were not re-verified; bumping asOf overstates verification.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui",
+    "field": "truth.reverifyBy",
+    "decision": "reject",
+    "note": "Same reason; extension past 2026-12-31 is unearned without re-verifying the volatile Lab storage and capability claims.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-wallets-comparison",
+    "field": "golden.answer (replace Freighter product sentence)",
+    "decision": "accept",
+    "note": "SDF-provided and non-custodial confirmed by owner README, blog, and docs.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now Varial. Same wallet, new name. Existing integrations keep working unchanged ... `stellar_signAuthEntry` ... from v2.3.0"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison",
+    "field": "golden.notes (append RENAME)",
+    "decision": "accept",
+    "note": "Symmetric caution.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml)",
+      "observedAt": "2026-11-02",
+      "quote": "Today, Freighter becomes Varial, with a new name and a new focus ... RSS: Published: Thu, 29 Oct 2026"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0 (published 2026-10-29T20:32:42Z)",
+      "observedAt": "2026-11-02",
+      "quote": "Freighter is now **Varial**. This is the first release under the new name. ... Listed as \"Varial Wallet\" on the stores"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/freighter README; extension/public/static/manifest/v3.json; commit db6d022b 2026-10-28 'Freighter is now Varial (#3048)'",
+      "observedAt": "2026-11-02",
+      "quote": "Varial (formerly Freighter) is a non-custodial wallet extension ... manifest name \"Varial Wallet\""
+     },
+     {
+      "class": "D",
+      "ref": "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory; https://www.tokenpost.com/news/technology/43511 (Parallel + Perplexity)",
+      "observedAt": "2026-11-02",
+      "quote": "according to a Stellar Foundation blog post published on 2026-10-29"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison",
+    "field": "truth.asOf",
+    "decision": "reject",
+    "note": "Only the Varial and Wallets Kit facts were rechecked; the SDK, Smart Account Kit, and per-product claims were not. Do not bump the case-level asOf on a rename-only check.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-wallets-comparison",
+    "field": "truth.reverifyBy",
+    "decision": "reject",
+    "note": "Same reason; leave 2027-01-21 until a full re-verification.",
+    "sources": []
+   }
+  ],
+  "urlsHit": [
+   "https://github.com/stellar/freighter (README, releases 5.49.0/5.50.0/5.51.0, manifest v3.json, contentScript, commits)",
+   "https://registry.npmjs.org/@stellar/varial-sdk",
+   "https://registry.npmjs.org/@stellar/freighter-api",
+   "https://registry.npmjs.org/@albedo-link/intent",
+   "https://registry.npmjs.org/@stellar/stellar-sdk",
+   "https://registry.npmjs.org/@creit.tech/stellar-wallets-kit",
+   "https://github.com/Creit-Tech/Stellar-Wallets-Kit (releases, modules varial/albedo/scopuly, v2.5.0 freighter.module.ts)",
+   "https://github.com/stellar-expert/albedo",
+   "https://github.com/stellar/stellar-docs (x402/index.mdx history)",
+   "https://github.com/stellar/stellar-cli (v28.1.0 release, typescript.rs, soroban-spec-typescript)",
+   "https://github.com/stellar/js-stellar-sdk README",
+   "https://github.com/lightsail-network/java-stellar-sdk (releases, FeeBumpTransaction.java)",
+   "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml",
+   "https://crates.io/api/v1/crates/stellar-cli",
+   "https://github.com/stellar/laboratory (SignShell, SignTransactionXdr, WalletKitContextProvider, pnpm-lock.yaml)",
+   "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+   "https://stellar.org/blog/rss.xml",
+   "https://developers.stellar.org/docs/build/agentic-payments/x402",
+   "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+   "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide",
+   "https://docs.varialwallet.com/",
+   "https://docs.varialwallet.com/extension-varial-sdk/signing",
+   "https://docs.varialwallet.com/extension-varial-sdk/installation",
+   "https://docs.varialwallet.com/extension-varial-sdk/connecting",
+   "https://www.freighter.app",
+   "https://freighter.app",
+   "https://docs.freighter.app",
+   "https://varialwallet.com",
+   "https://varialwallet.com/changelog (Perplexity)",
+   "https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory",
+   "https://www.tokenpost.com/news/technology/43511",
+   "https://lumenloop.com/news/freighter-now-varial-your-wallet-discovering-stellar",
+   "https://stellarlight.xyz/api/projects/resolve?q=freighter",
+   "https://stellarlight.xyz/api/projects/search?q=freighter",
+   "https://api.lumenloop.com/v1/tools/get_project",
+   "Raven scout.searchProjects, lumenloop.search_directory, stellarDocs.search_docs x4",
+   "https://www.validationcloud.io/multi-chain-faucets"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-defi-aquarius-what-is; q-eco-stellar-wallets-list; q-edge-ambig-best-wallet; q-soroban-x402-auth-entry-signing; q-ti-bindings-to-nextjs-integration; q-ti-connect-wallet-button-code; q-ti-freighter-localhost-not-detected; q-ti-friendbot-ratelimit-alternatives; q-ti-java-sdk-wallet-feebump; q-ti-stellar-lab-usage-and-new-ui; q-tool-wallets-comparison",
+  "verifiedOnly": "",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives",
+    "issue": "truth.reverifyBy 2026-12-01 kept (verifier reject: Friendbot/Quickstart/provider claims not re-verified); proposer re-read developers.stellar.org/docs/networks, quickstart/faucet and faucet.circle.com on 2026-11-02 (A) plus Validation Cloud (D), so a later full re-verify could move it into 2027-03."
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui",
+    "issue": "truth.asOf 2026-09-30 and reverifyBy 2026-12-31 kept (verifier reject: Saved Keypairs storage not re-verified); proposer shows only that localStorageSavedKeypairs.ts is unchanged since 2025-09-04 (B, one class)."
+   },
+   {
+    "id": "q-tool-wallets-comparison",
+    "issue": "truth.asOf/reverifyBy bump rejected by verifier (only rename facts rechecked); reverifyBy 2027-01-21 kept, not expired."
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "issue": "Follow-up (not proposed): Stellar CLI 28.1.0 deprecates `stellar contract bindings typescript` for `npx @stellar/stellar-sdk generate`, but answer sentence 1, keyFacts[0] and avoid[0] still require the CLI command; a reviewed change should accept both generators."
+   },
+   {
+    "id": "q-eco-stellar-wallets-list",
+    "issue": "Upstream finding candidate (not filed): Scout and Lumenloop records still slug freighter, name Freighter, website freighter.app (301 to varialwallet.com); q=varial finds no wallet (2026-11-02)."
+   },
+   {
+    "id": "q-soroban-x402-auth-entry-signing",
+    "issue": "Upstream finding candidate (not filed): developers.stellar.org x402 page lists Albedo, but Wallets Kit albedo.module.ts throws on signAuthEntry and @albedo-link/intent 0.13.0 has no auth-entry intent. Lint warns keyFacts[3] negative predicate (verifier-approved text kept)."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-defi-aquarius-what-is",
+    "log": "notes: Varial (formerly Freighter) in the also-good wallet list + RENAME caution; rename sources/corroboration; verified refreshed."
+   },
+   {
+    "id": "q-eco-stellar-wallets-list",
+    "log": "notes: RENAME caution scoped to wallet naming + Scout/Lumenloop still-Freighter record; rename + corpus-lag corroboration; verified refreshed."
+   },
+   {
+    "id": "q-edge-ambig-best-wallet",
+    "log": "answer+notes: example list says Varial (formerly Freighter); RENAME caution; rename sources/corroboration; verified refreshed."
+   },
+   {
+    "id": "q-soroban-x402-auth-entry-signing",
+    "log": "answer roster paragraph re-dated 2026-11-02 (Varial ext + mobile, Scopuly; dispute narrowed to Albedo); keyFacts[3] Albedo conflict; notes freshness + RENAME; corroboration disputed row rewritten with both sides; asOf 2026-11-02; reverifyBy 2027-03-04."
+   },
+   {
+    "id": "q-ti-bindings-to-nextjs-integration",
+    "log": "answer: CLI 28.1.0 output dated + bindings-typescript deprecation; Freighter (now Varial; both packages) client component; avoid[1] Freighter/Varial SDK; notes RENAME + packages; asOf 2026-11-02; reverifyBy 2027-03-11."
+   },
+   {
+    "id": "q-ti-connect-wallet-button-code",
+    "log": "answer: dated Varial package sentence; notes RENAME + packages + VarialModule alias; package/kit corroboration; asOf 2026-11-02 (reverifyBy 2027-03-04 kept)."
+   },
+   {
+    "id": "q-ti-freighter-localhost-not-detected",
+    "log": "answer: package rename + window.freighterApi provenance; keyFacts[0] and avoid[1] accept Freighter/Varial; notes RENAME + packages + global; asOf 2026-11-02; reverifyBy 2027-03-18."
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives",
+    "log": "avoid[1] Lab/Varial (Freighter); notes RENAME caution; rename sources/corroboration; verified refreshed; reverifyBy 2026-12-01 kept (verifier reject)."
+   },
+   {
+    "id": "q-ti-java-sdk-wallet-feebump",
+    "log": "answer: Java SDK 6.0.0 (2026-10-28) dated coordinates; fee-bump API unchanged since 4.0.1; notes observation 6.0.0 + symmetric older-release caution; version corroboration row rewritten; asOf 2026-11-02; reverifyBy 2027-03-11."
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui",
+    "log": "avoid[1] Freighter/Varial; notes RENAME + dated Lab signer UI (Wallets Kit 2.5.0 still labels Freighter); rename sources/corroboration; asOf/reverifyBy kept (verifier reject)."
+   },
+   {
+    "id": "q-tool-wallets-comparison",
+    "log": "answer: Varial (formerly Freighter) SDF product; notes RENAME caution; rename sources/corroboration; asOf/reverifyBy kept (verifier reject)."
+   }
+  ]
+ }
+}

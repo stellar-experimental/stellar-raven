@@ -37,19 +37,37 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances"
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+        "observedAt": "2026-11-02",
+        "note": "Re-observed by the golden audit: \"A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an op_no_trust error.\""
       },
       {
         "class": "A",
-        "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers"
+        "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+        "observedAt": "2026-11-02",
+        "note": "Re-observed by the golden audit: \"Anyone can issue tokens on the Stellar network and send them to you, and sometimes people blast out claimable balances to phish\""
       },
       {
         "class": "B",
-        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md"
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+        "observedAt": "2026-11-02",
+        "note": "Re-observed by the golden audit: \"payment to an account that is not necessarily prepared to receive the payment.\""
       },
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+        "note": "Golden audit 2026-11-02: \"PAYMENT_NO_TRUST ... The receiver does not trust the issuer of the asset being sent.\"",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+        "note": "Golden audit 2026-11-02: \"Operations are executed for the source account of the transaction unless an operation override is defined.\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -92,29 +110,17 @@
       }
     ],
     "verified": {
-      "date": "2026-10-09",
-      "by": "golden-truth lane G fix round, 2026-10-09 r1009b round (Claude Fable 5.1, high); independent review finding 2 (lane report tmp/report-gospel.md, Fix round)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
-        "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
-        "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — claimable balances have legitimate uses; class B CAP-0023 defines the entry; class D sweep found abuse reports and legitimate uses.",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — a trustline is needed for any asset except XLM; class B Stellar-ledger-entries.x separates native from issued assets.",
-        "Sibling sweep 2026-08-31: grep spam token|scam token|weird claimable|unsolicited asset → 1 other cases; read q-raph-unsolicited-airdrop; lane report also read q-raph-remove-scam-token, q-ti-enumerate-holders-airdrop; no contradiction",
-        "Key-fact addition 2026-10-09: the issuer-verification advice already in the golden answer and corroboration row 2 became key fact 3; truth unchanged.",
-        "Live re-check 2026-10-09: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — 'Always verify the domain and email addresses where the communication is coming from'; 'type the URL into your browser address bar and then bookmark the site. Only use the bookmark to visit the site'; red flags include 'assets that were sent to you in tiny amounts through a claimable balance'; phishing uses 'dummy websites ... to induce you to enter your secret key' (class A, HTTP 200).",
-        "Live re-check 2026-10-09: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md (raw) — issuer metadata lives at 'https://DOMAIN/.well-known/stellar.toml'; ORG_URL 'must be hosted on the same domain'; 'Issuers that list verified information ... will be prioritized'; the verification photo names the issuing public key (class B, HTTP 200).",
-        "Sibling sweep 2026-10-09: re-read all nine scam-check traps against their golden answers (q-raph-claimable-balance-safety, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-n3-wallet-hacked-support-redirect, q-n3-issues-842-backup-faucet-wallet); each directed protective instruction is now a key fact or named as supporting background; no contradiction between siblings."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Make the claimable-balance safety warning a key fact",
-        "independent review of the lane (2026-10-09): a protective behavior the golden answer directs was absent from the key facts, so trap grading could treat it as background"
+        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"Anyone can issue tokens on the Stellar network and send them to you, and sometimes people blast out claimable balances to phish\" (observedAt 2026-11-02 (live curl); supports golden.answer / keyFacts[0] / avoid[1]: confirmed)",
+        "B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — \"payment to an account that is not necessarily prepared to receive the payment.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0] / avoid[1]: confirmed)",
+        "C lumenloop.search_content_semantic 'spam claimable balances scam tokens' — \"Stellarscam.report connects this to memo-phishing bots on the Stellar Network (2020-12-21)\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0] / avoid[1]: confirmed)",
+        "A https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an op_no_trust error.\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
+        "A https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"PAYMENT_NO_TRUST ... The receiver does not trust the issuer of the asset being sent.\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
+        "A https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — \"Operations are executed for the source account of the transaction unless an operation override is defined.\" (observedAt 2026-11-02; supports golden.avoid[0]: confirmed)",
+        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"You can ignore claimable balances you don't understand or trust.\" (observedAt 2026-11-02; supports golden.avoid[0]: confirmed)",
+        "Sibling set checked by the proposer 2026-11-02: q-raph-claimable-balance-safety, q-raph-unsolicited-airdrop, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-asset-claimable-balance; no contradiction recorded."
       ]
     },
     "origin": "raph scam-claimable-balance-open-network"

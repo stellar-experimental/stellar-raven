@@ -12,6 +12,9 @@ evidence:
   - stellar-rpc v28.0.1 (tag commit 273f19e4fcb183b568948bd2b810abfe87150a9c) cmd/stellar-rpc/internal/ingest/service.go lines 182-191. On db.ErrEmptyDB the service reads archive.GetRootHAS() and sets nextLedgerSeq = root.CurrentLedger
   - stellar-rpc v28.0.1 cmd/stellar-rpc/internal/ingest/backfill.go lines 104-109 and 264. The comment says "It requires that no sequence number gaps exist in the local DB prior to backfilling." The error text is "db verify: gap detected in local DB: expected %d ledgers, got %d ledgers". daemon.go line 546 ends the process with "failed to backfill ledgers"
   - independent review 2026-09-21, Sol high (gpt-5.6-sol), classified both items as verified defects and the missing reverse links as optional; .agents/rounds/2026-09-21-improvements-followup.md
+recurrences:
+  - date: 2026-11-02
+    evidence: golden audit pass 2 live recheck 2026-11-02 - stellar/stellar-docs main 7cb5e8a4 docs/data/apis/rpc/admin-guide/configuring.mdx has no fresh-start or gap-check statement (grep 'fresh' and 'gap' return nothing). Issue #2602 remains open. The Stellar Triage Bot comment of 2026-10-30 says PR #2899 covers this half, waits for the RPC-team check, and now conflicts with main after the Mintlify move; PR #2899 is open, unmerged, mergeable_state dirty. Case q-ti-self-host-retention-backfill.
 ---
 
 ## Finding

@@ -19,6 +19,9 @@ evidence:
   - eval/qa/corpus/battery/protocol-core/q-protocol-ledger-close-time.json already accepts either figure when the answer dates it or names its source (truth.verified 2026-10-01). No golden change is needed for this finding
   - probe run 2026-10-01 with `npm run improvements:probes -- --service stellar-docs`; the result is in .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md. The probe reads the Stellar Stack page only and proves text presence, not the cadence. A missing match is a review signal; resolution must read both rendered pages and repeat the live cadence check
   - upstream issue filed 2026-10-01: https://github.com/stellar/stellar-docs/issues/2889
+recurrences:
+  - date: 2026-11-02
+    evidence: golden audit pass 2 live recheck 2026-11-02 - both rendered pages (https://developers.stellar.org/docs/learn/fundamentals/stellar-stack and https://developers.stellar.org/docs/validators, fetched 2026-11-02T17:17:27Z) still say 'update the ledger every 5-7 seconds'; the source moved to docs/validators/index.mdx line 7 at main 7cb5e8a4, and snippets/usdt0-launch.jsx line 778 says 'Stellar finalises in 5–7 seconds'. Horizon ledgers 65270718 to 65270917 (Protocol 29, read 2026-11-02T17:26:15Z) gave 199 intervals of 5 seconds each. Issue #2889 is open; PR #2931 is open, unmerged, mergeable_state dirty after the Mintlify rename. Case q-protocol-ledger-close-time.
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/stellar-stack.mdx

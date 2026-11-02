@@ -34,7 +34,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2027-03-04",
+    "reverifyBy": "2027-03-09",
     "sources": [
       {
         "class": "A",
@@ -111,24 +111,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
       "evidence": [
-        "Solo scratchpad 575 GT-47 primary 3327 and blind 3334; blind rejected unsupported generic-margin wording.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-soroban-cross-contract-footprint",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation",
-        "https://developers.stellar.org/docs/build/guides/conventions/cross-contract",
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Shortened the fee fact, split the missing-footprint error, and shortened the simulation-discovery fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — the current API returns transaction data and minimum resource fee above the inclusion fee.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation — the current guide requires one footprint for all transitively invoked contract reads and writes.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — the current guide identifies out-of-footprint access as a runtime HostError.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation — the current guide says simulation records the footprint for deep contract calls.",
-        "Sibling sweep 2026-08-29: grep simulateTransaction|transaction footprint|resource fee|inclusion fee|HostError → q-infra-simulate-transaction-howto, q-soroban-resource-limits; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction (observedAt 2026-10-27): \"minResourceFee ... Recommended minimum resource fee to add when submitting the transaction\"; \"instructionLeeway number Allow this many extra instructions when budgeting resources\"; \"restorePreamble ... indicates that the simulation detected archived ledger entries\".",
+        "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/methods/simulate_transaction.go (observedAt 2026-11-02): func getRestorePreamble(...) and validateAuthMode(op.Body, &request.AuthMode); gh api search/code repo:stellar/stellar-rpc instructionLeeway → cmd/stellar-rpc/internal/preflight/preflight.go.",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (observedAt 2026-10-26): \"A Soroban transaction that has a key to an archived Persistent entry in the footprint, but not in the transaction's restore list, will fail immediately\"; stellar tx simulate --help (CLI 28.1.0, observedAt 2026-11-02) runs.",
+        "Verification only: no gospel change; no contradicting change in P28/P29. Sibling sweep 2026-11-02: q-infra-simulate-transaction-howto, q-soroban-resource-limits; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-simulate-resource-fee"

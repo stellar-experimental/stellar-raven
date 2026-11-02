@@ -1,0 +1,889 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "retail-consumer-03",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-raph-unsolicited-airdrop",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Claimable balances are real ledger mechanics distinct from offer legitimacy; claiming a non-native asset needs a trustline",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-10-24",
+       "quote": "A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an `op_no_trust` err…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-10-05",
+       "quote": "Claiming these dust transactions will cause you to establish a trustline with the asset. Besides setting a reserve for .5 XLM on your account"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+       "observedAt": "2026-11-02",
+       "quote": "CAP-0023 present in stellar-protocol master 0da06899 (claimable balances)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1], keyFacts[2]",
+     "claim": "Do not sign/pay/disclose; verify issuer via independently found official source",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-10-05",
+       "quote": "Always verify the domain and email addresses where the communication is coming from... Red flags for assets include ... assets that were sent to you in tiny amo…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.reddit.com/r/Stellar/comments/1juzjml/is_this_a_scamm/",
+       "observedAt": "2026-11-02",
+       "quote": "If you find yourself needing to take any action to receive these airdrops, it's a clear indication of a scam."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0], avoid[1]",
+     "claim": "Not every claimable balance is a scam; an unsolicited asset does not prove wallet access",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+       "observedAt": "2026-10-24",
+       "quote": "Claimable balances allow an account to send a payment to another account that is not necessarily prepared to receive the payment."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-10-05",
+       "quote": "Anyone can issue tokens on the Stellar network and send them to you ... You can ignore claimable balances you don't understand or trust."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-claimable-balance-safety; q-raph-phishing-pending-claim; q-raph-scam-spam-tokens; q-asset-claimable-balance"
+  },
+  {
+   "id": "q-raph-usdc-onto-stellar",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "Stellar USDC is a Circle-issued Stellar asset needing an issuer-specific trustline; ERC-20 is a separate network",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+       "observedAt": "2026-10-30",
+       "quote": "Stellar | USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/stablecoins/quickstarts/setup-usdc-trustline-stellar",
+       "observedAt": "2026-10-01",
+       "quote": "On Stellar, an account must add a USDC trustline before it can hold USDC."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "struct AlphaNum4 { AssetCode4 assetCode; AccountID issuer; };"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+       "observedAt": "2026-11-02",
+       "quote": "home_domain circle.com; asset USDC contract_id CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "Sending ERC-20 directly to a Stellar address, or identifying by code alone, is wrong",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-10-05",
+       "quote": "Always check to make sure that the domain tied to the asset is correct."
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "credit assets carry assetCode plus issuer"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-cctp-v2-usdc-stellar; q-asset-usdc-eurc-issuer; q-token-circle-usdc-on-stellar"
+  },
+  {
+   "id": "q-raph-withdraw-exchange-self-custody",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts / avoid[1]",
+     "claim": "Pooled (exchange) destinations need memos/muxed IDs; a personal wallet address normally needs no memo",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+       "observedAt": "2026-10-14",
+       "quote": "A pooled account allows a single Stellar account ID to be shared across many users... using either the muxed account feature or transaction memos."
+      },
+      {
+       "class": "D",
+       "ref": "https://tangem.com/en/learning-hub/post/how-to-store-stellar-xlm-safely/",
+       "observedAt": "2026-08-14",
+       "quote": "When you send XLM from an exchange to your own hardware wallet, no memo is needed."
+      },
+      {
+       "class": "D",
+       "ref": "https://ndax.io/en/support/withdrawals_and_internal_transfers/send-cryptocurrency-external-wallet",
+       "observedAt": "2024-05-28",
+       "quote": "Please only check off the 'no memo' box if you are sending the funds to your private wallet."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1], avoid[0]",
+     "claim": "Keep secret/recovery material private; never give an exchange the secret key",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-10-05",
+       "quote": "SDF will NEVER ask you for your private keys... Always double check any place you are entering your secret key."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/stablecoins/quickstarts/setup-usdc-trustline-stellar",
+       "observedAt": "2026-10-01",
+       "quote": "NOTE: DO NOT SHARE THE SECRET KEY WITH ANYONE!"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-find-export-secret-key; q-crp-custodial-vs-noncustodial-wallets; q-raph-restore-wallet"
+  },
+  {
+   "id": "q-raph-xlm-network-role",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "XLM is the native asset; pays fees, rent and minimum-balance reserves; needs no issuer or trustline",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-10-31",
+       "quote": "Lumens (XLM) are the native currency of the Stellar network. The lumen is the only token that doesn't require an issuer or trustline. They are used to pay all t…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "ASSET_TYPE_NATIVE = 0, ASSET_TYPE_CREDIT_ALPHANUM4 = 1"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269966 protocol_version 29 base_fee_in_stroops 100 base_reserve_in_stroops 5000000"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "Avoids punish 'XLM needs trustline/issuer' / 'issuer-backed stablecoin' / price prediction / identical-economics claims",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-10-31",
+       "quote": "The lumen is the only token that doesn't require an issuer or trustline."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-xlm-simple; q-edge-metamask-evm-mental-model; q-protocol-base-reserve-min-balance"
+  },
+  {
+   "id": "q-raph-xlm-simple",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "XLM is the native asset; pays fees, rent and minimum-balance reserves; needs no issuer or trustline",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-10-31",
+       "quote": "Lumens (XLM) are the native currency of the Stellar network. The lumen is the only token that doesn't require an issuer or trustline. They are used to pay all t…"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "ASSET_TYPE_NATIVE = 0, ASSET_TYPE_CREDIT_ALPHANUM4 = 1"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269966 protocol_version 29 base_fee_in_stroops 100 base_reserve_in_stroops 5000000"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid",
+     "claim": "Avoids punish 'XLM needs trustline/issuer' / 'issuer-backed stablecoin' / price prediction / identical-economics claims",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-10-31",
+       "quote": "The lumen is the only token that doesn't require an issuer or trustline."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-raph-xlm-network-role; q-edge-ambig-stellar-token-meaning; q-asset-trustline-basics"
+  },
+  {
+   "id": "q-raph-xlm-staking",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0]",
+     "claim": "Stellar is not PoS; holding XLM earns no native staking or validator reward",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-10-26",
+       "quote": "There are no monetary rewards for being a validator on the Stellar network."
+      },
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "Locked XLM would not secure the network, confer validator or governance rights ... Validators would continue operating without protocol staking rewards."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.stakingrewards.com/asset/stellar",
+       "observedAt": "2026-11-01",
+       "quote": "There is no way to stake XLM, the only way to earn a return on your XLM is to lend them out to custodial providers."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (dated CAP sweep)",
+     "claim": "As of 2026-07-11, current Protocol 27 materials and the CAP repo show no native-staking or validator-reward proposal",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol (master 0da06899c02f818be0132f42cea1f45d6396e20a, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "Word-boundary grep of core/*.md for staking|stake|proof-of-stake|validator reward: only CAP-0037 liquidity-pool 'stake' fields; CAP-0026 'Disable Inflation Mech…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-10-31",
+       "quote": "Protocol 29 (Mainnet, October 1, 2026) ... It introduces no new CAPs. Protocol 28 (Mainnet, September 16, 2026): CAP-83, CAP-85, CAP-86"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "mainnet ledger 65269966 protocol_version 29"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new)",
+     "claim": "In October 2026 SDF published a discussion paper on a possible fee-pool-funded reward for XLM locked for a fixed term; SDF has not decided to fund or support it",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "Evolving Network Utility: Evaluating the Activation of Stellar's Fee Pool. DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026 ... sets out, for community di…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/xlm-utility",
+       "observedAt": "2026-10-28",
+       "quote": "XLM Rewards Pool Explorer: Model how network growth, fee levels, and funding choices could support rewards for locked XLM over ten years. Illustrative scenarios…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/orgs/stellar/discussions/2052",
+       "observedAt": "2026-11-02",
+       "quote": "At Meridian 2026, SDF called for reconsidering XLM tokenomics and asked whether a rewards mechanism funded from the existing fee pool could improve utility. Mec…"
+      },
+      {
+       "class": "C",
+       "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026",
+       "observedAt": "2026-10-30",
+       "quote": "At Meridian, SDF CPO Tomer Weller introduced a concept for rewarding XLM held, transacted, and settled onchain, drawing from the network's existing fee pool. Fr…"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.tokenpost.com/tag/meridian-2026",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Org Calls for Tokenomics Review, Raises Possible Fee-Pool Rewards ... Oct 28, 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1], avoid[1]",
+     "claim": "Third-party 'XLM staking' is a separate product (lending, promo yield)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/xlm-staking",
+       "observedAt": "2026-09-20",
+       "quote": "Anything sold as \"XLM staking\" is a lending product, a promotional rate, or a DeFi position wearing the word as a label."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.stakingrewards.com/asset/stellar",
+       "observedAt": "2026-11-01",
+       "quote": "XLM holders can earn rewards by depositing their assets into custodial service providers."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "SDF does not run an official staking program",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+       "observedAt": "2026-10-05",
+       "quote": "NEVER host staking initiatives and competitions."
+      },
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[2]",
+     "claim": "Do not say native staking will never exist or give an undated absence claim",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "The perspectives shared by the ecosystem will help determine whether these ideas proceed, and in what form."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Stellar does not use proof-of-stake, so holding XLM does not natively stake it or earn protocol staking rewards. If a third party advertises 'XLM staking,' it is offering its own product, not activating a native network feature; investigate its custody, lockup, withdrawal, counterparty, and scam risks independently. Never send a secret key or funds to a promoter just to 'activate' staking. As of 2026-11-02, a live sweep of the official accepted and proposed CAP repository shows no native-staking or validator-reward CAP. That is a dated record claim, not a promise that future governance can nev…",
+     "reason": "Drift: 'current Protocol 27' is stale (P29 since 2026-10-01) and SDF's Oct 2026 fee-pool rewards discussion paper is now part of a true answer to 'are there plans'."
+    },
+    {
+     "field": "golden.avoid[+]",
+     "op": "append",
+     "new": "Do NOT present SDF's October 2026 fee-pool rewards discussion paper as adopted, a CAP, or proof-of-stake staking.",
+     "reason": "Punishes a false claim (paper is undecided, no CAP, explicitly not network-securing staking)."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Negative/status claim requires blind re-derivation before landing. SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for community feedback; an accurate dated mention of it is correct and does not contradict the CAP-sweep negative.",
+     "reason": "Grader caution so an accurate dated mention of the paper is not read as contradicting the CAP-sweep negative."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-edge-noinfo-stellar-pos-staking-rewards; q-hot-fee-pool-burn-deflation; q-defi-liquid-staking-whitespace; q-edge-fresh-latest-protocol-version; q-protocol-scp-consensus-algorithm"
+  },
+  {
+   "id": "q-ti-block-explorer-basics",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "StellarExpert is not listed for Futurenet; explorers differ in coverage",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers",
+       "observedAt": "2026-11-02",
+       "quote": "StellarExpert ... Not available for Futurenet. StellarChain: ... including Futurenet. Stellar Explorer: ... Futurenet, Testnet, and Mainnet. Soroscan: ... Avail…"
+      },
+      {
+       "class": "F",
+       "ref": "https://api.stellar.expert/explorer/futurenet/ledger/last",
+       "observedAt": "2026-11-02",
+       "quote": "{\"error\":\"Bad request. Invalid parameter: \\\"network\\\". Unknown network name: \\\"futurenet\\\".\",\"status\":400} (public and testnet return 200)"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'block explorers StellarExpert Futurenet'",
+       "observedAt": "2026-11-02",
+       "quote": "block-explorers#stellarexpert: Not available for Futurenet."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0],[2],[3],[4]",
+     "claim": "Network + canonical identifier discipline; indexed views; miss is not nonexistence; Lab is a developer complement",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers",
+       "observedAt": "2026-11-02",
+       "quote": "The block explorers available for Soroban index data related to payments, accounts, deployed contracts, transaction history, and more."
+      },
+      {
+       "class": "F",
+       "ref": "https://developers.stellar.org/docs/tools/lab/transaction-dashboard",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (retention caution)",
+     "claim": "Canonical-page caution for the pre-2026-07-27 24-hour RPC retention wording",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar-RPC retains a bounded, ledger-denominated history ... single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depe…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+       "observedAt": "2026-11-02",
+       "quote": "configured by a single history-retention-window setting expressed in ledgers, with a stock default of 120960 ledgers"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'getEvents retention 24 hours'",
+       "observedAt": "2026-11-02",
+       "quote": "No getEvents/getTransaction hit carries a 24-hour retention default"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json sd-023",
+       "observedAt": "2026-11-02",
+       "quote": "resolved 2026-07-27; resolvingRefs stellar/stellar-docs#2595, #2656"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Verified explorer home URLs and official Stellar Lab docs on 2026-06-29. Specific explorer UI fields can change; Phase 3 may screenshot current UI if it wants stricter UI-field claims.\nAlso good if the answer: Mentions StellarChain as an alternate explorer with contract support, with source caveat if only site-level verification was available. | Cites a live explorer URL and an official Stellar Lab/explorer-related docs page.\nGolden cites: A live explorer URL. | An official Stellar Lab or developer docs page describing transaction/contract inspection.\nGT-51 CORRECTION 2026-07-11: grade network…",
+     "reason": "Remove the expired sd-023 canonical-page caution; add dated Soroscan listing so naming the newly listed explorer is not treated as unsupported."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "eval-authoring: a canonical-page caution for the fixed upstream finding sd-023 (improvements/resolved.json) stayed in the notes after the live page changed"
+   ],
+   "siblings": "q-infra-testnet-vs-futurenet; q-ti-stellar-lab-usage-and-new-ui; q-tool-lab-what-is; q-ti-enumerate-all-contracts; q-soroban-publish-events; q-ti-self-host-retention-backfill"
+  },
+  {
+   "id": "q-ti-testnet-usdc-faucet",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0], [1]",
+     "claim": "Friendbot funds fake Testnet XLM only; trustline plus reserve needed; trustline credits nothing",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet... Provides 10,000 fake XLM when funding a new account"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/stablecoins/quickstarts/setup-usdc-trustline-stellar",
+       "observedAt": "2026-10-01",
+       "quote": "requests test XLM from Friendbot (Stellar's faucet), submits a changeTrust for testnet USDC"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs 'Friendbot fund testnet account XLM'",
+       "observedAt": "2026-11-02",
+       "quote": "Lab account page: 'Fund account with Friendbot' button to add 10,000 XLM"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (dated issuer/faucet), keyFacts[2]",
+     "claim": "Circle Faucet supports Stellar Testnet; issuer GBBD47IF...LFLA5; 20 USDC per 2 hours (volatile)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+       "observedAt": "2026-10-30",
+       "quote": "Stellar Testnet | USDC-GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5"
+      },
+      {
+       "class": "C",
+       "ref": "https://faucet.circle.com/",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Testnet ... Limit: One request per pairing of asset and test network every 2 hours ... Send 20 USDC (live curl 2026-11-02; no faucet request made)"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+       "observedAt": "2026-11-02",
+       "quote": "USDC authorized accounts 134716, contract_id CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA; issuer home_domain centre.io"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4], avoid[1]",
+     "claim": "Classic issuer/trustline and deterministic SAC are representations of one asset",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+       "observedAt": "2026-11-02",
+       "quote": "Horizon reports one asset record with contract_id CBIELTK6...DAMA"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "SAC page (unchanged source in truth.sources)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Friendbot creates/funds a Testnet account with fake **XLM only**; it is not a USDC faucet. First ensure the Testnet account exists and has enough XLM for its base reserve, then establish a trustline to the current Circle-issued Testnet USDC asset. A trustline only permits holding the asset—it does not credit any USDC.\n\nAs of **2026-11-02**, Circle Faucet supported Stellar Testnet and the classic USDC issuer was `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`. The UI observation of 20 test USDC per address/chain per two hours is volatile and is not a grading requirement; recheck issu…",
+     "reason": "Freshness refresh: issuer, chain support, 20 USDC and 2-hour cooldown re-observed 2026-11-02; reverifyBy 2026-12-01 is near-due."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-ti-friendbot-ratelimit-alternatives; q-asset-usdc-eurc-issuer; q-asset-trustline-vs-sac; q-infra-testnet-vs-futurenet"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5); proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-raph-xlm-staking",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "Stellar does not use proof-of-stake, so holding XLM does not natively stake it or earn protocol staking rewards. If a third party advertises 'XLM staking,' it is offering its own product, not activating a native network feature; investigate its custody, lockup, withdrawal, counterparty, and scam risks independently. Never send a secret key or funds to a promoter just to 'activate' staking. As of 2026-11-02, a live sweep of the official accepted and proposed CAP repository shows no native-staking or validator-reward CAP. That is a dated record claim, not a promise that future governance can nev…",
+    "note": "Proposed text is true. Modified only the last clause to the paper's exact wording ('any such mechanism'; 'confer validator rights') instead of the paraphrase 'earn validator staking rewards'. As-of date kept on both volatile claims. Dropping 'current Protocol 27 materials' is acceptable. truth.asOf, corroboration rows, sources and truth.verified must be updated in the same diff for the lint.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026 ... It is important to note that SDF has not decided to fund or support any such mechanism; this paper is…"
+     },
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "Note: Locked XLM would not secure the network, confer validator or governance rights, create a claim on network services or face slashing. Validators would cont…"
+     },
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "design questions for a possible mechanism through which holders could commit XLM for a fixed term."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/xlm-utility",
+      "observedAt": "2026-11-02",
+      "quote": "XLM Rewards Pool Explorer. Model how network growth, fee levels, and funding choices could support rewards for locked XLM over ten years. Illustrative scenarios…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a core/",
+      "observedAt": "2026-11-02",
+      "quote": "grep -i 'staking|stake|validator reward|fee pool|rewards pool' over core/cap-*.md (latest CAP-0090): hits are only incidental (CAP-0076 fee-pool balance amendme…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/orgs/stellar/discussions/2051",
+      "observedAt": "2026-11-02",
+      "quote": "Tokenomics category, 'Rewards and locked up xlm', opened 2026-10-28 by a community member: 'Good idea, I think it should be funded with the rest of the XLM from…"
+     },
+     {
+      "class": "D",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026",
+      "observedAt": "2026-11-02",
+      "quote": "SDF CPO Tomer Weller introduced a concept for rewarding XLM ... drawing from the network's existing fee pool. Framed as an early discussion rather than a finali…"
+     },
+     {
+      "class": "E",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+      "observedAt": "2026-11-02",
+      "quote": "There are no monetary rewards for being a validator on the Stellar network."
+     }
+    ]
+   },
+   {
+    "id": "q-raph-xlm-staking",
+    "field": "golden.avoid[+]",
+    "decision": "modify",
+    "newText": "Do NOT present SDF's October 2026 fee-pool rewards paper as adopted or as proof-of-stake staking.",
+    "note": "Not judge-blind: the golden answer names the paper. Dropped the 'a CAP' clause: no CAP exists today, but the paper says fee-pool redistribution needs protocol development, so a CAP could be filed before reverifyBy (2027-02-18). The undated clause would then punish a true claim. The dated CAP-sweep negative in the answer already covers this point.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "fee-pool redistribution or new issuance would require protocol development, public review and validator adoption."
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol@0da06899c02f818be0132f42cea1f45d6396e20a",
+      "observedAt": "2026-11-02",
+      "quote": "no CAP for the rewards pool exists today"
+     }
+    ]
+   },
+   {
+    "id": "q-raph-xlm-staking",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Accurate; it is a symmetric caution, so an answer that mentions the paper correctly is not penalized.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/xlm-utility",
+      "observedAt": "2026-11-02",
+      "quote": "[Download the whitepaper] ... [Join the discussion](https://github.com/orgs/stellar/discussions/categories/tokenomics)"
+     },
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "This paper is intended to open a conversation and is not intended as a specific recommendation."
+     }
+    ]
+   },
+   {
+    "id": "q-ti-testnet-usdc-faucet",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Date-only bump; issuer, Stellar Testnet support, and the 20 USDC / 2 hours observation all re-confirmed live (read-only; no faucet request). Update truth.asOf, the Circle corroboration observedAt dates, and truth.verified in the same diff; reverifyBy 2026-12-01 should move forward too.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet | USDC-GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5"
+     },
+     {
+      "class": "C",
+      "ref": "https://faucet.circle.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet ... Developers can request 20 USDC on testnet every 2 hours, per address, and per blockchain."
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+      "observedAt": "2026-11-02",
+      "quote": "USDC accounts.authorized=134727, contract_id CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA; issuer home_domain centre.io"
+     },
+     {
+      "class": "E",
+      "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide#setting-up-a-testnet-wallet",
+      "observedAt": "2026-11-02",
+      "quote": "Visit the Circle faucet, select Stellar Testnet from the networks"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-block-explorer-basics",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Verified explorer home URLs and official Stellar Lab docs on 2026-06-29. Specific explorer UI fields can change; Phase 3 may screenshot current UI if it wants stricter UI-field claims.\nAlso good if the answer: Mentions StellarChain as an alternate explorer with contract support, with source caveat if only site-level verification was available. | Cites a live explorer URL and an official Stellar Lab/explorer-related docs page.\nGolden cites: A live explorer URL. | An official Stellar Lab or developer docs page describing transaction/contract inspection.\nGT-51 CORRECTION 2026-07-11: grade network…",
+    "note": "Removing the sd-023 cached-copy caution is correct: improvements/resolved.json marks sd-023 resolved 2026-07-27, and the live pages and docs source of getEvents, getTransaction, and getTransactions no longer carry the 24-hour default or separate seven-day cap. That meets the golden-truth caution-expiry rule. Modified the Soroscan line to also name Soroban Scan, which the page added on 2026-10-06 a…",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/developer-tools/block-explorers.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "### [Soroscan](https://soroscan.io) ... Available for Mainnet, Testnet, and Futurenet. ... ### [Soroban Scan](https://sorobanscan.rumblefish.dev) A Soroban-firs…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-docs/commit/9e22dd6b00",
+      "observedAt": "2026-11-02",
+      "quote": "docs: add Soroban Scan to block explorers (#2901) 2026-10-06; 1eab34405e docs: add Soroscan to block explorers (#2814) 2026-09-08"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers",
+      "observedAt": "2026-11-02",
+      "quote": "Soroscan ... Explore transactions, accounts, assets, contracts, and ledgers, with a built-in AI assistant ... Available for Mainnet, Testnet, and Futurenet."
+     },
+     {
+      "class": "E",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers#soroban-scan",
+      "observedAt": "2026-11-02",
+      "quote": "A Soroban-first block explorer built on direct ledger ingestion, independent of Horizon."
+     },
+     {
+      "class": "D",
+      "ref": "https://nownodes.io/blog/best-stellar-explorer-for-soroban-smart-contracts-in-2026/",
+      "observedAt": "2026-11-02",
+      "quote": "Soroscan|Mainnet, Testnet, Futurenet|... Described by the docs as newer and still under active development"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/rpc/api-reference/methods/getEvents.mdx",
+      "observedAt": "2026-11-02",
+      "quote": "configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+      "observedAt": "2026-11-02",
+      "quote": "configured by a single history-retention-window setting expressed in ledgers, with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://stellar.org/xlm-utility",
+   "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+   "https://github.com/stellar/stellar-protocol (shallow clone, master 0da06899c02f818be0132f42cea1f45d6396e20a, 2026-11-02T06:08:52Z)",
+   "https://github.com/orgs/stellar/discussions/2051",
+   "https://github.com/orgs/stellar/discussions/2052",
+   "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026",
+   "https://x.com/StellarOrg/status/2115410923582292477",
+   "https://coinfomania.com/stellar-org-calls-for-enhanced-tokenomics-in-utility-era/",
+   "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol (via stellarDocs.search_docs)",
+   "https://developers.stellar.org/docs/tools/developer-tools/block-explorers",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/developer-tools/block-explorers.mdx",
+   "https://api.github.com/repos/stellar/stellar-docs/commits?path=docs/tools/developer-tools/block-explorers.mdx",
+   "https://soroscan.io (HTTP 200)",
+   "https://sorobanscan.rumblefish.dev (HTTP 200)",
+   "https://nownodes.io/blog/best-stellar-explorer-for-soroban-smart-contracts-in-2026/",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
+   "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/rpc/api-reference/methods/getEvents.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/rpc/api-reference/methods/getTransaction.mdx",
+   "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/data/apis/rpc/api-reference/methods/getTransactions.mdx",
+   "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+   "https://faucet.circle.com/",
+   "https://horizon-testnet.stellar.org/accounts/GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+   "https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+   "https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide#setting-up-a-testnet-wallet (via stellarDocs.search_docs)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-raph-xlm-staking; q-ti-testnet-usdc-faucet; q-ti-block-explorer-basics",
+  "verifiedOnly": "q-raph-unsolicited-airdrop; q-raph-usdc-onto-stellar; q-raph-withdraw-exchange-self-custody; q-raph-xlm-network-role; q-raph-xlm-simple",
+  "untouched": "",
+  "escalations": [],
+  "changeLog": [
+   {
+    "id": "q-raph-unsolicited-airdrop",
+    "log": "verified-only: refreshed truth.verified (date, by, evidence); gospel unchanged."
+   },
+   {
+    "id": "q-raph-usdc-onto-stellar",
+    "log": "verified-only: refreshed truth.verified (date, by, evidence); truth.asOf -> 2026-11-02; gospel unchanged."
+   },
+   {
+    "id": "q-raph-withdraw-exchange-self-custody",
+    "log": "verified-only: refreshed truth.verified (date, by, evidence); truth.asOf -> 2026-11-02; gospel unchanged."
+   },
+   {
+    "id": "q-raph-xlm-network-role",
+    "log": "verified-only: refreshed truth.verified (date, by, evidence); gospel unchanged."
+   },
+   {
+    "id": "q-raph-xlm-simple",
+    "log": "verified-only: refreshed truth.verified (date, by, evidence); gospel unchanged."
+   },
+   {
+    "id": "q-raph-xlm-staking",
+    "log": "gospel: answer (verifier newText: CAP sweep re-dated 2026-11-02, Protocol 27 wording dropped, SDF Oct 2026 fee-pool discussion paper added), avoid[+] (verifier newText), notes (proposer, verifier accept); truth.asOf 2026-11-02; sources and corroboration rebuilt; reverifyBy kept 2027-02-18. Avoid reworded present-as -> say-that (same content) to clear avoid lint."
+   },
+   {
+    "id": "q-ti-testnet-usdc-faucet",
+    "log": "gospel: answer as-of date 2026-09-01 -> 2026-11-02 (verifier accept); truth.asOf 2026-11-02; reverifyBy 2026-12-01 -> 2027-02-08; Circle corroboration row re-observed; E source added."
+   },
+   {
+    "id": "q-ti-block-explorer-basics",
+    "log": "gospel: notes (verifier newText: sd-023 retention caution removed; dated Soroscan + Soroban Scan line added); truth.asOf 2026-11-02; reverifyBy 2027-03-04 -> 2027-02-22; sources and corroboration replaced legacy descriptors with live refs; sd-023 rootCause tie dropped."
+   }
+  ]
+ }
+}

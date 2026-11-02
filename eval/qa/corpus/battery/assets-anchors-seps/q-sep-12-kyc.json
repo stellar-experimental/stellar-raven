@@ -103,22 +103,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
       "evidence": [
-        "Solo scratchpad 575: GT-05 primary process 3220, blind process 3221, and independent GT-08 process 3225",
-        "stellar-protocol git history shows PUT /customer from SEP-12's initial version; POST /customer/files was added later as a separate helper",
-        "Structural re-form (compound-predicate): split the SEP-12 API, customer endpoints, file endpoint, and account authentication into atomic facts; no claim changed.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md names SEP-12 as the KYC API.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md gives PUT /customer the create/update role and GET /customer the fields/status role.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md lists POST /customer/files for optional binary files.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md requires SEP-10 or SEP-45 authentication and distinguishes G/M from C accounts.",
-        "Sibling sweep 2026-08-27: q-sep-45-contract-auth, q-comp-sep6-vs-sep12-roles, and q-anchor-platform-what preserve the same SEP-12/SEP-45 distinctions."
-      ],
-      "rootCause": [
-        "Inherited frontmatter typo conflated the main upload with SEP-10 POST, callback delivery, or POST /customer/files.",
-        "SEP-45 account support was not propagated into older SEP-10-only prose.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md — \"GET /customer: Check the status of a customers info / PUT /customer: Idempotent upload of customer info / DELETE /customer/[account] / POST /customer/files\" (observedAt 2026-11-02; supports golden.keyFacts[1-2]: confirmed)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform — \"SEP-12 — Customer KYC/AML data management\" (observedAt 2026-10-22; supports golden.keyFacts[1-2]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md — \"Anchors and clients must support at least one of SEP-10 or SEP-45 web authentication and use it for all SEP-12 endpoints.\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md — \"This SEP only supports C (contract) accounts. SEP-10 only supports G and M\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 — \"proving control over a contract account (C...)\" (observedAt 2026-10-01; supports golden.keyFacts[4]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0009.md — \"Title: Standard KYC Fields / Status: Active / Version 1.17.0\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: q-sep-45-contract-auth, q-comp-sep6-vs-sep12-roles, q-anchor-platform-what checked; no contradiction."
       ]
     },
     "origin": "raven-next q-sep-12-kyc"

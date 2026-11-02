@@ -32,8 +32,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-03",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-18",
     "sources": [
       {
         "class": "B",
@@ -78,20 +78,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-43 processes 3311/3320.",
-        "Structural re-form (compound-predicate): split stale spec surfaces, the current-spec path, raw calls, and simulation into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/types/fully-typed-contracts — the current docs still distinguish generated, static, and retained spec-aware clients.",
-        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/blob/main/src/contract/client.ts — current Client.from still fetches the active contract instance, Wasm, and spec.",
-        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/blob/main/src/base/contract.ts — current Contract.call still passes supplied ScVals directly without a spec lookup.",
-        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/blob/main/src/rpc/server.ts — current simulation still sends the supplied transaction XDR.",
-        "Sibling sweep 2026-08-27: grep Client.from|Contract.call|stale spec|supplied XDR → q-sor-reflector-integration-code, q-soroban-oz-upgradeable-macro, q-soroban-storage-migration; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side SDK diagnostic inversion.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Proposer B 2026-11-02: https://github.com/stellar/js-stellar-sdk/blob/main/src/base/contract.ts — \"call(method: string, ...params: ScVal[]): XdrOperation { return Operation.invokeContractFunction({ contract: this.address().toString(), function: method, args: params, });\"",
+        "Proposer F 2026-11-02: node script on @stellar/stellar-sdk 17.4.0 — \"Contract.call('f', bytes32) XDR === Operation.invokeContractFunction XDR -> true\"",
+        "Proposer claim verdict confirmed (golden.answer): Raw Contract.call passes supplied ScVals to Operation.invokeContractFunction (spec-free); byte-identical XDR",
+        "Proposer B 2026-11-02: https://github.com/stellar/js-stellar-sdk/blob/main/src/contract/client.ts — \"const instance = await server.getContractInstance(contractId); ... const wasm = await server.getContractWasmByHash(wasmHash); return Client.fromWasm<T>(wasm, options);\"",
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/types/fully-typed-contracts — \"official fully-typed contracts page (spec-derived clients)\"",
+        "Proposer claim verdict confirmed (golden.answer): Recreated Client.from fetches current instance, active Wasm hash, and embedded spec Note: v17 Client.from also handles SAC (embedded SAC spec) and CAP-85 external refs; consistent with the golden.",
+        "Sibling sweep 2026-11-02: checked q-sor-deploy-invoke-from-js-sdk; no contradiction found."
       ]
     },
     "origin": "raven-next q-sor-stale-spec-after-upgrade"

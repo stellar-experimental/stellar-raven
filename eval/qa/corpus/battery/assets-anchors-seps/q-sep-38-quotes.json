@@ -35,16 +35,13 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
-      ],
-      "rootCause": [
-        "eval-authoring"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md — \"Title: Anchor RFQ API / Status: Draft / Version 2.5.0 / Updated: 2025-02-26 ... GET /info, GET /prices, GET /price, POST /quote, GET /quote/:id\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform — \"SEP-38 — Price quotes and exchange rate services\" (observedAt 2026-10-22; supports golden.keyFacts[0]: confirmed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: q-sep-catalog-list, q-sep6-sep24-sep31-choice checked; no contradiction."
       ]
     },
     "origin": "raven-next q-sep-38-quotes",

@@ -1,0 +1,1502 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "soroban-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-sor-cross-warmancer-zk-stack",
+   "verdict": "unchanged-gospel; truth refresh",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Warmancer: Black Friday is SCF #33's hidden-information strategy-game proposal",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop.get_scf_submissions({name:'Warmancer'}) via Raven",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\":\"Warmancer: Black Friday\",...\"round\":\"SCF #33\",...\"budget\":\"136500\""
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recsJtI0JZOmnayxP (curl HTML)",
+       "observedAt": "2026-11-02",
+       "quote": "page contains 'SCF #33' and 'pending technology availability'"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search: communityfund.stellar.org/project/warmancer-black-friday-iwr",
+       "observedAt": "2026-11-02",
+       "quote": "Warmancer: Black Friday SCF #33 ... Total awarded $136.5K*"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Proposal qualifies ZK as 'pending technology availability'",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop.get_scf_submissions",
+       "observedAt": "2026-11-02",
+       "quote": "utilizing zero-knowledge proofs (ZKPs) on the Stellar blockchain (pending technology availability) to conceal board positions"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/submissions/recsJtI0JZOmnayxP",
+       "observedAt": "2026-11-02",
+       "quote": "pending technology availability"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Scout lists Warmancer as a live SCF-funded Stellar on-chain strategy game",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "scout.searchProjects({query:'Warmancer'}) via Raven, meta.generatedAt 2026-11-02T16:12:11Z",
+       "observedAt": "2026-11-02",
+       "quote": "\"status\":\"Live\",\"statusAsOf\":\"2026-08-28\",\"scfAwarded\":true,\"scfAwardedRounds\":[33] ... free-to-play on-chain strategy game on Stellar"
+      },
+      {
+       "class": "F",
+       "ref": "curl -w %{http_code} https://www.warmancer.com/",
+       "observedAt": "2026-11-02",
+       "quote": "200 (login page 'Welcome to Warmancer')"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Groth16 via BLS12-381/CAP-0059/P22 or BN254/Final CAP-0074/P25 with matching verifier",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/zk-proofs/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "| Circom + snarkjs (`-p bls12381`) | Groth16 | BLS12-381 | ✅ via CAP-0059 (Protocol 22+) | / | Circom + snarkjs (default `bn128`) | Groth16 | BN254 | ✅ via CAP-…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final / Protocol version: 25"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ current_protocol_version",
+       "observedAt": "2026-11-02",
+       "quote": "29 (stellar-core 30.0.0)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "CAP-0080 adds BN254 MSM/Fr/on-curve ops from Protocol 26",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final / Protocol version: 26"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/zk-proofs/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "| BN254 G1 MSM, Fr arithmetic (`fr_add/sub/mul/pow/inv`), on-curve checks | CAP-0080 | **Available** (Protocol 26+) |"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Circom default BN254 unavailable/gated on CAP-0074 is false today",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/zk-proofs/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "since Protocol 25 the default `bn128` (BN254) output is equally verifiable via `crypto::bn254`"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0,2]",
+     "claim": "Proposal does not prove deployed stack; CAP-0080 not required for every BN254 Groth16",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/zk-proofs/SKILL.md",
+       "observedAt": "2026-11-02",
+       "quote": "Groth16 verifies with a small contract on either curve, while UltraHonk needs a dedicated in-contract verifier ... relies on CAP-0080"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-04-06",
+     "reason": "Staggered into batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-zk-proof-systems-stellar; q-zk-host-functions-status; q-protocol-bn254-poseidon-xray; q-pc-protocol-26-yardstick"
+  },
+  {
+   "id": "q-sor-decode-hosterror-codes",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0]",
+     "claim": "Error class names incl. Error(Budget, ExceededLimit)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-contract.x",
+       "observedAt": "2026-11-02",
+       "quote": "SCEC_EXCEEDED_LIMIT = 5,    // Some arbitrary limit -- gas or otherwise -- was hit."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors",
+       "observedAt": "2026-11-02",
+       "quote": "| `HostError(Budget, LimitExceeded)` | A network-defined resource limit has been exceeded"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "try_* returns Result<Result<T, T::Error>, Result<E, InvokeError>>",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk-macros/src/syn_ext.rs (v29.0.1 latest, 2026-10-12)",
+       "observedAt": "2026-11-02",
+       "quote": "Result<#t, <#t as #crate_path::TryFromVal<#crate_path::Env, #crate_path::Val>>::Error>, Result<#e, #crate_path::InvokeError>"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
+       "observedAt": "2026-08-30",
+       "quote": "(prior verification evidence; unchanged)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Non-root auth, as_contract, Events/Ledger testutils remedies",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/env.rs",
+       "observedAt": "2026-11-02",
+       "quote": "this won't return an error when `require_auth` hasn't been called in the root invocation ... pub fn as_contract<T>(&self, id: &Address, f: impl FnOnce() -> T) -…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/testutils.rs",
+       "observedAt": "2026-11-02",
+       "quote": "pub trait Ledger { ... fn set_timestamp(&self, timestamp: u64); ... pub trait Events { ... fn all(&self) -> ContractEvents;"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-unit-testing; q-soroban-publish-events"
+  },
+  {
+   "id": "q-sor-deploy-invoke-from-js-sdk",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "'In current SDK 16' assembleTransaction returns a builder",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "npm view @stellar/stellar-sdk dist-tags",
+       "observedAt": "2026-11-02",
+       "quote": "\"latest\": \"17.4.0\", \"lts-16\": \"16.4.1\""
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/js-stellar-sdk/releases/tag/v17.4.0",
+       "observedAt": "2026-11-02",
+       "quote": "v17.4.0 2026-10-25T11:16:36Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "assembleTransaction returns a builder",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "@stellar/stellar-sdk 17.4.0 lib/esm/rpc/transaction.d.ts",
+       "observedAt": "2026-11-02",
+       "quote": "export declare function assembleTransaction(raw: Transaction | FeeBumpTransaction, simulation: ...): TransactionBuilder;"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/js-stellar-sdk/blob/master/src/rpc/transaction.ts",
+       "observedAt": "2026-11-02",
+       "quote": "export function assembleTransaction( ... ): TransactionBuilder {"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/archival/restore-data-js",
+       "observedAt": "2026-11-02",
+       "quote": "const prepTx = assembleTransaction(tx, sim); prepTx.sign(signer);"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "prepareTransaction returns a built transaction",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "@stellar/stellar-sdk 17.4.0 lib/esm/rpc/server.d.ts:813",
+       "observedAt": "2026-11-02",
+       "quote": "prepareTransaction(tx: Transaction | FeeBumpTransaction, useUpgradedAuth?: boolean): Promise<Transaction>;"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/install-deploy-contract-with-code",
+       "observedAt": "2026-11-02",
+       "quote": "const tx = await server . prepareTransaction ( transaction ) ; tx . sign ( sourceKeypair )"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Upload, createCustomContract with wasmHash/salt/constructorArgs; Client.deploy wraps it",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "@stellar/stellar-sdk 17.4.0 lib/esm/contract/client.js:88",
+       "observedAt": "2026-11-02",
+       "quote": "const operation = Operation.createCustomContract({ address: ..., ...executableOpts, salt, constructorArgs: ... }); return AssembledTransaction.buildWithOp(opera…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/transactions/install-deploy-contract-with-code",
+       "observedAt": "2026-11-02",
+       "quote": "StellarSDK . Operation . createCustomContract ( { wasmHash : ..., address : ..., salt : response . hash , } )"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "For raw JS deployment, upload/install Wasm, then create the contract from `wasmHash` plus address/salt preimage and constructor args. Current `contract.Client.deploy` wraps `Operation.createCustomContract` and returns a simulated `AssembledTransaction` by default. For invocation, build the contract call transaction, simulate with RPC, fold the simulation data/resource fee/auth into it, sign, submit, and poll for final result. In SDK 16 and in SDK 17 (17.4.0 is the latest as of 2026-11-02), `assembleTransaction(tx, simulation)` returns a **builder**, so call `.build()` before signing; RPC `prep…",
+     "reason": "Golden pins \"current SDK 16\"; npm latest is 17.4.0 (2026-10-25). Return semantics unchanged in 17.4.0 typings and GitHub source."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Official docs verify the transaction phases and typed-client recommendation. Phase 3 checked the current npm package/repo: @stellar/stellar-sdk 16.0.1 includes `Operation.createCustomContract` usage inside `contract.Client.deploy` with wasmHash/salt/constructorArgs, but raw helper examples remain package-version-sensitive.\nAlso good if the answer: Recommends generated TypeScript bindings or `contract.Client` for most apps before raw XDR helpers. | Mentions Horizon is not the simulation/invocation API for Soroban; use Stellar RPC.\nGolden cites: Must cite official Stellar SDK transaction guide a…",
+     "reason": "Record the as-of re-verification against the current major version."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-04-13",
+     "reason": "Staggered into batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-sor-scval-conversion (soroban-03: also says 'In current JS SDK 16')"
+  },
+  {
+   "id": "q-sor-doc-page-sections-followup",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Pass the exact url_without_anchor path to get_doc_page_sections",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven stellarDocs.search_doc_titles({query:'State Archival'}) observed 2026-11-02T16:15:15Z",
+       "observedAt": "2026-11-02",
+       "quote": "url_without_anchor: \"https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival\""
+      },
+      {
+       "class": "F",
+       "ref": "Raven stellarDocs.get_doc_page_sections({path:'https://developers.stellar.org/docs/...state-archival'}) 2026-11-02T16:15:30Z",
+       "observedAt": "2026-11-02",
+       "quote": "\"path\",\"message\":\"must match pattern ^/(docs|meetings)/\""
+      },
+      {
+       "class": "B",
+       "ref": "specs/stellar-docs.json (get_doc_page_sections.path)",
+       "observedAt": "2026-11-02",
+       "quote": "\"pattern\": \"^/(docs|meetings)/\", \"description\": \"URL path of the page on developers.stellar.org, no domain, no anchor ... Use url_without_anchor from a previous…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Returns headings/content in page order",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "Raven get_doc_page_sections({path:'/docs/learn/fundamentals/contract-development/storage/state-archival'})",
+       "observedAt": "2026-11-02",
+       "quote": "ok, nbSections 25, complete true, truncated false; first sections 'Storage > State Archival', '... > Contract Data Type Descriptions'"
+      },
+      {
+       "class": "B",
+       "ref": "specs/stellar-docs.json",
+       "observedAt": "2026-11-02",
+       "quote": "Returns every section in on-page order with anchor, heading breadcrumb and full content text."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Full URL or #fragment is not accepted",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "Raven get_doc_page_sections with '#semantics' path",
+       "observedAt": "2026-11-02",
+       "quote": "kind: soft-empty ... returned no matching records for /docs/...state-archival#semantics"
+      },
+      {
+       "class": "F",
+       "ref": "Raven get_doc_page_sections with full URL",
+       "observedAt": "2026-11-02",
+       "quote": "must match pattern ^/(docs|meetings)/"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Take the path portion of the search hit's url_without_anchor (the /docs/... or /meetings/... part, with no domain or anchor) and pass it as the `path` argument to get_doc_page_sections. Keep includeContent enabled when reading the page, then consume the returned headings, breadcrumbs, anchors, and content in on-page order. This is a page-follow-up operation; it is not a corpus-wide search.",
+     "reason": "Live 2026-11-02: hits return url_without_anchor as a full https://developers.stellar.org URL; get_doc_page_sections rejects it (pattern ^/(docs|meetings)/) and accepts only the path."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Live docs-index behavioral case. As of 2026-11-02, search hits carry url_without_anchor as a full https://developers.stellar.org URL; the operation accepts only its /docs or /meetings path in the `path` argument, and a path with a #fragment returns soft-empty.",
+     "reason": "Make the field/argument distinction explicit for the judge."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: golden answer said to pass the exact url_without_anchor, but that field carries the full https URL that the path argument rejects."
+   ],
+   "siblings": "q-edge-doc-page-sections-soft-empty; q-sor-doc-title-discovery"
+  },
+  {
+   "id": "q-sor-doc-timestamping-manage-data",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Manage Data name and value up to 64 bytes; subentry reserve; 1,000 subentry limit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#manage-data",
+       "observedAt": "2026-11-02",
+       "quote": "Name | string | String up to 64 bytes long ... Value | binary data | ... Up to 64 bytes long."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+       "observedAt": "2026-11-02",
+       "quote": "each of which increases an account’s minimum balance by one base reserve (0.5 XLM). An account cannot have more than 1,000 subentries."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x",
+       "observedAt": "2026-11-02",
+       "quote": "typedef string string64<64>; typedef opaque DataValue<64>;"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "MEMO_HASH is a 32-byte transaction-level field",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+       "observedAt": "2026-11-02",
+       "quote": "case MEMO_HASH: Hash hash; (typedef opaque Hash[32])"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "sd-014 canonical caution still applies",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: reported-upstream"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-sor-doc-title-discovery",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts",
+     "claim": "search_doc_titles finds the canonical State Archival page with breadcrumb and url_without_anchor; follow with a page read",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "Raven stellarDocs.search_doc_titles({query:'State Archival'}) 2026-11-02T16:15:15Z",
+       "observedAt": "2026-11-02",
+       "quote": "url_without_anchor https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival, breadcrumb 'Storage > State Archival'; hi…"
+      },
+      {
+       "class": "B",
+       "ref": "specs/stellar-docs.json search_doc_titles",
+       "observedAt": "2026-11-02",
+       "quote": "Title-only search over Stellar developer docs page and section headings ... follow up with get_doc_page_sections or includeContent on search_docs to read the pa…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-sor-doc-page-sections-followup"
+  },
+  {
+   "id": "q-sor-evm-to-soroban-porting",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Draft SEP-57 v0.3.0",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft / Updated: 2026-09-08 / Version: 0.4.0"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_search: SEP-57 T-REX Stellar version",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft Created: 2025-11-26 Updated: 2026-09-08 Version: 0.4.0"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer/keyFacts[4]",
+     "claim": "Solang 0.3.5 with pre-alpha Soroban target",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "gh api repos/hyperledger-solang/solang/releases",
+       "observedAt": "2026-11-02",
+       "quote": "v0.4.0 2026-09-30T07:38:49Z; v0.3.5 2026-07-07"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search: Solang v0.4.0 Thebes",
+       "observedAt": "2026-11-02",
+       "quote": "v0.4.0 Thebes Latest ... 30 Sep"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban.rst",
+       "observedAt": "2026-11-02",
+       "quote": "The Soroban target is still pre-alpha."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
+       "observedAt": "2026-11-02",
+       "quote": "Solidity support via Solang for Stellar is experimental and evolving ... We Don't recommend using Solang for production contracts at this time."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Unsupported areas include 'several crypto' features",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban_support_matrix.rst",
+       "observedAt": "2026-11-02",
+       "quote": "Hash and cryptographic builtins | Supported | sha256 and keccak256 hashing, the BLS12-381 builtins ... Yul and inline assembly | Unsupported ... Native value tr…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "All-zero G/C strkeys are valid addresses",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "@stellar/stellar-base StrKey encode of 32 zero bytes",
+       "observedAt": "2026-11-02",
+       "quote": "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF true; CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4 true"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF",
+       "observedAt": "2026-11-02",
+       "quote": "200, sequence 126500681086402560"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SEP-41 allowances carry ledger expiry",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "`live_until_ledger` - The ledger number where this allowance expires."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "SEP-57 Final / Solang production-ready are false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "sep-0057.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Draft"
+      },
+      {
+       "class": "B",
+       "ref": "solang soroban.rst",
+       "observedAt": "2026-11-02",
+       "quote": "still pre-alpha"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Port the design, not Solidity inheritance. ERC-20-like behavior maps to SAC for a classic Stellar asset or SEP-41 for a custom token. ERC-1404 transfer restrictions and ERC-1410 partitions need explicit custom policy/partition state and authorization; there is no one-to-one standard mapping. ERC-3643-style regulated controls can use **Draft SEP-57 (v0.4.0 as of 2026-11-02)** plus current OpenZeppelin RWA modules, but SEP-57 is not a finalized universal replacement.\n\nThere is no ambient `msg.sender`: pass an `Address` and call `require_auth`/`require_auth_for_args`; missing or mis-scoped auth i…",
+     "reason": "SEP-57 now Draft v0.4.0; Solang latest v0.4.0 (2026-09-30) with pre-alpha Soroban target; v0.4.0 support matrix lists hash/crypto builtins as Supported, so \"several crypto\" unsupported is drifted."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Solang repository was live and active on 2026-06-29; answer still treats Rust/Soroban SDK as the default production route.\nAlso good if the answer: Warns that there is no universal zero/null address pattern; use explicit `Option`, sentinel state, or validation instead of `address(0)` mental models. | Mentions OpenZeppelin Stellar modules for fungible, non-fungible, RWA/ERC-3643, allowlist/blocklist, pausable, access control, and upgradeability. | Mentions gas/resource differences: simulate to estimate resources/fees; avoid EVM gas-refund assumptions.\nGolden cites: Official EVM migration docs a…",
+     "reason": "Update dated version snapshot."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-04-27",
+     "reason": "Staggered into batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-crp-oz-rwa-erc3643-trex (compliance-rwa-payments-03: 'As of 2026-07-10 ... Draft v0.3.0'); q-tool-which-sdk-comparison; q-tool-rust-soroban-sdk"
+  },
+  {
+   "id": "q-sor-force-fast-archival-localnet",
+   "verdict": "unchanged-gospel; truth refresh",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Core keys TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME (min 10), OVERRIDE_EVICTION_PARAMS_FOR_TESTING, TESTING_EVICTION_SCAN_SIZE, TESTING_MAX_ENTRIES_TO_ARCHIVE, TESTING_STARTING_EVICTION_SCAN_LEVEL, AR…",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/main/Config.cpp (latest release 2026-10-16)",
+       "observedAt": "2026-11-02",
+       "quote": "if (TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME < MinimumSorobanNetworkConfig::MINIMUM_PERSISTENT_ENTRY_LIFETIME) throw ..."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.h",
+       "observedAt": "2026-11-02",
+       "quote": "static constexpr uint32_t MINIMUM_PERSISTENT_ENTRY_LIFETIME = 10;"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/docs/stellar-core_example.cfg",
+       "observedAt": "2026-11-02",
+       "quote": "OVERRIDE_EVICTION_PARAMS_FOR_TESTING=false ... TESTING_EVICTION_SCAN_SIZE=100000 ... ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING=false"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/integrationtest/infrastructure/test.go",
+       "observedAt": "2026-11-02",
+       "quote": "\"TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME=10\""
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/archival/test-ttl-extension",
+       "observedAt": "2026-11-02",
+       "quote": "li.min_persistent_entry_ttl = 500; ... SDK ledger fixture for unit tests"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Simulation fills archivedSorobanEntries; restorePreamble nil; same invoke restores and executes",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go (TestSimulateTransactionAutoRestore)",
+       "observedAt": "2026-11-02",
+       "quote": "// The restore preamble should be zero require.Nil(t, response.RestorePreamble) ... require.NotEmpty(t, transactionData.Ext.ResourceExt.ArchivedSorobanEntries)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+       "observedAt": "2026-11-02",
+       "quote": "Starting in Protocol 23 ... archived Persistent or Instance contract entries can be automatically restored before a host function runs, but only if they're incl…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "RPC shows archived entry with liveUntilLedgerSeq 0",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/ledgerentries/ledgerentries.go",
+       "observedAt": "2026-11-02",
+       "quote": "// Core doesn't provide the specific TTL in which an entry was archived. // We use TTL placeholder of 0 for archived entries."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Temporary data cannot be restored",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "state-archival docs",
+       "observedAt": "2026-11-02",
+       "quote": "When a `Temporary` entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-04-20",
+     "reason": "Staggered into batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-sor-p23-auto-restore-extendto; q-sor-ttl-defaults-extend"
+  },
+  {
+   "id": "q-sor-p23-auto-restore-extendto",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Restore liveUntil = current + minPersistentTTL - 1; extendTo relative with extendTo <= maxEntryTTL - 1",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp:557",
+       "observedAt": "2026-11-02",
+       "quote": "auto restoredLiveUntilLedger = ledgerSeq + mSorobanConfig.stateArchivalSettings().minPersistentTTL - 1;"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/ExtendFootprintTTLOpFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "getLedgerSeq() + mOpFrame.mExtendFootprintTTLOp.extendTo; ... if (mExtendFootprintTTLOp.extendTo > networkConfig.stateArchivalSettings().maxEntryTTL - 1)"
+      },
+      {
+       "class": "A",
+       "ref": "state-archival docs #extendfootprintttlop",
+       "observedAt": "2026-11-02",
+       "quote": "The extension will make sure that the entries' TTL will be at least extendTo ledgers from now."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "'current initial 4096 means current + 4095' and 'current initial max 1,054,080'",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "RPC getLedgerEntries CONFIG_SETTING_STATE_ARCHIVAL, mainnet.sorobanrpc.com ledger 65270076",
+       "observedAt": "2026-11-02",
+       "quote": "maxEntryTtl 3110400 minPersistentTtl 2073600 minTemporaryTtl 17280 (testnet: 3110400 / 120960 / 720)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies (Appendix: Mainnet limits)",
+       "observedAt": "2026-11-02",
+       "quote": "Max entry TTL | 3,110,400 ledgers ≈ 180 d | Min TTL: persistent/instance create or restore | 2,073,600 ledgers ≈ 120 d"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.h",
+       "observedAt": "2026-11-02",
+       "quote": "InitialSorobanNetworkConfig MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4'096 ... MAXIMUM_ENTRY_LIFETIME = 1'054'080 // 61 days"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "archivedSorobanEntries + one submitted invoke",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-rpc TestSimulateTransactionAutoRestore",
+       "observedAt": "2026-11-02",
+       "quote": "require.Nil(t, response.RestorePreamble) ... ArchivedSorobanEntries NotEmpty"
+      },
+      {
+       "class": "A",
+       "ref": "state-archival docs",
+       "observedAt": "2026-11-02",
+       "quote": "(usually) Automatically when an archived entry is accessed by `InvokeHostFunction` operation"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "For an ordinary P23 invocation, simulate the intended InvokeHostFunction transaction. RPC discovers archived Persistent/Instance read-write entries and populates `archivedSorobanEntries`; assemble, sign, and submit that same invoke, which restores and executes atomically. Simulation itself does not mutate state. `restorePreamble` is normally nil in this path; a separate RestoreFootprintOp plus retry is a rare/manual size or fee-management fallback. Temporary entries cannot be restored. Restoration sets `liveUntilLedger = currentLedger + minPersistentTTL - 1` (as of 2026-11-02, Mainnet minPersi…",
+     "reason": "Golden labeled Core initial constants as \"current\"; live Mainnet config read 2026-11-02 shows minPersistentTTL 2,073,600 and maxEntryTTL 3,110,400."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Phase 3 tightened auto-restore wording against current Stellar docs: archived entries are restored before host execution only when included in the transaction restore list, usually populated by RPC simulation.\nAlso good if the answer: Gives the three-step restore/extend flow: identify entries, build footprint operation, simulate/fill fees, submit and retry the original action. | Mentions SDK `extend_ttl(min_ttl, extend_to)` / persistent `extend_ttl(&key, min_ttl, extend_to)` for proactive extension.\nGolden cites: Official state archival docs for Protocol 23 auto-restore and restore/extend work…",
+     "reason": "Keep grading on durable formulas."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-verified."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: golden labeled Core's initial-config TTL constants as current values, mirroring a stale docs sentence."
+   ],
+   "siblings": "q-sor-ttl-defaults-extend (soroban-03: dated 2026-07-10 Mainnet 2,073,600/3,110,400; consistent with the proposed text); q-sor-force-fast-archival-localnet"
+  },
+  {
+   "id": "q-sor-persistent-unbounded-collection-cap",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0,1]",
+     "claim": "One Persistent key = one entry; network-configured entry limit",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data#granularity",
+       "observedAt": "2026-11-02",
+       "quote": "A Vec or Map held under a single key is read ..."
+      },
+      {
+       "class": "F",
+       "ref": "RPC getLedgerEntries CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES mainnet+testnet",
+       "observedAt": "2026-11-02",
+       "quote": "contractDataEntrySizeBytes 65536"
+      },
+      {
+       "class": "A",
+       "ref": "storage-strategies appendix",
+       "observedAt": "2026-11-02",
+       "quote": "64 KiB is the whole contract-data entry limit"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-sor-recurring-escrow-patterns",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Direct transfer_from by subscription contract is invoker-authorized; deeper calls need authorize_as_current_contract",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/smart-contracts/development.md",
+       "observedAt": "2026-11-02",
+       "quote": "when contract A directly calls B, B may `require_auth` A's address — the direct call is the authorization. ... If B will make a *deeper* call requiring A's auth…"
+      },
+      {
+       "class": "E",
+       "ref": "Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#when-to-require_auth",
+       "observedAt": "2026-11-02",
+       "quote": "If a contract calls another contract that will call ..."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Allowance live_until_ledger is absolute expiry; approve overwrites",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+       "observedAt": "2026-11-02",
+       "quote": "`live_until_ledger` - The ledger number where this allowance expires. ... If this function is called again it overwrites the existing allowance"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "transfer_from auths the spender",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-dev-skill smart-contracts/development.md",
+       "observedAt": "2026-11-02",
+       "quote": "`transfer_from`/`burn_from` auth the `spender` (the allowance pre-authorized the `from` side)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-sor-cross-warmancer-zk-stack",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Every golden claim re-derived 2026-11-02: SCF #33 text with 'pending technology availability' (Lumenloop + communityfund page via Perplexity), Scout Live + SCF-awarded, served skill still routes Groth16 over BLS12-381/CAP-0059/P22 or BN254/CAP-0074/P25, CAP-0080 Final P26. In-text as-of dates stay. The communityfund.stellar.org page is JS-rendered and Parallel web_fetch returned only chrome.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "GET https://stellarlight.xyz/api/projects/search?q=Warmancer",
+      "observedAt": "2026-11-02",
+      "quote": "\"status\": \"Live\" ... \"scfAwarded\": true ... \"scfSourceUrl\": \"https://communityfund.stellar.org/project/warmancer-black-friday-iwr\", \"scfTotalAwardedUSD\": 136500"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug: warmancer}",
+      "observedAt": "2026-11-02",
+      "quote": "\"title\":\"Warmancer: Black Friday\" ... \"round\":\"SCF #33\" ... utilizing zero-knowledge proofs (ZKPs) on the Stellar blockchain (pending technology availability) t…"
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search -> https://communityfund.stellar.org/project/warmancer-black-friday-iwr",
+      "observedAt": "2026-11-02",
+      "quote": "Warmancer: Black Friday SCF #33 ... utilizing zero-knowledge proofs (ZKPs) on the Stellar blockchain (pending technology availability) to conceal board position…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/zk-proofs/SKILL.md (last commit cac64041, 2026-10-21)",
+      "observedAt": "2026-11-02",
+      "quote": "| Circom + snarkjs (default `bn128`) | Groth16 | BN254 | ✅ via CAP-0074 (Protocol 25+) |"
+     },
+     {
+      "class": "C",
+      "ref": "Raven execute codemode.skill.read('skills.stellar-dev.zk-proofs') served from stellar-dev-skill@cac64041",
+      "observedAt": "2026-11-02",
+      "quote": "| Circom + snarkjs (`-p bls12381`) | Groth16 | BLS12-381 | ✅ via CAP-0059 (Protocol 22+) |"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0059.md, cap-0074.md, cap-0080.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0059 Status: Final, Protocol version: 22; CAP-0074 Status: Final, Protocol version: 25; CAP-0080 Status: Final, Protocol version: 26"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/apps/zk",
+      "observedAt": "2026-11-02",
+      "quote": "X-Ray (Protocol 25) introduced native host functions for zero-knowledge-friendly primitives (BN254 and Poseidon/Poseidon2)"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-cross-warmancer-zk-stack",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-04-06 is inside the batch window and staggered. The served skill changed on 2026-10-21 (UltraHonk P28+), but the golden's Groth16 claims still hold.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0059.md, cap-0074.md, cap-0080.md",
+      "observedAt": "2026-11-02",
+      "quote": "CAP-0059 Status: Final, Protocol version: 22; CAP-0074 Status: Final, Protocol version: 25; CAP-0080 Status: Final, Protocol version: 26"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/zk-proofs/SKILL.md (last commit cac64041, 2026-10-21)",
+      "observedAt": "2026-11-02",
+      "quote": "| Circom + snarkjs (default `bn128`) | Groth16 | BN254 | ✅ via CAP-0074 (Protocol 25+) |"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-deploy-invoke-from-js-sdk",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "17.4.0 is npm latest; source and shipped typings confirm builder/built-transaction semantics and createCustomContract in deploy for both 16.4.1 and 17.4.0. The new text is a dated, version-qualified improvement over the stale 'current SDK 16'.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "dist-tags: latest 17.4.0 (published 2026-10-25T11:30:46Z), lts-16 16.4.1"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/rpc/transaction.ts and src/rpc/server.ts and src/contract/client.ts",
+      "observedAt": "2026-11-02",
+      "quote": "assembleTransaction(...): TransactionBuilder {; prepareTransaction: return assembleTransaction(tx, simResponse).build(); deploy: const operation = Operation.cre…"
+     },
+     {
+      "class": "F",
+      "ref": "npm pack @stellar/stellar-sdk@17.4.0, lib/esm/rpc/transaction.d.ts and server.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "export declare function assembleTransaction(...): TransactionBuilder; prepareTransaction(tx: Transaction | FeeBumpTransaction, useUpgradedAuth?: boolean): Promi…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v16.4.1/src/rpc/transaction.ts",
+      "observedAt": "2026-11-02",
+      "quote": "): TransactionBuilder {"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-deploy-invoke-from-js-sdk",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Each re-check clause matches the 17.4.0 source and typings exactly. SDK 17 deploy also accepts a CAP-85 externalRef, but that is outside the golden's claims.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/rpc/transaction.ts and src/rpc/server.ts and src/contract/client.ts",
+      "observedAt": "2026-11-02",
+      "quote": "assembleTransaction(...): TransactionBuilder {; prepareTransaction: return assembleTransaction(tx, simResponse).build(); deploy: const operation = Operation.cre…"
+     },
+     {
+      "class": "F",
+      "ref": "npm pack @stellar/stellar-sdk@17.4.0, lib/esm/rpc/transaction.d.ts and server.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "export declare function assembleTransaction(...): TransactionBuilder; prepareTransaction(tx: Transaction | FeeBumpTransaction, useUpgradedAuth?: boolean): Promi…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-deploy-invoke-from-js-sdk",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified 2026-11-02.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "dist-tags: latest 17.4.0 (published 2026-10-25T11:30:46Z), lts-16 16.4.1"
+     },
+     {
+      "class": "F",
+      "ref": "npm pack @stellar/stellar-sdk@17.4.0, lib/esm/rpc/transaction.d.ts and server.d.ts",
+      "observedAt": "2026-11-02",
+      "quote": "export declare function assembleTransaction(...): TransactionBuilder; prepareTransaction(tx: Transaction | FeeBumpTransaction, useUpgradedAuth?: boolean): Promi…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-deploy-invoke-from-js-sdk",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-04-13 is inside the window and staggered.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+      "observedAt": "2026-11-02",
+      "quote": "dist-tags: latest 17.4.0 (published 2026-10-25T11:30:46Z), lts-16 16.4.1"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-doc-page-sections-followup",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Live: url_without_anchor is a full https URL; the full URL fails arg validation; the bare /docs path works. The new answer matches the existing keyFact ('without the domain or anchor') and removes the ambiguous 'exact url_without_anchor path'. It does not launder scores.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven execute: stellarDocs.search_docs + stellarDocs.get_doc_page_sections (plain path, full URL, path#fragment)",
+      "observedAt": "2026-11-02",
+      "quote": "hit url_without_anchor: \"https://developers.stellar.org/docs/build/guides/archival/restore-data-js\"; plain /docs path ok n=25; full URL -> \"invalid arguments ..…"
+     },
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/specs/stellar-docs.json (stellarDocs.get_doc_page_sections params)",
+      "observedAt": "2026-11-02",
+      "quote": "\"path\": { \"type\": \"string\", \"pattern\": \"^/(docs|meetings)/\", \"description\": \"URL path of the page on developers.stellar.org, no domain, no anchor\""
+     }
+    ]
+   },
+   {
+    "id": "q-sor-doc-page-sections-followup",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Observed 2026-11-02: a #fragment path returns soft-empty and the full URL fails arg validation. Both are covered by the existing avoid item. Dated and accurate.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven execute: stellarDocs.search_docs + stellarDocs.get_doc_page_sections (plain path, full URL, path#fragment)",
+      "observedAt": "2026-11-02",
+      "quote": "hit url_without_anchor: \"https://developers.stellar.org/docs/build/guides/archival/restore-data-js\"; plain /docs path ok n=25; full URL -> \"invalid arguments ..…"
+     },
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/specs/stellar-docs.json (stellarDocs.get_doc_page_sections params)",
+      "observedAt": "2026-11-02",
+      "quote": "\"path\": { \"type\": \"string\", \"pattern\": \"^/(docs|meetings)/\", \"description\": \"URL path of the page on developers.stellar.org, no domain, no anchor\""
+     }
+    ]
+   },
+   {
+    "id": "q-sor-evm-to-soroban-porting",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "Port the design, not Solidity inheritance. ERC-20-like behavior maps to SAC for a classic Stellar asset or SEP-41 for a custom token. ERC-1404 transfer restrictions and ERC-1410 partitions need explicit custom policy/partition state and authorization; there is no one-to-one standard mapping. ERC-3643-style regulated controls can use **Draft SEP-57 (v0.4.0 as of 2026-11-02)** plus current OpenZeppelin RWA modules, but SEP-57 is not a finalized universal replacement.\n\nThere is no ambient `msg.sender`: pass an `Address` and call `require_auth`/`require_auth_for_args`; missing or mis-scoped auth i…",
+    "note": "SEP-57 Draft v0.4.0, Solang v0.4.0 pre-alpha, and the unsupported list (Yul/inline assembly, native value, new Contract(), selfdestruct) are confirmed. Dropping 'crypto' is correct: v0.4.0 added keccak256/sha256. Modified because crates.io still lists 0.3.5 as newest, so an unqualified 'latest release' is not fully true.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md (last commit 2b45c64e 2026-09-09)",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Updated: 2026-09-08 / Version: 0.4.0"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search -> https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+      "observedAt": "2026-11-02",
+      "quote": "SEP-0057 | T-REX (Token for Regulated EXchanges) | OpenZeppelin, ... | Draft"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.4.0",
+      "observedAt": "2026-11-02",
+      "quote": "v0.4.0 Thebes, published 2026-09-30T07:38:49Z, prerelease false"
+     },
+     {
+      "class": "B",
+      "ref": "https://crates.io/api/v1/crates/solang",
+      "observedAt": "2026-11-02",
+      "quote": "max_version 0.3.5, newest_version 0.3.5, updated_at 2026-07-07"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban.rst",
+      "observedAt": "2026-11-02",
+      "quote": "The Soroban target is still pre-alpha. ... not yet feature-complete or production-ready."
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban_support_matrix.rst",
+      "observedAt": "2026-11-02",
+      "quote": "Yul and inline assembly - Unsupported; Solidity's new Contract() syntax ... is not yet supported; Native value transfer and payable-style flows - Unsupported; s…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search -> https://solang.readthedocs.io/en/latest/targets/soroban.html",
+      "observedAt": "2026-11-02",
+      "quote": "The Soroban target is still pre-alpha."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
+      "observedAt": "2026-11-02",
+      "quote": "Solidity support via Solang for Stellar is experimental and evolving. ... We Don't recommend using Solang for production contracts at this time."
+     }
+    ]
+   },
+   {
+    "id": "q-sor-evm-to-soroban-porting",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Solang repository was live and active on 2026-06-29; answer still treats Rust/Soroban SDK as the default production route.\nAlso good if the answer: Warns that there is no universal zero/null address pattern; use explicit `Option`, sentinel state, or validation instead of `address(0)` mental models. | Mentions OpenZeppelin Stellar modules for fungible, non-fungible, RWA/ERC-3643, allowlist/blocklist, pausable, access control, and upgradeability. | Mentions gas/resource differences: simulate to estimate resources/fees; avoid EVM gas-refund assumptions.\nGolden cites: Official EVM migration docs a…",
+    "note": "Accept the substance, and record the crates.io/GitHub split so an answer citing 0.3.5 from crates.io is not penalized. The 'grade status, not release number' caution is kept.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md (last commit 2b45c64e 2026-09-09)",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Updated: 2026-09-08 / Version: 0.4.0"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.4.0",
+      "observedAt": "2026-11-02",
+      "quote": "v0.4.0 Thebes, published 2026-09-30T07:38:49Z, prerelease false"
+     },
+     {
+      "class": "B",
+      "ref": "https://crates.io/api/v1/crates/solang",
+      "observedAt": "2026-11-02",
+      "quote": "max_version 0.3.5, newest_version 0.3.5, updated_at 2026-07-07"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban.rst",
+      "observedAt": "2026-11-02",
+      "quote": "The Soroban target is still pre-alpha. ... not yet feature-complete or production-ready."
+     }
+    ]
+   },
+   {
+    "id": "q-sor-evm-to-soroban-porting",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified 2026-11-02.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md (last commit 2b45c64e 2026-09-09)",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Updated: 2026-09-08 / Version: 0.4.0"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.4.0",
+      "observedAt": "2026-11-02",
+      "quote": "v0.4.0 Thebes, published 2026-09-30T07:38:49Z, prerelease false"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-evm-to-soroban-porting",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-04-27 is inside the window and staggered.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md (last commit 2b45c64e 2026-09-09)",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Draft / Updated: 2026-09-08 / Version: 0.4.0"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-force-fast-archival-localnet",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified on Core master: the config keys exist, the minimum is 10, and the scan level accepts 1. RPC master: auto-restore populates ArchivedSorobanEntries with RestorePreamble nil, and archived entries use a TTL placeholder of 0. Docs confirm that simulation-populated restore lists execute in the same InvokeHostFunction.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/main/Config.cpp and src/ledger/NetworkConfig.h",
+      "observedAt": "2026-11-02",
+      "quote": "TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME < MinimumSorobanNetworkConfig::MINIMUM_PERSISTENT_ENTRY_LIFETIME (=10) throws; TESTING_STARTING_EVICTION_SCAN_LEVEL re…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go and internal/ledgerentries/ledgerentries.go",
+      "observedAt": "2026-11-02",
+      "quote": "require.Nil(t, response.RestorePreamble) // But the autorestore vector should not ... require.NotEmpty(t, transactionData.Ext.ResourceExt.ArchivedSorobanEntries…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+      "observedAt": "2026-11-02",
+      "quote": "In practice, this list is usually populated by the contract invocation simulation ... When the resulting InvokeHostFunction operation executes, those entries ar…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-force-fast-archival-localnet",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-04-20 is inside the window and staggered.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/main/Config.cpp and src/ledger/NetworkConfig.h",
+      "observedAt": "2026-11-02",
+      "quote": "TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME < MinimumSorobanNetworkConfig::MINIMUM_PERSISTENT_ENTRY_LIFETIME (=10) throws; TESTING_STARTING_EVICTION_SCAN_LEVEL re…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-p23-auto-restore-extendto",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Live RPC (F) and the official storage-strategies appendix (A) agree: Mainnet minPersistentTTL 2,073,600 and maxEntryTTL 3,110,400 on both Mainnet and Testnet. Core source confirms the formulas and the 4096/1,054,080 initial defaults. Dated values. Caution: the official state-archival page still says 'current_ledger_number + 4095' (the Core initial default, stale vs live Mainnet). The new text keep…",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "POST https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org getLedgerEntries key AAAACAAAAAo= (CONFIG_SETTING_STATE_ARCHIVAL)",
+      "observedAt": "2026-11-02",
+      "quote": "Mainnet ledger 65270335: maxEntryTTL 3110400, minTemporaryTTL 17280, minPersistentTTL 2073600; Testnet ledger 5522764: maxEntryTTL 3110400, minTemporaryTTL 720,…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+      "observedAt": "2026-11-02",
+      "quote": "Max entry TTL | 3,110,400 ledgers ≈ 180 d; Min TTL: persistent/instance create or restore | 2,073,600 ledgers ≈ 120 d"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/ExtendFootprintTTLOpFrame.cpp, RestoreFootprintOpFrame.cpp, src/ledger/NetworkConfig.h",
+      "observedAt": "2026-11-02",
+      "quote": "getLedgerSeq() + mOpFrame.mExtendFootprintTTLOp.extendTo; if (extendTo > maxEntryTTL - 1) ...; ledgerSeq + archivalSettings.minPersistentTTL - 1; MAXIMUM_ENTRY_…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+      "observedAt": "2026-11-02",
+      "quote": "In practice, this list is usually populated by the contract invocation simulation ... When the resulting InvokeHostFunction operation executes, those entries ar…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-p23-auto-restore-extendto",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "A grade-the-formula caution is right, given the docs/live figure split. It does not add an avoid item.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "POST https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org getLedgerEntries key AAAACAAAAAo= (CONFIG_SETTING_STATE_ARCHIVAL)",
+      "observedAt": "2026-11-02",
+      "quote": "Mainnet ledger 65270335: maxEntryTTL 3110400, minTemporaryTTL 17280, minPersistentTTL 2073600; Testnet ledger 5522764: maxEntryTTL 3110400, minTemporaryTTL 720,…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+      "observedAt": "2026-11-02",
+      "quote": "In practice, this list is usually populated by the contract invocation simulation ... When the resulting InvokeHostFunction operation executes, those entries ar…"
+     }
+    ]
+   },
+   {
+    "id": "q-sor-p23-auto-restore-extendto",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-verified 2026-11-02. reverifyBy 2027-02-18 is unchanged, which is acceptable.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "POST https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org getLedgerEntries key AAAACAAAAAo= (CONFIG_SETTING_STATE_ARCHIVAL)",
+      "observedAt": "2026-11-02",
+      "quote": "Mainnet ledger 65270335: maxEntryTTL 3110400, minTemporaryTTL 17280, minPersistentTTL 2073600; Testnet ledger 5522764: maxEntryTTL 3110400, minTemporaryTTL 720,…"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/ExtendFootprintTTLOpFrame.cpp, RestoreFootprintOpFrame.cpp, src/ledger/NetworkConfig.h",
+      "observedAt": "2026-11-02",
+      "quote": "getLedgerSeq() + mOpFrame.mExtendFootprintTTLOp.extendTo; if (extendTo > maxEntryTTL - 1) ...; ledgerSeq + archivalSettings.minPersistentTTL - 1; MAXIMUM_ENTRY_…"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "/private/tmp/claude-501/raven-goldens-1102/specs/stellar-docs.json (stellarDocs.get_doc_page_sections params)",
+   "GET https://stellarlight.xyz/api/projects/search?q=Warmancer",
+   "POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug: warmancer}",
+   "POST https://mainnet.sorobanrpc.com and https://soroban-testnet.stellar.org getLedgerEntries key AAAACAAAAAo= (CONFIG_SETTING_STATE_ARCHIVAL)",
+   "Parallel web_search -> https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+   "Parallel web_search -> https://solang.readthedocs.io/en/latest/targets/soroban.html",
+   "Raven execute codemode.skill.read('skills.stellar-dev.zk-proofs') served from stellar-dev-skill@cac64041",
+   "Raven execute: stellarDocs.search_docs + stellarDocs.get_doc_page_sections (plain path, full URL, path#fragment)",
+   "https://crates.io/api/v1/crates/solang",
+   "https://developers.stellar.org/docs/build/apps/zk",
+   "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+   "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+   "https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
+   "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban.rst",
+   "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban_support_matrix.rst",
+   "https://github.com/hyperledger-solang/solang/releases/tag/v0.4.0",
+   "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md (last commit 2b45c64e 2026-09-09)",
+   "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v16.4.1/src/rpc/transaction.ts",
+   "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/rpc/transaction.ts and src/rpc/server.ts and src/contract/client.ts",
+   "https://raw.githubusercontent.com/stellar/stellar-core/master/src/main/Config.cpp and src/ledger/NetworkConfig.h",
+   "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/ExtendFootprintTTLOpFrame.cpp, RestoreFootprintOpFrame.cpp, src/ledger/NetworkConfig.h",
+   "https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/zk-proofs/SKILL.md (last commit cac64041, 2026-10-21)",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0059.md, cap-0074.md, cap-0080.md",
+   "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go and internal/ledgerentries/ledgerentries.go",
+   "https://registry.npmjs.org/@stellar/stellar-sdk",
+   "npm pack @stellar/stellar-sdk@17.4.0, lib/esm/rpc/transaction.d.ts and server.d.ts",
+   "perplexity_search -> https://communityfund.stellar.org/project/warmancer-black-friday-iwr"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-sor-deploy-invoke-from-js-sdk; q-sor-doc-page-sections-followup; q-sor-evm-to-soroban-porting; q-sor-p23-auto-restore-extendto",
+  "verifiedOnly": "q-sor-cross-warmancer-zk-stack; q-sor-decode-hosterror-codes; q-sor-doc-timestamping-manage-data; q-sor-doc-title-discovery; q-sor-force-fast-archival-localnet; q-sor-persistent-unbounded-collection-cap; q-sor-recurring-escrow-patterns",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-sor-p23-auto-restore-extendto",
+    "issue": "Upstream docs finding to file in improvements/stellar-docs: state-archival RestoreFootprintOp text says restored TTL is 'current_ledger_number + 4095', but live Mainnet minPersistentTTL is 2,073,600 (the docs' own storage-strategies appendix agrees). No existing improvements/ finding covers it; the rootCause records the authoring flaw instead."
+   },
+   {
+    "id": "q-sor-doc-page-sections-followup",
+    "issue": "Host-side defect in this repo: specs/stellar-docs.json get_doc_page_sections.path description says 'Use url_without_anchor from a previous search hit', but that field is a full https URL that fails the ^/(docs|meetings)/ pattern. Fix the description or accept full URLs (outside this batch's edit scope)."
+   },
+   {
+    "id": "q-sor-decode-hosterror-codes",
+    "issue": "Upstream docs finding to file: debugging-errors table names HostError(Budget, LimitExceeded)/HostError(Storage, LimitExceeded); the XDR code is SCEC_EXCEEDED_LIMIT (ExceededLimit). The golden notes already say not to hard-gate the old wording; gospel unchanged."
+   },
+   {
+    "id": "q-sor-deploy-invoke-from-js-sdk",
+    "issue": "sd-055 (restore-data-js signs an unbuilt assembleTransaction builder; stellar-docs#2906) is still open as of 2026-11-02; golden avoid[0] stays valid."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-sor-cross-warmancer-zk-stack",
+    "log": "truth.asOf (accept); truth.reverifyBy (accept); truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-decode-hosterror-codes",
+    "log": "truth.reverifyBy -> 2027-04-09; truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-deploy-invoke-from-js-sdk",
+    "log": "golden.answer (accept); golden.notes (accept); truth.asOf (accept); truth.reverifyBy (accept); truth.corroboration (+row); truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-doc-page-sections-followup",
+    "log": "golden.answer (accept); golden.notes (accept); truth.asOf; truth.corroboration (+row); truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-doc-timestamping-manage-data",
+    "log": "truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-doc-title-discovery",
+    "log": "truth.asOf; truth.verified refreshed; truth.corroboration (+row for title-hit fields, clears the negative-claim warning)"
+   },
+   {
+    "id": "q-sor-evm-to-soroban-porting",
+    "log": "golden.answer (modify); golden.notes (modify); truth.asOf (accept); truth.reverifyBy (accept); truth.corroboration (version rows refreshed); truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-force-fast-archival-localnet",
+    "log": "truth.asOf (accept); truth.reverifyBy (accept); truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-p23-auto-restore-extendto",
+    "log": "golden.answer (accept); golden.notes (accept); truth.asOf (accept); truth.reverifyBy -> 2027-04-16; truth.corroboration (+row); truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-persistent-unbounded-collection-cap",
+    "log": "truth.verified refreshed"
+   },
+   {
+    "id": "q-sor-recurring-escrow-patterns",
+    "log": "truth.verified refreshed"
+   }
+  ]
+ }
+}

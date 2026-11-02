@@ -34,7 +34,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-08-12",
-    "reverifyBy": "2027-03-31",
+    "reverifyBy": "2027-04-09",
     "sources": [
       {
         "class": "A",
@@ -67,6 +67,30 @@
       {
         "class": "B",
         "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-contract.x",
+        "note": "Quote: SCEC_EXCEEDED_LIMIT = 5,    // Some arbitrary limit -- gas or otherwise -- was hit.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk-macros/src/syn_ext.rs (v29.0.1 latest, 2026-10-12)",
+        "note": "Quote: Result<#t, <#t as #crate_path::TryFromVal<#crate_path::Env, #crate_path::Val>>::Error>, Result<#e, #crate_path::InvokeError>",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/env.rs",
+        "note": "Quote: this won't return an error when `require_auth` hasn't been called in the root invocation ... pub fn as_contract<T>(&self, id: &Address, f: impl FnOnce() -> T) -> T",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/testutils.rs",
+        "note": "Quote: pub trait Ledger { ... fn set_timestamp(&self, timestamp: u64); ... pub trait Events { ... fn all(&self) -> ContractEvents;",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -120,32 +144,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02)",
       "evidence": [
-        "solo://proj/49/scratchpad/784#authorization-failures-and-generated-try-clients",
-        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
-        "https://developers.stellar.org/docs/build/guides/conventions/error-enum",
-        "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk-macros/src/derive_client.rs",
-        "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs",
-        "Sibling sweep: q-soroban-unit-testing owns happy-path setup; this case owns exact failure interpretation; q-soroban-publish-events owns event publication and RPC retention.",
-        "Structural re-form (negative-predicate): replaced the taxonomy negation and split two long compound facts; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — HostError classes still require class-specific diagnostic interpretation",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — diagnostics still determine the matching auth, context, event, or ledger remedy",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — generated try methods still expose nested Result layers",
-        "Live re-check 2026-08-27: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs — SDK tests still preserve distinct declared-error and InvokeError branches",
-        "Sibling sweep 2026-08-27: grep HostError|try_*|events|set_timestamp → q-soroban-unit-testing, q-sor-test-event-assertion-ordering, q-sor-stale-spec-after-upgrade; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored ledger-testutils and moved the non-universal-remedy caveat into golden.avoid; truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — HostError classes still require class-specific diagnostic interpretation",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — diagnostics still determine the matching auth, context, event, or ledger remedy",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — generated try methods still expose nested Result layers",
-        "Live re-check 2026-08-30: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs — SDK tests still preserve distinct declared-error and InvokeError branches",
-        "Sibling sweep 2026-08-30: q-soroban-unit-testing owns happy-path setup; this case owns exact failure interpretation; q-soroban-publish-events owns event publication and RPC retention."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "https://github.com/stellar/stellar-xdr/blob/main/Stellar-contract.x — \"SCEC_EXCEEDED_LIMIT = 5,    // Some arbitrary limit -- gas or otherwise -- was hit.\" (class B, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — \"| `HostError(Budget, LimitExceeded)` | A network-defined resource limit has been exceeded\" (class A, observedAt 2026-11-02)",
+        "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk-macros/src/syn_ext.rs (v29.0.1 latest, 2026-10-12) — \"Result<#t, <#t as #crate_path::TryFromVal<#crate_path::Env, #crate_path::Val>>::Error>, Result<#e, #crate_path::InvokeError>\" (class B, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — \"(prior verification evidence; unchanged)\" (class A, observedAt 2026-08-30)",
+        "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/env.rs — \"this won't return an error when `require_auth` hasn't been called in the root invocation ... pub fn as_contract<T>(&self, id: &Address, f: impl FnOnce() -> T) -> T\" (class B, observedAt 2026-11-02)",
+        "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/testutils.rs — \"pub trait Ledger { ... fn set_timestamp(&self, timestamp: u64); ... pub trait Events { ... fn all(&self) -> ContractEvents;\" (class B, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-soroban-unit-testing, q-soroban-publish-events — no contradiction; no gospel change.",
+        "Proposer re-verification only; no change proposed and no gospel change: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json."
       ]
     },
     "origin": "raven-next q-sor-decode-hosterror-codes"

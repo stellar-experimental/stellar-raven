@@ -1,0 +1,1564 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "scf-population-staking",
+ "kind": "pass2",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-defi-category-funding-ratio-live",
+   "verdict": "change",
+   "claims": [
+    {
+     "claim": "getClusters(category) and analyzeEcosystem(categories) share population id projects|status:Development+Live+Pre-Release, 906/906, truncated false, with identical category counts",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+       "observedAt": "2026-11-02T17:33:59.119Z",
+       "quote": "\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"totalAvailable\": 906, \"included\": 906, \"truncated\": false}; rows size/scfFundedCount 3…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+       "observedAt": "2026-11-02T17:33:58.506Z",
+       "quote": "same population id; User-Facing App projectCount 366 scfFundedCount 257; Tooling 160/121; Protocol/Contract 147/104; Infrastructure 183/92"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sls-042",
+       "observedAt": "2026-07-14",
+       "quote": "2026-07-14 analyze and clusters share one population id, included=available=845 and truncated=false"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "'report it as a separate population' is stale since sls-042 (2026-07-14); align with sibling q-defi-cluster-rollup-live's population-id rule."
+    },
+    {
+     "field": "truth.corroboration[+], truth.verified.*",
+     "reason": "gospel-change provenance; replaces the pass-1 'No gospel change' evidence line and adds rootCause."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/resolved.json#sls-042"
+   ],
+   "siblings": {
+    "checked": [
+     "q-defi-cluster-rollup-live",
+     "q-scf-funding-by-category",
+     "q-scf-total-distributed",
+     "q-defi-category-saturation-live"
+    ],
+    "verdict": "no contradiction; q-defi-cluster-rollup-live already uses the population-id rule"
+   }
+  },
+  {
+   "id": "q-scf-funding-by-category",
+   "verdict": "change",
+   "claims": [
+    {
+     "claim": "/api/clusters is not truncated and matches /api/analyze categories (pass-1 refresh)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters",
+       "observedAt": "2026-11-02",
+       "quote": "\"totalAvailable\": 906, \"included\": 906, \"truncated\": false"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sls-042",
+       "observedAt": "2026-07-14",
+       "quote": "analyze and clusters share one population id"
+      }
+     ]
+    },
+    {
+     "claim": "The partial-cap caution for quoting Scout category funding without computedAt/methodologyVersion/countBasis has an expired trigger",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sls-013",
+       "observedAt": "2026-07-14",
+       "quote": "resolved 2026-07-14; liveRecheck '2026-07-14 funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "\"computedAt\": \"2026-11-02T17:29:52.126Z\", \"methodologyVersion\": \"funding-v2 (2026-07-05)\", countBasis present, byRound len 45"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+       "observedAt": "2026-11-02",
+       "quote": "categories keys: totalProjects, scope, distribution (no computedAt/methodologyVersion/countBasis)"
+      },
+      {
+       "class": "A",
+       "ref": "research/decisions/0008-human-review-eval-and-playground-policy.md",
+       "observedAt": "2026-11-02",
+       "quote": "The accepted set is exactly base reserve, Horizon lifecycle, and RPC pagination."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "remove expired aggregator partial-cap caution"
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "provenance"
+    }
+   ],
+   "rootCause": [
+    "improvements/resolved.json#sls-013"
+   ],
+   "siblings": {
+    "checked": [
+     "q-scf-total-distributed",
+     "q-defi-category-funding-ratio-live",
+     "q-eco-defi-market-map",
+     "q-defi-cluster-rollup-live"
+    ],
+    "verdict": "no contradiction; consistency-register cluster 'q-eco-defi-market-map + q-scf-funding-by-category' needs a re-stamp by the orchestrator"
+   }
+  },
+  {
+   "id": "q-scf-total-distributed",
+   "verdict": "change",
+   "claims": [
+    {
+     "claim": "Scout funding-v2 on 2026-11-02: 582 distinct awarded projects, $58,585,451.99, active-status population 906",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02T17:29:52.126Z",
+       "quote": "\"scfAwardedProjects\": 582, \"scfTotalDistributedUSD\": 58585451.99000002 ... population id projects|status:Development+Live+Pre-Release, totalAvailable 906"
+      }
+     ]
+    },
+    {
+     "claim": "Scout snapshotDelta compares against an empty previous snapshot (all 582 reported as added)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "\"previousSnapshot\": {\"projectSetHash\": \"e3b0c44298fc1c14\", ... \"scfAwardedProjects\": 0, \"scfTotalDistributedUSD\": 0}, \"snapshotDelta\": {... \"addedCount\": 582, .…"
+      },
+      {
+       "class": "F",
+       "ref": "python3 hashlib.sha256(b'').hexdigest()[:16]",
+       "observedAt": "2026-11-02",
+       "quote": "e3b0c44298fc1c14"
+      }
+     ]
+    },
+    {
+     "claim": "Official SCF banners: 42M Awarded in XLM, 656 Awarded Submissions; awards page 504 Previously Awarded Submissions",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/",
+       "observedAt": "2026-10-25 (Parallel cache)",
+       "quote": "42M Awarded in XLM ... 656 Awarded Submissions"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-10-22 (Parallel cache)",
+       "quote": "504 Previously Awarded Submissions"
+      }
+     ]
+    },
+    {
+     "claim": "Official round-ledger and project-record passes ($63.62M/$53.91M, 868 memberships; $50.85M/$41.72M)",
+     "verdict": "unverifiable",
+     "sources": []
+    },
+    {
+     "claim": "sls-013 cached-copy partial-cap caution trigger expired",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sls-013",
+       "observedAt": "2026-07-14",
+       "quote": "resolved 2026-07-14"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "computedAt, methodologyVersion, countBasis, byRound (45 rows) present"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "F14: refresh the dated Scout figure to 2026-11-02 and keep the July figure as history; heading date moved to 2026-11-02 while ledger passes stay dated 2026-07-10/11"
+    },
+    {
+     "field": "golden.notes",
+     "reason": "remove expired sls-013 partial cap; rewrite the historical-figures sentence; add plain wrong rule for the sls-103 delta"
+    },
+    {
+     "field": "truth.corroboration[+], truth.verified.*",
+     "reason": "replace 'not yet filed' with the sls-103 path; rootCause cites sls-103 and sls-013"
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-103-funding-delta-against-empty-snapshot.md",
+    "improvements/resolved.json#sls-013"
+   ],
+   "siblings": {
+    "checked": [
+     "q-scf-funding-by-category",
+     "q-defi-category-funding-ratio-live",
+     "q-defi-cluster-rollup-live",
+     "q-scf-round-43-results"
+    ],
+    "verdict": "no contradiction; F14 resolved (both cases now give 582 / $58.59M on 2026-11-02)"
+   }
+  },
+  {
+   "id": "q-defi-liquid-staking-whitespace",
+   "verdict": "change",
+   "claims": [
+    {
+     "claim": "No live native-XLM validator-staking LST as of the 2026-11-02 re-sweep",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02 (pass 1; also quoted by spield.live 2026-08-01)",
+       "quote": "There are no monetary rewards for being a validator on the Stellar network."
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=liquid%20staking",
+       "observedAt": "2026-11-02",
+       "quote": "total 79; top rows backyard, normal, defindex, for-yield, cushion, meria-defi ...; q=StelloFi total 1 (stellot), no StelloFi row"
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/search_directory",
+       "observedAt": "2026-11-02",
+       "quote": "query 'liquid staking' -> hatom-protocol, helix"
+      },
+      {
+       "class": "D",
+       "ref": "https://api.llama.fi/protocols",
+       "observedAt": "2026-11-02",
+       "quote": "44 Stellar protocols; categories Basis Trading, Bridge, CEX, Derivatives, Dexs, Farm, Insurance, Lending, Onchain Capital Allocator, Partially Algorithmic Stabl…"
+      },
+      {
+       "class": "D",
+       "ref": "https://whalehub.io/blog/xlm-staking",
+       "observedAt": "2026-09-20",
+       "quote": "There is no proof-of-stake, no validator rewards, no delegation and no lock-up."
+      }
+     ]
+    },
+    {
+     "claim": "StelloFi sXLM self-labels 'Native XLM Liquid Staking' but is a vault share token with no validator reward source",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.stellofi.com/docs",
+       "observedAt": "2026-10-26 (Parallel cache)",
+       "quote": "sXLM is the vault share token of the StelloFi protocol ... No strategy allocation is implemented, so it does not rise on its own today ... Stellar has no native…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellofi.com",
+       "observedAt": "2026-10-26 (Parallel cache)",
+       "quote": "Native XLM Liquid Staking on Stellar · Soroban Smart Contracts ... There is no strategy allocation yet, so it is currently flat."
+      },
+      {
+       "class": "F",
+       "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+       "observedAt": "2026-11-02",
+       "quote": "public-network contract, validation 'unverified' (pass-1 read)"
+      }
+     ]
+    },
+    {
+     "claim": "SDF October 2026 fee-pool paper is an undecided discussion; locked XLM confers no validator role",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only. ... Locked XLM would not sec…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/orgs/stellar/discussions/2052",
+       "observedAt": "2026-11-02",
+       "quote": "Mechanics are not defined yet."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "reason": "F15 + esc-49: StelloFi vault-share caution and fee-pool paper caution, both symmetric and tied to verified ambiguity (self-labelled 'liquid staking' product; undecided SDF paper)"
+    },
+    {
+     "field": "tags.freshness / truth.reverifyBy",
+     "reason": "M6: dated negative ecosystem claim on a stable case -> scheduled, reverifyBy 2027-01-14 (staggered; Jan 2027 holds 2 cases)"
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": {
+    "checked": [
+     "q-edge-noinfo-stellar-pos-staking-rewards",
+     "q-raph-xlm-staking",
+     "q-hot-fee-pool-burn-deflation",
+     "q-hot-sdf-xlm-holdings-sales",
+     "q-eco-defi-market-map"
+    ],
+    "verdict": "no contradiction after pass 2; register cluster 'SCP rewards versus third-party XLM yield' needs re-stamp"
+   }
+  },
+  {
+   "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+   "verdict": "change",
+   "claims": [
+    {
+     "claim": "No live native-XLM LST as of a 2026-11-02 re-sweep",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "note": "same as q-defi-liquid-staking-whitespace claim 1"
+      }
+     ]
+    },
+    {
+     "claim": "SDF October 2026 fee-pool paper is an undecided discussion",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "note": "same as q-defi-liquid-staking-whitespace claim 3"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "F15: add 2026-11-02 re-sweep date"
+    },
+    {
+     "field": "golden.notes",
+     "reason": "F15: add fee-pool paper caution"
+    },
+    {
+     "field": "tags.freshness / truth.reverifyBy",
+     "reason": "dated negative on stable case -> scheduled, reverifyBy 2027-01-28"
+    }
+   ],
+   "rootCause": [
+    "freshness-drift (existing rootCause list kept)"
+   ],
+   "siblings": {
+    "checked": [
+     "q-defi-liquid-staking-whitespace",
+     "q-raph-xlm-staking",
+     "q-hot-fee-pool-burn-deflation"
+    ],
+    "verdict": "no contradiction; register clusters cluster-017 and cluster-020 need re-stamp"
+   }
+  },
+  {
+   "id": "q-raph-xlm-staking",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "claim": "SDF fee-pool paper caution and 2026-11-02 CAP sweep present and correct",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "SDF has not decided to fund or support any such mechanism"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/orgs/stellar/discussions/2052",
+       "observedAt": "2026-11-02",
+       "quote": "Mechanics are not defined yet."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": {
+    "checked": [
+     "q-edge-noinfo-stellar-pos-staking-rewards",
+     "q-defi-liquid-staking-whitespace",
+     "q-hot-fee-pool-burn-deflation"
+    ],
+    "verdict": "consistent"
+   }
+  },
+  {
+   "id": "q-eco-defi-tvl-current",
+   "verdict": "change",
+   "claims": [
+    {
+     "claim": "Lumenloop directory and project records carry no TVL field",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/search_directory",
+       "observedAt": "2026-11-02",
+       "quote": "row keys: category, description, similarity, slug, tags, title, website (query 'DeFi TVL', 20 rows)"
+      },
+      {
+       "class": "C",
+       "ref": "https://api.lumenloop.com/v1/tools/get_project",
+       "observedAt": "2026-11-02",
+       "quote": "blend/defindex data keys: based_in, category, description, links, mainnet, operating_region, other_names, parent, scf, slug, tags, title; no TVL text"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.search_directory",
+       "observedAt": "2026-11-02",
+       "quote": "transport POST /v1/tools/search_directory"
+      }
+     ]
+    },
+    {
+     "claim": "DeFiLlama values in notes still hold",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+       "observedAt": "2026-11-02",
+       "quote": "max 2026-10-01 272841590; 2026-05-30 242671595; 2026-06-19 238715806; 2026-06-29 194179178; 2026-11-02 221313047"
+      },
+      {
+       "class": "D",
+       "ref": "https://api.llama.fi/v2/chains",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar tvl 227638623.88"
+      }
+     ]
+    },
+    {
+     "claim": "sls-031 cached-copy partial-cap caution trigger expired",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sls-031",
+       "observedAt": "2026-07-14",
+       "quote": "2026-07-14 TVL analysis serves provider/asOf/inclusion basis; DeFindex carries tvlAsOf, llamaSlugs and tvlMethodUrl"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=defindex",
+       "observedAt": "2026-11-02",
+       "quote": "tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15.688Z, tvlSource 'defillama', llamaSlugs ['defindex'], tvlMethodUrl https://defillama.com/protocol/defindex"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "esc-45: replace misleading LumenLoop-corpus source-routing sentence"
+    },
+    {
+     "field": "golden.notes",
+     "reason": "remove expired sls-031 partial cap; add dated source-routing note"
+    },
+    {
+     "field": "truth.verified.*",
+     "reason": "provenance; eval-authoring + sls-031 rootCause"
+    }
+   ],
+   "rootCause": [
+    "eval-authoring (template sentence)",
+    "improvements/resolved.json#sls-031"
+   ],
+   "siblings": {
+    "checked": [
+     "q-edge-fresh-latest-blend-tvl",
+     "q-edge-noinfo-exact-tvl-figure",
+     "q-eco-defi-market-map",
+     "q-asset-rwa-tokenized-freshness"
+    ],
+    "verdict": "no contradiction; follow-up for orchestrator: q-edge-fresh-latest-blend-tvl and q-edge-noinfo-exact-tvl-figure may carry the same expired sls-031 cap; 7 other cases share the 'from the current LumenLoop corpus' template sentence (q-asset-rwa-tokenized-freshness, q-crp-regional-offramp-mobilemoney, q-eco-stablecoins-on-stellar, q-eco-stellar-rwa-stablecoin-volume, q-edge-fresh-latest-blend-tvl, q-edge-fresh-most-recent-news, q-builder-lumenloop-regions-vocab)"
+   }
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-defi-category-funding-ratio-live#0",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Verified live: clusters and analyze share population.id and 906/906 untruncated rows with identical counts; Tooling 121/160 still first, no tie. The old 'separate population' wording was false after sls-042. Applier follow-up: verified.evidence[0..2] still end '(... analyzeEcosystem is a separate population)' and corroboration[0].evidence[1].note says 'This separate live population'; reword those …",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population {id 'projects|status:Development+Live+Pre-Release', totalAvailable 906, included 906, truncated false}; generatedAt 2026-11-02T17:33:59.119Z; ro…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "same population.id, 906/906, truncated false; generatedAt 2026-11-02T17:33:58.506Z; categories keys only totalProjects, scope, distribution; UFA projectCount 36…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven mcp execute scout.getClusters({dimension:'category'}) + scout.analyzeEcosystem({dimension:'categories'})",
+      "observedAt": "2026-11-02",
+      "quote": "both meta.population.id 'projects|status:Development+Live+Pre-Release', included 906, truncated false (observedAt 2026-11-02T17:44:40Z)"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     },
+     {
+      "class": "B",
+      "ref": "eval/qa/corpus/battery/defi-ecosystem/q-defi-cluster-rollup-live.json",
+      "observedAt": "2026-11-02",
+      "quote": "'Report each view's generatedAt, scope, and meta.population id: matching ids mean mechanically comparable numbers, and different ids mean different populations.…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-category-funding-ratio-live#1",
+    "field": "truth.corroboration[+]",
+    "decision": "accept",
+    "note": "Re-derived: both endpoints and the Raven path return the same population id and identical numerators/denominators.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population {id 'projects|status:Development+Live+Pre-Release', totalAvailable 906, included 906, truncated false}; generatedAt 2026-11-02T17:33:59.119Z; ro…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "same population.id, 906/906, truncated false; generatedAt 2026-11-02T17:33:58.506Z; categories keys only totalProjects, scope, distribution; UFA projectCount 36…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven mcp execute scout.getClusters({dimension:'category'}) + scout.analyzeEcosystem({dimension:'categories'})",
+      "observedAt": "2026-11-02",
+      "quote": "both meta.population.id 'projects|status:Development+Live+Pre-Release', included 906, truncated false (observedAt 2026-11-02T17:44:40Z)"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-category-funding-ratio-live#2",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-category-funding-ratio-live#3",
+    "field": "truth.verified.evidence[3]",
+    "decision": "accept",
+    "note": "Accurately records the pass-2 gospel change; keyFacts, avoid, notes unchanged.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population {id 'projects|status:Development+Live+Pre-Release', totalAvailable 906, included 906, truncated false}; generatedAt 2026-11-02T17:33:59.119Z; ro…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "same population.id, 906/906, truncated false; generatedAt 2026-11-02T17:33:58.506Z; categories keys only totalProjects, scope, distribution; UFA projectCount 36…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-category-funding-ratio-live#4",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Matches my reads (generatedAt identical, served from the same cache window).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population {id 'projects|status:Development+Live+Pre-Release', totalAvailable 906, included 906, truncated false}; generatedAt 2026-11-02T17:33:59.119Z; ro…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "same population.id, 906/906, truncated false; generatedAt 2026-11-02T17:33:58.506Z; categories keys only totalProjects, scope, distribution; UFA projectCount 36…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-category-funding-ratio-live#5",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Checked q-defi-cluster-rollup-live wording; consistent.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "eval/qa/corpus/battery/defi-ecosystem/q-defi-cluster-rollup-live.json",
+      "observedAt": "2026-11-02",
+      "quote": "'Report each view's generatedAt, scope, and meta.population id: matching ids mean mechanically comparable numbers, and different ids mean different populations.…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-category-funding-ratio-live#6",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "note": "Confirmed the wording entered on 2026-07-11, before the 2026-07-14 sls-042 fix.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "git log -S 'report it as a separate population' (worktree)",
+      "observedAt": "2026-11-02",
+      "quote": "61e8c632 2026-07-11 'eval: land P4 H1 Boxy and core harvest' introduced the wording, before the sls-042 fix on 2026-07-14"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-funding-by-category#0",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removal is correct: the caution was a Scout (aggregator) partial cap outside the ADR-0008 set, and its trigger expired (sls-013 fixed; live funding view carries computedAt/methodologyVersion/countBasis). The live categories view never carried those fields, so the caution capped correct quotes. No other notes text changed.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "same population.id, 906/906, truncated false; generatedAt 2026-11-02T17:33:58.506Z; categories keys only totalProjects, scope, distribution; UFA projectCount 36…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; previousS…"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     },
+     {
+      "class": "B",
+      "ref": "research/decisions/0008-human-review-eval-and-playground-policy.md",
+      "observedAt": "2026-11-02",
+      "quote": "'The accepted set is exactly base reserve, Horizon lifecycle, and RPC pagination.'"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-funding-by-category#1",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-funding-by-category#2",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Verified: funding view generatedAt 2026-11-02T17:29:52.126Z with computedAt, methodologyVersion 'funding-v2 (2026-07-05)', countBasis, 45 byRound rows.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; previousS…"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-funding-by-category#3",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Verified: categories object has only totalProjects, scope, distribution; values unchanged. ADR path is research/decisions/0008 (the task brief said docs/adr; the proposal's path is the correct one).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "same population.id, 906/906, truncated false; generatedAt 2026-11-02T17:33:58.506Z; categories keys only totalProjects, scope, distribution; UFA projectCount 36…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+      "observedAt": "2026-11-02",
+      "quote": "meta.population {id 'projects|status:Development+Live+Pre-Release', totalAvailable 906, included 906, truncated false}; generatedAt 2026-11-02T17:33:59.119Z; ro…"
+     },
+     {
+      "class": "B",
+      "ref": "research/decisions/0008-human-review-eval-and-playground-policy.md",
+      "observedAt": "2026-11-02",
+      "quote": "'The accepted set is exactly base reserve, Horizon lifecycle, and RPC pagination.'"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-funding-by-category#4",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "note": "rootCause points at a real resolved finding.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#0",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of the dates shown below, the verified sources supported this observed answer:\n\nThere is no single safe public scalar for SCF 'distributed.' Report a dated basis matrix and say whether each value is reconstructed, awarded, or paid. As of **2026-11-02**, Scout funding-v2 reconstructed about **$58.59M across 582 distinct awarded projects** in its active-status population (906 Development, Live, or Pre-Release projects…",
+    "note": "Scout figures verified live (582 / $58,585,451.99, 906 active-status population) and labeled as a reconstruction, not a ledger. Modified only the lead-in: the official-ledger and project-record passes (868 / $63.62M / $53.91M; $50.85M / $41.72M) were not re-verified on 2026-11-02 and stay dated 2026-07-10/11, so the intro must not say the 2026-11-02 sources supported them. Flag for orchestrator: t…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; previousS…"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "'42M Awarded in XLM' ... '656 Awarded Submissions' (Parallel web_fetch, cache 2026-10-25)"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02",
+      "quote": "'504 Previously Awarded Submissions' (Parallel web_fetch, cache 2026-10-22)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#1",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "sls-013 cap removal correct (expired trigger; aggregator partial cap outside ADR-0008). New snapshotDelta rule is tied to a verified defect: previousSnapshot hash is SHA-256 of empty input with 0 projects/0 USD, so the +582 / +$58.59M delta is not new awards; the rule names those specific figures and cannot fire on a later real delta.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; previousS…"
+     },
+     {
+      "class": "F",
+      "ref": "python3 hashlib.sha256(b'').hexdigest()[:16]",
+      "observedAt": "2026-11-02",
+      "quote": "e3b0c44298fc1c14"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-103-funding-delta-against-empty-snapshot.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: verified; 'snapshotDelta lists all 582 projects as added and reports a delta of 58585451.99 USD'"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     },
+     {
+      "class": "B",
+      "ref": "research/decisions/0008-human-review-eval-and-playground-policy.md",
+      "observedAt": "2026-11-02",
+      "quote": "'The accepted set is exactly base reserve, Horizon lifecycle, and RPC pagination.'"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#2",
+    "field": "truth.corroboration[+]",
+    "decision": "accept",
+    "note": "Re-derived live; hash prefix reproduced.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; previousS…"
+     },
+     {
+      "class": "F",
+      "ref": "python3 hashlib.sha256(b'').hexdigest()[:16]",
+      "observedAt": "2026-11-02",
+      "quote": "e3b0c44298fc1c14"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#3",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-total-distributed#4",
+    "field": "truth.verified.evidence[3]",
+    "decision": "accept",
+    "note": "sls-103 exists (untracked new file, status verified) and matches the observation.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-103-funding-delta-against-empty-snapshot.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: verified; 'snapshotDelta lists all 582 projects as added and reports a delta of 58585451.99 USD'"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#5",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Matches live read. If the answer modify above lands, this string stays accurate.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; previousS…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#6",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Verified: computedAt, methodologyVersion, countBasis, 45 byRound rows live.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; previousS…"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     },
+     {
+      "class": "B",
+      "ref": "research/decisions/0008-human-review-eval-and-playground-policy.md",
+      "observedAt": "2026-11-02",
+      "quote": "'The accepted set is exactly base reserve, Horizon lifecycle, and RPC pagination.'"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#7",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Re-fetched both pages; same counters (Parallel cache dates 2026-10-22/25).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "'42M Awarded in XLM' ... '656 Awarded Submissions' (Parallel web_fetch, cache 2026-10-25)"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02",
+      "quote": "'504 Previously Awarded Submissions' (Parallel web_fetch, cache 2026-10-22)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#8",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Consistent with q-scf-funding-by-category 582 / $58,585,451.99.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "same population.id, 906/906, truncated false; generatedAt 2026-11-02T17:33:58.506Z; categories keys only totalProjects, scope, distribution; UFA projectCount 36…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+      "observedAt": "2026-11-02",
+      "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99000002; methodologyVersion 'funding-v2 (2026-07-05)'; snapshotAsOf 2026-10-24T13:59:04.410Z; previousS…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-total-distributed#9",
+    "field": "truth.verified.rootCause",
+    "decision": "accept",
+    "note": "Both pointers verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-103-funding-delta-against-empty-snapshot.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: verified; 'snapshotDelta lists all 582 projects as added and reports a delta of 58585451.99 USD'"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#0",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Both cautions are symmetric and tied to verified truth: StelloFi footer says 'Native XLM Liquid Staking' while its docs call sXLM a vault share token with no strategy allocation and say Stellar has no native staking yield; the SDF paper is explicitly undecided and grants no validator rights. Note: stst-lake.vercel.app also self-labels 'Liquid Staking on Stellar' on Mainnet with lending/LP yield; t…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.stellofi.com/docs",
+      "observedAt": "2026-11-02",
+      "quote": "'sXLM is the vault share token of the StelloFi protocol.' ... 'No strategy allocation is implemented, so it does not rise on its own today' ... 'Stellar has no …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellofi.com",
+      "observedAt": "2026-11-02",
+      "quote": "title 'StelloFi — An XLM Vault on Stellar'; 'There is no strategy allocation yet, so it is currently flat.'; footer 'Native XLM Liquid Staking on Stellar · Soro…"
+     },
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "'DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026' ... 'It is important to note that SDF has not decided to fund or support any such mechanism; this paper…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/xlm-utility",
+      "observedAt": "2026-11-02",
+      "quote": "'Illustrative scenarios, not forecasts or commitments.'"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/orgs/stellar/discussions/2052",
+      "observedAt": "2026-11-02",
+      "quote": "community post: 'asked whether a rewards mechanism funded from the existing fee pool could improve utility. Mechanics are not defined yet.'"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'Stellar XLM liquid staking protocol mainnet' / 'sXLM liquid staking Stellar' / 'stake XLM native staking rewards 2026'",
+      "observedAt": "2026-11-02",
+      "quote": "hits: stst-lake.vercel.app ('Liquid Yield Layer ... Earn from lending, market making, and liquidity provision'), stellofi.com vault, spield.live 'XLM cannot be …"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#1",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "Golden text carries dated negatives (2026-07-10, 2026-11-02); scheduled is required.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#2",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-01-14 is after 2026-11-10 and staggered from siblings (2027-01-28, 2027-02-18).",
+    "sources": []
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#3",
+    "field": "truth.corroboration[+]",
+    "decision": "accept",
+    "note": "PDF quotes confirmed verbatim; discussion 2052 is a community post (not SDF), quote confirmed.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "'DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026' ... 'It is important to note that SDF has not decided to fund or support any such mechanism; this paper…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/orgs/stellar/discussions/2052",
+      "observedAt": "2026-11-02",
+      "quote": "community post: 'asked whether a rewards mechanism funded from the existing fee pool could improve utility. Mechanics are not defined yet.'"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#4",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#5",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Accurate summary of changes.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#6",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Quotes confirmed on re-fetch.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.stellofi.com/docs",
+      "observedAt": "2026-11-02",
+      "quote": "'sXLM is the vault share token of the StelloFi protocol.' ... 'No strategy allocation is implemented, so it does not rise on its own today' ... 'Stellar has no …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellofi.com",
+      "observedAt": "2026-11-02",
+      "quote": "title 'StelloFi — An XLM Vault on Stellar'; 'There is no strategy allocation yet, so it is currently flat.'; footer 'Native XLM Liquid Staking on Stellar · Soro…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#7",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Re-derived: Scout, Lumenloop, DeFiLlama, web sweeps show no validator-staking XLM derivative.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=liquid%20staking (also q=sXLM, q=StelloFi, q=staked%20XLM)",
+      "observedAt": "2026-11-02",
+      "quote": "liquid staking -> backyard, normal, defindex, for-yield, cushion, meria-defi, arkafund, stellar-defi-hub, spectra-finance, aquarius; sXLM and staked XLM -> exch…"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'liquid staking'}",
+      "observedAt": "2026-11-02",
+      "quote": "2 rows: hatom-protocol, helix"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/protocols",
+      "observedAt": "2026-11-02",
+      "quote": "44 protocols with Stellar in chains; categories Basis Trading, Bridge, CEX, Derivatives, Dexs, Farm, Insurance, Lending, Onchain Capital Allocator, Partially Al…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'Stellar XLM liquid staking protocol mainnet' / 'sXLM liquid staking Stellar' / 'stake XLM native staking rewards 2026'",
+      "observedAt": "2026-11-02",
+      "quote": "hits: stst-lake.vercel.app ('Liquid Yield Layer ... Earn from lending, market making, and liquidity provision'), stellofi.com vault, spield.live 'XLM cannot be …"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-liquid-staking-whitespace#8",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Sibling q-raph-xlm-staking checked: classifies the paper as undecided; consistent.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "'DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026' ... 'It is important to note that SDF has not decided to fund or support any such mechanism; this paper…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#0",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Adds a re-sweep date to a dated, source-bounded negative; re-derived independently. Self-described 'liquid staking' vaults (StelloFi, stst-lake) are non-validator products, already covered by the classification sentence and notes caution.",
+    "sources": [
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'monetary rewards validator Stellar Consensus Protocol' -> https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+      "observedAt": "2026-11-02",
+      "quote": "'There are no monetary rewards for being a validator on the Stellar network'"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=liquid%20staking (also q=sXLM, q=StelloFi, q=staked%20XLM)",
+      "observedAt": "2026-11-02",
+      "quote": "liquid staking -> backyard, normal, defindex, for-yield, cushion, meria-defi, arkafund, stellar-defi-hub, spectra-finance, aquarius; sXLM and staked XLM -> exch…"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'liquid staking'}",
+      "observedAt": "2026-11-02",
+      "quote": "2 rows: hatom-protocol, helix"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/protocols",
+      "observedAt": "2026-11-02",
+      "quote": "44 protocols with Stellar in chains; categories Basis Trading, Bridge, CEX, Derivatives, Dexs, Farm, Insurance, Lending, Onchain Capital Allocator, Partially Al…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'Stellar XLM liquid staking protocol mainnet' / 'sXLM liquid staking Stellar' / 'stake XLM native staking rewards 2026'",
+      "observedAt": "2026-11-02",
+      "quote": "hits: stst-lake.vercel.app ('Liquid Yield Layer ... Earn from lending, market making, and liquidity provision'), stellofi.com vault, spield.live 'XLM cannot be …"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.stellofi.com/docs",
+      "observedAt": "2026-11-02",
+      "quote": "'sXLM is the vault share token of the StelloFi protocol.' ... 'No strategy allocation is implemented, so it does not rise on its own today' ... 'Stellar has no …"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#1",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Symmetric caution tied to the verified paper status; does not loosen the core no-native-reward fact.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "'DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026' ... 'It is important to note that SDF has not decided to fund or support any such mechanism; this paper…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/xlm-utility",
+      "observedAt": "2026-11-02",
+      "quote": "'Illustrative scenarios, not forecasts or commitments.'"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'monetary rewards validator Stellar Consensus Protocol' -> https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+      "observedAt": "2026-11-02",
+      "quote": "'There are no monetary rewards for being a validator on the Stellar network'"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#2",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "note": "Golden text carries dated negatives; scheduled is required.",
+    "sources": []
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#3",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-01-28 is valid and staggered.",
+    "sources": []
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#4",
+    "field": "truth.corroboration[+]",
+    "decision": "accept",
+    "note": "All four evidence rows reproduced. Scout/Lumenloop rows are absence checks, not self-corroboration.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=liquid%20staking (also q=sXLM, q=StelloFi, q=staked%20XLM)",
+      "observedAt": "2026-11-02",
+      "quote": "liquid staking -> backyard, normal, defindex, for-yield, cushion, meria-defi, arkafund, stellar-defi-hub, spectra-finance, aquarius; sXLM and staked XLM -> exch…"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'liquid staking'}",
+      "observedAt": "2026-11-02",
+      "quote": "2 rows: hatom-protocol, helix"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/protocols",
+      "observedAt": "2026-11-02",
+      "quote": "44 protocols with Stellar in chains; categories Basis Trading, Bridge, CEX, Derivatives, Dexs, Farm, Insurance, Lending, Onchain Capital Allocator, Partially Al…"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.stellofi.com/docs",
+      "observedAt": "2026-11-02",
+      "quote": "'sXLM is the vault share token of the StelloFi protocol.' ... 'No strategy allocation is implemented, so it does not rise on its own today' ... 'Stellar has no …"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#5",
+    "field": "truth.corroboration[+]",
+    "decision": "accept",
+    "note": "Same verified PDF quotes.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "'DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026' ... 'It is important to note that SDF has not decided to fund or support any such mechanism; this paper…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/orgs/stellar/discussions/2052",
+      "observedAt": "2026-11-02",
+      "quote": "community post: 'asked whether a rewards mechanism funded from the existing fee pool could improve utility. Mechanics are not defined yet.'"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#6",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#7",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Accurate summary.",
+    "sources": []
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#8",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Reproduced.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=liquid%20staking (also q=sXLM, q=StelloFi, q=staked%20XLM)",
+      "observedAt": "2026-11-02",
+      "quote": "liquid staking -> backyard, normal, defindex, for-yield, cushion, meria-defi, arkafund, stellar-defi-hub, spectra-finance, aquarius; sXLM and staked XLM -> exch…"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'liquid staking'}",
+      "observedAt": "2026-11-02",
+      "quote": "2 rows: hatom-protocol, helix"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/protocols",
+      "observedAt": "2026-11-02",
+      "quote": "44 protocols with Stellar in chains; categories Basis Trading, Bridge, CEX, Derivatives, Dexs, Farm, Insurance, Lending, Onchain Capital Allocator, Partially Al…"
+     },
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "'DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026' ... 'It is important to note that SDF has not decided to fund or support any such mechanism; this paper…"
+     }
+    ]
+   },
+   {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards#9",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Consistent with siblings.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-defi-tvl-current#0",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "A grounded answer takes current chain DeFi TVL from a named, dated TVL provider such as DeFiLlama's Stellar chain endpoints, states the measurement basis, and makes the observation date visible. Directory, research, and news sources supply secondary figures; keep each figure's provider, scope, and date. As of 2026-07-11, the live research results included a 2026-04-23 developer meeting reporting $170M of DeFi TVL; older results reported different figures, demonstrating why provider and date matter.\n\nThe dated example is illustrative: a later grounded answer should report what the same source b…",
+    "note": "Removing 'from the current LumenLoop corpus' is correct: Lumenloop directory/project records carry no TVL field, and content hits are dated secondary mentions. Modified the second sentence: Scout's /api/analyze?dimension=tvl serves a provider-attributed DefiLlama per-project sum ($1.98B incl. Spiko RWA), so 'only dated secondary mentions' mischaracterizes it, and the notes already accept SDF blog …",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'DeFi TVL'}; POST /v1/tools/get_project {slug:'blend'|'defindex'}",
+      "observedAt": "2026-11-02",
+      "quote": "search rows keys category, description, similarity, slug, tags, title, website (20 rows); get_project keys based_in, category, description, links, mainnet, oper…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.search_content_semantic 'Stellar DeFi total value locked TVL'",
+      "observedAt": "2026-11-02",
+      "quote": "top rows dated secondary mentions: nftgators 2024-11-25 'record $61 million TVL'; thedefiant 2025-05-09 'current $48 million'"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=tvl",
+      "observedAt": "2026-11-02",
+      "quote": "totalTvlUSD 1980381301; trackedProjects 17; provider 'DefiLlama'; top row Spiko 1653789314; basis 'Sum of per-project tvlUSD across ACTIVE directory projects tr…"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/v2/chains",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar tvl 227609786.80 (read 2026-11-02T17:4xZ)"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+      "observedAt": "2026-11-02",
+      "quote": "max 2026-10-01 272841590; 2026-05-30 242671595; 2026-06-19 238715806; 2026-06-29 194179178; 2026-10-02 263745151; 2026-11-02 221284211"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-defi-tvl-current#1",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "sls-031 cap removal correct: fixed upstream, DeFindex row now carries tvlAsOf/tvlSource/llamaSlugs/tvlMethodUrl; it was an aggregator partial cap outside ADR-0008. The new source-routing line is verified.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=defindex",
+      "observedAt": "2026-11-02",
+      "quote": "tvlUSD 18732903; tvlAsOf 2026-11-02T13:19:15.688Z; tvlSource 'defillama'; llamaSlugs ['defindex']; tvlMethodUrl https://defillama.com/protocol/defindex"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     },
+     {
+      "class": "B",
+      "ref": "research/decisions/0008-human-review-eval-and-playground-policy.md",
+      "observedAt": "2026-11-02",
+      "quote": "'The accepted set is exactly base reserve, Horizon lifecycle, and RPC pagination.'"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'DeFi TVL'}; POST /v1/tools/get_project {slug:'blend'|'defindex'}",
+      "observedAt": "2026-11-02",
+      "quote": "search rows keys category, description, similarity, slug, tags, title, website (20 rows); get_project keys based_in, category, description, links, mainnet, oper…"
+     },
+     {
+      "class": "C",
+      "ref": "Raven lumenloop.search_content_semantic 'Stellar DeFi total value locked TVL'",
+      "observedAt": "2026-11-02",
+      "quote": "top rows dated secondary mentions: nftgators 2024-11-25 'record $61 million TVL'; thedefiant 2025-05-09 'current $48 million'"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-defi-tvl-current#2",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance label only.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-defi-tvl-current#3",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Reproduced: same row keys; no TVL field or text.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'DeFi TVL'}; POST /v1/tools/get_project {slug:'blend'|'defindex'}",
+      "observedAt": "2026-11-02",
+      "quote": "search rows keys category, description, similarity, slug, tags, title, website (20 rows); get_project keys based_in, category, description, links, mainnet, oper…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-defi-tvl-current#4",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Reproduced within intraday drift (my reads: /v2/chains 227609786.80; 2026-11-02 point 221284211); other points identical; notes say 'about'.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/v2/chains",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar tvl 227609786.80 (read 2026-11-02T17:4xZ)"
+     },
+     {
+      "class": "D",
+      "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+      "observedAt": "2026-11-02",
+      "quote": "max 2026-10-01 272841590; 2026-05-30 242671595; 2026-06-19 238715806; 2026-06-29 194179178; 2026-10-02 263745151; 2026-11-02 221284211"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-defi-tvl-current#5",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Reproduced DeFindex fields live.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=defindex",
+      "observedAt": "2026-11-02",
+      "quote": "tvlUSD 18732903; tvlAsOf 2026-11-02T13:19:15.688Z; tvlSource 'defillama'; llamaSlugs ['defindex']; tvlMethodUrl https://defillama.com/protocol/defindex"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-defi-tvl-current#6",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Sibling flags go to the ledger; no edit here.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-defi-tvl-current#7",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "note": "Fact verified. Minor: golden-truth Step 5 routes eval-side authoring flaws to a .agents/TODO.md entry; if the lint rejects a free-text rootCause, point this at a TODO entry instead.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'DeFi TVL'}; POST /v1/tools/get_project {slug:'blend'|'defindex'}",
+      "observedAt": "2026-11-02",
+      "quote": "search rows keys category, description, similarity, slug, tags, title, website (20 rows); get_project keys based_in, category, description, links, mainnet, oper…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-defi-tvl-current#8",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "note": "Verified resolved finding.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/resolved.json (sls-013, sls-031, sls-042)",
+      "observedAt": "2026-11-02",
+      "quote": "sls-013 resolved 2026-07-14 'funding analysis serves computedAt, methodologyVersion, countBasis and 41 byRound rows'; sls-031 resolved 2026-07-14 'DeFindex carr…"
+     }
+    ]
+   },
+   {
+    "id": "q-raph-xlm-staking#none",
+    "field": "(no proposed change)",
+    "decision": "accept",
+    "note": "No change proposed. Re-checked the paper status and SCP no-reward quote; golden, scheduled tag, and reverifyBy 2027-02-18 stay consistent with the two staking siblings after pass 2.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "'DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026' ... 'It is important to note that SDF has not decided to fund or support any such mechanism; this paper…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/xlm-utility",
+      "observedAt": "2026-11-02",
+      "quote": "'Illustrative scenarios, not forecasts or commitments.'"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/orgs/stellar/discussions/2052",
+      "observedAt": "2026-11-02",
+      "quote": "community post: 'asked whether a rewards mechanism funded from the existing fee pool could improve utility. Mechanics are not defined yet.'"
+     },
+     {
+      "class": "E",
+      "ref": "Raven stellarDocs.search_docs 'monetary rewards validator Stellar Consensus Protocol' -> https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+      "observedAt": "2026-11-02",
+      "quote": "'There are no monetary rewards for being a validator on the Stellar network'"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://stellarlight.xyz/api/clusters?dimension=category",
+   "https://stellarlight.xyz/api/analyze?dimension=categories",
+   "https://stellarlight.xyz/api/analyze?dimension=funding",
+   "https://stellarlight.xyz/api/analyze?dimension=tvl",
+   "https://stellarlight.xyz/api/projects/search?q=defindex",
+   "https://stellarlight.xyz/api/projects/search?q=liquid%20staking",
+   "https://stellarlight.xyz/api/projects/search?q=sXLM",
+   "https://stellarlight.xyz/api/projects/search?q=StelloFi",
+   "https://stellarlight.xyz/api/projects/search?q=staked%20XLM",
+   "https://api.llama.fi/v2/chains",
+   "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+   "https://api.llama.fi/protocols",
+   "POST https://api.lumenloop.com/v1/tools/search_directory (DeFi TVL; liquid staking)",
+   "POST https://api.lumenloop.com/v1/tools/get_project (blend; defindex)",
+   "Raven execute: scout.getClusters, scout.analyzeEcosystem, stellarDocs.search_docs, lumenloop.search_content_semantic",
+   "https://communityfund.stellar.org/",
+   "https://communityfund.stellar.org/awards",
+   "https://www.stellofi.com/docs",
+   "https://stellofi.com",
+   "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+   "https://github.com/orgs/stellar/discussions/2052",
+   "https://stellar.org/xlm-utility",
+   "Parallel web_search (3 queries) -> stst-lake.vercel.app, spield.live, stakingcrypto.io, stakingrewards.com, stellofi.com, whalehub.io, bitrue.com, plisio.net, stellofi.vercel.app, evedex.com"
+  ]
+ },
+ "applier": {}
+}

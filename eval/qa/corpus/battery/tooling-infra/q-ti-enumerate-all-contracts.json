@@ -35,7 +35,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2027-01-07",
+    "reverifyBy": "2027-06-28",
     "sources": [
       {
         "class": "A",
@@ -108,22 +108,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-52 primary process 3356 and blind process 3368 independently agreed on live-versus-ever/state-table semantics; blind matrix sealed before primary read and added RPC/provider provenance.",
-        "Sibling sweep checked Hubble/Galexie/indexer, contract build/upgrade, Wasm-size, and archive cases; no sibling now equates code hashes with deployments.",
-        "Structural re-form (compound-predicate): Split the RPC coverage fact and moved the canonical/completeness tail to the existing avoid; all provider, ingestion, state, Wasm, and SAC distinctions are unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries — RPC still retrieves explicit ledger keys rather than enumerating all contracts.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival — live, archived, and all-ever coverage remain different sets.",
-        "Live re-check 2026-08-27: https://github.com/stellar/laboratory/blob/5e4343067bb936b68bf678ea81e6b7557cbc54f2/src/query/external/useSEContractsList.ts — Lab contract listing still records StellarExpert provider provenance.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/history-vs-state-tables — Hubble state/history and complete ledger ingestion remain the controlled-coverage paths.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — contract instances, Wasm code hashes, and SAC built-ins remain distinct ledger concepts.",
-        "Sibling sweep 2026-08-27: grep enumerate all contracts|Lab/StellarExpert|contract instances|Wasm code hashes|all-ever → q-ti-enumerate-all-contracts, q-ti-enumerate-holders-airdrop; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side coverage/provenance incompleteness; Lab/StellarExpert contract-list provenance is recorded as a research candidate because no existing deduped upstream finding owns it.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries — 'The maximum number of ledger keys accepted is 200.'; getEvents keeps a bounded 120960-ledger default.",
+        "Live B 2026-11-02: https://github.com/stellar/laboratory/blob/main/src/query/external/useSEContractsList.ts (main a9bd4ee49c, 2026-10-29) — 'StellarExpert API to get smart contracts list ... fetch(`${STELLAR_EXPERT_API}/${network}/contract?...'.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/contract-data — contract_id and deleted columns.",
+        "Sibling sweep 2026-11-02: q-ti-enumerate-holders-airdrop, q-infra-which-indexer; no contradiction. No gospel change."
       ]
     },
     "origin": "raven-next q-ti-enumerate-all-contracts"

@@ -29,8 +29,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-10-06",
-    "reverifyBy": "2027-02-09",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-09",
     "sources": [
       {
         "class": "B",
@@ -44,19 +44,20 @@
       }
     ],
     "verified": {
-      "date": "2026-10-06",
-      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
-        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — 'Active (Interactive components are deprecated in favor of SEP-24)'.",
-        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — Hosted Deposit and Withdrawal, Active.",
-        "Live A 2026-10-06: https://developers.stellar.org/docs/learn/fundamentals/anchors — programmatic SEP-6 versus hosted SEP-24; no deprecation text.",
-        "Live E 2026-10-06: Stellar Docs search for 'SEP-6 interactive deprecated SEP-24' returns no deprecation text.",
-        "Improvement status 2026-10-06: improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md is declined-upstream, so the grader caution stays durable.",
-        "Sibling sweep 2026-10-06: grep interactive components|SEP-6 deprecat → q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-vs-31-misnumber-trap, q-comp-sep6-vs-sep12-roles; no contradiction."
-      ],
-      "rootCause": [
-        "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md — \"Status: Active (Interactive components are deprecated in favor of SEP-24) ... Updated: 2025-09-10 ... Version 4.3.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed-as-of)",
+        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed-as-of)",
+        "[E] stellarDocs.search_docs 'SEP-6 interactive deprecated SEP-24' (observedAt 2026-11-02T15:51:10Z) — \"No hit carries deprecated-status text; docs only contrast SEP-6 programmatic vs SEP-24 hosted (sd-009, declined-upstream).\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed-as-of)",
+        "[A] https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — \"SEP-24 is the alternative to SEP-6 which supports hosted deposits and withdrawals. ... SEP-6 is the alternative to SEP-24 that supports an API-style solution for the same use case.\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0006](sep-0006.md) | Deposit and Withdrawal API | SDF | Active |\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"Title: Hosted Deposit and Withdrawal / Status: Active / Updated: 2025-09-10 / Version 3.8.0\" (observedAt 2026-11-02; supports golden.answer: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0024](sep-0024.md) | Hosted Deposit and Withdrawal | SDF | Active |\" (observedAt 2026-11-02; supports golden.answer: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md — \"Title: Cross-Border Payments API / Status: Active ... Sending Anchor ... Must have a business relationship with the Receiving Anchor.\" (observedAt 2026-11-02; supports golden.avoid[1]: confirmed)",
+        "[B] improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md — \"status: declined-upstream\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: checked q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction with this case's facts."
       ]
     },
     "origin": "raven-next q-sep-6-24-deprecation",

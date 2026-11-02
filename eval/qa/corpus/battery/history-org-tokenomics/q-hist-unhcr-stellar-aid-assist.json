@@ -80,25 +80,21 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
       "evidence": [
-        "https://ukraine.un.org/en/211593-unhcr-launches-pilot-cash-based-intervention-using-blockchain-technology-humanitarian",
-        "https://www.coindesk.com/consensus-magazine/2023/04/17/stellar-aid-assist-uses-stablecoins-for-humanitarian-relief",
-        "https://stellar.org/blog/foundation-news/one-year-of-stellar-aid-assist",
-        "https://stellar.org/blog/foundation-news/stellar-aid-assist-2-year-anniversary",
-        "stellar-raven execute artifact b53313aa-d7db-4ff8-872a-5f24f9220bf7",
-        "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol review",
-        "Sibling sweep: exact anniversary-post amounts were removed from judge-facing gospel because no independent source class was found; the answer retains only the independently corroborated launch flow and the attribution rule.",
-        "Structural re-form (compound-predicate): Split the aid flow and snapshot-attribution claims, then moved the unsupported-metrics trap to avoid; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://www.unhcr.org/ua/en/news/unhcr-launches-pilot-cash-based-intervention-using-blockchain-technology-humanitarian-payments — UNHCR still documents the Ukraine USDC wallet and MoneyGram cash-out flow.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/stellar-aid-assist-2-year-anniversary — the later issuer snapshot still uses its own date, amount, household unit, and Ukraine scope.",
-        "Sibling sweep 2026-08-27: grep UNHCR|Stellar Aid Assist|aid disbursement → q-pay-sdp-disbursement, q-pay-travel-rule-aid-flows; no contradiction"
+        "[A] golden.keyFacts[0] (confirmed): https://www.unhcr.org/ua/en/news/unhcr-launches-pilot-cash-based-intervention-using-blockchain-technology-humanitarian-payments :: 15 December 2022; \"UNHCR, in collaboration with United Nations International Computing Centre (UNICC) ... distributes assistance in Circle Internet Financial's USD Coin (USDC) ... directly into a recipient's Vibrant digital wallet ... withdraw their funds at any global MoneyGram location\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[0] (confirmed): https://cointelegraph.com/news/stellar-partners-with-unhcr-to-give-ukrainian-refugees-cash-via-usdc :: Dec 16, 2022: \"The USDC tokens will be redeemable at any MoneyGram location.\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[0] (confirmed): https://www.nrc.no/globalassets/pdf/reports/mitigating-financial-sector-derisking-through-innovation-the-role-of-digital-technologies-in-humanitarian-fund-transfers/20231220-nrc-techderisking-outcome-paper_final.pdf :: \"UNHCR, with technical support from the Stellar Development Foundation, launched SAA in December 2022 to disburse humanitarian aid in Ukraine.\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[1] (confirmed): https://stellar.org/blog/foundation-news/stellar-aid-assist-2-year-anniversary :: date 2024-12-19; \"UNHCR has successfully disbursed $4.6 million since inception to some 2,500 households in Ukraine\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[1] (confirmed): https://stellar.org/blog/foundation-news/one-year-of-stellar-aid-assist :: date 2023-12-20 (individuals unit per prior record) (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-pay-sdp-disbursement, q-pay-travel-rule-aid-flows checked; consistent; attributed snapshot units unchanged.",
+        "No judge-facing change; prior verification event 2026-08-27 is in git history.",
+        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
       ],
       "rootCause": [
         "Issuer-reported individuals, households, countries, and amount windows were treated as interchangeable.",
         "Eval metadata incorrectly labeled independently corroborated primary-source history as corpus-only.",
-        "solo://proj/49/todo/golden-truth-review--972",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },

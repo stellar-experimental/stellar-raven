@@ -1,0 +1,1078 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "history-org-tokenomics-02",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-hot-fee-pool-burn-deflation",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Fees go to the fee pool; the pool is inaccessible and non-circulating but stays inside totalCoins under the conservation invariant.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/invariant/ConservationOfLumens.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "if (!addBalance(sumBalance, header.feePool)) ... if (sumBalance != header.totalCoins)"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "header.current().feePool += fee;"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "No one has access to the fee pool, so these lumens are non-circulating. Network validators could theoretically vote for a protocol change that would affect the …"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "ledger 65269887 (2026-11-02T16:00:19Z): total_coins 105443902087.3472865, fee_pool 10966277.6399585, protocol_version 29"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Validators ended inflation on 2019-10-28 via CAP-26 (Protocol 12).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Disable Inflation Mechanism / Status: Final / Protocol version: 12"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "This \"network inflation\" was ended by validator vote on October 28, 2019."
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask (bullrunners.com/blog/xrp-vs-stellar-xlm, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "October 28, 2019: validators voted to end inflation."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "SDF burned about 55.44B XLM on 2019-11-04.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/sdfs-next-steps",
+       "observedAt": "2026-11-02",
+       "quote": "To burn the lumens, we have sent them to a Stellar account with no signers ... GALAXYVOIDAOPZTDLHILAJQKCVVFMD4IKLXLSZV5YHO7VY74IWZILUTO"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GALAXYVOIDAOPZTDLHILAJQKCVVFMD4IKLXLSZV5YHO7VY74IWZILUTO",
+       "observedAt": "2026-11-02",
+       "quote": "native balance 55442115249.9502152"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask 2026-11-02 citing developers.stellar.org lumens page",
+       "observedAt": "2026-11-02",
+       "quote": "The SDF burn occurred on November 4, 2019: it sent 55,442,095,285.7418 XLM to an inaccessible account."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Trap: CAP-5 is not the inflation-removal CAP; fees are not paid to validators; fees are not auto-burned from totalCoins.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Disable Inflation Mechanism"
+      },
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/invariant/ConservationOfLumens.cpp",
+       "observedAt": "2026-11-02",
+       "quote": "sumBalance (incl. feePool) must equal header.totalCoins"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Future protocol changes could alter fee-pool treatment (now concretely raised by SDF's 2026-10 fee-pool activation whitepaper).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/xlm-utility",
+       "observedAt": "2026-11-02",
+       "quote": "XLM Rewards Pool Explorer: Model how network growth, fee levels, and funding choices could support rewards for locked XLM over ten years. | Download the whitepa…"
+      },
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "PDF title: Evolving Network Utility: Evaluating the Activation of Stellar's Fee Pool; Author: Stellar Development Foundation; CreationDate 2026-10-26; sections …"
+      },
+      {
+       "class": "C",
+       "ref": "Raven lumenloop.search_content_semantic 'XLM rewards mechanism funded from fee pool Meridian 2026'",
+       "observedAt": "2026-11-02",
+       "quote": "XLM Rewards Pool Explorer ... a whitepaper and interactive modeling tool designed to help the ecosystem understand how network growth, transaction fees, and fun…"
+      },
+      {
+       "class": "D",
+       "ref": "https://tearsheet.co/blockchain-crypto/at-meridian-stellar-makes-the-case-that-utility-should-drive-the-network/",
+       "observedAt": "2026-11-02",
+       "quote": "An SDF post featuring Tomer Weller ... asks whether a rewards mechanism funded from the network's existing fee pool could improve the network's utility."
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/StellarOrg/status/2115410923582292477",
+       "observedAt": "2026-11-02",
+       "quote": "But could a rewards mechanism created from the network's existing fee pool improve the network's utility? @tomerweller at #Meridian2026"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/orgs/stellar/discussions/2051",
+       "observedAt": "2026-11-02",
+       "quote": "'Rewards and locked up xlm' (Tokenomics category, created 2026-10-28); community thread, no CAP yet"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "append-text",
+     "new": "\n2026-11-02 freshness note: SDF's whitepaper \"Evolving Network Utility: Evaluating the Activation of Stellar's Fee Pool\" (stellar.org/xlm-utility, presented at Meridian 2026 on 2026-10-28) opens a discussion of a rewards mechanism for locked XLM funded from the existing fee pool. As of 2026-11-02 it is a discussion proposal, not adopted protocol behavior. Do not penalize an answer that cites it as a dated proposal; grade a claim that the fee pool already pays holder rewards, or that the proposal is adopted, as wrong.",
+     "reason": "New first-party SDF fee-pool activation proposal (2026-10-28) is a true current fact that a grounded answer may cite; grader needs a dated caution separating proposal from live behavior."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-protocol-ledger-header-fields; q-pc-fee-bump-channel-accounts-feepool; q-token-initial-supply-distribution; q-protocol-24-whisk-incident"
+  },
+  {
+   "id": "q-hot-sdf-transparency-wallets-reports",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "The SDF Mandate page gives bucket definitions, displayed timestamps, and named StellarExpert account links.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "Last updated: October 31, 2026 at 12.19 AM UTC ... Last updated: October 28, 2026 at 6.11 PM UTC; 13 stellar.expert/explorer/public/account links"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GB6NVEN5HSUBKMYCE5ZOWSK5K23TBWRUQLZY3KNMXUZ3AQ2ESC4MY4AQ",
+       "observedAt": "2026-11-02",
+       "quote": "native balance 1975727279.7861417 = mandate row 'Direct Development, Available Funds ... 1,975,727,280'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "The Quarterly Reports landing page carries the report series.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/quarterly-reports",
+       "observedAt": "2026-11-02",
+       "quote": "Summary of Q3 2026 ... Q3 2026 | Report | Q2 2026 | Report ... Q1 2020 | Report"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 2026-11-02 (tradingview coinmarketcal 'Stellar (XLM) - Quarterly Report - 04 May 2026')",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation will host a live quarterly report on 4 May 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Trap: inferring ownership from size, summing mismatched timestamps, treating samples as exhaustive.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "Bucket tables carry different Last updated stamps (Oct 28 to Oct 31, 2026) and the page says balances 'will be made available again on this page imminently'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-hot-sdf-xlm-holdings-sales; q-org-sdf-mandate-buckets; q-org-sdf-structure-mandate"
+  },
+  {
+   "id": "q-hot-sdf-xlm-holdings-sales",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SDF sells existing XLM through Kraken, Coinbase, Bitstamp, and direct sales for operating expenses and mandate work.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "The SDF sells XLM from this account on public exchanges like Kraken, Coinbase, and Bitstamp and through direct sales, in order to pay for the operational expens…"
+      },
+      {
+       "class": "D",
+       "ref": "https://app.blockworks.com/report/state-of-stellar-q1-2026 (via perplexity_search)",
+       "observedAt": "2026-11-02",
+       "quote": "SDF Development: 2.56 billion XLM ... This account covers SDF's operational expenses"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Current disclosures discuss liquidity and price discovery.",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "0 matches for 'price' or 'discovery'; 'SDF helps increase liquidity by funding market-making programs for key assets'"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate/2019",
+       "observedAt": "2026-11-02",
+       "quote": "0 matches for 'price' or 'discovery'"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/sdfs-next-steps",
+       "observedAt": "2026-11-02",
+       "quote": "0 matches for 'price' or 'discovery'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "The November 2019 announcement said SDF would not burn additional lumens; no newer primary burn plan found.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/sdfs-next-steps",
+       "observedAt": "2026-11-02",
+       "quote": "SDF will not burn any additional lumens."
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 'Stellar Development Foundation XLM burn announcement 2026' (recency year)",
+       "observedAt": "2026-11-02",
+       "quote": "No 2026 burn announcement; results describe the 2019 burn and the 2026-10-28 fee-pool rewards discussion"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/xlm-utility",
+       "observedAt": "2026-11-02",
+       "quote": "Fee-pool activation whitepaper models rewards for locked XLM; outline has no burn section"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Trap: SDF pegs or guarantees XLM price.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "0 matches for 'peg' or 'price' on the current mandate page"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "Current mandate disclosures discuss liquidity and market-making support, but they do not promise",
+     "reason": "'price discovery' is not found on the cited mandate, 2019 mandate, or Next Steps pages; 'liquidity' and 'market-making programs' are verbatim on the current mandate."
+    }
+   ],
+   "rootCause": [
+    "Eval-side authoring flaw: answer paraphrased mandate liquidity text as 'price discovery', a phrase no cited primary source carries."
+   ],
+   "siblings": "q-hot-sdf-transparency-wallets-reports; q-org-sdf-mandate-buckets; q-org-sdf-structure-mandate; q-hot-fee-pool-burn-deflation"
+  },
+  {
+   "id": "q-org-mazieres-chief-scientist",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SDF team-page data describes Mazières as 'Founder and Chief Scientist' while the rendered Leadership card shows only his name.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/team",
+       "observedAt": "2026-11-02",
+       "quote": "page data: \"description\":\"Founder and Chief Scientist\" in the card object whose \"title\":\"David Mazières\"; rendered Leadership list: 'Candace Kelly', 'David Mazi…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/people?q=Mazi&limit=10",
+       "observedAt": "2026-11-02",
+       "quote": "{'name': 'David Mazières', 'role': 'Founder and Chief Scientist', 'section': 'Leadership', 'sourceUrl': 'https://stellar.org/foundation/team', 'observedAt': '20…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Mazières is an SDF co-founder.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://fdc.stanford.edu/people/david-mazieres",
+       "observedAt": "2026-11-02",
+       "quote": "He is also a co-founder of Intrinsic, Inc and Stellar Development Foundation."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/team",
+       "observedAt": "2026-11-02",
+       "quote": "\"description\":\"Founder and Chief Scientist\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Single author of the 2015 SCP paper; Stanford CS professor.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/39856a57fa0c6e7d646b7db88f48f17688693fe4.pdf (linked from https://www.stellar.org/papers/stellar-consensus-protocol)",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus DAVID MAZIÈRES, Stellar Development Foundation"
+      },
+      {
+       "class": "D",
+       "ref": "https://fdc.stanford.edu/people/david-mazieres",
+       "observedAt": "2026-11-02",
+       "quote": "David Mazières Professor of Computer Science"
+      }
+     ]
+    },
+    {
+     "field": "truth.sources[1].ref",
+     "claim": "Provenance link https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf still resolves.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "404 Not Found (OpenBSD httpd)"
+      },
+      {
+       "class": "B",
+       "ref": "https://www.scs.stanford.edu/~dm/",
+       "observedAt": "2026-11-02",
+       "quote": "homepage now links href=\"https://www.stellar.org/papers/stellar-consensus-protocol.pdf\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.sources[1].ref",
+     "op": "replace",
+     "new": "https://www.stellar.org/papers/stellar-consensus-protocol",
+     "reason": "The Stanford PDF URL returns 404 on 2026-11-02; Mazières' homepage now links the stellar.org paper page."
+    },
+    {
+     "field": "truth.corroboration[1].evidence[1].ref",
+     "op": "replace",
+     "new": "https://www.stellar.org/papers/stellar-consensus-protocol",
+     "reason": "Same dead link in the corroboration row."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-hist-scp-rewrite-2015; q-protocol-scp-consensus-algorithm; q-edge-validators-reverse-tx-fork-detection; q-hist-meridian-2026-corrected-venue"
+  },
+  {
+   "id": "q-org-sdf-board-directors",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Board: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/team",
+       "observedAt": "2026-11-02",
+       "quote": "'Board of directors', 'Jed McCaleb', 'Lin-Hua Wu', 'Ronaldo Lemos', 'Ginger Baker', 'Asiff Hirji', 'Advisors'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "counts {'returned': 5, 'total': 5}; same five names; meta.observedAt '2026-07-19'"
+      },
+      {
+       "class": "D",
+       "ref": "https://legalclarity.org/who-owns-lumens-stellar-foundation-and-xlm-holders/ (perplexity_search)",
+       "observedAt": "2026-11-02",
+       "quote": "The foundation's board of directors includes co-founder Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "getPeople with section 'Board of directors' returns rows with role, sourceUrl, observedAt; pagination counts present.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "{'name': 'Asiff Hirji', 'role': 'President of MoonPay', 'section': 'Board of directors', 'sourceUrl': 'https://stellar.org/foundation/team', 'observedAt': '2026…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.getPeople({section:'Board of directors'})",
+       "observedAt": "2026-11-02",
+       "quote": "counts returned 5 total 5; source https://stellar.org/foundation/team"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02, the official page listed",
+     "reason": "Scheduled re-verification on 2026-11-02 found the same five names on the official page; refresh the dated observation."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "set",
+     "new": "2026-11-02",
+     "reason": "Re-observed."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "set",
+     "new": "2027-04-12",
+     "reason": "Staggered into the batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-org-mazieres-chief-scientist"
+  },
+  {
+   "id": "q-org-sdf-enterprise-fund",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Venture-style fund; SDF says portfolio totals over $100m.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/enterprise-fund",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Enterprise Fund is a venture-style fund for growing the open-source Stellar network. ... with our portfolio totaling over $100m."
+      },
+      {
+       "class": "D",
+       "ref": "https://goldi.ai/intelligence/vc/stellar-development-foundation (perplexity_search 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "Fund Size $100M"
+      },
+      {
+       "class": "C",
+       "ref": "Raven lumenloop.search_content_semantic 'Stellar Enterprise Fund portfolio over $100 million'",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Development Foundation debuts $30 million matching fund ... part of its Enterprise Fund venture arm (2022-03-15)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "MoneyGram stake came from SDF cash treasury, not the Enterprise Fund.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international",
+       "observedAt": "2026-11-02",
+       "quote": "The investment was made out of SDF's own cash treasury, the assets set aside to support the operations of the SDF, rather than the Enterprise Fund"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.ledgerinsights.com/stellar-blockchain-invests-in-moneygram/",
+       "observedAt": "2026-11-02",
+       "quote": "the money came from the SDF treasury used for SDF operations, not its Enterprise Fund"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-vs-sdf-enterprise-fund; q-scf-total-distributed; q-scf-ecosystem-listing-partner-jobs; q-scf-how-to-apply"
+  },
+  {
+   "id": "q-org-sdf-mandate-buckets",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "2019 buckets: Direct Development, Ecosystem Support, Use-Case Investment, User Acquisition; 2025-era: SDF Development, Stellar Growth, Product and Innovation, Assets and Liquidity.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "In 2019, SDF divided its XLM holdings into four main accounts: Direct Development, Ecosystem Support, Use-Case Investment and User Acquisition. ... in 2025, the…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate/2019",
+       "observedAt": "2026-11-02",
+       "quote": "Direct Development ... Ecosystem Support ... Use-Case Investment ... User Acquisition"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/StellarOrg/status/2019804472789119127 (2026-02-06)",
+       "observedAt": "2026-11-02",
+       "quote": "Foundation accounts now map clearly to the four mandate allocations ... -Development -Product & Innovation -Growth -Assets & Liquidity"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Page says real-time balances return 'imminently' while rendering dated rows.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "real-time public balances of XLM held by SDF will be made available again on this page imminently ... Last updated: October 31, 2026 at 12.19 AM UTC / October 3…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Trap: 2017 previous-mandate route is not the 2019 taxonomy.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate/2017",
+       "observedAt": "2026-11-02",
+       "quote": "50% for distribution via the Direct Sign-up Program 25% ... Partnership Program 20% ... Bitcoin Program 5% held by SDF"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-hot-sdf-transparency-wallets-reports; q-hot-sdf-xlm-holdings-sales; q-org-sdf-structure-mandate"
+  },
+  {
+   "id": "q-org-sdf-structure-mandate",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "SDF is a Delaware non-stock nonprofit corporation.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/terms-of-service",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation (the \"SDF\", \"we\", or \"us\"), a Delaware non-profit corporation"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.lobbyfacts.eu/datacard/stellar-development-foundation?rid=244864450367-86",
+       "observedAt": "2026-11-02",
+       "quote": "SDF is a U.S.-based nonstock, nonprofit organization that contributes to the development and growth of the Stellar network"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Mission of equitable access; self-funded, pays taxes, no shareholders.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "SDF is a non-profit organization with a mission: \"creating equitable access to the global financial system leveraging Stellar.\" SDF is not a charity. It is self…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/quarterly-reports",
+       "observedAt": "2026-11-02",
+       "quote": "SDF has no shareholders, no dividends, and no profit motive."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Trap: ~30B as a current reserve.",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate",
+       "observedAt": "2026-11-02",
+       "quote": "Bucket totals 2,565,372,641 + 5,228,218,231 + 3,393,741,531 + 3,293,165,235 with differing Last updated stamps (2026-10-28 to 2026-10-31)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "As of July 21st, 2026 ... \"sdfMandate\" : \"15563517195.789479\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-org-sdf-mandate-buckets; q-hot-sdf-xlm-holdings-sales; q-hot-sdf-transparency-wallets-reports; q-org-mazieres-chief-scientist"
+  },
+  {
+   "id": "q-token-circle-usdc-on-stellar",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Mainnet issuer GA5Z...KZVN; GBBD...FLA5 is Testnet.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN ... Stellar Testnet USDC-GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+       "observedAt": "2026-11-02",
+       "quote": "home_domain circle.com; mainnet lookup of GBBD...FLA5 returns 404; testnet GBBD...FLA5 home_domain centre.io"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Circle release notes: Stellar mainnet support 2026-05-18; SDF/Circle public-live announcement 2026-05-19.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/release-notes/cctp-2026.md",
+       "observedAt": "2026-11-02",
+       "quote": "**2026.05.18** Added support for Stellar mainnet."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Circle CCTP is Live on Stellar (foundation-news index: May 19, 2026)"
+      },
+      {
+       "class": "D",
+       "ref": "https://x.com/circle/status/2056767949445472739",
+       "observedAt": "2026-11-02",
+       "quote": "CCTP is now live on @StellarOrg ... May 19, 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Non-EEA terms name Circle Internet Financial, LLC; EEA involves Circle Internet Financial Europe SAS.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.circle.com/legal/usdc-terms",
+       "observedAt": "2026-11-02",
+       "quote": "USDC is a digital token issued by Circle Internet Financial, LLC ... these Terms only apply to USDC held by persons located outside of the EEA. From July 1st 20…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-cctp-v2-usdc-stellar; q-hist-cctp-stellar-live-announcement; q-tool-cctp-stellar-integration; q-raph-usdc-onto-stellar; q-eco-stablecoins-on-stellar"
+  },
+  {
+   "id": "q-token-initial-supply-distribution",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "100B created at genesis, not mined; plan 50/25/20/5 (20% = 19% BTC + 1% XRP).",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate/2017",
+       "observedAt": "2026-11-02",
+       "quote": "At the genesis of the Stellar Network, 100 billion lumens (XLM) were created as specified in the protocol. ... 50% ... Direct Sign-up Program 25% ... Partnershi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "\"originalSupply\" : \"100000000000\""
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "total_coins 105443902087.3472865 = 100B original + 5,443,902,087.3472865 inflation"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Stripe's $3M 2014 loan was later repaid with 2B lumens.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/foundation/mandate/2017",
+       "observedAt": "2026-11-02",
+       "quote": "In 2014, SDF received a loan of $3,000,000 from Stripe which was subsequently repaid with 2B lumens"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity search sweep 2026-11-02",
+       "observedAt": "2026-11-02",
+       "quote": "No contradicting account found"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Inflation disabled by Protocol 12/CAP-26 on 2019-10-28; November treasury burn distinct.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md",
+       "observedAt": "2026-11-02",
+       "quote": "Status: Final / Protocol version: 12"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+       "observedAt": "2026-11-02",
+       "quote": "ended by validator vote on October 28, 2019"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-hot-fee-pool-burn-deflation"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5), 2026-11-02; proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-hot-fee-pool-burn-deflation",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "\n2026-11-02 freshness note: SDF's discussion paper \"Evolving Network Utility: Evaluating the Activation of Stellar's Fee Pool\" (October 2026, linked from stellar.org/xlm-utility, presented at Meridian 2026 on 2026-10-28) explores a possible rewards mechanism for locked XLM funded from the existing fee pool. As of 2026-11-02 it is a discussion paper only: SDF states it has not decided to fund or support any such mechanism, and any proposal needs a validator vote. Do not penalize an answer that cites it as a dated proposal; grade a claim that the fee pool already pays holder rewards, or that the…",
+    "note": "Core facts confirmed across A, B, C, D. Modified only to match the primary wording: the paper calls itself a 'discussion paper', and SDF says it has not decided to fund or support any mechanism; 'discussion proposal' slightly overstates SDF's position. Paper also restates the fee pool 'under current rules, cannot be spent' and 'no protocol reward to validators', which supports the existing golden …",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "Evolving Network Utility: Evaluating the Activation of Stellar's Fee Pool / DISCUSSION PAPER FOR COMMUNITY FEEDBACK | OCTOBER 2026 ... Any ultimate proposal wou…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/xlm-utility",
+      "observedAt": "2026-11-02",
+      "quote": "XLM Rewards Pool Explorer: Model how network growth, fee levels, and funding choices could support rewards for locked XLM over ten years. Download the whitepape…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/orgs/stellar/discussions/2051",
+      "observedAt": "2026-11-02",
+      "quote": "GitHub GraphQL search: 'Rewards and locked up xlm', category Tokenomics, createdAt 2026-10-28T13:19:46Z; follow-up #2052 'Supply, sinks, a comparative model and…"
+     },
+     {
+      "class": "D",
+      "ref": "https://x.com/StellarOrg/status/2115410923582292477",
+      "observedAt": "2026-11-02",
+      "quote": "But could a rewards mechanism created from the network's existing fee pool improve the network's utility? @tomerweller at #Meridian2026 (11:50 AM, Oct 28, 2026)…"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.tokenpost.com/news/technology/42721",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Org proposed reviewing the network's tokenomics and raised a possible rewards mechanism funded through its existing fee pool ... The proposal was tied t…"
+     },
+     {
+      "class": "D",
+      "ref": "https://meridian.stellar.org/event-details",
+      "observedAt": "2026-11-02",
+      "quote": "Meridian 2026 is a two-day in-person conference taking place October 28-29, 2026 at Convento do Beato in Lisbon, Portugal."
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026",
+      "observedAt": "2026-11-02",
+      "quote": "At Meridian, SDF CPO Tomer Weller introduced a concept for rewarding XLM held, transacted, and settled onchain, drawing from the network's existing fee pool. Fr…"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-sdf-xlm-holdings-sales",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "The old phrase 'price discovery' has no current support in the mandate page, blog, or quarterly-reports index; 'market-making programs' appears verbatim in the mandate page and the 2025 mandate blog. New text is true and better grounded. The market-making funding targets liquidity for key assets on Stellar, not an XLM price, and the sentence keeps the no-peg/floor/guarantee clause, so the meaning …",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/foundation/mandate",
+      "observedAt": "2026-11-02",
+      "quote": "SDF helps increase liquidity by funding market-making programs for key assets, offering grants or incentives for institutions that provide on-chain liquidity ..…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/foundation-news/an-updated-mandate-for-a-growing-stellar-ecosystem",
+      "observedAt": "2026-11-02",
+      "quote": "This account supports asset issuance partnerships with institutions and fintechs, market-making programs, on and off-ramp infrastructure, and the integrations w…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/quarterly-reports",
+      "observedAt": "2026-11-02",
+      "quote": "Raw-HTML grep: 'price discovery' 0 hits; latest listed report Q3 2026. Q2 2026 report (https://cdn.sanity.io/files/e2r40yh6/production-i18n/0da602cf8d9aacb3ecb1…"
+     },
+     {
+      "class": "D",
+      "ref": "https://messari.io/report/state-of-stellar-q4-2025",
+      "observedAt": "2026-11-02",
+      "quote": "Assets and Liquidity : 3.5 billion XLM ... Used to support collaborations for asset issuance with institutions and fintechs, market-making programs, on and of[f…"
+     }
+    ]
+   },
+   {
+    "id": "q-org-mazieres-chief-scientist",
+    "field": "truth.sources[1].ref",
+    "decision": "modify",
+    "newText": "https://www.stellar.org/papers/stellar-consensus-protocol.pdf",
+    "note": "The old URL is dead (404), so replacing it is right. The proposed URL without '.pdf' lands on a marketing 'learn' page that does not itself name the author or affiliation, so it cannot carry the source note ('Single-author SCP paper naming David Mazières and his SDF affiliation'). The '.pdf' URL is the one Mazières' own papers index links, and it serves the single-author paper with the SDF affilia…",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "curl -L: HTTP 404 text/html (494 bytes)"
+     },
+     {
+      "class": "D",
+      "ref": "https://www.scs.stanford.edu/~dm/home/papers/",
+      "observedAt": "2026-11-02",
+      "quote": "Mazières' own papers index now links href=\"https://www.stellar.org/papers/stellar-consensus-protocol.pdf\" for the SCP paper"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.stellar.org/papers/stellar-consensus-protocol.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "Redirects (HTTP 200, application/pdf) to https://8130068.fs1.hubspotusercontent-na1.net/hubfs/8130068/stellar-consensus-protocol.pdf: 'The Stellar Consensus Pro…"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.stellar.org/papers/stellar-consensus-protocol",
+      "observedAt": "2026-11-02",
+      "quote": "curl -L: redirects to https://stellar.org/learn/stellar-consensus-protocol (text/html); the HTML has no 'Mazi' string and only links 'Download the White Paper' …"
+     }
+    ]
+   },
+   {
+    "id": "q-org-mazieres-chief-scientist",
+    "field": "truth.corroboration[1].evidence[1].ref",
+    "decision": "modify",
+    "newText": "https://www.stellar.org/papers/stellar-consensus-protocol.pdf",
+    "note": "Same reasoning as truth.sources[1].ref. With the class corrected to A and observedAt set to 2026-11-02, this corroboration row then holds A (paper) + D (Stanford profile), two independent classes, which is stronger than the old D + D row.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.stellar.org/papers/stellar-consensus-protocol.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "DAVID MAZIÈRES, Stellar Development Foundation ... Draft of February 25, 2016"
+     },
+     {
+      "class": "D",
+      "ref": "https://fdc.stanford.edu/people/david-mazieres",
+      "observedAt": "2026-11-02",
+      "quote": "David Mazières is a professor of Computer Science at Stanford University ... He is also a co-founder of Intrinsic, Inc and Stellar Development Foundation."
+     }
+    ]
+   },
+   {
+    "id": "q-org-sdf-board-directors",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Same five names confirmed live on the official page today. Stellar Light agrees but its upstream row observedAt is 2026-07-19, so record that date on the C evidence row rather than claiming a 2026-11-02 Stellar Light observation. Web sweep found no contradicting roster.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/foundation/team",
+      "observedAt": "2026-11-02",
+      "quote": "Rendered text (raw HTML, tags stripped): 'Board of directors | Jed McCaleb | Lin-Hua Wu | Ronaldo Lemos | Ginger Baker | Asiff Hirji | Advisors | Patrick Collis…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
+      "observedAt": "2026-11-02",
+      "quote": "counts {returned: 5, total: 5}; rows Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji; source https://stellar.org/foundation/team; row observed…"
+     },
+     {
+      "class": "D",
+      "ref": "https://legalclarity.org/who-owns-lumens-stellar-foundation-and-xlm-holders/",
+      "observedAt": "2026-11-02",
+      "quote": "The foundation's board of directors includes co-founder Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji. (dated 2026-06-15; via Perplexity…"
+     }
+    ]
+   },
+   {
+    "id": "q-org-sdf-board-directors",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Consistent with the golden.answer date change. The corroboration[0] claim text and both evidence observedAt values should move to 2026-11-02 for A, with the C row's observedAt set to the service's 2026-07-19 row date (or annotated).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/foundation/team",
+      "observedAt": "2026-11-02",
+      "quote": "Board of directors: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji"
+     }
+    ]
+   },
+   {
+    "id": "q-org-sdf-board-directors",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-04-12 falls inside the batch's assigned reverify window and keeps a scheduled date on a volatile roster; it does not drop the as-of date.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "/private/tmp/claude-501/golden-audit/batches.json",
+      "observedAt": "2026-11-02",
+      "quote": "history-org-tokenomics-02 window: [\"2027-04-01\", \"2027-04-30\"]"
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-hot-fee-pool-burn-deflation; q-hot-sdf-xlm-holdings-sales; q-org-sdf-board-directors",
+  "verifiedOnly": "q-org-mazieres-chief-scientist; q-hot-sdf-transparency-wallets-reports; q-org-sdf-enterprise-fund; q-org-sdf-mandate-buckets; q-org-sdf-structure-mandate; q-token-circle-usdc-on-stellar; q-token-initial-supply-distribution",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-org-mazieres-chief-scientist",
+    "issue": "Verifier modify applied: used https://www.stellar.org/papers/stellar-consensus-protocol.pdf (author-bearing PDF) instead of the proposer's extensionless URL, which redirects to a learn page without the author; source class D -> A. Judge-blind only."
+   },
+   {
+    "id": "q-org-sdf-board-directors",
+    "issue": "Upstream defect noted, not filed: Stellar Light /api/people board rows carry observedAt 2026-07-19 although stellar.org/foundation/team is live; content matches. The C corroboration row carries 2026-07-19."
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation",
+    "issue": "tags.freshness stays 'stable' (no proposal to change it), but the new dated note on the fee-pool discussion paper is volatile; truth.asOf 2026-11-02 and truth.reverifyBy 2027-04-27 were set. A reviewer may want freshness 'scheduled'."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-hot-fee-pool-burn-deflation",
+    "log": "golden.notes: appended dated 2026-11-02 note on SDF's fee-pool activation discussion paper (verifier modify); +5 sources, +1 confirmed-as-of corroboration row; asOf 2026-11-02; reverifyBy 2027-04-27."
+   },
+   {
+    "id": "q-hot-sdf-xlm-holdings-sales",
+    "log": "golden.answer: 'liquidity and price discovery' -> 'liquidity and market-making support' (verifier accept); +2 sources, +1 confirmed-as-of corroboration row; asOf kept 2026-07-10 (dated answer text unchanged)."
+   },
+   {
+    "id": "q-org-mazieres-chief-scientist",
+    "log": "truth only (judge-blind): dead SOSP15 PDF ref replaced with https://www.stellar.org/papers/stellar-consensus-protocol.pdf in sources[1] and corroboration[1] (verifier modify), class D -> A; reverifyBy 2027-01-19 -> 2027-04-07; truth.verified refreshed."
+   },
+   {
+    "id": "q-org-sdf-board-directors",
+    "log": "golden.answer: roster date 2026-08-18 -> 2026-11-02 (verifier accept); asOf 2026-11-02; reverifyBy 2026-11-19 -> 2027-04-12; sources/corroboration re-observed (+D source; C row dated 2026-07-19 per service)."
+   },
+   {
+    "id": "q-hot-sdf-transparency-wallets-reports",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change."
+   },
+   {
+    "id": "q-org-sdf-enterprise-fund",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change; reverifyBy 2027-02-23 -> 2027-04-16."
+   },
+   {
+    "id": "q-org-sdf-mandate-buckets",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change; reverifyBy 2027-02-03 -> 2027-04-22."
+   },
+   {
+    "id": "q-org-sdf-structure-mandate",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change."
+   },
+   {
+    "id": "q-token-circle-usdc-on-stellar",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change."
+   },
+   {
+    "id": "q-token-initial-supply-distribution",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change."
+   }
+  ]
+ }
+}

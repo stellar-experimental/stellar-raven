@@ -113,29 +113,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
       "evidence": [
-        "solo://proj/49/process/3417",
-        "solo://proj/49/process/3423",
-        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
-        "https://x.com/circle/status/2056767949445472739",
-        "https://developers.circle.com/release-notes/cctp-2026",
-        "https://developers.circle.com/cctp/references/stellar",
-        "https://stellar.org/blog/foundation-news/bringing-stellar-to-the-regions-that-matter",
-        "https://www.crossmint.com/announcement/cctp-stellar",
-        "solo://proj/49/process/3633",
-        "solo://proj/49/scratchpad/633#GPT-5.6-Terra-G3-classification",
-        "eval/local-lanes/playground-semantic/overfit-audit-g3-itemkeys/2026-07-14T14-54-38-868Z-39ac21e3-5a0c-4a3b-b4fd-a3c14e61b97f-playground-semantic.json",
-        "Sibling sweep: q-cctp-v2-usdc-stellar, q-defi-bridge-evm-to-stellar-axelar, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration, and q-tool-js-sdk-package contain no conflicting announcement-date claim.",
-        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — SDF announcement dated 2026-05-19; class D Binance Square (2026-05-21) reports 'On May 19, 2026 ... CCTP went live'.",
-        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — 'native USDC is burned and minted'; class A Circle release notes (2026-05-18) add Stellar mainnet; class D Crossmint: not wrapped.",
-        "Sibling sweep 2026-08-31: grep CCTP|burn-and-mint → 10 other cases; read q-cctp-v2-usdc-stellar, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration, q-defi-bridge-evm-to-stellar-axelar; no contradiction"
+        "[A] golden.keyFacts[0] (confirmed): https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar :: page metadata \"date\":\"2026-05-19\"; \"Circle CCTP (Cross-Chain Transfer Protocol) is live on the Stellar network.\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[0] (confirmed): https://x.com/circle/status/2056767949445472739 :: \"CCTP is now live on @StellarOrg.\" (snowflake decodes to 2026-05-19 16:04 UTC) (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[0] (confirmed): https://nansen.ai/post/stellar-q2-2026-report :: \"Circle CCTP launched on Stellar (May 19)\" (observedAt 2026-11-02)",
+        "[C] golden.keyFacts[0] (confirmed): lumenloop.search_content_semantic via Raven (Stellar Weekly Roundup week of May 15, 2026) :: \"Circle CCTP went live on Stellar this week\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[1] (confirmed): https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar :: \"CCTP eliminates the need for wrapped assets and custodial bridges ... native USDC is burned and minted for crosschain transfers\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[1] (confirmed): https://developers.circle.com/cctp/references/stellar :: \"CCTP natively transfers USDC and EURC via burn-and-mint\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[1] (confirmed): https://www.crossmint.com/announcement/cctp-stellar :: \"The source chain burns USDC, CCTP's attestation service signs the burn message, and the destination chain mints fresh native USDC ... No wrapped asset is created.\" (observedAt 2026-11-02)",
+        "[A] golden.avoid[0] (contradicted): https://stellar.org/blog/foundation-news :: index lists \"May 19, 2026 • Stellar Development Foundation Circle CCTP is Live on Stellar\" and a separate \"May 8, 2026 • José Fernández da Ponte\" post (observedAt 2026-11-02)",
+        "[A] golden.avoid[1] (contradicted): https://developers.circle.com/cctp/references/stellar :: \"Inside mint_and_forward ... Calls receive_message on MessageTransmitter, which mints USDC\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-cctp-v2-usdc-stellar, q-tool-cctp-stellar-integration, q-token-circle-usdc-on-stellar, q-defi-bridge-evm-to-stellar-axelar checked; consistent; no conflicting CCTP date or mechanism found.",
+        "No judge-facing change; prior verification event 2026-08-31 is in git history.",
+        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
       ],
       "rootCause": [
         "eval-authoring",
-        "solo://proj/49/scratchpad/633#GPT-5.6-Terra-G3-classification",
         ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },

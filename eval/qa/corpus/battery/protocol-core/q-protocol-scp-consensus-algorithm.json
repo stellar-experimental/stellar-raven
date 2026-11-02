@@ -36,12 +36,14 @@
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "A",
         "ref": "https://stellar.org/learn/stellar-consensus-protocol",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; re-checked live 2026-11-02 (golden audit, batch protocol-core-05)",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -65,26 +67,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-protocol-stellar-core-what-is",
-        "https://github.com/stellar/stellar-core",
-        "https://developers.stellar.org/docs/networks/software-versions",
-        "Structural re-form (long-fact): split trusted-node agreement from the PoW and PoS comparisons; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — FBA relies on agreement among user-selected trusted nodes.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — Proof-of-Work relies on computational mining power instead of trusted-node agreement.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — Proof-of-Stake relies on staking power instead of trusted-node agreement.",
-        "Sibling sweep 2026-08-29: grep Federated Byzantine|Proof-of-Work|Proof-of-Stake|validator rewards → q-hist-scp-rewrite-2015, q-edge-noinfo-stellar-pos-staking-rewards, q-raph-xlm-staking, q-defi-liquid-staking-whitespace, and q-protocol-scp-consensus-algorithm; no contradiction",
-        "Corroboration audit 2026-08-29: added 1 row(s) for absence of validator monetary incentives; class agreement Sol+Grok",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        "Removed an unrelated stellar-core implementation fact that the question and golden answer did not ask for.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'The Stellar network reaches consensus using the Stellar Consensus Protocol (SCP), which is a construction of the Federated Byzantine Agreement (FBA).' (claim: Stellar uses SCP, a construction of FBA; verdict confirmed)",
+        "Live B 2026-11-02: https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf — 'We also present the Stellar Consensus Protocol (SCP), a construction for FBA.' (claim: Stellar uses SCP, a construction of FBA; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'FBA differs from ... Proof of Work (which relies on a node's computational power) and Proof of Stake (which relies on a node's staking power)' (claim: FBA uses user-defined quorum sets; PoW=computation, PoS=stake; verdict confirmed)",
+        "Live D 2026-11-02: https://stellar.org/faq — 'This design is intended to overcome the limitations of incentive-based mechanisms, such as proof-of-work (PoW) and proof-of-stake (PoS).' (claim: FBA uses user-defined quorum sets; PoW=computation, PoS=stake; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator on the Stellar network.' (claim: No monetary rewards for validators; verdict confirmed)",
+        "Live D 2026-11-02: https://stellar.org/faq — 'Validators operate without on-chain financial incentives built into the protocol' (claim: No monetary rewards for validators; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'SCP prioritizes fault tolerance and safety over liveness.' (claim: SCP favors safety over liveness and can halt; verdict confirmed)",
+        "Live D 2026-11-02: https://stellar.org/faq — 'SCP favors safety over liveness.' (claim: SCP favors safety over liveness and can halt; verdict confirmed)",
+        "Live B 2026-11-02: https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf — 'The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus. David Mazières, Stellar Development Foundation' (claim: Authored by David Mazières; verdict confirmed)",
+        "Live D 2026-11-02: https://datatracker.ietf.org/doc/html/draft-mazieres-dinrg-scp-04 — 'Mazieres, D., \"The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus\", Stellar Development Foundation whitepaper, 2015' (claim: Authored by David Mazières; verdict confirmed)",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'construction of the Federated Byzantine Agreement (FBA)' (claim: PoW, PoS/staking rewards, PBFT/Tendermint/DPoS names are false; verdict confirmed)",
+        "Sibling sweep 2026-11-02: q-hist-scp-rewrite-2015, q-protocol-quorum-slice-vs-quorum, q-raph-xlm-staking checked; no contradiction."
       ]
     },
     "origin": "raven-next q-protocol-scp-consensus-algorithm"

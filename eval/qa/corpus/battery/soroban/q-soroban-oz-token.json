@@ -5,7 +5,7 @@
     "skills.openzeppelin-stellar.develop-secure-contracts"
   ],
   "golden": {
-    "answer": "Yes. OpenZeppelin maintains the Rust `OpenZeppelin/stellar-contracts` suite for Stellar smart contracts, separate from its Solidity packages. Its current token package provides a SEP-41 fungible base and token extensions such as burnable, capped, allowlist, blocklist, and votes. Pausing, upgrading, ownership/roles, accounts, and governance are separate suite modules that can be composed as needed; do not present every module as an intrinsic SEP-41 token extension. Reuse can reduce custom-code risk, but audit coverage is version/release scoped and does not make an application automatically audited or safe.",
+    "answer": "Yes. OpenZeppelin maintains the Rust `OpenZeppelin/stellar-contracts` suite for Stellar smart contracts, separate from its Solidity packages. As of release v0.8.0 (2026-10-20), its token package provides a SEP-41 fungible base and token extensions such as burnable, capped, allowlist, blocklist, and votes. Pausing, upgrading, ownership/roles, accounts, and governance are separate suite modules that can be composed as needed; do not present every module as an intrinsic SEP-41 token extension. Reuse can reduce custom-code risk, but audit coverage is version/release scoped and does not make an application automatically audited or safe.",
     "keyFacts": [
       "Identifies the current Rust OpenZeppelin Stellar Contracts suite and SEP-41 fungible base.",
       "The suite includes token extensions, pausing, upgrading, and access modules.",
@@ -29,8 +29,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-17",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-02-12",
     "sources": [
       {
         "class": "D",
@@ -46,6 +46,30 @@
         "class": "D",
         "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/tokens/src/fungible",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0",
+        "note": "OZ v0.8.0 release (2026-10-20)",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/v0.8.0/packages/tokens/src/fungible/extensions",
+        "note": "OZ v0.8.0 fungible extensions tree",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/fungible/fungible",
+        "note": "OZ fungible token docs",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/v0.8.0/audits",
+        "note": "OZ v0.8.0 audits directory",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -78,21 +102,51 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of release v0.8.0 (2026-10-20), the OZ token package provides a SEP-41 fungible base with extensions including burnable, capped, allowlist, blocklist, and votes; audits are release-scoped.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0",
+            "observedAt": "2026-11-02",
+            "note": "Release v0.8.0 published 2026-10-20T16:58:32Z."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/v0.8.0/packages/tokens/src/fungible/extensions",
+            "observedAt": "2026-11-02",
+            "note": "Tree: allowlist blocklist burnable capped combinations total_supply votes."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.openzeppelin.com/stellar-contracts/tokens/fungible/fungible",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: '| `Base` | Standard SEP-41 behavior.' with extension sections Burnable, Capped, AllowList, BlockList, Votes."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/v0.8.0/audits",
+            "observedAt": "2026-11-02",
+            "note": "Tree: 'Stellar Contracts Library v0.7.0 Audit.pdf'; 'Stellar Contracts Library v0.8.0 Audit.pdf'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 blind 3329 independently rejected the primary retain decision and enumerated current modules; primary 3326 established the package tree.",
-        "Structural re-form (long-fact): Split the module taxonomy from the audit scope; truth unchanged.",
-        "Live re-check 2026-08-29: https://docs.openzeppelin.com/stellar-contracts — the current OpenZeppelin owner docs list tokens, access control, and pausable/upgradeable utilities as separate suite areas.",
-        "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/tree/main/audits — the current primary audit directory names reports by exact library release.",
-        "Sibling sweep 2026-08-29: grep OpenZeppelin stellar-contracts|SEP-41 fungible|burnable|Upgradeable → q-crp-oz-rwa-erc3643-trex, q-sor-skill-openzeppelin-setup, q-soroban-oz-upgradeable-macro, q-tool-passkeykit-smart-wallet, and q-soroban-oz-token; no contradiction"
+        "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0 — published 2026-10-20T16:58:32Z (gh api repos/OpenZeppelin/stellar-contracts/releases) (observedAt 2026-11-02)",
+        "https://github.com/OpenZeppelin/stellar-contracts/tree/v0.8.0/packages/tokens/src/fungible/extensions — directories: allowlist blocklist burnable capped combinations total_supply votes (observedAt 2026-11-02)",
+        "https://docs.openzeppelin.com/stellar-contracts/tokens/fungible/fungible — \"| `Base` | Standard SEP-41 behavior.\"; \"To comply with the SEP-41 specification, a contract must implement both the `FungibleToken` and `FungibleBurnable` traits.\" (observedAt 2026-11-02)",
+        "https://github.com/OpenZeppelin/stellar-contracts/tree/v0.8.0/audits — \"Stellar Contracts Library v0.7.0 Audit.pdf\"; \"Stellar Contracts Library v0.8.0 Audit.pdf\" (observedAt 2026-11-02)",
+        "Independent verifier (verify/soroban-05.json): accept on golden.answer.",
+        "Sibling sweep 2026-11-02: grep 'v0.7.|v0.8.0' → q-crp-oz-rwa-erc3643-trex, q-sor-confidential-tokens, q-tool-passkeykit-smart-wallet, q-scf-confidential-tokens-preview and others; none asserts a conflicting OZ token-extension list or release date. q-sor-skill-openzeppelin-setup: no contradiction."
       ],
       "rootCause": [
-        "Eval-side extension list mixed historical/current token traits with separate suite utilities and generalized an audit claim beyond a pinned release.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-soroban-oz-token"

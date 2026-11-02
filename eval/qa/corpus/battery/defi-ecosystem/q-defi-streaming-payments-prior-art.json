@@ -98,23 +98,26 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
-        "Sibling sweep: q-defi-agentic-payment-standards-compare, q-defi-x402-projects-discovery, and agentic-payment implementation cases",
-        "Structural re-form (symmetric-caution): Added a claim-specific caution for cached Scout repository recall; the truth is unchanged.",
-        "Finding read 2026-08-27: improvements/resolved.json entry sls-025 — fixed exact x402 and repository alias recall on 2026-07-14.",
-        "Sibling sweep 2026-08-27: grep SStream|Fluxity|RouteDock|recurring payments → q-defi-agentic-payment-standards-compare, q-stellar-recurring-payments; no contradiction",
-        "Structural re-form (negative-predicate): replaced the negative taxonomy verb with one positive predicate; all per-item maturity fields are unchanged.",
-        "Live re-check 2026-08-27: https://github.com/rahimklaber/SStream and https://github.com/StreamCharge/ApiCharge — current repositories still expose different code, UI, contract/network, and maturity surfaces.",
-        "Sibling sweep 2026-08-27: grep SStream|Tide|Fluxity|ApiCharge|streaming|recurring-payment → q-stellar-recurring-payments and q-defi-agentic-payment-standards-compare; no contradiction"
-      ],
-      "rootCause": [
-        "Repository discovery was treated as deployment proof and a static handle list replaced a maturity comparison.",
-        "improvements/stellar-light-scout/sls-025-agent-standard-alias-recall.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "SStream SCF #16 $36K Awarded; linked UI 404 [confirmed] — A: https://communityfund.stellar.org/submissions/recnfJhEt3t2QogUI — \"{\"id\":\"recnfJhEt3t2QogUI\",\"title\":\"SStream\",\"status\":\"Awarded\",...,\"roundName\":\"SCF #16\",\"budget\":36000\" (observedAt 2026-11-02)",
+        "SStream SCF #16 $36K Awarded; linked UI 404 [confirmed] — C: https://api.lumenloop.com/v1/tools/get_scf_submissions {name:SStream} — \"\"title\": \"SStream\", \"round\": \"SCF #16\", \"budget\": \"36000\"\" (observedAt 2026-11-02)",
+        "SStream SCF #16 $36K Awarded; linked UI 404 [confirmed] — F: https://s-stream.vercel.app (homepage of github.com/rahimklaber/SStream) — \"HTTP 404\" (observedAt 2026-11-02)",
+        "Tide Stream Payment / Zentra SCF #23 $18.2K Awarded; frontend responds [confirmed] — A: https://communityfund.stellar.org/submissions/recTmMM8Qbio6zNHx — \"\"title\":\"Tide Stream Payment\",\"status\":\"Awarded\",\"roundName\":\"SCF #23\",\"budget\":18200\" (observedAt 2026-11-02)",
+        "Tide Stream Payment / Zentra SCF #23 $18.2K Awarded; frontend responds [confirmed] — C: lumenloop get_scf_submissions {name:Zentra} — \"\"title\": \"Tide Stream Payment\", \"project\": \"Zentra\", \"round\": \"SCF #23\", \"budget\": \"18200\"\" (observedAt 2026-11-02)",
+        "Tide Stream Payment / Zentra SCF #23 $18.2K Awarded; frontend responds [confirmed] — F: https://tide-soroban-contract-frontend.vercel.app — \"HTTP 200\" (observedAt 2026-11-02)",
+        "Fluxity official SCF #21 $68K Awarded row; project aggregate internally inconsistent [confirmed] — A: https://communityfund.stellar.org/submissions/recDXtqYuR8g9FMXt — \"\"totalAwarded\":82750,\"totalPaid\":82750 ... {\"title\":\"Fluxity\",\"status\":\"Awarded\",\"roundName\":\"SCF #21\",\"budget\":68000} ... {\"title\":\"Fluxity\",\"status\":\"Not Awarded\",\"roundName\":\"SCF #18\",\"budget\":147500}\" (observedAt 2026-11-02)",
+        "Fluxity official SCF #21 $68K Awarded row; project aggregate internally inconsistent [confirmed] — C: lumenloop get_scf_submissions {name:Fluxity} — \"\"round\": \"SCF #21\", \"budget\": \"68000\"\" (observedAt 2026-11-02)",
+        "Paystreme SCF #11 $50K Awarded [confirmed] — A: https://communityfund.stellar.org/submissions/recHSkknw3I5dlCDK — \"\"title\":\"Paystreme\",\"status\":\"Awarded\",\"roundName\":\"SCF #11\",\"budget\":50000\" (observedAt 2026-11-02)",
+        "Paystreme SCF #11 $50K Awarded [confirmed] — C: lumenloop get_scf_submissions {name:Paystreme} — \"\"round\": \"SCF #11\", \"budget\": \"50000\"\" (observedAt 2026-11-02)",
+        "ApiCharge SCF #40 $79K Awarded [confirmed] — A: https://communityfund.stellar.org/submissions/recaRJgrsYwJUGSxZ — \"\"title\":\"ApiCharge - ML and AI \",\"status\":\"Awarded\",\"roundName\":\"SCF #40\",\"budget\":79000\" (observedAt 2026-11-02)",
+        "ApiCharge SCF #40 $79K Awarded [confirmed] — C: lumenloop get_scf_submissions {name:ApiCharge} — \"\"round\": \"SCF #40\", \"budget\": \"79000\"\" (observedAt 2026-11-02)",
+        "ApiCharge SCF #40 $79K Awarded [confirmed] — B: https://github.com/StreamCharge/ApiCharge — \"archived=false pushed=2026-05-19\" (observedAt 2026-11-02)",
+        "RouteDock/MPP session work is testnet/reference, not verified mainnet production [confirmed-as-of] — B: https://github.com/winsznx/routedock README — \"The one-way-channel Soroban contract (`stellar-experimental/one-way-channel`) has **NOT been audited**. ... Production mainnet use should await a formal audit.\" (observedAt 2026-11-02)",
+        "RouteDock/MPP session work is testnet/reference, not verified mainnet production [confirmed-as-of] — C: https://stellarlight.xyz/api/projects/search?q=apicharge (repo discovery) — \"Scout repo rows still list winsznx/routedock\" (observedAt 2026-11-02)",
+        "x402, MPP sessions/channels, and custom recurring-payment contracts are distinct [confirmed] — A: https://developers.stellar.org/docs/build/agentic-payments/x402 — \"x402 is an open protocol ... On Stellar, x402 works with Soroban authorization\" (observedAt 2026-10-29)",
+        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-defi-agentic-payment-standards-compare, q-stellar-recurring-payments; no contradiction recorded."
       ]
     },
     "origin": "raven-next q-defi-streaming-payments-prior-art"

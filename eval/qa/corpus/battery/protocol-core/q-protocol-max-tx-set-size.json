@@ -30,8 +30,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-25",
-    "reverifyBy": "2027-02-21",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-23",
     "sources": [
       {
         "class": "A",
@@ -57,6 +57,18 @@
         "class": "C",
         "ref": "https://mainnet.sorobanrpc.com getLedgerEntries (LedgerKey ConfigSetting/contract_execution_lanes, base64 AAAACAAAAAs=)",
         "note": "Live Mainnet RPC read of the on-ledger ConfigSettingEntry that holds the current ledgerMaxTxCount value."
+      },
+      {
+        "class": "C",
+        "ref": "https://mainnet.sorobanrpc.com",
+        "note": "getLedgerEntries ConfigSetting contract_execution_lanes: ledger_max_tx_count 2000 (latestLedger 65269933).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-contract-config-setting.x",
+        "note": "ConfigSettingContractExecutionLanesV0 { uint32 ledgerMaxTxCount; }.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -130,31 +142,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-21 and re-observed 2026-08-25: 1,000 non-smart-contract operations and 2,000 smart contract transactions per ledger, with \"Resource limits are determined by a validator vote\".",
-        "https://horizon.stellar.org/ledgers/64119318 observed 2026-08-25: max_tx_set_size 1000 at protocol 27, closed_at 2026-08-25T14:54:56Z (prior observation https://horizon.stellar.org/ledgers/64050648 on 2026-08-21).",
-        "https://mainnet.sorobanrpc.com getLedgerEntries (LedgerKey ConfigSetting/contract_execution_lanes, base64 AAAACAAAAAs=) observed 2026-08-25 at latestLedger 64119318: {\"config_setting\":{\"contract_execution_lanes\":{\"ledger_max_tx_count\":2000}}}, lastModifiedLedgerSeq 60993066.",
-        "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x observed 2026-08-21 and re-read 2026-08-25: the struct declares only \"uint32 ledgerMaxTxCount;\" and encodes no numeric value.",
-        "stellar network settings --network mainnet observed 2026-08-21 with stellar 27.1.0: contract_execution_lanes.ledger_max_tx_count 2000.",
-        "Independent-class repair 2026-08-25: the XDR-attribution corroboration row previously carried a single class-B evidence row. It now carries B (schema text), A (Docs validator-vote attribution), and C (live on-ledger ConfigSettingEntry), so the gospel claim meets the independent-source-class bar.",
-        "truth.asOf moves to 2026-08-25 because that is the latest verification event. The golden answer keeps its \"As observed 2026-08-21\" basis on purpose: both dated values were re-confirmed unchanged on 2026-08-25, so the encoded observation stays true and no judge-facing text needed to change.",
-        "solo://proj/49/todo/independently-challe--1925 comments 5058 and 5064",
-        "Sibling sweep 2026-08-25: cluster-065 re-read. q-protocol-ledger-close-time makes no capacity or source-attribution claim, and q-protocol-ledger-header-fields still confirms maxTxSetSize is a ledger-header field. No sibling attributes a numeric ledger limit to the XDR schema.",
-        "Structural re-form (long-fact): Split two long facts into four one-predicate facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current official Docs identify the classic ledger setting as a non-smart-contract operation limit.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current official Docs describe separate smart-contract transaction and multidimensional resource limits configured by validators.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current official Docs report 2,000 smart-contract transactions per Mainnet ledger as of July 2026.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the current official page consistently reports the 2,000 setting, with no stale conflicting value.",
-        "Sibling sweep 2026-08-29: grep maxTxSetSize|2,000 smart-contract|1,000 classic|ledgerMaxTxCount → q-protocol-ledger-header-fields, q-protocol-max-tx-set-size; no contradiction.",
-        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-2.md): moved the presentation-shaped fact 'Does not invent a stale Docs conflict' into golden.avoid as the reviewer's concrete trap; truth unchanged versus HEAD."
-      ],
-      "rootCause": [
-        "solo://proj/49/todo/correct-max-transact--1928",
-        "Eval-authoring: the 2026-08-21 correction recorded the XDR-attribution claim from one source class (B) only, below the independent-class bar the golden-truth skill requires for a gospel change.",
-        "The 2026-08-04 correction attributed live numeric values to the v27 XDR schema instead of the live configuration.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Class C 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=200 — all 200 ledgers 65269731-65269930 (protocol 29) have max_tx_set_size 1000.",
+        "Class C 2026-11-02: https://mainnet.sorobanrpc.com getLedgerEntries ConfigSetting contract_execution_lanes — 'ledger_max_tx_count': 2000 (lastModifiedLedgerSeq 60993066).",
+        "Class A 2026-10-28: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — 'on Mainnet, as of July 2026, 1,000 non-smart-contract operations and 2,000 smart contract transactions'; https://developers.stellar.org/docs/networks (2026-10-21) — Operations per Ledger 1,000*, Smart Contract Transactions per Ledger Max 2,000*.",
+        "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-contract-config-setting.x — 'struct ConfigSettingContractExecutionLanesV0 { // maximum number of Soroban transactions per ledger uint32 ledgerMaxTxCount; };' (same in v30.0).",
+        "No gospel change; truth.asOf 2026-11-02; reverifyBy moved into the 2027-03 window. Sibling sweep: q-protocol-ledger-header-fields — consistent."
       ]
     },
     "origin": "raven-next q-protocol-max-tx-set-size"

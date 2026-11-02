@@ -6,7 +6,7 @@
     "scout.getBuilders"
   ],
   "golden": {
-    "answer": "No. `getLeaderboard` returned ranked projects with project GitHub rollups plus an ecosystem developer macro block; use `getBuilders` for named people. The observed activity/30d result returned Microvault and Noir as projects, not individual developer rankings.",
+    "answer": "No. `getLeaderboard` returned ranked projects with project GitHub rollups plus an ecosystem developer macro block; use `getBuilders` for named people. On 2026-07-11, the observed activity/30d result returned Microvault and Noir as projects, not individual developer rankings.",
     "keyFacts": [
       "Leaderboard ranks projects and supplies aggregate developer metrics.",
       "Uses getBuilders for person-directory questions."
@@ -28,7 +28,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -39,6 +39,24 @@
         "class": "B",
         "ref": "inventory/stellar-light.json",
         "note": "Committed inventory snapshot for the service family."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=5",
+        "note": "Top-level keys [meta, ecosystem, projects]; project rows (Rumble Fish, Stellar Development Foundation, Fundable, Nouns, Stellarchain); ecosystem block asOf 2026-10-24 with activeDevs28d.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/builders?limit=2",
+        "note": "Builder rows keyed by githubUsername; counts.total 300.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=microvault",
+        "note": "Microvault (Protocol/Contract) and Noir (Tooling) are project records.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -53,22 +71,45 @@
             "note": "Succeeded with two project rows and an ecosystem developer snapshot."
           }
         ]
+      },
+      {
+        "claim": "On 2026-07-11 the activity/30d leaderboard result returned Microvault and Noir, and both are project records, not developers.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=microvault",
+            "observedAt": "2026-11-02",
+            "note": "Microvault (microvault, Protocol/Contract); Noir (noir, Tooling)."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=300",
+            "observedAt": "2026-11-02",
+            "note": "Microvault rank 28 and Noir rank 146 on 2026-11-02; the top rows differ from 2026-07-11."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getLeaderboard",
+            "observedAt": "2026-11-02",
+            "note": "\"Ranks PROJECTS, not people → use getBuilders.\""
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-05)",
       "evidence": [
-        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
-        "catalog/manifest.json#scout.getLeaderboard",
-        "inventory/stellar-light.json",
-        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
-        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep getLeaderboard|getBuilders|people directory → q-tool-developer-leaderboard-live, q-tool-leaderboard-open-issues; no contradiction"
+        "Stellar Light 2026-11-02: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=5 — top-level keys [meta, ecosystem, projects]; rows are projects; ecosystem block asOf 2026-10-24.",
+        "Raven scout.getLeaderboard({}) 2026-11-02 (dataAsOf 2026-11-02T11:23:43.582Z): counts.returned 50, total 905; metricDefinitions.activity \"orders by github.commits90d ... summed across the project's indexed repos\".",
+        "Stellar Light 2026-11-02: https://stellarlight.xyz/api/builders?limit=2 — people rows keyed by githubUsername; catalog/manifest.json#scout.getBuilders \"The Stellar PEOPLE directory\".",
+        "Stellar Light 2026-11-02: https://stellarlight.xyz/api/projects/search?q=microvault — Microvault and Noir are project records; today they rank 28 and 146 on activity/30d, so the golden now dates the 2026-07-11 observation.",
+        "Independent verifier accepted the one change (date the Microvault/Noir observation): .agents/rounds/2026-11-02-golden-audit/pass1/defi-ecosystem-05.json.",
+        "Sibling sweep 2026-11-02: grep getLeaderboard|Microvault → q-tool-developer-leaderboard-live, q-tool-leaderboard-open-issues, q-eco-most-active-defi-projects; none names Microvault or Noir; no contradiction."
       ],
       "rootCause": [
-        "solo://project/49/scratchpad/p4/n1-gapops",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        "freshness-drift"
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

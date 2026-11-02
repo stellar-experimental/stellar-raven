@@ -45,6 +45,18 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos#supported-operations",
+        "note": "Supported muxed positions list, re-read 2026-11-02.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/",
+        "note": "current_protocol_version 29; core 30.0.0.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -80,18 +92,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 blind 3278; primary 3276 independently confirmed identity/sequence/memo mechanics.",
-        "Structural re-form (compound-predicate): Split supported positions from Soroban/source and service limitations; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — the current guide still lists the protocol positions that accept muxed accounts.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/signing-soroban-invocations — current Soroban signing guidance still requires G-account sources, preserving the non-universal support warning.",
-        "Sibling sweep 2026-08-27: grep muxed|M-account|CAP-0027 → q-pc-address-types-strkey, q-pc-memos-reference; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side supported-field matrix and freshness omission.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Verification-only event: no judge-facing field changed.",
+        "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos#supported-operations (via stellarDocs.search_docs) — 'The source account of any operation or transaction; The fee source of a fee-bump transaction; The destination of all three types of payments ... The destination of an AccountMerge' (observedAt 2026-11-02).",
+        "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp (master at dbe95a705e, 2026-10-14) — 'Soroban transactions are not allowed to use memo or muxed source account'; validateSorobanMemo rejects KEY_TYPE_MUXED_ED25519 transaction and operation sources (observedAt 2026-11-02).",
+        "https://horizon.stellar.org/ — 'current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0' (observedAt 2026-11-02); the Core rule holds through v30. CAP-0084 muxed contract (W) addresses for P30 do not change M-account rules.",
+        "Sibling sweep 2026-11-02: q-pc-memos-reference (same validateSorobanMemo rule, re-dated to P29 in this batch); no contradiction."
       ]
     },
     "origin": "raven-next q-pc-muxed-accounts"

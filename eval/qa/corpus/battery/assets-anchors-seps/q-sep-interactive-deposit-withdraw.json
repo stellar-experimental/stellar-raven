@@ -8,7 +8,7 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "**SEP-24** (\"Hosted Deposit and Withdrawal\") is the **interactive** standard: the anchor serves a\nhosted UI/webview that the wallet opens, and the anchor collects any KYC and drives the\ndeposit/withdraw flow. **SEP-6** (\"Deposit and Withdrawal API\") is the **programmatic** counterpart:\na pure API with no anchor-hosted UI, so the wallet itself collects customer data (typically via\n**SEP-12** KYC). Both authenticate the user with **SEP-10**, and the wallet discovers the anchor's\nendpoints via **SEP-1** (`stellar.toml`). Distinct from **SEP-31** (cross-border, anchor-to-anchor\n\"send\") and **SEP-38** (quotes).",
+    "answer": "**SEP-24** (\"Hosted Deposit and Withdrawal\") is the **interactive** standard: the anchor serves a\nhosted UI/webview that the wallet opens, and the anchor collects any KYC and drives the\ndeposit/withdraw flow. **SEP-6** (\"Deposit and Withdrawal API\") is the **programmatic** counterpart:\na pure API with no anchor-hosted UI, so the wallet itself collects customer data (typically via\n**SEP-12** KYC). Both authenticate the user with **SEP-10** (SEP-6 and SEP-24 also accept **SEP-45** for contract accounts), and the wallet discovers the anchor's\nendpoints via **SEP-1** (`stellar.toml`). Distinct from **SEP-31** (cross-border, anchor-to-anchor\n\"send\") and **SEP-38** (quotes).",
     "keyFacts": [
       "SEP-24 standardizes interactive deposits and withdrawals through an anchor-hosted UI.",
       "SEP-6 standardizes programmatic deposits and withdrawals without a hosted UI."
@@ -17,7 +17,7 @@
       "Do NOT misnumber the standard (e.g. call interactive deposit/withdraw SEP-31 or SEP-12 or SEP-0024-as-SEP-6).",
       "Do NOT claim SEP-31 is the wallet/anchor interactive standard (SEP-31 is cross-border anchor-to-anchor)."
     ],
-    "notes": "Exemplar. Verified 2026-06-22: SEP-0024 'Hosted Deposit and Withdrawal' Active; SEP-0006 'Deposit and Withdrawal API' Active. SEP-6 interactive components deprecated in favor of SEP-24.\nAlso good if the answer: SEP-24 hands off KYC/UI to the anchor's hosted flow; SEP-6 requires the wallet to collect data (often via SEP-12) itself. | Both rely on SEP-10 for authentication.\nGolden cites: The SEP-24 (and ideally SEP-6) spec on the stellar-protocol GitHub repo or developers.stellar.org."
+    "notes": "Exemplar. Verified 2026-06-22: SEP-0024 'Hosted Deposit and Withdrawal' Active; SEP-0006 'Deposit and Withdrawal API' Active. SEP-6 interactive components deprecated in favor of SEP-24.\nAlso good if the answer: SEP-24 hands off KYC/UI to the anchor's hosted flow; SEP-6 requires the wallet to collect data (often via SEP-12) itself. | Both rely on SEP-10 (or SEP-45 for contract accounts) for authentication.\nGolden cites: The SEP-24 (and ideally SEP-6) spec on the stellar-protocol GitHub repo or developers.stellar.org."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -46,25 +46,62 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md",
+        "note": "Authentication: 'Anchors may support SEP-10 and/or SEP-45 web authentications'; changelog v4.3.0 'Add Soroban contract account and SEP-45 support'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md",
+        "note": "'Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both'; changelog v3.8.0 'Add Soroban contract account and SEP-45 support'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45",
+        "note": "'SEP-45 does not replace SEP-10. SEP-45 supports contract accounts (C...), while SEP-10 supports classic accounts (G...) and muxed accounts (M...).'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep6/getting-started",
+        "note": "Raven stellarDocs.search_docs hit (2026-11-02T16:18:51Z): SEP-6 prerequisites list SEP-1, SEP-10, and SEP-45 (contract accounts).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://github.com/Soneso/stellar_flutter_sdk/blob/master/documentation/sep/README.md",
+        "note": "Perplexity search hit: 'SEP-10 — Authenticate users with anchors (or SEP-45 for contract accounts)'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/anchors",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Shortened two SEP deposit and withdrawal facts; webview and API-driven detail remain in the answer; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current SEP defines the interactive deposit and withdrawal flow with an anchor-hosted web app.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP defines programmatic wallet-to-anchor deposit and withdrawal API interactions.",
-        "Sibling sweep 2026-08-29: grep SEP-24|SEP-6|hosted UI|programmatic → q-comp-cross-moneygram-partnership-sep24, q-production-anchor-architecture, q-sep-wallet-seps-list; no contradiction."
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"Title: Hosted Deposit and Withdrawal / Status: Active / Updated: 2025-09-10 / Version 3.8.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[A] https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — \"SEP-24 is the alternative to SEP-6 which supports hosted deposits and withdrawals. ... SEP-6 is the alternative to SEP-24 that supports an API-style solution for the same use case.\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md — \"Status: Active (Interactive components are deprecated in favor of SEP-24) ... Updated: 2025-09-10 ... Version 4.3.0\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md#authentication — \"Anchors may support [SEP-10](sep-0010.md) and/or [SEP-45](sep-0045.md) web authentications ... changelog: `v4.3.0` Add Soroban contract account and SEP-45 support (#1782)\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md#authentication — \"Anchors must support [SEP-10](sep-0010.md) and/or [SEP-45](sep-0045.md) web authentication ... changelog: `v3.8.0` Add Soroban contract account and SEP-45 support (#1783)\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 — \"SEP-45 vs SEP-10: SEP-45 does not replace SEP-10. SEP-45 supports contract accounts (C...), while SEP-10 supports classic accounts (G...) and muxed accounts (M...). Services wishing to support all account types should implement both SEPs.\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md — \"TRANSFER_SERVER ... SEP-6; TRANSFER_SERVER_SEP0024 ... SEP-24; DIRECT_PAYMENT_SERVER ... SEP-31; ANCHOR_QUOTE_SERVER ... SEP-38\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md — \"Title: Cross-Border Payments API / Status: Active ... Sending Anchor ... Must have a business relationship with the Receiving Anchor.\" (observedAt 2026-11-02; supports golden.avoid[1]: contradicted)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"As stated, Anchors must support [SEP-10](sep-0010.md) and/or [SEP-45](sep-0045.md) web authentication to enable authenticated deposits, withdrawals, or transaction history lookups.\" (observedAt 2026-11-02; independent verifier)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md — \"clients must submit the JWT previously obtained from the anchor via the [SEP-10](sep-0010.md) or the [SEP-45](sep-0045.md) authentication flow to all API endpoints.\" (observedAt 2026-11-02; independent verifier)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/getting-started — \"configured necessary features, required by SEP-24: SEP-1 (Stellar Info File), SEP-10 (Stellar Authentication) and SEP-45 (Stellar Web Authentication for contract account).\" (observedAt 2026-11-02; independent verifier)",
+        "[D] https://developers.stellar.org/docs/platforms/anchor-platform/index (via Perplexity search) — \"Authentication & authorization — SEP-10 and SEP-45 support for both traditional and smart contract accounts\" (observedAt 2026-11-02; independent verifier)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"Anchors and clients must support one of the [SEP-10](sep-0010.md) or [SEP-45](sep-0045.md) web authentication or both\" (observedAt 2026-11-02; independent verifier)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 — \"SEP-45 (Stellar Web Authentication for Contract Accounts) enables smart wallet applications to create authenticated sessions with Stellar anchors by proving control over a contract account (C...).\" (observedAt 2026-11-02; independent verifier)",
+        "Applied fields: golden.answer, golden.notes (verifier decision: accept).",
+        "Sibling sweep 2026-11-02: checked q-sep-6-vs-31-misnumber-trap, q-sep-6-24-deprecation, q-sep6-sep24-sep31-choice, q-sep-45-contract-auth; no contradiction with this case's facts. q-comp-sep6-vs-sep12-roles and q-crp-become-an-anchor-licensing already name SEP-45 for C accounts; the identical parenthetical keeps q-sep-6-vs-31-misnumber-trap and q-sep-interactive-deposit-withdraw consistent."
       ],
       "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "SEP-6 v4.3.0 and SEP-24 v3.8.0 (both updated 2025-09-10) added SEP-45 web authentication for contract accounts after the golden named SEP-10 only."
       ]
     },
     "origin": "raven-next q-sep-interactive-deposit-withdraw",
@@ -90,6 +127,42 @@
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
             "observedAt": "2026-07-11",
             "note": "Fetched SEP-24 source defines the interactive anchor-hosted flow."
+          }
+        ]
+      },
+      {
+        "claim": "SEP-6 and SEP-24 authenticate with SEP-10 for G/M accounts and also accept SEP-45 web authentication for contract (C...) accounts.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md",
+            "note": "Authentication: 'Anchors may support SEP-10 and/or SEP-45 web authentications'; changelog v4.3.0 'Add Soroban contract account and SEP-45 support'.",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md",
+            "note": "'Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both'; changelog v3.8.0 'Add Soroban contract account and SEP-45 support'.",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45",
+            "note": "'SEP-45 does not replace SEP-10. SEP-45 supports contract accounts (C...), while SEP-10 supports classic accounts (G...) and muxed accounts (M...).'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep6/getting-started",
+            "note": "Raven stellarDocs.search_docs hit (2026-11-02T16:18:51Z): SEP-6 prerequisites list SEP-1, SEP-10, and SEP-45 (contract accounts).",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "D",
+            "ref": "https://github.com/Soneso/stellar_flutter_sdk/blob/master/documentation/sep/README.md",
+            "note": "Perplexity search hit: 'SEP-10 — Authenticate users with anchors (or SEP-45 for contract accounts)'.",
+            "observedAt": "2026-11-02"
           }
         ]
       }

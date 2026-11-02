@@ -40,21 +40,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Split the SEP-8 approval-server requirement and POST flow; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — the current SEP requires `approval_server` in the issuer's SEP-1 `stellar.toml`.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — the current SEP requires wallets to POST a transaction to the approval server.",
-        "Sibling sweep 2026-08-29: grep SEP-8|approval_server|Regulated Assets → q-comp-sep8-regulated-assets-approval-server, q-comp-sep8-number-lookup-no-deepresearch, q-sep-1-toml, q-sep-catalog-list, and q-sep-8-regulated-assets; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md — \"Title: Regulated Assets / Status: Active / Version 1.7.4\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/anatomy-of-an-asset#compliance — \"SEP-8: Regulated Assets - regulated assets are assets that require an issuer's approval\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md — \"regulated=true / approval_server=\"https://goat.io/tx_approve\" / approval_criteria=...\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md — \"\"status\": \"success\" ... \"revised\" ... \"pending\" ... \"action_required\" ... \"rejected\"\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md — \"Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account.\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/control-asset-access — \"This setting is useful for issuers of regulated assets who need to authorize transactions on a case-by-case basis\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md — \"Status: Active\" (observedAt 2026-11-02; supports golden.answer: disputed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0007] | URI Scheme to facilitate delegated signing | Interstellar | Final | ... | [SEP-0008] | Regulated Assets | Interstellar | Final |\" (observedAt 2026-11-02; supports golden.answer: disputed)",
+        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.answer: disputed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: checked q-comp-sep8-regulated-assets-approval-server, q-sep-catalog-list; no contradiction with this case's facts."
       ]
     },
     "origin": "raven-next q-sep-8-regulated-assets",

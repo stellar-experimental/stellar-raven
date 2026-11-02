@@ -33,8 +33,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-10-06",
-    "reverifyBy": "2027-01-05",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-12",
     "sources": [
       {
         "class": "A",
@@ -110,15 +110,21 @@
       }
     ],
     "verified": {
-      "date": "2026-10-06",
-      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
       "evidence": [
-        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
-        "Live A 2026-10-06: https://stellar.org/blog/foundation-news/x402-on-stellar — date 2026-03-10; 'The settlement layer is live. The agent tooling is being built.'",
-        "Live A 2026-10-06: https://developers.stellar.org/docs/build/agentic-payments/x402 — Soroban authorization entries and any SEP-41 token.",
-        "Live B 2026-10-06: stellar/stellar-protocol ecosystem directory (59 entries) has no x402 SEP; GitHub code and PR searches for x402 in that repository return zero.",
-        "Live D 2026-10-06: general-web sweep found no SEP number for x402.",
-        "Sibling sweep 2026-10-06: grep SEP-402|x402 on Stellar → q-defi-x402-on-stellar-what; no contradiction."
+        "[A] golden.keyFacts[0] (confirmed): https://stellar.org/blog/foundation-news/x402-on-stellar :: page metadata \"date\":\"2026-03-10\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[0] (confirmed): https://stellar.org/x402 (Perplexity index) and prior lane sweep :: x402 on Stellar landing page; prior D sweep 2026-10-06 consistent (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[1..2] (confirmed): https://developers.stellar.org/docs/build/agentic-payments/x402 :: \"enables programmatic, per request payments over HTTP ... x402 works with Soroban authorization so that clients can pay for API requests via signed auth entries\"; \"x402 on Stellar supports any SEP-41 compliant token. The default is USDC.\" (observedAt 2026-11-02)",
+        "[B] golden.keyFacts[1..2] (confirmed): https://github.com/x402-foundation/x402/blob/f8f83309706b14cc696962f0a002eeeb66c3dc26/docs/core-concepts/network-and-token-support.mdx :: \"Stellar | Any Soroban token implementing SEP-41 | transfer(from, to, amount)\" (observedAt 2026-11-02)",
+        "[E] golden.keyFacts[1..2] (confirmed): stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/cli/agent-cli/guides/pay-for-apis-x402 :: \"SEP-41 token transfers settle the payment underneath\" (observedAt 2026-11-02)",
+        "[B] golden.keyFacts[3] (confirmed-as-of): https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master :: 61 entries, newest sep-0059 External Account API, sep-0060 Wallet Provider Discovery, sep-0061 Trustline Onboarder; none is x402 (observedAt 2026-11-02)",
+        "[B] golden.keyFacts[3] (confirmed-as-of): gh api search/code and search/issues q=x402 repo:stellar/stellar-protocol :: total_count 0 for both (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[3] (confirmed-as-of): perplexity_search 'x402 Stellar SEP number Stellar Ecosystem Proposal x402' :: no result assigns a SEP number to x402; results describe SEP-41 token support only (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[4] (confirmed): https://stellar.org/blog/foundation-news/x402-on-stellar :: \"The settlement layer is live. The agent tooling is being built.\"; \"MCP integration: ... This is in active development\" (observedAt 2026-11-02)",
+        "[B] golden.avoid[0..2] (contradicted): https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master :: no SEP-402 file (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-defi-x402-on-stellar-what, q-soroban-x402-auth-entry-signing, q-x402-payment-verification checked; consistent; the x402 docs wallet list now reads 'Varial Browser Extension' but this golden names no wallet, so no rename is needed.",
+        "No judge-facing change; prior verification event 2026-10-06 is in git history."
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

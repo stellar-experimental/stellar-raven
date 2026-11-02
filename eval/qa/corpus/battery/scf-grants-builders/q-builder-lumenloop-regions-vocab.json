@@ -71,30 +71,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-35 primary 3287 and blind 3289; 2026-07-10 recurrence.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the region source returned 95 values and visibly contained case variants such as `africa` and `Africa`, so it was not a clean enum.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
-        "Reviewed improvements/lumenloop/ll-003-region-vocabulary-free-text.md — disputed claim: Lumenloop region values form a controlled list.",
-        "Sibling sweep 2026-08-27: grep get_regions|region vocabulary|based_in|operating_region → q-builder-lumenloop-regions-vocab, q-defi-lumenloop-categories-vocab, q-eco-lobstr-wallet, q-ti-vocab-regions-live; no contradiction",
-        "Structural re-form (long-fact): split the sourcing requirement and shortened the region-value characterization; truth unchanged.",
-        "Live re-check 2026-08-29: https://api.lumenloop.com/v1/tools/get_regions — the official operator schema identifies get_regions and its distinct region strings.",
-        "Live re-check 2026-08-29: https://api.lumenloop.com/v1/tools/get_regions — the official schema describes values currently used in the directory.",
-        "Live re-check 2026-08-29: https://api.lumenloop.com/v1/tools/get_regions — the word currently confirms that the changeable output needs a visible observation date.",
-        "Live re-check 2026-08-29: https://github.com/lumenloop/lumenloop-skills/blob/main/skills/lumenloop-mcp-connect/reference/tool-catalog.md — the official source calls categories controlled but calls regions distinct field values, confirming they are not a canonical enum.",
-        "Sibling sweep 2026-08-29: grep get_regions|based_in|operating_region|canonical enum → q-builder-lumenloop-regions-vocab, q-defi-lumenloop-categories-vocab, q-eco-lobstr-wallet, q-ti-vocab-regions-live; no contradiction."
-      ],
-      "rootCause": [
-        "A desired future normalization contract was presented as current truth.",
-        "improvements/lumenloop/ll-003-region-vocabulary-free-text.md",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "C 2026-11-02: POST https://api.lumenloop.com/v1/tools/get_regions → data.count 100 with six case-only pairs (africa/Africa, asia/Asia, europe/Europe, global/Global, latam/LATAM, mena/MENA) and 'Latin America & Caribbean' beside 'latam'/'LATAM'. The golden's 95-value figure is explicitly dated 2026-07-11; the not-a-clean-enum reading holds (ll-003 recurrence, https://github.com/lumenloop/lumenloop-backend/issues/23).",
+        "B 2026-11-02: catalog/manifest.json#lumenloop.get_regions 'Get all distinct region values (based_in + operating_region) currently used in the directory'.",
+        "C 2026-11-02: https://stellarlight.xyz/api/builders?location=Latin%20America → Scout builder locations are free text (for example 'Chile, Temuco'), so the vocabularies are not shared.",
+        "No judge-facing field changed. The count has one live witness and stays a dated observation.",
+        "Sibling sweep 2026-11-02: q-defi-lumenloop-categories-vocab, q-eco-lobstr-wallet, q-ti-vocab-regions-live; no contradiction."
       ]
     },
     "origin": "raven-next q-builder-lumenloop-regions-vocab"

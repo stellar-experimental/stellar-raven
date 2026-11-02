@@ -31,8 +31,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-11-19",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-05-08",
     "sources": [
       {
         "class": "A",
@@ -104,24 +104,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
       "evidence": [
-        "Solo scratchpad 575 GT-44 primary 3316 and blind 3324; historical 2026-07-11 observedAt text remains preserved.",
-        "https://github.com/kalepail/passkey-kit and https://github.com/kalepail/smart-account-kit — archived move pages.",
-        "https://github.com/stellar/passkey-kit",
-        "https://github.com/stellar/smart-account-kit",
-        "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
-        "Sibling sweep: q-tool-passkeykit-smart-wallet already states the maintained non-drop-in relationship and no universal default.",
-        "solo://proj/49/todo/reconcile-bounded-tr--1355",
-        "Structural re-form (long-fact): Split the kit relationship from the model-based choice; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/passkey-kit — the current canonical README calls Smart Account Kit a sibling SDK and says the kits are not drop-in compatible.",
-        "Live re-check 2026-08-29: https://github.com/stellar/passkey-kit — the current canonical README says the kits use different on-chain authorization models and directs users to choose the fitting model.",
-        "Sibling sweep 2026-08-29: grep Passkey Kit|Smart Account Kit|non-drop-in → q-passkey-smart-account-architecture, q-tool-passkey-wallet-recovery, q-tool-passkeykit-smart-wallet, q-tool-smart-wallet-repos-discovery, q-tool-wallets-comparison, q-builder-content-by-person, and q-soroban-add-signer-smart-wallet-howto; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side vendor/tooling freshness drift.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Proposer A 2026-11-02: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — \"They're siblings rather than old and new versions of the same thing: each one targets a different wallet contract with a different on-chain authorization model, so they aren't drop-in compatible.\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/passkey-kit/blob/main/README.md — \"smart-account-kit is a sibling SDK ... It uses a different on-chain authorization model (context rules + an auth digest) than passkey-kit's flat `Signatures` map, so the two are not drop-in compatible\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/smart-account-kit/releases — \"v0.10.0 2026-10-27; passkey-kit v0.18.3 2026-09-09, repo pushed 2026-10-27; neither archived\"",
+        "Proposer C 2026-11-02: https://stellarlight.xyz/api/repos/search?q=smart-account-kit — \"stellar/smart-account-kit and stellar/passkey-kit listed; kalepail/smart-account-kit '[MOVED → github.com/stellar/smart-account-kit]'\"",
+        "Proposer D 2026-11-02: https://github.com/stellar/smart-account-kit/releases/tag/v0.10.0 — \"Apps on Stellar SDK 17 can use the kit.\"",
+        "Proposer claim verdict confirmed-as-of (golden.keyFacts[1]): Passkey Kit and Smart Account Kit are maintained, non-drop-in siblings",
+        "Proposer B 2026-11-02: https://github.com/stellar/smart-account-kit/blob/main/README.md — \"The kit is a client for the OpenZeppelin `stellar-contracts` smart-account contract ... Context rules ... Policies ... Auth digest\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/passkey-kit/blob/main/README.md — \"each merges its entry into the flat `Signatures` map ... | `addPolicy(...)` | `add_signer` |\"",
+        "Proposer claim verdict confirmed (golden.answer): Smart Account Kit targets OZ smart accounts with context rules, auth digests, signers, policies; Passkey Kit uses a flat Signatures map",
+        "Proposer B 2026-11-02: https://github.com/stellar/smart-account-kit/blob/main/README.md — \"The underlying OpenZeppelin Stellar contracts have a separate audit ... The deployed artifacts ... use later source revisions than that audit scope.\"",
+        "Proposer B 2026-11-02: https://github.com/stellar/passkey-kit/blob/main/README.md — \"Unaudited software.\"",
+        "Proposer claim verdict confirmed (golden.avoid[1]): Audit claims are component- and release-specific",
+        "Sibling sweep 2026-11-02: checked q-tool-passkeykit-smart-wallet, q-passkey-smart-account-architecture, q-passkey-wallet-recovery, q-tool-smart-wallet-repos-discovery, q-infra-secp256r1-passkeys, q-soroban-check-auth-custom-account; no contradiction found."
       ]
     },
     "origin": "raven-next q-soroban-add-signer-smart-wallet-howto"

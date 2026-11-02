@@ -31,7 +31,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2027-02-04",
+    "reverifyBy": "2027-03-11",
     "sources": [
       {
         "class": "A",
@@ -125,19 +125,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
       "evidence": [
-        "https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture",
-        "https://github.com/stellar/anchor-platform",
-        "Structural re-form (long-fact): Shortened three production-anchor facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the current page lists SEP-1, SEP-6, SEP-10, SEP-12, and SEP-24 support.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture — the current architecture requires business-server integration for KYC, off-chain transfers, transaction state, and internal systems.",
-        "Live re-check 2026-08-29: https://github.com/stellar/anchor-platform — the current repository retains database, queue, logging, event-processing, observer, and test infrastructure for production controls.",
-        "Sibling sweep 2026-08-29: grep production anchor|SEP-1|SEP-24|mobile-money|idempotent → q-comp-anchor-compliance-stack, q-crp-become-an-anchor-licensing, q-anchor-sdp-what, q-crp-regional-offramp-mobilemoney; no contradiction"
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform — \"The Anchor Platform implements ... SEP-1 ... SEP-6 ... SEP-10 ... SEP-12 ... SEP-24 ... SEP-31 — Cross-border payment processing (receive only) ... SEP-38 ... SEP-45\" (observedAt 2026-10-22; supports golden.keyFacts[0]: confirmed-as-of)",
+        "[B] gh api repos/stellar/anchor-platform — \"archived:false, pushed_at 2026-10-31\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed-as-of)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture — \"The business server is a service that you (the business) must implement to connect the Anchor Platform with your internal systems ... provides updates to the platform server when off-chain events occur, such as the initiation of a bank transfer to a customer.\" (observedAt 2026-10-01; supports golden.keyFacts[1]: confirmed)",
+        "[E] stellarDocs.search_docs 'Anchor Platform architecture business server' -> architecture#business-server — \"must implement to connect the Anchor Platform with your internal\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture — \"The SEP server will never store any sensitive information ... business server ... you (the business) must implement\" (observedAt 2026-10-01; supports golden.avoid[0]: contradicted)",
+        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture — \"Event service ... HTTP webhooks ... Payment Observer monitors the Stellar blockchain\" (observedAt 2026-10-01; supports golden.keyFacts[2]: confirmed)",
+        "[A] https://developers.stellar.org/docs/tokens/control-asset-access — \"if the distribution account is compromised, you can freeze the account's asset balance and start with a new distribution account\" (observedAt 2026-10-26; supports golden.keyFacts[2]: confirmed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: q-comp-anchor-compliance-stack, q-crp-become-an-anchor-licensing, q-anchor-platform-what checked; no contradiction."
       ]
     },
     "origin": "kaan production-anchor-architecture"

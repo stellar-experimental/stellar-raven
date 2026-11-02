@@ -10,7 +10,6 @@
     "answer": "Discover first, then claim by balance id. On Horizon, use the claimable-balances collection and filter for the claimant account, then page through the result set until exhausted. Each record has a claimable-balance id and claimants/predicates. A single claimable balance can also be retrieved by `/claimable_balances/:claimable_balance_id`.\n\nTo claim, the claimant account submits one `ClaimClaimableBalance` operation per balance id, with the claimant account as the operation source. Multiple claim operations can be placed in one transaction if the transaction size/operation limits and account sequence handling allow it. The protocol operation adds the claimable-balance amount to the source account and deletes the claimable-balance entry on success.\n\nA listed balance is not necessarily claimable at this ledger close. The operation fails with `CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM` if no claimant matches the source account or the matched claimant's predicate is false. For non-native assets, the claiming account also needs the relevant trustline, enough remaining trustline limit, and required authorization. After the transaction confirms, query the claimant filter again and verify the claimed ids are absent and no remaining balances match.",
     "keyFacts": [
       "Names Horizon's claimant filter for claimable-balance id discovery.",
-      "Names an equivalent ledger-entry lookup for balance-id discovery.",
       "Names `ClaimClaimableBalance` or claim-claimable-balance operations.",
       "Requires claimant-account submission for each specific balance id.",
       "Mentions predicates must be satisfied for a claim to succeed."
@@ -19,7 +18,7 @@
       "Do NOT tell the user to send a normal payment to claim a claimable balance.",
       "Do NOT imply all listed balances are claimable before their predicates become true."
     ],
-    "notes": "Verified Horizon endpoint, claim operation, and predicate failure semantics. Phase 3 may check whether current SDK examples should prefer Horizon or RPC for discovery.\nAlso good if the answer: Explains batching multiple claim operations in one transaction when feasible. | Mentions re-querying the claimant filter after confirmation to verify no remaining claimable balances.\nGolden cites: Horizon or Stellar docs for claimable balances and the claim operation."
+    "notes": "Verified Horizon endpoint, claim operation, and predicate failure semantics. As of 2026-11-02, Horizon's `claimant` filter is the claimant-indexed discovery path; Stellar RPC `getLedgerEntries` reads a claimable balance only by a known balance id and has no claimant filter. Do not require an RPC discovery step.\nAlso good if the answer: Looks up a known balance id via Horizon `/claimable_balances/:id` or RPC `getLedgerEntries`. | Explains batching multiple claim operations in one transaction when feasible. | Mentions re-querying the claimant filter after confirmation to verify no remaining claimable balances.\nGolden cites: Horizon or Stellar docs for claimable balances and the claim operation."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -53,6 +52,24 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+        "note": "RPC getLedgerEntries reads entries by ledger key only; it has no claimant filter.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/go/blob/master/protocols/rpc/get_ledger_entries.go",
+        "note": "GetLedgerEntriesRequest takes only keys and xdrFormat.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "https://horizon.stellar.org/claimable_balances?claimant=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=2",
+        "note": "Live pubnet claimant-filtered list returned records and a claimant-filtered next link.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -60,56 +77,86 @@
         "claim": "A listed balance is not necessarily claimable at this ledger close.",
         "verdict": "confirmed-as-of",
         "evidence": [
-        {
-          "class": "A",
-          "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
-          "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "B",
-          "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
-          "observedAt": "2026-08-29",
-          "note": "Exact source: `Claimant` pairs `AccountID destination` with `ClaimPredicate predicate`, commented `Claimable if predicate is true`; CAP-0023 also says satisfiable conditions are not guaranteed."
-        }
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: `Claimant` pairs `AccountID destination` with `ClaimPredicate predicate`, commented `Claimable if predicate is true`; CAP-0023 also says satisfiable conditions are not guaranteed."
+          }
         ]
       },
       {
         "claim": "The operation fails with `CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM` if no claimant matches the source account or the matched claimant's predicate is false.",
         "verdict": "confirmed",
         "evidence": [
-        {
-          "class": "A",
-          "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
-          "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "B",
-          "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
-          "observedAt": "2026-08-29",
-          "note": "Exact source: `ClaimClaimableBalanceOp` fails with `CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM` when no claimant destination equals `sourceAccount` or the matched predicate is not satisfied."
-        }
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: `ClaimClaimableBalanceOp` fails with `CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM` when no claimant destination equals `sourceAccount` or the matched predicate is not satisfied."
+          }
+        ]
+      },
+      {
+        "claim": "Stellar RPC getLedgerEntries reads a claimable balance only by a known balance id; it has no claimant filter, so Horizon's claimant filter is the claimant-indexed discovery path.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'The `getLedgerEntries` method returns the \"values\" (or \"entries\") for a given set of \"keys\".'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/go/blob/master/protocols/rpc/get_ledger_entries.go",
+            "observedAt": "2026-11-02",
+            "note": "Exact quote: 'type GetLedgerEntriesRequest struct { Keys []string `json:\"keys\"`; Format string `json:\"xdrFormat,omitempty\"` }'"
+          },
+          {
+            "class": "F",
+            "ref": "POST https://mainnet.sorobanrpc.com getLedgerEntries with params {claimant:...}",
+            "observedAt": "2026-11-02",
+            "note": "Response: '{\"error\":{\"code\":-32603,\"message\":\"could not query captive core: no keys specified in request\"}}'"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/claimable_balances?claimant=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=2",
+            "observedAt": "2026-11-02",
+            "note": "Live pubnet response returned 2 records and a claimant-filtered next link."
+          }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575",
-        "Structural re-form (long-fact): Split both long facts into atomic method and operation requirements; truth unchanged.",
-        "Live re-check 2026-08-29: https://horizon.stellar.org/claimable_balances?claimant=GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ&limit=1 — the live Horizon response accepted the claimant filter and returned its filtered self link.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-23 defines a claimable balance as a ledger entry keyed by its balance id.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-23 defines `ClaimClaimableBalanceOp` and its claimable-balance operation type.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-23 requires a balance id and matches the operation source account to a claimant.",
-        "Sibling sweep 2026-08-29: grep ClaimClaimableBalance → q-protocol-operation-types-list, q-aas-claim-received-claimable-balances, q-asset-claimable-balance; no contradiction.",
-      "Corroboration audit 2026-08-29: added 2 row(s) for claimability and false-predicate failure; class agreement Sol+Grok",
-      "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
+        "Gospel change 2026-11-02: removed keyFacts[1] ('Names an equivalent ledger-entry lookup for balance-id discovery.'); no RPC method discovers balance ids by claimant. golden.notes now say Horizon's claimant filter is the discovery path and move the RPC by-id lookup to also-good.",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries — 'The `getLedgerEntries` method returns the \"values\" (or \"entries\") for a given set of \"keys\".'",
+        "Live B 2026-11-02: https://github.com/stellar/go/blob/master/protocols/rpc/get_ledger_entries.go — 'type GetLedgerEntriesRequest struct { Keys []string `json:\"keys\"`; Format string `json:\"xdrFormat,omitempty\"` }'",
+        "Live F 2026-11-02: POST https://mainnet.sorobanrpc.com getLedgerEntries with params {claimant:...} — 'could not query captive core: no keys specified in request'",
+        "Live F 2026-11-02: https://horizon.stellar.org/claimable_balances?claimant=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=2 — '2 records returned with a claimant-filtered next link'",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — 'A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an `op_no_trust` error.'",
+        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — 'struct ClaimClaimableBalanceOp { ClaimableBalanceID balanceID; }; ... CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM = -2'",
+        "Sibling sweep 2026-11-02: q-asset-claimable-balance, q-infra-horizon-vs-rpc, q-raph-claimable-balance-safety, q-protocol-operation-types-list checked; none requires a claimant-indexed RPC discovery method; no contradiction.",
+        "Upstream finding filed: improvements/stellar-docs/sd-061-claimable-balance-id-via-getledgerentries.md (status verified). The Docs claimable-balances guide says 'You can call the RPC's getLedgerEntries endpoint to do this' for finding the Balance ID, but the sample takes the id as input."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+        "Eval-side authoring flaw: the 2026-08-29 long-fact split (35c90ecf) turned the disjunct 'or equivalent ledger-entry lookup' into a separate required keyFact that no claimant-indexed RPC method supports.",
+        "improvements/stellar-docs/sd-061-claimable-balance-id-via-getledgerentries.md"
       ]
     },
     "origin": "raven-next q-aas-claim-received-claimable-balances"

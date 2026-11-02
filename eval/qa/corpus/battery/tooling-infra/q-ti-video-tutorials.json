@@ -5,7 +5,7 @@
     "lumenloop.find_av_passages"
   ],
   "golden": {
-    "answer": "Start with the official **Stellar Development Foundation** YouTube channel and its **Developer Tutorials** playlist, then pair each video with current written docs and release notes. Current Lab documentation links a Lumen Loop Lab playlist, and current Scaffold/getting-started docs provide concrete full-stack/smart-contract video entry points.\n\nAs of **2026-07-11**, the Developer Tutorials playlist inspection found 59 entries, a latest update of 2026-03-12, and one unavailable item. Those are live observations, not grading requirements: membership, titles, dates and availability can change. A video's upload date or playlist update does not prove its CLI, SDK, RPC, UI or network examples remain current. Older “Soroban” videos may preserve useful concepts while commands, package names, endpoints and branding have drifted; verify executable steps against current docs/releases.\n\nUse a real playback timestamp only when the media source exposes one. LumenLoop AV `start_offset` is an opaque passage offset and must not automatically be rendered as seconds. Community creators can supplement the official path, but label them as secondary and do not invent titles, timestamps or official status.",
+    "answer": "Start with the official **Stellar Development Foundation** YouTube channel and its **Developer Tutorials** playlist, then pair each video with current written docs and release notes. Current Lab documentation links a Lumen Loop Lab playlist, and current Scaffold/getting-started docs provide concrete full-stack/smart-contract video entry points.\n\nAs of **2026-11-02**, the Developer Tutorials playlist page showed 58 videos and \"Last updated on Jun 1, 2026\". Those are live observations, not grading requirements: membership, titles, dates and availability can change. A video's upload date or playlist update does not prove its CLI, SDK, RPC, UI or network examples remain current. Older “Soroban” videos may preserve useful concepts while commands, package names, endpoints and branding have drifted; verify executable steps against current docs/releases.\n\nUse a real playback timestamp only when the media source exposes one. LumenLoop AV `start_offset` is an opaque passage offset and must not automatically be rendered as seconds. Community creators can supplement the official path, but label them as secondary and do not invent titles, timestamps or official status.",
     "keyFacts": [
       "Names official SDF channel, Developer Tutorials playlist, plus Lab/Scaffold/docs entries.",
       "Dates volatile playlist metadata to an observation date instead of gating on it.",
@@ -19,7 +19,7 @@
       "Do NOT convert LumenLoop start_offset into playback seconds unless the source contract explicitly defines it.",
       "Do NOT invent video titles/timestamps or present unofficial results as official tutorials."
     ],
-    "notes": "GT-54 CORRECTION 2026-07-11: the official Developer Tutorials playlist was directly inspected. Grade a docs/release freshness check and honest timestamp semantics; playlist counts/dates/availability and the opaque LumenLoop offset are not golden gates."
+    "notes": "GT-54 CORRECTION 2026-07-11: the official Developer Tutorials playlist was directly inspected. Grade a docs/release freshness check and honest timestamp semantics; playlist counts/dates/availability and the opaque LumenLoop offset are not golden gates.\nRe-observed 2026-11-02: the playlist page showed 58 videos and \"Last updated on Jun 1, 2026\"; these remain non-gating observations."
   },
   "tags": {
     "category": "tooling-infra",
@@ -33,8 +33,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2027-01-14",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-25",
     "sources": [
       {
         "class": "D",
@@ -60,6 +60,12 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i",
+        "note": "SDF-owned playlist page fetched directly 2026-11-02T16:41:54Z: 58 videos, 'Last updated on Jun 1, 2026', no private or deleted entries.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -105,30 +111,39 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02 the Developer Tutorials playlist page showed 58 videos and 'Last updated on Jun 1, 2026'; these are non-gating volatile observations.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i",
+            "observedAt": "2026-11-02",
+            "note": "Direct fetch 2026-11-02T16:41:54Z. Exact: '\"stats\":[{\"runs\":[{\"text\":\"58\"},{\"text\":\" videos\"}]},{\"simpleText\":\"568 views\"},{\"runs\":[{\"text\":\"Last updated on \"},{\"text\":\"Jun 1, 2026\"}]}]'; 58 unique videoIds; no [Private video] or [Deleted video] entries."
+          },
+          {
+            "class": "D",
+            "ref": "Parallel web_fetch cached copy of https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i (acquired 2026-10-01)",
+            "observedAt": "2026-11-02",
+            "note": "Exact: 'Developer Tutorials by Stellar Development Foundation • Playlist • 58 videos • 565 views'"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-04)",
       "evidence": [
-        "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently required freshness/timestamp repair; helper 3388's complete video row was harvested before seal.",
-        "Sibling sweep checked AV/recommendation, Lab, Scaffold and CLI getting-started cases; official status, media metadata and current command applicability remain distinct.",
-        "Structural re-form (snapshot-date): Replaced the literal snapshot date and split dating behavior from non-gating playlist metadata; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i — showed the official Developer Tutorials playlist and current metadata.",
-        "Live re-check 2026-08-27: https://www.youtube.com/c/StellarDevelopmentFoundation/playlists — showed a current playlist count, which remains volatile and non-gating.",
-        "Sibling sweep 2026-08-27: grep Developer Tutorials|start_offset|Scaffold Stellar → q-ti-scaffold-stellar, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp; no contradiction",
-        "Owner correction 2026-08-27: merged the dated-metadata and non-gating facts to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
-        "Structural re-form (negative-predicate): tightened the discovery fact, expressed metadata applicability positively, and removed the start_offset rejection already held in avoid; truth is unchanged",
-        "Live re-check 2026-08-27: https://www.youtube.com/c/StellarDevelopmentFoundation and https://developers.stellar.org/docs/tools/scaffold-stellar — the official SDF channel, Developer Tutorials playlist, and Lab/Scaffold/docs entries remain discovery points",
-        "Live re-check 2026-08-27: https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i — upload/playlist metadata remains distinct from current command/version applicability",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started — older Soroban concepts can remain useful subject to current executable checks",
-        "Live re-check 2026-08-27: https://www.youtube.com/c/StellarDevelopmentFoundation — playback timestamps remain valid only when the media source exposes them",
-        "Sibling sweep 2026-08-27: grep Developer Tutorials|start_offset|Scaffold Stellar → q-ti-scaffold-stellar, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp; no contradiction"
+        "Gospel change 2026-11-02: replaced the 2026-07-11 playlist observation (59 entries, 2026-03-12, one unavailable item) with the 2026-11-02 observation (58 videos, 'Last updated on Jun 1, 2026'); notes append a dated non-gating re-observation; reverifyBy 2027-03-25.",
+        "Live A 2026-11-02T16:41:54Z: https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i — '\"text\":\"58\"},{\"text\":\" videos\"} ... \"Last updated on \"},{\"text\":\"Jun 1, 2026\"}'; no private or deleted entries",
+        "Live D 2026-11-02: Parallel web_fetch cache (2026-10-01) of the same playlist — 'Developer Tutorials by Stellar Development Foundation • Playlist • 58 videos • 565 views'",
+        "Live D 2026-11-02: perplexity_search 'Stellar Development Foundation YouTube Developer Tutorials playlist' — 'Using Soroban Auto-complete | Developer Tutorial | 10/15/2023' ... Stellar Development Foundation (official channel and playlist exist)",
+        "Sibling sweep 2026-11-02: q-gap-av-offset-not-timestamp and q-soroban-av-passkeys-talk checked; start_offset semantics and official-channel status agree; no sibling pins the playlist count; no contradiction."
       ],
       "rootCause": [
-        "Plain freshness and source-semantics drift: a live media catalog was tagged static and an aggregator offset was allowed to masquerade as a playback timestamp.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift",
+        "The answer carried a dated live playlist observation that the 2026-11-02 page no longer matches (count, last-updated date, unavailable item)."
       ]
     },
     "origin": "raven-next q-ti-video-tutorials"

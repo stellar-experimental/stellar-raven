@@ -6,11 +6,11 @@
     "skills.stellar-dev.cross-chain"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no provider-independent 'safest bridge.' For Ethereum **Circle USDC → canonical Stellar USDC**, first verify a current native-burn/mint or native-liquidity route rather than assuming an Axelar label gives the same asset. On **2026-07-10**, tested routes differed:\n- Allbridge Next used **Circle CCTP** and delivered canonical Stellar USDC.\n- Allbridge Core used its native-liquidity/message path and also selected canonical Stellar USDC.\n- Squid's canonical-USDC quote used an **Intents/RFQ** provider, not Axelar.\n- An explicit Axelar quote delivered **USDC.axl**, a different contract representation—not Circle-native Stellar USDC.\n\nCCTP burns/mints native USDC; Axelar uses a validator/gateway interchain trust model; Allbridge Core adds liquidity-pool and messaging dependencies. Re-quote at execution time, inspect the messenger and destination issuer/SAC, verify fees/limits and Circle forwarder fields, use a Stellar destination address, and send a small test. MetaMask can be the EVM source wallet. On **2026-10-01**, MetaMask's support documentation described swaps from another chain into Stellar, and MetaMask's production bridge configuration listed Stellar as an active source and destination. The recorded Ethereum-to-Stellar quote requests returned no route, so this audit did not verify a MetaMask route, its messenger, or its destination token. None of these observations is a safety guarantee.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no provider-independent 'safest bridge.' For Ethereum **Circle USDC → canonical Stellar USDC**, first verify a current native-burn/mint or native-liquidity route rather than assuming an Axelar label gives the same asset. On **2026-07-10**, tested routes differed:\n- Allbridge Next used **Circle CCTP** and delivered canonical Stellar USDC.\n- Allbridge Core used its native-liquidity/message path and also selected canonical Stellar USDC.\n- Squid's canonical-USDC quote used an **Intents/RFQ** provider, not Axelar.\n- An explicit Axelar quote delivered **USDC.axl**, a different contract representation—not Circle-native Stellar USDC.\n\nCCTP burns/mints native USDC; Axelar uses a validator/gateway interchain trust model; the 2026-07-10 Allbridge Core route added liquidity-pool and messaging dependencies. After a July 2026 exploit, Allbridge discontinued Core's pools; as of 2026-11-02, the Core docs list Stellar support as temporarily unavailable pending a Stellar CCTP audit. Re-quote at execution time, inspect the messenger and destination issuer/SAC, verify fees/limits and Circle forwarder fields, use a Stellar destination address, and send a small test. MetaMask can be the EVM source wallet. On **2026-10-01**, MetaMask's support documentation described swaps from another chain into Stellar, and MetaMask's production bridge configuration listed Stellar as an active source and destination. The recorded Ethereum-to-Stellar quote requests returned no route, so this audit did not verify a MetaMask route, its messenger, or its destination token. None of these observations is a safety guarantee.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents source-supported content as a current or dated observation, not a memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Compares CCTP, Axelar, Allbridge Core, and intent/RFQ trust assumptions.",
+      "Compares CCTP, Axelar, Allbridge, and intent/RFQ trust assumptions.",
       "Does not guarantee bridge safety."
     ],
     "avoid": [
@@ -19,7 +19,7 @@
       "Do NOT treat quote-time fees, duration, or availability as permanent.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Routes and supported assets are freshness-sensitive; Phase 3 should re-check provider UIs/docs before accepting any specific route recommendation.\nAlso good if the answer: Clarifies that an ordinary MetaMask EVM account/custom-network flow cannot directly receive native Stellar assets; MetaMask's dated built-in Stellar support and the third-party Stellar Snap are wallet pathways, not a route verification or a safety endorsement. | Compares Axelar only with sourced evidence and labels alternative bridges such as Allbridge or CCTP accurately if used.\nGolden cites: Current bridge/provider docs and Stellar/Circle docs for native USDC/CCTP claims.\nCorrected 2026-07-10. Grade route/messenger/token-representation verification and dated safety reasoning, not one preferred provider or quote. GT-24 sibling repair: narrow the old absolute MetaMask statement to the ordinary EVM flow and keep the third-party Snap distinct from MetaMask Bridge.\nFRESHNESS UPDATE 2026-10-01: MetaMask documents swaps from another chain into Stellar. Accept a dated, attributed statement of that support; do not require it. That statement does not replace the route, messenger, and destination-token checks."
+    "notes": "Routes and supported assets are freshness-sensitive; Phase 3 should re-check provider UIs/docs before accepting any specific route recommendation.\nAlso good if the answer: Clarifies that an ordinary MetaMask EVM account/custom-network flow cannot directly receive native Stellar assets; MetaMask's dated built-in Stellar support and the third-party Stellar Snap are wallet pathways, not a route verification or a safety endorsement. | Compares Axelar only with sourced evidence and labels alternative bridges such as Allbridge or CCTP accurately if used.\nGolden cites: Current bridge/provider docs and Stellar/Circle docs for native USDC/CCTP claims.\nCorrected 2026-07-10. Grade route/messenger/token-representation verification and dated safety reasoning, not one preferred provider or quote. GT-24 sibling repair: narrow the old absolute MetaMask statement to the ordinary EVM flow and keep the third-party Snap distinct from MetaMask Bridge.\nFRESHNESS UPDATE 2026-10-01: MetaMask documents swaps from another chain into Stellar. Accept a dated, attributed statement of that support; do not require it. That statement does not replace the route, messenger, and destination-token checks.\nFRESHNESS UPDATE 2026-11-02: Allbridge Core's pool route is discontinued, and its docs list Stellar support as temporarily unavailable pending a Stellar CCTP audit. Accept a dated comparison that uses Allbridge Next, or an Allbridge Core CCTP route only when the answer cites dated provider evidence that Core lists Stellar again. Do not require a current Allbridge Core pool comparison."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -34,6 +34,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-10",
+    "reverifyBy": "2027-01-29",
     "sources": [
       {
         "class": "A",
@@ -58,7 +59,7 @@
       {
         "class": "D",
         "ref": "https://core.api.allbridgecoreapi.net/token-info?filter=all",
-        "note": "class inferred at migration"
+        "note": "class inferred at migration; on 2026-11-02 the host core.api.allbridgecoreapi.net no longer resolves (DNS), so this inventory is historical only."
       },
       {
         "class": "A",
@@ -69,12 +70,42 @@
         "class": "C",
         "ref": "https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod",
         "note": "MetaMask production remote configuration; observed 2026-10-01. bridgeConfig lists Stellar as an active bridge source and destination."
+      },
+      {
+        "class": "A",
+        "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+        "note": "Core pools discontinued July 2026; Stellar support temporarily unavailable pending Stellar CCTP audit.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://allbridge.io/next/",
+        "note": "'every transfer is routed automatically over OFT, CCTP, or intents'; Stellar listed.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.theblock.co/news/defi/2026-07-19-allbridge-core-exploit-408855",
+        "note": "Core exploit report; rebuilt Core drops pools for CCTP and LayerZero.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.squidrouter.com/api-and-sdk-integration/chain-integration-guides/stellar-integration",
+        "note": "\"Stellar support is powered by Squid Intents\"; listed Stellar asset USDC with issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs-core.allbridge.io/sdk/guides/stellar/transfer",
+        "note": "\"Stellar transfers are temporarily unavailable while the Stellar CCTP implementation is pending audit.\"",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
-        "claim": "Current Ethereum-to-Stellar routes differ in messenger, trust model, duration, and destination USDC representation",
-        "verdict": "confirmed",
+        "claim": "As of 2026-07-10, Ethereum-to-Stellar routes differed in messenger, trust model, duration, and destination USDC representation",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
@@ -135,6 +166,18 @@
             "ref": "https://bridge.api.cx.metamask.io/getTokens?chainId=20000000000002",
             "observedAt": "2026-10-01",
             "note": "HTTP 200 with 34 Stellar tokens, including XLM and USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN."
+          },
+          {
+            "class": "A",
+            "ref": "https://support.metamask.io/configure/networks/stellar/",
+            "observedAt": "2026-11-02",
+            "note": "HTTP last-modified 2026-11-02T15:38:14Z; still \"You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button on the MetaMask homepage\" and \"A cross-chain swap (bridge) cannot create a trustline on your behalf\"."
+          },
+          {
+            "class": "C",
+            "ref": "https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod",
+            "observedAt": "2026-11-02",
+            "note": "2026-11-02T17:40Z: stellarAccounts {enabled: true, minimumVersion: '13.50.0'}; bridgeConfig.chains['20000000000002'] {isActiveSrc: true, isActiveDest: true}; chainRanking includes {name: 'Stellar', chainId: 'stellar:pubnet'}."
           }
         ]
       },
@@ -153,40 +196,87 @@
             "ref": "https://support.metamask.io/configure/networks/stellar/",
             "observedAt": "2026-10-01",
             "note": "The page describes the swap flow. It names no bridge provider, messenger, or destination-token representation for a swap into Stellar."
+          },
+          {
+            "class": "F",
+            "ref": "https://bridge.api.cx.metamask.io/getQuote (srcChainId=1; same parameters and headers as the 2026-10-01 requests 3-5)",
+            "observedAt": "2026-11-02",
+            "note": "2026-11-02T17:40:46Z: Ethereum USDC to Stellar USDC and to XLM (destination GDUK…YLEX) returned HTTP 200 with zero quotes, and the Ethereum USDC to Solana USDC control also returned zero quotes, so this request shape no longer validates; still inconclusive for route existence."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-02, Allbridge Core pool-based transfers are discontinued after a July 2026 exploit, and the Core docs list Stellar support as temporarily unavailable pending a Stellar CCTP audit.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+            "observedAt": "2026-11-02",
+            "note": "'Allbridge Core liquidity pools were discontinued in July 2026.' 'Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs-core.allbridge.io/llms-full.txt",
+            "observedAt": "2026-10-06",
+            "note": "'Allbridge Messaging and Wormhole messaging are deprecated. They were the messaging options for pool-based transfers, which were discontinued after the July 2026 security incident.'"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.theblock.co/news/defi/2026-07-19-allbridge-core-exploit-408855",
+            "observedAt": "2026-11-02",
+            "note": "'A rebuilt Core will drop liquidity pools entirely, routing transfers through CCTP and LayerZero instead'"
+          },
+          {
+            "class": "D",
+            "ref": "https://news.chainspot.io/2026/07/24/allbridge-core-security-breach/",
+            "observedAt": "2026-11-02",
+            "note": "'On July 20, 2026, Allbridge Core ... suspended its operations following a security breach that resulted in a $1.65 million loss on Solana.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs-core.allbridge.io/sdk/guides/stellar/transfer",
+            "observedAt": "2026-11-02",
+            "note": "\"Stellar transfers are temporarily unavailable while the Stellar CCTP implementation is pending audit.\""
+          },
+          {
+            "class": "F",
+            "ref": "dig/curl core.api.allbridgecoreapi.net",
+            "observedAt": "2026-11-02",
+            "note": "2026-11-02: \"Could not resolve host: core.api.allbridgecoreapi.net\" — the old Core token-info API is gone."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-10-01",
-      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task full-reverify)",
       "evidence": [
-        "MetaMask route review (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 2): the answer now reports what dated evidence supports. MetaMask documents swaps into Stellar and configures Stellar as an active bridge chain. The recorded quote requests returned no route, so the route, its messenger, and its destination token stay unverified. Avoid item 2 no longer bars the documented support claim; it bars a safety claim or a Circle-native USDC claim without dated provider evidence. The 2026-07-10 route observations for CCTP, Allbridge, Squid, and Axelar were not re-run and are unchanged, so truth.asOf stays 2026-07-10.",
-        "Independent review fix 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, \"Review reconciliation\", finding 2): the retained quote evidence now carries the request parameters, times, and counts. The recovered session record shows five zero-quote requests, not three, so the answer no longer states a request count. The route conclusion is unchanged.",
-        "Live check 2026-10-01 (class A): https://support.metamask.io/configure/networks/stellar/ — 'You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button on the MetaMask homepage.'",
-        "Live check 2026-10-01 (class C): https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod — stellarAccounts enabled from 13.50.0; bridgeConfig.chains['20000000000002'] isActiveSrc and isActiveDest true.",
-        "Source check 2026-10-01 (class B): MetaMask/core@418b73c1cd5eb251c35fe6a0d1d14eb169c93d10 bridge-controller types.ts and constants/bridge.ts; MetaMask/metamask-extension@ebd93b065869fb554d3246a13a2b73f3f749cfa5 CHANGELOG.md.",
-        "Empirical check 2026-10-01 (class F): https://bridge.api.cx.metamask.io/getQuote — five Ethereum-to-Stellar requests returned zero quotes; the Ethereum-to-Solana control returned nine. .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md (\"Recorded quote requests\") keeps the exact parameters. The result is inconclusive for route existence.",
-        "Sibling sweep 2026-10-01: grep MetaMask → q-edge-metamask-evm-mental-model (dates the same documented built-in support and keeps the third-party Snap distinct), q-edge-ambig-best-wallet, q-eco-nft-marketplace-whitespace, q-raph-xlm-network-role, q-soroban-contract-id-derivation (no MetaMask route claim); no contradiction.",
-        "Solo scratchpad 575 GT-15 primary 3243 and blind 3246",
-        "Quote-time checks: canonical Stellar USDC via CCTP/Allbridge Core/Squid Intents; explicit Axelar route produced USDC.axl",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (long-fact): split and shortened the facts without changing the required claims; truth unchanged.",
-        "Live re-check 2026-08-29: https://docs.axelar.dev/learn/security/ — the current dated primary security page supports a sourced observation rather than a memory claim.",
-        "Live re-check 2026-08-29: https://core.api.allbridgecoreapi.net/token-info?filter=all — the live provider inventory demonstrates that route and token rosters require an as-of date.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar, https://docs.axelar.dev/learn/security/, https://core.api.allbridgecoreapi.net/token-info?filter=all, and https://docs.squidrouter.com/api-and-sdk-integration/coral-intent-swaps/become-a-solver — the primary sources document native CCTP burn/mint, Axelar validators and gateways, Allbridge Core routes, and intent/RFQ solvers.",
-        "Live re-check 2026-08-29: https://docs.axelar.dev/learn/security/ — Axelar's risk and security documentation supports analysis, not a bridge-safety guarantee.",
-        "Sibling sweep 2026-08-29: grep CCTP|Axelar|Allbridge Core|intent/RFQ → q-cctp-v2-usdc-stellar, q-defi-allbridge-what-is, q-defi-bridge-evm-to-stellar-axelar, q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration; no contradiction."
+        "2026-10-06 [A] https://docs-core.allbridge.io/llms-full.txt — \"Allbridge Messaging and Wormhole messaging are deprecated. They were the messaging options for pool-based transfers, which were discontinued after the July 2026 security incident.\" (proposer claim, contradicted: Allbridge Core adds liquidity-pool and messaging dependencies (present tense))",
+        "2026-10-14 [A] https://docs-core.allbridge.io/what-is-allbridge-core.md — \"Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit.\" (proposer claim, contradicted: Allbridge Core adds liquidity-pool and messaging dependencies (present tense))",
+        "2026-11-02 [D] https://news.chainspot.io/2026/07/24/allbridge-core-security-breach/ — \"On July 20, 2026, Allbridge Core ... suspended its operations following a security breach that resulted in a $1.65 million loss on Solana.\" (proposer claim, contradicted: Allbridge Core adds liquidity-pool and messaging dependencies (present tense))",
+        "2026-11-02 [A] https://allbridge.io/next/ — \"every transfer is routed automatically over OFT, CCTP, or intents ... Stellar\" (proposer claim, confirmed-as-of: 2026-07-10 dated route observations (Allbridge Next CCTP, Squid RFQ, USDC.axl))",
+        "2026-10-31 [A] https://developers.circle.com/cctp/references/stellar — \"Always use CctpForwarder when routing CCTP USDC to a Stellar address.\" (proposer claim, confirmed-as-of: 2026-07-10 dated route observations (Allbridge Next CCTP, Squid RFQ, USDC.axl))",
+        "2026-10-16 [A] https://support.metamask.io/configure/networks/stellar/ — \"You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button\" (proposer claim, confirmed-as-of: MetaMask documents swaps from another chain into Stellar (2026-10-01))",
+        "2026-11-02 [D] perplexity/parallel sweep — \"no contradicting report\" (proposer claim, confirmed-as-of: MetaMask documents swaps from another chain into Stellar (2026-10-01))",
+        "2026-10-14 [A] https://docs-core.allbridge.io/what-is-allbridge-core.md — \"Stellar support is temporarily unavailable ... pending audit.\" (proposer claim, contradicted: Compares CCTP, Axelar, Allbridge Core, and intent/RFQ trust assumptions.)",
+        "2026-11-02 [A] https://developers.circle.com/cctp/references/stellar — \"CCTP on Stellar ... CctpForwarder\" (proposer claim, confirmed: avoid items punish false claims (Axelar = native USDC; MetaMask route safety; permanent quotes))",
+        "2026-11-02 [A] https://docs-core.allbridge.io/what-is-allbridge-core.md — \"Allbridge Core liquidity pools were discontinued in July 2026.\" (independent verifier, accept on golden.answer)",
+        "2026-11-02 [A] https://docs-core.allbridge.io/what-is-allbridge-core.md — \"Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit.\" (independent verifier, accept on golden.answer)",
+        "2026-11-02 [D] https://www.theblock.co/news/defi/2026-07-19-allbridge-core-exploit-408855 — \"A rebuilt Core will drop liquidity pools entirely, routing transfers through CCTP and LayerZero instead\" (independent verifier, accept on golden.answer)",
+        "2026-11-02 [A] https://docs-core.allbridge.io/what-is-allbridge-core.md — \"Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit.\" (independent verifier, accept on golden.keyFacts[2])",
+        "2026-11-02 [A] https://allbridge.io/next/ — \"every transfer is routed automatically over OFT, CCTP, or intents\" (independent verifier, accept on golden.keyFacts[2])",
+        "2026-11-02 [A] https://docs-core.allbridge.io/what-is-allbridge-core.md — \"Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit.\" (independent verifier, modify on golden.notes)",
+        "2026-11-02 [A] https://docs-core.allbridge.io/what-is-allbridge-core.md — \"EVM chains (Ethereum, Polygon, Avalanche, Arbitrum, Base, Optimism, Unichain) * Tron * Solana * Sui * Stacks\" (independent verifier, modify on golden.notes)",
+        "Change: answer re-dates the Allbridge Core liquidity-pool dependency to 2026-07-10 and adds the 2026-11-02 Core status; keyFacts[2] \"Allbridge Core\" -> \"Allbridge\"; notes gain the verifier-modified FRESHNESS UPDATE (a Core CCTP Stellar route counts only with dated provider evidence that Core lists Stellar again). The 2026-07-10 route quotes (Allbridge Next CCTP, Squid RFQ, USDC.axl) were not re-run, so truth.asOf stays 2026-07-10.",
+        "Sibling sweep 2026-11-02: checked q-defi-allbridge-what-is; q-defi-allbridge-what-is updated in the same pass with the same dated Core status; no contradiction.",
+        "Full re-verification attempt 2026-11-02 (pass 2): current-state claims re-confirmed — [A] Allbridge Core docs and SDK Stellar guide (pools discontinued July 2026; Stellar \"temporarily unavailable while the Stellar CCTP implementation is pending audit\"); [A] https://allbridge.io/next/ (\"every transfer is routed automatically over OFT, CCTP, or intents\", Stellar listed); [A] Circle https://developers.circle.com/cctp/references/stellar (CctpForwarder; mintRecipient and destinationCaller set to the forwarder) and the SDF CCTP blog (\"native USDC is burned and minted\"); [A] https://docs.axelar.dev/learn/security/ (proof-of-stake validator set); [D] Parallel web_search (Axelar Stellar integration blog 2026-02-16; Squid Stellar Intents docs; Allbridge SDK warning).",
+        "2026-11-02 [A] https://support.metamask.io/configure/networks/stellar/ (last-modified 2026-11-02T15:38:14Z) and [C] MetaMask prod flags: unchanged from 2026-10-01 (Stellar active bridge source and destination). [F] getQuote re-run 2026-11-02T17:40:46Z: Stellar requests and the Solana control all returned zero quotes, so the probe is inconclusive; the answer's 'did not verify a MetaMask route' statement stands.",
+        "truth.asOf stays 2026-07-10: the 2026-07-10 route quotes (Allbridge Next CCTP, Allbridge Core, Squid Intents/RFQ, explicit Axelar USDC.axl) cannot be re-run from read-only public APIs — Squid v2 returns 'x-integrator-id header is missing' and the Allbridge Core API host no longer resolves. They stay dated historical observations in the answer; later facts carry their own 2026-10-01 and 2026-11-02 dates. truth.reverifyBy 2027-01-29 is added (event-tied: the golden text dates the Allbridge Core Stellar status 'temporarily unavailable while the Stellar CCTP implementation is pending audit'; re-check after the audit or by that date). tags.freshness stays live; the stale gate keys on truth.reverifyBy.",
+        "Sibling sweep 2026-11-02 (pass 2): q-defi-allbridge-what-is states the same 2026-11-02 Core status; q-edge-metamask-evm-mental-model keeps the 2026-10-01 MetaMask support date; no contradiction."
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Re-verify the MetaMask Bridge statements in q-defi-bridge-evm-to-stellar-axelar: the avoid item barred a support claim that MetaMask now documents",
-        "eval-side route abstraction conflated provider brand, messenger, and destination token representation",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-defi-bridge-evm-to-stellar-axelar"

@@ -5,12 +5,12 @@
     "skills.trustless-work.trustless-work-dev"
   ],
   "golden": {
-    "answer": "As of 2026-09-16, authentication depends on the Trustless Work API surface. The pinned skill says to send `x-api-key` on every request. The current Core API documentation and JavaScript SDK also permit a wallet-session token in `Authorization: Bearer <jwt>`. For state-changing escrow calls, the API builds an unsigned XDR. The caller's wallet signs that XDR locally. The client sends the signed XDR through the send-transaction helper for that API version. The pinned V1 skill uses `/helper/send-transaction`; the pinned V2 skill and current Core API use `/stellar/send-transaction`. The API does not sign transactions for the caller.",
+    "answer": "As of 2026-11-02, authentication depends on the Trustless Work API surface. The pinned skill says to send `x-api-key` on every request. The current Core API documentation and JavaScript SDK also permit a wallet-session token in `Authorization: Bearer <jwt>`. For state-changing escrow calls, the API builds an unsigned XDR. The caller's wallet signs that XDR locally. The client sends the signed XDR through the send-transaction helper for that API version. The pinned V1 skill uses `/helper/send-transaction`; the pinned V2 skill and current Core API use `/stellar/send-transaction`. The API does not sign transactions for the caller.",
     "keyFacts": [
       "The pinned skill uses the x-api-key header.",
       "State-changing escrow calls return unsigned XDR.",
       "The caller's wallet signs the XDR locally.",
-      "The client submits the signed XDR through the documented send-transaction helper for the API version."
+      "The client submits the signed XDR via the send-transaction helper for that API version."
     ],
     "avoid": [
       "All current Trustless Work API requests must use x-api-key, and bearer authentication is never accepted.",
@@ -41,8 +41,8 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-09-16",
-    "reverifyBy": "2026-12-16",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-03-26",
     "sources": [
       {
         "class": "A",
@@ -71,6 +71,24 @@
       {
         "class": "B",
         "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/core-concepts.md"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/constitution.md",
+        "note": "Current pinned skill (ecosystem-skills/MANIFEST.json commit 80e2467f, 2026-09-27): x-api-key on every request; never Authorization: Bearer for the API-key requirement.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md",
+        "note": "Current pinned V2 skill: submit through POST /stellar/send-transaction; V1 documents /helper/send-transaction.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/main/src/transport/http-transport.ts",
+        "note": "SDK HEAD f95b5b1a (2026-09-28): emits x-api-key for an API key and Authorization: Bearer for an access token.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -95,6 +113,24 @@
             "ref": "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/4121f92593b74643fc9e16b3d7d13cdd0a620914/src/transport/http-transport.ts",
             "observedAt": "2026-09-16",
             "note": "The SDK emits x-api-key when given an API key and Authorization: Bearer when given an access token."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/constitution.md",
+            "observedAt": "2026-11-02",
+            "note": "\"**[ENFORCED]** `x-api-key` header on **every** request — including read-only indexer queries. ... Never `Authorization: Bearer` for the API-key requirement.\""
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+            "observedAt": "2026-11-02",
+            "note": "\"Every request carries either an API key or a wallet-session token: x-api-key: <id>.<secret> Authorization: Bearer <jwt>\""
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/main/src/transport/http-transport.ts",
+            "observedAt": "2026-11-02",
+            "note": "headers[\"x-api-key\"] = this.apiKey; ... headers.Authorization = `Bearer ${token}`; (HEAD f95b5b1a)"
           }
         ]
       },
@@ -113,6 +149,12 @@
             "ref": "https://github.com/Trustless-Work/trustlesswork-backoffice/blob/83e8cddfe3473f3e4bdabdd8dfd9c506a4fb3135/src/features/escrows/hooks/useSignAndSend.ts",
             "observedAt": "2026-09-16",
             "note": "The client builds a transaction, signs buildResult.unsignedXdr through the wallet kit, and sends the signed XDR."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+            "observedAt": "2026-11-02",
+            "note": "\"**The API never signs anything.** Every endpoint that changes on-chain state returns an *unsigned* transaction. Your wallet signs it. You submit it.\""
           }
         ]
       },
@@ -160,28 +202,46 @@
             "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction",
             "observedAt": "2026-09-16",
             "note": "Current Core API documents the stellar submit path."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md",
+            "observedAt": "2026-11-02",
+            "note": "\"3. **Submit** — `POST /stellar/send-transaction` with the signed XDR. > The submit route differs from V1, which documents `/helper/send-transaction`.\""
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+            "observedAt": "2026-11-02",
+            "note": "\"3. SUBMIT POST /stellar/send-transaction { signedXdr }\""
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-09-16",
-      "by": "Sol high proposal author; Astra coordinator reconciled independent Grok high submit-path finding",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
       "evidence": [
-        "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/constitution.md",
-        "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
-        "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction",
-        "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/4121f92593b74643fc9e16b3d7d13cdd0a620914/src/transport/http-transport.ts",
-        "https://github.com/Trustless-Work/trustlesswork-backoffice/blob/83e8cddfe3473f3e4bdabdd8dfd9c506a4fb3135/src/features/escrows/hooks/useSignAndSend.ts",
-        "Sibling sweep: q-crp-partner-detail-after-discovery and q-soroban-greenfield-escrow-prior-art-preflight mention Trustless Work but make no API authentication or signing claim that conflicts with this case.",
-        "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/core-concepts.md",
-        "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/core-concepts.md",
-        ".agents/rounds/2026-09-16-trustless-work/independent-review.md",
-        ".agents/rounds/2026-09-16-trustless-work-acceptance.md"
+        "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/constitution.md (observedAt 2026-11-02): \"**[ENFORCED]** `x-api-key` header on **every** request — including read-only indexer queries. ... Never `Authorization: Bearer` for the API-key requirement.\" The pin moved from 634f32bd to 80e2467f (ecosystem-skills/MANIFEST.json); auth and submit-path text unchanged.",
+        "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction (observedAt 2026-11-02, applier re-read): \"Authorization: Bearer <jwt>\" listed with x-api-key; \"The API never signs anything.\"",
+        "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/main/src/transport/http-transport.ts (HEAD f95b5b1a, observedAt 2026-11-02): emits x-api-key or Authorization: Bearer by credential type.",
+        "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md (observedAt 2026-11-02, applier re-read): \"POST /stellar/send-transaction\"; V1 documents /helper/send-transaction.",
+        "Pass 1 (batch compliance-rwa-payments-04): the source dispute (pinned skill x-api-key only vs Core API x-api-key or Bearer) stands as encoded; truth.status stays disputed.",
+        "Sibling sweep 2026-11-02: q-soroban-greenfield-escrow-prior-art-preflight, q-crp-partner-detail-after-discovery; no API-auth or signing claim conflicts.",
+        "Pass 2 live A 2026-11-02: https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction (HTTP 200) -- 'x-api-key: <id>.<secret> ... Authorization: Bearer <jwt>'; 'The API never signs anything. Every endpoint that changes on-chain state returns an unsigned transaction. Your wallet signs it. You submit it.'; '3. SUBMIT POST /stellar/send-transaction { signedXdr }'.",
+        "Pass 2 live B 2026-11-02: trustlesswork-skill@80e2467f (ecosystem-skills/MANIFEST.json pin) constitution.md line 114 -- '**[ENFORCED]** `x-api-key` header on **every** request'; skills/api/core-concepts.md line 135 -- 'POST to `/helper/send-transaction`'; skills/api/v2/core-concepts.md line 50 -- '`POST /stellar/send-transaction` with the signed XDR'.",
+        "Pass 2 change: keyFacts[3] shortened from 101 to 87 characters with the same predicate (submit signed XDR through the version-specific send-transaction helper); golden.answer snapshot date moved from 2026-09-16 to 2026-11-02 to match the re-verified content and truth.asOf. Dispute encoding unchanged.",
+        "Pass 2 sibling sweep 2026-11-02: grep 'Trustless Work' over the battery -> q-soroban-greenfield-escrow-prior-art-preflight; no API-auth, signing, or submit-path claim conflicts.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.answer: Every answer claim re-derived live on 2026-11-02 across A and B: pinned skill x-api-key on every request; Core API docs and SDK allow Bearer; unsigned XDR; wallet signs; V1 /helper and V2 /stellar submit paths; the API never signs. Only the snapshot date moves; the disputed-auth encoding stays.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.keyFacts[3]: 87 characters (was 101). Same single predicate; dropping 'documented' does not loosen it because the notes still require the path to match the applicable API version.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+] (keyFacts[3] length entry): Length fact verified: old keyFacts[3] is 101 characters, over the 90-character limit.",
+        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+] (answer snapshot-date entry): Accurate: truth.asOf is 2026-11-02 while the answer said 'As of 2026-09-16'; the content holds on 2026-11-02 per the sources above. Side note for the applier: the existing rootCause names improvements/skills/sk-025, and the notes carry no canonical-page partial cap. That is correct under ADR-0008 (aggregator/third-party skill dispute); do not add one to quiet the symmetric-caution warning."
       ],
       "rootCause": [
         "eval-authoring",
-        "improvements/skills/sk-025-trustless-work-beta-auth-scope.md"
+        "improvements/skills/sk-025-trustless-work-beta-auth-scope.md",
+        "Eval-side authoring flaw: keyFacts[3] was 101 characters, over the 90-character key-fact limit; the shortened text keeps the same single predicate.",
+        "Eval-side authoring flaw: pass-1 re-verification moved truth.asOf to 2026-11-02 but left the answer's 'As of 2026-09-16' snapshot date; every answer claim was re-verified live on 2026-11-02."
       ]
     },
     "origin": "authored 2026-09 (trustless-work source onboarding)"

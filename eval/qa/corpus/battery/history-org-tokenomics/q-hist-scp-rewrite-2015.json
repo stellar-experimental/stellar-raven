@@ -79,18 +79,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
       "evidence": [
-        "Solo scratchpad 575 GT-27 primary 3270 and blind 3272.",
-        "Structural re-form (symmetric-caution): Added a claim-specific caution for the SDF-only fork account; the truth is unchanged.",
-        "Finding read 2026-08-27: improvements/lumenloop/ll-016-historical-dispute-provenance.md — disputed single-source causation for the 2014 fork and 2015 rewrite.",
-        "Sibling sweep 2026-08-27: grep 2014 fork|SCP rewrite|Mazières|Ripple-derived → q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm; no contradiction",
-        "Structural re-form (long-fact): split authorship, FBA/rollout history, and disputed causation; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/stellar-consensus-protocol-proof-code credits the 2015 paper to David Mazières.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/stellar-consensus-protocol-proof-code and https://stellar.org/blog/developers/upgraded-network-is-here confirm FBA and the 2015 rollout.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/safety-liveness-and-fault-tolerance-consensus-choice and https://xrpl.org/blog/2014/why-the-stellar-forking-issue-does-not-affect-ripple retain the parties' conflicting causal accounts.",
-        "Sibling sweep 2026-08-29: grep Mazières|2014 fork|SCP rewrite|Ripple-derived|2015 rollout → q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm, and q-hist-scp-rewrite-2015; no contradiction."
+        "[A] golden.keyFacts[0] (confirmed): https://stellar.org/blog/foundation-news/stellar-consensus-protocol-proof-code :: date 2015-04-08; \"The paper by Prof. David Mazières, Chief Scientist at Stellar.org, presents the Stellar Consensus Protocol (SCP), a construction for federated Byzantine agreement (FBA).\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[0] (confirmed): https://datatracker.ietf.org/doc/html/draft-mazieres-dinrg-scp-05 :: \"Mazieres, D., 'The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus', Stellar Development Foundation whitepaper, 2015\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[1] (confirmed): https://stellar.org/blog/developers/upgraded-network-is-here :: date 2015-11-03; \"It uses the Stellar Consensus Protocol (SCP), which has several safety properties that secure the network against forking.\" (observedAt 2026-11-02)",
+        "[E] golden.keyFacts[1] (confirmed): stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol :: \"Stellar Consensus Protocol (SCP), which is a construction of the Federated Byzantine Agreement (FBA)\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[1] (confirmed): https://www.scs.stanford.edu/15au-cs140/notes/scp.pdf :: Mazières lecture 2015-11-11 on SCP/FBA (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[2] (disputed): https://stellar.org/blog/foundation-news/safety-liveness-and-fault-tolerance-consensus-choice :: (2014-12-05) \"the Stellar network experienced a ledger fork that is related to a failure of the underlying Ripple/Stellar consensus system\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[2] (disputed): https://xrpl.org/blog/2014/why-the-stellar-forking-issue-does-not-affect-ripple :: \"it is impossible for the Ripple network to experience an unintentional ledger fork as Stellar's did because our nodes require votes from a majority of validators\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm checked; consistent; dispute encoding unchanged.",
+        "No judge-facing change; prior verification event 2026-08-29 is in git history.",
+        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
       ],
       "rootCause": [
         "Secondary chronology collapsed a disputed causal narrative into settled fact.",

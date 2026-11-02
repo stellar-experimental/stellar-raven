@@ -5,7 +5,7 @@
     "scout.listSkills"
   ],
   "golden": {
-    "answer": "Use `scout.listSkills` to browse the live installable directory, optionally filtering by source or kind. The observed SDF-filtered result (a dated 2026-07-11 probe) returned seven entries with slug, install command, source, kind, homepage/raw URL, and compatibility; treat the count and slugs as an observation with its date. Then use `getSkill` for one named entry.",
+    "answer": "Use `scout.listSkills` to browse the live installable directory, optionally filtering by source or kind. An SDF-filtered probe returned seven entries on 2026-07-11 and eight on 2026-11-02, each with slug, install command, source, kind, homepage/raw URL, and compatibility; treat the count and slugs as an observation with its date. Then use `getSkill` for one named entry.",
     "keyFacts": [
       "Uses `listSkills` for discovery and `getSkill` for one known skill.",
       "Limits gateway-served skills to a subset of the live directory metadata."
@@ -13,7 +13,7 @@
     "avoid": [
       "Do NOT use `listSkills` as though it returns the full instructions for every skill."
     ],
-    "notes": "N1 live contract probe 2026-07-11: Succeeded with a source=sdf filter and returned seven skill-directory entries — a DATED 2026-07-11 snapshot: that roster included a 'soroban' entry, a slug the 2026-07-28 re-verification found retired in favour of 'smart-contracts'. Treat the count and slugs as an observation with its date, never a current guarantee."
+    "notes": "N1 live contract probe 2026-07-11: Succeeded with a source=sdf filter and returned seven skill-directory entries — a DATED 2026-07-11 snapshot: that roster included a 'soroban' entry, a slug the 2026-07-28 re-verification found retired in favour of 'smart-contracts'. Treat the count and slugs as an observation with its date, never a current guarantee. Re-probe 2026-11-02: source=sdf returned eight entries (agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs); do not penalize a sourced, dated count that differs from either snapshot."
   },
   "tags": {
     "category": "soroban",
@@ -27,7 +27,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -38,6 +38,24 @@
         "class": "B",
         "ref": "inventory/stellar-light.json",
         "note": "Committed inventory snapshot for the service family."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/skills?source=sdf",
+        "note": "Raw Stellar Light GET: meta.counts.returned 8; rows carry slug, install, source, kind, homepage, rawUrl, compatibility.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-dev-skill/tree/main/skills",
+        "note": "SDF skill repo: eight skill directories (agentic-payments, assets, cross-chain, dapp, data, smart-contracts, standards, zk-proofs).",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://skills.stellar.org/llms.txt",
+        "note": "SDF registry: '## Included Stellar Skills' lists eight SDF entries before '## Community Built'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -52,25 +70,46 @@
             "note": "Succeeded with a source=sdf filter and returned seven skill-directory entries including Soroban."
           }
         ]
+      },
+      {
+        "claim": "An SDF-filtered listSkills probe returned eight entries on 2026-11-02 (agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs), each with slug, install, source, kind, homepage/raw URL, and compatibility.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/skills?source=sdf",
+            "observedAt": "2026-11-02",
+            "note": "meta.counts.returned: 8; generatedAt 2026-11-02T16:09:37.061Z; same eight slugs; row fields slug, install, source, kind, homepage, rawUrl, compatibility."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-dev-skill/tree/main/skills",
+            "observedAt": "2026-11-02",
+            "note": "gh api repos/stellar/stellar-dev-skill/contents/skills: 'agentic-payments assets cross-chain dapp data smart-contracts standards zk-proofs' (8 directories)."
+          },
+          {
+            "class": "A",
+            "ref": "https://skills.stellar.org/llms.txt",
+            "observedAt": "2026-11-02",
+            "note": "'## Included Stellar Skills' lists Smart Contracts, Agentic Payments, Frontend (dapp), Assets, APIs (data), ZK, Cross-Chain, Ecosystem (standards) = 8 SDF entries."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
       "evidence": [
-        "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
-        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
-        "catalog/manifest.json#scout.listSkills",
-        "inventory/stellar-light.json",
-        "Todo 1253 Lane B review (2026-07-28, F3): the notes named the retired 'soroban' slug as an undated roster fact; date-scoped to the 2026-07-11 probe with the 2026-07-28 'smart-contracts' retirement recorded. Internal-consistency repair — the underlying probe observation is unchanged.",
-        "Structural re-form (long-fact): shortened the live-directory and gateway-subset distinction; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/skills and catalog/manifest.json#scout.listSkills — the live API returns skills, MCP servers, SDKs, CLIs, agent kits, and tools, while the current operation contract says most entries are not mirrored skills.",
-        "Sibling sweep 2026-08-29: grep listSkills|most entries are not mirrored skills → q-gap-scout-get-skill-detail, q-gap-scout-list-skill-directory, q-tool-cli-skills-discovery, q-tool-skill-detail-install; no contradiction."
+        "golden.answer + golden.notes: recorded the 2026-11-02 SDF roster (8 entries) beside the dated 2026-07-11 snapshot (7 entries); kept the 'observation with its date' framing and added a symmetric grader caution for sourced, dated counts.",
+        "C GET https://stellarlight.xyz/api/skills?source=sdf — 'meta.counts.returned: 8; slugs agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs; each row has slug, install, source, kind, homepage, rawUrl, compatibility' (observedAt 2026-11-02; generatedAt 2026-11-02T16:09:37.061Z).",
+        "C Raven execute scout.listSkills({source:'sdf'}) — 'meta.counts {returned:8,total:8}' with the same eight slugs (observedAt 2026-11-02; same aggregator as the raw read, so one class).",
+        "B gh api repos/stellar/stellar-dev-skill/contents/skills — 'agentic-payments assets cross-chain dapp data smart-contracts standards zk-proofs (8 directories)' (observedAt 2026-11-02).",
+        "A https://skills.stellar.org/llms.txt — '## Included Stellar Skills' lists 8 SDF entries before '## Community Built' (observedAt 2026-11-02).",
+        "A catalog/manifest.json#scout.listSkills — 'Not for ONE named skill's full content -> use getSkill' and 'most entries are not mirrored skills' (observedAt 2026-11-02): keyFacts[0..1] and avoid[0] unchanged.",
+        "Sibling sweep 2026-11-02: q-tool-skill-detail-install, q-tool-cli-skills-discovery, q-gap-scout-get-skill-detail checked; none pins an SDF roster count; no contradiction."
       ],
       "rootCause": [
-        "solo://project/49/scratchpad/p4/n1-gapops",
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

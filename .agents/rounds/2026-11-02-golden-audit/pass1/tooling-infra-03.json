@@ -1,0 +1,1399 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "tooling-infra-03",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-ti-enumerate-holders-airdrop",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0]",
+     "claim": "Horizon /accounts?asset=CODE:ISSUER is cursor paginated, max 200, and includes zero-balance trustlines",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-all-accounts",
+       "observedAt": "2026-11-02",
+       "quote": "This endpoint lists accounts by one of four filters : signer, asset, liquidity pool or sponsor."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts?asset=USDC:GA5Z...KZVN&limit=201",
+       "observedAt": "2026-11-02",
+       "quote": "\"reason\": \"invalid limit: value provided that is over limit max of 200\""
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts?asset=USDC:GA5Z...KZVN&limit=200",
+       "observedAt": "2026-11-02",
+       "quote": "200 records, all G..., next link with cursor; 141 of 200 rows had a 0.0000000 USDC trustline balance"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-horizon/blob/master/internal/db2/page_query.go",
+       "observedAt": "2026-11-02",
+       "quote": "DefaultPageSize = 10 ... MaxPageSize = 200"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Horizon accounts collection excludes C-address contract balances",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75",
+       "observedAt": "2026-11-02",
+       "quote": "\"invalid_field\": \"account_id\", \"reason\": \"Account ID must star[t with G]\""
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=USDC&asset_issuer=GA5Z...",
+       "observedAt": "2026-11-02",
+       "quote": "num_contracts 48504, contracts_amount 96737739.6990147 reported separately from accounts/balances"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar account balances for issued assets are always stored in trust lines, and Stellar contract balances for issued assets are always stored in a contract dat…"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..4]",
+     "claim": "Moving crawl is not an exact-ledger snapshot; pin ledger; idempotent distribution state",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data",
+       "observedAt": "2026-11-02",
+       "quote": "SDF-hosted Horizon keeps one year of history ... Hubble or Galexie are the recommended tools"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/history-vs-state-tables",
+       "observedAt": "2026-11-02",
+       "quote": "state tables are a full history log of ledger entry states"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-ti-explain-repo-payload-status",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "explainRepo takes q plus optional repo; payload carries its own ok; routed repo/repoUrl are provenance; answer can be null with routed repo still returned",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.explainRepo",
+       "observedAt": "2026-11-02",
+       "quote": "Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable ... the upstream payload carries its own ok flag at data.ok"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/explain?q=where%20are%20transaction%20result%20codes%20defined&repo=stellar/stellar-core",
+       "observedAt": "2026-11-02",
+       "quote": "\"ok\": true, \"routedVia\": \"explicit\", \"answered\": true, \"answerSource\": \"deepwiki\", \"answerAsOf\": null, sources.repoUrl https://github.com/stellar/stellar-core"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/repos/explain?q=where%20are%20transaction%20result%20codes%20defined",
+       "observedAt": "2026-11-02",
+       "quote": "\"routedVia\": \"canonical\"; meta.warnings: \"answerAsOf is null: DeepWiki exposes no index date ... Verify any specific value ... against repoUrl\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-explainrepo-payload-ok"
+  },
+  {
+   "id": "q-ti-fetch-all-balances-classic-sac",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Horizon /accounts/{G} returns native, Classic and LP rows; SAC view of a G trustline is the same balance",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+       "observedAt": "2026-11-02",
+       "quote": "Transfers between accounts and contracts using SAC resolve to the same trustline"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account",
+       "observedAt": "2026-11-02",
+       "quote": "The balances section in the response will also list all the trustlines this account has established"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "No standard one-call Horizon/RPC operation discovers every SAC and SEP-41 token for any address (negative, source-relative)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/tree/v30.0.0/cmd/stellar-rpc/internal/methods",
+       "observedAt": "2026-11-02",
+       "quote": "methods: get_events, get_fee_stats, get_health, get_latest_ledger, get_ledger_entries, get_ledgers, get_network, get_transaction(s), get_version_info, send_tran…"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/accounts/C...",
+       "observedAt": "2026-11-02",
+       "quote": "400 Account ID must start with G"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc",
+       "observedAt": "2026-11-02",
+       "quote": "GET /accounts/{address} | getLedgerEntries | ... RPC will not provide trust line information associated with the account directly"
+      },
+      {
+       "class": "D",
+       "ref": "https://developers.stellar.org/docs/data/indexers (via Perplexity)",
+       "observedAt": "2026-11-02",
+       "quote": "Alchemy ... Stellar Data API serves indexed transfer history, account balances, and NFT holdings across Stellar assets and contract tokens"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-enumerate-holders-airdrop; q-ti-historical-pointintime-balances"
+  },
+  {
+   "id": "q-ti-historical-pointintime-balances",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "getLedgerEntries has no historical-ledger parameter; reads current state",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+       "observedAt": "2026-11-02",
+       "quote": "For reading the current value of ledger entries directly. ... Params (2) ... keys string[] required"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/methods/get_ledger_entries.go",
+       "observedAt": "2026-11-02",
+       "quote": "request.Keys / request.Format only; getLedgerEntriesMaxKeys = 200"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Hubble state tables are change logs, not SCD2",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/history-vs-state-tables",
+       "observedAt": "2026-11-02",
+       "quote": "This is not a snapshot/SCD type 2 table. There is no valid to/from dates in these tables"
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs \"hubble state tables change log batch_run_date closed_at\"",
+       "observedAt": "2026-11-02",
+       "quote": "queries-for-horizon-like-data: batch_run_date between ... order by closed_at desc"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "History archive checkpoints every 64 ledgers; arbitrary ledger needs replay",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/events/replay-ledger-close-meta",
+       "observedAt": "2026-11-02",
+       "quote": "History archives don't store the state at every ledger. They store it every 64 ledgers, at checkpoints"
+      },
+      {
+       "class": "E",
+       "ref": "https://developers.stellar.org/docs/data/indexers/build-your-own/ingest-sdk",
+       "observedAt": "2026-11-02",
+       "quote": "A Checkpoint ledger occurs once every 64 ledgers"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-fetch-all-balances-classic-sac"
+  },
+  {
+   "id": "q-ti-openzeppelin-relayer",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Relayer is self-hostable AGPL; self-hosted operator funds the relayer account",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/OpenZeppelin/openzeppelin-relayer",
+       "observedAt": "2026-11-02",
+       "quote": "license.spdx_id AGPL-3.0"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/openzeppelin-relayer",
+       "observedAt": "2026-11-02",
+       "quote": "OpenZeppelin Relayer is an open source (AGPL-3.0) framework ... If you run your own instance, you control the signer and you fund the accounts that pay the fees…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Channels is free under a fair-use stroop limit that resets 24h after first tx; no generic top-up",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide",
+       "observedAt": "2026-11-02",
+       "quote": "Each API key has a fee consumption limit (measured in stroops) The limit resets automatically 24 hours after your first transaction"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/index (via Perplexity, dated 2026-10-21)",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Channels, the managed service OpenZeppelin operates ... covers the fees under a fair use policy"
+      },
+      {
+       "class": "C",
+       "ref": "https://channels.openzeppelin.com/",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 401"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer/keyFacts[3]",
+     "claim": "Latest release v1.8.0 vs rendered 1.5.x stable",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/OpenZeppelin/openzeppelin-relayer/releases",
+       "observedAt": "2026-11-02",
+       "quote": "v1.9.0 2026-10-22T08:08:29Z; v1.8.0 2026-08-19T13:58:23Z"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/relayer",
+       "observedAt": "2026-11-02",
+       "quote": "You're viewing documentation for unreleased features from the main branch. For production use, see the latest stable version (v 1.8.x )"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/relayer/1.9.x",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 404"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.openzeppelin.com/relayer/1.7.x",
+       "observedAt": "2026-11-02",
+       "quote": "You're viewing an older version (v 1.7.x )"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Public Channels Statuspage inactive",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://status.channels.openzeppelin.com/",
+       "observedAt": "2026-11-02",
+       "quote": "curl: Could not resolve host: status.channels.openzeppelin.com"
+      },
+      {
+       "class": "C",
+       "ref": "https://relayerchannelsmainnet.statuspage.io/",
+       "observedAt": "2026-11-02",
+       "quote": "Statuspage - Statuspage deleted This Statuspage was deleted"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. As of **2026-11-02**, official Channels terms said the service was free under …",
+     "reason": "Freshness drift: latest release is now v1.9.0 (2026-10-22); rendered docs label 1.8.x stable with no 1.9.x path; Statuspage host no longer resolves and the page is deleted. Channels terms re-dated."
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "op": "replace",
+     "new": "Dates any release-versus-rendered-docs mismatch (2026-11-02: v1.9.0 vs 1.8.x stable).",
+     "reason": "A true current answer would report v1.9.0 vs 1.8.x and fail the v1.8.0-vs-1.5.x key fact; restated as a dated behavior."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-11-02, repository v1.9.0 (published 2026-10-22) and rendered 1.8.x stable docs disagreed; on 2026-09-02 the observed pair was v1.8.0 and 1.5.x. Either dated observation is correct. On 2026-11-02 the former Channels Statuspage host did not resolve and its Statuspage page said it was deleted. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally. On 2026-09-09, the official Stellar Docs Tools pages a…",
+     "reason": "Refresh dated observations and accept either dated pair."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-x402-payment-verification; q-smart-wallet-fee-sponsorship; q-soroban-x402-auth-entry-signing; q-defi-x402-on-stellar-what; q-pc-fee-bump-channel-accounts-feepool"
+  },
+  {
+   "id": "q-ti-parse-raw-ledger-data",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "getLedgers headerXdr = LedgerHeaderHistoryEntry, metadataXdr = LedgerCloseMeta",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers",
+       "observedAt": "2026-11-02",
+       "quote": "headerXdr string The LedgerHeaderHistoryEntry structure ... metadataXdr string The LedgerCloseMeta union"
+      },
+      {
+       "class": "F",
+       "ref": "https://soroban-testnet.stellar.org getLedgers xdrFormat=json (RPC 30.0.0)",
+       "observedAt": "2026-11-02",
+       "quote": "keys: hash, sequence, ledgerCloseTime, headerXdr \"\", headerJson {..}, metadataXdr \"\", metadataJson {v2...}"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "getTransactions envelope/result/meta types; v4 meta",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar xdr decode --type TransactionMeta on testnet resultMetaXdr (CLI 28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"v4\":{\"ext\":\"v0\",\"tx_changes_before\":[..."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions",
+       "observedAt": "2026-11-02",
+       "quote": "envelopeXdr / resultXdr / resultMetaXdr (prior verified page)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": ".xdr.zst requires zstd plus dataset framing",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/data/indexers/build-your-own/galexie/data-lake-format",
+       "observedAt": "2026-11-02",
+       "quote": "Each ledger file is a Zstandard compressed LedgerCloseMetaBatch XDR value ... s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet"
+      },
+      {
+       "class": "F",
+       "ref": "https://aws-public-blockchain.s3.amazonaws.com/v1.1/stellar/ledgers/pubnet/FD054DFF--49984000-50047999/FD050F7F--50000000.xdr.zst",
+       "observedAt": "2026-11-02",
+       "quote": "zstd -dc | stellar xdr decode --type LedgerCloseMetaBatch -> {\"start_sequence\":50000000,\"end_sequence\":50000000,...}; --type LedgerCloseMeta -> error decoding X…"
+      },
+      {
+       "class": "C",
+       "ref": "https://aws-public-blockchain.s3.amazonaws.com/v1.1/stellar/ledgers/pubnet/.config.json",
+       "observedAt": "2026-11-02",
+       "quote": "\"compression\":\"zstd\",\"ledgersPerBatch\":1,\"batchesPerPartition\":64000"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "CLI decode uses --input single-base64",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar xdr decode --help (28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "--input <INPUT_FORMAT> [default: stream-base64] [possible values: single, single-base64, stream, stream-base64, stream-framed]"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Decode according to the **source field and method**, not a generic 'raw ledger XDR' label. With default base64 XDR, RPC `getLedgers.headerXdr` is a `LedgerHeaderHistoryEntry` and `metadataXdr` is a `LedgerCloseMeta`. `getTransactions.envelopeXdr` is a `TransactionEnvelope`, `resultXdr` a `TransactionResult`, and `resultMetaXdr` a `TransactionMeta`; transaction and diagnostic event fields have their own event XDR types. `getLatestLedger.header` and `getLedgerEntries` use different wrappers again.\n\nRaw JSON-RPC responses carry base64 strings. A public JavaScript SDK call may already parse those …",
+     "reason": "The official data-lake format page now establishes the Galexie framing; empirical decode confirms LedgerCloseMetaBatch."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Also good if the answer: Mentions the AWS Open Data S3 path `s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet` as the public data lake cited by Stellar RPC docs. | Mentions `.zst` decompression before XDR decode when consuming compressed files directly.\nGolden cites: Primary Stellar Ingest SDK and RPC/data-lake docs.\nGT-53 independently verified the exact getLedgers types and JSON-mode field renaming on 2026-07-11. Gate method/field/type boundaries; do not require a universal data-lake framing that the evidence did not establish.\nDATA-LAKE NOTE 2026-11-02: the official Galexie data-lake …",
+     "reason": "The GT-53 note said the framing was not established; record the new primary evidence without gating on it."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-ti-rpc-gettransactions-pagination-xdr"
+  },
+  {
+   "id": "q-ti-related-projects-from-content",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "get_related_projects needs numeric content_id plus content_type and returns projects mentioned by the content item; reverse is find_content_about_project",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.get_related_projects",
+       "observedAt": "2026-11-02",
+       "quote": "required: content_id (number), content_type ... The reverse direction (project -> content) is find_content_about_project."
+      },
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_related_projects {\"content_id\":691,\"content_type\":\"article\"}",
+       "observedAt": "2026-11-02",
+       "quote": "\"1 project(s) mentioned by article 691\" -> slug soroswap"
+      },
+      {
+       "class": "C",
+       "ref": "POST .../get_related_projects {\"content_id\":691}",
+       "observedAt": "2026-11-02",
+       "quote": "content_type: Required"
+      },
+      {
+       "class": "C",
+       "ref": "GET https://api.lumenloop.com/api/v1/tools/get_related_projects",
+       "observedAt": "2026-11-02",
+       "quote": "\"when_to_use\":\"You have a CONTENT item ... The reverse direction (project → content) is find_content_about_project.\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-related-projects-empty"
+  },
+  {
+   "id": "q-ti-rpc-gettransactions-pagination-xdr",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Stock getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, Horizon 10/200",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go",
+       "observedAt": "2026-11-02",
+       "quote": "max-events-limit 10000; default-events-limit 100; max-transactions-limit 200; default-transactions-limit 50; max-ledgers-limit 200; default-ledgers-limit 50 (sa…"
+      },
+      {
+       "class": "F",
+       "ref": "https://soroban-testnet.stellar.org (RPC 30.0.0)",
+       "observedAt": "2026-11-02",
+       "quote": "getTransactions limit 201 -> \"limit must not exceed 200\"; default page 50 rows; getEvents limit 10001 -> \"limit must not exceed 10000\""
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-horizon/blob/master/internal/db2/page_query.go",
+       "observedAt": "2026-11-02",
+       "quote": "DefaultPageSize = 10; MaxPageSize = 200"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Docs pagination page still calls caps hardcoded; sd-004 declined-upstream",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/pagination",
+       "observedAt": "2026-11-02",
+       "quote": "These upper limits are hardcoded in Stellar RPC for performance reasons."
+      },
+      {
+       "class": "B",
+       "ref": "improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: declined-upstream"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Event fields decode as TransactionEvent and ContractEvent; JSON mode uses *Json names",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "testnet getTransactions base64",
+       "observedAt": "2026-11-02",
+       "quote": "events keys transactionEventsXdr, contractEventsXdr; stellar xdr decode --type TransactionEvent -> {\"stage\":\"before_all_txs\",...}; --type ContractEvent -> {\"typ…"
+      },
+      {
+       "class": "F",
+       "ref": "testnet getTransactions xdrFormat=json",
+       "observedAt": "2026-11-02",
+       "quote": "keys envelopeJson, resultJson, resultMetaJson; events transactionEventsJson, contractEventsJson"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-parse-raw-ledger-data"
+  },
+  {
+   "id": "q-ti-scaffold-stellar",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0]",
+     "claim": "Install with cargo install --locked stellar-scaffold-cli or cargo binstall; stellar scaffold init",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar-scaffold/cli/blob/main/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "cargo binstall stellar-scaffold-cli ... To build from source ... run `cargo install --locked stellar-scaffold-cli`. The Scaffold Stellar CLI is installed as a p…"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/scaffold-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "cargo install --locked stellar-scaffold-cli # Install registry CLI (to easily deploy your contract to the registry) cargo install --locked stellar-registry-cli"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "stellar-scaffold-cli 0.0.26 as of 2026-07-28",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://crates.io/api/v1/crates/stellar-scaffold-cli",
+       "observedAt": "2026-11-02",
+       "quote": "max_version 0.0.34; 0.0.34 created 2026-10-25"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/Cargo.toml",
+       "observedAt": "2026-11-02",
+       "quote": "version = \"0.0.34\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Config lives in environments.toml (question premise)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellarscaffold.org/docs/configuration",
+       "observedAt": "2026-11-02",
+       "quote": "Every Stellar Scaffold project is configured by one file at its root: scaffold.yml ... Projects created before scaffold.yml version 2 use environments.toml inst…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar-scaffold/ui/blob/main/scaffold.yml",
+       "observedAt": "2026-11-02",
+       "quote": "version: 2 ... project: contracts-dir: contracts (no environments.toml at repo root)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar-scaffold/cli/releases/tag/stellar-scaffold-cli-v0.0.31",
+       "observedAt": "2026-11-02",
+       "quote": "config-driven builds with per-checkout deployment state (#630)"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_search \"stellar scaffold scaffold.yml version 2\"",
+       "observedAt": "2026-11-02",
+       "quote": "stellarscaffold.org Configuration page: Legacy: environments.toml"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/scaffold-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Explore the environments.toml file to customize your development environment(s) ... ├── environments.toml # Configuration per environment"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Official templates React and Svelte",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar-scaffold/ui/tree/main/templates",
+       "observedAt": "2026-11-02",
+       "quote": "react, svelte"
+      },
+      {
+       "class": "B",
+       "ref": "crates/stellar-scaffold-cli/src/commands/init/mod.rs",
+       "observedAt": "2026-11-02",
+       "quote": "DEFAULT_UI_REPO: &str = \"stellar-scaffold/ui\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Contract-only path is stellar contract init <path> --name",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar contract init --help (CLI 28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "Usage: stellar contract init [OPTIONS] <PROJECT_PATH> ... --name <NAME> [default: hello-world]"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-contract-init",
+       "observedAt": "2026-11-02",
+       "quote": "(prior verified)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "For a full-stack Stellar smart-contract dApp, install the separate Scaffold Stellar plugin and initialize a project:\n\n`cargo install --locked stellar-scaffold-cli`\n`stellar scaffold init <project>`\n\n`cargo binstall stellar-scaffold-cli` is the project's faster documented alternative when available. The plugin generates/coordinates Rust contracts, TypeScript clients/bindings, frontend templates, environment configuration, and build/watch workflows. Inspect the generated package scripts rather than assuming `npm start` and `npm run dev` are interchangeable. Local-network workflows require their …",
+     "reason": "Freshness drift: crate 0.0.34 (2026-10-25); 0.0.31+ and the UI template use scaffold.yml version 2, environments.toml is legacy; Stellar Docs page lags."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Defines full-stack tooling and the dated config file (v2 scaffold.yml; legacy TOML).",
+     "reason": "The question asks how to configure environments.toml; a current correct answer must date the config format change."
+    },
+    {
+     "field": "golden.avoid[2]",
+     "op": "replace",
+     "new": "Do NOT freeze a crate version, template roster, config format, repository path, or npm start/dev script without an as-of/source check.",
+     "reason": "Extend the existing freeze trap to the config format, which is now proven volatile."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-53 CORRECTION 2026-07-11: do not grade against the old local core-CLI 25.2.0 command snapshot. Gate the separate plugin install, full-stack-versus-contract-init boundary, and dated current source/registry evidence. Template frameworks, repository paths, and generated scripts are freshness-sensitive.\nCONFIG NOTE 2026-11-02: stellar-scaffold-cli 0.0.31 and later, the stellar-scaffold/ui template, and the stellarscaffold.org Configuration page use a version 2 scaffold.yml for networks, accounts, and contracts. environments.toml is the legacy format for projects without a version 2 scaffold.yml…",
+     "reason": "Grader note for the legacy-versus-current config boundary."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": ""
+  },
+  {
+   "id": "q-ti-scout-changelog-contract-check",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "getChangelog: since/limit, latest-first entries with date/type/surfaces/summary/detail/version; getStatus for health",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getChangelog",
+       "observedAt": "2026-11-02",
+       "quote": "A curated, latest-first feed of contract-affecting changes ... current health / source freshness / version -> use scout.getStatus"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/changelog?since=2026-10-31&limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "ok true; counts {returned 7, total 7}; dates 2026-10-31, 2026-11-01; entries carry date, surfaces, version (spec@1.9.116), type, summary, detail"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/changelog?limit=101",
+       "observedAt": "2026-11-02",
+       "quote": "counts.returned 100 (limit clamped)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/status",
+       "observedAt": "2026-11-02",
+       "quote": "ok true; apiVersion 1.9.116; sources[].lastUpdatedAt"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-scout-changelog-envelope"
+  },
+  {
+   "id": "q-ti-scout-refresh-cached-rows",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "getChanges: since + surfaces; limit per surface; meta.counts not returned rows; truncated flags; row facet means re-read; empty untruncated = unchanged",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getChanges",
+       "observedAt": "2026-11-02",
+       "quote": "Max rows PER SURFACE ... meta.truncated.<surface> signals more ... [\"row\"] = undated change, re-read the row ... Absence = unchanged since since, never an exist…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/changes?since=2026-10-26&limit=3",
+       "observedAt": "2026-11-02",
+       "quote": "limitPerSurface 3; counts projects 757, repos 10394, partners 0; truncated projects true, repos true, partners false; 3 rows per surface with facets [\"row\"]"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/changes?since=2026-11-01T12:00:00Z&surfaces=partners&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "counts.partners 0; truncated.partners false; changes []"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-ti-secret-key-vs-mnemonic-derivation",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "SEP-52 v0.1.0 Draft, Key Sharing Method, SLIP-39",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0052.md",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Key Sharing Method for Stellar Keys ... Status: Draft ... Version 0.1.0"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+       "observedAt": "2026-11-02",
+       "quote": "| [SEP-0052](sep-0052.md) | Key Sharing Method for Stellar Keys | Pamphile Roy, Jun Luo | Draft |"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "keys generate makes a 24-word phrase; --seed is generation input; keys add --secure-store; deprecated --secret-key/--seed-phrase; --hd-path",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "stellar keys generate --help (CLI 28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "Generate a new identity using a 24-word seed phrase ... --seed <SEED> Optional seed to use when generating seed phrase. Random otherwise"
+      },
+      {
+       "class": "F",
+       "ref": "stellar keys add --help (CLI 28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "--secret-key ⚠️ Deprecated, use `--secure-store`. Enter secret (S) key when prompted ... --seed-phrase ⚠️ Deprecated ... --hd-path"
+      },
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/stellar-cli/releases/latest",
+       "observedAt": "2026-11-02",
+       "quote": "v28.1.0 2026-09-26"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[5]",
+     "claim": "Lab Saved Keypairs Testnet/Futurenet only, obfuscated not encrypted",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+       "observedAt": "2026-11-02",
+       "quote": "You can only save keypairs on test networks—never on Mainnet ... Saved keypairs are obfuscated, but not encrypted"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/laboratory/commits/main/src/helpers/localStorageSavedKeypairs.ts",
+       "observedAt": "2026-11-02",
+       "quote": "last change 624d40ff 2025-09-04 \"Obscure saved keypairs\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5); did not read the proposer matrix",
+  "decisions": [
+   {
+    "id": "q-ti-openzeppelin-relayer",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. As of **2026-11-02**, official Channels terms said the service was free under …",
+    "note": "All dated facts re-derived: v1.9.0 (2026-10-22), docs banner 1.8.x latest stable, no 1.9.x path, fair-use reset 24 hours after first transaction. Only change: 'former' host is an inference; the Stellar Docs Relayer page still links status.channels.openzeppelin.com, so name the host by its link. As-of dates kept. Improvement candidate: Stellar Docs links a non-resolving status host.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/OpenZeppelin/openzeppelin-relayer/releases/latest (https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.9.0)",
+      "observedAt": "2026-11-02",
+      "quote": "{\"tag_name\":\"v1.9.0\",\"published_at\":\"2026-10-22T08:08:29Z\"}; previous v1.8.0 published 2026-08-19T13:58:23Z"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/blob/main/CHANGELOG.md",
+      "observedAt": "2026-11-02",
+      "quote": "1.9.0 (2026-10-22) ... Add docs for 1.6.x, 1.7.x and 1.8.x (#895)"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/relayer",
+      "observedAt": "2026-11-02",
+      "quote": "You're viewing documentation for unreleased features from the main branch. For production use, see the latest stable version (v1.8.x). [top nav Relayer link: hr…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/relayer/1.8.x",
+      "observedAt": "2026-11-02",
+      "quote": "v1.8.x (latest stable)"
+     },
+     {
+      "class": "F",
+      "ref": "curl https://docs.openzeppelin.com/relayer/1.9.x ; /1.8.x ; /1.7.x ; /1.6.x ; /1.5.x",
+      "observedAt": "2026-11-02",
+      "quote": "1.9.x -> HTTP 404; 1.8.x, 1.7.x, 1.6.x, 1.5.x -> HTTP 200"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide (also /relayer/1.8.x/guides/stellar-channels-guide)",
+      "observedAt": "2026-11-02",
+      "quote": "Each API key has a fee consumption limit (measured in stroops) The limit resets automatically 24 hours after your first transaction If you exceed the limit, req…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/openzeppelin-relayer",
+      "observedAt": "2026-11-02",
+      "quote": "To see the live status of Stellar Channels, visit the Stellar Channels status page. [href=\"https://status.channels.openzeppelin.com/\"]"
+     },
+     {
+      "class": "F",
+      "ref": "dig status.channels.openzeppelin.com; nslookup via 1.1.1.1; curl https://status.channels.openzeppelin.com/",
+      "observedAt": "2026-11-02",
+      "quote": "status: NOERROR, ANSWER: 0; \"Can't find status.channels.openzeppelin.com: No answer\"; curl HTTP 000"
+     },
+     {
+      "class": "C",
+      "ref": "https://relayerchannelsmainnet.statuspage.io/ (redirects to /page-deleted)",
+      "observedAt": "2026-11-02",
+      "quote": "Statuspage deleted This Statuspage was deleted Are you the owner? The Statuspage can still be recovered, but it will be permanently deleted soon."
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'openzeppelin-relayer v1.9.0 release'",
+      "observedAt": "2026-11-02",
+      "quote": "Release list v1.9.0 [Latest] ... latest stable version (v1.8.x)"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search 'OpenZeppelin Stellar Channels service status page'",
+      "observedAt": "2026-11-02",
+      "quote": "No alternative OpenZeppelin Channels status page found; results point to status.channels.openzeppelin.com (cached 2026-02-05) and the Stellar Docs link. status.…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-openzeppelin-relayer",
+    "field": "golden.keyFacts[3]",
+    "decision": "accept",
+    "note": "85 chars. Generalizes the mismatch fact so either dated observation can satisfy it; current pair confirmed by B and A. Not score laundering: the dating requirement stays.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/OpenZeppelin/openzeppelin-relayer/releases/latest (https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.9.0)",
+      "observedAt": "2026-11-02",
+      "quote": "{\"tag_name\":\"v1.9.0\",\"published_at\":\"2026-10-22T08:08:29Z\"}; previous v1.8.0 published 2026-08-19T13:58:23Z"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/blob/main/CHANGELOG.md",
+      "observedAt": "2026-11-02",
+      "quote": "1.9.0 (2026-10-22) ... Add docs for 1.6.x, 1.7.x and 1.8.x (#895)"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/relayer",
+      "observedAt": "2026-11-02",
+      "quote": "You're viewing documentation for unreleased features from the main branch. For production use, see the latest stable version (v1.8.x). [top nav Relayer link: hr…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/relayer/1.8.x",
+      "observedAt": "2026-11-02",
+      "quote": "v1.8.x (latest stable)"
+     },
+     {
+      "class": "F",
+      "ref": "curl https://docs.openzeppelin.com/relayer/1.9.x ; /1.8.x ; /1.7.x ; /1.6.x ; /1.5.x",
+      "observedAt": "2026-11-02",
+      "quote": "1.9.x -> HTTP 404; 1.8.x, 1.7.x, 1.6.x, 1.5.x -> HTTP 200"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-openzeppelin-relayer",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-11-02, repository v1.9.0 (published 2026-10-22) and rendered 1.8.x stable docs disagreed; on 2026-09-02 the observed pair was v1.8.0 and 1.5.x. Either dated observation is correct. On 2026-11-02 the status host linked from the Stellar Docs Relayer page (status.channels.openzeppelin.com) did not resolve, and the matching Statuspage page said it was deleted. The OpenZeppelin docs top navigation still linked /relayer/1.5.x on that date, so an an…",
+    "note": "Same host-naming fix as the answer. Added a symmetric caution: the OpenZeppelin docs top navigation still links /relayer/1.5.x, so an answer that reports that is not wrong.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/OpenZeppelin/openzeppelin-relayer/releases/latest (https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.9.0)",
+      "observedAt": "2026-11-02",
+      "quote": "{\"tag_name\":\"v1.9.0\",\"published_at\":\"2026-10-22T08:08:29Z\"}; previous v1.8.0 published 2026-08-19T13:58:23Z"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/blob/main/CHANGELOG.md",
+      "observedAt": "2026-11-02",
+      "quote": "1.9.0 (2026-10-22) ... Add docs for 1.6.x, 1.7.x and 1.8.x (#895)"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/relayer",
+      "observedAt": "2026-11-02",
+      "quote": "You're viewing documentation for unreleased features from the main branch. For production use, see the latest stable version (v1.8.x). [top nav Relayer link: hr…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/relayer/1.8.x",
+      "observedAt": "2026-11-02",
+      "quote": "v1.8.x (latest stable)"
+     },
+     {
+      "class": "F",
+      "ref": "curl https://docs.openzeppelin.com/relayer/1.9.x ; /1.8.x ; /1.7.x ; /1.6.x ; /1.5.x",
+      "observedAt": "2026-11-02",
+      "quote": "1.9.x -> HTTP 404; 1.8.x, 1.7.x, 1.6.x, 1.5.x -> HTTP 200"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide (also /relayer/1.8.x/guides/stellar-channels-guide)",
+      "observedAt": "2026-11-02",
+      "quote": "Each API key has a fee consumption limit (measured in stroops) The limit resets automatically 24 hours after your first transaction If you exceed the limit, req…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/openzeppelin-relayer",
+      "observedAt": "2026-11-02",
+      "quote": "To see the live status of Stellar Channels, visit the Stellar Channels status page. [href=\"https://status.channels.openzeppelin.com/\"]"
+     },
+     {
+      "class": "F",
+      "ref": "dig status.channels.openzeppelin.com; nslookup via 1.1.1.1; curl https://status.channels.openzeppelin.com/",
+      "observedAt": "2026-11-02",
+      "quote": "status: NOERROR, ANSWER: 0; \"Can't find status.channels.openzeppelin.com: No answer\"; curl HTTP 000"
+     },
+     {
+      "class": "C",
+      "ref": "https://relayerchannelsmainnet.statuspage.io/ (redirects to /page-deleted)",
+      "observedAt": "2026-11-02",
+      "quote": "Statuspage deleted This Statuspage was deleted Are you the owner? The Statuspage can still be recovered, but it will be permanently deleted soon."
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'openzeppelin-relayer v1.9.0 release'",
+      "observedAt": "2026-11-02",
+      "quote": "Release list v1.9.0 [Latest] ... latest stable version (v1.8.x)"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search 'OpenZeppelin Stellar Channels service status page'",
+      "observedAt": "2026-11-02",
+      "quote": "No alternative OpenZeppelin Channels status page found; results point to status.channels.openzeppelin.com (cached 2026-02-05) and the Stellar Docs link. status.…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-scaffold-stellar",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "0.0.34 (2026-10-25) confirmed by crates.io and GitHub release tag; v2 scaffold.yml and legacy environments.toml rule confirmed by owner docs, CLI source, and the ui template; React/Svelte templates confirmed; Stellar Docs page still describes environments.toml (stale canonical page, improvement candidate). Volatile facts carry the 2026-11-02 date.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/stellar-scaffold-cli",
+      "observedAt": "2026-11-02",
+      "quote": "max_version 0.0.34, max_stable_version 0.0.34, updated_at 2026-10-25T16:56:34Z; 0.0.28 created 2026-10-14"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar-scaffold/cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "stellar-scaffold-cli-v0.0.34 published 2026-10-25T16:56:37Z"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/CHANGELOG.md",
+      "observedAt": "2026-11-02",
+      "quote": "## [0.0.28] - 2026-10-12 ... Feat/scaffold config v2 (#610) ... Feat/scaffold config v2 build (#611); ## [0.0.31] - 2026-10-21 config-driven builds with per-che…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar-scaffold/cli/contents/crates/stellar-scaffold-cli/src/commands/build/v2.rs?ref=<tag>",
+      "observedAt": "2026-11-02",
+      "quote": "v0.0.27 -> 404; v0.0.28, v0.0.30, v0.0.31 -> file present"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarscaffold.org/docs/configuration (source docs/site/docs/configuration.md in stellar-scaffold/cli)",
+      "observedAt": "2026-11-02",
+      "quote": "Every Stellar Scaffold project is configured by one file at its root: scaffold.yml ... Projects created before scaffold.yml version 2 use environments.toml inst…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar-scaffold/ui (root scaffold.yml; templates/)",
+      "observedAt": "2026-11-02",
+      "quote": "scaffold.yml begins 'version: 2'; no environments.toml at repo root; templates: react, svelte"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/scaffold-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "cargo install --locked stellar-scaffold-cli ... Explore the environments.toml file to customize your development environment(s) ... Network configuration via en…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_fetch of https://stellarscaffold.org/docs/configuration (cache acquired 2026-10-03)",
+      "observedAt": "2026-11-02",
+      "quote": "Projects created before scaffold.yml version 2 use environments.toml instead. build and watch still read it as long as scaffold.yml says version: 1. [older word…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-scaffold-stellar",
+    "field": "golden.keyFacts[1]",
+    "decision": "modify",
+    "newText": "Defines contract, client, frontend, and config tooling (v2 scaffold.yml; legacy TOML).",
+    "note": "86 chars. Keeps the proposed config-format fact but restores the contract/client/frontend coverage the proposal dropped.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellarscaffold.org/docs/configuration (source docs/site/docs/configuration.md in stellar-scaffold/cli)",
+      "observedAt": "2026-11-02",
+      "quote": "Every Stellar Scaffold project is configured by one file at its root: scaffold.yml ... Projects created before scaffold.yml version 2 use environments.toml inst…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar-scaffold/ui (root scaffold.yml; templates/)",
+      "observedAt": "2026-11-02",
+      "quote": "scaffold.yml begins 'version: 2'; no environments.toml at repo root; templates: react, svelte"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/scaffold-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "cargo install --locked stellar-scaffold-cli ... Explore the environments.toml file to customize your development environment(s) ... Network configuration via en…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-scaffold-stellar",
+    "field": "golden.avoid[2]",
+    "decision": "accept",
+    "note": "Judge-visible extension of an existing freeze clause; config format changed between 0.0.27 and 0.0.28, so freezing it without an as-of check is a real trap.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/CHANGELOG.md",
+      "observedAt": "2026-11-02",
+      "quote": "## [0.0.28] - 2026-10-12 ... Feat/scaffold config v2 (#610) ... Feat/scaffold config v2 build (#611); ## [0.0.31] - 2026-10-21 config-driven builds with per-che…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar-scaffold/cli/contents/crates/stellar-scaffold-cli/src/commands/build/v2.rs?ref=<tag>",
+      "observedAt": "2026-11-02",
+      "quote": "v0.0.27 -> 404; v0.0.28, v0.0.30, v0.0.31 -> file present"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarscaffold.org/docs/configuration (source docs/site/docs/configuration.md in stellar-scaffold/cli)",
+      "observedAt": "2026-11-02",
+      "quote": "Every Stellar Scaffold project is configured by one file at its root: scaffold.yml ... Projects created before scaffold.yml version 2 use environments.toml inst…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-scaffold-stellar",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "GT-53 CORRECTION 2026-07-11: do not grade against the old local core-CLI 25.2.0 command snapshot. Gate the separate plugin install, full-stack-versus-contract-init boundary, and dated current source/registry evidence. Template frameworks, repository paths, and generated scripts are freshness-sensitive.\nCONFIG NOTE 2026-11-02: stellar-scaffold-cli 0.0.34 (version 2 support landed in 0.0.28 per its changelog), the stellar-scaffold/ui template, and the stellarscaffold.org Configuration page use a version 2 scaffold.yml for networks, accounts, and contracts. environments.toml is the legacy format …",
+    "note": "Proposal said '0.0.31 and later'. The changelog and the v2.rs file show version 2 config support landed in 0.0.28 (v2.rs absent at v0.0.27, present at v0.0.28). Reworded to the current version plus the verified landing version. Grading of legacy environments.toml answers kept lenient (missing key fact, not an avoid).",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://crates.io/api/v1/crates/stellar-scaffold-cli",
+      "observedAt": "2026-11-02",
+      "quote": "max_version 0.0.34, max_stable_version 0.0.34, updated_at 2026-10-25T16:56:34Z; 0.0.28 created 2026-10-14"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar-scaffold/cli/releases",
+      "observedAt": "2026-11-02",
+      "quote": "stellar-scaffold-cli-v0.0.34 published 2026-10-25T16:56:37Z"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/CHANGELOG.md",
+      "observedAt": "2026-11-02",
+      "quote": "## [0.0.28] - 2026-10-12 ... Feat/scaffold config v2 (#610) ... Feat/scaffold config v2 build (#611); ## [0.0.31] - 2026-10-21 config-driven builds with per-che…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar-scaffold/cli/contents/crates/stellar-scaffold-cli/src/commands/build/v2.rs?ref=<tag>",
+      "observedAt": "2026-11-02",
+      "quote": "v0.0.27 -> 404; v0.0.28, v0.0.30, v0.0.31 -> file present"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarscaffold.org/docs/configuration (source docs/site/docs/configuration.md in stellar-scaffold/cli)",
+      "observedAt": "2026-11-02",
+      "quote": "Every Stellar Scaffold project is configured by one file at its root: scaffold.yml ... Projects created before scaffold.yml version 2 use environments.toml inst…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar-scaffold/ui (root scaffold.yml; templates/)",
+      "observedAt": "2026-11-02",
+      "quote": "scaffold.yml begins 'version: 2'; no environments.toml at repo root; templates: react, svelte"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/scaffold-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "cargo install --locked stellar-scaffold-cli ... Explore the environments.toml file to customize your development environment(s) ... Network configuration via en…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_fetch of https://stellarscaffold.org/docs/configuration (cache acquired 2026-10-03)",
+      "observedAt": "2026-11-02",
+      "quote": "Projects created before scaffold.yml version 2 use environments.toml instead. build and watch still read it as long as scaffold.yml says version: 1. [older word…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-parse-raw-ledger-data",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Confirmed across A, B, C, E, F: each Galexie file is a zstd-compressed LedgerCloseMetaBatch; AWS Pubnet config has ledgersPerBatch 1. Dated and attributed; consistent with the existing avoid items.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/indexers/build-your-own/galexie/data-lake-format",
+      "observedAt": "2026-11-02",
+      "quote": "Each ledger file is a Zstandard compressed LedgerCloseMetaBatch XDR value ... The Pubnet ledgers sit in one data store: s3://aws-public-blockchain/v1.1/stellar/…"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs({query:'LedgerCloseMetaBatch zstd compressed'}) observedAt 2026-11-02T16:44:39Z",
+      "observedAt": "2026-11-02",
+      "quote": "data-lake-format#file-contents: 'Each ledger file is a Zstandard compressed LedgerCloseMetaBatch XDR value'; #configuration-file: '\"ledgersPerBatch\": 1, \"batche…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0054.md",
+      "observedAt": "2026-11-02",
+      "quote": "Each value in the key-value store is the Zstandard compressed binary encoding of the following XDR structure: ... struct LedgerCloseMetaBatch"
+     },
+     {
+      "class": "C",
+      "ref": "https://aws-public-blockchain.s3.us-east-2.amazonaws.com/v1.1/stellar/ledgers/pubnet/.config.json",
+      "observedAt": "2026-11-02",
+      "quote": "{\"networkPassphrase\":\"Public Global Stellar Network ; September 2015\",\"version\":\"1.0\",\"compression\":\"zstd\",\"ledgersPerBatch\":1,\"batchesPerPartition\":64000}"
+     },
+     {
+      "class": "F",
+      "ref": "curl .../pubnet/FD054DFF--49984000-50047999/FD050F7F--50000000.xdr.zst | zstd -d | stellar xdr decode (stellar 28.1.0, stellar-xdr 28.0.0)",
+      "observedAt": "2026-11-02",
+      "quote": "--type LedgerCloseMetaBatch -> {\"start_sequence\":50000000,\"end_sequence\":50000000,\"ledger_close_metas\":[{\"v0\":...}]}; --type LedgerCloseMeta -> error decoding X…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'Galexie data lake LedgerCloseMetaBatch zstd'",
+      "observedAt": "2026-11-02",
+      "quote": "stellar-data crate: 'Parse: Decodes XDR into LedgerCloseMetaBatch structure ... Ledgers per batch : 1'"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-parse-raw-ledger-data",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Ledger 50000000 decode re-run: LedgerCloseMetaBatch succeeds and LedgerCloseMeta fails. The note does not raise the key-fact bar.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/data/indexers/build-your-own/galexie/data-lake-format",
+      "observedAt": "2026-11-02",
+      "quote": "Each ledger file is a Zstandard compressed LedgerCloseMetaBatch XDR value ... The Pubnet ledgers sit in one data store: s3://aws-public-blockchain/v1.1/stellar/…"
+     },
+     {
+      "class": "E",
+      "ref": "stellarDocs.search_docs({query:'LedgerCloseMetaBatch zstd compressed'}) observedAt 2026-11-02T16:44:39Z",
+      "observedAt": "2026-11-02",
+      "quote": "data-lake-format#file-contents: 'Each ledger file is a Zstandard compressed LedgerCloseMetaBatch XDR value'; #configuration-file: '\"ledgersPerBatch\": 1, \"batche…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0054.md",
+      "observedAt": "2026-11-02",
+      "quote": "Each value in the key-value store is the Zstandard compressed binary encoding of the following XDR structure: ... struct LedgerCloseMetaBatch"
+     },
+     {
+      "class": "C",
+      "ref": "https://aws-public-blockchain.s3.us-east-2.amazonaws.com/v1.1/stellar/ledgers/pubnet/.config.json",
+      "observedAt": "2026-11-02",
+      "quote": "{\"networkPassphrase\":\"Public Global Stellar Network ; September 2015\",\"version\":\"1.0\",\"compression\":\"zstd\",\"ledgersPerBatch\":1,\"batchesPerPartition\":64000}"
+     },
+     {
+      "class": "F",
+      "ref": "curl .../pubnet/FD054DFF--49984000-50047999/FD050F7F--50000000.xdr.zst | zstd -d | stellar xdr decode (stellar 28.1.0, stellar-xdr 28.0.0)",
+      "observedAt": "2026-11-02",
+      "quote": "--type LedgerCloseMetaBatch -> {\"start_sequence\":50000000,\"end_sequence\":50000000,\"ledger_close_metas\":[{\"v0\":...}]}; --type LedgerCloseMeta -> error decoding X…"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search 'Galexie data lake LedgerCloseMetaBatch zstd'",
+      "observedAt": "2026-11-02",
+      "quote": "stellar-data crate: 'Parse: Decodes XDR into LedgerCloseMetaBatch structure ... Ledgers per batch : 1'"
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-ti-openzeppelin-relayer; q-ti-parse-raw-ledger-data; q-ti-scaffold-stellar",
+  "verifiedOnly": "q-ti-enumerate-holders-airdrop; q-ti-explain-repo-payload-status; q-ti-fetch-all-balances-classic-sac; q-ti-historical-pointintime-balances; q-ti-related-projects-from-content; q-ti-rpc-gettransactions-pagination-xdr; q-ti-scout-changelog-contract-check; q-ti-scout-refresh-cached-rows; q-ti-secret-key-vs-mnemonic-derivation",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-ti-openzeppelin-relayer",
+    "issue": "Improvement candidate (not filed): the Stellar Docs Relayer page links status.channels.openzeppelin.com, which has no DNS answer on 2026-11-02; the matching Statuspage is deleted."
+   },
+   {
+    "id": "q-ti-scaffold-stellar",
+    "issue": "Improvement candidate (not filed): developers.stellar.org/docs/tools/scaffold-stellar still documents environments.toml; stellar-scaffold-cli 0.0.28+ and owner docs use a version 2 scaffold.yml."
+   },
+   {
+    "id": "q-ti-related-projects-from-content",
+    "issue": "Recurrence (no gospel change): Lumenloop ll-031 still reproduces; search_content_semantic emits string ids that get_related_projects rejects (https://github.com/lumenloop/lumenloop-backend/issues/46)."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-ti-openzeppelin-relayer",
+    "log": "answer (verifier modify): v1.9.0 2026-10-22 vs docs 1.8.x latest stable, fair-use reset 24 hours after first transaction, linked status host not resolving / Statuspage deleted; keyFacts[3] accept; notes (verifier modify, adds /relayer/1.5.x nav caution); status stays disputed; sources and 3 corroboration rows extended; asOf 2026-11-02; reverifyBy 2026-11-24 -> 2027-02-15; rootCause freshness-drift."
+   },
+   {
+    "id": "q-ti-parse-raw-ledger-data",
+    "log": "answer + notes accept: Galexie .xdr.zst files are zstd LedgerCloseMetaBatch, AWS Pubnet one ledger per batch; new confirmed-as-of corroboration row (A,B,C,E,F); 3 sources added; asOf 2026-11-02; reverifyBy 2027-03-11 -> 2027-02-08; rootCause freshness-drift."
+   },
+   {
+    "id": "q-ti-scaffold-stellar",
+    "log": "answer accept (0.0.34 2026-10-25, v2 scaffold.yml current, environments.toml legacy, Stellar Docs page stale); keyFacts[1] verifier modify; avoid[2] accept (adds config format); notes verifier modify (v2 landed in 0.0.28); 0.0.26 corroboration row replaced by 0.0.34 row plus config-format row; 3 sources added; asOf 2026-11-02; reverifyBy 2027-01-29 -> 2027-02-22; rootCause freshness-drift."
+   },
+   {
+    "id": "q-ti-enumerate-holders-airdrop",
+    "log": "verified refreshed (A,B,F); asOf 2026-11-02; reverifyBy 2027-03-11 -> 2027-02-03."
+   },
+   {
+    "id": "q-ti-explain-repo-payload-status",
+    "log": "verified refreshed (B,C); live Stellar Light source added; asOf 2026-11-02."
+   },
+   {
+    "id": "q-ti-fetch-all-balances-classic-sac",
+    "log": "verified refreshed (A,B,D,F); asOf 2026-11-02; reverifyBy 2027-01-07 -> 2027-02-11."
+   },
+   {
+    "id": "q-ti-historical-pointintime-balances",
+    "log": "verified refreshed (A,B,E); asOf 2026-11-02; reverifyBy 2027-01-07 -> 2027-02-12."
+   },
+   {
+    "id": "q-ti-related-projects-from-content",
+    "log": "verified refreshed (B,C); live Lumenloop source added; ll-031 recurrence noted; asOf 2026-11-02."
+   },
+   {
+    "id": "q-ti-rpc-gettransactions-pagination-xdr",
+    "log": "verified refreshed (B,E,F); status stays disputed; asOf 2026-11-02; reverifyBy 2027-01-14 -> 2027-02-18."
+   },
+   {
+    "id": "q-ti-scout-changelog-contract-check",
+    "log": "verified refreshed (B,C); live Stellar Light source added; asOf 2026-11-02."
+   },
+   {
+    "id": "q-ti-scout-refresh-cached-rows",
+    "log": "verified refreshed (B,C); asOf 2026-11-02."
+   },
+   {
+    "id": "q-ti-secret-key-vs-mnemonic-derivation",
+    "log": "verified refreshed (A,B,F); asOf 2026-11-02; reverifyBy 2027-01-14 -> 2027-02-25."
+   }
+  ]
+ }
+}

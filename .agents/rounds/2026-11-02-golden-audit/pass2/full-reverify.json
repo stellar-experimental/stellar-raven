@@ -1,0 +1,2771 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "full-reverify",
+ "kind": "pass2",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-ti-friendbot-ratelimit-alternatives",
+   "claims": [
+    {
+     "claim": "Public Friendbot is rate-limited and has no durable published numeric quota.",
+     "verdict": "confirmed-as-of (quota: unverifiable)",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "Requests are rate limited, so use wisely"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/friendbot (ee67b7f12610)",
+       "observedAt": "2026-11-02",
+       "quote": "no rate/limit/429 in README.md or main.go"
+      },
+      {
+       "class": "F",
+       "ref": "GET https://friendbot.stellar.org/?addr=invalid",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 400 application/problem+json; no rate-limit headers"
+      },
+      {
+       "class": "D",
+       "ref": "https://testnetfaucets.dev/xlm-testnet-faucet/",
+       "observedAt": "2026-10-31",
+       "quote": "Stellar Friendbot | 10,000 XLM | — | none | Working"
+      }
+     ]
+    },
+    {
+     "claim": "Fund one account with Friendbot, then create additional accounts with CreateAccount.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "For multiple accounts: fund your first account with Friendbot, then use that account to fund subsequent accounts using the Create Account operation"
+      },
+      {
+       "class": "D",
+       "ref": "Perplexity search (developers.stellar.org/docs/networks/index excerpt)",
+       "observedAt": "2026-11-02",
+       "quote": "same sentence"
+      }
+     ]
+    },
+    {
+     "claim": "Quickstart local mode runs its own Friendbot; testnet/futurenet modes proxy the public Friendbot.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+       "observedAt": "2026-11-02",
+       "quote": "In local network mode, a local Friendbot is running. In testnet and futurenet network modes, requests to the local :8000/friendbot endpoint will be proxied to t…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart/blob/beb4f2faf526/testnet/nginx/etc/conf.d/friendbot.conf",
+       "observedAt": "2026-11-02",
+       "quote": "proxy_pass https://friendbot.stellar.org; (local: proxy_pass http://127.0.0.1:8002)"
+      }
+     ]
+    },
+    {
+     "claim": "As of 2026-11-02 Validation Cloud advertises a Stellar Testnet XLM faucet; independence from Friendbot is not established.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.validationcloud.io/multi-chain-faucets",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs.validationcloud.io/nodeapi/about/faucets",
+       "observedAt": "2026-11-02",
+       "quote": "We also link to other existing and working testnet faucets for the following networks: Aptos Hedera Stellar"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_search excerpt of validationcloud.io/multi-chain-faucets",
+       "observedAt": "2026-11-02",
+       "quote": "We offer faucets ourselves and link to existing working ones."
+      }
+     ]
+    },
+    {
+     "claim": "Circle's faucet supplies test USDC (not native XLM) on Stellar Testnet.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://faucet.circle.com/",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar Testnet ... Limit: One request per pairing of asset and test network every 2 hours ... Send 20 USDC"
+      },
+      {
+       "class": "D",
+       "ref": "Parallel web_search excerpt of faucet.circle.com FAQ",
+       "observedAt": "2026-11-02",
+       "quote": "Developers can request 20 USDC on testnet every 2 hours, per address, and per blockchain."
+      }
+     ]
+    },
+    {
+     "claim": "No official backup faucet wallet exists (negative; source-relative).",
+     "verdict": "unverifiable as absolute; no primary source names one as of 2026-11-02",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "Friendbot API: https://friendbot.stellar.org (only faucet named)"
+      },
+      {
+       "class": "D",
+       "ref": "testnetfaucets.dev; OnFinality; Paxos docs",
+       "observedAt": "2026-10-31",
+       "quote": "There is 1 XLM testnet faucet in this list"
+      }
+     ]
+    },
+    {
+     "claim": "Futurenet is a reset-prone separate network.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks",
+       "observedAt": "2026-11-02",
+       "quote": "Futurenet resets are on a less regular cadence than Testnet resets and don't have a set schedule."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Validation Cloud availability re-verified on 2026-11-02 (A twice + D); the dated text must match the new truth.asOf."
+    },
+    {
+     "field": "truth.asOf / truth.reverifyBy",
+     "reason": "Every volatile claim passed at the Step 3 bar; reverifyBy 2027-03-15 (staggered)."
+    },
+    {
+     "field": "truth.sources / corroboration / verified",
+     "reason": "Record the 2026-11-02 evidence; the Validation Cloud docs URL moved to /nodeapi/about/faucets."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": {
+    "checked": [
+     "q-ti-testnet-usdc-faucet",
+     "q-infra-rpc-provider-archive-tier",
+     "q-infra-rpc-methods-list"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-ti-stellar-lab-usage-and-new-ui",
+   "claims": [
+    {
+     "claim": "Current Lab covers network selection (Mainnet/Testnet/Futurenet), build/sign/simulate/submit, contract deploy/invoke, RPC/Horizon exploration, XDR<->JSON, saved/shareable requests.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab",
+       "observedAt": "2026-11-02",
+       "quote": "Create Accounts on Mainnet, Testnet, and Futurenet ... Simulate and Submit ... Save and Share API Requests ... XDR ⇔ JSON Support"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/laboratory (main a9bd4ee49c9d)",
+       "observedAt": "2026-11-02",
+       "quote": "routes /endpoints/horizon, /smart-contracts/saved, View XDR / JSON to XDR in served nav chunk"
+      },
+      {
+       "class": "F",
+       "ref": "https://lab.stellar.org/ served chunks",
+       "observedAt": "2026-11-02",
+       "quote": "{route:...VIEW_XDR,label:\"XDR to JSON\"},{route:...TO_XDR,label:\"JSON to XDR\"} ... SAVED_ENDPOINTS label:\"Requests\""
+      }
+     ]
+    },
+    {
+     "claim": "Walkthrough uses 'Fetch next sequence' and 'Add Operation'.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab/transactions",
+       "observedAt": "2026-11-02",
+       "quote": "clicking the “Fetch next sequence” button ... click the “Add Operation” button"
+      }
+     ]
+    },
+    {
+     "claim": "Signer paths: wallet-kit (extension), hardware, external signature, raw secret.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab/smart-contracts/upload-deploy-contract",
+       "observedAt": "2026-11-02",
+       "quote": "secret key, hardware wallet, extension wallet, or signature"
+      },
+      {
+       "class": "B",
+       "ref": "stellar/laboratory src/components/SignTransactionXdr/index.tsx",
+       "observedAt": "2026-11-02",
+       "quote": "\"secretKey\" | \"hardwareWallet\" | \"extensionWallet\" | \"signature\""
+      }
+     ]
+    },
+    {
+     "claim": "Saved Keypairs: Testnet/Futurenet only; new writes reversible XOR/base64 obfuscation; legacy plaintext readable; no confidentiality; Docs and UI agree.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+       "observedAt": "2026-11-02",
+       "quote": "(only Testnet and Futurenet) ... Saved keypairs are obfuscated, but not encrypted ... keypairs saved before September 2025 may remain in plain text"
+      },
+      {
+       "class": "B",
+       "ref": "stellar/laboratory src/helpers/localStorageSavedKeypairs.ts (last change 624d40ff29ca 2025-09-04; main a9bd4ee49c9d)",
+       "observedAt": "2026-11-02",
+       "quote": "// For backwards compatibility, try to parse JSON first ... localStorage.setItem(LOCAL_STORAGE_SAVED_KEYPAIRS, encryptJson(savedKeypairs))"
+      },
+      {
+       "class": "F",
+       "ref": "https://lab.stellar.org/_next/static/chunks/2hm6rn-eyf-za.js",
+       "observedAt": "2026-11-02",
+       "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection.\" …"
+      }
+     ]
+    },
+    {
+     "claim": "Lab can be self-hosted; Quickstart exposes a local /lab with a custom network default; Quickstart is not production infrastructure.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/laboratory README",
+       "observedAt": "2026-11-02",
+       "quote": "pnpm build ... To run production build locally ... pnpm start ... If you are running your version of Lab (for Quickstart, for example)"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/quickstart README + common/lab/bin/start (beb4f2faf526)",
+       "observedAt": "2026-11-02",
+       "quote": "Lab: http://localhost:8000/lab ... export NEXT_PUBLIC_DEFAULT_NETWORK=custom"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/quickstart",
+       "observedAt": "2026-11-02",
+       "quote": "Quickstart is intended for use in development, not in production"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/lab/quickstart-with-lab",
+       "observedAt": "2026-11-02",
+       "quote": "Now it is possible to use Stellar Lab as an interface on Quickstart."
+      }
+     ]
+    },
+    {
+     "claim": "stellar contract asset deploy deploys a SAC; stellar contract id asset only derives the C-address.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+       "observedAt": "2026-11-02",
+       "quote": "For any asset, the contract address can be fetched with: stellar contract id asset"
+      },
+      {
+       "class": "F",
+       "ref": "stellar 28.1.0 --help (latest release v28.1.0)",
+       "observedAt": "2026-11-02",
+       "quote": "deploy  Deploy builtin Soroban Asset Contract / Derive the contract id for a builtin Stellar Asset Contract"
+      }
+     ]
+    },
+    {
+     "claim": "Lab signer UI: 'Sign with wallet extension' opens Stellar Wallets Kit pinned 2.5.0 (Freighter label).",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar/laboratory main SignTransactionXdr/index.tsx line 762; package.json; pnpm-lock.yaml",
+       "observedAt": "2026-11-02",
+       "quote": "Sign with wallet extension ... \"@creit.tech/stellar-wallets-kit\": \"^2.5.0\" ... '@creit.tech/stellar-wallets-kit@2.5.0'"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/freighter/sign-soroban-xdrs",
+       "observedAt": "2026-11-02",
+       "quote": "(pass 1, 2026-11-02) Under Sign with wallet extension, click Sign with wallet."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Storage behavior re-verified on 2026-11-02 in classes A, B, F; the dated sentence must match the new truth.asOf."
+    },
+    {
+     "field": "golden.notes",
+     "reason": "The note says storage was verified 2026-09-09 and other claims keep prior verification; both are now superseded by the 2026-11-02 full re-verification."
+    },
+    {
+     "field": "truth.asOf / truth.reverifyBy",
+     "reason": "All volatile claims passed; reverifyBy 2027-04-15 (staggered)."
+    },
+    {
+     "field": "truth.sources[+] / corroboration / verified",
+     "reason": "The served Lab bundle changed (Turbopack) — the pinned page-dbc03db5d85268bb.js row is historical; add the current served chunk as F evidence."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": {
+    "checked": [
+     "q-ti-secret-key-vs-mnemonic-derivation",
+     "q-asset-deploy-sac-cli",
+     "q-sor-sac-introspection"
+    ],
+    "verdict": "no contradiction; q-ti-secret-key-vs-mnemonic-derivation still dates the same storage fact 2026-09-09 (true, older date)"
+   }
+  },
+  {
+   "id": "q-tool-wallets-comparison",
+   "claims": [
+    {
+     "claim": "Ledger and Trezor are hardware wallets; WalletConnect is a connectivity protocol/module.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Ledger Hardware Wallet Trezor Hardware Wallet ... WalletConnect"
+      },
+      {
+       "class": "B",
+       "ref": "Creit-Tech/Stellar-Wallets-Kit src/sdk/modules/*.module.ts (9db6b363f678)",
+       "observedAt": "2026-11-02",
+       "quote": "ledger: ModuleType.HW_WALLET; wallet-connect: ModuleType.BRIDGE_WALLET, projectId: wcParams.projectId"
+      }
+     ]
+    },
+    {
+     "claim": "Varial (formerly Freighter) is an SDF-provided non-custodial wallet product.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://varialwallet.com/",
+       "observedAt": "2026-11-02",
+       "quote": "Built by the Stellar Development Foundation. Open source and non-custodial."
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Varial Wallet SDF’s flagship non-custodial wallet extension"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/freighter (pass 1)",
+       "observedAt": "2026-11-02",
+       "quote": "Varial (formerly Freighter) is a non-custodial wallet extension"
+      }
+     ]
+    },
+    {
+     "claim": "SDF's TypeScript Wallet SDK is a wallet-building SDK for classic-account/anchor flows; Soneso ships a Flutter wallet SDK.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/apps/wallet/overview",
+       "observedAt": "2026-11-02",
+       "quote": "use the Wallet SDK to integrate with the Stellar blockchain and connect to anchors ... build a wallet without using smart contracts ... Typescript, Kotlin, Flut…"
+      },
+      {
+       "class": "B",
+       "ref": "stellar/typescript-wallet-sdk; Soneso/stellar_wallet_flutter_sdk",
+       "observedAt": "2026-11-02",
+       "quote": "Typescript Wallet SDK to build Stellar wallets; Flutter Wallet SDK to build Stellar wallets"
+      }
+     ]
+    },
+    {
+     "claim": "Stellar Wallets Kit is a community multi-wallet dapp adapter over configured modules.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "A simple-to-use wallet kit to manage integration to multiple Stellar ecosystem wallet."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit",
+       "observedAt": "2026-11-02",
+       "quote": "A kit to handle all Stellar Wallets at once with a simple API"
+      }
+     ]
+    },
+    {
+     "claim": "Smart Account Kit / OpenZeppelin tooling builds passkey C-account wallets with separate auth/fee/recovery design.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Smart Account Kit: deploys and drives OpenZeppelin Smart Account contracts ... Supports passkey (WebAuthn), Ed25519, and policy signers."
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/smart-account-kit",
+       "observedAt": "2026-11-02",
+       "quote": "TypeScript SDK for OpenZeppelin Stellar smart accounts with passkeys, multi-signers, authorization policies, and fee-sponsored transactions."
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.asOf / truth.reverifyBy",
+     "reason": "Every judge-facing claim passed at the Step 3 bar; no golden text change is needed; reverifyBy 2027-05-14."
+    },
+    {
+     "field": "truth.corroboration / verified",
+     "reason": "Record the 2026-11-02 A+B evidence that replaces the 2026-07-11 legacy descriptors."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": {
+    "checked": [
+     "q-eco-stellar-wallets-list",
+     "q-ti-connect-wallet-button-code",
+     "q-raph-hardware-wallet",
+     "q-tool-freighter-wallet"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-eco-stellar-wallets-list",
+   "claims": [
+    {
+     "claim": "As of 2026-11-02 Scout keyword search q=wallet: total 191, 100+92 rows, one overlap, 72 unique Wallet-typed, 32 sole-type, first rows Lobstr, xBull, Freighter.",
+     "verdict": "confirmed-as-of (corpus-grounded measurement)",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0|100",
+       "observedAt": "2026-11-02",
+       "quote": "\"counts\": {\"returned\": 100, \"total\": 191}; generatedAt 2026-11-02T17:39:11.718Z"
+      },
+      {
+       "class": "C",
+       "ref": "Raven scout.searchProjects (second read path)",
+       "observedAt": "2026-11-02",
+       "quote": "{\"rows\":192,\"unique\":191,\"walletOcc\":73,\"walletUnique\":72,\"sole\":32,\"first\":[\"Lobstr\",\"xBull\",\"Freighter\",\"Hana\",\"Beans\"]}"
+      },
+      {
+       "class": "F",
+       "ref": "curl sample of 7 first-page wallets",
+       "observedAt": "2026-11-02",
+       "quote": "all HTTP 200"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+       "observedAt": "2026-11-02",
+       "quote": "Albedo Varial Hana ... Lobstr Rabet Scopuly WalletConnect xBull HOT Wallet"
+      }
+     ]
+    },
+    {
+     "claim": "Scout and Lumenloop still name the wallet Freighter (slug freighter) after the 2026-10-29 Varial rename.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "stellarlight.xyz q=wallet row slug freighter",
+       "observedAt": "2026-11-02",
+       "quote": "{'name': 'Freighter', 'slug': 'freighter', 'status': 'Live', 'types': ['Wallet']}"
+      },
+      {
+       "class": "C",
+       "ref": "Raven lumenloop.get_project slug freighter",
+       "observedAt": "2026-11-02",
+       "quote": "\"title\":\"Freighter\",\"description\":\"Freighter is a non-custodial browser extension wallet developed by the Stellar Development Foundation\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "reason": "Move the illustrative dated count to the 2026-11-02 observation so the golden text matches the new truth.asOf (the old figures are no longer what the same source returns)."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "reason": "Dated volatile example; add a staggered 2027-02-15 re-check while keeping the live behavioral contract."
+    },
+    {
+     "field": "truth.verified.evidence[6] / rootCause",
+     "reason": "Replace 'upstream finding candidate, not filed' with the filed sls-095 and ll-032 paths, per the task list."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md",
+    "improvements/lumenloop/ll-032-freighter-varial-rename-stale-record.md"
+   ],
+   "siblings": {
+    "checked": [
+     "q-tool-wallets-comparison",
+     "q-eco-lobstr-wallet",
+     "q-eco-freighter-wallet",
+     "q-tool-freighter-wallet",
+     "q-eco-hana-wallet-scf"
+    ],
+    "verdict": "no contradiction; register clusters with this member reopen"
+   }
+  },
+  {
+   "id": "q-defi-bridge-evm-to-stellar-axelar",
+   "claims": [
+    {
+     "claim": "On 2026-07-10 tested Ethereum-to-Stellar routes differed (Allbridge Next CCTP, Allbridge Core, Squid Intents/RFQ, Axelar USDC.axl).",
+     "verdict": "confirmed-as-of 2026-07-10 (historical; not re-runnable)",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.squidrouter.com/api-and-sdk-integration/chain-integration-guides/stellar-integration",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar support is powered by Squid Intents ... USDC USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
+      },
+      {
+       "class": "F",
+       "ref": "GET https://v2.api.squidrouter.com/v2/chains",
+       "observedAt": "2026-11-02",
+       "quote": "{\"message\":\"x-integrator-id header is missing\",\"type\":\"UNAUTHORIZED\"}"
+      },
+      {
+       "class": "F",
+       "ref": "curl https://core.api.allbridgecoreapi.net/token-info?filter=all",
+       "observedAt": "2026-11-02",
+       "quote": "Could not resolve host: core.api.allbridgecoreapi.net"
+      }
+     ]
+    },
+    {
+     "claim": "CCTP burns/mints native USDC; Circle requires CctpForwarder for Stellar recipients.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Using CCTP, native USDC is burned and minted for crosschain t[ransfers]"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "On the source burn, both mintRecipient and destinationCaller must be set to the CctpForwarder contract address."
+      }
+     ]
+    },
+    {
+     "claim": "Axelar uses a proof-of-stake validator/gateway trust model and is integrated with Stellar.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs.axelar.dev/learn/security/",
+       "observedAt": "2026-11-02",
+       "quote": "Axelar is built using battle-tested proof-of-stake consensus, supporting a diverse and dynamic validator set."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.axelar.network/blog/axelar-stellar-integration (via Parallel)",
+       "observedAt": "2026-11-02",
+       "quote": "Axelar Network has integrated Stellar ... February 16, 2026"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/axelarnetwork/axelar-amplifier-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Axelar Cross-chain Gateway Protocol for Soroban platform (updated 2026-10-06)"
+      }
+     ]
+    },
+    {
+     "claim": "As of 2026-11-02 Allbridge Core pools are discontinued and Core lists Stellar as temporarily unavailable pending a Stellar CCTP audit.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+       "observedAt": "2026-11-02",
+       "quote": "Allbridge Core liquidity pools were discontinued in July 2026. ... Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending a…"
+      },
+      {
+       "class": "A",
+       "ref": "https://docs-core.allbridge.io/sdk/guides/stellar/transfer",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar transfers are temporarily unavailable while the Stellar CCTP implementation is pending audit."
+      },
+      {
+       "class": "D",
+       "ref": "https://www.theblock.co/news/defi/2026-07-19-allbridge-core-exploit-408855 (pass 1)",
+       "observedAt": "2026-11-02",
+       "quote": "A rebuilt Core will drop liquidity pools entirely, routing transfers through CCTP and LayerZero instead"
+      }
+     ]
+    },
+    {
+     "claim": "MetaMask documents swaps from another chain into Stellar and configures Stellar as an active bridge chain; no MetaMask route was verified.",
+     "verdict": "confirmed-as-of (route: unverifiable)",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://support.metamask.io/configure/networks/stellar/",
+       "observedAt": "2026-11-02",
+       "quote": "You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button on the MetaMask homepage."
+      },
+      {
+       "class": "C",
+       "ref": "MetaMask prod client-config flags",
+       "observedAt": "2026-11-02",
+       "quote": "{'isSingleSwapBridgeButtonEnabled': False, 'isActiveDest': True, 'isActiveSrc': True}"
+      },
+      {
+       "class": "F",
+       "ref": "bridge.api.cx.metamask.io/getQuote",
+       "observedAt": "2026-11-02",
+       "quote": "Stellar and Solana-control requests all returned [] (HTTP 200)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "truth.sources / corroboration / verified",
+     "reason": "Record the 2026-11-02 re-checks, the dead Allbridge Core API host, and the inconclusive quote re-run. No judge-facing change: the current-state claims are already correct and dated."
+    },
+    {
+     "field": "truth.asOf (kept 2026-07-10)",
+     "reason": "The 2026-07-10 route quotes cannot be re-run with read-only public APIs, so the brief's condition (every volatile claim passes) is not met for them."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift (pass-1 value; no new gospel change)"
+   ],
+   "siblings": {
+    "checked": [
+     "q-defi-allbridge-what-is",
+     "q-edge-metamask-evm-mental-model",
+     "q-cctp-v2-usdc-stellar",
+     "q-tool-cctp-stellar-integration"
+    ],
+    "verdict": "no contradiction"
+   }
+  },
+  {
+   "id": "q-hot-fee-pool-burn-deflation",
+   "claims": [
+    {
+     "claim": "Fees accrue to LedgerHeader.feePool; totalCoins includes the pool; the pool is non-circulating and not burned.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "stellar-core TransactionFrame.cpp / ConservationOfLumens.cpp (pass 1, 2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "header.current().feePool += fee; ... if (sumBalance != header.totalCoins)"
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens (pass 1)",
+       "observedAt": "2026-11-02",
+       "quote": "No one has access to the fee pool, so these lumens are non-circulating ... so we include it in the total supply."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+       "observedAt": "2026-11-02",
+       "quote": "65271107 2026-11-02T17:41:59Z total_coins 105443902087.3472865 fee_pool 10966513.7857213 protocol 29"
+      }
+     ]
+    },
+    {
+     "claim": "CAP-26 ended inflation on 2019-10-28; SDF burned about 55.44B XLM on 2019-11-04.",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "SDF discussion paper (Oct 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "validators adopted Protocol 12 and ended the mechanism in October 2019. The following month, SDF burned 55.44 billion XLM"
+      },
+      {
+       "class": "F",
+       "ref": "Horizon GALAXYVOID account",
+       "observedAt": "2026-11-02",
+       "quote": "['55442115249.9502152'] weight 0"
+      },
+      {
+       "class": "B",
+       "ref": "stellar-protocol core/cap-0026.md (pass 1)",
+       "observedAt": "2026-11-02",
+       "quote": "Title: Disable Inflation Mechanism / Status: Final / Protocol version: 12"
+      }
+     ]
+    },
+    {
+     "claim": "As of 2026-11-02 the October 2026 fee-pool paper is a discussion paper only; no CAP, no vote, no holder rewards.",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only."
+      },
+      {
+       "class": "B",
+       "ref": "github.com/stellar/stellar-protocol commits since 2026-10-20; discussions #2051/#2052",
+       "observedAt": "2026-11-02",
+       "quote": "Add CAP-0090: Custom signature payload for account contracts (#2050) — no fee-pool CAP"
+      },
+      {
+       "class": "D",
+       "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026 (Perplexity)",
+       "observedAt": "2026-10-30",
+       "quote": "Framed as an early discussion rather than a finalized protocol change"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/xlm-utility",
+       "observedAt": "2026-11-02",
+       "quote": "Model how network growth, fee levels, and funding choices could support rewards for locked XLM over ten years. Download the whitepaper Join the discussion"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "tags.freshness",
+     "reason": "golden.notes carries a dated volatile status (discussion paper not adopted as of 2026-11-02); the task rule tags such cases scheduled."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "reason": "2027-04-27 -> 2027-02-26: the discussion status can change within the feedback period; still in the 2027-02-01..2027-06-30 window and on a distinct day."
+    },
+    {
+     "field": "truth.corroboration / verified",
+     "reason": "Record the pass-2 re-verification."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": {
+    "checked": [
+     "q-raph-xlm-staking",
+     "q-edge-noinfo-stellar-pos-staking-rewards",
+     "q-hot-sdf-xlm-holdings-sales",
+     "q-protocol-ledger-header-fields",
+     "q-token-initial-supply-distribution"
+    ],
+    "verdict": "no contradiction; q-edge-noinfo-stellar-pos-staking-rewards lacks the caution (pass-1 F15, outside this set)"
+   }
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#0",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Only the Validation Cloud as-of date moves; live page still advertises Stellar Testnet XLM and the docs still say it links to existing faucets, so the hedged wording stays true. Date is not dropped.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.validationcloud.io/multi-chain-faucets (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.validationcloud.io/nodeapi/about/faucets (old /v1/about/faucets -> HTTP 308)",
+      "observedAt": "2026-11-02",
+      "quote": "We also link to other existing and working testnet faucets for the following networks: Aptos Hedera Stellar"
+     },
+     {
+      "class": "A",
+      "ref": "https://faucet.circle.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet ... Limit: One request per pairing of asset and test network every 2 hours ... Send testnet USDC, EURC, and cirBTC"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#1",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Requests are rate limited, so use wisely ... For multiple accounts: fund your first account with Friendbot, then use that account to fund subsequent accounts us…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+      "observedAt": "2026-11-02",
+      "quote": "In local network mode, a local Friendbot is running. In testnet and futurenet network modes, requests to the local :8000/friendbot endpoint will be proxied to t…"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.validationcloud.io/multi-chain-faucets (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#2",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-03-15 is staggered, later than 2026-11-10, and fits provider volatility.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#3",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/quickstart (main beb4f2faf526, 2026-10-27) testnet/ and local/nginx/etc/conf.d/friendbot.conf",
+      "observedAt": "2026-11-02",
+      "quote": "proxy_pass https://friendbot.stellar.org; | proxy_pass http://127.0.0.1:8002;"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#4",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.validationcloud.io/nodeapi/about/faucets (old /v1/about/faucets -> HTTP 308)",
+      "observedAt": "2026-11-02",
+      "quote": "We also link to other existing and working testnet faucets for the following networks: Aptos Hedera Stellar"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#5",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://testnetfaucets.dev/xlm-testnet-faucet/ (Parallel web_fetch, page dated 2026-10-31)",
+      "observedAt": "2026-11-02",
+      "quote": "There is 1 XLM testnet faucet in this list ... Stellar Friendbot | 10,000 XLM | — | none | Working"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#6",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Requests are rate limited, so use wisely ... For multiple accounts: fund your first account with Friendbot, then use that account to fund subsequent accounts us…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#7",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/friendbot (main ee67b7f12610, 2026-10-20) README.md",
+      "observedAt": "2026-11-02",
+      "quote": "README grep for rate|limit|quota: only config/secret-file lines; no request-window quota"
+     },
+     {
+      "class": "F",
+      "ref": "curl -i https://friendbot.stellar.org/?addr=invalid",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 400 content-type: application/problem+json ... \"reason\": \"invalid address: must be a valid G or C address\" (no rate-limit headers)"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#8",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "Perplexity search \"Stellar Friendbot testnet rate limit requests per hour official backup faucet\"",
+      "observedAt": "2026-11-02",
+      "quote": "Requests are rate limited, so use wisely (docs); OnFinality: \"OnFinality does not currently offer a faucet but supports the public Friendbot.\" No numeric quota …"
+     },
+     {
+      "class": "D",
+      "ref": "https://testnetfaucets.dev/xlm-testnet-faucet/ (Parallel web_fetch, page dated 2026-10-31)",
+      "observedAt": "2026-11-02",
+      "quote": "There is 1 XLM testnet faucet in this list ... Stellar Friendbot | 10,000 XLM | — | none | Working"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#9",
+    "field": "truth.corroboration[1].claim",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.validationcloud.io/multi-chain-faucets (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+     },
+     {
+      "class": "A",
+      "ref": "https://faucet.circle.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet ... Limit: One request per pairing of asset and test network every 2 hours ... Send testnet USDC, EURC, and cirBTC"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#10",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+      "observedAt": "2026-11-02",
+      "quote": "In local network mode, a local Friendbot is running. In testnet and futurenet network modes, requests to the local :8000/friendbot endpoint will be proxied to t…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#11",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/quickstart (main beb4f2faf526, 2026-10-27) testnet/ and local/nginx/etc/conf.d/friendbot.conf",
+      "observedAt": "2026-11-02",
+      "quote": "proxy_pass https://friendbot.stellar.org; | proxy_pass http://127.0.0.1:8002;"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#12",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.validationcloud.io/multi-chain-faucets (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#13",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.validationcloud.io/nodeapi/about/faucets (old /v1/about/faucets -> HTTP 308)",
+      "observedAt": "2026-11-02",
+      "quote": "We also link to other existing and working testnet faucets for the following networks: Aptos Hedera Stellar"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#14",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://faucet.circle.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet ... Limit: One request per pairing of asset and test network every 2 hours ... Send testnet USDC, EURC, and cirBTC"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#15",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://testnetfaucets.dev/xlm-testnet-faucet/ (Parallel web_fetch, page dated 2026-10-31)",
+      "observedAt": "2026-11-02",
+      "quote": "There is 1 XLM testnet faucet in this list ... Stellar Friendbot | 10,000 XLM | — | none | Working"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#16",
+    "field": "truth.corroboration[1].note",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.validationcloud.io/multi-chain-faucets (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+     },
+     {
+      "class": "A",
+      "ref": "https://faucet.circle.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet ... Limit: One request per pairing of asset and test network every 2 hours ... Send testnet USDC, EURC, and cirBTC"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#17",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance text only.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#18",
+    "field": "truth.verified.evidence[6]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Requests are rate limited, so use wisely ... For multiple accounts: fund your first account with Friendbot, then use that account to fund subsequent accounts us…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+      "observedAt": "2026-11-02",
+      "quote": "In local network mode, a local Friendbot is running. In testnet and futurenet network modes, requests to the local :8000/friendbot endpoint will be proxied to t…"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.validationcloud.io/multi-chain-faucets (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+     },
+     {
+      "class": "A",
+      "ref": "https://faucet.circle.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet ... Limit: One request per pairing of asset and test network every 2 hours ... Send testnet USDC, EURC, and cirBTC"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#19",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/networks",
+      "observedAt": "2026-11-02",
+      "quote": "Requests are rate limited, so use wisely ... For multiple accounts: fund your first account with Friendbot, then use that account to fund subsequent accounts us…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#20",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/friendbot (main ee67b7f12610, 2026-10-20) README.md",
+      "observedAt": "2026-11-02",
+      "quote": "README grep for rate|limit|quota: only config/secret-file lines; no request-window quota"
+     },
+     {
+      "class": "F",
+      "ref": "curl -i https://friendbot.stellar.org/?addr=invalid",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP/2 400 content-type: application/problem+json ... \"reason\": \"invalid address: must be a valid G or C address\" (no rate-limit headers)"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#21",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+      "observedAt": "2026-11-02",
+      "quote": "In local network mode, a local Friendbot is running. In testnet and futurenet network modes, requests to the local :8000/friendbot endpoint will be proxied to t…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#22",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/quickstart (main beb4f2faf526, 2026-10-27) testnet/ and local/nginx/etc/conf.d/friendbot.conf",
+      "observedAt": "2026-11-02",
+      "quote": "proxy_pass https://friendbot.stellar.org; | proxy_pass http://127.0.0.1:8002;"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#23",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.validationcloud.io/multi-chain-faucets (live curl)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet Get XLM to help you build on the Stellar blockchain. Start request now"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.validationcloud.io/nodeapi/about/faucets (old /v1/about/faucets -> HTTP 308)",
+      "observedAt": "2026-11-02",
+      "quote": "We also link to other existing and working testnet faucets for the following networks: Aptos Hedera Stellar"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#24",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://faucet.circle.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Testnet ... Limit: One request per pairing of asset and test network every 2 hours ... Send testnet USDC, EURC, and cirBTC"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#25",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://testnetfaucets.dev/xlm-testnet-faucet/ (Parallel web_fetch, page dated 2026-10-31)",
+      "observedAt": "2026-11-02",
+      "quote": "There is 1 XLM testnet faucet in this list ... Stellar Friendbot | 10,000 XLM | — | none | Working"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity search \"Stellar Friendbot testnet rate limit requests per hour official backup faucet\"",
+      "observedAt": "2026-11-02",
+      "quote": "Requests are rate limited, so use wisely (docs); OnFinality: \"OnFinality does not currently offer a faucet but supports the public Friendbot.\" No numeric quota …"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-friendbot-ratelimit-alternatives#26",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Re-ran grep: siblings q-ti-testnet-usdc-faucet, q-infra-rpc-provider-archive-tier, q-infra-rpc-methods-list carry no conflicting faucet claim. No source sentinel exists for this case, so no caseAsOf update is needed.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#0",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Storage as-of date moves 2026-09-09 -> 2026-11-02; independently re-derived from docs (A), source history (B), and the live served bundle (F). Same claim, date kept visible.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+      "observedAt": "2026-11-02",
+      "quote": "(only Testnet and Futurenet) ... Saved keypairs are obfuscated, but not encrypted ... keypairs saved before September 2025 may remain in plain text until they’r…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/laboratory main a9bd4ee49c9d (2026-10-29); commits?path=src/helpers/localStorageSavedKeypairs.ts and jsonCipher.ts",
+      "observedAt": "2026-11-02",
+      "quote": "latest commit for both files 624d40ff29ca 2025-09-04; \"For backwards compatibility, try to parse JSON first\"; encryptJson(savedKeypairs)"
+     },
+     {
+      "class": "F",
+      "ref": "https://lab.stellar.org/account/saved -> /_next/static/chunks/2hm6rn-eyf-za.js",
+      "observedAt": "2026-11-02",
+      "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection\" .…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#1",
+    "field": "golden.notes",
+    "decision": "accept",
+    "newText": null,
+    "note": "Note keeps the obfuscation-is-not-encryption caution and the dated Varial/Wallets Kit 2.5.0 note (lab still pins 2.5.0). No leniency added.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+      "observedAt": "2026-11-02",
+      "quote": "(only Testnet and Futurenet) ... Saved keypairs are obfuscated, but not encrypted ... keypairs saved before September 2025 may remain in plain text until they’r…"
+     },
+     {
+      "class": "F",
+      "ref": "https://lab.stellar.org/account/saved -> /_next/static/chunks/2hm6rn-eyf-za.js",
+      "observedAt": "2026-11-02",
+      "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection\" .…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab",
+      "observedAt": "2026-11-02",
+      "quote": "Simulate and Submit ... Save and Share API Requests ... XDR ⇔ JSON Support"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/quickstart README.md and common/lab/bin/start (main beb4f2faf526)",
+      "observedAt": "2026-11-02",
+      "quote": "- Lab: `http://localhost:8000/lab` ... --enable lab ... export NEXT_PUBLIC_DEFAULT_NETWORK=custom"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+      "observedAt": "2026-11-02",
+      "quote": "stellar contract asset deploy \\ --source S... \\ --network testnet ... the contract address can be fetched with: stellar contract id asset"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#2",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+      "observedAt": "2026-11-02",
+      "quote": "(only Testnet and Futurenet) ... Saved keypairs are obfuscated, but not encrypted ... keypairs saved before September 2025 may remain in plain text until they’r…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/laboratory main a9bd4ee49c9d (2026-10-29); commits?path=src/helpers/localStorageSavedKeypairs.ts and jsonCipher.ts",
+      "observedAt": "2026-11-02",
+      "quote": "latest commit for both files 624d40ff29ca 2025-09-04; \"For backwards compatibility, try to parse JSON first\"; encryptJson(savedKeypairs)"
+     },
+     {
+      "class": "F",
+      "ref": "https://lab.stellar.org/account/saved -> /_next/static/chunks/2hm6rn-eyf-za.js",
+      "observedAt": "2026-11-02",
+      "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection\" .…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#3",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-04-15 is staggered and later than 2026-11-10.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#4",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Confirmed: served page references 2hm6rn-eyf-za.js and no longer references page-dbc03db5d85268bb.js.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://lab.stellar.org/account/saved -> /_next/static/chunks/2hm6rn-eyf-za.js",
+      "observedAt": "2026-11-02",
+      "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection\" .…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#5",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Page returns HTTP 200; the note describes its purpose only.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/quickstart-with-lab",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#6",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab",
+      "observedAt": "2026-11-02",
+      "quote": "Simulate and Submit ... Save and Share API Requests ... XDR ⇔ JSON Support"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#7",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/transactions",
+      "observedAt": "2026-11-02",
+      "quote": "clicking the “Fetch next sequence” button ... click the “Add Operation” button"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#8",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/smart-contracts/upload-deploy-contract",
+      "observedAt": "2026-11-02",
+      "quote": "sign using any of the following methods: secret key, hardware wallet, extension wallet, or signature"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#9",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/laboratory/blob/main/src/components/SignTransactionXdr/index.tsx; package.json; pnpm-lock.yaml",
+      "observedAt": "2026-11-02",
+      "quote": "type TxSignatureType = ...; \"Sign with wallet extension\"; \"@creit.tech/stellar-wallets-kit\": \"^2.5.0\"; lock version: 2.5.0"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#10",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+      "observedAt": "2026-11-02",
+      "quote": "(only Testnet and Futurenet) ... Saved keypairs are obfuscated, but not encrypted ... keypairs saved before September 2025 may remain in plain text until they’r…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#11",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/laboratory main a9bd4ee49c9d (2026-10-29); commits?path=src/helpers/localStorageSavedKeypairs.ts and jsonCipher.ts",
+      "observedAt": "2026-11-02",
+      "quote": "latest commit for both files 624d40ff29ca 2025-09-04; \"For backwards compatibility, try to parse JSON first\"; encryptJson(savedKeypairs)"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#12",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://lab.stellar.org/account/saved -> /_next/static/chunks/2hm6rn-eyf-za.js",
+      "observedAt": "2026-11-02",
+      "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection\" .…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#13",
+    "field": "truth.corroboration[2].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+      "observedAt": "2026-11-02",
+      "quote": "stellar contract asset deploy \\ --source S... \\ --network testnet ... the contract address can be fetched with: stellar contract id asset"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#14",
+    "field": "truth.corroboration[2].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da891b); gh api repos/stellar/stellar-cli/releases/latest -> v28.1.0 2026-09-26",
+      "observedAt": "2026-11-02",
+      "quote": "deploy  Deploy builtin Soroban Asset Contract | id  Get Id of builtin Soroban Asset Contract. Deprecated, use `stellar contract id asset` instead | Derive the c…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#15",
+    "field": "truth.corroboration[3].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/quickstart README.md and common/lab/bin/start (main beb4f2faf526)",
+      "observedAt": "2026-11-02",
+      "quote": "- Lab: `http://localhost:8000/lab` ... --enable lab ... export NEXT_PUBLIC_DEFAULT_NETWORK=custom"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#16",
+    "field": "truth.corroboration[3].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/quickstart",
+      "observedAt": "2026-11-02",
+      "quote": "Quickstart is intended for use in development, not in production"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#17",
+    "field": "truth.corroboration[1].claim",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+      "observedAt": "2026-11-02",
+      "quote": "(only Testnet and Futurenet) ... Saved keypairs are obfuscated, but not encrypted ... keypairs saved before September 2025 may remain in plain text until they’r…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/laboratory main a9bd4ee49c9d (2026-10-29); commits?path=src/helpers/localStorageSavedKeypairs.ts and jsonCipher.ts",
+      "observedAt": "2026-11-02",
+      "quote": "latest commit for both files 624d40ff29ca 2025-09-04; \"For backwards compatibility, try to parse JSON first\"; encryptJson(savedKeypairs)"
+     },
+     {
+      "class": "F",
+      "ref": "https://lab.stellar.org/account/saved -> /_next/static/chunks/2hm6rn-eyf-za.js",
+      "observedAt": "2026-11-02",
+      "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection\" .…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#18",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#19",
+    "field": "truth.verified.evidence[8]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+      "observedAt": "2026-11-02",
+      "quote": "(only Testnet and Futurenet) ... Saved keypairs are obfuscated, but not encrypted ... keypairs saved before September 2025 may remain in plain text until they’r…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/laboratory main a9bd4ee49c9d (2026-10-29); commits?path=src/helpers/localStorageSavedKeypairs.ts and jsonCipher.ts",
+      "observedAt": "2026-11-02",
+      "quote": "latest commit for both files 624d40ff29ca 2025-09-04; \"For backwards compatibility, try to parse JSON first\"; encryptJson(savedKeypairs)"
+     },
+     {
+      "class": "F",
+      "ref": "https://lab.stellar.org/account/saved -> /_next/static/chunks/2hm6rn-eyf-za.js",
+      "observedAt": "2026-11-02",
+      "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection\" .…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab",
+      "observedAt": "2026-11-02",
+      "quote": "Simulate and Submit ... Save and Share API Requests ... XDR ⇔ JSON Support"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+      "observedAt": "2026-11-02",
+      "quote": "stellar contract asset deploy \\ --source S... \\ --network testnet ... the contract address can be fetched with: stellar contract id asset"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#20",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+      "observedAt": "2026-11-02",
+      "quote": "(only Testnet and Futurenet) ... Saved keypairs are obfuscated, but not encrypted ... keypairs saved before September 2025 may remain in plain text until they’r…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#21",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/laboratory main a9bd4ee49c9d (2026-10-29); commits?path=src/helpers/localStorageSavedKeypairs.ts and jsonCipher.ts",
+      "observedAt": "2026-11-02",
+      "quote": "latest commit for both files 624d40ff29ca 2025-09-04; \"For backwards compatibility, try to parse JSON first\"; encryptJson(savedKeypairs)"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#22",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://lab.stellar.org/account/saved -> /_next/static/chunks/2hm6rn-eyf-za.js",
+      "observedAt": "2026-11-02",
+      "quote": "set:e=>localStorage.setItem(t.r,btoa(i(JSON.stringify(e),r))) ... \"Saved keypairs are stored in the browser’s localstorage unencrypted and with no protection\" .…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#23",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab",
+      "observedAt": "2026-11-02",
+      "quote": "Simulate and Submit ... Save and Share API Requests ... XDR ⇔ JSON Support"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/transactions",
+      "observedAt": "2026-11-02",
+      "quote": "clicking the “Fetch next sequence” button ... click the “Add Operation” button"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/smart-contracts/upload-deploy-contract",
+      "observedAt": "2026-11-02",
+      "quote": "sign using any of the following methods: secret key, hardware wallet, extension wallet, or signature"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#24",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/laboratory/blob/main/src/components/SignTransactionXdr/index.tsx; package.json; pnpm-lock.yaml",
+      "observedAt": "2026-11-02",
+      "quote": "type TxSignatureType = ...; \"Sign with wallet extension\"; \"@creit.tech/stellar-wallets-kit\": \"^2.5.0\"; lock version: 2.5.0"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#25",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/quickstart README.md and common/lab/bin/start (main beb4f2faf526)",
+      "observedAt": "2026-11-02",
+      "quote": "- Lab: `http://localhost:8000/lab` ... --enable lab ... export NEXT_PUBLIC_DEFAULT_NETWORK=custom"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/quickstart",
+      "observedAt": "2026-11-02",
+      "quote": "Quickstart is intended for use in development, not in production"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/lab/quickstart-with-lab",
+      "observedAt": "2026-11-02",
+      "quote": "HTTP 200"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#26",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "CLI help and cookbook confirmed live; the GitHub code-search absence note is framed as non-proof, which is correct.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+      "observedAt": "2026-11-02",
+      "quote": "stellar contract asset deploy \\ --source S... \\ --network testnet ... the contract address can be fetched with: stellar contract id asset"
+     },
+     {
+      "class": "F",
+      "ref": "local stellar 28.1.0 (c0f4d0da891b); gh api repos/stellar/stellar-cli/releases/latest -> v28.1.0 2026-09-26",
+      "observedAt": "2026-11-02",
+      "quote": "deploy  Deploy builtin Soroban Asset Contract | id  Get Id of builtin Soroban Asset Contract. Deprecated, use `stellar contract id asset` instead | Derive the c…"
+     }
+    ]
+   },
+   {
+    "id": "q-ti-stellar-lab-usage-and-new-ui#27",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Sibling claim dated 2026-09-09 stays true; no contradiction. No source sentinel for this case.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-wallets-comparison#0",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "newText": null,
+    "note": "No judge-facing text changes; asOf moves because every role claim was re-derived on 2026-11-02 across A and B.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit main 9db6b363f678 (2026-10-28), release v2.8.0 2026-10-28T21:55:28Z, src/sdk/modules/*.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "ledger: ModuleType.HW_WALLET productName \"Ledger\"; trezor: ModuleType.HW_WALLET \"Trezor\"; wallet-connect: ModuleType.BRIDGE_WALLET \"WalletConnect\", projectId: w…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/apps/wallet/overview",
+      "observedAt": "2026-11-02",
+      "quote": "In this guide we will use the Wallet SDK to integrate with the Stellar blockchain and connect to anchors ... how to build a wallet without using smart contracts"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Smart wallets are contract accounts that act as user wallets ... Smart Account Kit: deploys and drives OpenZeppelin Smart Account contracts ... Supports passkey…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#1",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-05-14 is staggered and later than 2026-11-10.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-wallets-comparison#2",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#3",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit main 9db6b363f678 (2026-10-28), release v2.8.0 2026-10-28T21:55:28Z, src/sdk/modules/*.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "ledger: ModuleType.HW_WALLET productName \"Ledger\"; trezor: ModuleType.HW_WALLET \"Trezor\"; wallet-connect: ModuleType.BRIDGE_WALLET \"WalletConnect\", projectId: w…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#4",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/apps/wallet/overview",
+      "observedAt": "2026-11-02",
+      "quote": "In this guide we will use the Wallet SDK to integrate with the Stellar blockchain and connect to anchors ... how to build a wallet without using smart contracts"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#5",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Smart wallets are contract accounts that act as user wallets ... Smart Account Kit: deploys and drives OpenZeppelin Smart Account contracts ... Supports passkey…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#6",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/typescript-wallet-sdk, Soneso/stellar_wallet_flutter_sdk, stellar/smart-account-kit, kalepail/smart-account-kit",
+      "observedAt": "2026-11-02",
+      "quote": "Typescript Wallet SDK to build Stellar wallets (pushed 2026-10-19, archived false); Flutter Wallet SDK to build Stellar wallets (pushed 2026-10-25); TypeScript …"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#7",
+    "field": "truth.corroboration[2].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/ ; https://docs.varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation Open source and non-custodial. | Freighter is now Varial. Same wallet, new name. ... New integrations should use @st…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#8",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-tool-wallets-comparison#9",
+    "field": "truth.verified.evidence[6]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit main 9db6b363f678 (2026-10-28), release v2.8.0 2026-10-28T21:55:28Z, src/sdk/modules/*.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "ledger: ModuleType.HW_WALLET productName \"Ledger\"; trezor: ModuleType.HW_WALLET \"Trezor\"; wallet-connect: ModuleType.BRIDGE_WALLET \"WalletConnect\", projectId: w…"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/apps/wallet/overview",
+      "observedAt": "2026-11-02",
+      "quote": "In this guide we will use the Wallet SDK to integrate with the Stellar blockchain and connect to anchors ... how to build a wallet without using smart contracts"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Smart wallets are contract accounts that act as user wallets ... Smart Account Kit: deploys and drives OpenZeppelin Smart Account contracts ... Supports passkey…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/typescript-wallet-sdk, Soneso/stellar_wallet_flutter_sdk, stellar/smart-account-kit, kalepail/smart-account-kit",
+      "observedAt": "2026-11-02",
+      "quote": "Typescript Wallet SDK to build Stellar wallets (pushed 2026-10-19, archived false); Flutter Wallet SDK to build Stellar wallets (pushed 2026-10-25); TypeScript …"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#10",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#11",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit main 9db6b363f678 (2026-10-28), release v2.8.0 2026-10-28T21:55:28Z, src/sdk/modules/*.module.ts",
+      "observedAt": "2026-11-02",
+      "quote": "ledger: ModuleType.HW_WALLET productName \"Ledger\"; trezor: ModuleType.HW_WALLET \"Trezor\"; wallet-connect: ModuleType.BRIDGE_WALLET \"WalletConnect\", projectId: w…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#12",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/apps/wallet/overview",
+      "observedAt": "2026-11-02",
+      "quote": "In this guide we will use the Wallet SDK to integrate with the Stellar blockchain and connect to anchors ... how to build a wallet without using smart contracts"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
+      "observedAt": "2026-11-02",
+      "quote": "Smart wallets are contract accounts that act as user wallets ... Smart Account Kit: deploys and drives OpenZeppelin Smart Account contracts ... Supports passkey…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#13",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/typescript-wallet-sdk, Soneso/stellar_wallet_flutter_sdk, stellar/smart-account-kit, kalepail/smart-account-kit",
+      "observedAt": "2026-11-02",
+      "quote": "Typescript Wallet SDK to build Stellar wallets (pushed 2026-10-19, archived false); Flutter Wallet SDK to build Stellar wallets (pushed 2026-10-25); TypeScript …"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#14",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://varialwallet.com/ ; https://docs.varialwallet.com/",
+      "observedAt": "2026-11-02",
+      "quote": "Built by the Stellar Development Foundation Open source and non-custodial. | Freighter is now Varial. Same wallet, new name. ... New integrations should use @st…"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#15",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accept as an observation only. The pre-existing sls-033 Scout partial cap is outside the three ADR-0008 canonical-page cases; this proposal correctly adds no new cap and routes the existing one to the owner decision (consistency-rubric M4). Recommend the owner convert it to a plain correct/wrong rule or remove it; that is not part of this edit.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-033-wallet-type-enumeration-availability.md",
+      "observedAt": "2026-11-02",
+      "quote": "status: reported-upstream"
+     }
+    ]
+   },
+   {
+    "id": "q-tool-wallets-comparison#16",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#0",
+    "field": "golden.answer",
+    "decision": "accept",
+    "newText": null,
+    "note": "Independent raw GET at 2026-11-02T17:52Z reproduces every number: total 191, 100 + 92 rows, one overlap (Coca), 72 unique Wallet-typed, 32 sole-type, first rows Lobstr, xBull, Freighter. As-of date is kept; the example stays illustrative and keyFacts stay behavioral.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0|100|200 (raw GET)",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T17:52:15.888Z; counts {returned 100, total 191} and {returned 92, total 191}; offset=200 returned 0; overlap Coca; Wallet occurrences 73,…"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L lobstr.co xbull.app varialwallet.com albedo.link www.decaf.so rabet.io beansapp.com",
+      "observedAt": "2026-11-02",
+      "quote": "200 200 200 200 200 200 200"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#1",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0|100|200 (raw GET)",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T17:52:15.888Z; counts {returned 100, total 191} and {returned 92, total 191}; offset=200 returned 0; overlap Coca; Wallet occurrences 73,…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#2",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-02-15 is staggered and later than 2026-11-10. The stale gate (lintStale) applies to any truth.reverifyBy, so a live case with a reverifyBy enters the stale queue.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#3",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0|100|200 (raw GET)",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T17:52:15.888Z; counts {returned 100, total 191} and {returned 92, total 191}; offset=200 returned 0; overlap Coca; Wallet occurrences 73,…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#4",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L lobstr.co xbull.app varialwallet.com albedo.link www.decaf.so rabet.io beansapp.com",
+      "observedAt": "2026-11-02",
+      "quote": "200 200 200 200 200 200 200"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#5",
+    "field": "truth.corroboration[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "All counts match my independent read (73 occurrences, 72 unique, page split 71 + 2). The corpus-domain bar is met: live corpus plus a 7-site real-world sample.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0|100|200 (raw GET)",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T17:52:15.888Z; counts {returned 100, total 191} and {returned 92, total 191}; offset=200 returned 0; overlap Coca; Wallet occurrences 73,…"
+     },
+     {
+      "class": "F",
+      "ref": "curl -L lobstr.co xbull.app varialwallet.com albedo.link www.decaf.so rabet.io beansapp.com",
+      "observedAt": "2026-11-02",
+      "quote": "200 200 200 200 200 200 200"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#6",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#7",
+    "field": "truth.verified.evidence[6]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Both finding files exist in the worktree (untracked) with status verified; Lumenloop record still names Freighter with no Varial mention.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0|100|200 (raw GET)",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T17:52:15.888Z; counts {returned 100, total 191} and {returned 92, total 191}; offset=200 returned 0; overlap Coca; Wallet occurrences 73,…"
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_project {\"slug\":\"freighter\"} (manifest transport)",
+      "observedAt": "2026-11-02",
+      "quote": "success true; title Freighter; \"Freighter is a non-custodial browser extension wallet developed by the Stellar Development Foundation\"; no \"varial\" in response"
+     },
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md ; improvements/lumenloop/ll-032-freighter-varial-rename-stale-record.md (worktree, untracked)",
+      "observedAt": "2026-11-02",
+      "quote": "id: sls-095 status: verified ... | id: ll-032 status: verified ..."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#8",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0|100|200 (raw GET)",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T17:52:15.888Z; counts {returned 100, total 191} and {returned 92, total 191}; offset=200 returned 0; overlap Coca; Wallet occurrences 73,…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#9",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0|100|200 (raw GET)",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T17:52:15.888Z; counts {returned 100, total 191} and {returned 92, total 191}; offset=200 returned 0; overlap Coca; Wallet occurrences 73,…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#10",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl -L lobstr.co xbull.app varialwallet.com albedo.link www.decaf.so rabet.io beansapp.com",
+      "observedAt": "2026-11-02",
+      "quote": "200 200 200 200 200 200 200"
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+      "observedAt": "2026-11-02",
+      "quote": "The Stellar Wallets Kit supports many wallets including: Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBu…"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#11",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accept, with a flag for the orchestrator: the task rule says dated volatile golden text implies freshness scheduled. For this case live and scheduled get the same judge FRESHNESS-SENSITIVE block (judge.mjs: freshness !== \"stable\"), and the stale gate keys on reverifyBy alone, so live + reverifyBy gives the same gating. 76 battery live cases carry dated text. Switching the tag is a separate judge-f…",
+    "sources": []
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#12",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accept as an observation; no new aggregator cap added. Existing sls-024 cap is governed by the owner decision (rubric M4).",
+    "sources": []
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#13",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#14",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Upstream defect root cause exists independent of scores.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md ; improvements/lumenloop/ll-032-freighter-varial-rename-stale-record.md (worktree, untracked)",
+      "observedAt": "2026-11-02",
+      "quote": "id: sls-095 status: verified ... | id: ll-032 status: verified ..."
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-wallets-list#15",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Upstream defect root cause exists independent of scores.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md ; improvements/lumenloop/ll-032-freighter-varial-rename-stale-record.md (worktree, untracked)",
+      "observedAt": "2026-11-02",
+      "quote": "id: sls-095 status: verified ... | id: ll-032 status: verified ..."
+     },
+     {
+      "class": "C",
+      "ref": "POST https://api.lumenloop.com/v1/tools/get_project {\"slug\":\"freighter\"} (manifest transport)",
+      "observedAt": "2026-11-02",
+      "quote": "success true; title Freighter; \"Freighter is a non-custodial browser extension wallet developed by the Stellar Development Foundation\"; no \"varial\" in response"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#0",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs.squidrouter.com/api-and-sdk-integration/chain-integration-guides/stellar-integration",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar support is powered by Squid Intents ... USDC USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#1",
+    "field": "truth.sources[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/sdk/guides/stellar/transfer",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar transfers are temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#2",
+    "field": "truth.sources[4].note",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl https://core.api.allbridgecoreapi.net/token-info?filter=all ; dig +short",
+      "observedAt": "2026-11-02",
+      "quote": "Could not resolve host: core.api.allbridgecoreapi.net (dig empty)"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#3",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://support.metamask.io/configure/networks/stellar/ (last-modified Mon, 02 Nov 2026 15:38:14 GMT)",
+      "observedAt": "2026-11-02",
+      "quote": "You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button on the MetaMask homepage. ... A cross-chain swap (…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#4",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod",
+      "observedAt": "2026-11-02",
+      "quote": "stellarAccounts {enabled: True, minimumVersion: 13.50.0}; chains[20000000000002] {isActiveDest: True, isActiveSrc: True}; chainRanking [{name: Stellar, chainId:…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#5",
+    "field": "truth.corroboration[2].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Not independently re-run (quote endpoint shape changed per proposer); the entry is framed as inconclusive and changes no gospel, so accept.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#6",
+    "field": "truth.corroboration[3].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/sdk/guides/stellar/transfer",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar transfers are temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#7",
+    "field": "truth.corroboration[3].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "curl https://core.api.allbridgecoreapi.net/token-info?filter=all ; dig +short",
+      "observedAt": "2026-11-02",
+      "quote": "Could not resolve host: core.api.allbridgecoreapi.net (dig empty)"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#8",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#9",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Allbridge Core liquidity pools were discontinued in July 2026. ... Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending a…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/sdk/guides/stellar/transfer",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar transfers are temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "A",
+      "ref": "https://developers.circle.com/cctp/references/stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Use CctpForwarder for Stellar recipients"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs.axelar.dev/learn/security/",
+      "observedAt": "2026-11-02",
+      "quote": "Proof-of-stake consensus In Byzantine systems, if you break liveness, the system halts"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search -> https://www.axelar.network/blog/axelar-stellar-integration",
+      "observedAt": "2026-11-02",
+      "quote": "Axelar Network Integrates Stellar ... February 16, 2026 ... Solv, Stronghold, and Squid build on Axelar and Stellar from day one"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#10",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://support.metamask.io/configure/networks/stellar/ (last-modified Mon, 02 Nov 2026 15:38:14 GMT)",
+      "observedAt": "2026-11-02",
+      "quote": "You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button on the MetaMask homepage. ... A cross-chain swap (…"
+     },
+     {
+      "class": "C",
+      "ref": "https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod",
+      "observedAt": "2026-11-02",
+      "quote": "stellarAccounts {enabled: True, minimumVersion: 13.50.0}; chains[20000000000002] {isActiveDest: True, isActiveSrc: True}; chainRanking [{name: Stellar, chainId:…"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#11",
+    "field": "truth.verified.evidence[+]",
+    "decision": "modify",
+    "newText": "truth.asOf stays 2026-07-10: the 2026-07-10 route quotes (Allbridge Next CCTP, Allbridge Core, Squid Intents/RFQ, explicit Axelar USDC.axl) cannot be re-run from read-only public APIs — Squid v2 returns 'x-integrator-id header is missing' and the Allbridge Core API host no longer resolves. They stay dated historical observations in the answer; later facts carry their own 2026-10-01 and 2026-11-02 dates. truth.reverifyBy 2027-01-29 is added (event-tied: the golden text dates the Allbridge Core Stellar status 'temporarily unavailable while the Stellar CCTP implementation is pending audit'; re-ch…",
+    "note": "Modify: the asOf rationale is correct, but the golden text carries an event-tied volatile status (\"as of 2026-11-02, the Core docs list Stellar support as temporarily unavailable pending a Stellar CCTP audit\") with no reverifyBy, so the stale gate never re-checks it. Add truth.reverifyBy 2027-01-29 (staggered, after 2026-11-10), tied to the Allbridge Core Stellar CCTP audit. Same tag rationale as …",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Allbridge Core liquidity pools were discontinued in July 2026. ... Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending a…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/sdk/guides/stellar/transfer",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar transfers are temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     },
+     {
+      "class": "F",
+      "ref": "curl https://core.api.allbridgecoreapi.net/token-info?filter=all ; dig +short",
+      "observedAt": "2026-11-02",
+      "quote": "Could not resolve host: core.api.allbridgecoreapi.net (dig empty)"
+     }
+    ]
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#12",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#0",
+    "field": "tags.freshness",
+    "decision": "accept",
+    "newText": null,
+    "note": "Accept: golden.notes carries a dated volatile status (discussion paper not adopted as of 2026-11-02); the task rule requires scheduled. The stable core facts are re-confirmed (fee_pool grows inside unchanged total_coins; burn account balance; CAP-26). The tag adds only the generic freshness block; notes still grade \"fee pool already pays rewards\" or \"proposal adopted\" as wrong, so this is not scor…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf (Parallel web_fetch, publish_date 2026-10-26)",
+      "observedAt": "2026-11-02",
+      "quote": "It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only. ... validators adopted Proto…"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#1",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "newText": null,
+    "note": "2027-02-26 is staggered, after 2026-11-10, and earlier than the old 2027-04-27 to catch a CAP or feedback-period outcome.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf (Parallel web_fetch, publish_date 2026-10-26)",
+      "observedAt": "2026-11-02",
+      "quote": "It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only. ... validators adopted Proto…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?since=2026-10-20",
+      "observedAt": "2026-11-02",
+      "quote": "2026-11-02 Add CAP-0090 ...; 2026-10-26 [CAP-89] Rename ...; 2026-10-22 Update CAP and SLP statuses; 2026-10-20 CAP-89 ... (no fee-pool CAP)"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#2",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "My read at ledger 65271242 shows the same total_coins with a larger fee_pool, consistent with the proposer read.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+      "observedAt": "2026-11-02",
+      "quote": "ledger 65271242 2026-11-02T17:53:14Z total_coins 105443902087.3472865 fee_pool 10966539.0586499 protocol 29 (fee_pool grew; total_coins unchanged vs proposer re…"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#3",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GALAXYVOIDAOPZTDLHILAJQKCVVFMD4IKLXLSZV5YHO7VY74IWZILUTO",
+      "observedAt": "2026-11-02",
+      "quote": "native balance 55442115249.9502152; thresholds 0/0/0; signer weights [0]"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#4",
+    "field": "truth.corroboration[0].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf (Parallel web_fetch, publish_date 2026-10-26)",
+      "observedAt": "2026-11-02",
+      "quote": "It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only. ... validators adopted Proto…"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#5",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf (Parallel web_fetch, publish_date 2026-10-26)",
+      "observedAt": "2026-11-02",
+      "quote": "It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only. ... validators adopted Proto…"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#6",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?since=2026-10-20",
+      "observedAt": "2026-11-02",
+      "quote": "2026-11-02 Add CAP-0090 ...; 2026-10-26 [CAP-89] Rename ...; 2026-10-22 Update CAP and SLP statuses; 2026-10-20 CAP-89 ... (no fee-pool CAP)"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#7",
+    "field": "truth.corroboration[1].evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Bell CAP-84/87/88 titles checked in stellar-protocol; none mentions the fee pool. The Lumen Loop roundup quote is an aggregator but it only corroborates a non-adoption status already confirmed by the A paper.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "stellar/stellar-protocol core/cap-0084.md, cap-0087.md, cap-0088.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Muxed Contract Addresses | Title: Host functions for ML-DSA signature verification | Title: Millisecond-Resolution Close Times (0 mentions of feePool/fee…"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#8",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#9",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+      "observedAt": "2026-11-02",
+      "quote": "ledger 65271242 2026-11-02T17:53:14Z total_coins 105443902087.3472865 fee_pool 10966539.0586499 protocol 29 (fee_pool grew; total_coins unchanged vs proposer re…"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/accounts/GALAXYVOIDAOPZTDLHILAJQKCVVFMD4IKLXLSZV5YHO7VY74IWZILUTO",
+      "observedAt": "2026-11-02",
+      "quote": "native balance 55442115249.9502152; thresholds 0/0/0; signer weights [0]"
+     },
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf (Parallel web_fetch, publish_date 2026-10-26)",
+      "observedAt": "2026-11-02",
+      "quote": "It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only. ... validators adopted Proto…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/stellar-protocol/commits?since=2026-10-20",
+      "observedAt": "2026-11-02",
+      "quote": "2026-11-02 Add CAP-0090 ...; 2026-10-26 [CAP-89] Rename ...; 2026-10-22 Update CAP and SLP statuses; 2026-10-20 CAP-89 ... (no fee-pool CAP)"
+     },
+     {
+      "class": "B",
+      "ref": "stellar/stellar-protocol core/cap-0084.md, cap-0087.md, cap-0088.md",
+      "observedAt": "2026-11-02",
+      "quote": "Title: Muxed Contract Addresses | Title: Host functions for ML-DSA signature verification | Title: Millisecond-Resolution Close Times (0 mentions of feePool/fee…"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#10",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Verified independently; text matches live sources.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf (Parallel web_fetch, publish_date 2026-10-26)",
+      "observedAt": "2026-11-02",
+      "quote": "It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only. ... validators adopted Proto…"
+     }
+    ]
+   },
+   {
+    "id": "q-hot-fee-pool-burn-deflation#11",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "newText": null,
+    "note": "Provenance or bookkeeping text; consistent with the verified rows.",
+    "sources": []
+   },
+   {
+    "id": "q-defi-bridge-evm-to-stellar-axelar#add-reverifyBy",
+    "field": "truth.reverifyBy",
+    "decision": "modify",
+    "newText": "2027-01-29",
+    "note": "Companion to the #11 modify: set truth.reverifyBy (currently null) to 2027-01-29, event-tied to the pending Allbridge Core Stellar CCTP audit. The reason is recorded in the #11 evidence text.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+      "observedAt": "2026-11-02",
+      "quote": "Allbridge Core liquidity pools were discontinued in July 2026. ... Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending a…"
+     },
+     {
+      "class": "A",
+      "ref": "https://docs-core.allbridge.io/sdk/guides/stellar/transfer",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar transfers are temporarily unavailable while the Stellar CCTP implementation is pending audit."
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {}
+}

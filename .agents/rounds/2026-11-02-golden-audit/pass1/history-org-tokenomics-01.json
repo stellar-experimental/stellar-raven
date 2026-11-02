@@ -1,0 +1,1036 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "history-org-tokenomics-01",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-hist-cctp-stellar-live-announcement",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SDF/Circle public CCTP-live announcement date is May 19, 2026",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "page metadata \"date\":\"2026-05-19\"; \"Circle CCTP (Cross-Chain Transfer Protocol) is live on the Stellar network.\""
+      },
+      {
+       "class": "A",
+       "ref": "https://x.com/circle/status/2056767949445472739",
+       "observedAt": "2026-11-02",
+       "quote": "\"CCTP is now live on @StellarOrg.\" (snowflake decodes to 2026-05-19 16:04 UTC)"
+      },
+      {
+       "class": "D",
+       "ref": "https://nansen.ai/post/stellar-q2-2026-report",
+       "observedAt": "2026-11-02",
+       "quote": "\"Circle CCTP launched on Stellar (May 19)\""
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic via Raven (Stellar Weekly Roundup week of May 15, 2026)",
+       "observedAt": "2026-11-02",
+       "quote": "\"Circle CCTP went live on Stellar this week\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "CCTP uses native burn-and-mint USDC, not wrapped USDC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "\"CCTP eliminates the need for wrapped assets and custodial bridges ... native USDC is burned and minted for crosschain transfers\""
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "\"CCTP natively transfers USDC and EURC via burn-and-mint\""
+      },
+      {
+       "class": "D",
+       "ref": "https://www.crossmint.com/announcement/cctp-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "\"The source chain burns USDC, CCTP's attestation service signs the burn message, and the destination chain mints fresh native USDC ... No wrapped asset is creat…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "May 8, 2026 as public live-announcement date is false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news",
+       "observedAt": "2026-11-02",
+       "quote": "index lists \"May 19, 2026 • Stellar Development Foundation Circle CCTP is Live on Stellar\" and a separate \"May 8, 2026 • José Fernández da Ponte\" post"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Lock-and-wrap description of CCTP on Stellar is false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/cctp/references/stellar",
+       "observedAt": "2026-11-02",
+       "quote": "\"Inside mint_and_forward ... Calls receive_message on MessageTransmitter, which mints USDC\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-cctp-v2-usdc-stellar; q-tool-cctp-stellar-integration; q-token-circle-usdc-on-stellar; q-defi-bridge-evm-to-stellar-axelar"
+  },
+  {
+   "id": "q-hist-meridian-2026-corrected-venue",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Meridian 2026 held Oct 28-29, 2026 at Convento do Beato, Lisbon",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://meridian.stellar.org/event-details",
+       "observedAt": "2026-11-02",
+       "quote": "\"Meridian 2026 is a two-day in-person conference taking place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal.\""
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic via Raven",
+       "observedAt": "2026-11-02",
+       "quote": "\"Stellar's flagship conference returns Oct 28-29 at Convento do Beato in Lisbon\" (meridian.stellar.org, 2026-10-28)"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference",
+       "observedAt": "2026-11-02",
+       "quote": "re-verified earlier today by near-due lane; on-site coverage places event in Lisbon Oct 28-29"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "HackMeridian ran Oct 25-26, 2026 in Lisbon",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic via Raven",
+       "observedAt": "2026-11-02",
+       "quote": "\"HackMeridian comes to Lisbon Oct 25-26\" (hackmeridian.com); \"HackMeridian 2026 Day 2: Live from Lisbon\" YouTube 2026-10-26"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.hackmeridian.com/",
+       "observedAt": "2026-11-02",
+       "quote": "'25–26 October 2026 · ONE16, Lisbon' (per same-day near-due lane)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "SDF announced Lisbon and Oct 28-29 on April 1, 2026",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/StellarOrg/status/2039405316803031315",
+       "observedAt": "2026-11-02",
+       "quote": "snowflake decodes to 2026-04-01 18:11 UTC"
+      },
+      {
+       "class": "D",
+       "ref": "same-day near-due lane D sweep (h-x.technology, tearsheet.co)",
+       "observedAt": "2026-11-02",
+       "quote": "coverage of the Lisbon move"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Abu Dhabi/Oct 21-22 and 'still upcoming' are false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://meridian.stellar.org/event-details",
+       "observedAt": "2026-11-02",
+       "quote": "Lisbon, October 28–29, 2026"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-builder-justin-rice-history; q-scf-hackathons-active"
+  },
+  {
+   "id": "q-hist-quantum-preparedness-plan",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SDF published the QPP on June 9, 2026",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+       "observedAt": "2026-11-02",
+       "quote": "page metadata \"date\":\"2026-06-09\""
+      },
+      {
+       "class": "D",
+       "ref": "https://decrypt.co/370570/quantum-clock-ticking-bitcoin-crypto-how-stellar-preparing",
+       "observedAt": "2026-11-02",
+       "quote": "Decrypt 2026-06-09: 'The Stellar Development Foundation announced a three-stage roadmap' (via Lumenloop index)"
+      },
+      {
+       "class": "C",
+       "ref": "lumenloop.search_content_semantic via Raven",
+       "observedAt": "2026-11-02",
+       "quote": "Introducing the Quantum Preparedness Plan, 2026-06-09"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Stage 1 plans ML-DSA-44/65 verification host functions in 2026 for Soroban contract accounts",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+       "observedAt": "2026-11-02",
+       "quote": "\"Stage 1—Building blocks and contract accounts (2026). Add post-quantum signature verification to Soroban as native host functions, supporting ML-DSA-44 and ML-…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+       "observedAt": "2026-11-02",
+       "quote": "\"Supporting ML-DSA verification as host functions allows Soroban custom accounts ... to authenticate with post-quantum signatures\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]/golden.answer",
+     "claim": "Plan is a roadmap; signer type missing at publication; every account expected to add a quantum-safe signer by end of 2027",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+       "observedAt": "2026-11-02",
+       "quote": "\"The piece missing today is the quantum-safe signer type itself, along with the protocol primitives required to verify quantum-safe signatures efficiently.\"; \"B…"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (roadmap status)",
+     "claim": "Post-publication status: CAP-0087 Implemented for Protocol 30; Mainnet vote 2026-11-23; Mainnet on Protocol 29 as of 2026-11-02",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+       "observedAt": "2026-11-02",
+       "quote": "\"Status: Implemented ... Protocol version: 30\"; README row \"CAP-0087 | 30 | Host functions for ML-DSA signature verification | Jay Geng | Implemented\""
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "(dated 2026-10-20) \"November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote.\"; \"Network-level transaction signatures…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+       "observedAt": "2026-11-02",
+       "quote": "\"This release bumps the protocol to version 30, which includes CAP-0084 ..., CAP-0087 (Host functions for ML-DSA signature verification) and CAP-0088\""
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/",
+       "observedAt": "2026-11-02",
+       "quote": "current_protocol_version 29; core_supported_protocol_version 30; stellar-core 30.0.0"
+      },
+      {
+       "class": "D",
+       "ref": "https://coinburn.com/news/stellar-protocol-30-ledger-decoder-upgrade",
+       "observedAt": "2026-11-02",
+       "quote": "\"Those dates describe planned votes, not completed activations\""
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Shipped-at-publication, guaranteed dates, default-quantum-safe claims are false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+       "observedAt": "2026-11-02",
+       "quote": "\"The piece missing today is the quantum-safe signer type itself\"; \"is expected to\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Roadmap status is volatile and must be reverified. Grade the dated distinction between planned and shipped behavior. As of 2026-11-02, CAP-0087 (ML-DSA-44/65/87 verification host functions) ships in Protocol 30 \"Bell\", with a Mainnet vote set for 2026-11-23; Mainnet still runs Protocol 29. Do not penalize an answer that reports this later dated status, and do not require it.",
+     "reason": "Volatile roadmap drift: CAP-0087 is Implemented for Protocol 30 with a 2026-11-23 Mainnet vote; Mainnet runs Protocol 29. Dated note keeps true later-status answers from being penalized and does not gate on them."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-pc-quantum-preparedness-dormant; q-zk-host-functions-status"
+  },
+  {
+   "id": "q-hist-remittance-corridors",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts (MoneyGram current)",
+     "claim": "MoneyGram Ramps is a current Stellar USDC cash-in/out example",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+       "observedAt": "2026-11-02",
+       "quote": "\"MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar\""
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners (via Raven scout.getPartners, generatedAt 2026-11-02T16:01:50Z)",
+       "observedAt": "2026-11-02",
+       "quote": "\"MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor on Stellar. Via the SEP-24 standard\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Nium/Velo-PDAX/Coins.ph/Onafriq caveats)",
+     "claim": "Nium 190 countries is a 2022 capability claim; Coins.ph historical",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries",
+       "observedAt": "2026-08-30",
+       "quote": "June 22, 2022 announcement (prior re-check 2026-08-30; unchanged)"
+      },
+      {
+       "class": "F",
+       "ref": "https://coins.ph/.well-known/stellar.toml and https://www.coins.ph/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "both return 404 (no SEP-1 file)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners/anchor-coins-ph",
+       "observedAt": "2026-11-02",
+       "quote": "description claims 'PHP fiat on/off-ramps and remittances on Stellar' but tomlSourceUrl null, seps [], freshness.status 'aging', isCurrent false"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Collapsing historic/announced into current, freezing counts, timeless claims",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/partners/anchor-coins-ph",
+       "observedAt": "2026-11-02",
+       "quote": "freshness.isCurrent false"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-anchor-moneygram-ramps; q-crp-anchors-by-corridor; q-crp-regional-offramp-mobilemoney; q-pay-moneygram-ramps"
+  },
+  {
+   "id": "q-hist-scp-rewrite-2015",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "2015 SCP paper by David Mazières; SDF announced paper/code April 8, 2015",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/stellar-consensus-protocol-proof-code",
+       "observedAt": "2026-11-02",
+       "quote": "date 2015-04-08; \"The paper by Prof. David Mazières, Chief Scientist at Stellar.org, presents the Stellar Consensus Protocol (SCP), a construction for federated…"
+      },
+      {
+       "class": "D",
+       "ref": "https://datatracker.ietf.org/doc/html/draft-mazieres-dinrg-scp-05",
+       "observedAt": "2026-11-02",
+       "quote": "\"Mazieres, D., 'The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus', Stellar Development Foundation whitepaper, 2015\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "FBA and 2015 rollout (upgraded network Nov 3, 2015)",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/upgraded-network-is-here",
+       "observedAt": "2026-11-02",
+       "quote": "date 2015-11-03; \"It uses the Stellar Consensus Protocol (SCP), which has several safety properties that secure the network against forking.\""
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "\"Stellar Consensus Protocol (SCP), which is a construction of the Federated Byzantine Agreement (FBA)\""
+      },
+      {
+       "class": "D",
+       "ref": "https://www.scs.stanford.edu/15au-cs140/notes/scp.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "Mazières lecture 2015-11-11 on SCP/FBA"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Fork causation is an attributed SDF-vs-Ripple dispute",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/safety-liveness-and-fault-tolerance-consensus-choice",
+       "observedAt": "2026-11-02",
+       "quote": "(2014-12-05) \"the Stellar network experienced a ledger fork that is related to a failure of the underlying Ripple/Stellar consensus system\""
+      },
+      {
+       "class": "A",
+       "ref": "https://xrpl.org/blog/2014/why-the-stellar-forking-issue-does-not-affect-ripple",
+       "observedAt": "2026-11-02",
+       "quote": "\"it is impossible for the Ripple network to experience an unintentional ledger fork as Stellar's did because our nodes require votes from a majority of validato…"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-org-mazieres-chief-scientist; q-protocol-scp-consensus-algorithm"
+  },
+  {
+   "id": "q-hist-soroban-launch-protocol20",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer/keyFacts[0]",
+     "claim": "P20/Phase 0 Feb 20 2024, Phase 1 Feb 27, Phase 2/GA Mar 19; $100M fund announced with Futurenet Oct 12 2022",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/developers/protocol-20-upgrade-guide",
+       "observedAt": "2026-11-02",
+       "quote": "\"February 20 : Protocol 20 Upgrade Vote + Phase 0. Complete! March 19: Phase 2 Network Settings Vote. Complete!\"; \"02/27/2024 — The network is now in Phase 1.\""
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet",
+       "observedAt": "2026-11-02",
+       "quote": "\"ROME, Italy – October 12, 2022 ... The Soroban Adoption Fund dedicates $100M to support developers\""
+      },
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/networks/software-versions",
+       "observedAt": "2026-11-02",
+       "quote": "\"Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits\""
+      },
+      {
+       "class": "D",
+       "ref": "https://www.theblock.co/amp/post/283446/smart-contracts-finally-arrive-on-stellar-network-with-soroban-launch-on-mainnet",
+       "observedAt": "2026-11-02",
+       "quote": "\"Soroban's mainnet phase 2 went live today\" (March 19, 2024)"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.coindesk.com/tech/2024/02/20/stellar-starts-phased-rollout-of-soroban-smart-contracts",
+       "observedAt": "2026-11-02",
+       "quote": "Published Feb 20, 2024: phased rollout began after validators voted"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Wasm platform, Rust-first, non-EVM",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet",
+       "observedAt": "2026-11-02",
+       "quote": "\"Soroban introduces Turing-complete smart contracts to the Stellar network, built on WASM and with Rust.\""
+      },
+      {
+       "class": "D",
+       "ref": "https://www.cryptotimes.io/2024/03/20/stellar-launches-soroban",
+       "observedAt": "2026-11-02",
+       "quote": "\"Soroban deploys a WebAssembly (WASM) solution\""
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-soroban-auth-delegation-p27; q-protocol-19-preconditions-cap-0021"
+  },
+  {
+   "id": "q-hist-unhcr-stellar-aid-assist",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "UNHCR with UNICC and SDF announced Ukraine pilot Dec 2022; USDC to wallets, MoneyGram cash-out",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.unhcr.org/ua/en/news/unhcr-launches-pilot-cash-based-intervention-using-blockchain-technology-humanitarian-payments",
+       "observedAt": "2026-11-02",
+       "quote": "15 December 2022; \"UNHCR, in collaboration with United Nations International Computing Centre (UNICC) ... distributes assistance in Circle Internet Financial's …"
+      },
+      {
+       "class": "D",
+       "ref": "https://cointelegraph.com/news/stellar-partners-with-unhcr-to-give-ukrainian-refugees-cash-via-usdc",
+       "observedAt": "2026-11-02",
+       "quote": "Dec 16, 2022: \"The USDC tokens will be redeemable at any MoneyGram location.\""
+      },
+      {
+       "class": "D",
+       "ref": "https://www.nrc.no/globalassets/pdf/reports/mitigating-financial-sector-derisking-through-innovation-the-role-of-digital-technologies-in-humanitarian-fund-transfers/20231220-nrc-techderisking-outcome-paper_final.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "\"UNHCR, with technical support from the Stellar Development Foundation, launched SAA in December 2022 to disburse humanitarian aid in Ukraine.\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Later SDF snapshots use different units/scopes; keep attributed",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/stellar-aid-assist-2-year-anniversary",
+       "observedAt": "2026-11-02",
+       "quote": "date 2024-12-19; \"UNHCR has successfully disbursed $4.6 million since inception to some 2,500 households in Ukraine\""
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/one-year-of-stellar-aid-assist",
+       "observedAt": "2026-11-02",
+       "quote": "date 2023-12-20 (individuals unit per prior record)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-pay-sdp-disbursement; q-pay-travel-rule-aid-flows"
+  },
+  {
+   "id": "q-hist-x402-stellar-announcement",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "SDF x402-on-Stellar announcement date March 10, 2026",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/x402-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "page metadata \"date\":\"2026-03-10\""
+      },
+      {
+       "class": "D",
+       "ref": "https://stellar.org/x402 (Perplexity index) and prior lane sweep",
+       "observedAt": "2026-11-02",
+       "quote": "x402 on Stellar landing page; prior D sweep 2026-10-06 consistent"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1..2]",
+     "claim": "Programmatic per-request HTTP payments; Soroban auth + SEP-41 token flow",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+       "observedAt": "2026-11-02",
+       "quote": "\"enables programmatic, per request payments over HTTP ... x402 works with Soroban authorization so that clients can pay for API requests via signed auth entries…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/x402-foundation/x402/blob/f8f83309706b14cc696962f0a002eeeb66c3dc26/docs/core-concepts/network-and-token-support.mdx",
+       "observedAt": "2026-11-02",
+       "quote": "\"Stellar | Any Soroban token implementing SEP-41 | transfer(from, to, amount)\""
+      },
+      {
+       "class": "E",
+       "ref": "stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/cli/agent-cli/guides/pay-for-apis-x402",
+       "observedAt": "2026-11-02",
+       "quote": "\"SEP-41 token transfers settle the payment underneath\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "x402 is not a SEP and has no SEP number (as of date)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
+       "observedAt": "2026-11-02",
+       "quote": "61 entries, newest sep-0059 External Account API, sep-0060 Wallet Provider Discovery, sep-0061 Trustline Onboarder; none is x402"
+      },
+      {
+       "class": "B",
+       "ref": "gh api search/code and search/issues q=x402 repo:stellar/stellar-protocol",
+       "observedAt": "2026-11-02",
+       "quote": "total_count 0 for both"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search 'x402 Stellar SEP number Stellar Ecosystem Proposal x402'",
+       "observedAt": "2026-11-02",
+       "quote": "no result assigns a SEP number to x402; results describe SEP-41 token support only"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Settlement live; agent/MCP tooling being built at announcement",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/x402-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "\"The settlement layer is live. The agent tooling is being built.\"; \"MCP integration: ... This is in active development\""
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "SEP-402 / SEP-41-as-spec / all-tooling-live-on-March-10 are false",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
+       "observedAt": "2026-11-02",
+       "quote": "no SEP-402 file"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-x402-on-stellar-what; q-soroban-x402-auth-entry-signing; q-x402-payment-verification"
+  },
+  {
+   "id": "q-hist-yieldblox-v2-2026-exploit",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "Feb 22, 2026 USTRY/Reflector manipulation against YieldBlox V2 Blend pool",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+       "observedAt": "2026-11-02",
+       "quote": "\"On February 22, 2026, an attacker manipulated the market price of a low liquidity token ... the Blend lending pools consumed price data from Reflector\""
+      },
+      {
+       "class": "D",
+       "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
+       "observedAt": "2026-11-02",
+       "quote": "\"The attacker manipulated the USTRY/USDC market on SDEX. The pool's configured Reflector oracle path then accepted the manipulated price\""
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+       "observedAt": "2026-11-02",
+       "quote": "\"Date: February 22, 2026 ~00:25 UTC ... Protocol: Blend V2 — YieldBlox DAO Pool\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Transfers 61,249,278.31 XLM and 1,000,196.70 USDC",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+       "observedAt": "2026-11-02",
+       "quote": "\"They then borrowed: 61,249,278.31 XLM; 1,000,196.70 USDC\""
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+       "observedAt": "2026-11-02",
+       "quote": "\"TX1 ... Borrow USDC 1,000,196.70 USDC; TX2 ... Borrow XLM 61,249,278.31 XLM\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "48,069,094 XLM quarantined subset",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+       "observedAt": "2026-11-02",
+       "quote": "\"Approximately 48,069,094 XLM was effectively quarantined as a result.\""
+      },
+      {
+       "class": "D",
+       "ref": "https://rekt.news/yieldblox-rekt",
+       "observedAt": "2026-11-02",
+       "quote": "\"Tier 1 Validators scrambled to freeze 48 million XLM - about 80% of the stolen native token.\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]/golden.notes",
+     "claim": "~$10M headline is a source-specific combined USD valuation",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+       "observedAt": "2026-11-02",
+       "quote": "\"Total ... $10,857,337.06\" (USDC $1,000,196.70 + XLM $9,857,140.35)"
+      },
+      {
+       "class": "A",
+       "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+       "observedAt": "2026-11-02",
+       "quote": "\"drain approximately $10.2 million worth of XLM and USDC\""
+      },
+      {
+       "class": "D",
+       "ref": "https://rekt.news/yieldblox-rekt",
+       "observedAt": "2026-11-02",
+       "quote": "\"Combined, $10.97 million drained\""
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[5] (quarantine vs reimbursement)",
+     "claim": "Depositor remediation was distributed by Script3, separate from quarantine",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://x.com/script3official/status/2027462360294953200",
+       "observedAt": "2026-11-02",
+       "quote": "\"Remediation for depositors in the pool has been fully distributed directly into affected accounts (wallets) via payment as of 19:12 UTC ... This announcement d…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/script3/yieldblox-incident-remediation",
+       "observedAt": "2026-11-02",
+       "quote": "\"To see if your account was refunded, check the *_remediation_log for the asset\" (pushed 2026-03-20)"
+      },
+      {
+       "class": "D",
+       "ref": "https://avoid.net/yieldblox-stellar-oracle-manipulation-exploit-feb-2026",
+       "observedAt": "2026-11-02",
+       "quote": "\"Script3 committed to full depositor compensation\""
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Script3 ~$10.5M net loss)",
+     "claim": "Script3 ~$10.5M net loss attribution",
+     "verdict": "unverifiable",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "perplexity_search YieldBlox remediation 2026",
+       "observedAt": "2026-11-02",
+       "quote": "no primary Script3 source for $10.5M net loss found"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "The token quantities and dollar valuations answer different questions. The exploit call transferred 1,000,196.7040837 USDC; the roughly 14,000-USDC liability was already present in decoded pre-state. Script3's roughly $10M, Blockaid's roughly $10.2M, and the PoC's $10,857,337.06 are combined USD valuations of the XLM and USDC legs under different bases. The accessible primary record did not recover the prior Script3 ~$10.5M net-loss attribution. Do not penalize a sourced valuation whose basis is clear, and never treat one USD figure as a token invariant. Script3 reported on 2026-02-27 that dep…",
+     "reason": "Truth gap: Script3's 2026-02-27 depositor remediation is primary-sourced and true; the note keeps avoid[5] from punishing an accurate reimbursement statement and matches sibling q-comp-yieldblox-oracle-incident."
+    }
+   ],
+   "rootCause": [
+    "Eval-authoring flaw: the reimbursement avoid did not distinguish Script3's separately funded depositor remediation from the quarantined XLM."
+   ],
+   "siblings": "q-comp-yieldblox-oracle-incident; q-defi-reflector-oracle; q-soroban-oracle-defensive-consumption; q-pc-slp-0004-0006-status"
+  },
+  {
+   "id": "q-history-ecosystem-index-freshness-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Live status exposes generatedAt and per-source count/lastUpdatedAt",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/status",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T16:00:22.243Z; sources[] e.g. {name: projects, count: 1139, lastUpdatedAt: 2026-11-02T13:19:39.201Z, populationId: projects|status:all}; …"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getStatus",
+       "observedAt": "2026-11-02",
+       "quote": "\"per-source freshness and counts (sources[])\""
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]/answer (denominators)",
+     "claim": "Collection notes and full-collection vs active-project denominators",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getStatus outputSchema populationId",
+       "observedAt": "2026-11-02",
+       "quote": "\"DB-backed sources here are <collection>|status:all (the FULL collection incl. Inactive), which is why projects.count is larger than analyze/clusters' active-on…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/status",
+       "observedAt": "2026-11-02",
+       "quote": "partners notes: \"Counts ALL rows incl. unpublished drafts; /api/partners serves published-only, so its total can be smaller.\" (scout.getPartners meta.counts.tot…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "One archived count/timestamp for every collection is wrong",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/status",
+       "observedAt": "2026-11-02",
+       "quote": "nine sources with distinct counts and lastUpdatedAt"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-scout-status-envelope; q-defi-category-saturation-live; q-scf-funding-by-category"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-hist-quantum-preparedness-plan",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "Roadmap status is volatile and must be reverified. Grade the dated distinction between planned and shipped behavior. As of 2026-11-02, CAP-0087 (ML-DSA-44/65/87 verification host functions) is in Protocol 30 \"Bell\" (stellar-core v30.0.0), with the Mainnet vote set for 2026-11-23; Mainnet still runs Protocol 29. SDF says a native post-quantum signer for classic accounts remains a future change. Do not penalize an answer that reports this later dated status, and do not require it.",
+    "note": "Facts confirmed across A, B, D, F. Modified rather than accepted: the proposed word 'ships' can read as activated on Mainnet, but Protocol 30 is only released and pending the 2026-11-23 vote (Horizon reports Protocol 29). Added the SDF statement that a classic-account post-quantum signer is still future, which keeps the planned-vs-shipped distinction graded. As-of date kept; no avoid item added; n…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026. ... CAP-87 lets Stellar smart contracts verify ML-DSA signatures. ... Network…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+      "observedAt": "2026-11-02",
+      "quote": "November 23, 2026, 1700 UTC—Mainnet upgrade vote. ... Adds three Soroban host functions, verify_sig_ml_dsa_44, verify_sig_ml_dsa_65, and verify_sig_ml_dsa_87"
+     },
+     {
+      "class": "B",
+      "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+      "observedAt": "2026-11-02",
+      "quote": "Status: Implemented ... Protocol version: 30 ... one per standardized parameter set: ML-DSA-44, ML-DSA-65 and ML-DSA-87."
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+      "observedAt": "2026-11-02",
+      "quote": "This release bumps the protocol to version 30, which includes CAP-0084 ..., CAP-0087 (Host functions for ML-DSA signature verification) and CAP-0088"
+     },
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/",
+      "observedAt": "2026-11-02",
+      "quote": "current_protocol_version 29; core_version stellar-core 30.0.0; history_latest_ledger_closed_at 2026-11-02T16:27:44Z"
+     },
+     {
+      "class": "D",
+      "ref": "https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30",
+      "observedAt": "2026-11-02",
+      "quote": "The mainnet upgrade vote follows on November 23, 2026 at 17:00 UTC. ... Each upgrade takes effect if its validator vote passes."
+     }
+    ]
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "field": "golden.notes",
+    "decision": "modify",
+    "newText": "The token quantities and dollar valuations answer different questions. The exploit call transferred 1,000,196.7040837 USDC; the roughly 14,000-USDC liability was already present in decoded pre-state. Script3's roughly $10M, Blockaid's roughly $10.2M, and the PoC's $10,857,337.06 are combined USD valuations of the XLM and USDC legs under different bases. The accessible primary record did not recover the prior Script3 ~$10.5M net-loss attribution. Do not penalize a sourced valuation whose basis is clear, and never treat one USD figure as a token invariant. Script3 reported on 2026-02-27 that poo…",
+    "note": "The proposed 2026-02-27 fact is true, but its exclusion clause ('excluding liquidated and backstop users') is stale: Script3 later (2026-03-20) distributed backstop remediation and confirmed no remediation for liquidated users. Leaving the proposed wording could make a judge penalize a true answer that reports backstop remediation. Modified to carry both dated statements. Keeps the quarantine-vs-r…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2027462360294953200",
+      "observedAt": "2026-11-02",
+      "quote": "Remediation for depositors in the pool has been fully distributed directly into affected accounts (wallets) via payment as of 19:12 UTC ... This announcement do…"
+     },
+     {
+      "class": "A",
+      "ref": "https://x.com/script3official/status/2035066332887023761",
+      "observedAt": "2026-11-02",
+      "quote": "Remediation for depositors in the YieldBlox backstop has been fully distributed directly into affected accounts (wallets) via payment as of 18:40 UTC. ... 1.45M…"
+     },
+     {
+      "class": "B",
+      "ref": "https://github.com/script3/yieldblox-incident-remediation",
+      "observedAt": "2026-11-02",
+      "quote": "commits: 2026-02-27T19:10:26Z 'chore: add execution logs'; 2026-03-20T18:38:03Z 'chore: add backstop remediation logs'; logs/2026-03-20T18:10:22.167Z_remediatio…"
+     },
+     {
+      "class": "D",
+      "ref": "https://dune.com/paltalabs/defindex-ybx-incident",
+      "observedAt": "2026-11-02",
+      "quote": "As of Feb 27th 2026, 19h00 UTC we have only distributed to group 0."
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search: Script3 YieldBlox remediation backstop depositors distributed March 2026 (x.com/script3official profile result)",
+      "observedAt": "2026-11-02",
+      "quote": "Mar 20 For YieldBlox backstop depositors and those liquidated ... Remediation for depositors in the YieldBlox backstop has been fully distributed"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://horizon.stellar.org/",
+   "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+   "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+   "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+   "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+   "https://github.com/stellar/stellar-protocol/commits",
+   "https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30",
+   "https://cryptoticker.io/en/stellar-protocol-30-bell-vote",
+   "https://github.com/UprarLabs/stellar-upgrade-radar",
+   "https://x.com/script3official/status/2027462360294953200",
+   "https://x.com/script3official/status/2035066332887023761",
+   "https://x.com/script3official/status/2026013344453501130",
+   "https://api.github.com/repos/script3/yieldblox-incident-remediation (readme, contents, commits, logs)",
+   "https://dune.com/paltalabs/defindex-ybx-incident",
+   "https://whalehub.io/blog/blend-exploits-2026"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-hist-quantum-preparedness-plan; q-hist-yieldblox-v2-2026-exploit",
+  "verifiedOnly": "q-hist-cctp-stellar-live-announcement; q-hist-remittance-corridors; q-hist-scp-rewrite-2015; q-hist-soroban-launch-protocol20; q-hist-unhcr-stellar-aid-assist; q-hist-x402-stellar-announcement; q-history-ecosystem-index-freshness-live",
+  "untouched": "q-hist-meridian-2026-corrected-venue",
+  "escalations": [
+   {
+    "id": "q-hist-quantum-preparedness-plan",
+    "issue": "reverifyBy set to 2026-12-01 (outside the 2027-03 window) because the dated note says Mainnet still runs Protocol 29, which changes if the 2026-11-23 Mainnet vote passes; reviewer may prefer a March date."
+   },
+   {
+    "id": "q-pc-quantum-preparedness-dormant",
+    "issue": "Sibling (not in this batch): judge-blind truth notes still call CAP-0087 Draft; it is now Implemented for Protocol 30. Judge-facing text is not affected."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-hist-quantum-preparedness-plan",
+    "log": "golden.notes: added dated Protocol 30 Bell / CAP-0087 status (verifier modify); new sources + confirmed-as-of corroboration row; asOf 2026-11-02; reverifyBy 2027-02-04 -> 2026-12-01 (event-tied to 2026-11-23 Mainnet vote)."
+   },
+   {
+    "id": "q-hist-yieldblox-v2-2026-exploit",
+    "log": "golden.notes: added dated Script3 depositor (2026-02-27) and backstop (2026-03-20) remediation, separate from quarantine (verifier modify); new sources + corroboration row; asOf 2026-11-02."
+   },
+   {
+    "id": "q-hist-cctp-stellar-live-announcement",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change."
+   },
+   {
+    "id": "q-hist-remittance-corridors",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); truth.asOf 2026-11-02; no gospel change."
+   },
+   {
+    "id": "q-hist-scp-rewrite-2015",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change."
+   },
+   {
+    "id": "q-hist-soroban-launch-protocol20",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change."
+   },
+   {
+    "id": "q-hist-unhcr-stellar-aid-assist",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); no gospel change."
+   },
+   {
+    "id": "q-hist-x402-stellar-announcement",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); truth.asOf 2026-11-02; reverifyBy 2027-01-05 -> 2027-03-12; no gospel change."
+   },
+   {
+    "id": "q-history-ecosystem-index-freshness-live",
+    "log": "truth.verified refreshed (2026-11-02, multi-class matrix evidence); truth.asOf 2026-11-02; no gospel change."
+   },
+   {
+    "id": "q-hist-meridian-2026-corrected-venue",
+    "log": "untouched: already re-verified 2026-11-02 by the near-due lane (.agents/rounds/2026-11-02-golden-reverify.md); matrix confirms, no change."
+   }
+  ]
+ }
+}

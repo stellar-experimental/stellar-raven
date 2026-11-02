@@ -35,7 +35,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-08-04",
-    "reverifyBy": "2027-04-08",
+    "reverifyBy": "2027-06-19",
     "sources": [
       {
         "class": "A",
@@ -98,24 +98,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
       "evidence": [
-        "Production stellar-raven: stellarDocs.search_rpc_horizon_data_docs({query:'Hubble historical data Horizon RPC indexers liquidity pools trades',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data',includeContent:true}) — Hubble offers historical Horizon/RPC-like pool and trade queries.",
-        "Production stellar-raven: stellarDocs.get_doc_page_sections({path:'/docs/data/apis/migrate-from-horizon-to-rpc',includeContent:true}) — resource-by-resource API mappings retained; no single explorer-market methodology is canonical.",
-        "Canonical Horizon source: https://github.com/stellar/stellar-horizon/blob/main/internal/ingest/processors/trades_processor.go — only successful trades are processed and liquidity-pool trades carry pool/reserve data.",
-        "Sibling sweep: q-protocol-amm-cap-0038 and q-ti-historical-pointintime-balances agree that Classic liquidity pools are protocol pools and history/analytics need a bounded source/methodology.",
-        "Structural re-form (compound-predicate): Tightened one long formula fact and split one lifecycle fact; all metrics, sources, lifecycle wording, and migration boundaries are unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — asset/pool metrics still require explicit identity, quote, window, source, and as-of methodology.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/indexers — Classic SDEX/pool data and Soroban AMM contract/indexer data remain separate source shapes.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — pool reserves and trades remain inputs for explicit volume, fee, TVL, and price formulas rather than canonical product numbers.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble — Hubble remains the official bulk historical analytics source.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis — Horizon remains near end-of-life while endpoint-specific RPC/indexer boundaries remain necessary.",
-        "Sibling sweep 2026-08-27: grep StellarX|Scopuly|Hubble/indexers|Horizon lifecycle|TVL|endpoint-specific migration → q-defi-soroswap-vs-stellarx, q-eco-defi-tvl-current, q-infra-horizon-vs-rpc, q-ti-compute-token-lp-market-data; no contradiction"
-      ],
-      "rootCause": [
-        "freshness-recheck",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis — 'Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs.'",
+        "Live F 2026-11-02: GET https://horizon.stellar.org/ — horizon_version 30.0.0 (Horizon still ships for Protocol 30).",
+        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — bounded history, 'stock default of 120960 ledgers (about 7 days'.",
+        "Unverifiable 2026-11-02: no canonical StellarX/Scopuly methodology exists to match; the golden does not claim one.",
+        "Sibling sweep 2026-11-02: q-infra-which-indexer; no contradiction. No gospel change."
       ]
     },
     "origin": "raven-next q-ti-compute-token-lp-market-data"

@@ -122,23 +122,18 @@
       }
     ],
     "verified": {
-      "date": "2026-09-17",
-      "by": ".agents/rounds/2026-09-17-routing-audit.md — Opus verification, Fable high independent review, coordinator reconciliation",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
       "evidence": [
-        "Live re-check 2026-09-17: https://communityfund.stellar.org/project/lobstr-gcn and official submission payloads recWR4fbwZYJ72i34 and recLPGmYh7sNVjRz7 report separate project totalAwarded and totalPaid fields; values recorded in the verification ledger only.",
-        "Evidence bar 2026-09-17: Scout and LumenLoop amounts derive from the same SCF record, so no second independent class corroborates any amount; the golden asserts no amount.",
-        "Live re-check 2026-09-17: https://lobstr.co/ — Stellar and XRPL wallet, 'You control your keys', 1,000,000+ total users, 10,000,000+ monthly transactions.",
-        "Live re-check 2026-09-17: Google Play com.lobstr.client — Stellar and XRPL, 1M+ downloads, developer Ultra Stellar OU (Tallinn, Estonia), updated 2026-09-11.",
-        "Live re-check 2026-09-17: https://ultrastellar.com/ lists LOBSTR as an Ultra Stellar product; https://www.xrpl-commons.org/newsroom/lobstr-brings-native-xrpl-access-to-1-5-million-users (2026-04-14) attributes 1.5 million users.",
-        "Prior verification-scope error: the official public payload already carried totalAwarded and totalPaid in https://web.archive.org/web/20260521081837id_/https://communityfund.stellar.org/project/lobstr-gcn. Independent Fable verification recovered that snapshot; the earlier 503 observation did not establish absent history.",
-        "Sibling sweep 2026-09-17: grep LOBSTR|Ultra Stellar|232000|267463 → q-builder-by-scf-tier, q-raph-lobstr-legitimacy, q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-eco-dex-saturation; none pins an SCF total; no contradiction. Register cluster q-eco-lobstr-wallet + q-eco-stellar-wallets-list needs re-stamping.",
-        "Independent reconciliation: research/audits/2026-09-17-routing-audit/golden-and-pipeline-review.md. The rendered page shows awarded only; the public payload also reports paid. Amounts remain source-relative, not confirmed golden values.",
-        "Provenance row narrowed 2026-09-17: removed unsupported absolute SDF independence and no-scale-metrics negatives; retained operator and non-custodial identity. Current operator pages are class A, replacing the inherited class D label. Independent review: research/audits/2026-09-17-routing-audit/golden-and-pipeline-review.md section 5.5."
-      ],
-      "rootCause": [
-        "eval-side avoid overreach: the blanket ban on citing a cumulative SCF total punished officially sourced, basis-labeled figures, after a verification that did not read the official SCF project record",
-        "improvements/lumenloop/ll-013-scf-submission-award-fields.md — LumenLoop exposes the official paid total as scf.awarded_total without paid/awarded basis",
-        ".agents/TODO.md — Complete the September 17 golden corrections and pilot regrading"
+        "Ultra Stellar operates LOBSTR [confirmed] — A: https://play.google.com/store/apps/details?id=com.lobstr.client — \"developer Ultra Stellar OU\" (observedAt 2026-11-02)",
+        "Ultra Stellar operates LOBSTR [confirmed] — C: https://stellarlight.xyz/api/projects/search?q=lobstr — \"Lobstr | Live | Wallet; Ultra Stellar | Live\" (observedAt 2026-11-02)",
+        "Stellar + XRPL support; 1M+ users and 10M+ monthly tx (operator claims); 1M+ Google Play downloads [confirmed-as-of] — A: https://lobstr.co/ — \"LOBSTR is the easiest way to get started with Stellar and XRP Ledger ... 1,000,000+ Total users ... 10,000,000+ Monthly transactions\" (observedAt 2026-11-01)",
+        "Stellar + XRPL support; 1M+ users and 10M+ monthly tx (operator claims); 1M+ Google Play downloads [confirmed-as-of] — A: https://play.google.com/store/apps/details?id=com.lobstr.client — \"1M+ Downloads\" (observedAt 2026-11-02)",
+        "LOBSTR is non-custodial [confirmed] — A: https://lobstr.co/ (inherited 2026-09-17) — \"You control your keys\" (observedAt 2026-09-17)",
+        "LOBSTR is non-custodial [confirmed] — C: Stellar Light Lobstr shortDescription — \"a widely used non-custodial Stellar wallet\" (observedAt 2026-11-02)",
+        "SCF record reports totalAwarded and totalPaid separately [confirmed] — A: https://communityfund.stellar.org/project/lobstr-gcn (inherited) — \"separate project totalAwarded and totalPaid fields\" (observedAt 2026-09-17)",
+        "SCF record reports totalAwarded and totalPaid separately [confirmed] — C: lumenloop get_scf_submissions {name:LOBSTR} — \"3 submissions incl. recLPGmYh7sNVjRz7\" (observedAt 2026-11-02)",
+        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-stellar-wallets-list, q-edge-ambig-best-wallet; no contradiction recorded."
       ]
     },
     "origin": "raven-next q-eco-lobstr-wallet"

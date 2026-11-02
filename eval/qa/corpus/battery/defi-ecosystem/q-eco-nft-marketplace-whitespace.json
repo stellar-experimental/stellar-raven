@@ -29,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "D",
@@ -91,18 +91,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; sibling sweep included NFT standards and project-discovery cases.",
-        "Structural re-form (long-fact): split the Litemint and Rarible claims; truth unchanged.",
-        "Live re-check 2026-08-29: https://litemint.com/ identifies its live NFT marketplace on Stellar; https://communityfund.stellar.org/submissions/recRfE25wZkOThcrq remains an awarded SCF #30 Rarible Stellar integration.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=rarible&limit=10 retains the award/schema relationship separately from verified EVM deployment; https://docs.rarible.org/docs/supported-chains does not list Stellar.",
-        "Sibling sweep 2026-08-29: grep Litemint|Rarible|NFT marketplace|Stellar NFT → q-eco-defi-market-map and q-eco-nft-marketplace-whitespace; no new contradiction."
-      ],
-      "rootCause": [
-        "Award, enum, repo, and directory presence were collapsed into production availability; an undefined scale comparison became a negative fact.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — A: https://litemint.com/ — \"Litemint Market Buy, Sell, and Collect Digital Creations on Stellar, Cyberbrawl items included\" (observedAt 2026-10-20)",
+        "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — F: https://market.litemint.com/ — \"HTTP 200\" (observedAt 2026-11-02)",
+        "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — C: https://stellarlight.xyz/api/projects/search?q=litemint — \"Litemint | Live | User-Facing App | ['NFT']\" (observedAt 2026-11-02)",
+        "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — A: https://communityfund.stellar.org/submissions/recRfE25wZkOThcrq — \"\"title\":\"Rarible.com X Stellar NFT Experience\",\"status\":\"Awarded\",\"roundName\":\"SCF #30\",\"budget\":150000; project \"totalAwarded\":150000,\"totalPaid\":50000\" (observedAt 2026-11-02)",
+        "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — A: https://docs.rarible.org/docs/supported-chains — \"Currently supported chains table: no Stellar row (0 occurrences of 'stellar' in the fetched page)\" (observedAt 2026-11-02)",
+        "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — C: https://stellarlight.xyz/api/projects/search?q=rarible — \"lifecycle.note: public Stellar marketplace support was not verifiable on Rarible's live API/UI as of 2026-07-11, so supportedNetworks lists verified deployments only (evm).\" (observedAt 2026-11-02)",
+        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-defi-market-map, q-defi-nft-standards-projects; no contradiction recorded."
       ]
     },
     "origin": "raven-next q-eco-nft-marketplace-whitespace"

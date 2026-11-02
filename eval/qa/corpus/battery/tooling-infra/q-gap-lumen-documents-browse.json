@@ -1,1 +1,75 @@
-{"id":"q-gap-lumen-documents-browse","question":"How do I browse upcoming Lumenloop events rather than keyword-search them?","surface":["lumenloop.list_documents","lumenloop.search_documents"],"golden":{"answer":"Use `lumenloop.list_documents({collection: 'events', period: 'upcoming'})`. The observed result returned document summaries and pagination. Use `search_documents` only when you know exact title/URL wording; its substring search is not conceptual search.","keyFacts":["Uses `list_documents` plus the `period` argument for upcoming-event browsing.","Treats browsing and exact title/URL substring lookup as different actions."],"avoid":["Do NOT pass the nonexistent `time_period` argument or claim exact search covers document body meaning."],"notes":"N1 live contract probe 2026-07-11: Succeeded with period=upcoming and two event summaries plus pagination; an invalid `time_period` argument was rejected before any call."},"tags":{"category":"tooling-infra","service":"lumenloop","freshness":"live"},"truth":{"lifecycle":{"state":"active","reviewState":"none"},"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"A","ref":"catalog/manifest.json#lumenloop.list_documents","note":"Exposed operation contract and catalog notes."},{"class":"B","ref":"inventory/lumenloop.json","note":"Committed inventory snapshot for the service family."}],"corroboration":[{"claim":"Uses `list_documents` plus the `period` argument for upcoming-event browsing.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","observedAt":"2026-07-11","note":"Succeeded with period=upcoming and two event summaries plus pagination; an invalid `time_period` argument was rejected before any call."}]}],"verified":{"date":"2026-08-27","by":"golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)","evidence":["http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","catalog/manifest.json#lumenloop.list_documents","inventory/lumenloop.json","Structural re-form (negative-predicate): recast the browsing-versus-lookup taxonomy as one positive atomic fact; both operation roles are unchanged.","Live re-check 2026-08-27: https://api.lumenloop.com/v1/tools and https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the current list_documents contract still browses by period, while search_documents matches exact title/URL substrings.","Sibling sweep 2026-08-27: grep list_documents|search_documents|title/URL substring|upcoming events → q-gap-lumen-exact-document-empty; no contradiction"],"rootCause":["solo://project/49/scratchpad/p4/n1-gapops",".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"]},"origin":"authored 2026-07 (gap-ops)"}}
+{
+  "id": "q-gap-lumen-documents-browse",
+  "question": "How do I browse upcoming Lumenloop events rather than keyword-search them?",
+  "surface": [
+    "lumenloop.list_documents",
+    "lumenloop.search_documents"
+  ],
+  "golden": {
+    "answer": "Use `lumenloop.list_documents({collection: 'events', period: 'upcoming'})`. The observed result returned document summaries and pagination. Use `search_documents` only when you know exact title/URL wording; its substring search is not conceptual search.",
+    "keyFacts": [
+      "Uses `list_documents` plus the `period` argument for upcoming-event browsing.",
+      "Treats browsing and exact title/URL substring lookup as different actions."
+    ],
+    "avoid": [
+      "Do NOT pass the nonexistent `time_period` argument or claim exact search covers document body meaning."
+    ],
+    "notes": "N1 live contract probe 2026-07-11: Succeeded with period=upcoming and two event summaries plus pagination; an invalid `time_period` argument was rejected before any call."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "lumenloop",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-11-02",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "catalog/manifest.json#lumenloop.list_documents",
+        "note": "Exposed operation contract and catalog notes."
+      },
+      {
+        "class": "B",
+        "ref": "inventory/lumenloop.json",
+        "note": "Committed inventory snapshot for the service family."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Uses `list_documents` plus the `period` argument for upcoming-event browsing.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+            "observedAt": "2026-07-11",
+            "note": "Succeeded with period=upcoming and two event summaries plus pagination; an invalid `time_period` argument was rejected before any call."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-01)",
+      "evidence": [
+        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, C); the proposer proposed no change and the verifier listed the case as no-proposal.",
+        "Class C (golden.answer, confirmed-as-of): POST https://api.lumenloop.com/v1/tools/list_documents {collection:'events',period:'upcoming',limit:5} (raw) — \"\"pagination\":{\"total\":14,\"page\":1,\"limit\":5,\"hasMore\":true}; items Noir X Velo Hackathon, Riserva London ...\" (observedAt 2026-11-02)",
+        "Class C (golden.answer, confirmed-as-of): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) lumenloop.list_documents({collection:'events',period:'upcoming',limit:3}) — \"pag {total:14,page:1,limit:3,hasMore:true}\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[0], confirmed): catalog/manifest.json#lumenloop.list_documents inputSchema.period — \"\"period\": {\"description\": \"Events only: filter by time period\", \"enum\": [\"all\",\"upcoming\",\"past\"]}\" (observedAt 2026-11-02)",
+        "Class A (golden.keyFacts[1], confirmed): GET https://api.lumenloop.com/v1/tools#list_documents — \"Its optional \"search\" is the SAME exact case-insensitive SUBSTRING match on title and URL as search_documents (not body text, not meaning)\" (observedAt 2026-11-02)",
+        "Class C (golden.avoid[0], contradicted): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) lumenloop.list_documents({collection:'events',time_period:'upcoming'}) — \"invalid arguments for lumenloop.list_documents — no call was made ... time_period: unknown argument (allowed: collection, limit, order, page, period, search, sort, source, status, wp)\" (observedAt 2026-11-02)",
+        "Class C (golden.avoid[0], contradicted): POST https://api.lumenloop.com/v1/tools/list_documents {collection:'events',time_period:'upcoming'} (raw) — \"success:true, pagination total 1192 (all events; the unknown argument was silently ignored)\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-gap-lumen-exact-document-empty checked; no conflicting fact.",
+        "Upstream defect observed (not gospel): lumenloop: list_documents silently ignores the unknown argument time_period (raw POST returned success with total 1192 events vs 14 for period=upcoming); same silent-ignore class as improvements/lumenloop/ll-028 (https://api.lumenloop.com/v1/tools/list_documents)"
+      ]
+    },
+    "origin": "authored 2026-07 (gap-ops)"
+  }
+}

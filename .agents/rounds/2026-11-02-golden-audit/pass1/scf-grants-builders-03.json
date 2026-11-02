@@ -1,0 +1,1416 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "scf-grants-builders-03",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-scf-cross-reflector-rounds-current",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..2]",
+     "claim": "Four Reflector awards: SCF #15 original oracle grid, #20 expansion, #26 CEX feeds, #29 DAO/public feeds/subscriptions",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug:reflector}",
+       "observedAt": "2026-11-02",
+       "quote": "SCF #15 'Reflector' 148840 'Decentralized price feed oracle grid...'; SCF #20 'Reflector | Expansion' 96000; SCF #26 'Reflector | CEX price feeds' 100000; SCF #…"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/project/reflector-5w2 (embedded page data)",
+       "observedAt": "2026-11-02",
+       "quote": "'Total awarded $444.8K*'; 'Awarded Submissions 4'; {\"title\":\"Reflector DAO\",\"status\":\"Awarded\",\"roundName\":\"SCF #29\",\"budget\":100000}; 'Reflector | CEX price fe…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=reflector",
+       "observedAt": "2026-11-02",
+       "quote": "scfAwardedRounds [15,20,26,29]; scfTotalAwardedUSD 444840; scfSourceUrl communityfund.stellar.org/project/reflector-5w2"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "Scout credits Stellar Expert as builder; Reflector is live",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=reflector",
+       "observedAt": "2026-11-02",
+       "quote": "\"builtBy\": {\"name\": \"Stellar Expert\", \"slug\": \"stellar-expert\"}; \"status\": \"Live\"; shortDescription 'Reflector is a decentralized price oracle and data-feed net…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/resolve?q=reflector",
+       "observedAt": "2026-11-02",
+       "quote": "{\"slug\":\"reflector\",\"name\":\"Reflector\",\"status\":\"Live\"} 'reflector is current.'"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4] / golden.answer parenthetical",
+     "claim": "Scout surfaces reflector-network/reflector-contract as Rust code reference, alongside DAO and subscription contracts",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=reflector",
+       "observedAt": "2026-11-02",
+       "quote": "repos: reflector-network/reflector-contract (Rust), contract-client-js, reflector-node, dao-client, reflector-dao-contract (Rust)"
+      },
+      {
+       "class": "B",
+       "ref": "gh api orgs/reflector-network/repos",
+       "observedAt": "2026-11-02",
+       "quote": "reflector-contract Rust pushed 2026-10-14; reflector-subscription-contract Rust pushed 2025-10-20; reflector-dao-contract Rust"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..1]",
+     "claim": "Not one award; not RedStone; not Script3",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/project/reflector-5w2",
+       "observedAt": "2026-11-02",
+       "quote": "Awarded Submissions 4"
+      },
+      {
+       "class": "C",
+       "ref": "stellarlight search reflector",
+       "observedAt": "2026-11-02",
+       "quote": "builtBy Stellar Expert"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Lumenloop returns four Reflector awards: the original SCF #15 decentralized price-feed oracle grid, SCF #20 expansion, SCF #26 CEX price feeds, and SCF #29 Reflector DAO with public feeds and customizable subscriptions. As observed on 2026-11-02, Scout lists Reflector as a live decentralized price-oracle/data-feed network, credits Stellar Expert as the builder, and surfaces `reflector-network/reflector-contract` as a Rust code reference (alongside DAO-contract, node, and client repositories). The historical submission sequence comes from Lumenloop; the current builder/status/repository facts c…",
+     "reason": "Refresh the dated Scout observation to 2026-11-02; Scout now lists DAO contract, node and JS client repos, not a subscription contract."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-observed on 2026-11-02."
+    },
+    {
+     "field": "truth.reverifyBy",
+     "op": "replace",
+     "new": "2027-05-14",
+     "reason": "Scheduled case due 2026-11-26; re-verified now; new quarter-granular date in the batch window."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-defi-reflector-oracle; q-sor-reflector-integration-code; q-scf-kale-winner-live; q-builder-by-scf-tier"
+  },
+  {
+   "id": "q-scf-current-hackathons-compare-live",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "question premise",
+     "claim": "Latest Stellar ZK hackathon and a recent agents/x402 hackathon exist",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons",
+       "observedAt": "2026-11-02",
+       "quote": "stellar-hacks-zk 'Stellar Hacks: Real-World ZK' completed 2026-06-15..2026-07-03 hackersCount 678; stellar-agents-x402-stripe-mpp 'Stellar Hacks: Agents' comple…"
+      },
+      {
+       "class": "D",
+       "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk/detail (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "Submission 2026/06/15 07:00 Deadline 2026/06/29 19:00 Extended 2026/07/03 17:00 ... Builds 345 Hackers 678"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer / keyFacts",
+     "claim": "Compare reports dates/source/status/hackers/prize with generatedAt; hackers distinct from submissions; null vs zero",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-zk,stellar-agents-x402-stripe-mpp",
+       "observedAt": "2026-11-02",
+       "quote": "meta.generatedAt 2026-11-02T16:08:34.955Z; zk hackersCount 678 submissionCount 319; agents hackersCount 591 submissionCount 249; deltas 'registered hackers: ...…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.compareHackathons",
+       "observedAt": "2026-11-02",
+       "quote": "prizePoolUSD 'null when the source publishes none: unknown, never zero.'"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.compareHackathons",
+       "observedAt": "2026-11-02",
+       "quote": "same fields returned through Raven"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Archived totals / hackers = submissions",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/compare",
+       "observedAt": "2026-11-02",
+       "quote": "hackersCount 678 vs submissionCount 319"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-compare-hackathons; q-scf-hackathon-compare-live; q-scf-hackathons-active"
+  },
+  {
+   "id": "q-scf-eligibility-criteria",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Individuals, teams, organizations eligible; not limited to companies",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions",
+       "observedAt": "2026-11-02",
+       "quote": "'Teams of Eligible Individuals ... and Organizations ...'; 'Eligible Individual is a natural person who: Is 18 years of age or older; Is not a citizen of ... Cu…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-11-02",
+       "quote": "'If applying as an individual: you must complete the form. If applying as a team: each individual contributor must complete the form'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Prescreen is a completeness/readiness check (not idea strength); its current check list",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria.md",
+       "observedAt": "2026-11-02",
+       "quote": "'This step isn't about judging the strength of your idea. It's about ensuring your submission is complete, reviewable, and ready.' Checks: 'Vague or missing del…"
+      },
+      {
+       "class": "B",
+       "ref": "https://github.com/stellar/scf-handbook/commit/0d5dbc12 (2026-08-14, GITBOOK-236)",
+       "observedAt": "2026-11-02",
+       "quote": "diff adds '+* (Integration Track) A present, concrete, and credible final-tranche metric commitment' and '+... or Jurisdiction-Specific Restriction that may app…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Panel evaluates ecosystem value/validated need, feasibility, roadmap, traction, team; Open-only vote; revision; KYC/KYB before payout",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+       "observedAt": "2026-11-02",
+       "quote": "'Panel Review ... evaluate projects for: Ecosystem value; Technical feasibility; Roadmap clarity and team capability'; 'Revision Window'; 'Community Vote (for O…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria",
+       "observedAt": "2026-11-02",
+       "quote": "'Product Readiness & Traction ... Significant user traction, or A clearly validated need'; 'Ecosystem Value & Differentiation'; 'Open Source Plan (for Smart Con…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1..2]",
+     "claim": "Traction is not prescreen definition; no universal TVL/token/US-only gates",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria",
+       "observedAt": "2026-11-02",
+       "quote": "prescreen 'isn't about judging the strength of your idea'"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions",
+       "observedAt": "2026-11-02",
+       "quote": "eligibility lists age, sanctions, jurisdiction; no TVL or US-only rule"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\nSCF Build accepts eligible individuals, teams, and organizations building meaningful Stellar applications/protocols; it is not limited to registered companies. The current flow has distinct gates. The initial interest/referral step establishes fit and eligibility. **Prescreen is a completeness/readiness check, not an id…",
+     "reason": "Prescreen check list changed 2026-08-14 (Integration Track metric commitment, jurisdiction-specific tranche restriction); the old sentence also put panel criteria under prescreen. Re-observed 2026-11-02."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-observed date."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: the golden placed panel-review criteria (team readiness, differentiation, open-source plan) inside the prescreen sentence"
+   ],
+   "siblings": "q-scf-how-to-apply; q-scf-v7-changes; q-scf-instawards; q-edge-scf-v7-centralization-myths"
+  },
+  {
+   "id": "q-scf-funding-by-category",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "/api/clusters is truncated and must not be used",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/clusters",
+       "observedAt": "2026-11-02",
+       "quote": "population {id:'projects|status:Development+Live+Pre-Release', totalAvailable:906, included:906, truncated:false}; rows UFA 366/257/25724193.95 ... identical to…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.getClusters({dimension:'category'})",
+       "observedAt": "2026-11-02",
+       "quote": "same population and rows through Raven"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json entry sls-042",
+       "observedAt": "2026-11-02",
+       "quote": "'The category-cluster endpoint silently truncates its active-project input at 500 rows' resolved 2026-07-14; liveRecheck 'analyze and clusters share one populat…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Dated category aggregate (projects, funded, dollars, order, funded-rate leader)",
+     "verdict": "corpus-only",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T15:49:24.783Z totalProjects 906; UFA 366/257/$25,724,193.95; Infrastructure 183/92/$8,626,544.78; Tooling 160/121/$10,198,786.90; Protoco…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "scfAwardedProjects 582; scfTotalDistributedUSD 58585451.99; methodologyVersion 'funding-v2 (2026-07-05)'; countBasis 'Counts distinct PROJECTS with scf.awarded=…"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/awards",
+       "observedAt": "2026-11-02",
+       "quote": "Official SCF does not publish a category aggregate (prior row; unchanged)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (cached-source caution)",
+     "claim": "computedAt/methodologyVersion/countBasis fields exist after the 2026-07-14 fix",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "computedAt, methodologyVersion, countBasis present"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+       "observedAt": "2026-11-02",
+       "quote": "categories dimension serves meta.generatedAt and population only; no computedAt/methodologyVersion/countBasis"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Scout counts not official totals; no fabricated splits; not a permanent roster",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+       "observedAt": "2026-11-02",
+       "quote": "countBasis 'Dollar totals are in-house reconstructions: SCF does not publish per-award amounts for all rounds'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\nUse Stellar Light's **`/api/analyze?dimension=categories`** (or the matching `/api/clusters` category view) for a corpus-relative aggregate, not per-project history. Label output per the Scout corpus with `generatedAt`, taxonomy, project/status scope, and methodology. As of **2026-11-02**, the active-project basis (Live, Pre-Release, Development) h…",
+     "reason": "Remove the stale truncated-clusters claim (fixed 2026-07-14) and refresh the dated example; leaders changed."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "2nd scout_analyze case; exercises the categories dimension ('projects per category'). Refreshed 2026-06-29 via /api/analyze?dimension=categories: User-Facing App 204/103/$9.19M, Tooling 108/42/$3.28M, Infrastructure 97/34/$3.01M, Protocol/Contract 86/44/$4.48M (totalProjects 500). Live dollar figures → flipped freshness_sensitive true; ranking headline (UFA leads count+dollars, then Tooling/Infra/Protocol) unchanged.\nAlso good if the answer: Frames it as an aggregate distribution, not a per-project breakdown.\nGolden cites: Stellar Light analytics (scout_analyze categories/funding dimension).\nG…",
+     "reason": "Notes told the judge clusters must not supply the denominator; that is false since 2026-07-14."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-observed date."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/resolved.json (sls-042, resolved 2026-07-14)"
+   ],
+   "siblings": "q-scf-total-distributed; q-defi-category-funding-ratio-live; q-defi-category-saturation-live"
+  },
+  {
+   "id": "q-scf-hackathon-compare-live",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "A correct answer must use two getHackathon detail calls",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend",
+       "observedAt": "2026-11-02",
+       "quote": "kale-reflector submissionCount 45 winnerCount 10 prizePoolUSD 12000 hackersCount 161; blend submissionCount 39 winnerCount 3 prizePoolUSD 6000 hackersCount 136;…"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.compareHackathons",
+       "observedAt": "2026-11-02",
+       "quote": "same submissionCount/winnerCount through Raven"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.compareHackathons description",
+       "observedAt": "2026-11-02",
+       "quote": "'per-event snapshot (prize pool, submissions, winners, prize-per-winner, and cohort DURABILITY ...)'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "getHackathon stats.totalSubmissions and stats.winners exist",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+       "observedAt": "2026-11-02",
+       "quote": "stats {totalSubmissions:39, upstreamSubmissions:39, totalPrizeUSD:6000, winners:3}; winners[] 3 rows"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-kale-reflector",
+       "observedAt": "2026-11-02",
+       "quote": "stats {totalSubmissions:45, upstreamSubmissions:46, coverageNote:'DoraHacks counts 46 submissions for this event; 45 are served here...', winners:10}"
+      },
+      {
+       "class": "D",
+       "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/hackers (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "'Builds 46' 'Hackers 161' 'Prize Pool 12,000 USD'"
+      },
+      {
+       "class": "D",
+       "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/report",
+       "observedAt": "2026-11-02",
+       "quote": "'A total of $6,000 in XLM was awarded as prizes to the top three innovations'"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Archived counts as current",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons/compare",
+       "observedAt": "2026-11-02",
+       "quote": "live counts dated generatedAt 2026-11-02T16:08:34.731Z"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "Resolve both current event slugs, then compare explicit per-event submission and winner fields: hackathon.stats.totalSubmissions and hackathon.stats.winners from getHackathon detail, or the submissionCount and winnerCount that compareHackathons returns. Use compareHackathons only for fields it actually returns, distinguish null from zero, and cite generatedAt/scope.",
+     "reason": "compareHackathons now returns submissionCount/winnerCount; do not force a specific call path."
+    },
+    {
+     "field": "golden.keyFacts[0]",
+     "op": "replace",
+     "new": "Resolves both current slugs before reading per-event fields.",
+     "reason": "Process-bound keyFact would fail a correct compare-only answer."
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "op": "replace",
+     "new": "Compares explicit submission-count and winner-count fields.",
+     "reason": "Name the field meaning, not one field spelling."
+    },
+    {
+     "field": "golden.notes",
+     "op": "set",
+     "new": "As of 2026-11-02, compareHackathons returns submissionCount and winnerCount that match getHackathon stats (KALE x Reflector 45 and 10; Blend 39 and 3), so either explicit source is acceptable. Scout serves 45 KALE x Reflector submissions while DoraHacks counts 46 (stats.upstreamSubmissions); a sourced figure from either is not wrong.",
+     "reason": "Symmetric caution for the disclosed 45/46 coverage gap and the two equivalent sources."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: keyFact required a specific tool-call path (two getHackathon calls) rather than the answer content"
+   ],
+   "siblings": "q-gap-compare-hackathons; q-scf-current-hackathons-compare-live; q-scf-kale-winner-live; q-gap-hackathon-winner-order"
+  },
+  {
+   "id": "q-scf-hackathons-active",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer dated example",
+     "claim": "Feed returned 10 events; newest Real-World ZK ended 2026-07-03",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons",
+       "observedAt": "2026-11-02",
+       "quote": "generatedAt 2026-11-02T16:07:56.699Z counts {curated:7, dorahacks:20, returned:27, total:27}; first row hackmeridian-2026 'HackMeridian 2026' completed 2026-10-…"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons?status=active and ?status=upcoming",
+       "observedAt": "2026-11-02",
+       "quote": "counts.total 0; fallbackChannels.summary 'No upcoming or active hackathons in stellarlight's feed right now: between events.'"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.hackmeridian.com/ (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "'25-26 October 2026 · ONE16, Lisbon · $30K across 6 winners'; 'Submission deadline at 12:00' Mon 26 Oct"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.getHackathons({status:'active'})",
+       "observedAt": "2026-11-02",
+       "quote": "n 0, generatedAt 2026-11-02T16:13:33.616Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Real-World ZK is not active after 2026-07-03",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk/detail",
+       "observedAt": "2026-11-02",
+       "quote": "'Submission period ended' 'Extended 2026/07/03 17:00'"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/hackathons",
+       "observedAt": "2026-11-02",
+       "quote": "stellar-hacks-zk status completed"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1] / notes",
+     "claim": "Scoped zero is not a global absence",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "D",
+       "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar (Parallel search + Perplexity search, one domain)",
+       "observedAt": "2026-11-02",
+       "quote": "'A two-week student challenge to build Stellar-blockchain solutions ...' 'Who: All University of Waterloo students' 'When: Nov 2-18, 2026'"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.risein.com/programs/stellar-pro-hackathon",
+       "observedAt": "2026-11-02",
+       "quote": "'Stellar Pro Hackathon' Istanbul 'Start date Sep 18, 2026' 'Prize Pool $15,000' (absent from the Scout feed)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace",
+     "new": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the live hackathon feed listed 27 events and no active or upcoming rows; its newest result was `HackMeridian 2026` (Lisbon), which ended 2026-10-26.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+     "reason": "Refresh stale dated example to the 2026-11-02 observation."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "GT-38 CORRECTION 2026-07-10: the scoped live feed returned zero active/upcoming rows; Real-World ZK completed July 3. Grade dated source-bound reporting and live re-check guidance, not hidden operation use.\nGT-38 independently confirmed by processes 3297/3299.\n2026-11-02 re-check: the feed again returned zero active/upcoming rows. That zero is feed-relative: a sourced real-world Stellar event outside the feed (for example Velocity's University of Waterloo 'Blockchain Innovation Challenge powered by Stellar', Nov 2-18, 2026, UW students only) is not a wrong claim.",
+     "reason": "Symmetric caution: feed zero is source-relative; an off-feed active Stellar event exists."
+    },
+    {
+     "field": "truth.asOf",
+     "op": "replace",
+     "new": "2026-11-02",
+     "reason": "Re-observed date."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-gap-upcoming-hackathon-fallback; q-scf-current-hackathons-compare-live; q-scf-hackathon-compare-live"
+  },
+  {
+   "id": "q-scf-history-soroswap",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[2..4] / avoid[0]",
+     "claim": "Four Soroswap awards: SCF #15 57,600; #17 139,150; #21 100,000; Liquidity Award '24 Q1 50,000; total 346,750",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug:soroswap}",
+       "observedAt": "2026-11-02",
+       "quote": "'Soroswap.Finance Aggregator' SCF #21 Legacy v5.0 Community Award 100000; 'Soroswap Protocol' SCF #17 Legacy v4.0 Award 139150; 'Soroswap Protocol' SCF #15 5760…"
+      },
+      {
+       "class": "A",
+       "ref": "https://communityfund.stellar.org/project/soroswapfinance-yax (embedded page data)",
+       "observedAt": "2026-11-02",
+       "quote": "'Total awarded $346.8K*'; 'Awarded Submissions 4'; \"totalAwarded\":346750,\"totalPaid\":346750"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap",
+       "observedAt": "2026-11-02",
+       "quote": "scfTotalAwardedUSD 346750 scfAmountStatus disclosed scfAwardedRounds [15,17,21]; scfRoundAwards incl. Liquidity Award - '24 Q1 50000"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Soroswap is not Soroban or another DEX",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "stellarlight soroswap",
+       "observedAt": "2026-11-02",
+       "quote": "category Protocol/Contract, llamaSlugs soroswap-amm"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-defi-soroswap-what-is; q-defi-soroswap-vs-stellarx; q-edge-factcheck-soroswap-first-amm"
+  },
+  {
+   "id": "q-scf-how-to-apply",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[0..1]",
+     "claim": "Interest form on communityfund.stellar.org, then invitation to submit to Open/Integration/RFP",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award.md",
+       "observedAt": "2026-11-02",
+       "quote": "'Submit the interest form on the SCF Website ... If you meet requirements, you will be invited to submit to an open SCF round'; 'invitation via email to submit …"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/open-track",
+       "observedAt": "2026-11-02",
+       "quote": "'Submit the SCF Interest form and indicate your interest in the Open Track.' 'Eligible teams will be invited to submit to an upcoming Build round.'"
+      },
+      {
+       "class": "D",
+       "ref": "https://devgrantsdaily.com/industry/web3/",
+       "observedAt": "2026-11-02",
+       "quote": "'Stellar Community Fund Build Award gives up to $150K in XLM ... Round SCF #46 closes on November 8, 2026'"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Open track: experienced teams, novel use cases, traction or deep domain knowledge; panels; Open-only NQG vote; 3-6 months; $150K XLM; KYC/KYB before tranches",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/open-track",
+       "observedAt": "2026-11-02",
+       "quote": "'experienced builders exploring novel use cases'; 'Projects with existing traction or deep, proven Stellar / domain knowledge'; 'reviewed by 2 reviewers from th…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track",
+       "observedAt": "2026-11-02",
+       "quote": "'reviewed by 2 reviewers from that quarter's Category Delegate Panel'"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award.md",
+       "observedAt": "2026-11-02",
+       "quote": "'Award size: up to $150,000 worth of XLM'; 'Timeline: Typically 3–6 months per project'; 'Community Vote (for Open Track only)'; 'complete a compliance and iden…"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "Enterprise Fund is a separate path",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria",
+       "observedAt": "2026-11-02",
+       "quote": "'Entities funded through the Matching Fund or Enterprise Fund are not eligible'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-eligibility-criteria; q-scf-vs-sdf-enterprise-fund; q-org-sdf-enterprise-fund; q-scf-v7-changes"
+  },
+  {
+   "id": "q-scf-hummingbot-kelp-closed-rfp",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer / keyFacts[2..4]",
+     "claim": "RFP 'Hummingbot Integration (Trading Engine)', closed, q1-2026, defi; Kelp deprecation liquidity gap; orderbook connector for MM/arbitrage",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps",
+       "observedAt": "2026-11-02",
+       "quote": "{\"title\":\"Hummingbot Integration (Trading Engine)\",\"description\":\"The deprecation of Kelp has left a liquidity gap. ... enable automated market-making and arbit…"
+      },
+      {
+       "class": "B",
+       "ref": "gh api repos/stellar-deprecated/kelp",
+       "observedAt": "2026-11-02",
+       "quote": "archived true; 'Kelp is a free and open-source trading bot for the Stellar DEX and 100+ centralized exchanges'"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute scout.getRfps",
+       "observedAt": "2026-11-02",
+       "quote": "Hummingbot Integration (Trading Engine) closed q1-2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes 'Also good'",
+     "claim": "Q2 2026 open RFPs are the different current set",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps",
+       "observedAt": "2026-11-02",
+       "quote": "all five q2-2026 briefs status closed; open rows only q3-2026 LayerZero DVN and x402 Facilitator plus synthetic 'SCF Round #46: submissions OPEN until 2026-11-0…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+       "observedAt": "2026-11-02",
+       "quote": "'October 2026: New Q4 RFPs are coming soon.' with two 'Coming Soon' entries"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Hummingbot RFP is not open",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/rfps",
+       "observedAt": "2026-11-02",
+       "quote": "status closed"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.notes",
+     "op": "replace",
+     "new": "Added from theboycoder/StellarLight data-layer intake. Verified 2026-06-25 against /api/rfps: Hummingbot Integration (Trading Engine), category defi, author Rahim, quarter q1-2026, status closed; description explicitly says Kelp deprecation left a liquidity gap.\nAlso good if the answer: Says the currently open RFP set is a different, dated roster and sends the user to the live feed and the official RFP Track page for fundable briefs.\nGolden cites: The live Scout/Stellar Light RFP feed or the Hummingbot Integration RFP page.",
+     "reason": "The grading hint names Q2 2026 as the current open set; Q2 briefs are closed and the current roster is disputed."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-scf-open-rfps-live; q-scf-open-rfps; q-scf-rfp-tooling; q-defi-market-making-kelp"
+  },
+  {
+   "id": "q-scf-instawards",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Initial $1,000-$5,000 paid in XLM; up to two follow-ons; $15,000 aggregate; not automatic",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules.md",
+       "observedAt": "2026-11-02",
+       "quote": "'Most proposals successfully accepted by SDF begin with an initial Instaward in the range of $1,000 – $5,000 USD, paid in XLM ... may increase the total funding…"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+       "observedAt": "2026-11-02",
+       "quote": "'ambassadors may recommend projects for small awards of up to $15K per project'"
+      },
+      {
+       "class": "D",
+       "ref": "https://www.risein.com/blog (Parallel search)",
+       "observedAt": "2026-11-02",
+       "quote": "'15 Projects from Türkiye Received $75,000 in Stellar Instawards Grants in October' (Oct 19, 2026)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3]",
+     "claim": "No standard open application but a real chapter-guided process; SDF final approval",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules",
+       "observedAt": "2026-11-02",
+       "quote": "'Instawards don't have a standard open application process, but opportunities to apply can be made available by the local Ambassador Chapter leads'; 'only SDF m…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask (cites the official rules and v7 blog)",
+       "observedAt": "2026-11-02",
+       "quote": "'SCF 7.0 replaced the former Kickstart model with Instawards ... a decentralized evolution of SCF Kickstart'"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1..2]",
+     "claim": "$15K is not automatic initial; chapter leads do not commit SDF funds; no NQG vote",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules",
+       "observedAt": "2026-11-02",
+       "quote": "'Chapter Leads ... are not agents or representatives of SDF and generally do not have authority to act on behalf of or bind SDF'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-scf-v7-changes; q-scf-ambassador-program; q-scf-regional-india; q-edge-scf-v7-centralization-myths; q-scf-nqg-voting"
+  }
+ ],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-scf-cross-reflector-rounds-current",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "Lumenloop returns four Reflector awards: the original SCF #15 decentralized price-feed oracle grid, SCF #20 expansion, SCF #26 CEX price feeds, and SCF #29 Reflector DAO with public feeds and customizable subscriptions. As observed on 2026-11-02, Scout lists Reflector as a live decentralized price-oracle/data-feed network, credits Stellar Expert as the builder, and surfaces `reflector-network/reflector-contract` as a Rust code reference (alongside other reflector-network repositories, such as the DAO contract and JS client). The historical submission sequence comes from Lumenloop; the current …",
+    "note": "Date refresh and all four rounds, builder, live status, and reflector-contract confirmed. The proposed parenthetical 'DAO-contract, node, and client repositories' matches the API/Raven row but not the project web page (which shows subscription repos and no reflector-node); the old 'DAO and subscription contracts' matches the page but not the API row. Use wording true on both Scout surfaces.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/get_scf_submissions (POST {slug:reflector})",
+      "observedAt": "2026-11-02",
+      "quote": "count: 4; SCF #29 'Reflector DAO' — 'DAO-governed oracle with publicprice feed and customizable subscriptions'; SCF #26 'Reflector | CEX price feeds'; SCF #20 '…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=reflector&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "builtBy: {name: 'Stellar Expert', slug: 'stellar-expert'}; status Live; repos: reflector-contract (Rust), contract-client-js, reflector-node, dao-client, reflec…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/project/reflector (HTML)",
+      "observedAt": "2026-11-02",
+      "quote": "page lists reflector-network/reflector-contract, reflector-dao-contract, contract-client-js, dao-client, reflector-subscription-contract, reflector-subscription…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/resolve?q=reflector",
+      "observedAt": "2026-11-02",
+      "quote": "found: true, matchedOn: slug, status Live, statusAsOf 2026-10-27T11:56:36.248Z, statusBasis onchain-activity"
+     },
+     {
+      "class": "C",
+      "ref": "Raven MCP scout.searchProjects({q:Reflector})",
+      "observedAt": "2026-11-02",
+      "quote": "builtBy Stellar Expert; repos [reflector-contract, contract-client-js, reflector-node, dao-client, reflector-dao-contract]; rounds [15,20,26,29]"
+     },
+     {
+      "class": "A",
+      "ref": "https://reflector.network/",
+      "observedAt": "2026-11-02",
+      "quote": "Decentralized price oracle for Stellar Network ... [Email Support](mailto:info@stellar.expert) ... 2026 © REFLECTOR"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/reflector-network/reflector-contract",
+      "observedAt": "2026-11-02",
+      "quote": "language Rust, archived false, pushed_at 2026-10-14T15:05:05Z"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/reflector-network/reflector-subscription-contract",
+      "observedAt": "2026-11-02",
+      "quote": "language Rust, archived false, pushed_at 2025-10-20"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/submissions/receZeLlUlVSruadg",
+      "observedAt": "2026-11-02",
+      "quote": "page is JS-rendered; fetch returned only the shell ('Loading...'); not usable as corroboration this pass"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-cross-reflector-rounds-current",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-observed 2026-11-02.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://api.lumenloop.com/v1/tools/get_scf_submissions (POST {slug:reflector})",
+      "observedAt": "2026-11-02",
+      "quote": "count: 4; SCF #29 'Reflector DAO' — 'DAO-governed oracle with publicprice feed and customizable subscriptions'; SCF #26 'Reflector | CEX price feeds'; SCF #20 '…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/projects/search?q=reflector&limit=3",
+      "observedAt": "2026-11-02",
+      "quote": "builtBy: {name: 'Stellar Expert', slug: 'stellar-expert'}; status Live; repos: reflector-contract (Rust), contract-client-js, reflector-node, dao-client, reflec…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-cross-reflector-rounds-current",
+    "field": "truth.reverifyBy",
+    "decision": "accept",
+    "note": "2027-05-14 lies in the batch window (2027-05-01..2027-05-31); quarter-granular stagger is fine.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-eligibility-criteria",
+    "field": "golden.answer",
+    "decision": "modify",
+    "newText": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\nSCF Build accepts eligible individuals, teams, and organizations building meaningful Stellar applications/protocols; it is not limited to registered companies. The current flow has distinct gates. The initial interest/referral step establishes fit and eligibility. **Prescreen is a completeness/readiness check, not an id…",
+    "note": "Proposal matches the live handbook (A) and its GitHub source (B). One fidelity fix: the handbook bullet is 'Vague or missing deliverables (or deliverables that don't have a specific budget amount)'; the proposal dropped 'missing'. Changed to 'vague, missing, or unbudgeted deliverables'. Also dropped the unsourced 'onchain' qualifier from the prescreen bullet (prescreen text says 'final-tranche met…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria.md",
+      "observedAt": "2026-11-02",
+      "quote": "During prescreening, the SCF team does a check for: Vague or missing deliverables (or deliverables that don't have a specific budget amount associated with them…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria.md",
+      "observedAt": "2026-11-02",
+      "quote": "Your application must include three tranches of deliverables. ... In certain cases, jurisdiction-specific restrictions may require a modified tranche structure …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria.md",
+      "observedAt": "2026-11-02",
+      "quote": "This step isn't about judging the strength of your idea. It's about ensuring your submission is complete, reviewable, and ready."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+      "observedAt": "2026-11-02",
+      "quote": "Prescreen: SDF confirms your application is complete and meets the core eligibility criteria. ... Community Vote (for Open Track only) ... complete a KYC (Know …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions.md",
+      "observedAt": "2026-11-02",
+      "quote": "Teams of Eligible Individuals ... Organizations ... Is not a citizen of, located in, or otherwise normally residing in Cuba, Iran, North Korea ... subject to sa…"
+     },
+     {
+      "class": "B",
+      "ref": "gh search code -> stellar/scf-handbook:scf-awards/build-award/submission-criteria.md",
+      "observedAt": "2026-11-02",
+      "quote": "* (Integration Track) A present, concrete, and credible final-tranche metric commitment — not omitted, vague, trivially low, or unrealistically high."
+     },
+     {
+      "class": "D",
+      "ref": "perplexity_search (stellar.gitbook.io submission-criteria; github.com/stellar/scf-handbook)",
+      "observedAt": "2026-11-02",
+      "quote": "same prescreen bullet list; handbook 'What's New ... August 2026 ... Jurisdiction-Specific Conditions'"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-eligibility-criteria",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Live handbook re-read 2026-11-02.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria.md",
+      "observedAt": "2026-11-02",
+      "quote": "During prescreening, the SCF team does a check for: Vague or missing deliverables (or deliverables that don't have a specific budget amount associated with them…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-funding-by-category",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "Every number re-derived exactly (906/582/$58,585,451.99; UFA 366/257/$25.724M/43.91%; dollar order UFA > Protocol/Contract > Tooling > Infrastructure; Tooling 121/160 = 75.625% -> 75.63%). /api/clusters now untruncated (906/906) and its category rows equal /api/analyze. Single-witness corpus metric, explicitly labeled Scout-relative and dated; the official-aggregate claim stays unverifiable as bef…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:33:40.106Z; population statusScope [Development, Live, Pre-Release], totalAvailable 906, included 906, truncated false; User-Facing Ap…"
+     },
+     {
+      "class": "C",
+      "ref": "derived from https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "sum: 906 projects, 582 funded, $58,585,451.99; UFA share 43.91%; funded rates: Tooling 75.625%, Protocol/Contract 70.75%, UFA 70.22%, Infrastructure 50.27%"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:33:48.017Z; filters.dimension category; population totalAvailable 906, included 906, truncated false; Infrastructure size 183, scfFund…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-funding-by-category",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Clusters no longer truncated is confirmed; leader-shift caution is symmetric and prevents punishing a dated Protocol/Contract-led answer.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/clusters",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:33:48.017Z; filters.dimension category; population totalAvailable 906, included 906, truncated false; Infrastructure size 183, scfFund…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-funding-by-category",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-observed 2026-11-02.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:33:40.106Z; population statusScope [Development, Live, Pre-Release], totalAvailable 906, included 906, truncated false; User-Facing Ap…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hackathon-compare-live",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "compareHackathons now returns submissionCount and winnerCount, documented in live OpenAPI 1.9.116 and equal to getHackathon stats. The committed manifest snapshot (1.9.61) still omits these fields in its outputSchema; a catalog refresh is outside this lane.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:33:08.900Z; stellar-hacks-kale-reflector submissionCount 45, winnerCount 10; stellar-hacks-blend submissionCount 39, winnerCount 3"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-kale-reflector",
+      "observedAt": "2026-11-02",
+      "quote": "stats: totalSubmissions 45, upstreamSubmissions 46, coverageNote 'DoraHacks counts 46 submissions for this event; 45 are served here.', winners 10"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "stats: totalSubmissions 39, upstreamSubmissions 39, winners 3"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarlight.xyz/api/openapi.json (info.version 1.9.116)",
+      "observedAt": "2026-11-02",
+      "quote": "/api/hackathons/compare response schema contains submissionCount, winnerCount, hackersCount (committed catalog/manifest.json is still at openapi 1.9.61 and its …"
+     },
+     {
+      "class": "D",
+      "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/detail",
+      "observedAt": "2026-10-15",
+      "quote": "[Builds 46] [Hackers 161] ... $12,000 in XLM Awards paid out over 10 winners!"
+     },
+     {
+      "class": "D",
+      "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/detail",
+      "observedAt": "2026-10-26",
+      "quote": "awards for the top three projects. First Place: $3,000 ... Second Place: $2,000 ... Third Place: $1,000"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hackathon-compare-live",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "Removing the mandatory two-detail-call method is not laundering: the compare endpoint returns the same explicit fields, so the old fact punished a correct sourced answer. 57 chars.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:33:08.900Z; stellar-hacks-kale-reflector submissionCount 45, winnerCount 10; stellar-hacks-blend submissionCount 39, winnerCount 3"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarlight.xyz/api/openapi.json (info.version 1.9.116)",
+      "observedAt": "2026-11-02",
+      "quote": "/api/hackathons/compare response schema contains submissionCount, winnerCount, hackersCount (committed catalog/manifest.json is still at openapi 1.9.61 and its …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hackathon-compare-live",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "Field-name-agnostic; still requires explicit fields. 59 chars.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:33:08.900Z; stellar-hacks-kale-reflector submissionCount 45, winnerCount 10; stellar-hacks-blend submissionCount 39, winnerCount 3"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-kale-reflector",
+      "observedAt": "2026-11-02",
+      "quote": "stats: totalSubmissions 45, upstreamSubmissions 46, coverageNote 'DoraHacks counts 46 submissions for this event; 45 are served here.', winners 10"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "stats: totalSubmissions 39, upstreamSubmissions 39, winners 3"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hackathon-compare-live",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "45 vs 46 confirmed by Scout coverageNote and the DoraHacks 'Builds 46' tab; 10 and 3 winners confirmed by DoraHacks prize text. Symmetric caution is correct.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:33:08.900Z; stellar-hacks-kale-reflector submissionCount 45, winnerCount 10; stellar-hacks-blend submissionCount 39, winnerCount 3"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-kale-reflector",
+      "observedAt": "2026-11-02",
+      "quote": "stats: totalSubmissions 45, upstreamSubmissions 46, coverageNote 'DoraHacks counts 46 submissions for this event; 45 are served here.', winners 10"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+      "observedAt": "2026-11-02",
+      "quote": "stats: totalSubmissions 39, upstreamSubmissions 39, winners 3"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellarlight.xyz/api/openapi.json (info.version 1.9.116)",
+      "observedAt": "2026-11-02",
+      "quote": "/api/hackathons/compare response schema contains submissionCount, winnerCount, hackersCount (committed catalog/manifest.json is still at openapi 1.9.61 and its …"
+     },
+     {
+      "class": "D",
+      "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/detail",
+      "observedAt": "2026-10-15",
+      "quote": "[Builds 46] [Hackers 161] ... $12,000 in XLM Awards paid out over 10 winners!"
+     },
+     {
+      "class": "D",
+      "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/detail",
+      "observedAt": "2026-10-26",
+      "quote": "awards for the top three projects. First Place: $3,000 ... Second Place: $2,000 ... Third Place: $1,000"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hackathons-active",
+    "field": "golden.answer",
+    "decision": "accept",
+    "note": "27 events, zero active/upcoming, newest HackMeridian 2026 ended 2026-10-26 in Lisbon: confirmed by C plus official A pages.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons?limit=100",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:32:28.789Z; counts {curated 7, dorahacks 20, returned 27, total 27}; every row status completed; hackmeridian-2026 | HackMeridian 2026…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons?status=active and ?status=upcoming",
+      "observedAt": "2026-11-02",
+      "quote": "active total 0; upcoming total 0 (generatedAt 2026-11-02T16:32:35Z)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons/hackmeridian-2026",
+      "observedAt": "2026-11-02",
+      "quote": "Lisbon: check-in and hacking open at 09:00 on Sunday 25 October 2026"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.hackmeridian.com/schedule",
+      "observedAt": "2026-11-02",
+      "quote": "When 25–26 October 2026 Where ONE16, Lisbon Submissions close Mon 26 Oct, 12:00"
+     },
+     {
+      "class": "A",
+      "ref": "https://meridian.stellar.org/event-details",
+      "observedAt": "2026-11-02",
+      "quote": "HackMeridian is the annual Meridian hackathon, running October 25–26, 2026, the two days before the main Meridian conference."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hackathons-active",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Velocity UW challenge confirmed (Nov 2-18, 2026; all UW students). Note is lenient-only; it adds no trap.",
+    "sources": [
+     {
+      "class": "D",
+      "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar (via perplexity_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Who: All University of Waterloo students ... When: Nov 2-18, 2026 ... $15,000 in prizes"
+     },
+     {
+      "class": "D",
+      "ref": "https://uwaterloo.ca/events/ (via perplexity_search)",
+      "observedAt": "2026-11-02",
+      "quote": "Monday, November 2, 2026 - Wednesday, November 18, 2026 ... The Blockchain Innovation Challenge powered by Stellar"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons?status=active and ?status=upcoming",
+      "observedAt": "2026-11-02",
+      "quote": "active total 0; upcoming total 0 (generatedAt 2026-11-02T16:32:35Z)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hackathons-active",
+    "field": "truth.asOf",
+    "decision": "accept",
+    "note": "Re-observed 2026-11-02.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons?limit=100",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:32:28.789Z; counts {curated 7, dorahacks 20, returned 27, total 27}; every row status completed; hackmeridian-2026 | HackMeridian 2026…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "'Q2 2026 open RFPs' is stale. Hummingbot row still closed/q1-2026/defi. The two sources disagree on what is open now: Scout activeQuarter q3-2026 with 2 open briefs; the official RFP Track page says 'October 2026: New Q4 RFPs are coming soon.' The proposed wording names no roster and points to both, so it holds either way. The retained 2026-06-25 'author Rahim' history line no longer matches the l…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?limit=200",
+      "observedAt": "2026-11-02",
+      "quote": "generatedAt 2026-11-02T16:35:22.245Z; activeQuarter q3-2026; counts total 16, open 2, closed 14; Hummingbot Integration (Trading Engine) status closed, quarter …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+      "observedAt": "2026-11-02",
+      "quote": "Current Open RFPs — October 2026: New Q4 RFPs are coming soon. ... The submission must address an open RFP from the current quarter"
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "Raven MCP scout.searchProjects({q:Reflector})",
+   "derived from https://stellarlight.xyz/api/analyze?dimension=categories",
+   "gh api repos/reflector-network/reflector-contract",
+   "gh api repos/reflector-network/reflector-dao-contract",
+   "gh api repos/reflector-network/reflector-subscription-contract",
+   "gh search code -> stellar/scf-handbook:scf-awards/build-award/submission-criteria.md",
+   "https://api.lumenloop.com/v1/tools/get_scf_submissions (POST {slug:reflector})",
+   "https://app.hackmeridian.com/",
+   "https://communityfund.stellar.org/submissions/receZeLlUlVSruadg",
+   "https://dorahacks.io/hackathon/stellar-hacks-blend/detail",
+   "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/buidl",
+   "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/detail",
+   "https://meridian.stellar.org/",
+   "https://meridian.stellar.org/event-details",
+   "https://meridian.stellar.org/hackmeridian",
+   "https://reflector.network/",
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria.md",
+   "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions.md",
+   "https://stellarlight.xyz/api/analyze?dimension=categories",
+   "https://stellarlight.xyz/api/clusters",
+   "https://stellarlight.xyz/api/hackathons/compare?slugs=stellar-hacks-kale-reflector,stellar-hacks-blend",
+   "https://stellarlight.xyz/api/hackathons/hackmeridian-2026",
+   "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+   "https://stellarlight.xyz/api/hackathons/stellar-hacks-kale-reflector",
+   "https://stellarlight.xyz/api/hackathons?limit=100",
+   "https://stellarlight.xyz/api/hackathons?status=active and ?status=upcoming",
+   "https://stellarlight.xyz/api/openapi.json",
+   "https://stellarlight.xyz/api/openapi.json (info.version 1.9.116)",
+   "https://stellarlight.xyz/api/projects/resolve?q=reflector",
+   "https://stellarlight.xyz/api/projects/search?q=reflector&limit=3",
+   "https://stellarlight.xyz/api/repos/search?q=reflector-network&limit=20",
+   "https://stellarlight.xyz/api/rfps?limit=200",
+   "https://stellarlight.xyz/project/reflector (HTML)",
+   "https://uwaterloo.ca/events/ (via perplexity_search)",
+   "https://www.hackmeridian.com/",
+   "https://www.hackmeridian.com/build",
+   "https://www.hackmeridian.com/faq",
+   "https://www.hackmeridian.com/schedule",
+   "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar (via perplexity_search)",
+   "perplexity_search (stellar.gitbook.io submission-criteria; github.com/stellar/scf-handbook)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-scf-cross-reflector-rounds-current; q-scf-eligibility-criteria; q-scf-funding-by-category; q-scf-hackathon-compare-live; q-scf-hackathons-active; q-scf-hummingbot-kelp-closed-rfp",
+  "verifiedOnly": "q-scf-current-hackathons-compare-live; q-scf-history-soroswap; q-scf-how-to-apply; q-scf-instawards",
+  "untouched": "",
+  "escalations": [
+   {
+    "id": "q-scf-hackathons-active",
+    "issue": "Upstream finding candidate (not filed in this lane): the Stellar Light hackathon feed (https://stellarlight.xyz/api/hackathons?status=active) reports zero active events while real Stellar events exist off-feed (Velocity UW Blockchain Innovation Challenge powered by Stellar, Nov 2-18 2026; Rise In Stellar Pro Hackathon, Istanbul, Sep 18-20 2026)."
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "issue": "Upstream finding candidate (not filed): Scout /api/rfps reports activeQuarter q3-2026 with 2 open briefs (LayerZero DVN, x402 Facilitator) while the official RFP Track page says \"October 2026: New Q4 RFPs are coming soon.\" Recorded as a disputed corroboration row; golden pins no open set."
+   },
+   {
+    "id": "q-scf-hackathon-compare-live",
+    "issue": "Catalog drift (outside this lane): live Stellar Light OpenAPI 1.9.116 documents submissionCount/winnerCount/hackersCount on /api/hackathons/compare, but committed catalog/manifest.json (openapi 1.9.61) compareHackathons outputSchema omits them."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-scf-cross-reflector-rounds-current",
+    "log": "golden.answer refreshed to the 2026-11-02 observation (verifier modify: repo parenthetical true on both Scout surfaces); truth.asOf 2026-11-02; truth.reverifyBy 2026-11-26 -> 2027-05-14; sources, corroboration evidence, and truth.verified refreshed."
+   },
+   {
+    "id": "q-scf-eligibility-criteria",
+    "log": "golden.answer refreshed to the 2026-11-02 handbook prescreen list (verifier modify: 'vague, missing, or unbudgeted'; no 'onchain'); added jurisdiction constraint; truth.asOf 2026-11-02; sources, new corroboration row, truth.verified refreshed."
+   },
+   {
+    "id": "q-scf-funding-by-category",
+    "log": "golden.answer refreshed to the 2026-11-02 Scout category basis (clusters no longer forbidden; Tooling leads funded rate); golden.notes adds 2026-11-02 refresh and leader-shift caution; truth.asOf 2026-11-02; sources, corpus-only corroboration row, truth.verified refreshed."
+   },
+   {
+    "id": "q-scf-hackathon-compare-live",
+    "log": "golden.answer accepts compareHackathons submissionCount/winnerCount or getHackathon stats; keyFacts[0..1] made path- and spelling-agnostic; golden.notes added (45/46 coverage caution); truth.asOf 2026-11-02; sources, corroboration row, truth.verified refreshed."
+   },
+   {
+    "id": "q-scf-hackathons-active",
+    "log": "golden.answer dated example refreshed (27 events, none active/upcoming, newest HackMeridian 2026 ended 2026-10-26); golden.notes adds feed-relative zero caution (Velocity UW challenge); truth.asOf 2026-11-02; sources, corroboration row, truth.verified refreshed."
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "log": "golden.notes 'Also good' hint no longer names Q2 2026 as the open set; points to the live feed and the official RFP Track page; sources, confirmed-as-of and disputed (open-set) corroboration rows, truth.verified refreshed."
+   },
+   {
+    "id": "q-scf-current-hackathons-compare-live",
+    "log": "Verified only: live compare still separates hackers from submissions and null from zero; truth.verified and one source refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-scf-history-soroswap",
+    "log": "Verified only: four awards and $346,750 re-confirmed (Lumenloop + official page + Scout); truth.verified and one source refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-scf-how-to-apply",
+    "log": "Verified only: interest-form flow, tracks, $150K XLM, 3–6 months, Open-only vote re-confirmed (official handbook + web); truth.verified and one source refreshed; gospel unchanged."
+   },
+   {
+    "id": "q-scf-instawards",
+    "log": "Verified only: $1K–$5K initial, two follow-ons, $15K aggregate, chapter-guided, SDF final approval re-confirmed (official rules + v7 blog + web); truth.verified and one source refreshed; gospel unchanged."
+   }
+  ]
+ }
+}

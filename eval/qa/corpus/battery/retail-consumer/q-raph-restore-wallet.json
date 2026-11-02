@@ -33,11 +33,31 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/guides/freighter"
+        "ref": "https://developers.stellar.org/docs/build/guides/freighter",
+        "note": "Still resolves on 2026-11-02, now titled 'Varial Wallet - Stellar Developer Docs'.",
+        "observedAt": "2026-11-02"
       },
       {
         "class": "D",
         "ref": "https://stellar.org/blog/developers/key-management-101"
+      },
+      {
+        "class": "A",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md",
+        "note": "'The following path should be used to generate keys: m/44'/148'/x'.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key-",
+        "note": "'Recovery code is a 10-word code ... applicable to one certain Stellar wallet'.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/locales/en/translation.json",
+        "note": "'Varial supports one backup phrase imported at a time'.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -59,21 +79,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch varial-retail)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://developers.stellar.org/docs/build/guides/freighter",
-        "https://stellar.org/blog/developers/key-management-101",
-        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/ecosystem/sep-0005.md — path m/44'/148'/x'; class A LOBSTR restore article documents wallet-specific formats.",
-        "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key- — vendor recovery steps; class A LOBSTR phrase page and Ledger support require secrecy; class D CISA on links.",
-        "Sibling sweep 2026-08-31: grep restore wallet|recovery phrase|derivation path|secret key → 24 other cases; read q-ti-secret-key-vs-mnemonic-derivation, q-raph-hardware-wallet; lane report also read q-tool-passkey-wallet-recovery; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md — 'The following path should be used to generate keys: m/44'/148'/x'. ... BIP-0039 should be used to derive binary seed from a mnemonic code.' (observedAt 2026-11-02).",
+        "https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key- — 'Recovery code is a 10-word code ... applicable to one certain Stellar wallet' (wallet-specific formats confirm non-universal import; observedAt 2026-11-02).",
+        "https://github.com/stellar/freighter/blob/5c6956b29a39f6f13a7aedf81b437b2f289f5881/extension/src/popup/locales/en/translation.json — 'Varial supports one backup phrase imported at a time' (observedAt 2026-11-02).",
+        "https://developers.stellar.org/docs/build/guides/freighter — still resolves, now titled 'Varial Wallet - Stellar Developer Docs'; the judge-facing text names no wallet brand (observedAt 2026-11-02).",
+        "No gospel change: proposer and independent verifier both found the answer, key facts, and avoid items current.",
+        "Sibling sweep 2026-11-02: grep -ril 'freighter|varial' over eval/qa/corpus/battery → q-defi-aquarius-what-is, q-eco-freighter-wallet, q-eco-stellar-wallets-list, q-eco-xbull-wallet, q-edge-ambig-best-wallet, q-raph-hardware-wallet, q-raph-lobstr-legitimacy, q-raph-restore-wallet, q-soroban-x402-auth-entry-signing, q-ti-bindings-to-nextjs-integration, q-ti-connect-wallet-button-code, q-ti-find-export-secret-key, q-ti-freighter-localhost-not-detected, q-ti-friendbot-ratelimit-alternatives, q-ti-java-sdk-wallet-feebump, q-ti-stellar-lab-usage-and-new-ui, q-tool-freighter-wallet, q-tool-wallets-comparison; no sibling contradicts the rename or the SDF/noncustodial identity (Freighter-only wording stays valid; out-of-batch siblings are covered by the parallel Varial batches of this round).",
+        "Proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/varial-retail.json; independent verifier decisions .agents/rounds/2026-11-02-golden-audit/pass1/varial-retail.json (accept/modify); applier spot-checked README, npm, www.freighter.app redirect, and SDF blog RSS on 2026-11-02."
       ]
     },
     "origin": "raph wallet-restore-from-phrase-or-secret-key"

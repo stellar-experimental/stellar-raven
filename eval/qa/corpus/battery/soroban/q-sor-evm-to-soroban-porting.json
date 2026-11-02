@@ -8,7 +8,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Port the design, not Solidity inheritance. ERC-20-like behavior maps to SAC for a classic Stellar asset or SEP-41 for a custom token. ERC-1404 transfer restrictions and ERC-1410 partitions need explicit custom policy/partition state and authorization; there is no one-to-one standard mapping. ERC-3643-style regulated controls can use **Draft SEP-57 v0.3.0** plus current OpenZeppelin RWA modules, but SEP-57 is not a finalized universal replacement.\n\nThere is no ambient `msg.sender`: pass an `Address` and call `require_auth`/`require_auth_for_args`; missing or mis-scoped auth is the largest porting footgun. SEP-41 allowances include ledger expiry and are not copied EVM approvals. Use `Option<Address>`, an enum, or explicit initialized state for null/unset values. Do not use all-zero G/C bytes as a sentinel—both encode valid Stellar addresses—and EVM `0x000…` is not accepted as a Stellar Address.\n\nSimulation is temporary, may be stale, discards writes, and is not consensus-final state; submitted transactions commit changes. Replace one-dimensional gas assumptions with CPU, memory, read/write, transaction/event/return and rent fees plus hard limits. Contract storage has TTL, rent, archival/restoration, granularity, and contention.\n\nSolang **0.3.5** exists, but its Soroban target is explicitly pre-alpha/experimental and incomplete—not a production-default compiler. Unsupported or risky areas include assembly/Yul, several crypto/value/creation/destruction features, and compiler-defined storage incompatible with EVM or Rust layout. Prefer a deliberate Rust/Soroban redesign and current audited libraries unless the port fits Solang's documented matrix.",
+    "answer": "Port the design, not Solidity inheritance. ERC-20-like behavior maps to SAC for a classic Stellar asset or SEP-41 for a custom token. ERC-1404 transfer restrictions and ERC-1410 partitions need explicit custom policy/partition state and authorization; there is no one-to-one standard mapping. ERC-3643-style regulated controls can use **Draft SEP-57 (v0.4.0 as of 2026-11-02)** plus current OpenZeppelin RWA modules, but SEP-57 is not a finalized universal replacement.\n\nThere is no ambient `msg.sender`: pass an `Address` and call `require_auth`/`require_auth_for_args`; missing or mis-scoped auth is the largest porting footgun. SEP-41 allowances include ledger expiry and are not copied EVM approvals. Use `Option<Address>`, an enum, or explicit initialized state for null/unset values. Do not use all-zero G/C bytes as a sentinel—both encode valid Stellar addresses—and EVM `0x000…` is not accepted as a Stellar Address.\n\nSimulation is temporary, may be stale, discards writes, and is not consensus-final state; submitted transactions commit changes. Replace one-dimensional gas assumptions with CPU, memory, read/write, transaction/event/return and rent fees plus hard limits. Contract storage has TTL, rent, archival/restoration, granularity, and contention.\n\nSolang **0.4.0** (latest GitHub release as of 2026-11-02; crates.io still lists 0.3.5) exists, but its Soroban target is still explicitly pre-alpha/experimental and incomplete—not a production-default compiler. Unsupported or partial areas include Yul/inline assembly, native value transfer, Solidity `new Contract()` creation, `selfdestruct`, and compiler-defined storage incompatible with EVM or Rust layout. Prefer a deliberate Rust/Soroban redesign and current audited libraries unless the port fits Solang's documented matrix.",
     "keyFacts": [
       "Maps ERC-20/1404/1410/3643 with explicit Draft SEP-57 and custom-policy boundaries.",
       "Makes explicit Address authorization the primary footgun and gives safe null-state design.",
@@ -21,7 +21,7 @@
       "Do NOT call SEP-57 Final or Solang production-ready, or imply ERC-1404/1410 are automatically covered by SEP-57.",
       "Do NOT use zero-byte G/C addresses as null sentinels."
     ],
-    "notes": "Solang repository was live and active on 2026-06-29; answer still treats Rust/Soroban SDK as the default production route.\nAlso good if the answer: Warns that there is no universal zero/null address pattern; use explicit `Option`, sentinel state, or validation instead of `address(0)` mental models. | Mentions OpenZeppelin Stellar modules for fungible, non-fungible, RWA/ERC-3643, allowlist/blocklist, pausable, access control, and upgradeability. | Mentions gas/resource differences: simulate to estimate resources/fees; avoid EVM gas-refund assumptions.\nGolden cites: Official EVM migration docs and authorization docs. | Official SAC/token overview or SEP-41 docs for token mapping. | OpenZeppelin Stellar docs or repository when citing OZ modules.\nGT-41 snapshot 2026-07-10, re-verified unchanged 2026-09-02: SEP-57 Draft v0.3.0 and Solang 0.3.5 pre-alpha are volatile. Auth—not syntax—is the top scored footgun."
+    "notes": "Solang repository was live and active on 2026-06-29; answer still treats Rust/Soroban SDK as the default production route.\nAlso good if the answer: Warns that there is no universal zero/null address pattern; use explicit `Option`, sentinel state, or validation instead of `address(0)` mental models. | Mentions OpenZeppelin Stellar modules for fungible, non-fungible, RWA/ERC-3643, allowlist/blocklist, pausable, access control, and upgradeability. | Mentions gas/resource differences: simulate to estimate resources/fees; avoid EVM gas-refund assumptions.\nGolden cites: Official EVM migration docs and authorization docs. | Official SAC/token overview or SEP-41 docs for token mapping. | OpenZeppelin Stellar docs or repository when citing OZ modules.\nRe-verified 2026-11-02: SEP-57 is Draft v0.4.0 (updated 2026-09-08), and Solang v0.4.0 (GitHub release 2026-09-30; crates.io still lists 0.3.5) still calls its Soroban target pre-alpha. Both version numbers are volatile; grade the Draft and pre-alpha status, not one release number. Auth—not syntax—is the top scored footgun."
   },
   "tags": {
     "category": "soroban",
@@ -35,8 +35,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-09-02",
-    "reverifyBy": "2026-12-01",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-27",
     "sources": [
       {
         "class": "A",
@@ -62,48 +62,108 @@
         "class": "D",
         "ref": "https://github.com/hyperledger-solang/solang",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md (last commit 2b45c64e 2026-09-09)",
+        "note": "Quote: Status: Draft / Updated: 2026-09-08 / Version: 0.4.0",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Parallel web_search -> https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+        "note": "Quote: SEP-0057 | T-REX (Token for Regulated EXchanges) | OpenZeppelin, ... | Draft",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.4.0",
+        "note": "Quote: v0.4.0 Thebes, published 2026-09-30T07:38:49Z, prerelease false",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://crates.io/api/v1/crates/solang",
+        "note": "Quote: max_version 0.3.5, newest_version 0.3.5, updated_at 2026-07-07",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban.rst",
+        "note": "Quote: The Soroban target is still pre-alpha. ... not yet feature-complete or production-ready.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban_support_matrix.rst",
+        "note": "Quote: Yul and inline assembly - Unsupported; Solidity's new Contract() syntax ... is not yet supported; Native value transfer and payable-style flows - Unsupported; selfdestruct - Unsupported",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "Parallel web_search -> https://solang.readthedocs.io/en/latest/targets/soroban.html",
+        "note": "Quote: The Soroban target is still pre-alpha.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
+        "note": "Quote: Solidity support via Solang for Stellar is experimental and evolving. ... We Don't recommend using Solang for production contracts at this time.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
       {
-        "claim": "SEP-57 is Draft version 0.3.0 as of 2026-09-02.",
+        "claim": "SEP-57 is Draft version 0.4.0 as of 2026-11-02.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
-            "observedAt": "2026-09-02",
-            "note": "The source marks SEP-57 Draft, updated 2026-06-11, at version 0.3.0."
+            "observedAt": "2026-11-02",
+            "note": "Status: Draft / Updated: 2026-09-08 / Version: 0.4.0 (last commit 2b45c64e, 2026-09-09)."
           },
           {
             "class": "D",
-            "ref": "https://www.openzeppelin.com/news/rwa-wizard-issue-regulated-real-world-assets-on-stellar",
-            "observedAt": "2026-09-02",
-            "note": "The 2026-08-27 post uses SEP-57 for a Testnet RWA wizard and makes no Final claim."
+            "ref": "Parallel web_search -> https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+            "observedAt": "2026-11-02",
+            "note": "SEP-0057 T-REX (Token for Regulated EXchanges) listed as Draft."
           }
         ]
       },
       {
-        "claim": "Solang 0.3.5 is the latest release and its Soroban target remains experimental and not production-ready as of 2026-09-02.",
+        "claim": "Solang v0.4.0 is the latest GitHub release (crates.io still lists 0.3.5) and its Soroban target remains pre-alpha and not production-ready as of 2026-11-02.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "B",
-            "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.3.5",
-            "observedAt": "2026-09-02",
-            "note": "The v0.3.5 release remains the newest tag."
+            "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.4.0",
+            "observedAt": "2026-11-02",
+            "note": "v0.4.0 Thebes, published 2026-09-30T07:38:49Z, prerelease false."
           },
           {
             "class": "B",
-            "ref": "https://github.com/hyperledger-solang/solang/blob/main/docs/targets/soroban.rst",
-            "observedAt": "2026-09-02",
-            "note": "The target documentation calls Soroban support pre-alpha and not production-ready."
+            "ref": "https://crates.io/api/v1/crates/solang",
+            "observedAt": "2026-11-02",
+            "note": "max_version 0.3.5, newest_version 0.3.5."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban.rst",
+            "observedAt": "2026-11-02",
+            "note": "'The Soroban target is still pre-alpha. ... not yet feature-complete or production-ready.'"
+          },
+          {
+            "class": "D",
+            "ref": "Parallel web_search -> https://solang.readthedocs.io/en/latest/targets/soroban.html",
+            "observedAt": "2026-11-02",
+            "note": "'The Soroban target is still pre-alpha.'"
           },
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
-            "observedAt": "2026-09-02",
-            "note": "The official guide says Solang support is experimental and not recommended for production."
+            "observedAt": "2026-11-02",
+            "note": "'Solidity support via Solang for Stellar is experimental and evolving. ... We Don't recommend using Solang for production contracts at this time.'"
           }
         ]
       },
@@ -145,14 +205,19 @@
       }
     ],
     "verified": {
-      "date": "2026-09-02",
-      "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md (Fable 5 high; orchestrator reconciled)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02)",
       "evidence": [
-        "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md",
-        "Source review 2026-09-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
-        "Source review 2026-09-02: https://github.com/hyperledger-solang/solang/releases/tag/v0.3.5",
-        "Live source 2026-09-02: https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
-        "Sibling sweep 2026-09-02: q-crp-oz-rwa-erc3643-trex, q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-tool-rust-soroban-sdk, and q-tool-which-sdk-comparison; no contradiction."
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md (last commit 2b45c64e 2026-09-09) — \"Status: Draft / Updated: 2026-09-08 / Version: 0.4.0\" (class B, observedAt 2026-11-02)",
+        "Parallel web_search -> https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md — \"SEP-0057 | T-REX (Token for Regulated EXchanges) | OpenZeppelin, ... | Draft\" (class D, observedAt 2026-11-02)",
+        "https://github.com/hyperledger-solang/solang/releases/tag/v0.4.0 — \"v0.4.0 Thebes, published 2026-09-30T07:38:49Z, prerelease false\" (class B, observedAt 2026-11-02)",
+        "https://crates.io/api/v1/crates/solang — \"max_version 0.3.5, newest_version 0.3.5, updated_at 2026-07-07\" (class B, observedAt 2026-11-02)",
+        "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban.rst — \"The Soroban target is still pre-alpha. ... not yet feature-complete or production-ready.\" (class B, observedAt 2026-11-02)",
+        "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban_support_matrix.rst — \"Yul and inline assembly - Unsupported; Solidity's new Contract() syntax ... is not yet supported; Native value transfer and payable-style flows - Unsupported; selfdestruct - Unsupported\" (class B, observedAt 2026-11-02)",
+        "Parallel web_search -> https://solang.readthedocs.io/en/latest/targets/soroban.html — \"The Soroban target is still pre-alpha.\" (class D, observedAt 2026-11-02)",
+        "https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang — \"Solidity support via Solang for Stellar is experimental and evolving. ... We Don't recommend using Solang for production contracts at this time.\" (class A, observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-crp-oz-rwa-erc3643-trex (refreshed concurrently in its own batch) now states Draft v0.4.0 as of 2026-11-02 — consistent; q-tool-which-sdk-comparison and q-tool-rust-soroban-sdk — no contradiction.",
+        "Independent verifier decisions and proposer matrix: .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02."
       ],
       "rootCause": [
         "freshness-drift"

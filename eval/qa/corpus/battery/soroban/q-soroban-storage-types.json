@@ -36,7 +36,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2026-12-24",
+    "reverifyBy": "2027-03-19",
     "sources": [
       {
         "class": "A",
@@ -152,41 +152,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
       "evidence": [
-        "eval/qa/results/2026-07-07T19-58-35-variantA.json q-soroban-storage-types: candidate said Instance storage is archived at TTL 0 but auto-restored via Invoke; judge marked this wrong with a RestoreFootprintOp-only rationale",
-        "Live official docs 2026-07-07: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — overview says Persistent/Instance restore usually automatically via InvokeHostFunction, rarely manually via RestoreFootprintOp; Contract Data Automatic Restoration says P23 auto-restore requires transaction restore list; RestoreFootprintOp section says manual op is mostly no longer needed from P23",
-        "Live official docs 2026-07-07: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage — storage table confirms Persistent and Instance archive while Temporary is removed forever; Persistent section still mentions RestoreFootprintOp without the P23 auto-restore caveat (sd-007)",
-        "stellar/stellar-protocol core/cap-0066.md at 1b1c22e02fc0cec6fff1175c2d7d08ad83a828e1: lines 16-17, 43-48, 391-400, and 619-647 confirm automatic restoration via InvokeHostFunctionOp and rare/manual RestoreFootprintOp fallback",
-        "stellar/stellar-core at d6f2546791774d0b2cd925b8a4026adf967a92a3: InvokeHostFunctionOpFrame.cpp lines 1006-1025 and 1184-1195 implement archivedSorobanEntries-driven autorestore; InvokeHostFunctionTests.cpp lines 5256-5330, 5488-5585, and 10439-10520 exercise contract-instance and persistent-entry autorestore",
-        "Independent verifier subagent 019f3e2e-cca0-73b0-96f3-fefe990de0bb independently confirmed A/B/E source classes and the restore-list nuance on 2026-07-07",
-        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-007; the Protocol 23 storage-restoration facts are unchanged.",
-        "No live recheck was required for this pure symmetric-caution re-form.",
-        "Improvements review 2026-08-27: improvements/resolved.json entry sd-007 records the 2026-07-27 Docs fix; the disputed claim is whether archived Persistent or Instance entries require a separate RestoreFootprintOp under Protocol 23.",
-        "Sibling sweep 2026-08-27: grep sd-007|RestoreFootprintOp|archivedSorobanEntries|auto-restore → q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto, q-infra-simulate-transaction-howto; no contradiction",
-        "Structural re-form (compound-predicate): Recast four compound facts as five compact atomic maps; the manual-fallback claim moved into the existing RestoreFootprintOp avoid.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — SDK storage still exposes Instance, Persistent, and Temporary.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md — XDR ContractDataDurability still contains only Persistent and Temporary.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Persistent remains long-lived per-key storage for data such as balances, while Temporary remains cheap, short-lived, and recreatable.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Instance remains small contract config/admin/metadata loaded with its contract instance.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Persistent and Instance remain archived/restorable at expiry; Temporary remains permanently deleted and nonrestorable.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-core/blob/master/src/transactions/InvokeHostFunctionOpFrame.cpp — Protocol 23+ restoration still requires archived keys in the read-write footprint and archivedSorobanEntries.",
-        "Sibling sweep 2026-08-27: grep ContractDataDurability|archivedSorobanEntries|RestoreFootprintOp|Instance.*Persistent.*Temporary → q-sor-classic-dex-from-contract, q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto, q-soroban-storage-types; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 1 review (gt2-grok-rev)): restored RestoreFootprintOp as the required manual fallback while keeping the read-write footprint + archivedSorobanEntries requirement from the HEAD fact; truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — SDK storage still exposes Instance, Persistent, and Temporary.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage — XDR ContractDataDurability still contains only Persistent and Temporary.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Persistent remains long-lived per-key storage for data such as balances, while Temporary remains cheap, short-...",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Instance remains small contract config/admin/metadata loaded with its contract instance.",
-        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Persistent and Instance remain archived/restorable at expiry; Temporary remains permanently deleted and nonres...",
-        "Sibling sweep 2026-08-30: grep sd-007|RestoreFootprintOp|archivedSorobanEntries|auto-restore → q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto, q-infra-simulate-transaction-howto; no contradiction"
-      ],
-      "rootCause": [
-        "eval-side freshness drift of protocol semantics: the generic storage-types golden did not carry the Protocol 23 / CAP-0066 auto-restore update, so a judge applied the older RestoreFootprintOp-only mental model",
-        "improvements/stellar-docs/sd-007-state-archival-auto-restore-ambiguity.md — official docs are mostly correct on the state-archival page, but adjacent sections/pages still omit or contradict the restore-list qualifier, making the stale interpretation plausible",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (observedAt 2026-10-26): \"When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible; When a Persistent or Instance entry TTL is 0, it is \\\"archived\\\"\".",
+        "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage (observedAt 2026-10-01): \"It can then be restored when needed — usually automatically, by including the entry in a transaction's restore list ... or manually using the RestoreFootprintOp operation\".",
+        "https://raw.githubusercontent.com/stellar/stellar-xdr/main/Stellar-transaction.x (observedAt 2026-11-02): \"uint32 archivedSorobanEntries<>;\"; Stellar-ledger-entries.x: \"enum ContractDataDurability { TEMPORARY = 0, PERSISTENT = 1 }\"; cap-0066.md: \"no archived key should be in the readOnly footprint\".",
+        "Verification only: no gospel change; the sd-007 caution in golden.notes stays. Sibling sweep 2026-11-02: q-sor-ttl-defaults-extend, q-soroban-vuln-classes, q-sor-p23-auto-restore-extendto; no contradiction."
       ]
     },
     "origin": "raven-next q-soroban-storage-types"

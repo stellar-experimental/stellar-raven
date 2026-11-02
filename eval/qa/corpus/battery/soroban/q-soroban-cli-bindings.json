@@ -6,17 +6,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Use the language-specific subcommand. In Stellar CLI 27.0.0, TypeScript is implemented as `stellar contract bindings typescript --output-dir <dir> (--wasm <file> | --wasm-hash <hash> | --contract-id <C…>)`. Rust binding generation is implemented only from local `--wasm` and emits Rust source; for an on-chain Rust target, first fetch/export the exact Wasm and generate from that file. Python, Java, Flutter, Swift, and PHP appear as subcommands but currently exit as not implemented and direct users to external tooling—do not present them as built-in generators. Bindings snapshot the selected embedded spec and must be regenerated after interface changes. `contractimport!` is the separate in-contract Rust typed-client pattern; EVM ABI JSON/ethers is irrelevant.",
+    "answer": "Use the language-specific subcommand. As of Stellar CLI 28.1.0 (2026-09-26), `stellar contract bindings typescript --output-dir <dir> (--wasm <file> | --wasm-hash <hash> | --contract-id <C…>)` still generates a TypeScript package, but the CLI marks it deprecated in favor of the JavaScript Stellar SDK generator (`npx @stellar/stellar-sdk generate`, which takes the same three inputs). Rust binding generation is implemented only from local `--wasm` and emits Rust source; for an on-chain Rust target, first fetch/export the exact Wasm and generate from that file. Python, Java, Flutter, Swift, PHP, and KMP appear as subcommands but exit as not implemented and direct users to external tooling—do not present them as built-in generators. Bindings snapshot the selected embedded spec and must be regenerated after interface changes. `contractimport!` is the separate in-contract Rust typed-client pattern; EVM ABI JSON/ethers is irrelevant.",
     "keyFacts": [
-      "CLI 27 TypeScript bindings accept Wasm, Wasm hash, or contract ID input.",
-      "CLI 27 Rust bindings accept only local Wasm input.",
-      "CLI 27 placeholder language commands are not built-in generators.",
+      "CLI TypeScript bindings take Wasm, Wasm hash, or contract ID; CLI 28.1.0 deprecates them.",
+      "As of CLI 28.1.0, Rust bindings accept only local Wasm input.",
+      "As of CLI 28.1.0, placeholder language commands are not built-in generators.",
       "Explains spec snapshot/regeneration and contractimport! distinction."
     ],
     "avoid": [
       "Do NOT generalize TypeScript's three inputs to Rust/placeholder languages, claim automatic synchronization, or use stellar contract abi/EVM ABI flows."
     ],
-    "notes": "Command + targets (--wasm / --wasm-hash / --contract-id) and language list verified against the Stellar CLI manual. 2026-06-29 differentiation: this file is the simple CLI bindings how-to (deployed contract OR local Wasm); the no-address→discover-functions/constructor→deploy-with-constructor-args JS-SDK flow is owned by q-sor-bindings-from-wasm-no-address. Fixed q to name the local-Wasm target.\nAlso good if the answer: You can target a deployed contract id or a local .wasm to produce the bindings. | In Rust, the `contractimport!` macro is the in-code equivalent for typed cross-contract clients.\nGolden cites: The developers.stellar.org Stellar CLI bindings documentation.\nGT-44 empirical capability matrix from stellar 27.0.0; version-qualify future changes."
+    "notes": "Command + targets (--wasm / --wasm-hash / --contract-id) and language list verified against the Stellar CLI manual. 2026-06-29 differentiation: this file is the simple CLI bindings how-to (deployed contract OR local Wasm); the no-address→discover-functions/constructor→deploy-with-constructor-args JS-SDK flow is owned by q-sor-bindings-from-wasm-no-address. Fixed q to name the local-Wasm target.\nAlso good if the answer: You can target a deployed contract id or a local .wasm to produce the bindings. | In Rust, the `contractimport!` macro is the in-code equivalent for typed cross-contract clients.\nGolden cites: The developers.stellar.org Stellar CLI bindings documentation.\nGT-44 empirical capability matrix from stellar 27.0.0. Re-run 2026-11-02 on stellar 28.1.0: TypeScript bindings work but are deprecated toward the JS SDK generator; a KMP placeholder was added. Version-qualify future changes."
   },
   "tags": {
     "category": "soroban",
@@ -30,8 +30,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-06-29",
-    "reverifyBy": "2027-02-25",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-06-10",
     "sources": [
       {
         "class": "A",
@@ -47,6 +47,24 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/types/fully-typed-contracts",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+        "note": "Release notes: \"TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli.\" Also adds the KMP target.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+        "note": "\"npx @stellar/stellar-sdk generate [options]\" with `--wasm`, `--wasm-hash`, and `--contract-id` sources.",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "F",
+        "ref": "local stellar 28.1.0 (c0f4d0da) `stellar contract bindings <lang>` probes",
+        "note": "TypeScript generates with a deprecation warning; Rust takes --wasm only; python/java/flutter/swift/php/kmp exit not implemented.",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -73,22 +91,57 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of Stellar CLI 28.1.0 (2026-09-26), TypeScript bindings still generate from Wasm, Wasm hash, or contract ID but are deprecated toward `npx @stellar/stellar-sdk generate`; Rust takes local Wasm only; Python/Java/Flutter/Swift/PHP/KMP are not-implemented placeholders.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+            "observedAt": "2026-11-02",
+            "note": "\"`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead\"; usage `<--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>`; `stellar contract bindings rust --wasm <WASM>`; `kmp` requires external plugin."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+            "observedAt": "2026-11-02",
+            "note": "v28.1.0 published 2026-09-26; release notes deprecate TypeScript bindings and add KMP. v27.1.0 and v28.0.0 bindings.rs carry no deprecation."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md",
+            "observedAt": "2026-11-02",
+            "note": "The JS SDK generator takes --wasm, --wasm-hash, or --contract-id."
+          },
+          {
+            "class": "F",
+            "ref": "local stellar 28.1.0 (c0f4d0da) bindings probes",
+            "observedAt": "2026-11-02",
+            "note": "\"⚠️ `stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK instead ... ✅ Generated!\"; kmp: \"kmp binding generation is not implemented in the stellar-cli\" (exit 1)."
+          },
+          {
+            "class": "D",
+            "ref": "Parallel web_search \"stellar cli 28.1.0 typescript bindings deprecated\"",
+            "observedAt": "2026-11-02",
+            "note": "Hits the v28.1.0 release and js-stellar-sdk docs: \"the Stellar CLI currently ships its own native `stellar contract bindings typescript` command (now deprecated).\""
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
       "evidence": [
-        "Solo scratchpad 575 GT-44 processes 3316/3324; stellar 27.0.0 empirical run.",
-        "Structural re-form (long-fact): Split the CLI 27 language input matrix into three facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-cli/blob/v27.0.0/cmd/soroban-cli/src/commands/contract/bindings/typescript.rs — the tagged CLI 27 source accepts Wasm, Wasm hash, or contract ID input for TypeScript bindings.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-cli/blob/v27.0.0/cmd/soroban-cli/src/commands/contract/bindings/rust.rs — the tagged CLI 27 Rust source accepts only local Wasm input.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-cli/tree/v27.0.0/cmd/soroban-cli/src/commands/contract/bindings — the tagged CLI 27 placeholder-language modules return not-implemented errors and direct users to external tooling.",
-        "Sibling sweep 2026-08-29: grep bindings typescript|bindings rust|placeholder language|contractimport → q-ti-bindings-to-nextjs-integration; no contradiction."
+        "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0 — \"New Kotlin Multiplatform (KMP) target for `stellar contract bindings`. TypeScript bindings are now deprecated (`stellar contract bindings typescript`) in favor of https://github.com/stellar/js-stellar-sdk#cli.\" (observedAt 2026-11-02; gh api releases: v28.1.0 2026-09-26T16:33:53Z latest).",
+        "https://developers.stellar.org/docs/tools/cli/stellar-cli — \"`typescript` — ⚠️ Deprecated, use the JavaScript Stellar SDK instead\"; usage `stellar contract bindings typescript [OPTIONS] --output-dir <OUTPUT_DIR> <--wasm <WASM>|--wasm-hash <WASM_HASH>|--contract-id <CONTRACT_ID>>`; `stellar contract bindings rust --wasm <WASM>` (observedAt 2026-11-02).",
+        "https://raw.githubusercontent.com/stellar/js-stellar-sdk/master/README.md — \"npx @stellar/stellar-sdk generate [options] ... You can generate bindings from three different sources ... `--wasm <path>` ... `--wasm-hash <hash>` ... `--contract-id <id>`\" (observedAt 2026-11-02).",
+        "Local stellar 28.1.0 (c0f4d0da) probes 2026-11-02: TypeScript generated with a deprecation warning; Rust emitted `soroban_sdk::contractfile!`; python/java/flutter/swift/php/kmp exit 1 as not implemented.",
+        "Independent verifier decisions and proposer matrix: .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04.",
+        "Sibling sweep 2026-11-02: grep 'contract bindings' over eval/qa/corpus/battery → q-ti-bindings-to-nextjs-integration (calls the TS command \"current\"; no deprecation note — drift flagged to its batch, not edited here), q-tool-which-sdk-comparison (no bindings claim); q-sor-bindings-from-wasm-no-address is not in the owned battery."
       ],
       "rootCause": [
-        "CLI capability drift/local golden overgeneralization.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-soroban-cli-bindings"

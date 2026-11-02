@@ -37,16 +37,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
-      ],
-      "rootCause": [
-        "eval-authoring"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md — \"Title: URI Scheme to facilitate delegated signing / Status: Active / Updated: 2020-07-29 / Version: 2.1.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[A] https://developers.stellar.org/docs/build/apps/wallet — \"The [Sep-7] standard defines a way for a non-wallet application to construct a URI scheme that represents a ...\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md — \"to look like this: `web+stellar:` (no forward-slashes) ... web+stellar:tx ... web+stellar:pay\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
+        "[E] stellarDocs.search_docs -> https://developers.stellar.org/docs/build/apps/wallet/sep7 — \"The scheme used is web+stellar, followed by a colon. Example: web+stellar:<operation\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md — \"origin_domain ... URI_REQUEST_SIGNING_KEY\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md — \"Status: Active\" (observedAt 2026-11-02; supports golden.notes: disputed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0007] | URI Scheme to facilitate delegated signing | Interstellar | Final | ... | [SEP-0008] | Regulated Assets | Interstellar | Final |\" (observedAt 2026-11-02; supports golden.notes: disputed)",
+        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.notes: disputed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: checked q-sep-catalog-list, q-sep-wallet-seps-list; no contradiction with this case's facts."
       ]
     },
     "origin": "raven-next q-sep-7-uri",

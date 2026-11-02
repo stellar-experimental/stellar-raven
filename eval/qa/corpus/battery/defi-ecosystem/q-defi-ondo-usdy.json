@@ -20,7 +20,7 @@
       "Do NOT claim everyone, U.S. persons, or institutions only can hold USDY; consult current eligibility terms.",
       "Do NOT infer legal eligibility from Stellar issuer authorization flags."
     ],
-    "notes": "VERIFIED against the dossier's primary source (stellar.org Ondo USDY press release): Ondo Finance's institutional-grade yieldcoin backed by tokenized US Treasuries, launched on Stellar Sep 17 2025, ~5.3% APY at launch, available to non-US (global) individual + institutional investors only — 'not offered or sold to US persons.' Entity-grounded → find_content_by_entity. USDY=non-US yieldcoin; issuer/product precision trap (vs BENJI mutual-fund share, CRDT private credit).\nAlso good if the answer: Notes it carries a yield (around 5% APY at launch) backed by tokenized US Treasuries.\nGolden cites: A dated source on Ondo USDY's Stellar launch.\nCorrected 2026-07-10. Grade current issuer/product/eligibility scope separately from the dated launch and from on-chain flags."
+    "notes": "VERIFIED against the dossier's primary source (stellar.org Ondo USDY press release): Ondo Finance's institutional-grade yieldcoin backed by tokenized US Treasuries, launched on Stellar Sep 17 2025, ~5.3% APY at launch, available to non-US (global) individual + institutional investors only — 'not offered or sold to US persons.' Entity-grounded → find_content_by_entity. USDY=non-US yieldcoin; issuer/product precision trap (vs BENJI mutual-fund share, CRDT private credit).\nAlso good if the answer: Notes it carried about 5.3% APY at launch, when the Stellar release tied it to tokenized U.S. Treasuries. As of 2026-11-02, Ondo's docs say USDY was formerly issued by Ondo USDY LLC (folded into Ondo Stocks on 2025-12-15) and name Ondo Global Markets (BVI) Limited as the issuer; a dated answer may use either name.\nGolden cites: A dated source on Ondo USDY's Stellar launch.\nCorrected 2026-07-10. Grade current issuer/product/eligibility scope separately from the dated launch and from on-chain flags."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -54,6 +54,24 @@
         "class": "D",
         "ref": "https://ondo.finance/.well-known/stellar.toml",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.ondo.finance/general-access-products/usdy/basics",
+        "note": "'a tokenized note formerly issued by Ondo USDY LLC, which as of December 15, 2025 has been folded into the Ondo Stocks umbrella. Depending on the issuance date, USDY may be secured by either short-term US Treasuries, shares of iShares Short Treasury Bond ETF, or bank demand deposits.'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.ondo.finance/general-access-products/usdy/eligibility",
+        "note": "'Ondo Global Markets (BVI) Limited, the issuer of USDY tokens, also prohibits persons ...'",
+        "observedAt": "2026-11-02"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.findas.org/tokenomics-review/the-tokenomics-of-ondo-us-dollar-yield-usdy",
+        "note": "independent review: USDY formerly issued by Ondo USDY LLC; folded under a new umbrella as of 2025-12-15",
+        "observedAt": "2026-11-02"
       }
     ],
     "corroboration": [
@@ -80,26 +98,75 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-02 Ondo's docs say USDY was formerly issued by Ondo USDY LLC (folded in on 2025-12-15) and name Ondo Global Markets (BVI) Limited as the issuer.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.ondo.finance/general-access-products/usdy/basics",
+            "observedAt": "2026-11-02",
+            "note": "'formerly issued by Ondo USDY LLC, which as of December 15, 2025 has been folded into the Ondo Stocks umbrella'"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.ondo.finance/general-access-products/usdy/eligibility",
+            "observedAt": "2026-11-02",
+            "note": "'Ondo Global Markets (BVI) Limited, the issuer of USDY tokens'"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.findas.org/tokenomics-review/the-tokenomics-of-ondo-us-dollar-yield-usdy",
+            "observedAt": "2026-11-02",
+            "note": "corroborates the 2025-12-15 transition"
+          }
+        ]
+      },
+      {
+        "claim": "Current USDY backing is tokenized U.S. Treasuries alone.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.ondo.finance/general-access-products/usdy/basics",
+            "observedAt": "2026-11-02",
+            "note": "may be secured by short-term US Treasuries, iShares Short Treasury Bond ETF shares, or bank demand deposits"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=Ondo",
+            "observedAt": "2026-11-02",
+            "note": "'backed by short-term US Treasuries and bank deposits'"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-02)",
       "evidence": [
-        "Solo scratchpad 575 GT-16 processes 3244/3245; live issuer/SAC/flag checks 2026-07-10",
-        "Structural re-form (compound-predicate): split product, launch, rate, backing, and eligibility claims into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://docs.ondo.finance/general-access-products/usdy/basics — the current product page identifies USDY as Ondo's accumulating tokenized note.",
-        "Live re-check 2026-08-27: https://stellar.org/press/ondo-finance-launches-usdy-on-stellar — the dated release confirms the September 2025 Stellar launch.",
-        "Live re-check 2026-08-27: https://stellar.org/press/ondo-finance-launches-usdy-on-stellar — the dated release states 5.3% at launch.",
-        "Live re-check 2026-08-27: https://docs.ondo.finance/general-access-products/usdy/basics — the current product page makes backing dependent on issuance date.",
-        "Live re-check 2026-08-27: https://docs.ondo.finance/general-access-products/usdy/eligibility — the current terms limit eligibility by jurisdiction and KYC status.",
-        "Sibling sweep 2026-08-27: grep USDY|Ondo → q-asset-rwa-tokenized-freshness, q-rwa-projects-tokenizing-stellar, q-defi-benji-franklin-templeton, q-defi-rwa-scf-similar, q-eco-stablecoins-on-stellar; no contradiction"
+        "2026-11-02 [A] https://stellar.org/press/ondo-finance-launches-usdy-on-stellar — \"Rio de Janeiro, Brazil - September 17, 2025 - Ondo Finance ... USDY currently offers a 5.3% APY\" (proposer claim, confirmed: USDY launched on Stellar 2025-09-17 at about 5.3% APY.)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=Ondo — \"Ondo Finance issues USDY on Stellar ... Launched on Stellar in 2025\" (proposer claim, confirmed: USDY launched on Stellar 2025-09-17 at about 5.3% APY.)",
+        "2026-11-02 [A] https://docs.ondo.finance/general-access-products/usdy/basics — \"USDY ... is a tokenized note formerly issued by Ondo USDY LLC, which as of December 15, 2025 has been folded into the Ondo Stocks umbrella. Depending on the issuance date, USDY may be secured by either short-term US Treasuries, shares of iShares Short Treasur…\" (proposer claim, confirmed: USDY is an accumulating tokenized note; backing depends on issuance date (Treasuries, ETF shares, bank deposits).)",
+        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=Ondo — \"USDY ... backed by short-term US Treasuries and bank deposits\" (proposer claim, confirmed: USDY is an accumulating tokenized note; backing depends on issuance date (Treasuries, ETF shares, bank deposits).)",
+        "2026-11-02 [A] https://docs.ondo.finance/general-access-products/usdy/eligibility — \"Prohibited Persons ... United States ... persons who are 'US persons' ... Restricted Persons generally will be required to produce evidence that they satisfy the applicable eligibility requirements\" (proposer claim, confirmed: Eligibility excludes US persons and prohibited jurisdictions; others may need qualified status and KYC.)",
+        "2026-11-02 [A] https://stellar.org/press/ondo-finance-launches-usdy-on-stellar — \"enables global (non-US) individual and institutional investors\" (proposer claim, confirmed: Eligibility excludes US persons and prohibited jurisdictions; others may need qualified status and KYC.)",
+        "2026-11-02 [A] https://docs.ondo.finance/general-access-products/usdy/basics — \"may be secured by either short-term US Treasuries, shares of iShares Short Treasury Bond ETF, or bank demand deposits\" (proposer claim, contradicted: Also-good line: USDY backed by tokenized US Treasuries.)",
+        "2026-11-02 [A] https://docs.ondo.finance/general-access-products/usdy/basics — \"USDY ... is a tokenized note formerly issued by Ondo USDY LLC, which as of December 15, 2025 has been folded into the Ondo Stocks umbrella. Depending on the issuance date, USDY may be secured by either short-term US Treasuries, shares of iShares Short Treasur…\" (independent verifier, accept on golden.notes)",
+        "2026-11-02 [A] https://docs.ondo.finance/general-access-products/usdy/eligibility — \"Ondo Global Markets (BVI) Limited, the issuer of USDY tokens, also prohibits persons from subscribing for, acquiring or redeeming its tokens\" (independent verifier, accept on golden.notes)",
+        "2026-11-02 [A] https://app.ondo.finance/assets/usdy (via perplexity_search) — \"USDY tokens are issued by Ondo Global Markets (BVI) Limited, a British Virgin Islands business company.\" (independent verifier, accept on golden.notes)",
+        "2026-11-02 [D] https://www.findas.org/tokenomics-review/the-tokenomics-of-ondo-us-dollar-yield-usdy — \"Ondo's docs state USDY was formerly issued by Ondo USDY LLC and that, as of December 15, 2025, it was \"folded into the Ondo Global Markets umbrella.\"\" (independent verifier, accept on golden.notes)",
+        "Change: notes 'Also good' line no longer rewards 'backed by tokenized US Treasuries' (it conflicted with avoid[0]); it keeps 5.3% as launch-only and adds the dated issuer-entity transition (Ondo USDY LLC -> Ondo Global Markets (BVI) Limited). Answer, keyFacts, avoid unchanged; asOf 2026-11-02 added; freshness stays stable.",
+        "Root-cause note: an 'also good' note rewarded a backing claim that avoid[0] punishes (authoring flaw); Ondo's issuer entity also changed on 2025-12-15.",
+        "Sibling sweep 2026-11-02: grep USDY → q-asset-stablecoin-issuers-discovery, q-rwa-projects-tokenizing-stellar, q-defi-benji-franklin-templeton, q-defi-rwa-scf-similar, q-eco-defi-market-map, q-eco-stablecoins-on-stellar; none names a USDY issuer entity or pins Treasuries-only backing; register cluster '2025-2026 RWA/stablecoin launch dates' (USDY 2025-09-17) unchanged; no contradiction."
       ],
       "rootCause": [
-        "eval-side launch-snapshot drift and technical-versus-legal eligibility conflation",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — eval-side authoring flaw: an 'also good' note rewarded a backing claim that avoid[0] punishes",
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-defi-ondo-usdy"
+    "origin": "raven-next q-defi-ondo-usdy",
+    "asOf": "2026-11-02"
   }
 }

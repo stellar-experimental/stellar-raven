@@ -1,0 +1,1386 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "scf-rfp",
+ "kind": "pass2",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [],
+ "verifier": {
+  "decisions": [
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.keyFacts[2]",
+    "decision": "modify",
+    "newText": "Reports which briefs, if any, the official RFP Track page lists as open.",
+    "note": "Behavior gating is correct (the old fact pinned a date-contingent empty roster). 'Roster' can read as requiring named briefs; on 2026-11-02 the verified official roster is empty. The new wording makes an empty roster an explicit pass and stays durable after Q4 briefs publish.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.keyFacts[3]",
+    "decision": "modify",
+    "newText": "Flags any reported Scout open brief that the official RFP Track page omits.",
+    "note": "Dropping the date-contingent 'Q4 announced but not yet published' fact is right (it expires when Q4 briefs publish; avoid[4] and the answer keep the dated state). But the proposed wording reads as a required Scout flag, which conflicts with the notes' 'Correct: the official state' and with the q-scf-open-rfps-live notes ('lists only the official roster, meets the listing fact'). The modified text …",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removing the Scout-attribution partial cap is required: ADR-0008 (research/decisions/0008-human-review-eval-and-playground-policy.md) fixes canonical-page partial caps at base reserve, Horizon lifecycle, and RPC pagination, and Scout is an aggregator. The replacement is a plain wrong rule for an unattributed false claim (verified false: A and B agree both Q3 briefs were withdrawn 2026-10-16; Scout…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "truth.verified.rootCause[3]",
+    "decision": "accept",
+    "note": "sls-096 exists in the worktree (status verified) and its evidence matches my live Scout read and the handbook commit.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "truth.verified.evidence[9]",
+    "decision": "accept",
+    "note": "Accurate description of the pass-2 keyFact change; still accurate with my modified keyFact texts.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Pass-2 evidence block re-derived independently: every quoted value matches my own reads (RFP page quote and two empty 'Coming Soon' blocks; e07b4bfce1 latest on path and repo; Scout generatedAt 17:29:38.076Z, q3-2026, open 2, syntheticRounds 1; awards page November 9 / close 2026-11-09; Wayback 20261018175817 close 2026-11-08; no published Q4 brief in Parallel or Perplexity).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search 'Stellar Community Fund Q4 2026 RFPs published' (recency month); https://github.com/stellar/scf-handbook/discussions",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Top hit is the RFP Track page itself: 'October 2026: New Q4 RFPs are coming soon.' (2026-10-16); discussion 'SCF #46: which developer-tooling RFP scopes remain …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Grading rationale is accurate and matches ADR-0008. 'Plain rule' sentence is consistent with the modified keyFacts.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance only; accurate for this pass.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "golden.keyFacts[1]",
+    "decision": "modify",
+    "newText": "Answers whether the official RFP Track page lists a matching open brief.",
+    "note": "Behavior gating is correct. 'Answers from the roster' is vague for a yes/no question; the modified text grades the actual answer (is there a matching open brief on the official page), passes 'No' on 2026-11-02, and stays durable after Q4 publication.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "The submission must address an [open RFP](#current-open-rfps) from the current quarter; 1. Submit the SCF Interest form ... 2. Eligible teams will be invited to…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removing the Scout-attribution partial cap is required: ADR-0008 (research/decisions/0008-human-review-eval-and-playground-policy.md) fixes canonical-page partial caps at base reserve, Horizon lifecycle, and RPC pagination, and Scout is an aggregator. The replacement is a plain wrong rule for an unattributed false claim (verified false: A and B agree both Q3 briefs were withdrawn 2026-10-16; Scout…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "The submission must address an [open RFP](#current-open-rfps) from the current quarter; 1. Submit the SCF Interest form ... 2. Eligible teams will be invited to…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "truth.verified.rootCause[3]",
+    "decision": "accept",
+    "note": "sls-096 exists and is verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "truth.verified.evidence[10]",
+    "decision": "accept",
+    "note": "Accurate; still accurate with the modified keyFact text.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Pass-2 evidence block re-derived independently: every quoted value matches my own reads (RFP page quote and two empty 'Coming Soon' blocks; e07b4bfce1 latest on path and repo; Scout generatedAt 17:29:38.076Z, q3-2026, open 2, syntheticRounds 1; awards page November 9 / close 2026-11-09; Wayback 20261018175817 close 2026-11-08; no published Q4 brief in Parallel or Perplexity).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search 'Stellar Community Fund Q4 2026 RFPs published' (recency month); https://github.com/stellar/scf-handbook/discussions",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Top hit is the RFP Track page itself: 'October 2026: New Q4 RFPs are coming soon.' (2026-10-16); discussion 'SCF #46: which developer-tooling RFP scopes remain …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Grading rationale is accurate and matches ADR-0008.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfp-tooling",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance only; accurate for this pass.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "golden.keyFacts[0]",
+    "decision": "accept",
+    "note": "80 characters, one predicate. The old fact rewarded echoing only the lagging Scout rows; the new one also passes an official-roster-only answer. Scout-listed briefs remain allowed only with attribution and date (avoid[3]), so the change does not loosen the false-claim rule.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "golden.avoid[2]",
+    "decision": "accept",
+    "note": "The old trap named SCF #45, which has ended (awards page shows #45 'Notification & Award Distribution'), so it no longer tracks the live round. The new wording targets the invalid inference (brief status proves a full-proposal window), not the possibly-true fact that #46 is in Submission through 2026-11-09; it is answer-visible and matches the sibling q-scf-passkey-rfps-live avoid[2] verbatim.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "The submission must address an [open RFP](#current-open-rfps) from the current quarter; 1. Submit the SCF Interest form ... 2. Eligible teams will be invited to…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removing the Scout-attribution partial cap is required: ADR-0008 (research/decisions/0008-human-review-eval-and-playground-policy.md) fixes canonical-page partial caps at base reserve, Horizon lifecycle, and RPC pagination, and Scout is an aggregator. The replacement is a plain wrong rule for an unattributed false claim (verified false: A and B agree both Q3 briefs were withdrawn 2026-10-16; Scout…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.rootCause[2]",
+    "decision": "accept",
+    "note": "sls-096 exists and is verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Pass-2 evidence block re-derived independently: every quoted value matches my own reads (RFP page quote and two empty 'Coming Soon' blocks; e07b4bfce1 latest on path and repo; Scout generatedAt 17:29:38.076Z, q3-2026, open 2, syntheticRounds 1; awards page November 9 / close 2026-11-09; Wayback 20261018175817 close 2026-11-08; no published Q4 brief in Parallel or Perplexity).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search 'Stellar Community Fund Q4 2026 RFPs published' (recency month); https://github.com/stellar/scf-handbook/discussions",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Top hit is the RFP Track page itself: 'October 2026: New Q4 RFPs are coming soon.' (2026-10-16); discussion 'SCF #46: which developer-tooling RFP scopes remain …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Grading rationale is accurate. Non-blocking: this live-freshness case carries dated 2026-11-02 values in notes with no reverifyBy; that is pre-existing and the dated values are labeled, so I do not block on it.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-open-rfps-live",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance only; accurate for this pass.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-passkey-rfps-live",
+    "field": "golden.keyFacts[1]",
+    "decision": "accept",
+    "note": "'reported' instead of 'returned' lets an official-only answer (no open brief to compare) pass, consistent with the notes; 59 characters.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-passkey-rfps-live",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removing the Scout-attribution partial cap is required: ADR-0008 (research/decisions/0008-human-review-eval-and-playground-policy.md) fixes canonical-page partial caps at base reserve, Horizon lifecycle, and RPC pagination, and Scout is an aggregator. The replacement is a plain wrong rule for an unattributed false claim (verified false: A and B agree both Q3 briefs were withdrawn 2026-10-16; Scout…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-passkey-rfps-live",
+    "field": "truth.verified.rootCause[2]",
+    "decision": "accept",
+    "note": "sls-096 exists and is verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-passkey-rfps-live",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Pass-2 evidence block re-derived independently: every quoted value matches my own reads (RFP page quote and two empty 'Coming Soon' blocks; e07b4bfce1 latest on path and repo; Scout generatedAt 17:29:38.076Z, q3-2026, open 2, syntheticRounds 1; awards page November 9 / close 2026-11-09; Wayback 20261018175817 close 2026-11-08; no published Q4 brief in Parallel or Perplexity).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search 'Stellar Community Fund Q4 2026 RFPs published' (recency month); https://github.com/stellar/scf-handbook/discussions",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Top hit is the RFP Track page itself: 'October 2026: New Q4 RFPs are coming soon.' (2026-10-16); discussion 'SCF #46: which developer-tooling RFP scopes remain …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-passkey-rfps-live",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Grading rationale is accurate.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-passkey-rfps-live",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance only; accurate for this pass.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-rfps-hackathons-live",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Removing the Scout-attribution partial cap is required: ADR-0008 (research/decisions/0008-human-review-eval-and-playground-policy.md) fixes canonical-page partial caps at base reserve, Horizon lifecycle, and RPC pagination, and Scout is an aggregator. The replacement is a plain wrong rule for an unattributed false claim (verified false: A and B agree both Q3 briefs were withdrawn 2026-10-16; Scout…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons?status=active ; https://stellarlight.xyz/api/hackathons?status=upcoming",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "generatedAt 2026-11-02T17:43:05.253Z / 17:43:05.440Z; counts {curated 0, dorahacks 0, returned 0, total 0}; fallbackChannels.summary 'No upcoming or active hack…"
+     },
+     {
+      "class": "A",
+      "ref": "https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "The Blockchain Innovation Challenge powered by Stellar ... Monday, November 2, 2026 - Wednesday, November 18, 2026 (all day) ... compete for your share of $15K …"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "A two-week student challenge to build Stellar-blockchain solutions ... When: Nov 2-18, 2026 ... $15,000 in prizes to be awarded."
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfps-hackathons-live",
+    "field": "truth.verified.rootCause[2]",
+    "decision": "accept",
+    "note": "sls-096 exists and is verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfps-hackathons-live",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "note": "sls-106 exists (status verified); its active-event evidence matches my reads of both host pages and the Scout feed.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     },
+     {
+      "class": "A",
+      "ref": "https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "The Blockchain Innovation Challenge powered by Stellar ... Monday, November 2, 2026 - Wednesday, November 18, 2026 (all day) ... compete for your share of $15K …"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "A two-week student challenge to build Stellar-blockchain solutions ... When: Nov 2-18, 2026 ... $15,000 in prizes to be awarded."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons?status=active ; https://stellarlight.xyz/api/hackathons?status=upcoming",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "generatedAt 2026-11-02T17:43:05.253Z / 17:43:05.440Z; counts {curated 0, dorahacks 0, returned 0, total 0}; fallbackChannels.summary 'No upcoming or active hack…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfps-hackathons-live",
+    "field": "truth.corroboration[+]",
+    "decision": "accept",
+    "note": "Every quoted note matches my reads (UW: dates, '$15K in prizes', 'Host: Velocity'; Velocity: 'two-week student challenge', 'Nov 2-18, 2026', '$15,000 in prizes'). The Scout row is correctly labeled the aggregator under check. confirmed-as-of is the right verdict for a dated existence fact.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "The Blockchain Innovation Challenge powered by Stellar ... Monday, November 2, 2026 - Wednesday, November 18, 2026 (all day) ... compete for your share of $15K …"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "A two-week student challenge to build Stellar-blockchain solutions ... When: Nov 2-18, 2026 ... $15,000 in prizes to be awarded."
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons?status=active ; https://stellarlight.xyz/api/hackathons?status=upcoming",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "generatedAt 2026-11-02T17:43:05.253Z / 17:43:05.440Z; counts {curated 0, dorahacks 0, returned 0, total 0}; fallbackChannels.summary 'No upcoming or active hack…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfps-hackathons-live",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Pass-2 evidence block re-derived independently: every quoted value matches my own reads (RFP page quote and two empty 'Coming Soon' blocks; e07b4bfce1 latest on path and repo; Scout generatedAt 17:29:38.076Z, q3-2026, open 2, syntheticRounds 1; awards page November 9 / close 2026-11-09; Wayback 20261018175817 close 2026-11-08; no published Q4 brief in Parallel or Perplexity).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search 'Stellar Community Fund Q4 2026 RFPs published' (recency month); https://github.com/stellar/scf-handbook/discussions",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Top hit is the RFP Track page itself: 'October 2026: New Q4 RFPs are coming soon.' (2026-10-16); discussion 'SCF #46: which developer-tooling RFP scopes remain …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfps-hackathons-live",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Grading rationale is accurate; sibling consistency with q-scf-hackathons-active confirmed by grep.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/hackathons?status=active ; https://stellarlight.xyz/api/hackathons?status=upcoming",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "generatedAt 2026-11-02T17:43:05.253Z / 17:43:05.440Z; counts {curated 0, dorahacks 0, returned 0, total 0}; fallbackChannels.summary 'No upcoming or active hack…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-rfps-hackathons-live",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance only; accurate for this pass.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "golden.notes",
+    "decision": "accept",
+    "note": "Corrects a pass-1 error: the notes said the official awards page deadline is November 8, but the live page reads November 9 (close 2026-11-09), and only the 2026-10-18 snapshot read November 8. The sls-105 pointer is verified: the Scout row's technicalRequirements are the idea text, and the handbook brief at 1e04b79973 is the SEP-58 hosted service. The brief's 2026-07-24 removal is verified at 4d3…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "generatedAt 2026-11-02T17:29:52.579Z; contract-source-verification 'Contract Source Verification Service' closed q2-2026 infrastructure, url https://stellarligh…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/contents/scf-awards/build-award/rfp-track.md?ref=1e04b79973 and ?ref=4d3b1d0f03",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "At 1e04b79973 (2026-07-23T15:38Z): '### Contract Source Verification Service ... The service consumes the [SEP-58] metadata vocabulary (bldimg, bldopt, source_r…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.evidence[3]",
+    "decision": "accept",
+    "note": "Matches my raw curl and the Wayback snapshot. The cached-fetch explanation is supported: Parallel's index still serves a November 8 excerpt of the awards page.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.evidence[6]",
+    "decision": "accept",
+    "note": "Re-observation matches my read of /api/rfps?q=source%20verification; sls-105 exists.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "generatedAt 2026-11-02T17:29:52.579Z; contract-source-verification 'Contract Source Verification Service' closed q2-2026 infrastructure, url https://stellarligh…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/contents/scf-awards/build-award/rfp-track.md?ref=1e04b79973 and ?ref=4d3b1d0f03",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "At 1e04b79973 (2026-07-23T15:38Z): '### Contract Source Verification Service ... The service consumes the [SEP-58] metadata vocabulary (bldimg, bldopt, source_r…"
+     },
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "note": "sls-105 exists and is verified.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "generatedAt 2026-11-02T17:29:52.579Z; contract-source-verification 'Contract Source Verification Service' closed q2-2026 infrastructure, url https://stellarligh…"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/contents/scf-awards/build-award/rfp-track.md?ref=1e04b79973 and ?ref=4d3b1d0f03",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "At 1e04b79973 (2026-07-23T15:38Z): '### Contract Source Verification Service ... The service consumes the [SEP-58] metadata vocabulary (bldimg, bldopt, source_r…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "note": "A real eval-side authoring flaw (the pass-1 notes recorded the cached November 8 as the 2026-11-02 official deadline); the free-text 'eval-side authoring flaw (<id>): ...' form matches existing rootCause entries in q-scf-open-rfps.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.corroboration[3].claim",
+    "decision": "accept",
+    "note": "Verified: both the live awards page and Scout give 2026-11-09; the 2026-10-18 snapshot gives 2026-11-08.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.corroboration[3].evidence[0].note",
+    "decision": "accept",
+    "note": "Matches my raw curl.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.corroboration[3].evidence[+]",
+    "decision": "accept",
+    "note": "Matches the snapshot I fetched (CDX timestamp 20261018175817, close 2026-11-08).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.sources[7].note",
+    "decision": "accept",
+    "note": "Matches my raw curl and snapshot.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Pass-2 evidence block re-derived independently: every quoted value matches my own reads (RFP page quote and two empty 'Coming Soon' blocks; e07b4bfce1 latest on path and repo; Scout generatedAt 17:29:38.076Z, q3-2026, open 2, syntheticRounds 1; awards page November 9 / close 2026-11-09; Wayback 20261018175817 close 2026-11-08; no published Q4 brief in Parallel or Perplexity).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     },
+     {
+      "class": "D",
+      "ref": "Perplexity perplexity_search 'Stellar Community Fund Q4 2026 RFPs published' (recency month); https://github.com/stellar/scf-handbook/discussions",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Top hit is the RFP Track page itself: 'October 2026: New Q4 RFPs are coming soon.' (2026-10-16); discussion 'SCF #46: which developer-tooling RFP scopes remain …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-contract-verification-rfp-live",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance only; accurate for this pass.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "truth.corroboration[2].claim",
+    "decision": "accept",
+    "note": "The dated claim is true on both parts: A and B show no official open brief; Scout's own served state is directly observed. Matches the q-scf-open-rfps convention.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "truth.corroboration[2].verdict",
+    "decision": "accept",
+    "note": "'disputed' was wrong under the skill: the only dissent is the aggregator under check, which cannot corroborate itself, while A and B agree. confirmed-as-of fits a dated point fact. The case's truth.status is already confirmed.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "truth.corroboration[2].evidence[+]",
+    "decision": "accept",
+    "note": "Commit facts verified via gh api (2026-10-16T18:20:46Z, removals and the October 2026 line; still latest on path).",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "truth.corroboration[2].evidence[0].note",
+    "decision": "accept",
+    "note": "Accurate labeling of the aggregator row.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "truth.verified.evidence[3]",
+    "decision": "accept",
+    "note": "Accurate correction of the pass-1 'disputed' rationale.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "truth.verified.rootCause[+]",
+    "decision": "accept",
+    "note": "sls-096 exists; this case consumes the Scout open-set claim in its corroboration row.",
+    "sources": [
+     {
+      "class": "B",
+      "ref": "/private/tmp/claude-501/raven-goldens-1102/improvements/stellar-light-scout/ (sls-096, sls-105, sls-106; untracked, status verified)",
+      "observedAt": "2026-11-02T17:46Z",
+      "quote": "sls-096 upstreamTitle 'GET /api/rfps?status=open still lists the Q3 2026 briefs after the SCF RFP Track page withdrew them'; sls-105 'contract-source-verificati…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "truth.verified.evidence[+]",
+    "decision": "accept",
+    "note": "Hummingbot re-observation matches my /api/rfps?q=hummingbot read. Pass-2 evidence block re-derived independently: every quoted value matches my own reads (RFP page quote and two empty 'Coming Soon' blocks; e07b4bfce1 latest on path and repo; Scout generatedAt 17:29:38.076Z, q3-2026, open 2, syntheticRounds 1; awards page November 9 / close 2026-11-09; Wayback 20261018175817 close 2026-11-08; no pu…",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?q=hummingbot",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "generatedAt 2026-11-02T17:37:09.605Z; hummingbot-integration 'Hummingbot Integration (Trading Engine)' closed q1-2026 defi, url https://stellarlight.xyz/ideas/h…"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "#### Current Open RFPs ... ***October 2026: New Q4 RFPs are coming soon.*** ... <summary><strong>Coming Soon</strong></summary> (x2)"
+     },
+     {
+      "class": "B",
+      "ref": "gh api repos/stellar/scf-handbook/commits?path=scf-awards/build-award/rfp-track.md ; https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "Latest path and repo commit e07b4bfce1 2026-10-16T18:20:46Z GITBOOK-246 (+1/-197): '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! Mo…"
+     },
+     {
+      "class": "C",
+      "ref": "https://stellarlight.xyz/api/rfps?status=open",
+      "observedAt": "2026-11-02T17:42Z",
+      "quote": "generatedAt 2026-11-02T17:29:38.076Z, activeQuarter q3-2026, counts {total 16, open 2, closed 14, returned 3, syntheticRounds 1}; rows scf-round-46 (synthetic, …"
+     },
+     {
+      "class": "A",
+      "ref": "https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:43Z",
+      "quote": "<p class=\"font-semibold\">Deadline to submit:</p><p>November 9, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-09\\\"} (raw curl)"
+     },
+     {
+      "class": "A",
+      "ref": "https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards (CDX: snapshots 20261005011120, 20261018175817)",
+      "observedAt": "2026-11-02T17:44Z",
+      "quote": "Deadline to submit:</p><p>November 8, 2026</p>; \\\"awardSubmission\\\":{\\\"open\\\":\\\"\\\",\\\"close\\\":\\\"2026-11-08\\\"}"
+     },
+     {
+      "class": "D",
+      "ref": "Parallel web_search (SCF Q4 2026 RFP; SCF #46 deadline): https://x.com/lumenloop/status/2112203379225321685 ; https://devgrantsdaily.com/items/2026-09-21-stellar-community-fund-build-award-46/ ; https://x.com/lumenloop/status/2116313258219151869 ; https://github.com/drQedwards/PPM/blob/main/docs/SCF.md ; Parallel cached excerpt of https://communityfund.stellar.org/awards",
+      "observedAt": "2026-11-02T17:45Z",
+      "quote": "Lumen Loop 2026-10-19: 'Full submission: Nov 8 New RFPs come after Meridian, with a later deadline'; DevGrants Daily 2026-09-21: 'Round SCF #46 closes on Novemb…"
+     }
+    ]
+   },
+   {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "field": "truth.verified.by",
+    "decision": "accept",
+    "note": "Provenance only; accurate for this pass.",
+    "sources": []
+   },
+   {
+    "id": "q-scf-sdf-marketing-grant",
+    "field": "truth.verified.evidence[4]",
+    "decision": "dispute",
+    "note": "Proposer made no change, but pass 1 left one item open: evidence[4] says the SDF two-page eligibility conflict is 'not yet filed in improvements/ (escalated to the round orchestrator)'. I re-read both pages: the conflict persists ('with a live product' versus 'live with traction or preparing to launch soon'; both say up to $500,000). No improvements/ file covers it (grep 'marketing' finds none in …",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/grants-and-funding ; https://stellar.org/grants-and-funding/marketing-grants",
+      "observedAt": "2026-11-02T17:47Z",
+      "quote": "Index: 'For both new and existing projects with a live product built on the Stellar network'; 'Marketing Grants of up to $500,000 awarded in USD, USDC, or XLM'.…"
+     }
+    ]
+   }
+  ]
+ },
+ "applier": {
+  "untouched": {
+   "q-scf-sdf-marketing-grant": "verifier dispute is bookkeeping only: evidence[4] says the SDF two-page eligibility conflict is not yet filed; no improvements/ finding exists; golden encoding is correct. Escalated."
+  },
+  "escalations": [
+   "cluster-011 reSwept.reason stale: 'now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates.'",
+   "cluster-030 reSwept.reason stale: 'now give the 2026-11-09 deadline with an as-of date and the attributed-November-8 partial cap.'",
+   "cluster-081 note stale: 'The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates.'; reSwept.reason stale: 'the attributed-November-8 partial cap'",
+   "cluster-085 note stale: 'is closed and absent from the two current Q3 briefs'; reSwept.reason stale: 'q-scf-open-rfps changed only the #46 deadline'",
+   "cluster-089 reSwept.reason stale: 'q-scf-rfp-tooling changed only the #46 deadline; the interest-to-invitation flow is unchanged.'",
+   "dateContingentTraps[2] disposition stale: 'the attributed-November-8 partial cap. The two-brief roster in q-scf-open-rfps and q-scf-rfp-tooling conflicts with the official RFP page and stays queued in .agents/TODO.md before their 2026-11-12/13 due dates.agents/TODO.md before their 2026-11-12/13 due dates.' (also a duplicated fragment)",
+   ".agents/TODO.md item 'Resolve the SCF RFP roster conflict in two goldens before 2026-11-12' (line 427) is now resolved by pass 1 + pass 2; orchestrator should close it with commit refs.",
+   "q-scf-sdf-marketing-grant truth.verified.evidence[4] still says the SDF marketing-grant two-page eligibility conflict is 'not yet filed in improvements/'; no canonical-source finding exists. Orchestrator should file one and replace evidence[4] with its path."
+  ]
+ }
+}

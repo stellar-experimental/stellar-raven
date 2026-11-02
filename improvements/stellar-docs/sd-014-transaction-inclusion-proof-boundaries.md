@@ -13,6 +13,8 @@ evidence:
   - GT-41 recurrence: document timestamping guidance required historical transaction/result and ledger-close evidence because the current Manage Data entry is mutable
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-docs/issues/2611
 recurrences:
+  - date: 2026-11-02
+    evidence: golden audit pass 2 live recheck 2026-11-02T17:26:21Z - Raven stellarDocs.search_docs 'transaction inclusion proof' returned only stellar-cli transaction-options sections; a grep of stellar/stellar-docs main 7cb5e8a4 docs/ for 'inclusion proof' and 'proof of inclusion' returns no file. Issue #2611 remains open; the latest comment is still ElliotFriend's 2026-07-21 enhancement triage. Cases q-pc-bucketlist-vs-merkle-inclusion-proof and q-sor-doc-timestamping-manage-data.
   - date: 2026-08-11
     evidence: live Docs search for `transaction inclusion proof` still returns adjacent material only, not a verification-boundaries guide. Issue #2611 remains open; ElliotFriend's 2026-07-21 comment classed it as a valid enhancement and confirmed no compact per-transaction Merkle branch.
 ---

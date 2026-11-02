@@ -1,0 +1,1296 @@
+{
+ "schema": "golden-audit-digest-v1",
+ "round": ".agents/rounds/2026-11-02-golden-audit.md",
+ "unit": "defi-ecosystem-05",
+ "kind": "pass1",
+ "note": "Compact digest of the proposer matrix, the independent verifier decisions, and the applier log. Quotes are truncated to 160 characters; every row keeps its ref and observedAt so a reader can re-walk it.",
+ "proposer": [
+  {
+   "id": "q-eco-pyusd-stellar-freshness",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question",
+     "claim": "PYUSD is PayPal's and may be live on Stellar",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Rio de Janeiro, Brazil, September 18th, 2025 ... Today the stablecoin PayPal USD (PYUSD) is live on the Stellar network."
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=PYUSD&asset_issuer=GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5",
+       "observedAt": "2026-11-02",
+       "quote": "balances.authorized 13138429.5510204; accounts.authorized 10781; contract_id CCCRWH6Q3FNP3I2I57BDLM5AFAT7O6OF6GKQOC6SSJNDAVRZ57SPHGU2"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "PYUSD launched on Stellar on September 18, 2025",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar",
+       "observedAt": "2026-11-02",
+       "quote": "Rio de Janeiro, Brazil, September 18th, 2025"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_search: https://x.com/paypaldev/status/1968714784850751750",
+       "observedAt": "2026-11-02",
+       "quote": "PYUSD is now live on Stellar. ... (@paypaldev) September 18, 2025"
+      },
+      {
+       "class": "A",
+       "ref": "https://developer.paypal.com/community/blog/pyusd-on-stellar/",
+       "observedAt": "2026-11-02",
+       "quote": "PYUSD is now available on Stellar (post dated Sept 25, 2025)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[3]",
+     "claim": "PYUSD product is PayPal's",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.paxos.com/pyusd/",
+       "observedAt": "2026-11-02",
+       "quote": "PayPal USD (PYUSD) is PayPal's stablecoin designed for payments."
+      },
+      {
+       "class": "A",
+       "ref": "https://developer.paypal.com/community/blog/pyusd-on-stellar/",
+       "observedAt": "2026-11-02",
+       "quote": "PYUSD is issued by Paxos Trust Company, LLC ... redeemable 1:1 via PayPal"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[4]",
+     "claim": "Paxos issues PYUSD",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.paxos.com/pyusd/",
+       "observedAt": "2026-11-02",
+       "quote": "Issued by Paxos Trust Company, N.A., PayPal USD (PYUSD) ... PayPal USD is issued by Paxos, not PayPal or Venmo"
+      },
+      {
+       "class": "A",
+       "ref": "https://token-metadata.paxos.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "ORG_NAME=\"Paxos Trust Company\" ... code=\"PYUSD\" issuer=\"GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5\""
+      },
+      {
+       "class": "C",
+       "ref": "scout.getStablecoins via https://stellarlight.xyz/api/stablecoins?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "row issuerName 'PayPal / Paxos', issuer GDQE7IXJ..., peg USD, basis live"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (legal entity)",
+     "claim": "LLC vs N.A. is a source/time-slice disagreement, not a proven corporate transition",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.occ.gov/topics/charters-and-licensing/interpretations-and-decisions/2026/ca1358.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "December 12, 2025 ... conditionally approves the application filed by Paxos Trust Company, LLC ... to convert to a national trust bank ... The converted bank wi…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.paxos.com/blog/occ-charter-stablecoins",
+       "observedAt": "2026-11-02",
+       "quote": "Paxos completed its conversion to a national trust charter on December 12, 2025 ... PayPal USD (PYUSD) and Pax Gold (PAXG) are issued by Paxos Trust Company, N.…"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.paxos.com/newsroom/occ-approves-paxos-application-to-convert-to-occ-trust-paxos-to-complete-conversion-imminently-to-become-a-federally-regulated-blockchain-infrastructure-provider",
+       "observedAt": "2026-11-02",
+       "quote": "Update: Paxos officially converted its ... limited purpose trust charter to a national trust charter overseen by the U.S. Office of the Comptroller of the Curre…"
+      },
+      {
+       "class": "D",
+       "ref": "perplexity_ask (cites occ.gov ca1358.pdf and paxos.com blog)",
+       "observedAt": "2026-11-02",
+       "quote": "The OCC conditionally approved the conversion on December 12, 2025. Paxos says the conversion was completed that same day"
+      },
+      {
+       "class": "D",
+       "ref": "parallel web_search: https://www.occ.gov/topics/charters-and-licensing/interpretations-and-decisions/2026/cd1367.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "The OCC recently approved charters for five trust bank applications for ... Paxos Trust Company, N.A."
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (mainnet issuer)",
+     "claim": "Mainnet issuer GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://token-metadata.paxos.com/.well-known/stellar.toml",
+       "observedAt": "2026-11-02",
+       "quote": "code=\"PYUSD\" issuer=\"GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5\""
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=PYUSD&asset_issuer=GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5",
+       "observedAt": "2026-11-02",
+       "quote": "record present; _links.toml https://token-metadata.paxos.com/.well-known/stellar.toml"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Avoid hard-coding one Paxos legal entity while primary disclosures differ",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.paxos.com/blog/occ-charter-stablecoins",
+       "observedAt": "2026-11-02",
+       "quote": "PayPal USD (PYUSD) and Pax Gold (PAXG) are issued by Paxos Trust Company, N.A."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[1]",
+     "claim": "PYUSD is not absent from Stellar; supply needs a dated source",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=PYUSD&asset_issuer=GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5",
+       "observedAt": "2026-11-02",
+       "quote": "balances.authorized 13138429.5510204 (2026-11-02)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "PayPal / Paxos USD marketCapUSD 18019682.0180876, dataAsOf 2026-11-02T06:26:31.295Z"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes",
+     "claim": "Issuer = PayPal (with Paxos)",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.paxos.com/pyusd/",
+       "observedAt": "2026-11-02",
+       "quote": "PayPal USD is issued by Paxos, not PayPal or Venmo"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02, the verified sources supported this observed answer:",
+     "reason": "Re-verified today; the legal-entity facts changed in the as-of window."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "The 2025 SDF launch release names **Paxos Trust Company, LLC**, the issuer at launch. On 2025-12-12 the OCC approved, and Paxos completed, its conversion to **Paxos Trust Company, N.A.**, which Paxos names as PYUSD's issuer as of 2026-11-02. Paxos's Stellar TOML still carries the older LLC wording, so date any legal-entity name.",
+     "reason": "OCC CA 1358 and Paxos confirm a completed 2025-12-12 conversion; the 'disagreement' framing is contradicted."
+    },
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT claim PayPal itself is the legal issuer, or state without a source and date that Paxos Trust Company, LLC issues PYUSD today.",
+     "reason": "The old trap fires on a true undated N.A. claim; the new trap punishes only the false unsourced current-LLC claim."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Issuer = Paxos (PayPal-branded).",
+     "reason": "Notes contradict the case's own avoid[0] and Paxos's disclosure."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "LLC-versus-N.A. reflects the OCC-approved conversion of 2025-12-12 (OCC Conditional Approval 1358); date any legal-entity name.",
+     "reason": "Regulatory proof of the transition now exists."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "Eval-side authoring flaw: inherited 'Issuer = PayPal (with Paxos)' shorthand survived the GT-20 correction in golden.notes."
+   ],
+   "siblings": "q-eco-stablecoins-on-stellar; q-asset-usdc-eurc-issuer"
+  },
+  {
+   "id": "q-eco-stablecoins-on-stellar",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Dated roster example (2026-07-11: 38 matches incl. Circle, Glo Dollar, Coins.ph)",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop search_directory {query:'stablecoin',limit:100}",
+       "observedAt": "2026-11-02",
+       "quote": "count 89; slugs include circle, glo-dollar, coins-ph (2026-11-02)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "counts.tracked 41; rows include Circle USD, Circle EUR, Glo Foundation USD, PayPal / Paxos USD"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2]",
+     "claim": "Names current Stellar stablecoins with issuers",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "coverage.basis curated-registry; 'Absence from this list means the asset is not tracked here: NOT proof it is not issued on Stellar'"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=PYUSD&asset_issuer=GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5",
+       "observedAt": "2026-11-02",
+       "quote": "PYUSD live"
+      },
+      {
+       "class": "F",
+       "ref": "https://horizon.stellar.org/assets?asset_code=TZS",
+       "observedAt": "2026-11-02",
+       "quote": "TZS GA2MSSZKJOU6RNL3EJKH3S5TB5CDYTFQFWRYFGUJVIN5I6AOIRTLUHTO, toml connect.clickpesa.com, 5924 authorized accounts"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Avoid presenting one Paxos legal entity as timeless while dated primary sources differ",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://www.occ.gov/topics/charters-and-licensing/interpretations-and-decisions/2026/ca1358.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "The converted bank will operate under the title of Paxos Trust Company, National Association"
+      },
+      {
+       "class": "A",
+       "ref": "https://www.paxos.com/blog/occ-charter-stablecoins",
+       "observedAt": "2026-11-02",
+       "quote": "Paxos completed its conversion to a national trust charter on December 12, 2025 ... PYUSD ... issued by Paxos Trust Company, N.A."
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[4]",
+     "claim": "Ranked registry is not the complete set",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "coverage.basis 'curated-registry' ... verify against Horizon before asserting non-existence"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getStablecoins",
+       "observedAt": "2026-11-02",
+       "quote": "Every tracked Stellar stablecoin ... null = not measured, never zero"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[5]",
+     "claim": "Null is unmeasured; marketCapUSD is the comparable metric",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "CLPX CLP marketCapUSD None; Anclap PEN None"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getStablecoins",
+       "observedAt": "2026-11-02",
+       "quote": "raw supply + its peg (NOT comparable across pegs ...)"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (issuer-led dollars)",
+     "claim": "USDC/EURC/PYUSD are issuer-led dollars",
+     "verdict": "contradicted",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://developers.circle.com/stablecoins/eurc-contract-addresses",
+       "observedAt": "2026-11-02",
+       "quote": "EURC (euro stablecoin) Stellar Mainnet EURC-GDHU6WRG... (case truth source, 2026-08-18)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "Circle GDHU6WRG row peg EUR"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (sls-066 caution)",
+     "claim": "Cached Scout copy may omit Circle USDC; cap at partial",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/stablecoins?limit=100",
+       "observedAt": "2026-11-02",
+       "quote": "Circle GA5ZSEJY USD row present, marketCapUSD 301240866.491132"
+      },
+      {
+       "class": "B",
+       "ref": "improvements/resolved.json#sls-066",
+       "observedAt": "2026-11-02",
+       "quote": "resolved 2026-08-19; liveRecheck: live Scout stablecoins includes Circle USDC"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.avoid[0]",
+     "op": "replace",
+     "new": "Do NOT claim PayPal is PYUSD's legal issuer, or state without a source and date that Paxos Trust Company, LLC issues PYUSD today.",
+     "reason": "OCC CA 1358 and Paxos prove the conversion; the 'sources differ' premise is stale and the old trap can fire on a true undated N.A. claim."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Characterizes the stablecoin set as issuer-led fiat stablecoins (USDC/EURC/PYUSD)",
+     "reason": "EURC is a euro stablecoin; 'dollars' is inaccurate grader steering."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "",
+     "reason": "sls-066 is resolved (2026-08-19) and the live registry includes Circle USDC; the caution has expired per the skill's removal rule."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift",
+    "improvements/resolved.json#sls-066",
+    "Eval-side authoring flaw: notes label EURC as a dollar stablecoin."
+   ],
+   "siblings": "q-eco-pyusd-stellar-freshness; q-asset-usdc-eurc-issuer; q-asset-stablecoin-issuers-discovery; q-token-circle-usdc-on-stellar"
+  },
+  {
+   "id": "q-eco-stellar-rwa-stablecoin-volume",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "question",
+     "claim": "'recent SDF reporting' — the latest SDF quarterly report",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/quarterly-reports",
+       "observedAt": "2026-11-02",
+       "quote": "Summary of Q3 2026 ... $4.3B RWAs ... Q3 2026 Report | Q2 2026 Report | Q1 2026 Report"
+      },
+      {
+       "class": "D",
+       "ref": "https://cryptobriefing.com/stellar-ranks-second-active-developers",
+       "observedAt": "2026-11-02",
+       "quote": "the Stellar Development Foundation (SDF), which published its Q3 2026 report on October 19, 2026"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Q1 bullet)",
+     "claim": "RWAs crossed $2B shortly after Q1 from $785M YE2025; Q1 stablecoin payment volume $5.5B +72% YoY",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+       "observedAt": "2026-11-02",
+       "quote": "$2B+ in onchain RWAs, $5.5B in stablecoin payment volume ... Stablecoin payment volume reached $5.5 billion in Q1, an all-time high and up 72% year over year."
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/q2-2026-what-stellar-was-built-for-has-arrived",
+       "observedAt": "2026-11-02",
+       "quote": "$1B in January, $2B in April, $3B in June"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new Q3 bullet)",
+     "claim": "SDF Q3 2026: RWAs $4.1B at quarter end; stablecoin transfer volume $25.1B; stablecoin market cap $496M",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "Stablecoin market cap reached $496M, and real-world assets reached $4.1 billion ... Stablecoin volume grew by 121% quarter-over-quarter to $25.1 billion ... Rea…"
+      },
+      {
+       "class": "D",
+       "ref": "https://cryptobriefing.com/stellar-ranks-second-active-developers",
+       "observedAt": "2026-11-02",
+       "quote": "Stablecoin transfer volume hit $25.1 billion ... Stellar's stablecoin market cap was $496 million ... Stellar's RWA total reached $4.1 billion, up 36% quarter-o…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (RWA Q3 surface conflict)",
+     "claim": "SDF Q3 RWA value: $4.1B (PDF) vs $4.3B (quarterly-reports page)",
+     "verdict": "disputed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "Real-world assets on Stellar reached $4.1 billion at quarter end"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/quarterly-reports",
+       "observedAt": "2026-11-02",
+       "quote": "Summary of Q3 2026 ... $4.3B ... RWAs"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (new Q2 bullet)",
+     "claim": "SDF Q2 2026: RWAs crossed $3B in June; Q2 stablecoin transfer volume $11.4B",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/q2-2026-what-stellar-was-built-for-has-arrived",
+       "observedAt": "2026-11-02",
+       "quote": "RWAs crossed $3B ... $3B in June ... Stablecoin transfer volume reached $11.4 billion in Q2, an all-time high, up 72% quarter over quarter"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/solutions/stablecoins",
+       "observedAt": "2026-11-02",
+       "quote": "$11.4B Stablecoin volume, Q2 2026"
+      },
+      {
+       "class": "D",
+       "ref": "https://cryptobriefing.com/stellar-protocol-26-rwa-growth",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar Development Foundation's Q2 2026 network report, released on August 3, shows tokenized real-world assets on the network reached $3.05 billion ... st…"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (Allium bullet)",
+     "claim": "Allium March 2026 report figures",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://stellar.org/solutions/stablecoins",
+       "observedAt": "2026-11-02",
+       "quote": "Allium Research — March 2026 ... Allium data through February 2026 ... 17 stablecoins"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer (rwa.xyz bullet)",
+     "claim": "rwa.xyz snapshot as of 2026-07-10",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "lumenloop search_content_semantic 'SDF Q3 2026 quarterly report RWA ...'",
+       "observedAt": "2026-11-02",
+       "quote": "articles include 'Tokenized RWAs on Stellar cross $4 billion as euro-denominated assets lead growth' (2026-09-02)"
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..3], avoid[0]",
+     "claim": "Stocks vs flows are distinct and not summable",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "A",
+       "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+       "observedAt": "2026-11-02",
+       "quote": "Metric RWA Market Cap / Stablecoin Market Cap / Stablecoin Transfer Volume listed as separate metrics"
+      },
+      {
+       "class": "A",
+       "ref": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+       "observedAt": "2026-11-02",
+       "quote": "Stablecoin payment volume (Q1) vs Q2 'Stablecoin transfer volume' — different metrics"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (ll-009 caution)",
+     "claim": "ll-009 still open",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "improvements/lumenloop/ll-009-messari-report-misattribution.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: reported-upstream"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "As of 2026-11-02, the verified sources supported this observed answer:",
+     "reason": "Re-verified with newer SDF reports today."
+    },
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "- **SDF Q3 2026 report (October 2026):** RWAs **$4.1B at quarter end** (+36% QoQ); Q3 stablecoin **transfer volume $25.1B**; stablecoin **market cap $496M**. SDF's quarterly-reports page summary shows $4.3B RWAs.\n- **SDF Q2 2026 report:** RWAs crossed **$3B in June**; Q2 stablecoin **transfer volume $11.4B**.\n- **SDF Q1 report (published 2026-05-07):**",
+     "reason": "'Recent SDF reporting' now means Q2/Q3 2026; add dated SDF figures with two classes each and keep Q1 as history."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "gate on 'cite a dated SDF quarterly report + flag it's a snapshot.'",
+     "reason": "Notes steer graders to a Q1-2026 citation that a true current answer would not use."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Also good if the answer: Attributes the numbers to a specific dated report (an SDF quarterly report, latest Q3 2026 as of 2026-11-02, or Messari State of Stellar Q1 2026) rather than asserting bare figures.",
+     "reason": "Same steering drift."
+    },
+    {
+     "field": "golden.notes",
+     "op": "replace-substring",
+     "new": "Golden cites: A dated SDF quarterly report (Q3 2026 is the latest as of 2026-11-02; Q1 and Q2 2026 stay valid as dated history) for the figures.\nSDF SURFACES DIFFER (2026-11-02): the Q3 2026 report PDF states $4.1B RWAs at quarter end; stellar.org/quarterly-reports shows $4.3B. Do not penalize either figure when attributed and dated.",
+     "reason": "Same steering drift; encode the SDF $4.1B vs $4.3B surface conflict as a dispute."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-asset-rwa-tokenized-freshness"
+  },
+  {
+   "id": "q-gap-contracts-domain-empty",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Empty defi-yield contracts array is ok-with-empty, with filters, generatedAt, counts",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "HTTP 200; meta.filters.domain 'defi-yield'; generatedAt 2026-11-02T15:57:22.070Z; counts {returned:0,total:0}; contracts []"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.listContracts",
+       "observedAt": "2026-11-02",
+       "quote": "Absence here is NOT a claim a contract doesn't exist — coverage grows as scans reach repos."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "Evidence-gated membership rule",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "note: 'Evidence-gated: rows exist only for contracts the scanner verified live on mainnet or on-chain enrichment attributed real activity to. Absence is NOT a c…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.listContracts",
+       "observedAt": "2026-11-02",
+       "quote": "the scanner echo-checked a README-claimed contract id live on-chain, or weekly on-chain enrichment attributed real activity to the repo"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0..2]",
+     "claim": "Registry-relative absence; not an error; omission is not 'unverified/inactive'",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.listContracts",
+       "observedAt": "2026-11-02",
+       "quote": "codeInUse: null = no attributed activity on record, never 'unused'"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-ti-enumerate-all-contracts; q-gap-hackathon-brief-evidence-boundaries; q-scout-hackathon-brief-first-hour"
+  },
+  {
+   "id": "q-gap-digest-defi-adjacent",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "Digest returns window, items, counts, softEmpty, calls; softEmpty true = quiet window",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "Raven execute codemode.describe('skills.lumenloop.stellar-ecosystem-digest')",
+       "observedAt": "2026-11-02",
+       "quote": "softEmpty: boolean — 'true ⇔ the window matched nothing — a quiet window, not a failure.' calls: Host-recorded constituent-call audit trail"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute codemode.skill.run('skills.lumenloop.stellar-ecosystem-digest',{subject:'zzqx nonexistent defi widget',subjectType:'entity',days:3})",
+       "observedAt": "2026-11-02",
+       "quote": "keys [subject,subjectType,window,items,counts,softEmpty,upcomingEvents,calls]; softEmpty true; calls [{op:'lumenloop.find_content_by_entity',ok:true}]"
+      },
+      {
+       "class": "C",
+       "ref": "codemode.skill.run(...,{subject:'DeFi lending and AMMs',subjectType:'theme',days:14})",
+       "observedAt": "2026-11-02",
+       "quote": "window {dateStart:'2026-10-19',dateEnd:'2026-11-02'}; counts {articles:5,av:5,events:5,research:2}; softEmpty false"
+      }
+     ]
+    },
+    {
+     "field": "golden.avoid[0]",
+     "claim": "Quiet theme window does not prove ecosystem inactivity",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "digest describe signature",
+       "observedAt": "2026-11-02",
+       "quote": "a quiet window, not a failure"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": ""
+  },
+  {
+   "id": "q-gap-leaderboard-project-not-builder",
+   "verdict": "change",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0]",
+     "claim": "Leaderboard ranks projects with aggregate developer metrics",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=5",
+       "observedAt": "2026-11-02",
+       "quote": "top-level keys [meta, ecosystem, projects]; rows Rumble Fish, Stellar Development Foundation, Fundable, Nouns, Stellarchain; ecosystem {asOf:'2026-10-24', activ…"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getLeaderboard",
+       "observedAt": "2026-11-02",
+       "quote": "Ranks PROJECTS, not people → use getBuilders."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "getBuilders is the people directory",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/builders?limit=2",
+       "observedAt": "2026-11-02",
+       "quote": "builders rows keyed by githubUsername (JulioMCruz, JJonathanOlwenyi); counts.total 300"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#scout.getBuilders",
+       "observedAt": "2026-11-02",
+       "quote": "The Stellar PEOPLE directory"
+      }
+     ]
+    },
+    {
+     "field": "golden.answer",
+     "claim": "Observed activity/30d result returned Microvault and Noir",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=300",
+       "observedAt": "2026-11-02",
+       "quote": "Microvault rank 28; Noir rank 146 (2026-11-02)"
+      },
+      {
+       "class": "C",
+       "ref": "https://stellarlight.xyz/api/projects/search?q=microvault",
+       "observedAt": "2026-11-02",
+       "quote": "Microvault (microvault, Protocol/Contract); Noir (noir, Tooling)"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [
+    {
+     "field": "golden.answer",
+     "op": "replace-substring",
+     "new": "On 2026-07-11, the observed activity/30d result returned Microvault and Noir as projects, not individual developer rankings.",
+     "reason": "Volatile row observation lacks an as-of date in the golden text; today's activity/30d top rows differ."
+    }
+   ],
+   "rootCause": [
+    "freshness-drift"
+   ],
+   "siblings": "q-tool-developer-leaderboard-live; q-tool-leaderboard-open-issues; q-eco-most-active-defi-projects"
+  },
+  {
+   "id": "q-gap-semantic-directory-fallback",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.keyFacts[0..1]",
+     "claim": "search_directory semantic fallback carries match_mode 'semantic' and a note; rows are candidates",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/search_directory {query:'decentralized lending for stablecoins',limit:5}",
+       "observedAt": "2026-11-02",
+       "quote": "match_mode 'semantic'; note 'No exact substring match ... showing the closest projects by meaning'; rows carry similarity (k2-lend 0.608)"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.search_directory",
+       "observedAt": "2026-11-02",
+       "quote": "A match_mode semantic row is a candidate, not exact identity proof."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[2..4], avoid[1..2]",
+     "claim": "Closed vs open-world; one broad pass; similar-project search does not establish unknown identity",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.search_directory retrievalProfile",
+       "observedAt": "2026-11-02",
+       "quote": "recoverWith lumenloop.search_content_semantic (broader-semantic), scout.searchProjects, scout.searchResearch"
+      },
+      {
+       "class": "C",
+       "ref": "Raven execute host footer (2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "These rows are candidates, not identity or absence proof: require an exact identity or canonical slug plus source and date"
+      }
+     ]
+    },
+    {
+     "field": "golden.notes (ll-017 caution)",
+     "claim": "ll-017 still open",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
+       "observedAt": "2026-11-02",
+       "quote": "status: reported-upstream"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-edge-closed-world-builder-directory-miss; q-edge-lumenloop-person-entity-empty; q-edge-open-world-recovery-after-narrow-miss; q-edge-strupey-ambiguous-stellar-history; q-builder-content-by-person; q-builder-justin-rice-history"
+  },
+  {
+   "id": "q-gap-semantic-similar-projects",
+   "verdict": "unchanged",
+   "claims": [
+    {
+     "field": "golden.answer",
+     "claim": "find_similar_projects_semantic({slug:'soroswap'}) returns ranked rows with similarity",
+     "verdict": "confirmed-as-of",
+     "sources": [
+      {
+       "class": "C",
+       "ref": "POST https://api.lumenloop.com/v1/tools/find_similar_projects_semantic {slug:'soroswap',limit:5}",
+       "observedAt": "2026-11-02",
+       "quote": "data: stellarbroker 0.7485, soroban-polygon-interop 0.7127, stabble 0.7120, assetdesk 0.7010, lumagg 0.6850"
+      },
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.find_similar_projects_semantic",
+       "observedAt": "2026-11-02",
+       "quote": "required: ['slug'] ... For keyword search use search_directory."
+      }
+     ]
+    },
+    {
+     "field": "golden.keyFacts[1]",
+     "claim": "search_directory is keyword/concept discovery",
+     "verdict": "confirmed",
+     "sources": [
+      {
+       "class": "B",
+       "ref": "catalog/manifest.json#lumenloop.search_directory",
+       "observedAt": "2026-11-02",
+       "quote": "For 'projects like X' use find_similar_projects_semantic"
+      },
+      {
+       "class": "C",
+       "ref": "search_directory note (2026-11-02)",
+       "observedAt": "2026-11-02",
+       "quote": "For project-to-project neighbors use find_similar_projects_semantic"
+      }
+     ]
+    }
+   ],
+   "proposedChanges": [],
+   "rootCause": [],
+   "siblings": "q-gap-semantic-directory-fallback"
+  }
+ ],
+ "verifier": {
+  "by": "independent verifier (Claude Opus 5.5), 2026-11-02; proposer matrix not opened",
+  "decisions": [
+   {
+    "id": "q-eco-pyusd-stellar-freshness",
+    "field": "golden.answer (As-of date 2026-07-10 -> 2026-11-02)",
+    "decision": "accept",
+    "note": "Every substantive line of the observed answer re-verified today (live on Stellar, 2025-09-18 launch, mainnet issuer, Paxos issuance), so a new observation date is honest. Only valid together with the LLC/N.A. rewrite below.",
+    "sources": [
+     {
+      "class": "F",
+      "ref": "https://horizon.stellar.org/assets?asset_code=PYUSD&asset_issuer=GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5",
+      "observedAt": "2026-11-02",
+      "quote": "PYUSD authorized balance 13138529.2189296; contract_id CCCRWH6Q3FNP3I2I57BDLM5AFAT7O6OF6GKQOC6SSJNDAVRZ57SPHGU2"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "Rio de Janeiro, Brazil, September 18th, 2025 Today the stablecoin PayPal USD (PYUSD) is live on the Stellar network."
+     },
+     {
+      "class": "C",
+      "ref": "https://token-metadata.paxos.com/.well-known/stellar.toml",
+      "observedAt": "2026-11-02",
+      "quote": "code=\"PYUSD\" issuer=\"GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5\""
+     },
+     {
+      "class": "C",
+      "ref": "Raven scout.getStablecoins dataAsOf 2026-11-02T16:22:16.011Z",
+      "observedAt": "2026-11-02",
+      "quote": "assetId PYUSD-GDQE7IXJ, issuer GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-pyusd-stellar-freshness",
+    "field": "golden.answer (LLC-versus-N.A. paragraph)",
+    "decision": "accept",
+    "note": "The old 'source/time-slice disagreement, not a corporate transition' framing is contradicted: the regulator (OCC CA 1358) and Paxos both document the 2025-12-12 LLC-to-N.A. conversion. Same-day approval and completion is stated by Paxos (licenses page, blog, newsroom update). The TOML still says LLC. Root cause: freshness-drift plus incomplete earlier corporate-record check.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.occ.gov/topics/charters-and-licensing/interpretations-and-decisions/2026/ca1358.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "December 12, 2025 ... The Office of the Comptroller of the Currency (OCC) hereby conditionally approves the application filed by Paxos Trust Company, LLC (PTC) …"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.paxos.com/terms-and-conditions/licenses",
+      "observedAt": "2026-11-02",
+      "quote": "Paxos Trust Company, National Association converted from a New York limited-purpose trust charter to a national trust charter on December 12, 2025. Charter No. …"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.paxos.com/pyusd",
+      "observedAt": "2026-11-02",
+      "quote": "Issued by Paxos Trust Company, N.A., PayPal USD (PYUSD) is PayPal's stablecoin designed for payments."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "PayPal USD is issued by Paxos Trust Company, LLC, a fully chartered limited purpose trust company."
+     },
+     {
+      "class": "C",
+      "ref": "https://token-metadata.paxos.com/.well-known/stellar.toml",
+      "observedAt": "2026-11-02",
+      "quote": "ORG_NAME=\"Paxos Trust Company\" ... ORG_DESCRIPTION=\"Paxos Trust Company LLC is a prudentially regulated stablecoin issuer, powering PYUSD \""
+     },
+     {
+      "class": "D",
+      "ref": "https://stableregistry.com/issuers/paxos/ (Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "the OCC Trust Banks Active list as of August 31, 2026 lists Paxos Trust Company, National Association (charter 25379; RSSD 6099145)."
+     },
+     {
+      "class": "A",
+      "ref": "https://www.paxos.com/blog/occ-charter-stablecoins (Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Our conversion was approved on December 12, 2025 and completed on the same day"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-pyusd-stellar-freshness",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "Punishes only a false current claim (LLC issues today, unsourced and undated). An answer that quotes the dated Stellar TOML LLC wording with its source stays exempt, so it does not punish a possibly-true claim. Judge-visible (the claim is in the answer text). The old 'hard-code one entity while disclosures differ' clause no longer reflects a real dispute.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.paxos.com/pyusd",
+      "observedAt": "2026-11-02",
+      "quote": "PayPal USD is issued by Paxos, not PayPal or Venmo"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.paxos.com/terms-and-conditions/licenses",
+      "observedAt": "2026-11-02",
+      "quote": "converted from a New York limited-purpose trust charter to a national trust charter on December 12, 2025"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-pyusd-stellar-freshness",
+    "field": "golden.notes (Issuer = Paxos (PayPal-branded))",
+    "decision": "accept",
+    "note": "Removes the inherited 'PayPal (with Paxos)' shorthand that conflicts with avoid[0].",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.paxos.com/pyusd",
+      "observedAt": "2026-11-02",
+      "quote": "The new stablecoin from PayPal. Issued by Paxos."
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar",
+      "observedAt": "2026-11-02",
+      "quote": "PayPal USD is issued by Paxos Trust Company, LLC"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-pyusd-stellar-freshness",
+    "field": "golden.notes (LLC-versus-N.A. conversion sentence)",
+    "decision": "accept",
+    "note": "Approval number and date match the OCC index. Wording 'OCC-approved conversion of 2025-12-12' is accurate.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.occ.treas.gov/topics/charters-and-licensing/interpretations-and-actions/index-interpretations-and-actions.html",
+      "observedAt": "2026-11-02",
+      "quote": "Conditional Approval 1358 | January 2026 | 12/12/2025 | Application by Paxos Trust Company, LLC, New York, NY to convert to a national bank"
+     },
+     {
+      "class": "A",
+      "ref": "https://www.paxos.com/terms-and-conditions/licenses",
+      "observedAt": "2026-11-02",
+      "quote": "converted ... to a national trust charter on December 12, 2025. Charter No. 25379"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stablecoins-on-stellar",
+    "field": "golden.avoid[0]",
+    "decision": "accept",
+    "note": "Sibling-consistent with q-eco-pyusd-stellar-freshness avoid[0]; same reasoning (false current claim only; sourced dated TOML quote stays exempt).",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://www.paxos.com/terms-and-conditions/licenses",
+      "observedAt": "2026-11-02",
+      "quote": "Paxos Trust Company, National Association converted ... on December 12, 2025."
+     },
+     {
+      "class": "C",
+      "ref": "https://token-metadata.paxos.com/.well-known/stellar.toml",
+      "observedAt": "2026-11-02",
+      "quote": "Paxos Trust Company LLC is a prudentially regulated stablecoin issuer, powering PYUSD"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stablecoins-on-stellar",
+    "field": "golden.notes (issuer-led dollars -> issuer-led fiat stablecoins)",
+    "decision": "accept",
+    "note": "EURC is a euro stablecoin, so 'dollars' was wrong for the USDC/EURC/PYUSD set. Self-evident correction; nice-to-have note only.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven scout.getStablecoins dataAsOf 2026-11-02T16:22:16.011Z",
+      "observedAt": "2026-11-02",
+      "quote": "EURC is issued on Stellar by 2 distinct companies ... assetId EURC-GDHU6WRG"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stablecoins-on-stellar",
+    "field": "golden.notes (remove Scout Circle USDC quoting caution)",
+    "decision": "accept",
+    "note": "The caution covered a pre-2026-08-19 omission of Circle USDC from the Scout registry. The live canonical record now carries Circle USDC (and has since 2026-08-19 per the case truth block), so the caution is obsolete. Removal makes grading stricter, not more lenient, so it is not score laundering. The rest of the registry-bound note (absence means untracked) still protects source-scoped answers.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven scout.getStablecoins({limit:100}); meta.source https://stellarlight.xyz/api/stablecoins; dataAsOf 2026-11-02T16:22:16.011Z",
+      "observedAt": "2026-11-02",
+      "quote": "assetId USDC-GA5ZSEJY, issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN, marketCapUSD 321134258.33; counts.tracked 41"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-rwa-stablecoin-volume",
+    "field": "golden.answer (As-of date 2026-07-10 -> 2026-11-02)",
+    "decision": "accept",
+    "note": "Valid only with the Q3/Q2 bullets added; the remaining rows (Q1 report, Allium March 2026, rwa.xyz 2026-07-10) each keep their own dates, so no volatile fact loses an as-of.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/quarterly-reports",
+      "observedAt": "2026-11-02",
+      "quote": "Summary of Q3 2026 Network stats ... 23.5B Total operations $4.3B RWAs Download Full Report"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-rwa-stablecoin-volume",
+    "field": "golden.answer (add SDF Q3 2026 and Q2 2026 bullets)",
+    "decision": "accept",
+    "note": "Claim is an attribution ('SDF report states X'), so the SDF primary is the authority; press and Lumenloop confirm the report contents. Q3 +121% QoQ to $25.1B implies Q2 about $11.36B, consistent with $11.4B. Stocks (RWAs, market cap) and flows (transfer volume) stay labeled.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar Development Foundation · October 2026 ... Real-world assets on Stellar reached $4.1 billion at quarter end, up 36% from Q2 and 548% year over year. ... …"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/quarterly-reports",
+      "observedAt": "2026-11-02",
+      "quote": "Summary of Q3 2026 Network stats ... $4.3B RWAs"
+     },
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/0da602cf8d9aacb3ecb1444978460a2dfce8772f.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "Quarter in Review Q2 2026 ... Stellar crossed $1 billion in onchain RWAs in January, $2 billion in April, and $3 billion in June 2026. ... $11.4 billion in stab…"
+     },
+     {
+      "class": "D",
+      "ref": "https://cryptobriefing.com/stellar-ranks-second-active-developers/ (Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "SDF ... published its Q3 2026 report on October 19, 2026. ... Stablecoin transfer volume hit $25.1 billion ... stablecoin market cap was $496 million ... Stella…"
+     },
+     {
+      "class": "C",
+      "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 (Perplexity search)",
+      "observedAt": "2026-11-02",
+      "quote": "Stellar's Q3 report recorded $25.1 billion in stablecoin volume, up 314% year over year, $4.1 billion in RWAs"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-rwa-stablecoin-volume",
+    "field": "golden.notes (gate on a dated SDF quarterly report)",
+    "decision": "accept",
+    "note": "Durable gate; avoids requiring a stale Q1 report when later reports exist.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://stellar.org/quarterly-reports",
+      "observedAt": "2026-11-02",
+      "quote": "Q3 2026 Report Q2 2026 Report ... Q1 2026 Report"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-rwa-stablecoin-volume",
+    "field": "golden.notes (Also good: SDF quarterly report, latest Q3 2026)",
+    "decision": "accept",
+    "note": "Nice-to-have wording, dated 'as of 2026-11-02'.",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "Quarter in Review Q3 2026 ... Stellar Development Foundation · October 2026"
+     }
+    ]
+   },
+   {
+    "id": "q-eco-stellar-rwa-stablecoin-volume",
+    "field": "golden.notes (Golden cites + SDF SURFACES DIFFER caution)",
+    "decision": "accept",
+    "note": "The two SDF surfaces genuinely differ ($4.1B PDF quarter-end vs $4.3B page summary, likely a later measurement). Both are SDF, so this is a same-publisher surface conflict; the grader caution 'do not penalize either figure when attributed and dated' follows the disputed-encoding rule and does not pin either value. Neither figure is a keyFact. Messari Q1 2026 drops from 'Golden cites' but stays acc…",
+    "sources": [
+     {
+      "class": "A",
+      "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+      "observedAt": "2026-11-02",
+      "quote": "Real-world assets on Stellar reached $4.1 billion at quarter end"
+     },
+     {
+      "class": "A",
+      "ref": "https://stellar.org/quarterly-reports",
+      "observedAt": "2026-11-02",
+      "quote": "$4.3B RWAs"
+     }
+    ]
+   },
+   {
+    "id": "q-gap-leaderboard-project-not-builder",
+    "field": "golden.answer (date the Microvault/Noir observation 2026-07-11)",
+    "decision": "accept",
+    "note": "Adds an as-of date to a volatile row observation; the date matches the case's own probe record. Live leaderboard today still returns project rows plus an ecosystem block, so the durable claim (projects, not people) stands.",
+    "sources": [
+     {
+      "class": "C",
+      "ref": "Raven scout.getLeaderboard({}); meta.source https://stellarlight.xyz/leaderboard; dataAsOf 2026-11-02T11:23:43.582Z",
+      "observedAt": "2026-11-02",
+      "quote": "keys [meta, ecosystem, projects]; counts.returned 50, total 905; metricDefinitions.activity: 'orders by github.commits90d ... summed across the project's indexe…"
+     },
+     {
+      "class": "B",
+      "ref": "eval/qa/corpus/battery/defi-ecosystem/q-gap-leaderboard-project-not-builder.json golden.notes + truth.verified.evidence",
+      "observedAt": "2026-11-02",
+      "quote": "N1 live contract probe 2026-07-11: Succeeded with two project rows and an ecosystem developer snapshot."
+     }
+    ]
+   }
+  ],
+  "urlsHit": [
+   "https://www.occ.gov/topics/charters-and-licensing/interpretations-and-decisions/2026/ca1358.pdf (via Parallel web_search + Perplexity search)",
+   "https://www.occ.treas.gov/topics/charters-and-licensing/interpretations-and-actions/index-interpretations-and-actions.html (via Parallel web_search)",
+   "https://www.occ.gov/news-issuances/news-releases/2025/nr-occ-2025-125e.pdf (via Parallel web_search)",
+   "https://paxos.com/pyusd/ (Parallel web_fetch) and https://www.paxos.com/pyusd (curl)",
+   "https://www.paxos.com/terms-and-conditions/licenses (curl + Perplexity)",
+   "https://www.paxos.com/blog/occ-charter-stablecoins (Perplexity)",
+   "https://www.paxos.com/newsroom/occ-approves-paxos-application-to-convert-to-occ-trust-paxos-to-complete-conversion-imminently-to-become-a-federally-regulated-blockchain-infrastructure-provider (Perplexity)",
+   "https://stableregistry.com/issuers/paxos/ (Perplexity)",
+   "https://paxos.com/.well-known/stellar.toml (404)",
+   "https://token-metadata.paxos.com/.well-known/stellar.toml (curl)",
+   "https://horizon.stellar.org/accounts/GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5 (curl)",
+   "https://horizon.stellar.org/assets?asset_code=PYUSD&asset_issuer=GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5 (curl)",
+   "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar (Perplexity)",
+   "https://stellar.org/quarterly-reports (curl)",
+   "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf (SDF Q3 2026 report, curl + pypdf)",
+   "https://cdn.sanity.io/files/e2r40yh6/production-i18n/0da602cf8d9aacb3ecb1444978460a2dfce8772f.pdf (SDF Q2 2026 report, curl + pypdf)",
+   "https://cryptobriefing.com/stellar-ranks-second-active-developers/ (Perplexity)",
+   "https://en.coin-turk.com/bitflyer-halts-xlm-deposits-due-to-stellar-api-issue-no-timeline-for-fix/ (Perplexity)",
+   "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-23-2026 (Perplexity)",
+   "Raven MCP execute: scout.getStablecoins({limit:100}), scout.getLeaderboard({}), lumenloop.search_content_semantic (observedAt 2026-11-02T16:28:30.042Z)"
+  ]
+ },
+ "applier": {
+  "gospelChanged": "q-eco-pyusd-stellar-freshness; q-eco-stablecoins-on-stellar; q-eco-stellar-rwa-stablecoin-volume; q-gap-leaderboard-project-not-builder",
+  "verifiedOnly": "q-gap-contracts-domain-empty; q-gap-semantic-directory-fallback; q-gap-semantic-similar-projects",
+  "untouched": "q-gap-digest-defi-adjacent",
+  "escalations": [
+   {
+    "id": "q-eco-pyusd-stellar-freshness",
+    "issue": "Upstream finding to file in improvements/: Paxos stellar.toml (https://token-metadata.paxos.com/.well-known/stellar.toml) ORG_DESCRIPTION still says 'Paxos Trust Company LLC' after the 2025-12-12 OCC conversion to Paxos Trust Company, N.A."
+   },
+   {
+    "id": "q-eco-stellar-rwa-stablecoin-volume",
+    "issue": "Upstream finding to file in improvements/ (golden-truth Step 5 for the disputed sub-fact): SDF Q3 2026 RWA value is $4.1B in the report PDF but $4.3B on https://stellar.org/quarterly-reports, with no stated date basis."
+   },
+   {
+    "id": "q-gap-semantic-similar-projects",
+    "issue": "Proposer upstream defects to consider for improvements/: Lumenloop find_similar_projects_semantic rows omit the 'description' field the tool description promises; search_content_semantic proposals group serves an unsanitized HTML-injection title from aqua.network proposal 696 (2026-11-02)."
+   },
+   {
+    "id": "q-gap-digest-defi-adjacent",
+    "issue": "Proposer confirmed the case but only with class C evidence (Raven skill describe/run); left untouched because the verified refresh needs multi-class evidence."
+   }
+  ],
+  "changeLog": [
+   {
+    "id": "q-eco-pyusd-stellar-freshness",
+    "log": "Applied 5 verifier-accepted edits (as-of 2026-11-02; LLC-to-N.A. conversion paragraph per OCC CA 1358; avoid[0] now traps only an unsourced current-LLC claim; notes 'Issuer = Paxos (PayPal-branded)' and conversion sentence); status disputed->confirmed; asOf 2026-11-02; 7 sources added; corroboration rebuilt (launch confirmed, conversion confirmed-as-of, avoid-trap contradicted); verified + rootCause [freshness-drift, eval-side authoring flaw]."
+   },
+   {
+    "id": "q-eco-stablecoins-on-stellar",
+    "log": "Applied 3 accepted edits (avoid[0] aligned with sibling; notes 'issuer-led fiat stablecoins'; removed expired sls-066 caution); asOf 2026-11-02; 4 sources added; avoid-trap contradicted corroboration row added; verified + rootCause [freshness-drift, improvements/resolved.json entry sls-066, eval-side EURC label flaw]."
+   },
+   {
+    "id": "q-eco-stellar-rwa-stablecoin-volume",
+    "log": "Applied 5 accepted edits (as-of 2026-11-02; SDF Q3 and Q2 2026 bullets; notes gate on a dated SDF quarterly report; SDF SURFACES DIFFER $4.1B vs $4.3B caution); status stays confirmed; asOf 2026-11-02; 6 sources added; corroboration rows for Q3 (confirmed-as-of), Q3 RWA surface conflict (disputed), Q2 (confirmed-as-of); verified + rootCause [freshness-drift]."
+   },
+   {
+    "id": "q-gap-leaderboard-project-not-builder",
+    "log": "Applied 1 accepted edit (dated the Microvault/Noir observation 2026-07-11); asOf 2026-11-02; 3 Stellar Light sources added; confirmed-as-of corroboration row added; verified + rootCause [freshness-drift]."
+   },
+   {
+    "id": "q-gap-contracts-domain-empty",
+    "log": "No gospel change; truth.verified refreshed with B+C evidence (live empty defi-yield probe, manifest); asOf 2026-11-02; 1 source added."
+   },
+   {
+    "id": "q-gap-semantic-directory-fallback",
+    "log": "No gospel change; truth.verified refreshed with B+C evidence (raw Lumenloop search_directory semantic probe, manifest, ll-017 status); asOf 2026-11-02; 1 source added."
+   },
+   {
+    "id": "q-gap-semantic-similar-projects",
+    "log": "No gospel change; truth.verified refreshed with B+C evidence (raw Lumenloop find_similar_projects_semantic soroswap probe, manifest); asOf 2026-11-02; 1 source added; file re-serialized from one-line JSON to 2-space format."
+   },
+   {
+    "id": "q-gap-digest-defi-adjacent",
+    "log": "Untouched: confirmed by the proposer with single-class (C) evidence only."
+   }
+  ]
+ }
+}

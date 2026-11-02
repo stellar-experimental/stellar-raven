@@ -35,8 +35,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-10-06",
-    "reverifyBy": "2027-02-02",
+    "asOf": "2026-11-02",
+    "reverifyBy": "2027-04-17",
     "sources": [
       {
         "class": "A",
@@ -210,15 +210,24 @@
       }
     ],
     "verified": {
-      "date": "2026-10-06",
-      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
-        "Live A 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — Final, Version 1.0.0, Updated 2026-06-18; prefix, single SHA-256, ed25519.",
-        "Live B 2026-10-06: js-stellar-sdk src/base/keypair.ts, py-stellar-base stellar_sdk/keypair.py, and stellar-cli commands/message/mod.rs implement SEP-53.",
-        "Live B 2026-10-06: GitHub code search finds SEP-53 signMessage support in java-stellar-sdk, stellar_flutter_sdk, stellar-ios-mac-sdk, stellar-php-sdk, and kmp-stellar-sdk.",
-        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — Draft, Version 1.2.1.",
-        "Sibling sweep 2026-10-06: grep SEP-53|Stellar Signed Message → q-sep-53-sign-verify-message (Final, updated 2026-06-18); no contradiction."
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0053.md — \"fixed prefix string is used: \"Stellar Signed Message:\\n\" ... single-round SHA-256\" (observedAt 2026-11-02; supports golden.keyFacts[0-1]: confirmed)",
+        "[B] https://github.com/stellar/js-stellar-sdk/blob/HEAD/src/base/keypair.ts — \"const MESSAGE_PREFIX = stringToUint8Array(\"Stellar Signed Message:\\n\"); ... signMessage(message: string | Uint8Array)\" (observedAt 2026-11-02; supports golden.keyFacts[0-1]: confirmed)",
+        "[D] https://docs.walletconnect.com/wallets/chains/stellar — \"sign(Ed25519, sha256(\"Stellar Signed Message:\\n\" || message))\" (observedAt 2026-11-02; supports golden.keyFacts[0-1]: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0053.md — \"Title: Sign and Verify Messages / Status: Final / Created: 2025-02-01 / Updated: 2026-06-18 / Version: 1.0.0\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed-as-of)",
+        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed-as-of)",
+        "[B] js-stellar-sdk src/base/keypair.ts; py-stellar-base stellar_sdk/keypair.py — \"signMessage/verifyMessage; def sign_message / def verify_message\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
+        "[B] GitHub code search \"Stellar Signed Message\" (2026-11-02) — \"java-stellar-sdk src/main/java/org/stellar/sdk/KeyPair.java; stellar_flutter_sdk compatibility/sep/SEP-0053_COMPATIBILITY_MATRIX.md; stellar-ios-mac-sdk docs/sep/sep-53.md\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/Soneso/stellar-php-sdk/HEAD/compatibility/sep/SEP-0053_COMPATIBILITY_MATRIX.md and Soneso/kmp-stellar-sdk same path — \"PHP: Status: Supported, SEP Status: Final; KMP: Total Coverage: 100.0% (8/8 fields)\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
+        "[A] https://developers.stellar.org/docs/tools/cli/stellar-cli#subcommands — \"message — Sign and verify arbitrary messages using SEP-53\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
+        "[D] https://stellar-sdk.readthedocs.io/en/stable/_modules/stellar_sdk/keypair.html — \"def sign_message(self, message: str | bytes) -> bytes: Sign a message according to SEP-53\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md — \"Title: Standard Web Wallet API Interface / Status: Draft / Version: 1.2.1\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed-as-of)",
+        "[A] https://developers.stellar.org/docs/tools/cli/agent-cli/guides/sign-messages — \"SEP-53 proves control of a single key. It does not prove control of an account. An account under multisig ... can still produce a valid SEP-53 signature\" (observedAt 2026-11-02; supports golden.avoid[1]: contradicted)",
+        "[A] https://developers.stellar.org/docs/tools/cli/agent-cli/guides/sign-messages — \"run fully offline, with no funded account or network flag\" (observedAt 2026-11-02; supports golden.avoid[3]: contradicted)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: checked q-sep-53-sign-verify-message; no contradiction with this case's facts."
       ]
     },
     "origin": "kaan sep53-sign-verify-message"

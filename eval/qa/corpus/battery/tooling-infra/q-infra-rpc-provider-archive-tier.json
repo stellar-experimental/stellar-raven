@@ -33,7 +33,7 @@
     "domain": "real-world",
     "status": "mixed",
     "asOf": "2026-11-02",
-    "reverifyBy": "2027-02-12",
+    "reverifyBy": "2027-05-21",
     "sources": [
       {
         "class": "A",
@@ -274,7 +274,8 @@
         "Live B/A 2026-11-02: stellar-rpc tag archive-node-beta (d277ba48, 2026-09-30) docs/API-CHANGES-BETA.md and Validation Cloud's RPC v2 docs serve full history for getEvents, getLedgers, getTransaction, and getTransactions. The answer sentence and avoid[1] now scope the getLedgers-only claim to the official RPC Archive tier; the betas are a dated nuance in the answer and notes.",
         "Live F 2026-11-02: archive-rpc.lightsail.network and rpc.ankr.com/stellar_soroban return ledger 1000000 from getLedgers but reject getEvents at ledger 1000000; mainnet.sorobanrpc.com serves getLedgers only within retention.",
         "node101's own page uses generic archive text; its own capability is unverifiable, so the golden attributes the row to the official table and truth.status stays mixed.",
-        "Sibling sweep 2026-11-02: grep 'rpc archive|archive tier|validation cloud|node101|getLedgers' in the battery. q-infra-rpc-methods-list, q-crp-export-tx-history-taxes, and q-ti-rpc-gettransactions-pagination-xdr bound getEvents and getTransactions by retention; that holds for stock RPC, and the archive-node beta is a new caveat that q-infra-rpc-methods-list may need. q-ti-self-host-retention-backfill dates its v27.1.1 defaults to 2026-07-11. q-ti-friendbot-ratelimit-alternatives and q-ti-parse-raw-ledger-data do not conflict. No sibling names node101 or a roster count. Register cluster-018's note ('extends getLedgers only') needs the same tier scope."
+        "Sibling sweep 2026-11-02: grep 'rpc archive|archive tier|validation cloud|node101|getLedgers' in the battery. q-infra-rpc-methods-list, q-crp-export-tx-history-taxes, and q-ti-rpc-gettransactions-pagination-xdr bound getEvents and getTransactions by retention; that holds for stock RPC, and the archive-node beta is a new caveat that q-infra-rpc-methods-list may need. q-ti-self-host-retention-backfill dates its v27.1.1 defaults to 2026-07-11. q-ti-friendbot-ratelimit-alternatives and q-ti-parse-raw-ledger-data do not conflict. No sibling names node101 or a roster count. Register cluster-018's note ('extends getLedgers only') needs the same tier scope.",
+        "Golden audit 2026-11-02 (batch tooling-infra-01, .agents/rounds/2026-11-02-golden-audit.md): proposer re-walk confirmed the 16-provider, nine-row RPC Archive table at providers.mdx@de38543 (B) and the rendered page (A), the getLedgers-only footnote, and the archive-node-beta full-history note (B, d277ba48). No change proposed; reverifyBy moved into the 2027-05 audit window."
       ],
       "rootCause": [
         "freshness-drift",

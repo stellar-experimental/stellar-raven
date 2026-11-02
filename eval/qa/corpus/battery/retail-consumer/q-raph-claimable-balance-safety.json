@@ -84,30 +84,18 @@
       }
     ],
     "verified": {
-      "date": "2026-10-09",
-      "by": "golden-truth lane G, 2026-10-09 r1009b round (Claude Fable 5.1, high); evidence in .agents/rounds/2026-10-07-tool-surface-qa.md and the stored 2026-10-07-tool-surface-qa results",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
       "evidence": [
-        "solo://proj/49/process/3415",
-        "solo://proj/49/process/3419",
-        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-        "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
-        "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
-        "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
-        "Structural re-form (negative-predicate): Replaced the adjective trigger with an equivalent positive taxonomy term; truth unchanged",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-0023 defined a conditional ClaimableBalanceEntry with distinct create and claim operations.",
-        "Sibling sweep 2026-08-27: grep claimable balance|ClaimableBalanceEntry|op_no_trust → q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-asset-claimable-balance, q-raph-phishing-pending-claim; no contradiction",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — two-part conditional flow; class B CAP-0023 defines ClaimableBalanceEntry; class F live entry shows claimants and predicates.",
-        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — claimant needs a trustline or the claim fails with op_no_trust; class B CAP-0023 defines CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4.",
-        "Sibling sweep 2026-08-31: grep claimable balance|op_no_trust|ClaimableBalanceEntry → 16 other cases; read q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-raph-phishing-pending-claim, q-raph-unsolicited-airdrop; no contradiction",
-        "Key-fact addition 2026-10-09: the scam warning that the golden answer and grader note already require became key fact 3; truth unchanged. Five stored rubric v2.10 verdicts on answers that all omit the warning split 3 wrong / 2 correct (eval/qa/results/2026-10-07-tool-surface-qa/: 2026-10-07T19-43-18-variantA.json wrong; 2026-10-07T23-25-14-variantA.json correct, rationale 'not listed as a separate required-behavior item'; 2026-10-08T02-40-37-variantA.json wrong; 2026-10-08T02-41-23-rejudge.json wrong; 2026-10-08T02-54-52-rejudge.json correct). Row review: .agents/rounds/2026-10-07-tool-surface-qa.md (q-raph-claimable-balance-safety, 'shared safety omission graded both ways').",
-        "Live re-check 2026-10-09: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — 'A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an op_no_trust error.' (class A, HTTP 200).",
-        "Live re-check 2026-10-09: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — red flags include 'assets that were sent to you in tiny amounts through a claimable balance'; SDF will 'NEVER ask you to deposit funds to any wallet address' and 'NEVER ask you for your private keys'; 'Always verify the domain and email addresses' (class A, HTTP 200). Class D https://www.cisa.gov/secure-our-world/recognize-and-report-phishing — 'don't click on any link or call any number in the message. Look up another way to contact the company' (HTTP 200).",
-        "Sibling sweep 2026-10-09: read all nine scam-check traps (q-raph-scam-spam-tokens, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-unsolicited-airdrop, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-n3-wallet-hacked-support-redirect, q-n3-issues-842-backup-faucet-wallet) and the claimable-balance siblings q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves; no contradiction. q-raph-unsolicited-airdrop and q-raph-phishing-pending-claim already carry the no-pay, no-link, no-secret behavior as key facts."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Make the claimable-balance safety warning a key fact"
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"This operation will load the ClaimableBalanceEntry that corresponds to the Balance ID ... If a match on the claimant is found, and the ClaimPredicate evaluates to true, then the ClaimableBalanceEntry can be claimed.\" (claim: golden.keyFacts[0] confirmed: Claimable balance is a conditional ledger entry claimed in a separate operation)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0023.md — \"CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4\" (claim: golden.keyFacts[0] confirmed: Claimable balance is a conditional ledger entry claimed in a separate operation)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an op_no_trust error.\" (claim: golden.keyFacts[1] confirmed: Non-XLM claim requires matching trustline else op_no_trust)",
+        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x — \"CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4\" (claim: golden.keyFacts[1] confirmed: Non-XLM claim requires matching trustline else op_no_trust)",
+        "2026-11-02 [E] https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"the claim will result in an op_no_trust error\" (claim: golden.keyFacts[1] confirmed: Non-XLM claim requires matching trustline else op_no_trust)",
+        "2026-11-02 [A] https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"sometimes people blast out claimable balances to phish for buyers in the hopes of them clicking a link tied to the asset ... You can ignore claimable balances you don't understand or trust.\" (claim: golden.keyFacts[2] confirmed: Verify issuer; do not pay or follow links to unlock)",
+        "2026-10-09 [D] https://www.cisa.gov/secure-our-world/recognize-and-report-phishing — \"don't click on any link or call any number in the message\" (claim: golden.keyFacts[2] confirmed: Verify issuer; do not pay or follow links to unlock)",
+        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"They can be used when you send a non-native asset to an account that has not yet established a trustline, which can be useful for anchors onboarding new users.\" (claim: golden.avoid[0] contradicted: Every claimable balance is a scam (false))",
+        "Sibling sweep 2026-11-02: siblings checked q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-raph-phishing-pending-claim, q-raph-unsolicited-airdrop; no gospel change in this case, no contradiction found."
       ]
     },
     "origin": "raph claimable-balance-claim-and-safety"

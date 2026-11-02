@@ -31,7 +31,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-10-06",
-    "reverifyBy": "2027-02-23",
+    "reverifyBy": "2027-04-16",
     "sources": [
       {
         "class": "A",
@@ -83,14 +83,16 @@
       }
     ],
     "verified": {
-      "date": "2026-10-06",
-      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-02)",
       "evidence": [
-        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
-        "Live A 2026-10-06: https://stellar.org/enterprise-fund — venture-style fund; 'portfolio totaling over $100m'.",
-        "Live A 2026-10-06: https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international — dated 2023-08-15; MoneyGram funded from SDF cash treasury, not the Enterprise Fund.",
-        "Live D 2026-10-06: general-web sweep found the same 'over $100m' wording and no newer portfolio figure.",
-        "Sibling sweep 2026-10-06: grep Enterprise Fund → q-scf-vs-sdf-enterprise-fund, q-scf-total-distributed, q-scf-ecosystem-listing-partner-jobs, q-scf-how-to-apply; no contradiction."
+        "[A] golden.answer (confirmed-as-of): https://stellar.org/enterprise-fund :: \"The Stellar Enterprise Fund is a venture-style fund for growing the open-source Stellar network. ... with our portfolio totaling over $100m.\" (observedAt 2026-11-02)",
+        "[D] golden.answer (confirmed-as-of): https://goldi.ai/intelligence/vc/stellar-development-foundation (perplexity_search 2026-11-02) :: \"Fund Size $100M\" (observedAt 2026-11-02)",
+        "[C] golden.answer (confirmed-as-of): Raven lumenloop.search_content_semantic 'Stellar Enterprise Fund portfolio over $100 million' :: \"Stellar Development Foundation debuts $30 million matching fund ... part of its Enterprise Fund venture arm (2022-03-15)\" (observedAt 2026-11-02)",
+        "[A] golden.keyFacts[2] (confirmed): https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international :: \"The investment was made out of SDF's own cash treasury, the assets set aside to support the operations of the SDF, rather than the Enterprise Fund\" (observedAt 2026-11-02)",
+        "[D] golden.keyFacts[2] (confirmed): https://www.ledgerinsights.com/stellar-blockchain-invests-in-moneygram/ :: \"the money came from the SDF treasury used for SDF operations, not its Enterprise Fund\" (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-scf-vs-sdf-enterprise-fund, q-scf-total-distributed, q-scf-ecosystem-listing-partner-jobs, q-scf-how-to-apply checked; no contradiction.",
+        "No judge-facing change; prior verification event 2026-10-06 is in git history."
       ]
     },
     "origin": "raven-next q-org-sdf-enterprise-fund"

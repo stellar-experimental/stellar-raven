@@ -124,20 +124,15 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-07)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/apps/zk",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
-        "Structural re-form (long-fact): split authorship from verifier material and transparent setup from universal setup; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/zk — the current official page says developers generate proofs from circuits or guest methods.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/zk — the current official page requires developers to deploy the verifier contract used by the application.",
-        "Live re-check 2026-08-29: https://eprint.iacr.org/2018/046 — the primary ZK-STARK paper defines transparent setup as requiring no trusted party.",
-        "Live re-check 2026-08-29: https://eprint.iacr.org/2019/953 — the primary PLONK paper defines an updatable universal structured reference string for general circuits.",
-        "Sibling sweep 2026-08-29: grep Groth16|transparent|universal|verifier → q-zk-proof-systems-stellar, q-protocol-bls12-381-cap59, q-sor-cross-warmancer-zk-stack; no contradiction."
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verified unchanged 2026-11-02 (no gospel change; verifier received no proposal for this case).",
+        "golden.keyFacts[0..1] confirmed: A https://developers.stellar.org/docs/build/apps/zk \u2014 'developers must still generate proofs using higher-level systems (such as circuits written in Noir or Risc0 methods) and deploy verifier smart contracts on Stellar to implement complete zero-knowledge workflows.' (observedAt 2026-11-02) | B https://github.com/iden3/snarkjs/blob/master/README.md \u2014 'The `zkey` is a zero-knowledge key that includes both the proving and verification keys as well as phase 2 contributions.' (observedAt 2026-11-02)",
+        "golden.keyFacts[2] confirmed: B https://github.com/iden3/snarkjs/blob/master/README.md \u2014 'Groth16 requires a trusted ceremony for each circuit. PLONK and FFLONK do not require it, it's enough with the powers of tau ceremony which is universal.' (observedAt 2026-11-02) | C https://raw.githubusercontent.com/stellar/stellar-dev-skill/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/zk-proofs/SKILL.md (Raven skills.stellar-dev.zk-proofs#pitfalls) \u2014 'Groth16 needs a circuit-specific phase-2 setup; for production use a real multi-party ceremony' (observedAt 2026-11-02)",
+        "golden.keyFacts[3..4] confirmed: B https://github.com/iden3/snarkjs/blob/master/README.md \u2014 'PLONK and FFLONK do not require a circuit-specific trusted ceremony' (observedAt 2026-11-02) | D https://eprint.iacr.org/2018/046 (cited in 2026-08-29 evidence) and perplexity_ask 2026-11-02 \u2014 'STARKs: No trusted setup is required; they are transparent proof systems. PLONK: a universal, updatable SRS can be reused across circuits within its supported size bound.' (observedAt 2026-11-02)",
+        "golden.avoid[0..1] contradicted: A https://developers.stellar.org/docs/build/apps/zk \u2014 'developers must still generate proofs ... and deploy verifier smart contracts' (observedAt 2026-11-02) | B https://github.com/iden3/snarkjs/blob/master/README.md \u2014 'PLONK and FFLONK do not require it' (observedAt 2026-11-02)",
+        "Sibling sweep 2026-11-02: q-zk-proof-systems-stellar, q-protocol-bls12-381-cap59, q-sor-cross-warmancer-zk-stack checked; no contradiction."
       ]
     },
     "origin": "kaan zk-circuit-dev-workflow"

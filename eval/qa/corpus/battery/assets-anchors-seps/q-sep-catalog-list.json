@@ -34,7 +34,7 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-02",
     "sources": [
       {
         "class": "A",
@@ -156,21 +156,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-11-02",
+      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (long-fact): Split the SEP-12, SEP-24, and SEP-6 mappings; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — the current official catalog maps SEP-12 to KYC and SEP-24 to hosted deposit and withdrawal.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — the current official catalog maps SEP-6 to API-based deposit and withdrawal.",
-        "Sibling sweep 2026-08-29: grep SEP-1|SEP-10|SEP-12|SEP-24|SEP-6|SEP-31|SEP-38 → q-sep-1-toml, q-sep-12-kyc, q-sep-interactive-deposit-withdraw, q-sep-31-cross-border, q-sep-38-quotes, q-sep-wallet-seps-list, q-sep6-sep24-sep31-choice, and related anchor cases; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-00NN.md preambles — \"sep-0001 'Stellar Info File'; sep-0009 'Standard KYC Fields'; sep-0010 'Stellar Web Authentication'; sep-0012 'KYC API'; sep-0038 'Anchor RFQ API'; sep-0041 'Soroban Token Interface'; sep-0043 'Standard Web Wallet API Interface'; sep-0045 'Stellar Web Authentication for Contract Accounts'\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[A] https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — \"SEP-1 Stellar Info File | SEP-6 Deposit and Withdrawal API | SEP-7 URI Scheme to facilitate delegated signing | SEP-8 Regulated Assets | SEP-9 Standard KYC Fields | SEP-10 Stellar Authentication | SEP-12 KYC API | SEP-24 Hosted Deposit and Withdrawal | SEP-31 Cross-Border Payments API\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"is a subset of the Stellar Asset contract\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md + sep-0008.md — \"Status: Active (both)\" (observedAt 2026-11-02; supports golden.notes: disputed)",
+        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0007] | URI Scheme to facilitate delegated signing | Interstellar | Final | ... | [SEP-0008] | Regulated Assets | Interstellar | Final |\" (observedAt 2026-11-02; supports golden.notes: disputed)",
+        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.notes: disputed)",
+        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
+        "Sibling sweep 2026-11-02: checked q-sep-7-uri, q-sep-8-regulated-assets, q-sep-wallet-seps-list, q-sep-45-contract-auth, q-sep-38-quotes; no contradiction with this case's facts."
       ]
     },
     "origin": "raven-next q-sep-catalog-list"
