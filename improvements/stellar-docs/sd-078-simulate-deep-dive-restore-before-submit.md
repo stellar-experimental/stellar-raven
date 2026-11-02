@@ -1,7 +1,7 @@
 ---
 id: sd-078
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: simulateTransaction deep dive says archived entries need a restore step first; Protocol 23 restores them in place
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - "Adjacent omission: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md documents `restorePreamble` (\"indicates that the simulation detected archived ledger entries which need to be restored before the submission\") and has no mention of automatic restoration or of `archivedSorobanEntries` in the returned transaction data."
   - "Dedupe 2026-11-02: gh search issues stellar/stellar-docs 'restorePreamble' returned no results; 'simulateTransaction deep dive' returned #1856 (open, generic guide update), #2964 (closed, funding helper), and no issue about archived-entry handling. No improvements/ finding or resolved.json entry names the deep-dive page."
   - "Golden consumers (partial caps naming this finding): eval/qa/corpus/battery/soroban/q-sor-p23-auto-restore-extendto.json, eval/qa/corpus/battery/soroban/q-sor-force-fast-archival-localnet.json, eval/qa/corpus/battery/soroban/q-sor-ttl-defaults-extend.json, eval/qa/corpus/battery/soroban/q-soroban-storage-types.json."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/3016
 ---
 
 ## Finding

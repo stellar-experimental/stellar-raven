@@ -2,7 +2,7 @@
 id: cs-008
 service: canonical-source
 repo: stellar/stellar-protocol
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: CAP-0046-06 names the SAC executable CONTRACT_EXECUTABLE_TOKEN; the XDR name is CONTRACT_EXECUTABLE_STELLAR_ASSET
 evidence:
@@ -15,6 +15,7 @@ evidence:
   - "Precedent: stellar-protocol accepts post-Final corrections to this CAP, for example 7b1ff42b 'CAP-0046-06: Fix events emitted (#1564)' (2024-10-28)."
   - "Dedupe 2026-11-02: gh search issues stellar/stellar-protocol 'CONTRACT_EXECUTABLE_TOKEN' and gh search prs 'CONTRACT_EXECUTABLE_STELLAR_ASSET' returned no results. No improvements/ finding names CAP-0046-06."
   - "Golden consumer: eval/qa/corpus/battery/soroban/q-sor-sac-introspection.json golden.notes partial cap; truth.verified 2026-11-02 (golden cap backlog, caps-2)."
+  - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-protocol/issues/2056
 ---
 
 ## Finding
