@@ -1,7 +1,7 @@
 ---
 id: sd-056
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-10-09
 upstreamTitle: Correct ledger-header fee units and document its extension member
 evidence:
@@ -10,6 +10,8 @@ evidence:
   - 2026-10-09 TransactionFrame.cpp at ba6a4e6e322a8069b85bdf48a35d971a2d72cc81; https://raw.githubusercontent.com/stellar/stellar-core/ba6a4e6e322a8069b85bdf48a35d971a2d72cc81/src/transactions/TransactionFrame.cpp
   - 2026-10-09 public ledger 64853885 header_xdr and fee_pool; https://horizon.stellar.org/ledgers/64853885
   - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2907
+  - fixed upstream by https://github.com/stellar/stellar-docs/pull/2930 (merge 378944a1c7497eb0aee9bd85aab185d5984321e4, 2026-11-02T18:27:15Z); handoff https://github.com/stellar-experimental/stellar-raven/issues/316
+  - 2026-11-02T20:58:46Z live recheck https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers no longer says denominated in lumens; Fee pool and Total coins say the header stores stroops, Base reserve says Calculated in stroops, and a new Extension section names discriminants 0 and 1 and LedgerHeaderExtensionV1
 ---
 
 ## Finding
