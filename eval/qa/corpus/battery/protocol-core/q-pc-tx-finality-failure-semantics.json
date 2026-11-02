@@ -17,7 +17,7 @@
       "Do NOT say every submission is on-ledger or that included failure leaves fee/sequence untouched.",
       "Do NOT assign PENDING to getTransaction, treat send acceptance as finality, or use one NOT_FOUND as proof of nonexistence."
     ],
-    "notes": "GT-30 CORRECTION 2026-07-10: getTransaction statuses are SUCCESS/FAILED/NOT_FOUND. PENDING is a sendTransaction admission/polling state. Included failures consume fee/sequence; pre-inclusion rejection/drop does not. NOT_FOUND remains retention/processing ambiguous.\nGT-30 independently confirmed by processes 3277/3279; sd-003 owns method-reference discoverability.\nAccurately quoting the canonical Stellar Docs source on the `getTransaction` versus `sendTransaction` status sets is not a wrong claim while sd-003 leaves the method pages unindexed; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "GT-30 CORRECTION 2026-07-10: getTransaction statuses are SUCCESS/FAILED/NOT_FOUND. PENDING is a sendTransaction admission/polling state. Included failures consume fee/sequence; pre-inclusion rejection/drop does not. NOT_FOUND remains retention/processing ambiguous.\nGT-30 independently confirmed by processes 3277/3279; sd-003 (method-reference discoverability) resolved 2026-11-02."
   },
   "tags": {
     "category": "protocol-core",
@@ -76,15 +76,23 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
+      "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
       "evidence": [
+        "Gospel change 2026-11-02: removed the sd-003 partial cap and re-dated the sd-003 note in golden.notes.",
+        "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
+        "Class A (confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — 'The limit for getTransactions can range from 1 to 200 … it defaults to 50'; …/methods/getFeeStats and /docs/data/apis/horizon/api-reference/list-all-transactions HTTP 200 (observedAt 2026-11-02)",
+        "Class B: stellar/stellar-docs commit 700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (2026-10-22, 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)') moved the generated reference pages into the Mintlify site and its search.",
         "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
         "Live re-check 2026-11-02 (confirmed): getTransaction returns SUCCESS/FAILED/NOT_FOUND; PENDING is a sendTransaction status — A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction 'Allowed values: SUCCESSNOT_FOUNDFAILED'; A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/sendTransaction 'Allowed values: PENDINGDUPLICATETRY_AGAIN_LATERERROR'; B https://github.com/stellar/go-stellar-sdk/blob/main/protocols/rpc/get_transaction.go 'TransactionStatusNotFound indicates the transaction was not found in Stellar-RPC's transaction store.'; B https://github.com/stellar/go-stellar-sdk/blob/main/protocols/rpc/send_transaction.go 'Status can be one of: proto.TXStatusPending, proto.TXStatusDuplicate, proto.TXStatusTryAgainLater, or proto.TXStatusError.'",
         "Live re-check 2026-11-02 (confirmed): Included txs (incl. failed) consume fee and sequence; pre-inclusion rejection consumes neither — A https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle 'If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed ... For each transaction, the account's sequence number i'; B https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp 'There are only a few possible reasons for why we would *not* update the sequence number: ... In any other scenario we should update the sequence number'",
         "Live re-check 2026-11-02 (confirmed-as-of): NOT_FOUND ambiguous due to bounded retention; sd-003 method pages unindexed caution — A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction 'The stellar-rpc system maintains a bounded history of recently processed transactions ... stock default of 120960 ledgers (about 7 days'; E stellarDocs.get_doc_page_sections path=/docs/data/apis/rpc/api-reference/methods/getTransaction 'soft-empty: The page-section queries returned no matching records'",
         "Sibling sweep 2026-11-02: q-protocol-accounts-signers-thresholds was corrected in this batch to the same rule (included failures consume the sequence); q-pc-sequence-numbers-ordering-replace checked; no contradiction."
+      ],
+      "rootCause": [
+        "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
       ]
     },
-    "origin": "raven-next q-pc-tx-finality-failure-semantics"
+    "origin": "raven-next q-pc-tx-finality-failure-semantics",
+    "asOf": "2026-11-02"
   }
 }

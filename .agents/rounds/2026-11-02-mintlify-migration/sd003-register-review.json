@@ -1,0 +1,105 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-008",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer Claude Fable 5.1): the only member that changed is q-ti-rpc-gettransactions-pagination-xdr, and its diff is limited to golden.notes (sd-003 marked resolved; sd-004 caution kept). It carries no CAP-status claim. Re-read every CAP/protocol pair across the 14 members: CAP-0035/P17, CAP-0038/P18, CAP-0051/P21, CAP-0058 Final/P22, CAP-0059 Final/P22, CAP-0062/63/65/67 P23, CAP-0071 Final/P27, CAP-0073 Final/P26, CAP-0074/75 Final/P25 all still match the note.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-017",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer): the only member that changed is q-pc-practical-fee-setting, whose diff removes the sd-003 partial cap and re-dates the sd-003 note in golden.notes; its answer still gives the dated 100-stroop floor. Re-read the constants across members: base reserve 0.5 XLM (q-asset-trustline-basics, q-edge-1xlm-activation-fee, q-pc-account-activation-not-found, q-protocol-base-reserve-min-balance), empty unsponsored minimum 1 XLM, pool-share trustline 2 base reserves, fees separate. No constant moved.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-018",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer): the changed members are q-infra-rpc-methods-list (sd-003 partial-cap sentence removed from golden.notes; the 12-method gate, 120960-ledger retention, and archive-node-beta/queryEvents nuance are unchanged) and q-ti-rpc-gettransactions-pagination-xdr (sd-003 note re-dated; 50/200, cursor, and sd-004 caution unchanged). Horizon lifecycle wording across q-infra-horizon-vs-rpc, q-pc-practical-fee-setting, and q-ti-compute-token-lp-market-data still says nearing end-of-life with the dated sd-072 Lab caution; retention members still use the single history-retention-window (stock 120960) with no 24h default; archive tier remains getLedgers-only with the beta nuance.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-041",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer): the only member that changed is q-pc-tx-finality-failure-semantics, whose diff removes the sd-003 partial cap from golden.notes; its answer still says submission is not finality, pre-inclusion rejection consumes neither fee nor sequence, and NOT_FOUND alone proves nothing. The live getTransaction page lists status SUCCESS, NOT_FOUND, FAILED (class A, 2026-11-02). q-edge-validators-reverse-tx-fork-detection, q-protocol-quorum-slice-vs-quorum, and q-protocol-tier1-requirements make no conflicting finality or authority claim.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-042",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes (sd-003 cap removed) and still makes no monetary-supply claim. q-hot-fee-pool-burn-deflation is unchanged: fee pool inside totalCoins, sequestration not burn, CAP-26 2019-10-28 and the SDF burn 2019-11-04 separate, fees not validator rewards.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-056",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes and still leads with RPC getFeeStats / stellar fees stats, keeps Horizon GET /fee_stats available, and calls Hubble historical analytics. q-pc-fee-bump-channel-accounts-feepool still says the fee source is charged once and channel sources consume their own sequences; q-hot-fee-pool-burn-deflation still says fees are not validator rewards. The live getFeeStats method page is readable through get_doc_page (8,691 chars, 2026-11-02).",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-061",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes and keeps its dated 2026-09-08 nearing-end-of-life label and the endpoint-specific Horizon/RPC boundary; q-infra-horizon-vs-rpc is unchanged and carries the dated sd-072 Lab API Explorer caution. The note's two-page split still describes both members.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-063",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer): both members keep the dated 100-stroop floor, getFeeStats-first estimation, Horizon /fee_stats availability, and Hubble-as-historical role. q-pc-practical-fee-setting's only diff is the sd-003 note in golden.notes; q-infra-horizon-vs-rpc is unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "numericInvariants": [
+    {
+      "label": "Stellar base fee floor",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-02",
+      "reSwept": {
+        "date": "2026-11-02",
+        "reason": "sd-003 retirement re-sweep (independent reviewer): q-pc-practical-fee-setting changed only in golden.notes (sd-003 cap removed); its answer still states the dated 100 stroops per operation floor with surge-pricing qualification. q-edge-1xlm-activation-fee is unchanged and still says the current minimum effective fee is 100 stroops per operation. The rule holds.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

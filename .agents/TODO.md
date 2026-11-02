@@ -52,22 +52,6 @@ result-code queries in `rounds/2026-11-02-mintlify-migration/identifier-probe.js
 `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search call or one hinted
 page read, and the change is measured on the retrieval A/B. Remove when `sd-059` is fixed upstream.
 
-### Retire `sd-003` after the Mintlify deploy and the golden audit
-
-`sd-003` is `fixed-upstream`. A distinct reviewer re-derived RESOLVE on 2026-11-02
-(`rounds/2026-11-02-mintlify-migration/sd003-recheck.md`), and the resolution comment is posted:
-https://github.com/stellar/stellar-docs/issues/2566#issuecomment-6585113964. The Mintlify adapter
-went live in production on 2026-11-02 (Worker version `358fd0f5`). One condition remains: four
-battery cases name `sd-003` (`q-ti-rpc-gettransactions-pagination-xdr`,
-`q-infra-rpc-methods-list`, `q-pc-practical-fee-setting`, `q-pc-tx-finality-failure-semantics`),
-and the 2026-11-02 golden audit no longer holds the battery. Run the resolver with the
-command in the recheck file (section 8), reconcile those four cases with the `golden-truth` skill,
-and update the current-state lines the recheck lists (TODO, the Mintlify research note,
-`ideas/source-delivery-ranked-references.md`). In the same change, re-verify three cases that
-still state Algolia-era index facts: `q-gap-rpc-horizon-unindexed-reference` (its answer says the
-per-method RPC and Horizon reference pages are outside the search index),
-`q-pc-doc-category-validator-search`, and `q-edge-doc-title-zero-hits`.
-
 ## Improvements follow-up
 
 ### Monitor the Horizon protocol-ceiling note behind the rejected recovery experiment
@@ -768,8 +752,9 @@ figures.
   and placements (R24, R26, R27); SCF #45 coverage (R28); Chainlink oracle and native MetaMask rows
   (Q2, Q18); DEX sub-type tags (Q6).
 - stellar-docs: the state-archival page says `current_ledger + 4095` for the restored persistent
-  minimum TTL, but mainnet uses 2,073,600; RPC method pages stay unindexed (sd-003: Q21, R03, R32,
-  R34); "Building with AI" and `llms.txt` still name `raven.stellar.buzz`.
+  minimum TTL, but mainnet uses 2,073,600; "Building with AI" and `llms.txt` still name
+  `raven.stellar.buzz`. (The unindexed RPC method pages, sd-003: Q21, R03, R32, R34, resolved on
+  2026-11-02.)
 - Lumenloop: the Friday roundup leaves Saturday to Monday without news items (R21, near ll-006).
 
 Done when: each item is filed, merged into an existing finding, or rejected with a reason.
@@ -895,7 +880,7 @@ expired caps, but three policy questions remain:
 1. Partial caps outside the ADR-0008 set. ADR-0008 accepts canonical-page caps for exactly base
    reserve, Horizon lifecycle, and RPC pagination. Existing aggregator caps (for example
    `q-tool-wallets-comparison`, `q-eco-stellar-wallets-list`, `q-builder-justin-rice-history`,
-   `q-edge-fresh-latest-blend-tvl`) and finding-tied canonical caps (`sd-003`, `sd-009`) stay on
+   `q-edge-fresh-latest-blend-tvl`) and the finding-tied canonical cap (`sd-009`) stay on
    `main`. Convert them to plain correct/wrong rules, or extend the accepted set by decision.
 2. Freshness tags. Eleven `live` and five `stable` cases carry dated example values in golden text.
    Decide whether such a case is always `scheduled` with a `reverifyBy` date.

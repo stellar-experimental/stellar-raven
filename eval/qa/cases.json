@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "e6258fd01b7dc9fe40268daaff3926075e746065595739a2267b4f141cddd71c",
+  "corpusContentSha256": "cce10279b185026d80c37f3506a78bc79a594957b23f010e0fb28e13a66c764c",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -20130,16 +20130,16 @@
         "stellarDocs.search_doc_titles"
       ],
       "golden": {
-        "answer": "Treat the title search as a reliable zero-hit for that title query in the indexed corpus, not proof that the concept does not exist anywhere. Do not fabricate a page. Retry with plausible title words or use broader body search; if a known developer-site page is auto-generated or unindexed, consult the operation's index constraint instead.",
+        "answer": "A title search with no matching hit returns soft-empty: none of the candidate sections that the docs search returned contains a query term. That result is inconclusive. It is not proof that no page or documentation exists. Do not fabricate a page or a URL. Retry with plausible title words, broaden with search_docs, or read a known path with get_doc_page.",
         "keyFacts": [
-          "Preserves the title search zero-hit without fabricating a page.",
-          "Broadens the query or search mode while keeping the claim scoped to the index."
+          "Treats the zero title result as inconclusive and fabricates no page.",
+          "Broadens the query or search mode while keeping the claim scoped to the search."
         ],
         "avoid": [
-          "Do NOT convert an indexed-title zero result into a universal claim that no documentation exists.",
+          "Do NOT convert a zero title-search result into a universal claim that no documentation exists.",
           "Do NOT invent a canonical URL from the query words."
         ],
-        "notes": "NEG / zero-result title-search behavior."
+        "notes": "NEG / zero-result title-search behavior. Mintlify backend since 2026-11-02: the zero case is a soft-empty envelope, not an exact zero count."
       },
       "tags": {
         "category": "edge-behavior",
@@ -20168,12 +20168,21 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
+          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
           "evidence": [
+            "Gospel change 2026-11-02: golden.answer, keyFacts, and notes updated. The old answer called the zero a reliable zero-hit in the indexed corpus and pointed to an index constraint for unindexed generated pages; neither holds on the Mintlify backend.",
+            "Class C (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_doc_titles 'qzxv frobnicator ledgerwhale' → soft-empty 'None of the 43 candidate sections the docs search returned contains a query term …' with a rephrase hint; search_doc_titles 'getTransactions' → #1 …/methods/getTransactions (observedAt 2026-11-02T20:02:52Z).",
+            "Class B: src/adapters/stellar-docs.ts — a result whose kept sections contain no query term is soft-empty, and 'A soft-empty result never establishes corpus absence.'",
+            "Sibling sweep 2026-11-02: see q-gap-rpc-horizon-unindexed-reference evidence.",
             "Raven stellarDocs.search_doc_titles {query:'zqxv flurbonic wombatization'} (observedAt 2026-11-02): kind soft-empty, 'This query returned no hits in the docs index with the operation filters.' hint 'Scope the negative to this docs index.'",
             "src/adapters/stellar-docs.ts:568-580 (worktree, 2026-11-02): nbHits === 0 selects the index-scoped no-hits message.",
             "specs/stellar-docs.json:36 (2026-11-02): 'Auto-generated per-method RPC reference pages ... and per-endpoint Horizon reference pages are NOT in the index.'",
             "No gospel change. Sibling sweep 2026-11-02: q-sor-doc-title-discovery, q-edge-doc-page-sections-soft-empty; no contradiction."
+          ],
+          "rootCause": [
+            "freshness-drift",
+            "Raven moved stellarDocs from Algolia to Mintlify (PR #309, deployed 2026-11-02); the zero-result contract changed.",
+            "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
           ]
         },
         "origin": "authored 2026-07 (coverage)",
@@ -25225,15 +25234,17 @@
         "skills.stellar-dev.data"
       ],
       "golden": {
-        "answer": "Use the RPC/Horizon docs search for structure, migration, error, admin, and method-guide material, then follow official page links or the data skill for procedure. The exposed catalog explicitly says auto-generated per-method RPC and per-endpoint Horizon references are not in this search index; a zero search hit is not evidence that the API does not exist.",
+        "answer": "As of 2026-11-02 the generated per-method RPC and per-endpoint Horizon reference pages are in the docs search, and a search by the method or endpoint name usually ranks the page first. A search can still miss the page when the query uses words that appear only inside the page's response-field components, such as a Horizon result code: that text ranks poorly in the docs search. Retry with the method or endpoint name or the page title, or read the reference page with get_doc_page. An empty or off-target search result is not evidence that the API does not exist.",
         "keyFacts": [
-          "Marks generated RPC-method and Horizon-endpoint references outside the search index.",
-          "Does not infer API absence from an unindexed search result."
+          "Says the reference pages are searchable by method or endpoint name.",
+          "Recovers with a name or title search, or a direct page read.",
+          "Does not infer API absence from a missed or empty search result."
         ],
         "avoid": [
-          "Do NOT say an RPC or Horizon API is nonexistent solely because this search operation did not return it."
+          "Do NOT say an RPC or Horizon API is nonexistent solely because this search operation did not return it.",
+          "Do NOT claim the generated RPC-method or Horizon-endpoint reference pages are excluded from the docs search index."
         ],
-        "notes": "N1 live contract probe 2026-07-11: Catalog note is the stable contract; live probe context was established through the local MCP execute surface."
+        "notes": "N1 live contract probe 2026-07-11, reversed 2026-11-02: the retired Algolia index excluded the generated reference pages (sd-003, resolved). An answer that reports that exclusion as dated history is acceptable. Component text that ranks poorly is the open sd-059 finding; an answer need not name it."
       },
       "tags": {
         "category": "tooling-infra",
@@ -25251,39 +25262,102 @@
         "sources": [
           {
             "class": "A",
-            "ref": "catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs",
-            "note": "Exposed operation contract and catalog notes."
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions",
+            "note": "Generated method page on the Mintlify site."
           },
           {
-            "class": "B",
-            "ref": "inventory/stellar-docs.json",
-            "note": "Committed inventory snapshot for the service family."
+            "class": "C",
+            "ref": "catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs",
+            "note": "Operation contract: includes the per-RPC-method and per-Horizon-endpoint API reference pages."
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_rpc_horizon_data_docs / search_docs (production, Mintlify)",
+            "note": "Live ranking of the reference pages."
           }
         ],
         "corroboration": [
           {
-            "claim": "Treats the docs-search index as intentionally incomplete for generated per-method/per-endpoint references.",
+            "claim": "The generated RPC-method and Horizon-endpoint reference pages are in the docs search and rank first for a name query.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions; …/horizon/api-reference/list-all-transactions",
+                "observedAt": "2026-11-02",
+                "note": "Both pages HTTP 200 on the Mintlify site."
+              },
+              {
                 "class": "C",
-                "ref": "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
-                "observedAt": "2026-07-11",
-                "note": "Catalog note is the stable contract; live probe context was established through the local MCP execute surface."
+                "ref": "codemode.spec() /stellarDocs/search_rpc_horizon_data_docs (production)",
+                "observedAt": "2026-11-02",
+                "note": "'Includes the per-RPC-method and per-Horizon-endpoint API reference pages'."
+              },
+              {
+                "class": "E",
+                "ref": "production search_docs 'getTransactions API reference limit'; search_rpc_horizon_data_docs 'getFeeStats', 'Horizon list all transactions endpoint'; search_docs 'getHealth'",
+                "observedAt": "2026-11-02",
+                "note": "Each query ranks the named reference page #1."
+              }
+            ]
+          },
+          {
+            "claim": "Text that appears only inside response-field components ranks poorly, so a query for it can miss the page.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/set-options.md",
+                "observedAt": "2026-11-02",
+                "note": "The page carries op_bad_signer inside a ResponseField."
+              },
+              {
+                "class": "E",
+                "ref": "production search_docs 'op_bad_signer' (top 5 has no result-code page); search_doc_titles 'Set Options result codes' ranks that page #1; sweep .agents/rounds/2026-11-02-mintlify-migration/responsefield-rank.json",
+                "observedAt": "2026-11-02",
+                "note": "Component text misses; the title query recovers the page."
+              }
+            ]
+          },
+          {
+            "claim": "The generated reference pages are excluded from the docs search index.",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "E",
+                "ref": "production search_docs 'getTransactions API reference limit'",
+                "observedAt": "2026-11-02",
+                "note": "The method page ranks #1, so the exclusion avoid item punishes a false claim."
+              },
+              {
+                "class": "B",
+                "ref": "stellar/stellar-docs@700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (PR #2941)",
+                "observedAt": "2026-11-02",
+                "note": "Migration that indexed the pages."
               }
             ]
           }
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-01)",
+          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
           "evidence": [
+            "Gospel change 2026-11-02: golden.answer, keyFacts, avoid[1], and notes reversed. The old answer said the catalog excludes generated reference pages from the search index; the production Mintlify backend indexes them and the catalog now says so.",
+            "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
+            "Class A (confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — 'The limit for getTransactions can range from 1 to 200 … it defaults to 50'; …/methods/getFeeStats and /docs/data/apis/horizon/api-reference/list-all-transactions HTTP 200 (observedAt 2026-11-02)",
+            "Class B: stellar/stellar-docs commit 700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (2026-10-22, 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)') moved the generated reference pages into the Mintlify site and its search.",
+            "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) search_docs 'op_bad_signer' → top 5 has no result-code page; search_doc_titles 'Set Options result codes' → #1 /docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/set-options (observedAt 2026-11-02T20:04Z). Open finding improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md (stellar/stellar-docs#2995).",
+            "Sibling sweep 2026-11-02: q-infra-rpc-methods-list, q-pc-practical-fee-setting, q-pc-tx-finality-failure-semantics, q-ti-rpc-gettransactions-pagination-xdr, q-edge-doc-title-zero-hits, q-pc-doc-category-validator-search updated in the same change; git grep 'unindexed|not in (this|the) search index|sd-003' over eval/qa/corpus/battery found no other live claim.",
             "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, E); the proposer proposed no change and the verifier listed the case as no-proposal.",
             "Class A (golden.keyFacts[0], confirmed-as-of): catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs — \"Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.\" (observedAt 2026-11-02)",
             "Class E (golden.keyFacts[0], confirmed-as-of): Raven MCP execute (production, mcp__claude_ai_Stellar_Raven__execute) stellarDocs.search_rpc_horizon_data_docs + search_docs for 'getLedgers', 'getTransactions method parameters', 'simulateTransact... — \"no hit under /api-reference/methods/* or /horizon/api-reference/<endpoint>; rpc_horizon soft-empty for two queries\" (observedAt 2026-11-02)",
             "Class A (golden.keyFacts[0], confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers and .../horizon/api-reference/retrieve-an-account — \"both HTTP 200 (pages exist after the 2026-10-22 Mintlify migration)\" (observedAt 2026-11-02)",
             "Class A (golden.avoid[0], contradicted): https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers — \"HTTP 200 although the search index returns no method page\" (observedAt 2026-11-02)",
             "Sibling sweep 2026-11-02: q-infra-rpc-methods-list checked; no conflicting fact."
+          ],
+          "rootCause": [
+            "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)",
+            "freshness-drift"
           ]
         },
         "origin": "authored 2026-07 (gap-ops)"
@@ -28513,7 +28587,7 @@
           "Do NOT add Horizon paths, SDK helpers, removed aliases, or `rpc.discover`/`getMethods` to the application-method list.",
           "Do NOT imply every getLedgers endpoint reaches genesis or repeat a universal event-retention day count."
         ],
-        "notes": "2026-06-29: simulateTransaction is the load-bearing answer; inventing method names is the trap. 12-method enum is this file's lane (vs q-infra-simulate-transaction-howto, the procedure). Retention normalized (re-verified 2026-11-02): the getEvents reference and stellar-rpc v30.0.0 config use one history-retention-window with a stock default of 120960 ledgers (~7 days); there is no separate 24h event default. Rubric gates on the durable 'limited window' fact, not the exact default.\nAlso good if the answer: `getLedgers` is the archive-tier method for full ledger-history retrieval. | `getEvents` retrieves contract events within the provider's retention window (stock default 120960 ledgers, about 7 days, as of 2026-11-02).\nGolden cites: developers.stellar.org RPC API-reference methods page.\nGT-50 CORRECTION 2026-07-11: exact inventory is release-sensitive. Gate the 12 names and simulateTransaction, while preserving ordinary-versus-archive getLedgers and provider-configured event retention.\nAccurately quoting the canonical Stellar documentation's indexed RPC overview that omits generated method pages is not a wrong claim while sd-003 stands; grade caps at partial for an incomplete inventory from that indexed surface unless the answer contradicts the golden 12-method list independently of the quoted source.\nArchive-node beta 2026-11-02: SDF's stellar-rpc tag archive-node-beta (2026-09-30) adds a beta-only `queryEvents` method and serves full history for getEvents, getLedgers, getTransaction, and getTransactions. Stock RPC v30.0.0 returns method not found for queryEvents. Do not penalize an answer that names these as beta-only; the 12 stock methods remain the gate."
+        "notes": "2026-06-29: simulateTransaction is the load-bearing answer; inventing method names is the trap. 12-method enum is this file's lane (vs q-infra-simulate-transaction-howto, the procedure). Retention normalized (re-verified 2026-11-02): the getEvents reference and stellar-rpc v30.0.0 config use one history-retention-window with a stock default of 120960 ledgers (~7 days); there is no separate 24h event default. Rubric gates on the durable 'limited window' fact, not the exact default.\nAlso good if the answer: `getLedgers` is the archive-tier method for full ledger-history retrieval. | `getEvents` retrieves contract events within the provider's retention window (stock default 120960 ledgers, about 7 days, as of 2026-11-02).\nGolden cites: developers.stellar.org RPC API-reference methods page.\nGT-50 CORRECTION 2026-07-11: exact inventory is release-sensitive. Gate the 12 names and simulateTransaction, while preserving ordinary-versus-archive getLedgers and provider-configured event retention.\nArchive-node beta 2026-11-02: SDF's stellar-rpc tag archive-node-beta (2026-09-30) adds a beta-only `queryEvents` method and serves full history for getEvents, getLedgers, getTransaction, and getTransactions. Stock RPC v30.0.0 returns method not found for queryEvents. Do not penalize an answer that names these as beta-only; the 12 stock methods remain the gate."
       },
       "tags": {
         "category": "tooling-infra",
@@ -28645,8 +28719,13 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
+          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
           "evidence": [
+            "Gospel change 2026-11-02: removed the sd-003 partial cap from golden.notes; sd-003 is resolved.",
+            "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
+            "Class A (confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — 'The limit for getTransactions can range from 1 to 200 … it defaults to 50'; …/methods/getFeeStats and /docs/data/apis/horizon/api-reference/list-all-transactions HTTP 200 (observedAt 2026-11-02)",
+            "Class B: stellar/stellar-docs commit 700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (2026-10-22, 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)') moved the generated reference pages into the Mintlify site and its search.",
+            "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) get_doc_page /docs/data/apis/rpc/api-reference/methods (title 'Methods') names all 12 stock methods plus the beta-only queryEvents (observedAt 2026-11-02T20:04Z).",
             "Gospel change 2026-11-02: golden.notes drops the stale '24h default, ~7 days max' getEvents wording (retention-normalized sentence and also-good fragment) for the single 120960-ledger history-retention-window, and adds a beta-only archive-node note (queryEvents, full-history methods). The 12 stock methods remain the gate; answer, keyFacts, and avoid are unchanged.",
             "Verifier accept (replace-substring (retention normalized sentence)) class A: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — \"Stellar-RPC retains a bounded, ledger-denominated history of recent transactions and events, configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)\" (observedAt 2026-11-02)",
             "Verifier accept (replace-substring (retention normalized sentence)) class B: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go — \"Name: \"history-retention-window\", ... \"configures history retention window for transactions and events, expressed in number of ledgers, the default value is %d which corresponds to about 7 days of history\" ... DefaultValue: uint32(SevenDayOfLedgers); OneDay...\" (observedAt 2026-11-02)",
@@ -28689,7 +28768,8 @@
             "freshness-drift",
             "improvements/resolved.json entry sd-023 (stellar-docs PR #2656 replaced the 24h/7-day event retention prose; the notes still cited the pre-fix wording)",
             "Upstream stellar-rpc tag archive-node-beta (2026-09-30) added beta-only queryEvents and full-history reads after the last verification.",
-            "Eval-side authoring flaw: golden.answer and keyFacts[0] stated the 12-method count as 'current' with no as-of date or release scope, while the archive-node rpcv2 handler set (13 methods with queryEvents) exists on the archive-node-beta tag and stellar-rpc main."
+            "Eval-side authoring flaw: golden.answer and keyFacts[0] stated the 12-method count as 'current' with no as-of date or release scope, while the archive-node rpcv2 handler set (13 methods with queryEvents) exists on the archive-node-beta tag and stellar-rpc main.",
+            "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
           ]
         },
         "origin": "raven-next q-infra-rpc-methods-list"
@@ -33852,16 +33932,16 @@
         "stellarDocs.search_docs_in_category"
       ],
       "golden": {
-        "answer": "Call search_docs_in_category with query quorum and category validators. Verify returned paths are in the validator area, inspect breadcrumbs/snippets, and then open the relevant page. Category restriction is adapter-side because the upstream hierarchy field is not a reliable facet; use only the operation's supported category values.",
+        "answer": "Call search_docs_in_category with query quorum and category validators. The adapter keeps only hits under the /docs/validators path, because the docs search has no category facet; the result carries pathFiltered: true. Check the returned paths and snippets, then open the relevant page with get_doc_page. A soft-empty result means no candidate in the search window fell under that path, or no kept section contains a query term, so broaden once with search_docs. Use only the operation's supported category values.",
         "keyFacts": [
           "Uses the validators category to constrain the quorum search.",
           "Checks the returned paths and follows the relevant result for full content."
         ],
         "avoid": [
           "Do NOT invent a category outside the operation's supported vocabulary.",
-          "Do NOT assume an upstream hierarchy facet performed the category restriction."
+          "Do NOT claim an upstream search facet performed the category restriction."
         ],
-        "notes": "Behavioral docs-category case; result ordering and content are live."
+        "notes": "Behavioral docs-category case; result ordering and content are live. Mintlify backend since 2026-11-02: hits carry url, path, title, optional section, and snippet; there are no breadcrumbs."
       },
       "tags": {
         "category": "protocol-core",
@@ -33875,7 +33955,7 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-11-02",
         "sources": [
           {
             "class": "B",
@@ -33910,8 +33990,12 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
           "evidence": [
+            "Gospel change 2026-11-02: golden.answer, avoid[1], and notes updated for the Mintlify backend. The old answer named breadcrumbs and an upstream hierarchy field, which were Algolia record fields.",
+            "Class C (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs_in_category {query:'quorum', category:'validators'} → /docs/validators/admin-guide/monitoring, …/configuring, …/maintenance; pathFiltered true; hit keys url, path, title, section, snippet (observedAt 2026-11-02T20:02:52Z).",
+            "Class B: src/adapters/stellar-docs.ts header — 'The search service has no facets, scores, or counts … Path scoping therefore happens here over a fixed candidate window'; specs/stellar-docs.json category enum includes validators and maps it to the /docs/<category> URL prefix.",
+            "Sibling sweep 2026-11-02: see q-gap-rpc-horizon-unindexed-reference evidence.",
             "Live C 2026-11-02: Raven stellarDocs.search_docs_in_category({query:'quorum',category:'validators'}) -- 'nbHits 56, clientFiltered present; all 5 hits under https://developers.stellar.org/docs/validators/admin-guide/...'",
             "Live E 2026-11-02: Raven stellarDocs.search_docs({query:'quorum'}) -- 'unfiltered top hit is /docs/learn/fundamentals/stellar-consensus-protocol#quorum (cross-area), confirming the mixing premise'",
             "Live B 2026-11-02: specs/stellar-docs.json -- 'facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix'",
@@ -33919,6 +34003,10 @@
             "Live F 2026-11-02: npx vitest run test/adapters.test.ts -t 'URL-prefix' (worktree) -- 'Test Files 1 passed; Tests 1 passed | 95 skipped'",
             "Re-verified with no gospel change; proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json (no proposal, so no verifier decision).",
             "Sibling sweep 2026-11-02: no topical sibling names search_docs_in_category validators; no contradiction."
+          ],
+          "rootCause": [
+            "freshness-drift",
+            "Raven moved stellarDocs from Algolia to Mintlify (PR #309, deployed 2026-11-02); the answer named Algolia-only record fields."
           ]
         },
         "origin": "authored 2026-07 (coverage)"
@@ -34676,7 +34764,7 @@
           "Do NOT say 100 always wins, freeze current percentiles, or use Ethereum gas/gwei framing.",
           "Do NOT claim Hubble is the primary real-time submission estimator or overbid without an application risk cap."
         ],
-        "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint/discoverability recurrence attaches to sd-003. On 2026-09-09, the live pages and positive search records agree on the nearing-end-of-life label. The sd-042 search-ingestion conflict no longer applies. Grade durable endpoint behavior.\nAccurately quoting the canonical Stellar documentation on RPC getFeeStats method discoverability is not a wrong claim while sd-003 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint discoverability attached to sd-003, resolved 2026-11-02: the getFeeStats method page is in the docs search. On 2026-09-09, the live pages and positive search records agree on the nearing-end-of-life label. The sd-042 search-ingestion conflict no longer applies. Grade durable endpoint behavior."
       },
       "tags": {
         "category": "protocol-core",
@@ -34776,17 +34864,26 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-02)",
+          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
           "evidence": [
+            "Gospel change 2026-11-02: removed the sd-003 partial cap and re-dated the sd-003 note in golden.notes.",
+            "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
+            "Class A (confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — 'The limit for getTransactions can range from 1 to 200 … it defaults to 50'; …/methods/getFeeStats and /docs/data/apis/horizon/api-reference/list-all-transactions HTTP 200 (observedAt 2026-11-02)",
+            "Class B: stellar/stellar-docs commit 700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (2026-10-22, 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)') moved the generated reference pages into the Mintlify site and its search.",
+            "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) get_doc_page /docs/data/apis/rpc/api-reference/methods/getFeeStats → title 'getFeeStats', 8,691 characters (observedAt 2026-11-02T20:02:52Z).",
             "Verification-only event: no judge-facing field changed.",
             "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — 'This cannot be lower than 100 stroops per operation (the network minimum) ... When network traffic exceeds the ledger limit, the network enters into surge pricing mode, and your effective base fee becomes your maximum bid' (observedAt 2026-11-02).",
             "https://horizon.stellar.org/fee_stats — last_ledger_base_fee 100 (ledger 65269952); RPC getFeeStats on https://mainnet.sorobanrpc.com — inclusionFee min 100, p50 100 (observedAt 2026-11-02).",
             "stellar fees --help (stellar 28.1.0) — 'Commands: stats  Fetch the feestats from the network' (observedAt 2026-11-02).",
             "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment — 'networking layer API for Stellar RPC methods as well as the Horizon API (nearing end-of-life)' (observedAt 2026-11-02); the golden's dated 2026-09-08 wording still holds.",
             "Sibling sweep 2026-11-02: q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement rule; consistent); no contradiction."
+          ],
+          "rootCause": [
+            "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
           ]
         },
-        "origin": "raven-next q-pc-practical-fee-setting"
+        "origin": "raven-next q-pc-practical-fee-setting",
+        "asOf": "2026-11-02"
       }
     },
     {
@@ -36117,7 +36214,7 @@
           "Do NOT say every submission is on-ledger or that included failure leaves fee/sequence untouched.",
           "Do NOT assign PENDING to getTransaction, treat send acceptance as finality, or use one NOT_FOUND as proof of nonexistence."
         ],
-        "notes": "GT-30 CORRECTION 2026-07-10: getTransaction statuses are SUCCESS/FAILED/NOT_FOUND. PENDING is a sendTransaction admission/polling state. Included failures consume fee/sequence; pre-inclusion rejection/drop does not. NOT_FOUND remains retention/processing ambiguous.\nGT-30 independently confirmed by processes 3277/3279; sd-003 owns method-reference discoverability.\nAccurately quoting the canonical Stellar Docs source on the `getTransaction` versus `sendTransaction` status sets is not a wrong claim while sd-003 leaves the method pages unindexed; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GT-30 CORRECTION 2026-07-10: getTransaction statuses are SUCCESS/FAILED/NOT_FOUND. PENDING is a sendTransaction admission/polling state. Included failures consume fee/sequence; pre-inclusion rejection/drop does not. NOT_FOUND remains retention/processing ambiguous.\nGT-30 independently confirmed by processes 3277/3279; sd-003 (method-reference discoverability) resolved 2026-11-02."
       },
       "tags": {
         "category": "protocol-core",
@@ -36176,16 +36273,24 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
+          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
           "evidence": [
+            "Gospel change 2026-11-02: removed the sd-003 partial cap and re-dated the sd-003 note in golden.notes.",
+            "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
+            "Class A (confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — 'The limit for getTransactions can range from 1 to 200 … it defaults to 50'; …/methods/getFeeStats and /docs/data/apis/horizon/api-reference/list-all-transactions HTTP 200 (observedAt 2026-11-02)",
+            "Class B: stellar/stellar-docs commit 700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (2026-10-22, 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)') moved the generated reference pages into the Mintlify site and its search.",
             "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
             "Live re-check 2026-11-02 (confirmed): getTransaction returns SUCCESS/FAILED/NOT_FOUND; PENDING is a sendTransaction status — A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction 'Allowed values: SUCCESSNOT_FOUNDFAILED'; A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/sendTransaction 'Allowed values: PENDINGDUPLICATETRY_AGAIN_LATERERROR'; B https://github.com/stellar/go-stellar-sdk/blob/main/protocols/rpc/get_transaction.go 'TransactionStatusNotFound indicates the transaction was not found in Stellar-RPC's transaction store.'; B https://github.com/stellar/go-stellar-sdk/blob/main/protocols/rpc/send_transaction.go 'Status can be one of: proto.TXStatusPending, proto.TXStatusDuplicate, proto.TXStatusTryAgainLater, or proto.TXStatusError.'",
             "Live re-check 2026-11-02 (confirmed): Included txs (incl. failed) consume fee and sequence; pre-inclusion rejection consumes neither — A https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle 'If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed ... For each transaction, the account's sequence number i'; B https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp 'There are only a few possible reasons for why we would *not* update the sequence number: ... In any other scenario we should update the sequence number'",
             "Live re-check 2026-11-02 (confirmed-as-of): NOT_FOUND ambiguous due to bounded retention; sd-003 method pages unindexed caution — A https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction 'The stellar-rpc system maintains a bounded history of recently processed transactions ... stock default of 120960 ledgers (about 7 days'; E stellarDocs.get_doc_page_sections path=/docs/data/apis/rpc/api-reference/methods/getTransaction 'soft-empty: The page-section queries returned no matching records'",
             "Sibling sweep 2026-11-02: q-protocol-accounts-signers-thresholds was corrected in this batch to the same rule (included failures consume the sequence); q-pc-sequence-numbers-ordering-replace checked; no contradiction."
+          ],
+          "rootCause": [
+            "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
           ]
         },
-        "origin": "raven-next q-pc-tx-finality-failure-semantics"
+        "origin": "raven-next q-pc-tx-finality-failure-semantics",
+        "asOf": "2026-11-02"
       }
     },
     {
@@ -64937,7 +65042,7 @@
           "Do NOT hard-code Horizon's 200 limit as the RPC getEvents limit.",
           "Do NOT expect *Xdr names in xdrFormat=json or double-decode SDK-parsed XDR values."
         ],
-        "notes": "GT-53 CORRECTION 2026-07-11: getTransactions has stock 50/default and 200/max options, but providers may configure them. First-page startLedger is inclusive; continuation uses cursor without startLedger. The old Horizon-only premise is false.\nAlso good if the answer: Mentions that RPC/Horizon are not perfect substitutes and some Horizon endpoints/effects require XDR decoding or an indexer. | Recommends idempotent processing keyed by transaction hash/ledger/index to survive retries.\nGolden cites: Primary RPC pagination docs and Horizon-to-RPC migration/XDR docs.\nPreserve the 2026-07-03 sd-003/sd-004 correction: docs/search missed the RPC method page and docs call configurable defaults hardcoded. GT-53 adds exact cursor exclusivity and XDR/JSON types. Do not penalize provider-configurability precision or a dated live limit that differs from stock defaults. Per stellar-docs#2567, grade either the documented effective stock 50/200 cap or a dated source-level configurable-default qualifier as correct, provided the answer does not call the cap compile-time immutable or recommend raising it.\nCanonical-page caution: The official getTransactions page calls the cap hardcoded. An attributed quote is not a wrong claim; grade caps at partial. This does not accept universal immutability. improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md is declined-upstream, so this durable caution has no expiry date and remains until a later owner decision."
+        "notes": "GT-53 CORRECTION 2026-07-11: getTransactions has stock 50/default and 200/max options, but providers may configure them. First-page startLedger is inclusive; continuation uses cursor without startLedger. The old Horizon-only premise is false.\nAlso good if the answer: Mentions that RPC/Horizon are not perfect substitutes and some Horizon endpoints/effects require XDR decoding or an indexer. | Recommends idempotent processing keyed by transaction hash/ledger/index to survive retries.\nGolden cites: Primary RPC pagination docs and Horizon-to-RPC migration/XDR docs.\nPreserve the 2026-07-03 sd-003/sd-004 correction: the then-Algolia search missed the RPC method page (sd-003, resolved 2026-11-02) and docs call configurable defaults hardcoded (sd-004). GT-53 adds exact cursor exclusivity and XDR/JSON types. Do not penalize provider-configurability precision or a dated live limit that differs from stock defaults. Per stellar-docs#2567, grade either the documented effective stock 50/200 cap or a dated source-level configurable-default qualifier as correct, provided the answer does not call the cap compile-time immutable or recommend raising it.\nCanonical-page caution: The official getTransactions page calls the cap hardcoded. An attributed quote is not a wrong claim; grade caps at partial. This does not accept universal immutability. improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md is declined-upstream, so this durable caution has no expiry date and remains until a later owner decision."
       },
       "tags": {
         "category": "tooling-infra",
@@ -65074,8 +65179,12 @@
         ],
         "verified": {
           "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
+          "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
           "evidence": [
+            "Gospel change 2026-11-02: golden.notes marks sd-003 resolved. The 50/200 facts and the sd-004 caution are unchanged and re-checked against the live page.",
+            "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
+            "Class A (confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — 'The limit for getTransactions can range from 1 to 200 … it defaults to 50'; …/methods/getFeeStats and /docs/data/apis/horizon/api-reference/list-all-transactions HTTP 200 (observedAt 2026-11-02)",
+            "Class B: stellar/stellar-docs commit 700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (2026-10-22, 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)') moved the generated reference pages into the Mintlify site and its search.",
             "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes B, E, F); the proposer proposed no change and the verifier listed the case as no-proposal.",
             "Class B (golden.keyFacts[1], confirmed-as-of): https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go — \"max-events-limit 10000; default-events-limit 100; max-transactions-limit 200; default-transactions-limit 50; max-ledgers-limit 200; default-ledgers-limit 50 (same values on main rpcv1/config/options.go)\" (observedAt 2026-11-02)",
             "Class F (golden.keyFacts[1], confirmed-as-of): https://soroban-testnet.stellar.org (RPC 30.0.0) — \"getTransactions limit 201 -> \"limit must not exceed 200\"; default page 50 rows; getEvents limit 10001 -> \"limit must not exceed 10000\"\" (observedAt 2026-11-02)",
@@ -65085,6 +65194,9 @@
             "Class F (golden.answer, confirmed): testnet getTransactions base64 — \"events keys transactionEventsXdr, contractEventsXdr; stellar xdr decode --type TransactionEvent -> {\"stage\":\"before_all_txs\",...}; --type ContractEvent -> {\"type\":\"contract\",...}\" (observedAt 2026-11-02)",
             "Class F (golden.answer, confirmed): testnet getTransactions xdrFormat=json — \"keys envelopeJson, resultJson, resultMetaJson; events transactionEventsJson, contractEventsJson\" (observedAt 2026-11-02)",
             "Sibling sweep 2026-11-02: q-ti-parse-raw-ledger-data checked; no conflicting fact."
+          ],
+          "rootCause": [
+            "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
           ]
         },
         "origin": "raven-next q-ti-rpc-gettransactions-pagination-xdr"

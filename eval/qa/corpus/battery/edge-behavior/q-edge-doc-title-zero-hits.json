@@ -5,16 +5,16 @@
     "stellarDocs.search_doc_titles"
   ],
   "golden": {
-    "answer": "Treat the title search as a reliable zero-hit for that title query in the indexed corpus, not proof that the concept does not exist anywhere. Do not fabricate a page. Retry with plausible title words or use broader body search; if a known developer-site page is auto-generated or unindexed, consult the operation's index constraint instead.",
+    "answer": "A title search with no matching hit returns soft-empty: none of the candidate sections that the docs search returned contains a query term. That result is inconclusive. It is not proof that no page or documentation exists. Do not fabricate a page or a URL. Retry with plausible title words, broaden with search_docs, or read a known path with get_doc_page.",
     "keyFacts": [
-      "Preserves the title search zero-hit without fabricating a page.",
-      "Broadens the query or search mode while keeping the claim scoped to the index."
+      "Treats the zero title result as inconclusive and fabricates no page.",
+      "Broadens the query or search mode while keeping the claim scoped to the search."
     ],
     "avoid": [
-      "Do NOT convert an indexed-title zero result into a universal claim that no documentation exists.",
+      "Do NOT convert a zero title-search result into a universal claim that no documentation exists.",
       "Do NOT invent a canonical URL from the query words."
     ],
-    "notes": "NEG / zero-result title-search behavior."
+    "notes": "NEG / zero-result title-search behavior. Mintlify backend since 2026-11-02: the zero case is a soft-empty envelope, not an exact zero count."
   },
   "tags": {
     "category": "edge-behavior",
@@ -43,12 +43,21 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
+      "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
       "evidence": [
+        "Gospel change 2026-11-02: golden.answer, keyFacts, and notes updated. The old answer called the zero a reliable zero-hit in the indexed corpus and pointed to an index constraint for unindexed generated pages; neither holds on the Mintlify backend.",
+        "Class C (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_doc_titles 'qzxv frobnicator ledgerwhale' → soft-empty 'None of the 43 candidate sections the docs search returned contains a query term …' with a rephrase hint; search_doc_titles 'getTransactions' → #1 …/methods/getTransactions (observedAt 2026-11-02T20:02:52Z).",
+        "Class B: src/adapters/stellar-docs.ts — a result whose kept sections contain no query term is soft-empty, and 'A soft-empty result never establishes corpus absence.'",
+        "Sibling sweep 2026-11-02: see q-gap-rpc-horizon-unindexed-reference evidence.",
         "Raven stellarDocs.search_doc_titles {query:'zqxv flurbonic wombatization'} (observedAt 2026-11-02): kind soft-empty, 'This query returned no hits in the docs index with the operation filters.' hint 'Scope the negative to this docs index.'",
         "src/adapters/stellar-docs.ts:568-580 (worktree, 2026-11-02): nbHits === 0 selects the index-scoped no-hits message.",
         "specs/stellar-docs.json:36 (2026-11-02): 'Auto-generated per-method RPC reference pages ... and per-endpoint Horizon reference pages are NOT in the index.'",
         "No gospel change. Sibling sweep 2026-11-02: q-sor-doc-title-discovery, q-edge-doc-page-sections-soft-empty; no contradiction."
+      ],
+      "rootCause": [
+        "freshness-drift",
+        "Raven moved stellarDocs from Algolia to Mintlify (PR #309, deployed 2026-11-02); the zero-result contract changed.",
+        "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
       ]
     },
     "origin": "authored 2026-07 (coverage)",

@@ -17,7 +17,7 @@
       "Do NOT say 100 always wins, freeze current percentiles, or use Ethereum gas/gwei framing.",
       "Do NOT claim Hubble is the primary real-time submission estimator or overbid without an application risk cap."
     ],
-    "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint/discoverability recurrence attaches to sd-003. On 2026-09-09, the live pages and positive search records agree on the nearing-end-of-life label. The sd-042 search-ingestion conflict no longer applies. Grade durable endpoint behavior.\nAccurately quoting the canonical Stellar documentation on RPC getFeeStats method discoverability is not a wrong claim while sd-003 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint discoverability attached to sd-003, resolved 2026-11-02: the getFeeStats method page is in the docs search. On 2026-09-09, the live pages and positive search records agree on the nearing-end-of-life label. The sd-042 search-ingestion conflict no longer applies. Grade durable endpoint behavior."
   },
   "tags": {
     "category": "protocol-core",
@@ -117,16 +117,25 @@
     ],
     "verified": {
       "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-02)",
+      "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
       "evidence": [
+        "Gospel change 2026-11-02: removed the sd-003 partial cap and re-dated the sd-003 note in golden.notes.",
+        "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
+        "Class A (confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — 'The limit for getTransactions can range from 1 to 200 … it defaults to 50'; …/methods/getFeeStats and /docs/data/apis/horizon/api-reference/list-all-transactions HTTP 200 (observedAt 2026-11-02)",
+        "Class B: stellar/stellar-docs commit 700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (2026-10-22, 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)') moved the generated reference pages into the Mintlify site and its search.",
+        "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) get_doc_page /docs/data/apis/rpc/api-reference/methods/getFeeStats → title 'getFeeStats', 8,691 characters (observedAt 2026-11-02T20:02:52Z).",
         "Verification-only event: no judge-facing field changed.",
         "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — 'This cannot be lower than 100 stroops per operation (the network minimum) ... When network traffic exceeds the ledger limit, the network enters into surge pricing mode, and your effective base fee becomes your maximum bid' (observedAt 2026-11-02).",
         "https://horizon.stellar.org/fee_stats — last_ledger_base_fee 100 (ledger 65269952); RPC getFeeStats on https://mainnet.sorobanrpc.com — inclusionFee min 100, p50 100 (observedAt 2026-11-02).",
         "stellar fees --help (stellar 28.1.0) — 'Commands: stats  Fetch the feestats from the network' (observedAt 2026-11-02).",
         "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment — 'networking layer API for Stellar RPC methods as well as the Horizon API (nearing end-of-life)' (observedAt 2026-11-02); the golden's dated 2026-09-08 wording still holds.",
         "Sibling sweep 2026-11-02: q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement rule; consistent); no contradiction."
+      ],
+      "rootCause": [
+        "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
       ]
     },
-    "origin": "raven-next q-pc-practical-fee-setting"
+    "origin": "raven-next q-pc-practical-fee-setting",
+    "asOf": "2026-11-02"
   }
 }
