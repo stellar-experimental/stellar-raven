@@ -16,8 +16,8 @@
  *  - standard OpenAPI shapes (summary/description/tags/parameters/
  *    requestBody/responses/components) so generic spec-grepping code works;
  *  - per-operation vendor extensions: x-service, x-execute (exact sandbox
- *    call line), x-upstream (real HTTP method+path), x-algolia (stellarDocs
- *    query mapping);
+ *    call line), x-upstream (real HTTP method+path), x-mintlify (stellarDocs
+ *    request mapping);
  *  - spec-level x-services (per-service metadata incl. the stellarDocs
  *    backend block + measured corpus taxonomy) and x-generated (provenance,
  *    counts, size).

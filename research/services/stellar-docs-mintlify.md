@@ -66,6 +66,10 @@ Status semantics that differ from Algolia:
 - `404` on page content returns `{"message":"Page not found"}` for a missing page. The `path` must
   have no leading slash: `/docs/...` returns `404`, `docs/...` returns `200`.
 - An invalid key returns `401` with `{"error":"Unauthorized"}`.
+- The `404` bodies differ by cause (probed 2026-11-02). An empty `query` returns
+  `{"message":"No results found"}`. An unknown subdomain returns
+  `{"error":"No deployment related to <domain> exists"}` on both endpoints. The adapter treats
+  only the two `message` forms as absence; any other `404` is an error.
 - `403` covers wrong project, plan without assistant API access, and IP allowlist rejection.
 - `500` is the only documented retryable status. There is one host, so the Algolia four-host
   ladder does not carry over.

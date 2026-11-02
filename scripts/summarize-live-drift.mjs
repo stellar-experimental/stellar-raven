@@ -317,6 +317,7 @@ function summarizeDocsInventory(path) {
     return [
       `- ${path}: docs page-title vocabulary changed (${oldTotal} -> ${nextTotal}).`,
       "  - This feeds catalog keywords; treat as routing-relevant until the routing gate proves it safe.",
+      "  - The committed snapshot is held at its Algolia-era bytes until the general routing repair (#223) lands; this drift is expected while that hold stands.",
       `  - path/title pairs added: ${added.length}`,
       bulletList(added),
       `  - path/title pairs removed: ${removed.length}`,

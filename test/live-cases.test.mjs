@@ -32,7 +32,7 @@ describe("manual live case contracts (offline)", () => {
       lumenloop: {},
       stellarDocs: {
         search_anchor_sep_docs: async () => ({
-          ok: true, data: { nbHits: 1, hits: [{ url: "https://developers.stellar.org/fixture" }] }
+          ok: true, data: { candidates: 1, hits: [{ url: "https://developers.stellar.org/fixture" }] }
         })
       }
     });
@@ -48,7 +48,7 @@ describe("manual live case contracts (offline)", () => {
       expect(result).toBe(spec);
     } else {
       expect(result.specOps).toContain("stellarDocs.search_anchor_sep_docs");
-      expect(result.nbHits).toBe(1);
+      expect(result.candidates).toBe(1);
     }
   });
 

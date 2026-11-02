@@ -128,10 +128,28 @@ software-versions table (R22), and the `getEvents` tables (R32) come back comple
 page reads normally (Q9). The `.agents/TODO.md` item is removed. The software-versions page is
 147 KB, so answers rely on host truncation and artifacts for it.
 
+## Independent review
+
+Reviewer: Claude Fable 5.1 at high (`branch-review.md`). The author and orchestrator is Claude Opus
+5.5. Codex frontier was the matched tier for implementation review; it was skipped because no
+Herdr session is running. Commit reviewed: `dfccf526`. Verdict: APPROVE WITH CHANGES.
+
+| # | Finding | Resolution |
+|---|---|---|
+| 1 | Every `404` became soft-empty | Fixed. A live probe on 2026-11-02 showed distinct bodies: search `{"message":"No results found"}`, page `{"message":"Page not found"}`, unknown subdomain `{"error":"No deployment related to <domain> exists"}`. Only the two `message` forms are absence; any other `404` is `error`. Tests and `docs/stellar-docs.md` updated. |
+| 2 | One `get_doc_page` could run 88 s | Fixed. `OPERATION_BUDGET_MS` = 24,000 ms covers all attempts, the `/index` retry, and the site probe. |
+| 3 | Heading regexes quadratic on whitespace; a bare `#` line swallowed the next line | Fixed with a linear line parser. The reviewer's inputs (200,000 blank lines; 50,000 spaces) now take ≤ 13 ms. |
+| 4 | Live scripts read the retired `nbHits` | Fixed: `candidates`. |
+| 5 | Held title snapshot described as `llms.txt`-derived | Fixed: `inventory/README.md` and the drift summary name the hold. |
+| 6 | Stale `x-algolia` comment | Fixed. |
+| 7 | Snippets dropped `Vec<Val>` generics | Fixed: MDX tags shrink outside fenced code only. |
+| 8 | Redundant `include` prefix in `search_docs_in_category` | Declined. Behavior is identical, and the edit changes the manifest fingerprint in `eval/gates.json` for no behavior change. |
+
+The review also confirmed the red `eval:qa:lint -- --stale --enforce-floors` lane predates this
+branch (five `reverifyBy` dates expired on 2026-11-01).
+
 ## Open items
 
-- Paid QA paired A/B on the docs cases (pre-spend review by a different tier, budget cap, identity
-  guard on the Mintlify docs identity).
-- Independent review of the branch.
+- Paid QA paired A/B on the docs cases: see "Paid QA diagnostic".
 - Production cut-over: `MINTLIFY_ASSISTANT_API_KEY` Worker secret, then delete the `ALGOLIA_*_DOCS`
   secrets after deploy.

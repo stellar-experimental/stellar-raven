@@ -49,6 +49,20 @@ The first attempt times out after 8,000 ms and the second after 12,000 ms.
 A network failure, a timeout, or an HTTP 5xx response allows the second attempt.
 An HTTP 4xx response, including `429`, returns immediately.
 Malformed JSON in a successful response returns an error, not a retry.
+
+One operation has a wall-clock budget of 24,000 ms (`OPERATION_BUDGET_MS`).
+The budget covers every attempt, the `/index` retry, and the site redirect probe.
+Each attempt timeout is clipped to the time left.
+The adapter does not start an attempt or a probe with less than 500 ms left.
+
+The API uses `404` for both absence and configuration failures.
+Only two `404` bodies mean absence:
+
+- `{"message":"No results found"}` from the search endpoint.
+- `{"message":"Page not found"}` from the page endpoint.
+
+Any other `404` body returns `error` with `status: 404`.
+An example is `{"error":"No deployment related to <domain> exists"}` for an unknown project subdomain.
 The adapter has no persistent host-health cache and installs no Mintlify SDK.
 
 ## Credentials and boundaries
@@ -139,14 +153,14 @@ The adapter does not make a second request for content.
 `get_doc_page` sends the normalized `path` to the page endpoint.
 Normalization removes an origin, a query or fragment, a trailing slash, a `.md` or `.mdx` suffix, and leading slashes.
 The page store holds an index page only as `<dir>/index`.
-A `404` for a path without the `/index` suffix triggers one retry with `<path>/index`.
-Any failure other than `404` returns `error`.
+A "Page not found" `404` for a path without the `/index` suffix triggers one retry with `<path>/index`.
+Any other failure, including any other `404`, returns `error`.
 
-When both lookups return `404`, the adapter checks for a moved page.
+When both lookups return "Page not found", the adapter checks for a moved page.
 The live site redirects moved pages; the page store does not.
 The adapter makes one `GET` to `https://developers.stellar.org/<path>` with `redirect: "manual"` and no credentials.
 It reads only the status and the `Location` header, and discards the body.
-This probe uses the first attempt timeout of 8,000 ms and has no retry.
+This probe uses the first attempt timeout of 8,000 ms, clipped to the operation budget, and has no retry.
 A probe failure counts as no redirect.
 
 The adapter follows the redirect only when all of these hold:
@@ -212,7 +226,7 @@ Adapter failures return `{ ok: false, error }`.
 
 A search returns `soft-empty` in three cases:
 
-1. The search returned no sections.
+1. The search returned no sections: an empty array, or the "No results found" `404`.
 2. No candidate section is under the operation's paths.
    This is a candidate-window result.
    The message states the candidate count.
@@ -247,6 +261,7 @@ Use `get_doc_page` to read a whole page after a search hit.
 | Hits per search | 1 to 20, default 5 | `hitsPerPage` in each operation schema |
 | Snippet length | 300 characters | `SNIPPET_CHARS` in the adapter |
 | Attempts per request | 2, with 8,000 ms and 12,000 ms timeouts | `attemptTimeoutsMs` in the spec backend |
+| Wall-clock budget per operation | 24,000 ms, across all requests and the redirect probe | `OPERATION_BUDGET_MS` in the adapter |
 | Page requests per read | At most 4: 2 for the requested path, 2 for a redirect target | The `/index` retry and the redirect follow in the adapter |
 | Site redirect probes per read | At most 1, with an 8,000 ms timeout and no retry | `siteRedirectPath` in the adapter |
 | Mintlify rate limit | 10,000 requests per organization per hour | Mintlify API reference |

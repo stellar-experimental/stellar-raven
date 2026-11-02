@@ -5,7 +5,7 @@
  * Mintlify discovery API shape (research/services/stellar-docs-mintlify.md). Per service: one success, one soft-empty, one error —
  * the three-way outcome contract in ARCHITECTURE.md: soft-empty ≠ error ≠ data.
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -758,7 +758,7 @@ describe("stellarDocs adapter", () => {
 
   it("treats a search 404 and an empty array as no sections (soft-empty, no retry)", async () => {
     for (const [response, status] of [
-      [() => Response.json({ message: "No results" }, { status: 404 }), 404],
+      [() => Response.json({ message: "No results found" }, { status: 404 }), 404],
       [() => Response.json([]), 200]
     ] as const) {
       const { fetchImpl, calls } = mintlifyStub(response);
@@ -771,6 +771,62 @@ describe("stellarDocs adapter", () => {
         hint: expect.stringContaining("does not prove the docs lack the topic")
       } });
     }
+  });
+
+  it("keeps any other 404 (a missing deployment, an unknown body) as an error on both endpoints", async () => {
+    for (const body of [{ error: "No deployment related to stellardevelopmentfoundation exists" }, { message: "Not Found" }]) {
+      const search = mintlifyStub(() => Response.json(body, { status: 404 }));
+      const r = await callStellarDocs(entry("stellarDocs.search_docs"), { query: "soroban" }, docsEnv, search.fetchImpl);
+      expect(r).toMatchObject({ ok: false, error: { kind: "error", status: 404 } });
+      expect(search.calls).toHaveLength(1);
+
+      const page = mintlifyStub(() => Response.json(body, { status: 404 }));
+      const p = await callStellarDocs(entry("stellarDocs.get_doc_page"), { path: "/docs/build" }, docsEnv, page.fetchImpl);
+      expect(p).toMatchObject({ ok: false, error: { kind: "error", status: 404 } });
+      // No /index retry and no site probe: the page store did not say the page is absent.
+      expect(page.calls).toHaveLength(1);
+    }
+  });
+
+  it("bounds one operation by a wall-clock deadline across retries", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    try {
+      // A slow 5xx that uses up almost the whole 24 s budget: the retry is not started.
+      const { fetchImpl, calls } = mintlifyStub(() => {
+        vi.setSystemTime(Date.now() + 23_800);
+        return Response.json({ message: "slow" }, { status: 503 });
+      });
+      const r = await callStellarDocs(entry("stellarDocs.search_docs"), { query: "soroban" }, docsEnv, fetchImpl);
+      expect(calls).toHaveLength(1);
+      expect(r).toMatchObject({ ok: false, error: {
+        kind: "error",
+        message: "mintlify request failed after 1 attempts: operation deadline of 24000 ms reached"
+      } });
+
+      // A slow missing page: the /index retry and the site probe are skipped.
+      const page = pageAndSiteStub({}, {});
+      const slow: FetchLike = async (url, init) => {
+        vi.setSystemTime(Date.now() + 23_800);
+        return page.fetchImpl(url, init);
+      };
+      const p = await callStellarDocs(entry("stellarDocs.get_doc_page"), { path: "/docs/build/x" }, docsEnv, slow);
+      expect(page.pageCalls).toEqual(["docs/build/x"]);
+      expect(page.siteCalls).toHaveLength(0);
+      expect(p).toMatchObject({ ok: false, error: { kind: "error", message: expect.stringContaining("operation deadline") } });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("does not read a bare # line as a heading and keeps generics in code snippets", async () => {
+    const content = "#\nNot a heading.\n\n```rust\nfn balance(env: Env) -> Option<Address> { Vec<Val>::new(&env) }\n```";
+    const { fetchImpl } = searchStub([chunk("docs/build/x", content)]);
+    const r = await callStellarDocs(entry("stellarDocs.search_docs"), { query: "balance" }, docsEnv, fetchImpl);
+    expect(r.ok).toBe(true);
+    const hit = (r as { data: SearchData }).data.hits[0]!;
+    expect(hit.section).toBeUndefined();
+    expect(hit.snippet).toContain("Option<Address>");
+    expect(hit.snippet).toContain("Vec<Val>");
   });
 
   it("scopes by whole path segments, not raw string prefixes", async () => {

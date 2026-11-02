@@ -29,7 +29,7 @@ export const CASES = [
         scoutProjects: status.ok ? status.data.sources.find(s => s.name === "projects").count : null,
         lumenloopCount: dir.ok ? dir.data.count : dir.error,
         lumenloopTop: dir.ok && dir.data.projects[0] ? dir.data.projects[0].slug : null,
-        docsNbHits: docs.ok ? docs.data.nbHits : docs.error,
+        docsCandidates: docs.ok ? docs.data.candidates : docs.error,
         docsTopUrl: docs.ok ? docs.data.hits[0].url : null,
         skillChars: skill.ok ? skill.data.content.length : skill.error
       };

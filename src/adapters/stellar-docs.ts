@@ -31,6 +31,15 @@ import {
 const SERVICE = "stellarDocs";
 const MAX_ERROR_BODY_CHARS = 1024;
 const SNIPPET_CHARS = 300;
+/** Wall-clock bound for one operation, across retries, the `/index` retry, and the site redirect probe. */
+const OPERATION_BUDGET_MS = 24_000;
+/** An attempt with less time left than this is not started. */
+const MIN_ATTEMPT_MS = 500;
+/**
+ * The 404 bodies that mean "nothing here" (live, 2026-11-02). Any other 404 body — for example
+ * `{"error":"No deployment related to <domain> exists"}` — is a configuration failure, not absence.
+ */
+const ABSENT_MESSAGES = new Set(["No results found", "Page not found"]);
 
 type PathScope = { include?: string[] | null; exclude?: string[] | null };
 
@@ -59,7 +68,9 @@ type Section = { path: string; title: string; content: string; rank: number; isI
 type Attempt =
   | { kind: "success"; data: unknown }
   | { kind: "retryable"; cause: string }
-  | { kind: "terminal"; status: number; message: string };
+  | { kind: "terminal"; status: number; message: string; absent: boolean };
+
+type MintlifyResponse = { ok: true; body: unknown } | { ok: false; message: string; status?: number; absent?: boolean };
 
 /** Small stopword set: words that carry no topic in a docs query. */
 const STOPWORDS = new Set([
@@ -81,6 +92,15 @@ function errorMessageFromBody(bodyText: string, status: number): string {
   return bodyText.trim().slice(0, MAX_ERROR_BODY_CHARS) || `mintlify HTTP ${status}`;
 }
 
+function isAbsentBody(bodyText: string): boolean {
+  try {
+    const message = (JSON.parse(bodyText) as { message?: unknown }).message;
+    return typeof message === "string" && ABSENT_MESSAGES.has(message);
+  } catch {
+    return false;
+  }
+}
+
 async function attempt(
   url: string,
   apiKey: string,
@@ -97,14 +117,22 @@ async function attempt(
     });
     const bodyText = await res.text();
     if (res.status >= 500) return { kind: "retryable", cause: errorMessageFromBody(bodyText, res.status) };
-    if (!res.ok) return { kind: "terminal", status: res.status, message: errorMessageFromBody(bodyText, res.status) };
+    if (!res.ok) {
+      return {
+        kind: "terminal",
+        status: res.status,
+        message: errorMessageFromBody(bodyText, res.status),
+        absent: res.status === 404 && isAbsentBody(bodyText)
+      };
+    }
     try {
       return { kind: "success", data: JSON.parse(bodyText) };
     } catch {
       return {
         kind: "terminal",
         status: res.status,
-        message: `mintlify HTTP ${res.status} returned malformed JSON: ${bodyText.slice(0, MAX_ERROR_BODY_CHARS)}`
+        message: `mintlify HTTP ${res.status} returned malformed JSON: ${bodyText.slice(0, MAX_ERROR_BODY_CHARS)}`,
+        absent: false
       };
     }
   } catch (e) {
@@ -112,22 +140,36 @@ async function attempt(
   }
 }
 
-/** One host: try each configured attempt timeout in order; retry only network, timeout, and 5xx failures. */
+/**
+ * One host: try each configured attempt timeout in order, each clipped to the operation deadline;
+ * retry only network, timeout, and 5xx failures.
+ */
 async function mintlifyRequest(
   url: string,
   apiKey: string,
   body: Record<string, unknown>,
   timeouts: number[],
+  deadline: number,
   fetchImpl: FetchLike
-): Promise<{ ok: true; body: unknown } | { ok: false; message: string; status?: number }> {
+): Promise<MintlifyResponse> {
   let lastError = "no attempts configured";
+  let attempts = 0;
   for (const timeoutMs of timeouts) {
-    const result = await attempt(url, apiKey, body, timeoutMs, fetchImpl);
+    const remaining = deadline - Date.now();
+    if (remaining < MIN_ATTEMPT_MS) {
+      lastError = `operation deadline of ${OPERATION_BUDGET_MS} ms reached`;
+      break;
+    }
+    attempts += 1;
+    const result = await attempt(url, apiKey, body, Math.min(timeoutMs, remaining), fetchImpl);
     if (result.kind === "success") return { ok: true, body: result.data };
-    if (result.kind === "terminal") return { ok: false, message: result.message, status: result.status };
+    if (result.kind === "terminal") return { ok: false, message: result.message, status: result.status, absent: result.absent };
     lastError = result.cause;
   }
-  return { ok: false, message: `mintlify request failed after ${timeouts.length} attempts: ${lastError}` };
+  return {
+    ok: false,
+    message: attempts === 0 ? `mintlify request not started: ${lastError}` : `mintlify request failed after ${attempts} attempts: ${lastError}`
+  };
 }
 
 /**
@@ -135,6 +177,7 @@ async function mintlifyRequest(
  * following, and return the same-origin docs or meetings path it redirects to.
  */
 async function siteRedirectPath(siteOrigin: string, path: string, timeoutMs: number, fetchImpl: FetchLike): Promise<string | null> {
+  if (timeoutMs < MIN_ATTEMPT_MS) return null;
   try {
     const res = await fetchImpl(`${siteOrigin}/${path}`, { method: "GET", redirect: "manual", signal: AbortSignal.timeout(timeoutMs) });
     await res.body?.cancel();
@@ -200,7 +243,7 @@ function fillPlaceholders(template: string, args: Record<string, unknown>): stri
 
 /** Drop Mintlify's code-fence theme metadata and make relative Markdown links absolute. */
 export function cleanContent(content: string, pageUrl: string, siteOrigin: string): string {
-  const unthemed = content.replace(/^(\s*```[^\s`]*)[ \t]+theme=\{.*\}[ \t]*$/gm, "$1");
+  const unthemed = content.replace(/^([ \t]*```[^\s`]*)[ \t]+theme=\{.*\}[ \t]*$/gm, "$1");
   return unthemed.replace(/\]\(([^)\s]+)\)/g, (match, target: string) => {
     if (/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(target)) return match;
     try {
@@ -214,24 +257,64 @@ export function cleanContent(content: string, pageUrl: string, siteOrigin: strin
   });
 }
 
-function firstHeading(content: string): string | undefined {
-  // An ATX closing sequence needs a space before it, so `## Using C#` keeps its `#`.
-  const match = content.match(/^\s*#{1,6}\s+(.+?)(?:\s+#+)?\s*$/m);
-  if (!match || content.trimStart().indexOf(match[0].trim()) !== 0) return undefined;
-  return match[1];
+/**
+ * Text of an ATX heading line of at most `maxLevel`, or undefined. The pattern is anchored and
+ * never spans a newline, and the closing sequence is stripped without a regex, so long whitespace
+ * runs cost linear time. A closing sequence needs a space before it: `## Using C#` keeps its `#`.
+ */
+function atxHeading(line: string, maxLevel: number): string | undefined {
+  const open = /^[ \t]*(#+)[ \t]/.exec(line);
+  if (!open || open[1]!.length > maxLevel) return undefined;
+  let text = line.slice(open[0].length).trim();
+  let end = text.length;
+  while (end > 0 && text[end - 1] === "#") end -= 1;
+  if (end === 0 && text.length > 0) return undefined;
+  if (end < text.length && /[ \t]/.test(text[end - 1]!)) text = text.slice(0, end).trimEnd();
+  return text || undefined;
 }
 
-/** A window of the section text centered on the first query term it contains. */
+function firstLine(text: string): string {
+  const trimmed = text.trimStart();
+  const newline = trimmed.indexOf("\n");
+  return newline < 0 ? trimmed : trimmed.slice(0, newline);
+}
+
+function firstHeading(content: string): string | undefined {
+  return atxHeading(firstLine(content), 6);
+}
+
+/** The first H1 anywhere in a page. */
+function pageTitle(content: string): string | undefined {
+  for (const line of content.split("\n")) {
+    const title = atxHeading(line, 1);
+    if (title) return title;
+  }
+  return undefined;
+}
+
 /** MDX component tags (`<Tab title="x">`, `</CodeGroup>`) shrink to their attribute values. */
 const MDX_TAG = /<\/?[A-Z][A-Za-z0-9.]*((?:\s+[A-Za-z_:][\w:.-]*(?:=(?:"[^"]*"|'[^']*'|\{[^}]*\}))?)*)\s*\/?>/g;
 
+/** Shrink MDX tags outside fenced code only, so `Vec<Val>` in a code block stays intact. */
+function shrinkMdxTags(text: string): string {
+  return text
+    .split(/(```[\s\S]*?(?:```|$))/)
+    .map((part, index) =>
+      index % 2 === 1
+        ? part
+        : part.replace(MDX_TAG, (_tag, attrs: string) => {
+            const values = [...attrs.matchAll(/=(?:"([^"]*)"|'([^']*)')/g)].map((m) => m[1] ?? m[2]).filter(Boolean);
+            return values.length > 0 ? ` ${values.join(" ")} ` : " ";
+          })
+    )
+    .join("");
+}
+
+/** A window of the section text centered on the first query term it contains. */
 function snippetOf(content: string, terms: string[]): string {
-  const body = content
-    .replace(/^\s*#{1,6}\s+[^\n]*/, "")
-    .replace(MDX_TAG, (_tag, attrs: string) => {
-      const values = [...attrs.matchAll(/=(?:"([^"]*)"|'([^']*)')/g)].map((m) => m[1] ?? m[2]).filter(Boolean);
-      return values.length > 0 ? ` ${values.join(" ")} ` : " ";
-    })
+  const trimmed = content.trimStart();
+  const head = firstLine(trimmed);
+  const body = shrinkMdxTags(atxHeading(head, 6) ? trimmed.slice(head.length) : trimmed)
     .replace(/```[^\n]*\n/g, "")
     .replace(/```/g, "")
     .replace(/\s+/g, " ")
@@ -347,26 +430,27 @@ export async function callStellarDocs(
   }
   const timeouts = transport.attemptTimeoutsMs?.length ? transport.attemptTimeoutsMs : [8000, 12000];
   const siteOrigin = transport.siteOrigin;
+  const deadline = Date.now() + OPERATION_BUDGET_MS;
 
   try {
     if (mapping.endpoint === "page") {
       const path = normalizePagePath(String(args.path ?? ""));
       const pageUrl = `${transport.apiBase}${transport.pagePath}`;
       const fetchPage = async (pagePath: string) => {
-        const first = await mintlifyRequest(pageUrl, apiKey, { path: pagePath }, timeouts, fetchImpl);
+        const first = await mintlifyRequest(pageUrl, apiKey, { path: pagePath }, timeouts, deadline, fetchImpl);
         // Index pages exist only as `<dir>/index` in the page store.
-        if (!first.ok && first.status === 404 && !pagePath.endsWith("/index")) {
-          return mintlifyRequest(pageUrl, apiKey, { path: `${pagePath}/index` }, timeouts, fetchImpl);
+        if (!first.ok && first.absent && !pagePath.endsWith("/index")) {
+          return mintlifyRequest(pageUrl, apiKey, { path: `${pagePath}/index` }, timeouts, deadline, fetchImpl);
         }
         return first;
       };
       let res = await fetchPage(path);
-      if (!res.ok && res.status === 404) {
-        const moved = await siteRedirectPath(siteOrigin, path, timeouts[0]!, fetchImpl);
+      if (!res.ok && res.absent) {
+        const moved = await siteRedirectPath(siteOrigin, path, Math.min(timeouts[0]!, deadline - Date.now()), fetchImpl);
         if (moved) res = await fetchPage(moved);
       }
       if (!res.ok) {
-        if (res.status === 404) {
+        if (res.absent) {
           return errResult({
             service: SERVICE,
             kind: "soft-empty",
@@ -384,7 +468,7 @@ export async function callStellarDocs(
       const rawPath = typeof page.path === "string" ? page.path : path;
       const relative = siteRelative(rawPath);
       const url = `${siteOrigin}${relative}`;
-      const title = page.content.match(/^\s*#\s+(.+?)\s*$/m)?.[1] ?? relative.split("/").at(-1) ?? relative;
+      const title = pageTitle(page.content) ?? relative.split("/").at(-1) ?? relative;
       return okResult({ url, path: relative, title, content: cleanContent(page.content, linkBase(url, isIndexPath(rawPath)), siteOrigin) });
     }
 
@@ -395,9 +479,10 @@ export async function callStellarDocs(
       apiKey,
       { query, pageSize: transport.candidateWindow ?? 50 },
       timeouts,
+      deadline,
       fetchImpl
     );
-    if (!res.ok && res.status !== 404) {
+    if (!res.ok && !res.absent) {
       return errResult({ service: SERVICE, kind: "error", message: res.message, ...(res.status !== undefined ? { status: res.status } : {}) });
     }
     const sections = res.ok ? sectionsOf(res.body) : [];
