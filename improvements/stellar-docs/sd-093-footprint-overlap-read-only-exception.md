@@ -20,18 +20,15 @@ The current sentence overstates the serialization rule.
 
 ## Evidence
 
-The current published page and repository source retain the broad overlap sentence.
-CAP-0063 defines the read/write dependency rule for Protocol 23.
-The local matrix checks RO/RO, RO/RW, RW/RO, RW/RW, and disjoint keys.
-This fixture tests the normative relation. It does not run or benchmark the Core scheduler.
+The [published page](https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data.md) and [canonical source](https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/learn/fundamentals/contract-development/storage/persisting-data.mdx) contain the reported text.
 
-The public receipt binds the current repository tree and source file to exact Git blob bytes.
+[CAP-0063](https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0063.md) defines the read/write dependency rule for Protocol 23.
+The local matrix checks RO/RO, RO/RW, RW/RO, RW/RW, and disjoint keys.
+This fixture tests the specification's rule.
+It does not run or benchmark the Core scheduler.
+
 The owner is stellar/stellar-docs at source revision 85d2d1b8e7a4451b7a6af0931f587ce73109b816.
 Canonical edit path: `docs/learn/fundamentals/contract-development/storage/persisting-data.mdx`.
-
-The duplicate search covers every active namespace, recurrence text, and the resolved ledger.
-Related records remain separate in the public triage receipt.
-No external issue, message, source patch, grade change, or paid measurement occurs.
 
 ## Recommendation
 

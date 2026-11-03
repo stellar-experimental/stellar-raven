@@ -20,19 +20,19 @@ This distinction does not mean that the website receives a private key.
 
 ## Evidence
 
-The canonical source is `docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx`.
+The [published guide](https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.md) retains the absolute storage statement.
+The [canonical source](https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx) contains the same statement.
 Its observed Git blob is `8a19af6652948dd9778f41cf39fc57934cab1ab9`.
-The source and published page retain the absolute storage statement.
 
 The maintained [SDP registration source](https://github.com/stellar/stellar-disbursement-platform-backend/blob/4aff0437810d12e020571c1dc075597d032a0bb7/internal/wallet/webauthn_service.go) uses platform and resident-key preferences.
 Those preferences do not require a device-bound-only credential.
 Registration delegates credential validation, and the authentication source reconstructs both backup flags as true.
 That code does not establish actual synchronization for any receiver.
 
-The [source supplement](../../research/audits/2026-11-03-qa-followup/passkey-source-supplement.json) records exact identities and the independent provider source.
+The [Google passkey guide](https://developers.google.com/identity/passkeys/supported-environments) describes encrypted provider synchronization.
 The observed branch is develop; this finding asserts no deployment-specific behavior.
 No credential ceremony, account access, transaction, or network simulation occurs.
-No application vulnerability or private-key exposure is claimed.
+The evidence establishes no application vulnerability or private-key exposure.
 
 ## Recommendation
 

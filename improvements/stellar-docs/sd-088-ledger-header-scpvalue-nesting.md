@@ -20,7 +20,6 @@ Its SCP paragraph also describes storage here and in the following three fields.
 This hierarchy can encourage an incorrect direct-field table.
 The page does not explicitly declare a false XDR wire structure.
 
-This is a verified `docs-content` presentation ambiguity owned by `stellar/stellar-docs`.
 The correction should clarify nesting, rather than claim that the wire format changed.
 
 ## Evidence
@@ -37,7 +36,6 @@ This versioned comparison does not claim that every network runs Protocol 30.
 
 The [Core implementation](https://github.com/stellar/stellar-core/blob/0e49751aa9ddf892302cca02cea7f3f5d97df9f1/src/ledger/LedgerManagerImpl.cpp#L1774) independently assigns the agreed value to `header.current().scpValue`.
 Its transaction-set validation reads that value's `txSetHash`.
-The retained receipts preserve source hashes and bounded identity evidence.
 No ledger decoder, account query, or transaction ran for this finding.
 
 ## Recommendation
@@ -49,4 +47,3 @@ Preserve the corrected stroop units and direct header-extension explanation.
 Leave the separate transaction-set application wording outside this patch.
 
 Recheck the rendered heading hierarchy and both schema structures.
-No schema, runtime, golden, or external issue changed for this finding.

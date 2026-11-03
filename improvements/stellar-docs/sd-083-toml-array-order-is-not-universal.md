@@ -19,10 +19,6 @@ Its section-order note says that TOML requires arrays at the end.
 The same note recommends the SEP-1 section order.
 That recommendation can remain, but the syntax explanation needs qualification.
 
-The failing surface is `docs-content`, owned by `stellar/stellar-docs` under the intake map.
-This finding records a direct source claim, rather than an omission inferred from a question.
-No external issue was filed.
-
 ## Evidence
 
 The [publishing guide](https://developers.stellar.org/docs/tokens/publishing-asset-info.md) contains the claim at line `36`.
@@ -37,21 +33,12 @@ Arbitrary reordering can still change key ownership or cause errors.
 The root table ends at the first table header, and table headers determine later key ownership.
 The recommendation must preserve that distinction.
 
-Evidence lives under `research/audits/2026-11-02-golden-overnight/`:
-
-- `toml-order-receipts.json` contains public request descriptors, timestamps, statuses, and exact body hashes.
-- `toml-order-fixture.toml` contains the counterexample.
-- `toml-order-result.json` contains the parser version, parsed structure, and fixture hash.
-
-One reviewed answer repeats the source claim.
-Its original judge score remains `correct`; the separate review records the missed false statement.
-The source defect and the judge disagreement remain distinct.
-No golden or runtime source changed for this finding.
+The fixture SHA-256 is `9305615eb7f557e92c7373c27a03297e16c7173b462e1507d72cab7a960aabe4`.
 
 ## Recommendation
 
-Keep the SEP-1 section order as practical guidance.
 Replace the universal arrays-at-the-end rule with the actual table ownership rules.
+Keep the SEP-1 section order as practical guidance.
 Explain that bare root keys must precede the first table header.
 Explain that explicit named tables can follow arrays of tables when their paths remain valid.
 Link the syntax explanation to the TOML specification.

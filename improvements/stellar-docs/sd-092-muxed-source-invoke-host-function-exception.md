@@ -20,19 +20,16 @@ The generic matrix needs this exception.
 
 ## Evidence
 
-Core v29.0.0 and v30.0.0 contain the same validateSorobanMemo checks.
+The [published page](https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md) and [canonical source](https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx) contain the reported text.
+
+Core [v29.0.0](https://raw.githubusercontent.com/stellar/stellar-core/v29.0.0/src/transactions/TransactionFrame.cpp) and [v30.0.0](https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/transactions/TransactionFrame.cpp) contain the same `validateSorobanMemo` checks.
 The caller applies these checks from ProtocolVersion::V_25.
 The local fixtures compile each extracted production helper with minimal input type stubs.
 They reject both muxed source positions and preserve the non-invocation control.
 These fixtures do not execute complete Core transactions or prove a network activation date.
 
-The public receipt binds the current repository tree and source file to exact Git blob bytes.
 The owner is stellar/stellar-docs at source revision 85d2d1b8e7a4451b7a6af0931f587ce73109b816.
 Canonical edit path: `docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx`.
-
-The duplicate search covers every active namespace, recurrence text, and the resolved ledger.
-Related records remain separate in the public triage receipt.
-No external issue, message, source patch, grade change, or paid measurement occurs.
 
 ## Recommendation
 

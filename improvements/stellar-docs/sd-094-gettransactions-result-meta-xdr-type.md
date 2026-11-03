@@ -20,25 +20,19 @@ The same field link begins with the malformed prefix L446https.
 
 ## Evidence
 
-The current source and published method page retain the type name and malformed link.
-The independent XDR source defines the union and its larger wrapper separately.
+The [published page](https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md) and [canonical source](https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/data/apis/rpc/api-reference/methods/getTransactions.mdx) contain the reported text.
+
+The independent [XDR source](https://raw.githubusercontent.com/stellar/stellar-xdr/v22.0/Stellar-ledger.x) defines the union and its larger wrapper separately.
 The installed SDK 17.4.0 parser decodes resultMetaXdr with TransactionMeta.fromXdr.
 A local unsigned fixture passes the actual SDK parser.
 The same metadata bytes fail when decoded as TransactionResultMeta.
 No chain query, network simulation, signature, or submission occurs.
 
-The public receipt binds the current repository tree and source file to exact Git blob bytes.
 The owner is stellar/stellar-docs at source revision 85d2d1b8e7a4451b7a6af0931f587ce73109b816.
 Canonical edit path: `docs/data/apis/rpc/api-reference/methods/getTransactions.mdx`.
-
-The duplicate search covers every active namespace, recurrence text, and the resolved ledger.
-Related records remain separate in the public triage receipt.
-No external issue, message, source patch, grade change, or paid measurement occurs.
 
 ## Recommendation
 
 Name TransactionMeta for resultMetaXdr and link to the correct union definition.
 Remove the malformed link prefix.
 Keep pagination limits unchanged.
-The sd-004 owner decision concerns operational limits, not this metadata type.
-This finding requests no configurability change or reopening of that decision.

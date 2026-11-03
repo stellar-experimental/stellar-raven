@@ -21,7 +21,7 @@ The released implementation chooses its default from the invocation's authorizat
 For `InvokeHostFunction`, an empty entry list selects `record`; a nonempty list selects `enforce`.
 The condition concerns authorization-entry presence, rather than transaction signatures.
 
-This is a `docs-content` error in generated OpenRPC descriptions, owned by `stellar/stellar-docs`.
+Both canonical OpenRPC descriptions contain this error.
 The discrepancy can cause clients to misinterpret authorization behavior when they omit `authMode`.
 It does not establish an exploit or a provider outage.
 
@@ -49,11 +49,10 @@ Extension and restoration operations reject an explicitly supplied mode; the inv
 ## Recommendation
 
 Correct both canonical OpenRPC descriptions.
-Explain the conditional default when `authMode` is omitted for `InvokeHostFunction`.
+Explain the conditional default when callers omit `authMode` for `InvokeHostFunction`.
 Keep `enforce`, `record`, and `record_allow_nonroot` and their explicit meanings.
 Do not replace the condition with a signed-versus-unsigned transaction rule.
 
 Run the documented `pnpm rpcspec:build` and `pnpm rpcspec:validate` workflows.
 Have a Docs maintainer regenerate the method page.
 Recheck the public page and its served MCP copy.
-No runtime workaround or external issue was created by this finding.

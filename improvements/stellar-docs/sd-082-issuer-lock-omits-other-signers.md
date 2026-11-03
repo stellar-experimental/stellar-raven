@@ -23,11 +23,9 @@ That step disables the master key.
 Other signers can still authorize transactions when their combined weights meet the relevant threshold.
 The issuance tutorial repeats the unconditional account-lock claim in its maximum-supply section.
 
-This is a `docs-content` omission on pages that explain fixed supply and issuer locking.
-It can mislead issuers and holders about account authority and supply controls.
-The existing SAC-admin exception addresses a separate authorization path and does not supply the missing signer condition.
-The intake map names `stellar/stellar-docs` as the content owner.
-This finding remains local; no external report was sent.
+The omission can mislead issuers and holders about account authority and supply controls.
+The existing SAC-admin exception addresses a separate authorization path.
+It does not supply the missing signer condition.
 
 ## Evidence
 
@@ -59,24 +57,6 @@ Result hashes cover the exact returned Markdown bytes.
 | Multisig | `64f7da831e78f4d0d44afdfa1289154b544493677f9882c7ab94cebb2936792f` | `6e2a70e0c425a38a12abf42c6383ce2f54c070b92504240e3788fd4202a98b80` |
 | Issuance tutorial | `47864ed608e9925227ffda43ef244d97107c2e8a969175564aa416f5a15bbfbd` | `da98324edb693f04aef1c20fbf17274cc26d28a4ff24bbfddc02cde7faeda314` |
 
-Two reviewed answers repeat this omission.
-The first uses execute entry `5`, field `limitSupply`.
-The second uses execute entry `6`, field `control.supply`.
-Their source is `eval/local-lanes/direct-grok/2026-11-02/review-packets/<case-id>.json`.
-The result hashes below cover exact model-visible text, including source footers.
-
-| Reviewed ID | Tool input text SHA-256 | Model-visible result text SHA-256 |
-| --- | --- | --- |
-| `q-aas-burn-clawback-redemption-mechanics` | `4660df76a8d08c344b55b7f40ee21175d6ce51a7a47f26d9eebb8cfd114ef5ed` | `8544de8e3372119c3c6c159b8b47881b3ed440e198c84bf1f5682d3b1debdcb1` |
-| `q-aas-list-token-on-exchanges-aggregators` | `71f60424199e0e0fe7af139ace68a416ab686f6eab754a177cde7db79d62d61f` | `9cb95bfd8f15bc408268c5c8a9eb2efe364390ad21e371a9ea53f3a5a8563c72` |
-
-Agent synthesis and judge behavior remain separate from the upstream omission.
-Both original grades remain `correct`; their main required answers remain supported.
-Both need qualitative disagreement labels for the unqualified issuer-lock claim that their judges missed.
-The containing diagnostic method is invalid-or-incomplete, so these observations establish no aggregate prevalence or accuracy.
-The separate infrastructure failure is not an agent error.
-No golden, score, source, or baseline artifact changed for this finding.
-
 ## Recommendation
 
 Qualify both asset pages at the master-weight instruction and the adjacent permanent-lock warning.
@@ -85,6 +65,7 @@ Require review of all remaining signers and thresholds before claiming that issu
 Also account for authority that can restore issuance permissions.
 Preserve the existing separate SAC-admin warning.
 Link both instructions to the multisig threshold explanation.
+
 Keep examples clear about their assumption that no other signer retains the required authority.
 
 Recheck both asset pages after the correction.

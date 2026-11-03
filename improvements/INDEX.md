@@ -88,7 +88,7 @@ Total findings: 130
 | sd-081 | The contract-restoration example on two docs pages does not parse and cannot build a valid restoration transaction. getWasmLedgerKey has…   | reported-upstream | 2026-11-02 | 0           |
 | sd-082 | The asset-control page equates setting issuer master weight 0 with disabling issuer transactions and further issuance. That step disables…  | verified          | 2026-11-02 | 1           |
 | sd-083 | The asset publishing guide presents a false universal TOML syntax rule. Its section-order note says that TOML requires arrays at the end.…  | verified          | 2026-11-02 | 0           |
-| sd-084 | The authorization sandwich explanation describes transaction operations as simultaneous. The operations execute in order, with atomic…      | verified          | 2026-11-02 | 0           |
+| sd-084 | The asset-control page describes authorization sandwich operations as simultaneous. The operations execute in order, with atomic…           | verified          | 2026-11-02 | 0           |
 | sd-085 | The SAC page gives two names for its balance authorization function. The Balance Authorization Required paragraph uses set_auth. The…       | verified          | 2026-11-02 | 0           |
 | sd-086 | The Horizon strict-send destination parameter descriptions name the wrong alternative parameters. DestinationAccountParam correctly…        | verified          | 2026-11-02 | 0           |
 | sd-087 | The simulateTransaction documentation describes enforce as the unconditional authorization-mode default. The released implementation…       | verified          | 2026-11-03 | 0           |
@@ -100,7 +100,7 @@ Total findings: 130
 | sd-093 | The storage page says transactions with overlapping footprints must execute sequentially. CAP-0063 defines a conflict only when at least…   | verified          | 2026-11-03 | 0           |
 | sd-094 | The getTransactions page names TransactionResultMeta for resultMetaXdr. The payload type is TransactionMeta. TransactionResultMeta is a…    | verified          | 2026-11-03 | 0           |
 | sd-095 | The SDP Embedded Wallets guide says the private key never leaves the receiver's device. Some passkey providers synchronize credentials…     | verified          | 2026-11-03 | 0           |
-| sd-096 | Three old URLs redirect to pages that do not exist. Two wildcard rules in redirects.json cause this. /docs/build/apps/smart-wallets/:slug…  | verified          | 2026-11-03 | 0           |
+| sd-096 | Three old URLs redirect to pages that do not exist. Two wildcard rules in redirects.json cause this. /docs/build/apps/smart-wallets/:slug…  | reported-upstream | 2026-11-03 | 0           |
 
 ## lumenloop
 

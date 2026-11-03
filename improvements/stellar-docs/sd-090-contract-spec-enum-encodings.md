@@ -33,11 +33,20 @@ The [immutable source](https://github.com/stellar/stellar-docs/blob/85d2d1b8e7a4
 
 The separate [SDK implementation](https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/contract/spec.ts) emits one symbol-led vector for a selected union variant.
 It emits a single `scvU32` for a declared integer-enum value and rejects a vector during conversion.
-The SDK source uses a release tag; the receipt pins its observed bytes without inventing an immutable commit.
-The Docs source and rendered page share one producer.
 The SDK implementation provides the separate encoding evidence.
 
-The initial preparation ran no conversion or contract execution.
+### Local SDK verification
+
+The published source still contains the reported enum examples on 2026-11-03.
+Local SDK `17.4.0` fixtures serialize and reload both specifications.
+Separate A and B union values round-trip as symbol-led vectors.
+Integer values 1 and 2 round-trip as one u32.
+The SDK rejects the published integer vector.
+
+The tagged decoder accepts A followed by a map and ignores that trailing map.
+It decodes only A; re-encoding removes the extra map.
+This permissiveness does not represent both variants or establish on-chain rejection.
+The local fixtures do not execute the Python, Java, or PHP examples.
 
 ## Recommendation
 
@@ -48,17 +57,3 @@ Apply the correction to every repeated Python, Java, and PHP example in both enu
 Keep the valid struct examples unchanged.
 
 Validate each corrected example with its stated SDK version before publication.
-
-## Follow-up verification
-
-The published source still contains the reported enum examples on 2026-11-03.
-Local SDK17.4.0 fixtures serialize and reload both specifications.
-Separate A and B union values round-trip as symbol-led vectors.
-Integer values 1 and 2 round-trip as one u32; the published integer vector is rejected.
-
-The tagged decoder accepts A followed by a map and ignores that trailing map.
-It decodes only A; re-encoding removes the extra map.
-This permissiveness does not represent both variants or establish on-chain rejection.
-Python, Java, and PHP examples remain unexecuted.
-
-The [fixture](../../research/audits/2026-11-03-qa-followup/sdk-fixtures.mjs), [results](../../research/audits/2026-11-03-qa-followup/sdk-fixtures-result.json), and [current source checks](../../research/audits/2026-11-03-qa-followup/proposal-currentness.json) retain exact evidence.

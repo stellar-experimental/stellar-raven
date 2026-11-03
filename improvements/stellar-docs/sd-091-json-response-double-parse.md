@@ -19,19 +19,16 @@ The second parse can hide either a successful result or the original JSON-RPC er
 
 ## Evidence
 
+The [published page](https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md) and [canonical source](https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx) contain the reported text.
+
 The local fixture extracts the current function without changing its body.
 A mocked fetch returns a normal success object and a normal error object.
 Both original executions throw SyntaxError.
 The single-parse control preserves each object.
 The fixture performs no network request, signing, submission, or network simulation.
 
-The public receipt binds the current repository tree and source file to exact Git blob bytes.
 The owner is stellar/stellar-docs at source revision 85d2d1b8e7a4451b7a6af0931f587ce73109b816.
 Canonical edit path: `docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx`.
-
-The duplicate search covers every active namespace, recurrence text, and the resolved ledger.
-Related records remain separate in the public triage receipt.
-No external issue, message, source patch, grade change, or paid measurement occurs.
 
 ## Recommendation
 

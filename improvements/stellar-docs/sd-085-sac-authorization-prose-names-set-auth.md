@@ -18,17 +18,13 @@ The Balance Authorization Required paragraph uses `set_auth`.
 The documented interface and the built-in contract use `set_authorized`.
 Readers can copy the incorrect function name into contract calls.
 
-This is a `docs-content` defect owned by `stellar/stellar-docs` under the intake map.
-
 ## Evidence
 
 The [SAC page](https://developers.stellar.org/docs/tokens/stellar-asset-contract.md) contains the incorrect name at line `87`.
 Its interface declares `fn set_authorized(env: Env, id: Address, authorize: bool)`.
 The [built-in implementation](https://raw.githubusercontent.com/stellar/rs-soroban-env/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs) also defines `set_authorized`.
 The focused MCP read returns both names, so the inconsistency reaches documentation consumers.
-Retained receipts identify exact public response bytes and MCP input and output hashes.
 
-The original diagnostic grade remains unchanged.
 This finding makes no claim about when the naming mismatch began.
 The check submitted no contract transaction.
 

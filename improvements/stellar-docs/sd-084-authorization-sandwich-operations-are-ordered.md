@@ -13,25 +13,22 @@ evidence:
 
 ## Finding
 
-The authorization sandwich explanation describes transaction operations as simultaneous.
+The asset-control page describes authorization sandwich operations as simultaneous.
 The operations execute in order, with atomic transaction results.
 The example depends on authorization before the payment and deauthorization afterward.
 The current wording confuses operation order with transaction atomicity.
 
-This is a `docs-content` defect owned by `stellar/stellar-docs` under the intake map.
 The finding concerns the explanation, rather than a demonstrated failure of the example transaction.
 
 ## Evidence
 
 The [asset-control page](https://developers.stellar.org/docs/tokens/control-asset-access.md) lists five ordered sandwich operations.
-Its next paragraph calls bundled operations simultaneous.
+Its next paragraph calls bundled operations simultaneous at line `108`.
 [Stellar Core](https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp) applies `mOperations[i]` in increasing index order.
 Later operations use the transaction state produced by earlier operations.
 The focused MCP read reproduced the documentation wording without changing source or running a transaction.
 
-Retained receipts identify the exact public response bytes and the MCP request and result.
-The original diagnostic grade stays separate from this source correction.
-The first bad release is not established.
+The checks do not establish the first affected release.
 
 ## Recommendation
 
