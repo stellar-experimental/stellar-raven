@@ -4,8 +4,11 @@ Question: are there better or cheaper Playground models than the shipped primary
 `openai/gpt-5.6-terra` and fallback `openai/gpt-5.6-luna`?
 
 Decision: **keep the shipped configuration.** `openai/gpt-6-luna` costs about 1/20 as much per
-answer, but on 30 paired golden cases it gave more wrong answers and had tool-loop failures that
-the current primary did not have. Correctness outranks cost. `src/demo/model-config.ts` is
+answer. The switch rule allowed it only with no new wrong answers and no tool-loop regressions
+against the current primary. On 30 paired golden cases Luna had three new wrong answers (two
+hand-confirmed) and two tool-loop failures; Terra had none of those failures. Correctness
+outranks cost. The overall totals (6 wrong against 5) differ by one row and are not evidence of a
+quality gap on their own: Terra also had two hand-confirmed new wrong answers that Luna avoided. `src/demo/model-config.ts` is
 unchanged. The open follow-up is in [the work queue](../../.agents/TODO.md) ("Re-check the
 Playground primary when a new OpenAI model ships").
 
@@ -82,14 +85,20 @@ in the same change as this record (see "Harness provenance" below).
 ## Semantic lane, 30 paired cases
 
 Same 30 cases (seed `2026-11-03-gpt6-paired`), same judge, installed SDK, one Wrangler process at
-a time. Round-cap context: `not-applicable` (owner-requested diagnostic). Both result files carry
+a time. Both runs used one uncommitted working tree on `a44aaa4c` that also contained the harness
+change. In that tree `src/demo/model-config.ts` set `openai/gpt-6-luna` as the default primary, so
+the Luna run used the file default (`modelSource: "default"`) and the Terra run set
+`DEMO_MODEL_OVERRIDE=openai/gpt-5.6-terra,openai/gpt-5.6-luna` for both the server and the harness
+(`modelSource: "process-env"`). The committed `model-config.ts` is unchanged. Round-cap context: `not-applicable` (owner-requested diagnostic). Both result files carry
 `runtimeIntrospection: "gateway-log"` and record the AI Gateway-logged models:
 `["openai/gpt-5.6-terra"]` and `["openai/gpt-6-luna"]`. The fallback never ran.
 
-| Model | Correct | Partial | Wrong | Tool failures | Answer USD | p50 s | p90 s |
+| Model | Correct | Partial | Wrong | Tool failures | Answer USD | Median s | p90 s |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| `openai/gpt-5.6-terra` | 8 | 17 | 5 | 0 | 1.883 | 14.4 | 24.0 |
-| `openai/gpt-6-luna` | 6 | 18 | 6 | 2 | 0.094 | 16.0 | 20.4 |
+| `openai/gpt-5.6-terra` | 8 | 17 | 5 | 0 | 1.883 | 14.1 | 24.0 |
+| `openai/gpt-6-luna` | 6 | 18 | 6 | 2 | 0.094 | 15.5 | 20.4 |
+
+Latency is the client turn time; p90 uses linear interpolation.
 
 Every verdict was reviewed by hand against its answer. The rows that differ:
 

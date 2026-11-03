@@ -212,6 +212,15 @@ function answeringConfiguration(devVars) {
   };
 }
 
+/**
+ * The artifact's observed list: logged models that are configured attempts. A turn that logged
+ * an unconfigured model already stopped the run as invalid, and its row keeps provenanceError.
+ */
+export function answeringWithObserved(answering, rows) {
+  const configured = answering.models.map(({ model }) => model);
+  return { ...answering, observedAttemptedModels: observedModelsFromRows(rows).filter((model) => configured.includes(model)) };
+}
+
 /** Distinct Gateway-logged models across rows, in first-seen order. */
 export function observedModelsFromRows(rows) {
   const seen = [];
@@ -892,7 +901,7 @@ async function main() {
     buildNormalArtifact: (rows) => {
       const meta = buildPlaygroundArtifactMeta({
         run: runMeta(new Date().toISOString()),
-        answering: { ...answering, observedAttemptedModels: observedModelsFromRows(rows) },
+        answering: answeringWithObserved(answering, rows),
         judge, capContext, inputFiles: sourceFiles,
         selectedCases: cases, tree: treeAtStart, server
       });

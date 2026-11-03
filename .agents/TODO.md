@@ -483,8 +483,9 @@ records, so that close-out needs a reviewed lifecycle decision.
 
 On 2026-11-03 a paired 30-case semantic check kept `openai/gpt-5.6-terra` as the primary.
 `openai/gpt-6-luna` cost $0.094 against $1.883 in answer spend, but scored 6 correct, 18 partial,
-and 6 wrong against Terra's 8, 17, and 5. It had three new wrong answers (two hand-confirmed) and
-two tool-loop failures, against none for Terra. The fallback stays `openai/gpt-5.6-luna`. The
+and 6 wrong against Terra's 8, 17, and 5. Luna had three new wrong answers (two hand-confirmed) and
+two tool-loop failures. Terra had two new wrong answers (both hand-confirmed) and no tool-loop
+failures. The switch rule allows no new wrong answers and no tool-loop regressions. The fallback stays `openai/gpt-5.6-luna`. The
 numbers are in
 [the re-check record](../research/audits/2026-11-03-playground-model-recheck.md).
 

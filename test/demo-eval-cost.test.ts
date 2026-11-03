@@ -246,7 +246,7 @@ describe("loopback answer cost accounting", () => {
     await blocked;
     expect(f.getLog).toHaveBeenCalledTimes(5);
     expect(f.run).toHaveBeenCalledTimes(1);
-    expect(await f.accounting.finish()).toMatchObject({ costUsd: null, reportedCostUsd: 0, reportedCalls: 0 });
+    expect(await f.accounting.finish()).toMatchObject({ costUsd: null, reportedCostUsd: 0, reportedCalls: 0, models: [] });
   });
 
   it.each(["binding", "gateway", "native"])("bounds unavailable %s log reads and preserves partial reported costs", async (transport) => {

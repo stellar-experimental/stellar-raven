@@ -93,7 +93,7 @@ handlers use — not an HTTP round-trip to `/mcp` with a token:
 
 > **Re-check 2026-11-03 (no change):** a paired 30-case semantic check kept
 > `openai/gpt-5.6-terra` primary and `openai/gpt-5.6-luna` fallback. The cheaper
-> `openai/gpt-6-luna` had more wrong answers and tool-loop failures. See
+> `openai/gpt-6-luna` had new wrong answers and tool-loop failures. See
 > [`research/audits/2026-11-03-playground-model-recheck.md`](audits/2026-11-03-playground-model-recheck.md).
 >
 > **Revision 2026-08-06 (supersedes the 2026-07-07 revision below):** the primary is
