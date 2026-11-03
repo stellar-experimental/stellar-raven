@@ -1,7 +1,7 @@
 ---
 id: cs-003
 service: canonical-source
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "ecosystem/README.md status column disagrees with the preamble Status of SEP-0007, 0008, 0014, 0039, and 0054"
 evidence:
@@ -15,6 +15,8 @@ evidence:
   - "Dedupe 2026-11-02: gh search issues and PRs in stellar/stellar-protocol for 'README status', 'status mismatch README', 'preamble status', 'sep-0007 Final', 'SEP-14 status', 'SEP-39 status', and 'SEP-54 status' found no issue or PR about these rows."
   - "Golden consumers (eval-side encoding, status not gated): eval/qa/corpus/battery/assets-anchors-seps/q-sep-7-uri.json and q-sep-8-regulated-assets.json notes record the preamble-vs-README conflict; q-sep-catalog-list.json carries disputed truth rows for SEP-7 and SEP-8 and cites commits 600c326b and 936a617e."
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-protocol/issues/2055
+  - "2026-11-03 upstream fix: https://github.com/stellar/stellar-protocol/pull/2058 (author and merger leighmcculloch, merged 2026-11-03T03:39:04Z as ded60f56201478b82b341151a6c44f7d1a4aec6e) closed #2055 as completed. It changed ecosystem/README.md and ecosystem/sep-0054.md; sep-0054.md now says Status: Active."
+  - "2026-11-03T15:06Z live re-check at stellar-protocol master ded60f56201478b82b341151a6c44f7d1a4aec6e (raw.githubusercontent.com at that commit): the same row-vs-preamble script read 60 README rows. SEP-0007 Active (Proposals), SEP-0008 Active (Proposals), SEP-0014 Active (Proposals), SEP-0039 Draft (Draft Proposals), and SEP-0054 Active (Proposals) now match their preambles. The only remaining difference is the minor SEP-0013 wording (README Abandoned, preamble Rejected), which the recommendation did not ask to change."
 ---
 
 ## Finding

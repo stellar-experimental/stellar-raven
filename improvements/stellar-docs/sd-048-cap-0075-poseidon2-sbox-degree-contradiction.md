@@ -11,6 +11,7 @@ evidence:
   - independent residual review in .agents/rounds/2026-09-01-free-improvements-maintenance/opus-deletion-review.md
   - upstream issue filed 2026-09-01: https://github.com/stellar/stellar-protocol/issues/2010
   - "2026-10-06 issue state: github-actions added the stale label and a stale notice on 2026-10-02. The bot can close the issue after 30 more days without activity, on or after about 2026-11-01. No maintainer has replied. If the issue closes unfixed, classify it as closed-unfixed and keep this finding. Do not post a keep-alive comment."
+  - "2026-11-03 errata PR opened after the stale-bot closure: https://github.com/stellar/stellar-protocol/pull/2059 (one-line change to core/cap-0075.md line 78 at master ded60f56; matches line 61, lines 124 and 157, and rs-soroban-env 0c99950e SUPPORTED_SBOX_DEGREES = [5])"
 recurrences:
   - date: 2026-11-02
     evidence: "closed-unfixed: the github-actions stale bot closed https://github.com/stellar/stellar-protocol/issues/2010 as not_planned at 2026-11-02T18:09:27Z. No maintainer replied. stellar-protocol master 0da06899c02f818be0132f42cea1f45d6396e20a core/cap-0075.md line 78 still lists `d`: S-box degree (3, 5, 7, or 11); line 124 still says only d=5 is supported; line 157 still lists `d` is not 5 as an error. The last commit on the file is still d186cf3187 (2026-08-20). A stale closure is not an owner decision, so the status stays reported-upstream. Do not reopen or post a keep-alive comment; a one-line correction PR to stellar/stellar-protocol is the remaining owner path."

@@ -140,10 +140,10 @@ Total findings: 114
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | cs-001 | searchConnectors in @cloudflare/codemode returns connector methods that share no real word with the query. scoreField accepts a prefix…     | reported-upstream | 2026-09-17 | 0           |
-| cs-003 | The status table in ecosystem/README.md disagrees with the Status: preamble line of five SEPs:                                              | reported-upstream | 2026-11-02 | 0           |
+| cs-003 | The status table in ecosystem/README.md disagrees with the Status: preamble line of five SEPs:                                              | fixed-upstream    | 2026-11-02 | 0           |
 | cs-004 | Circle's CCTP Stellar contracts reference lists the TokenMessengerMinter receive handlers as handle_receive_finalized_message and…          | reported-upstream | 2026-11-02 | 0           |
 | cs-005 | The Stellar to Arc quickstart passes 1000 to deposit_for_burn and labels it a Fast Transfer finality threshold. Circle's supported-chains…  | reported-upstream | 2026-11-02 | 0           |
 | cs-006 | The SEP-1 stellar.toml that Paxos publishes for its Stellar assets describes the issuer as "Paxos Trust Company LLC". Paxos converted that… | verified          | 2026-11-02 | 0           |
 | cs-007 | The trionlabs/stellar-8004 README expands MPP as "Managed Payment Protocol". The repository's own database migration, registration UI, and… | verified          | 2026-11-02 | 0           |
-| cs-008 | CAP-0046-06 (Stellar Asset Contract, Status Final) says a SAC deployment uses a ContractExecutable of type CONTRACT_EXECUTABLE_TOKEN. The…  | reported-upstream | 2026-11-02 | 0           |
+| cs-008 | CAP-0046-06 (Stellar Asset Contract, Status Final) says a SAC deployment uses a ContractExecutable of type CONTRACT_EXECUTABLE_TOKEN. The…  | declined-upstream | 2026-11-02 | 0           |
 | cs-009 | The Stellar Security Portal lists 2 audit reports for the OpenZeppelin Stellar Contracts library: 0.1.0 and v0.3.0-rc.2. The…               | reported-upstream | 2026-11-02 | 0           |
