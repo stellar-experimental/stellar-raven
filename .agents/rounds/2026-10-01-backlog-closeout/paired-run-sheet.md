@@ -1,3 +1,5 @@
+2026-11-03: The owner retired decision A ([decision record](../2026-11-03-owner-followup.md)). Deleted launch files: `assemble-paired-plan.mjs`, `execute-frozen.mjs`, `paired-claude-pin.mjs`, `paired-launch-runtime.mjs`, `paired-launch.mjs`, `paired-process-guard.cjs`, `paired-server-toolchain.mjs`, `paired-stability-register.json`. Deleted tests: `test/qa-paired-launch.test.mjs` and `test/qa-paired-claude-pin.test.mjs`.
+
 # Supervised paired measurement: launch run sheet
 
 Prepared on 2026-10-01 at `bcfa617ffcb6e58e6a7498a1e42135a059535402`.

@@ -15,9 +15,6 @@ Open owner decisions are at the end of this file. Each one is listed once.
 1. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Run owner decision A (the supervised paired subset) when the owner picks a window, under its
-   own spend authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
-   #281, and #270 are merged and deployed; the section guard does not ship.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -638,8 +635,8 @@ record](rounds/2026-10-01-backlog-closeout/owner-adjudications.md) records the c
 change needs a separate reviewed decision and measurement.
 
 Done when: a reviewed decision either changes the prompt with a measured before/after on the
-out-of-scope cases, or records why the prompt stays. Land this change before the first paired arm or
-after the second. A change to run-qa.mjs or judge.mjs changes the implementation hash.
+out-of-scope cases, or records why the prompt stays.
+A change to run-qa.mjs or judge.mjs changes the implementation hash.
 
 ### Monitor Raven capability-boundary offers
 
@@ -681,27 +678,6 @@ The plan includes the trap, the control, the environment pin, and a pre-register
 Do not add another QA-prompt wording layer or copy case facts into a prompt.
 
 Done when: the owner retires the monitor, or a fired trigger leads to a reviewed resolution.
-
-### Resolve paired-QA design before promotion
-
-`qa-paired-ordinal-ni-v1` is implemented, experimental, and not a ship gate. No same-tuple pinned
-pair exists. The method requires 100 eligible IDs after five-track T4 and T5 exclusions; the one
-real run returned `INDETERMINATE` at 99. The collection supervisor, identity guards, per-arm caps,
-and the `qa-paired-collection-plan-v2` launch contract are in place; the contract is in
-`eval/qa/README.md` and `eval/EVALS.md`. The revision 3 plan has an independent `LAUNCH-OK`
-(`.agents/rounds/2026-09-03-truth-maintenance/final-launch-contract-review-opus.md`), which grants
-no paid authority.
-
-Permitted now: free validator work on a pre-registered selected denominator above 100, and a fresh
-free capacity artifact for a chosen launch window (an artifact older than 24 hours at launch is
-invalid). Never change the denominator or candidate-only rule after reading a paid look. Paid
-collection waits for owner decision A.
-
-Done when: two complete arms share the answering model, judge model, rubric, pack, pinned register,
-environment hash, agent binary, implementation hash, probe hash, and remote identity vector; at
-least 100 IDs remain eligible; `npm run eval:qa:paired:validate -- --recalibrate <baseline>
-<candidate>` passes; and a round ledger records the promotion decision. Owner decision A recording
-`NOT AUTHORIZED` also closes the paid part.
 
 ### Monitor Friendbot network-context synthesis
 
@@ -813,59 +789,6 @@ retires the program.
 
 Each decision names the question, the evidence it needs, and the safe default. Record each answer
 in a round ledger, `eval/qa/README.md`, or a decision record, then delete the decision here.
-
-### A. Authorize the supervised paired subset measurement
-
-The owner approved spend on 2026-10-01 and delegated the signature on 2026-10-10. Use
-[the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md) and its "2026-10-11
-amendment". Three launches on 2026-10-11 produced no result. They spent $146.2439 in total, and
-their rows support no claim. Each record is archived, moved unchanged, under
-`eval/qa/results/2026-10-11-paired-attempt-*` in the main checkout (ignored).
-
-- Attempt 1 (`0dc353b9`, $72.7624): the guard stopped both arms at row 146, because the public
-  DocSearch key reached its limit of 1000 calls per hour. PRs #265 and #266 repaired this.
-- Attempt 2 (`826be10f`, $0): the stable pre-arm probe got HTTP 429 before any paid call.
-- Attempt 3 (`8bca4167`, $73.4815): the probe repair held (zero failed probes; 141 of 142
-  before-checks reused in each arm). Then the baseline server (`90d0ba75`, Wrangler 4.120.1)
-  stopped at 07:02:39Z, after 1 h 56 min, with an empty `[ERROR]`. The supervisor stopped both
-  arms at about row 143. The Wrangler debug log is in the attempt 3 archive.
-
-The 2026-10-12 soak reproduced the stop path ([record](rounds/2026-10-12-baseline-soak/README.md)).
-A request about 5 s after the previous response can fail with `Network connection lost.` Wrangler
-4.120.1 then exits with an empty `[ERROR]`. The leading explanation is a race with the local
-proxy-to-runtime keep-alive idle limit. The server survived the token expiry and the scheduled
-refresh times, which weakens a fixed-time expiry explanation; the lane did not isolate the remote
-binding or the token. Wrangler 4.149.0 logs that failure and continues. Near the same timing, a
-runtime crash of unknown cause can also occur, and both versions then refused later requests on
-the public port.
-
-Launch change (2026-10-12, chosen by the orchestrator under the owner's delegation): the record's
-option 1. The baseline server runs the candidate server's installed Wrangler toolchain (4.149.0 at
-the current lockfile). The reason: 4.120.1 exits on one `ProxyWorker` error, and 4.149.0 fails only
-that request. Before any server starts, the launcher requires one identical toolchain in both
-servers, with the same `workerd` binary SHA-256. The signed plan records it. The local dev runtime
-is no longer part of the measured difference. A local listener check also runs before every paid
-call: before P6 and collection, before each P6 call, before each answering attempt and retry, and
-before each row release. The signed plan binds the listener record by its digest. A lost or
-replaced listener stops the method. Nothing restarts a server.
-The check reads sockets and does not connect, and a short interval remains between a check and its
-call. See the run sheet's "2026-10-12 amendment" for these limits.
-
-Codex `gpt-6-astra` at high reviewed the change (RA to RA4, final APPROVE). A free live check ran
-the baseline source under the candidate's Wrangler and matched the surface pin.
-
-Next step (paid; needs its own spend authorization): a fresh assembled and signed plan. A full
-collection needs about 2.5 hours of baseline uptime. Run on a quiet machine. On 2026-11-02 the owner
-set no date: the run may happen overnight on a work day, not only on a weekend. The DocSearch key
-that limited attempt 1 is retired (#320); the Stellar Docs adapter now calls Mintlify, so re-check
-the Mintlify request limit against the run sheet capacity check before collection.
-
-The launch tooling stays in the round folder until the next attempt ends or the owner retires the
-method. Then either promote it into `eval/qa/` with its test, or delete the round's launch scripts,
-`paired-stability-register.json`, `test/qa-paired-launch.test.mjs`, and
-`test/qa-paired-claude-pin.test.mjs` together. Both tests import the scripts from the round folder.
-
-Assemble the plan again before you sign its hash. The dated hashes in the run sheet are history.
 
 ### B. Decide whether search may call a query-embedding model
 
