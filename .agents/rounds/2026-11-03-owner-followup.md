@@ -103,3 +103,131 @@ This decision authorizes no paid collection.
 
 Validation: install, type generation, type checking, tests, build, and the tree secret scan all exited 0.
 The tests passed 144 files and 3019 tests, with three expected failures.
+
+### sd-059 comparison verdict (2026-11-03)
+
+Lane sd059 (Codex gpt-6.1-sol high): verdict B, upstream retrieval. The expected result-code page
+is absent from all seven raw Discovery candidate sets (top 50), so no Raven adapter step drops it.
+A real-adapter replay (seven equality assertions against unmodified output) confirms the adapter
+keeps every candidate except meeting sections. The public site MCP (`search_stellar_developer_docs`)
+ranks an expected page first for all seven queries, and its `op_bad_signer` result carries the
+`SET_OPTIONS_BAD_SIGNER` mapping. Discovery median 920 ms vs. site MCP 675 ms (single observations;
+one MCP timeout at 30 s). Published site MCP limits: 5,000 requests/hour per IP, 10,000 searches/hour
+per site. Evidence: `rv-sd059/tmp/sd059/` (not committed). Phase 2 measures D (Discovery), M (site MCP),
+and P (both in parallel, RRF) on the full identifier probe and the golden docs pages.
+
+### Merged and opened (2026-11-03)
+
+- PR #340 (retire decision A): Argon APPROVE, CI green, merged as `f44fbb1a`.
+- PR #341 (upstream sweep): cs-003 `fixed-upstream` (resolve waits for a golden-truth pass on the
+  SEP goldens, held behind the other session, and a distinct reviewer), cs-008 `declined-upstream`,
+  sd-048 errata PR stellar/stellar-protocol#2059 opened from the `kalepail` fork.
+- Issue #339 (daily refresh crash since 2026-11-03 06:31Z, ADR-0003 leak guard on
+  `analyzeHackathonSubmissions` in keyword-exclusion text): lane r339 (hc t13h, Codex Sol high,
+  worktree `rv-339`). The coordinator ran `refresh-inventory.mjs` host-side (exit 0).
+- Demo migration: blocked by two `createAI` gaps; `workers-ai-provider` stays. Lane demo-finding
+  (hc t13s, Claude Opus high) packages the upstream finding for cloudflare/agents.
+
+### B contract (2026-11-03)
+
+Lane b-design delivered `contract.md` (SHA-256 `0ec05f5fa1850e12000c9947239cb75cb425ee471bcb4be8ece11fcd9930f0c0`),
+`candidates.md`, `harness.md`, and `runtime-design.md` in `rv-b`, with no candidate measured.
+b-research (Grok 4.7 xhigh) shortlist: bge-base, Clef-flash, bge-reranker, qwen3-embedding, Clef;
+external decision models only as a conditional tier; no small LLM (including Particle-1) on the
+search path. Assumption attacks before signing: Gemini 4 Argon high (hc t13j) and Kimi K3.1 Pro
+high (hc t13k), both OpenRouter with zero retention.
+
+### sd-059 backend A/B, development round (2026-11-03)
+
+Pre-registered, free, 382 paired captures (536 labeled rows), no HTTP 429. Hit@5 by set (D Discovery /
+M site MCP / P parallel RRF by page+anchor): identifiers 17/48/31; migration golden 178/175/166;
+routing legacy 104/103/98; routing extended 79/79/78. M wins identifiers by 31 with no loss but loses
+6 and gains 3 golden pages (four candidate omissions in its 10-record window). P loses pages through
+anchor-split fusion keys. Lane verdict: keep D. Coordinator: the page-keyed fusion fix (P2) and an
+identifier-shape route (R) came from reading this data, so phase 3 confirms them on a disjoint,
+frozen confirmation set with a fresh capture before any production change.
+
+### B contract attacks (2026-11-03)
+
+Argon high: 24 findings (8 blockers), Kimi K3.1 Pro high: 23 findings (2 blockers). Both name class
+(m) as too permissive, no untouched confirmation set across many variants, repeat cherry-picking, an
+unfrozen fresh source, the weak fallback identity proof, unfiltered `limit: 5` only, and an
+`AGENTS.md` rule text that forbids family f. Lane b-amend (hc t14s, Claude Opus high) writes
+Amendment 1 and the reconciliation before any measurement.
+
+### Demo provider: upstream finding filed (2026-11-03)
+
+PR #342 merged (`d3849813`): cs-010 with a self-contained repro (byte-identical on agents 0.32.0
+and 0.33.0 across Codex, Claude, and Argon runs; Argon APPROVE). Filed as cloudflare/agents#2809;
+the stream-resume opt-out defers to the existing cloudflare/agents#2790. `workers-ai-provider`
+stays. PR #343 records the filing.
+
+### #339 fix: review round 1 (2026-11-03)
+
+Argon high returned CHANGES: the `x-routing` scrub weakened a strict raw-text guard (and still
+leaked split tokens into routing keywords), templated paths produced "upstream {id}", fully
+excluded lists left stray text, and the super-spec change lacked a test. Lane r339-fix (hc t14w,
+Codex Sol high) narrows the fix to operation descriptions and adds the missing tests.
+
+### B contract signed (2026-11-03)
+
+Lane b-amend wrote Amendment 1 (N1–N24) and `attack-reconciliation.md`, with no rejected finding.
+It cuts the shippable set to 8 primary variants, adds a seeded development/confirmation split with one
+finalist, replaces class (m) with a labels-based (m′)/(u) rule and a cap, counts the effect in distinct
+rows with a sign test on the confirmation part, freezes the fresh source by SHA-256, proves fallback
+identity on full pages, and prices one complete search. The coordinator signed it with a USD 15 spend
+cap (tier X USD 0): `contract.md` SHA-256 `a1cf67f6cb77e449ef2156b7cd39a1bb0902dd22f2e9ee8d3dbf330cc77c2346`,
+pushed in `1365fc62` before any candidate ran. Harness lanes: h-core (hc t15s, Sol xhigh), h-capture
+(t15t, Sol high), h-latency (t15v, Sol high). Paid captures and the probe deploy run host-side by the
+coordinator.
+
+### #339 fix merged (2026-11-03)
+
+Argon high round 2 returned APPROVE: all four round-1 findings resolved, 266 focused tests pass, and
+reverting the three scripts fails 54 tests. PR #344 merged as `3ff5c59b` and closed #339. No
+generated artifact changed, so no deploy follows. The next scheduled refresh reports the held Scout
+1.9.116 drift (#223) instead of crashing.
+
+### sd-059 phase 3 confirmation (2026-11-03)
+
+Pre-registered (`registration.json` predates every confirmation request), 205 new query strings
+(15 QA golden page rows, 190 Horizon result-code tokens), one host-side collection with no HTTP 429.
+Hit@5 on identifiers: D 153, M 190, P2 178, R 171; QA golden 5 for every arm. Added-latency p95 over
+D: P2 1,424 ms, R 1,258 ms, against the registered 600 ms limit. Both fail. P2 also fails the
+development gate (migration golden hit@1 −1, hit@5 −2); R passes it. Verdict: keep D; no production
+change. The site MCP gains come with tail latency (slowest 20.2 s) and a shared 10,000 searches/hour
+site limit. The raw-candidate comparison closes the question that Raven's 2026-11-02 comment on
+stellar/stellar-docs#2995 left open: Raven's filter is not a cause. Lane sd059-up (hc t165, Claude
+Opus high, worktree `rv-sd059up`) recorded the evidence on sd-059. The coordinator posted
+https://github.com/stellar/stellar-docs/issues/2995#issuecomment-6608646512: no content change requested;
+the Discovery ranking gap goes to whoever holds the Mintlify relationship.
+
+### B harness inputs and clarifications (2026-11-03)
+
+- Main source: clean clone at `e530c7f4`; `catalog/manifest.json` byte SHA-256
+  `f018b979460a9a0d22bfafb9b2b57b67d7ddb31650719fd8a190bdcb6bbc1534` (matches harness section 3).
+- Fresh inputs: `eval/results/2026-10-28-routing-repair-evidence.tar.gz` SHA-256
+  `ed4e32a37c8ea2cd0d66268dee82172a3f182d53a55272ad9813d08a61e00a4e`, run `baseline-fresh`:
+  `inventory/stellar-light.json` (Scout 1.9.111) `f653ef3236baaf1259662a4999cb6731017a4d5f4c90ea4434b21ed6a5bd5ef8`,
+  `inventory/stellar-docs-titles.json` (682 titles) `c9758cab3a97c107198d29543a01570e298a1ade2ee42487af4add1811e199d5`,
+  `ecosystem-skills/MANIFEST.json` (pin `789c9061`) `ff12040593e3721ab7c9e749f2373a59298677a2605999ecc05fb0b96b4e9524`.
+  All eight fresh runs in the archive carry the same three hashes. The rebuilt fresh manifest hash
+  is `3d688f150cc53b0a3f169cc90e2e8792a1501d5373a4ae07a48d7552da7aaff5` (built once from the
+  stellar-light source object). Both sources reproduce the harness section 3 totals exactly
+  (h-core `tmp/model-ranking/fresh/hashes.json`).
+- rt-c's c.1 + c.2 code was lane-local and is not retained. Family b (diagnostic only) is a
+  reimplementation from `report-rt-c.md` and `candidates.md`, labeled as such.
+- C1 (before any measurement): a ranking pool with fewer than 2 entries makes no model call and
+  returns the fallback page (reason `trivial-pool`, cost 0, neither a timeout nor an error, counted
+  per lane, excluded from latency samples).
+- C2: for families a, b, and d, an `error` key after the one retry gets one key-level repair even
+  when errors are at most 2%. The original line stays, the repair cost counts, and `invalid` keys
+  are never recaptured. A failed repair fails that capture for shipping. Families c and f get no key
+  repair; their errors count toward the 2% budget.
+- Latency probe censor rule: a wait at the 5,000 ms probe cap is a censored timeout sample, never
+  dropped. The late promise drains (30 s cap) before the next request, and the idle interval starts
+  after the drain. Windows are not discarded or re-run. Reports show the raw wait and min(wait, T).
+- C3 (N17 / harness A1.10 replay): reranker and Clef use all repeat-1 keys as the denominator. A key
+  matches when both outputs are valid with equal top-five orders, or when both are non-valid (both
+  fall back). Any other case is a mismatch; the gate stays at 98%. Vector keys all need cosine
+  ≥ 0.999, and a replay error on a vector key fails the check.
