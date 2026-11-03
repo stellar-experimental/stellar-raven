@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Verified 2026-11-02 (sd-059 filed as stellar/stellar-docs#2995). developers.stellar.org runs on Mintlify, and the docs team owns both its content and its search; content and search findings file in stellar/stellar-docs."
@@ -278,6 +278,10 @@
     "cs-009": {
       "repo": "Inferara/soroban-security-portal",
       "reason": "Inferara/soroban-security-portal is the public, issue-enabled repository for stellarsecurityportal.com (its GitHub homepage). The portal owns the audit-report dataset that Stellar Light/Scout mirrors."
+    },
+    "cs-010": {
+      "repo": "cloudflare/agents",
+      "reason": "The agents package metadata (npm view agents@0.32.0 repository bugs) names cloudflare/agents as its issue owner; createAI lives in packages/agents/src/models."
     }
   }
 }

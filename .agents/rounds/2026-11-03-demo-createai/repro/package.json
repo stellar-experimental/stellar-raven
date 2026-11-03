@@ -1,0 +1,12 @@
+{
+  "name": "agents-0320-catalog-options-repro",
+  "private": true,
+  "type": "module",
+  "scripts": { "repro": "node repro.mjs" },
+  "dependencies": {
+    "agents": "0.32.0",
+    "ai": "7.0.137",
+    "@ai-sdk/anthropic": "4.0.78"
+  },
+  "engines": { "node": ">=24" }
+}
