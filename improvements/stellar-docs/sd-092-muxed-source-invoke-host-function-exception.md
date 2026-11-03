@@ -1,7 +1,7 @@
 ---
 id: sd-092
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Document the muxed-source exception for contract invocation"
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - "Current source: https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx; SHA256 7b8584dd15e756006aec21823b560a57ba0ec1bc7d0a6eb22cb8dc875e667a08; Git blob af7ecae3202b86f227b03338f968842d1df93539."
   - "Published page: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md; SHA256 58947c5707163492a6e52d435166ad8029feed7015dc141c1f8c8a7e9294a1e1."
   - "Case q-pc-muxed-accounts; review SHA256 c00e62867a4934936a47c1996858999aaf8d818cfe16be782511e1c2ea49c62e; packet SHA256 1c8b6c7941e2ab6fd10a19e43363c47c483140ae89ce7c9d7c6d45b56ec37a19; full source-row SHA256 003eda477402f2e86554d0ba00d5cb01040b824e2ebda939448371ce6ca6fb0a."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3039
 ---
 
 ## Finding

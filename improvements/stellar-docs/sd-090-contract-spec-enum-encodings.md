@@ -1,7 +1,7 @@
 ---
 id: sd-090
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Correct tagged and integer enum encodings in the contract-spec guide"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "The official SDK-author guide independently describes a symbol-led vector for a selected union variant. Retained published-body SHA256 938bbced8e584420cb1b83211964e12f446626ca5dd920fde6ce4b635560d4ad. This corroborates the implementation, rather than treating two Docs pages as independent implementations."
   - "Dedupe checked every improvements namespace, recurrences, resolved.json, and intake in MAIN and the method tree. No equivalent enum-encoding finding appeared. sd-055 concerns transaction assembly examples."
   - "research/audits/2026-11-02-golden-overnight/tail-source-receipts.json contains exact URLs, source dates, public body hashes, and bounded implementation excerpts. No contract invocation, simulation, or transaction ran."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3037
 ---
 
 ## Finding

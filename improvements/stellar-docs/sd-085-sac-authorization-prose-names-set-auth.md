@@ -1,7 +1,7 @@
 ---
 id: sd-085
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Use set_authorized consistently in SAC authorization prose
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - "The current built-in SAC contract defines set_authorized and no set_auth function. Body SHA-256: 5fe6f53f7da37861501ae6e6205907f3473679a8cabe1eca61759d50210e997a. URL: https://raw.githubusercontent.com/stellar/rs-soroban-env/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs."
   - "2026-11-03T01:34:06Z a focused MCP page read returned both spellings. Request/result hashes and public HTTP receipts: research/audits/2026-11-02-golden-overnight/authorization-source-receipts.json."
   - "The new q-comp-auth-flags-overview answer repeats set_auth. Its original correct grade remains unchanged; the independent review records the extra naming error."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3032
 ---
 
 ## Finding

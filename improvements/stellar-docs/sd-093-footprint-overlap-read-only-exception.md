@@ -1,7 +1,7 @@
 ---
 id: sd-093
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Distinguish read-only overlap from footprint write conflicts"
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - "Current source: https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/learn/fundamentals/contract-development/storage/persisting-data.mdx; SHA256 96d9869f47d9be00d5fbf87b8d158e312b2757d48bec49569e5d115cb2cad403; Git blob ad0715f7d4ef1123ca354af114076e70bc0f6ee3."
   - "Published page: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data.md; SHA256 341dad73f10891a8e830b6e184f833ca3de467cbda35217a2238084c23243148."
   - "Case q-protocol-parallel-execution; review SHA256 90e76cc8b8a06b89658cdeda4cd21d1ac5c06eff58f7e9413924214af1e90e37; packet SHA256 2b8da6b11aa1f122e601bd2455a4a4c30da7ff0270c9bde3142a20cb409e4aa0; full source-row SHA256 62e3101dd1cec1f88a8a934208b43255b619eef12ff165c8bd75236428139ffa."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3040
 ---
 
 ## Finding

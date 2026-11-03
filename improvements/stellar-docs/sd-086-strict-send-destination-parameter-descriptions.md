@@ -1,7 +1,7 @@
 ---
 id: sd-086
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Correct strict-send destination descriptions in the Horizon OpenAPI source
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Fresh public Horizon GET with destination_assets returns HTTP 200 and path records. Replacing that selector with source_assets returns HTTP 400 for a missing destination selector."
   - "Safe public request receipts, exact timestamps, small query descriptors, validation details, and body hashes: research/audits/2026-11-02-golden-overnight/horizon-strict-send-receipts.json. No full response bodies are retained."
   - "Dedupe covered active findings and resolved.json in MAIN and the method worktree before creation. No strict-send destination-description finding appeared."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3033
 ---
 
 ## Finding

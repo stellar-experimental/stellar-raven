@@ -1,7 +1,7 @@
 ---
 id: sd-088
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: Show consensus-value members beneath scpValue in the Ledgers page
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "Current public Markdown SHA-256: 542beafe9c23c70ebd321606b29342054732172d2d93fb07c4643e7a15adc37d. Current MCP page-content SHA-256: 8a53f3bb15356ed6e485184ff2bff6b60e6adcd6bc3ff5b99063328bffbd6597."
   - "Public requests, timestamps, schema identities, result hashes, and scoped source evidence: research/audits/2026-11-02-golden-overnight/late-docs-receipts.json. Independent Grok review cleared a narrow presentation clarification, not a false wire declaration."
   - "Dedupe covered both worktrees. Resolved sd-056 corrected units and the header extension; those fixes remain. Active sd-014 concerns inclusion proofs, a different boundary."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3035
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sd-084
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Describe authorization sandwich operations as ordered and atomic
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - "Stellar Core TransactionFrame::applyOperations iterates over mOperations in order and applies each operation to transaction state. Source body SHA-256: fb6c9fcb85589265c3199205d247ae8ebb2aacc662b6182fe8ef098337ac9fd5. URL: https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp."
   - "2026-11-03T01:34:06Z the existing local MCP served the same simultaneous wording in a focused get_doc_page read. Request/result hashes and public HTTP receipts: research/audits/2026-11-02-golden-overnight/authorization-source-receipts.json."
   - "The new q-comp-auth-flags-overview answer repeats the wording. Its original correct grade remains unchanged; the independent review records a qualitative disagreement."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3031
 ---
 
 ## Finding

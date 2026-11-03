@@ -1,7 +1,7 @@
 ---
 id: sd-089
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Check simulation success before decoding the preview return value"
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "The exact served source was also visible in case77 transcript entries 5 and 6. This is source evidence, not a verdict-based truth claim."
   - "Dedupe checked every improvements namespace, recurrences, resolved.json, and intake in MAIN and the method tree. Related sd-055 covers assembly examples; sd-078 covers archived-entry restoration. Neither covers this decoding guard."
   - "research/audits/2026-11-02-golden-overnight/tail-source-receipts.json records request/result hashes, bounded public source text, currentness, and verification limits. No simulation or transaction ran."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3036
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sd-095
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Distinguish device-bound and synchronized passkeys in the SDP guide"
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - "Source-scope follow-up: research/audits/2026-11-03-qa-followup/passkey-source-supplement.json. The maintained SDP backend source at commit 4aff0437810d12e020571c1dc075597d032a0bb7 uses platform/resident preferences and delegates credential registration. It reconstructs backup flags as true for authentication."
   - "The independent Google source describes encrypted provider synchronization. Exact public source URLs, observation times and hashes are retained in the supplement."
   - "Dedupe covers active and resolved records. sd-027,sd-034 and sk-017 have different mechanisms; the original concern had no finding ID while application scope was unverified."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3042
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sd-087
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: Document the conditional authMode default for transaction simulation
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Current public method page and the existing local MCP reproduce the unconditional default. Public Markdown SHA-256: 0a4378f9684b69448dc72b9abd894370a1ab8aec779bff41a80fe14b4783940b. MCP page-content SHA-256: 0d08c97822b14ff1cdc02461cbf84d47da4dcf38ab29192561f7f11ecba1bbff."
   - "Public requests, timestamps, result hashes, CLI fingerprints, and scoped source evidence: research/audits/2026-11-02-golden-overnight/late-docs-receipts.json. Independent Grok review cleared this docs-content finding."
   - "Dedupe covered active findings, recurrences, resolved.json, and intake.json in both worktrees. sd-055 concerns assembly examples; sd-078 concerns restoration. Neither owns authorization defaults."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3034
 ---
 
 ## Finding

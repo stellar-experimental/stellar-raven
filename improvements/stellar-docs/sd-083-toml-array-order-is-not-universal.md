@@ -1,7 +1,7 @@
 ---
 id: sd-083
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Qualify the publishing guide's TOML array ordering rule
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - "Python 3.12.15 tomllib accepted [[CURRENCIES]] before [DOCUMENTATION], with both entries at the intended root. Fixture SHA-256: 9305615eb7f557e92c7373c27a03297e16c7173b462e1507d72cab7a960aabe4."
   - "Retained receipts, fixture, and parser result: research/audits/2026-11-02-golden-overnight/toml-order-*. The parser check proves syntax only, without SEP-1 or wallet acceptance claims."
   - "A new direct-Grok diagnostic answer for q-aas-list-token-on-exchanges-aggregators repeats this rule. Its original correct grade remains unchanged. No aggregate prevalence claim follows."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3030
 ---
 
 ## Finding

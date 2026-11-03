@@ -1,7 +1,7 @@
 ---
 id: sk-037
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Remove unsupported classic-operation batching from the dapp skill invocation guidance"
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "Independent SDK boundary: stellar/js-stellar-sdk v17.4.0 src/rpc/transaction.ts rejects assembly outside the single supported Soroban-operation shape. Retained source SHA256 be386ee34388e57c83c47db874ff3946e6cc381bb50cb66440bad8363847230a."
   - "Dedupe includes all skills findings, every other namespace, recurrence text, resolved.json, and intake in MAIN and the method tree. sk-033 concerns Rust try-client nesting; sk-036 concerns sendTransaction statuses. Neither covers mixed operation batching."
   - "research/audits/2026-11-02-golden-overnight/tail-source-receipts.json records the latest-branch check, immutable served evidence, public source boundaries, and pending runtime fixture checks. No simulation or transaction ran."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-dev-skill/issues/173
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sd-082
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Clarify that master weight 0 does not disable other issuer signers
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "Request descriptors and receipts: research/audits/2026-11-02-golden-overnight/issuer-lock-receipts.json. Requests use no authentication or model calls."
   - "Reviewed IDs: q-aas-burn-clawback-redemption-mechanics and q-aas-list-token-on-exchanges-aggregators. Their exact tool input and result hashes appear below."
   - "Dedupe checked active findings, recurrences, resolved.json, and intake.json in both worktrees. sd-059 concerns search indexing, not this content omission."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3029
 recurrences:
   - date: 2026-11-02
     evidence: "The separately authorized method 7 listing answer repeats the unqualified issuer-lock claim. Its exact row SHA-256 is e05e08432584b13241a7d2b7ac766cfd0a0ec477ac6e808d4d9864ef38db7a47. Fresh primary reads at 2026-11-03T00:38:45Z reproduce the same asset-control and multisig distinction. The new burn answer avoids that claim, so this recurrence counts only the listing answer. Original scores remain unchanged, and collection supplies no aggregate at this checkpoint."
