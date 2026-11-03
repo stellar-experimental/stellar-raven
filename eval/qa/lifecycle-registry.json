@@ -4,8 +4,8 @@
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
     "proposed": 4,
-    "active": 501,
-    "quarantined": 0,
+    "active": 499,
+    "quarantined": 2,
     "retired": 0
   },
   "reservedIds": [
@@ -1443,9 +1443,9 @@
     {
       "id": "q-edge-fresh-latest-protocol-version",
       "path": "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-protocol-version.json",
-      "state": "active",
-      "reviewState": "none",
-      "caseContentSha256": "951abcb0e4e29a8bed1ea49ac4cf6f771353a48f95c642e8d53dd760ea2da2d5"
+      "state": "quarantined",
+      "reviewState": "in-review",
+      "caseContentSha256": "83e7950d895b6c16c65b3b51cb55e084818a9bd3ee05fbaa49006a948f9407c0"
     },
     {
       "id": "q-edge-fresh-latest-scf-round",
@@ -1513,9 +1513,9 @@
     {
       "id": "q-edge-noinfo-stellar-pos-staking-rewards",
       "path": "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-stellar-pos-staking-rewards.json",
-      "state": "active",
-      "reviewState": "none",
-      "caseContentSha256": "6b8cb779e2cf03bd99943338d6ef15ac7bd8726fe2e2ac2e1a2d2bd71998f16f"
+      "state": "quarantined",
+      "reviewState": "in-review",
+      "caseContentSha256": "9f1f2eda62e2c8e0b0c074e716e99e965b9fa34bd8132f66a7fe27c4bc20e3e3"
     },
     {
       "id": "q-edge-oos-bitcoin-price-prediction",

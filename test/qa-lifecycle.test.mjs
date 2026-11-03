@@ -502,8 +502,15 @@ describe("golden lifecycle", () => {
     const current = JSON.parse(readFileSync(path.join(ROOT, "eval/qa/cases.json"), "utf8"));
     const currentRegistry = JSON.parse(readFileSync(path.join(ROOT, "eval/qa/lifecycle-registry.json"), "utf8"));
     expect(current.cases).toHaveLength(501);
-    expect(currentRegistry.counts).toMatchObject({ active: 501, proposed: 4, quarantined: 0, retired: 0 });
+    const activeCount = current.cases.filter((item) => item.truth.lifecycle.state === "active").length;
+    const quarantinedCount = current.cases.filter((item) => item.truth.lifecycle.state === "quarantined").length;
+    expect(activeCount + quarantinedCount).toBe(current.cases.length);
+    expect(currentRegistry.counts).toMatchObject({ active: activeCount, proposed: 4, quarantined: quarantinedCount, retired: 0 });
     expect(currentRegistry.reservedIds).toHaveLength(505);
-    expect(contentSha256(current.cases[0])).toBe(currentRegistry.entries.find((entry) => entry.id === current.cases[0].id).caseContentSha256);
+    for (const item of current.cases) {
+      const entry = currentRegistry.entries.find((candidate) => candidate.id === item.id);
+      expect(entry.state).toBe(item.truth.lifecycle.state);
+      expect(entry.caseContentSha256).toBe(contentSha256(item));
+    }
   });
 });

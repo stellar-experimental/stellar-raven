@@ -1,0 +1,326 @@
+{
+  "pattern": "Protocol (?:2[7-9]|30)|\\bP(?:2[7-9]|30)\\b|liquid.stak|proof.of.stake|native.{0,30}stak|StelloFi|sXLM|validator.{0,30}reward",
+  "counts": {
+    "battery": {
+      "files": 501,
+      "matched": 29
+    },
+    "proposed": {
+      "files": 4,
+      "matched": 0
+    },
+    "live": {
+      "files": 2,
+      "matched": 0
+    }
+  },
+  "cases": [
+    {
+      "scope": "battery",
+      "id": "q-defi-build-staking-for-own-token",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-build-staking-for-own-token.json",
+      "sha256": "4ab3f5cefb9083abf1a5c475259437168111285028866445d61f4167bb092066",
+      "matchedFieldCount": 7,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-defi-liquid-staking-whitespace",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-liquid-staking-whitespace.json",
+      "sha256": "6719f2d0823e66448f07a82fd2fb6a6e87bd42ecaac5c476fb186ef3ea3fb59a",
+      "matchedFieldCount": 10,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-eco-defi-market-map",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-defi-market-map.json",
+      "sha256": "f6ebcdba13c215b3e0149990045abeadac8235c95ee54bef69d41645c2a01c8e",
+      "matchedFieldCount": 2,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-edge-fresh-latest-protocol-version",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-protocol-version.json",
+      "sha256": "442c2eeeddcd8de6606479d1481dd37c94169613a68cb09398a3aaff7665dd7d",
+      "matchedFieldCount": 7,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-stellar-pos-staking-rewards.json",
+      "sha256": "673d822b4a7ec68b10fd98dd9841b63e01cc86f6ce5cb38acffdf073605e0f72",
+      "matchedFieldCount": 11,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-hist-quantum-preparedness-plan",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-quantum-preparedness-plan.json",
+      "sha256": "0b45e51e78bd7881edc767286d5e44363840d9e44200b2b23b094747dd544c0c",
+      "matchedFieldCount": 2,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-hot-fee-pool-burn-deflation",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hot-fee-pool-burn-deflation.json",
+      "sha256": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
+      "matchedFieldCount": 1,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-pc-address-types-strkey",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-address-types-strkey.json",
+      "sha256": "47dada099fd31ab21b253a849c9f4b89e3e601f2bd6eac7b074d57b6e08c5f42",
+      "matchedFieldCount": 2,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-bucketlist-vs-merkle-inclusion-proof.json",
+      "sha256": "ba2f60cf21041acb0a3d4b66ea09cff584a03e0b7060509331b5b80690ef1f21",
+      "matchedFieldCount": 1,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-pc-fee-bump-channel-accounts-feepool",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-fee-bump-channel-accounts-feepool.json",
+      "sha256": "fb4fe26225f8af7edf19847dcda611b77a3791813c28b13b07fcb1083ee10bac",
+      "matchedFieldCount": 1,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-pc-memos-reference",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-memos-reference.json",
+      "sha256": "4ab8c2461dab6b53d4769fb3b624b6b8cdbdcee04b57351b77e5c15465232c46",
+      "matchedFieldCount": 1,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-pc-protocol-27-zipper",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-protocol-27-zipper.json",
+      "sha256": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8",
+      "matchedFieldCount": 9,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-pc-protocol-upgrade-timing",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-protocol-upgrade-timing.json",
+      "sha256": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
+      "matchedFieldCount": 7,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-pc-quantum-preparedness-dormant",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-quantum-preparedness-dormant.json",
+      "sha256": "9a58e1d288cff42fa4a933af6e513b260ab2d2e0dbdf3af4f97946099c33a372",
+      "matchedFieldCount": 1,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-protocol-27-cap-0071",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-27-cap-0071.json",
+      "sha256": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
+      "matchedFieldCount": 8,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-protocol-ledger-close-time",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-ledger-close-time.json",
+      "sha256": "b6d6438972116ef0e6c1935e2cd66370c87da8543911166ef1bee7187c5a9b7e",
+      "matchedFieldCount": 4,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-protocol-ledger-entry-types",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-ledger-entry-types.json",
+      "sha256": "b1d0a3c9e9131f3e703a96ce33f9bb123d5f7f6e7483cb163de7ccadf484f2d2",
+      "matchedFieldCount": 1,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-protocol-ledger-header-fields",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-ledger-header-fields.json",
+      "sha256": "560a7817023680051d3bcc3beb2511cb5a2d7e69f0198664630f6451f046c30f",
+      "matchedFieldCount": 4,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-protocol-scp-consensus-algorithm",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-scp-consensus-algorithm.json",
+      "sha256": "ba760d5bb7ac504e53db81c2d209ecdec1994d2991aaf5cc5ec7d4bfee91c45d",
+      "matchedFieldCount": 4,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-protocol-validator-node-roles",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-validator-node-roles.json",
+      "sha256": "d63544e7a16685f42c21715ef80e0b883daf180f753b03ad385e3fece6577302",
+      "matchedFieldCount": 1,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-protocol-version-history-list",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-version-history-list.json",
+      "sha256": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+      "matchedFieldCount": 10,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-raph-xlm-staking",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-xlm-staking.json",
+      "sha256": "de5c7b96b8e37bf8785426d159cf147f0c5bc428ea46a67a46c1d6bfd0d28ddb",
+      "matchedFieldCount": 9,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-soroban-auth-delegation-p27",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-auth-delegation-p27.json",
+      "sha256": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750",
+      "matchedFieldCount": 8,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-soroban-storage-migration",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-storage-migration.json",
+      "sha256": "ce0dcbdd12cad7cdecfd3c95ffe4557f639aba1d22b730340eb25cee41daeecc",
+      "matchedFieldCount": 1,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-soroban-upgradeable-storage-compat",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-upgradeable-storage-compat.json",
+      "sha256": "c52aa618b95f7b5a86a83c9af3b5d2dec3c565dbd9ebc597b6940069162d2cd0",
+      "matchedFieldCount": 2,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-zk-host-functions-status",
+      "path": "eval/qa/corpus/battery/soroban/q-zk-host-functions-status.json",
+      "sha256": "a46b4a89de728fd62e3c2c24709deae92cd0d46d8867a93b39376fc6b8230b8b",
+      "matchedFieldCount": 3,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-infra-testnet-vs-futurenet",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-testnet-vs-futurenet.json",
+      "sha256": "67f4508dd5fe05740581adb7bfacf8aa89ef4b65d1e18c557ec0a6933d939891",
+      "matchedFieldCount": 2,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-quickstart-manual-ledger-close",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-quickstart-manual-ledger-close.json",
+      "sha256": "6acab8079564bd5356421c0e9028423333a57afad7d1994bd01207cc1cdb0478",
+      "matchedFieldCount": 3,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    },
+    {
+      "scope": "battery",
+      "id": "q-tool-rust-soroban-sdk",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-rust-soroban-sdk.json",
+      "sha256": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4",
+      "matchedFieldCount": 2,
+      "verdict": "No conflicting target claim found in the scoped sweep; historical and optional claims keep their stated dates."
+    }
+  ],
+  "support": [
+    {
+      "path": "eval/qa/consistency-register.json",
+      "sha256": "b4cb51bedcd14a0fb323f19551cf8ba62cfad4dcc59e543d4977250cc727f0fe",
+      "matches": [
+        {
+          "location": "$.clusters.entries[6]",
+          "id": "cluster-007",
+          "label": "protocol version history + activation dates (P17/P18/P20/P21/P22/P23/P24/P25/P26/P27)",
+          "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Updated 2026-11-02: members agree that P28/Adapter activated at ledger 64458446 on 2026-09-16 and P29 (no new CAPs) at ledger 64717645 on 2026-10-01; Bell/P30 (CAP-0084/0087/0088) votes are scheduled for 2026-11-03 (Testnet) and 2026-11-23 (Mainnet), not activated. P23 initialized ledgerMaxDependentTxClusters at 1; SLP-0004 set 2 on 2026-01-29 and SLP-0007 set 3 on 2026-10-22.",
+          "triggerDateEvent": null
+        },
+        {
+          "location": "$.clusters.entries[16]",
+          "id": "cluster-017",
+          "label": "network constants: fees, reserves, close time, supply, monetary history",
+          "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+          "triggerDateEvent": null
+        },
+        {
+          "location": "$.clusters.entries[19]",
+          "id": "cluster-020",
+          "label": "org/founding facts (SDF, SCP, consensus, Tier 1)",
+          "note": "SCP was authored by David Mazières and rolled out in 2015 using FBA. The causal interpretation of the 2014 fork is disputed: SDF attributed it to weaknesses in the inherited system, while Ripple rejected that conclusion. Mazières's founder/professor/paper facts remain stable, while the Founder and Chief Scientist team-page data is dated and distinguished from the rendered card. SDF structure and not-PoS/no-validator-reward facts remain separate.",
+          "triggerDateEvent": null
+        },
+        {
+          "location": "$.clusters.entries[24]",
+          "id": "cluster-025",
+          "label": "Protocol 27 activation, CAP-0071 semantics, and v27 tooling",
+          "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z, and its CAP-0071 authentication delegation/address-bound credentials remain in effect. As of 2026-11-02, P28/Adapter (ledger 64458446, 2026-09-16) and P29 (ledger 64717645, 2026-10-01, no new CAPs) followed, so Mainnet runs P29; Bell/P30 votes are scheduled (Testnet 2026-11-03, Mainnet 2026-11-23), not live. As of 2026-11-02 the latest stable soroban-sdk is v29.0.1 and v30.0.0-rc.1 is a pre-release. The edge latest-version case remains behavior-gated rather than number-gated, and the SCP consensus case never carried an activation claim.",
+          "triggerDateEvent": null
+        },
+        {
+          "location": "$.clusters.entries[47]",
+          "id": "cluster-048",
+          "label": "SCP rewards versus third-party XLM yield",
+          "note": "Stellar uses SCP/FBA and validators receive no monetary rewards. Issuer interest, lending, AMM/LP, vault, token-lock, RWA, and external-chain wrapper yield are not native staking. The no-live-native-XLM-LST result is dated and source-bounded to the 2026-07-10 sweep and a 2026-11-02 re-sweep. As of 2026-11-02, two members carry dated do-not-penalize cautions: StelloFi's self-described 'Native XLM Liquid Staking' sXLM is a vault share token, not validator staking, and SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for locked XLM, not proof-of-stake staking or an adopted protocol reward.",
+          "triggerDateEvent": null
+        },
+        {
+          "location": "$.clusters.entries[82]",
+          "id": "cluster-083",
+          "label": "Nontechnical participation boundaries",
+          "note": "Legitimate community, education, content, event, operations, product, marketing, and job paths exist, but participation does not imply compensation, program eligibility, mining, staking rewards, airdrops, or free XLM.",
+          "triggerDateEvent": null
+        },
+        {
+          "location": "$.clusters.entries[119]",
+          "id": "cluster-120",
+          "label": "Protocol 27 Zipper activation, current-version, and AddressV2 facts",
+          "note": "P27 activated on Mainnet at ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features and remain in effect. As of 2026-11-02, Mainnet runs Protocol 29: P28 (Adapter) activated at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01, and neither changed CAP-0071 credentials. Bell/P30 has a Mainnet vote scheduled for 2026-11-23; a scheduled vote is not activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+          "triggerDateEvent": null
+        },
+        {
+          "location": "$.dateContingentTraps.entries[0]",
+          "id": null,
+          "label": null,
+          "note": null,
+          "triggerDateEvent": "Protocol 30 (Bell) Mainnet vote on 2026-11-23, any later Mainnet protocol activation, or any AddressV2 successor change"
+        },
+        {
+          "location": "$.numericInvariants.entries[2]",
+          "label": "Mainnet protocol activation history",
+          "rule": "Each listed activation is fixed history: P27 at ledger 63386819 on 2026-07-08T17:00:10Z, P28 at ledger 64458446 on 2026-09-16T17:00:06Z, and P29 at ledger 64717645 on 2026-10-01T17:00:07Z. The current Mainnet version is volatile: on 2026-11-02 Horizon reported current_protocol_version 29 and core_supported_protocol_version 30. The Bell/Protocol 30 Mainnet vote is scheduled for 2026-11-23 17:00 UTC. A scheduled vote, release support, or CAP status alone does not prove activation; a dated later answer that reports P30 as current is correct. Retargeted 2026-11-02 from the former 'Protocol 27 Mainnet version' invariant.",
+          "verdict": "consistent with the proposed measurement distinction"
+        }
+      ]
+    },
+    {
+      "path": "eval/qa/source-sentinels.json",
+      "sha256": "a3ac90f53310b41b9cc518f2d3846c8bd75c4b9db4dc3261427af8d312d20bbc",
+      "matches": []
+    }
+  ]
+}

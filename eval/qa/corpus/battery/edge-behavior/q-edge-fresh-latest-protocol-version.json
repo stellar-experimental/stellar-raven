@@ -29,8 +29,33 @@
   },
   "truth": {
     "lifecycle": {
-      "state": "active",
-      "reviewState": "none"
+      "state": "quarantined",
+      "reviewState": "in-review",
+      "review": {
+        "queuedOn": "2026-11-03",
+        "trigger": "proposal-verification",
+        "evidence": [
+          "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
+          "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
+          "research/audits/2026-11-03-qa-followup/reference-corroboration.json"
+        ],
+        "startedOn": "2026-11-03",
+        "reviewer": "Grok 4.7 high, independent source verifier t9r",
+        "ledger": ".agents/rounds/2026-11-03-qa-followup.md"
+      },
+      "quarantine": {
+        "startedOn": "2026-11-03",
+        "reviewBy": "2026-11-10",
+        "author": "Codex reference proposer t9q and Codex root",
+        "reviewer": "Grok 4.7 high, independent source verifier t9r",
+        "cause": "The question requires a current network observation, while the introduction and citation notes accept a documentation snapshot.",
+        "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
+        "evidence": [
+          "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
+          "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
+          "research/audits/2026-11-03-qa-followup/reference-corroboration.json"
+        ]
+      }
     },
     "domain": "real-world",
     "status": "confirmed",
