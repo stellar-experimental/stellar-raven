@@ -577,7 +577,12 @@ describe("service specifics", () => {
     expect(av.description).not.toContain("recording's date");
     expect(av.description).not.toContain("quote what was said");
     expect((hackathon as { parameters?: Array<{ name: string }> }).parameters?.map((p) => p.name).sort()).toEqual([
+      "category",
+      "hackathon",
       "limit",
+      "mode",
+      "offset",
+      "package",
       "q",
       "track",
       "winnersOnly"

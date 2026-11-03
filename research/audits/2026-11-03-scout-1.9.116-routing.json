@@ -1,0 +1,587 @@
+{
+  "sourceVersion": "1.9.116",
+  "baselineCommit": "bcfd8bdd681b022d1f5fb5e8b07200be8c1d8de6",
+  "inputSha256": "41a168a867224a8e028193d6c9491d62cc80f661b7758cbf84a93959d44b637a",
+  "manifestSha256": {
+    "before": "f018b979460a9a0d22bfafb9b2b57b67d7ddb31650719fd8a190bdcb6bbc1534",
+    "after": "88ab54571841313ac6641351233d11cdbe55eb4b5a9aaee63dec66cc1099063a"
+  },
+  "traces": {
+    "before": "2026-11-03T17:04:43.796Z",
+    "after": "2026-11-03T17:11:57.560Z"
+  },
+  "totals": {
+    "before": {
+      "legacy": {
+        "n": 338,
+        "top1": 218,
+        "top3": 294,
+        "top5": 327,
+        "cardN": 182,
+        "cardHit5": 113
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 27,
+        "top5": 30,
+        "cardN": 49,
+        "cardHit5": 30,
+        "forbiddenCaptures": 10,
+        "passed": 25
+      }
+    },
+    "after": {
+      "legacy": {
+        "n": 338,
+        "top1": 219,
+        "top3": 293,
+        "top5": 327,
+        "cardN": 182,
+        "cardHit5": 113
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 27,
+        "top5": 30,
+        "cardN": 49,
+        "cardHit5": 30,
+        "forbiddenCaptures": 10,
+        "passed": 25
+      }
+    }
+  },
+  "rankChanges": 48,
+  "gradeChanges": [
+    {
+      "lane": "cases",
+      "id": "q-defi-stellarx-what-is",
+      "changes": {
+        "top1": {
+          "before": false,
+          "after": true
+        }
+      },
+      "before": [
+        {
+          "id": "scout.searchHackathonBuilds",
+          "service": "scout",
+          "score": 227
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 217
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 216
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 212
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 206
+        }
+      ],
+      "after": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 217
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 216
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 212
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "service": "scout",
+          "score": 209
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 206
+        }
+      ]
+    },
+    {
+      "lane": "cases",
+      "id": "q-scf-how-to-apply",
+      "changes": {
+        "top3": {
+          "before": true,
+          "after": false
+        }
+      },
+      "before": [
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "service": "skills",
+          "score": 323
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "service": "scout",
+          "score": 302
+        },
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "score": 300
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 281
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 270
+        }
+      ],
+      "after": [
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "service": "skills",
+          "score": 323
+        },
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "score": 300
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 281
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "service": "scout",
+          "score": 275
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 270
+        }
+      ]
+    },
+    {
+      "lane": "extendedCases",
+      "id": "q-edge-scf-v7-centralization-myths",
+      "changes": {
+        "top3": {
+          "before": false,
+          "after": true
+        }
+      },
+      "before": [
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "service": "skills",
+          "score": 250
+        },
+        {
+          "id": "lumenloop.find_content_by_entity",
+          "service": "lumenloop",
+          "score": 226
+        },
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "score": 225
+        },
+        {
+          "id": "lumenloop.find_similar_scf_submissions",
+          "service": "lumenloop",
+          "score": 220
+        },
+        {
+          "id": "scout.scfPitch",
+          "service": "scout",
+          "score": 217
+        }
+      ],
+      "after": [
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "service": "skills",
+          "score": 250
+        },
+        {
+          "id": "scout.scfPitch",
+          "service": "scout",
+          "score": 237
+        },
+        {
+          "id": "lumenloop.find_content_by_entity",
+          "service": "lumenloop",
+          "score": 226
+        },
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "score": 225
+        },
+        {
+          "id": "lumenloop.find_similar_scf_submissions",
+          "service": "lumenloop",
+          "score": 220
+        }
+      ]
+    }
+  ],
+  "historical": [
+    {
+      "id": "q-defi-agentic-payment-standards-compare",
+      "grade": "top3",
+      "before": true,
+      "after": true
+    },
+    {
+      "id": "q-defi-blend-alternatives",
+      "grade": "top5",
+      "before": true,
+      "after": true
+    },
+    {
+      "id": "q-defi-rwa-overview",
+      "grade": "top3",
+      "before": true,
+      "after": true
+    },
+    {
+      "id": "q-scf-funded-similar-payroll",
+      "grade": "top3",
+      "before": true,
+      "after": true
+    },
+    {
+      "id": "q-defi-streaming-payments-prior-art",
+      "grade": "cardHit5",
+      "before": true,
+      "after": true
+    }
+  ],
+  "controlledCategory": {
+    "before": {
+      "total": 6,
+      "truncated": true,
+      "hits": [
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "score": 399,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 335,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 291,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.get_categories",
+          "score": 298,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.getRfps",
+          "score": 94,
+          "tier": "gated"
+        }
+      ],
+      "grades": {
+        "top1": false,
+        "top3": true,
+        "top5": true,
+        "cardHit5": true
+      }
+    },
+    "after": {
+      "total": 7,
+      "truncated": true,
+      "hits": [
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "score": 399,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 335,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 291,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.get_categories",
+          "score": 298,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "score": 103,
+          "tier": "gated"
+        }
+      ],
+      "grades": {
+        "top1": false,
+        "top3": true,
+        "top5": true,
+        "cardHit5": true
+      }
+    }
+  },
+  "measurements": {
+    "scout.searchProjects": {
+      "before": {
+        "inputs": [
+          "category",
+          "fields",
+          "limit",
+          "offset",
+          "q",
+          "scfAwarded",
+          "status",
+          "type"
+        ],
+        "inputCharacters": 2226,
+        "outputCharacters": 64820,
+        "compactSignatureCharacters": 2563
+      },
+      "after": {
+        "inputs": [
+          "category",
+          "fields",
+          "limit",
+          "offset",
+          "q",
+          "scfAwarded",
+          "status",
+          "type",
+          "view"
+        ],
+        "inputCharacters": 3092,
+        "outputCharacters": 72600,
+        "compactSignatureCharacters": 3429
+      }
+    },
+    "scout.searchHackathonBuilds": {
+      "before": {
+        "inputs": [
+          "limit",
+          "q",
+          "track",
+          "winnersOnly"
+        ],
+        "inputCharacters": 542,
+        "outputCharacters": 2084,
+        "compactSignatureCharacters": 896
+      },
+      "after": {
+        "inputs": [
+          "category",
+          "hackathon",
+          "limit",
+          "mode",
+          "offset",
+          "package",
+          "q",
+          "track",
+          "winnersOnly"
+        ],
+        "inputCharacters": 4335,
+        "outputCharacters": 15146,
+        "compactSignatureCharacters": 4689
+      }
+    },
+    "scout.compareHackathons": {
+      "before": {
+        "inputs": [
+          "slugs"
+        ],
+        "inputCharacters": 115,
+        "outputCharacters": 763,
+        "compactSignatureCharacters": 1077
+      },
+      "after": {
+        "inputs": [
+          "slugs"
+        ],
+        "inputCharacters": 115,
+        "outputCharacters": 12617,
+        "compactSignatureCharacters": 461
+      }
+    }
+  },
+  "forbiddenCaptures": {
+    "before": [
+      {
+        "id": "q-holdout-a-01-oz-upgrade",
+        "forbiddenHits": [
+          "skills.openzeppelin-stellar.setup-stellar-contracts"
+        ]
+      },
+      {
+        "id": "q-holdout-a-18-zk-ecosystem-search",
+        "forbiddenHits": [
+          "skills.stellar-dev.zk-proofs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-01-sep-asset-metadata",
+        "forbiddenHits": [
+          "skills.stellar-dev.assets"
+        ]
+      },
+      {
+        "id": "q-holdout-b-02-asset-metadata-standard",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-03-clawback-stablecoin",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-04-regulated-asset",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-05-classic-or-sep41",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-06-sac-or-sep41",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-13-payments-history",
+        "forbiddenHits": [
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-c-01-defi-map",
+        "forbiddenHits": [
+          "skills.lumenloop.stellar-integration-finder"
+        ]
+      }
+    ],
+    "after": [
+      {
+        "id": "q-holdout-a-01-oz-upgrade",
+        "forbiddenHits": [
+          "skills.openzeppelin-stellar.setup-stellar-contracts"
+        ]
+      },
+      {
+        "id": "q-holdout-a-18-zk-ecosystem-search",
+        "forbiddenHits": [
+          "skills.stellar-dev.zk-proofs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-01-sep-asset-metadata",
+        "forbiddenHits": [
+          "skills.stellar-dev.assets"
+        ]
+      },
+      {
+        "id": "q-holdout-b-02-asset-metadata-standard",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-03-clawback-stablecoin",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-04-regulated-asset",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-05-classic-or-sep41",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-06-sac-or-sep41",
+        "forbiddenHits": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-b-13-payments-history",
+        "forbiddenHits": [
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-holdout-c-01-defi-map",
+        "forbiddenHits": [
+          "skills.lumenloop.stellar-integration-finder"
+        ]
+      }
+    ],
+    "identical": true
+  }
+}

@@ -156,7 +156,7 @@ The 2026-09-03 Scout routing attribution found eight real regressions from phras
 first-token truncation, generic schema-word coverage, substring coverage, and five weak gated rows.
 It also found valid leaderboard and RFP gains. Rejected search and Scout candidates are retired
 ([disposition](rounds/2026-09-09-outstanding-closeout.md#rejected-candidate-retirement--2026-09-10));
-the current accepted source is Scout 1.9.61 (absorbed 2026-10-02). Use current main and a fresh source snapshot for any
+the current accepted source is Scout 1.9.116 (accepted 2026-11-03). Use current main and a fresh source snapshot for any
 later authorized repair.
 
 Trigger only after the owner authorizes a general Raven scoring repair. This item does not
@@ -177,24 +177,18 @@ Do not create a separate routing TODO or upstream successor for either. Three mi
 controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove those markers after the
 general routing repair passes.
 
-Source held by this item: Scout spec 1.9.71 (2026-10-06, drift issue #223). It adds
-`GET /api/hackathons/analyze`, `GET /api/hackathons/builds/{id}`, and `GET /api/hackathons/review`,
-and rewrites `x-routing` examples on twelve existing operations. Against the 1.9.61 manifest, with
-`reviewSubmission` excluded, legacy routing lost top3 298 to 295, top5 326 to 325, and cardHit5 112
-to 111. Four losses are real operation-selection regressions: `q-defi-agentic-payment-standards-compare`,
-`q-defi-blend-alternatives`, `q-defi-rwa-overview`, and `q-scf-funded-similar-payroll`. The fifth,
-`q-defi-streaming-payments-prior-art`, is a narrow card label. Exposed, `scout.reviewSubmission`
-ranked first on `q-pc-sequence-numbers-ordering-replace`. Ungraded captures also appeared
-(`getHackathonSubmission` first on `q-scf-ecosystem-listing-partner-jobs`; `getHackathon` first on
-`q-hist-remittance-corridors`). Four tested general policies failed; the narrower admission-only
-example policy is untested. Evidence: `rounds/2026-10-06-truth-maintenance.md` and its
-`routing-repair-astra.md`. Four golden proposals for the two read operations wait in
-`eval/qa/corpus/proposed/scf-grants-builders/` (see "Activate the Scout hackathon golden
-proposals"). Keep `inventory/stellar-light.json`
-at 1.9.61 until check 12 passes. A separate absorb on the unchanged scorer was measured and
-declined on 2026-10-29 (ledger `rounds/2026-10-28-routing-repair.md`, "Owner decision D"). The daily
-drift report keeps #223 open meanwhile. (PR #303 closed it in error on 2026-10-28; it was reopened.)
-The same hold keeps `inventory/stellar-docs-titles.json` at its Algolia-era bytes, so its
+Source decision for this item: Scout spec 1.9.116 replaces 1.9.61 with all twelve exclusions retained.
+The coordinator accepted option (a) on 2026-11-03.
+None of the five historical loss grades recurs on the unchanged scorer.
+The new source loses `q-scf-how-to-apply` at top3 and gains two strict grades.
+The coordinator accepted this tradeoff; it does not satisfy the general repair checks.
+The four new operations remain excluded: `reviewSubmission`, `analyzeHackathonSubmissions`,
+`getHackathonSubmission`, and `locateSource`.
+The four golden proposals remain inactive because their required operations remain excluded.
+Decision and evidence: `rounds/2026-11-03-scout-1.9.116.md`.
+Issue #223 stays open for the routing repair and the separate Docs title hold.
+The Scout source hold ends; the stellar-light skill pin remains unchanged.
+The separate hold keeps `inventory/stellar-docs-titles.json` at its Algolia-era bytes, so its
 `source.authEnv` still names the deleted `ALGOLIA_*_DOCS` secrets. Nothing reads them; the next
 refresh after the hold ends rewrites the file keyless.
 
@@ -381,8 +375,14 @@ not an upstream finding.
 
 Next: treat it with the scoring repair above. A narrow builder rule needs the same twelve checks.
 
-Done when: the two operations no longer enter non-hackathon pages in the 544-row corpus and the
-verify lane's 22 hackathon negative probes, with no graded loss.
+Scout 1.9.116 also admits `searchHackathonBuilds` on `q-defi-lumenloop-categories-vocab` through new schema keywords.
+It replaces `getRfps` at rank 5; `lumenloop.get_categories` stays at rank 4.
+The gated pool grows from 6 to 7, with no strict grade change.
+The source acceptance records this capture; it does not resolve this item.
+
+Done when: the two operations, and `searchHackathonBuilds` through schema keywords, no longer
+enter non-hackathon pages in the 544-row corpus and the verify lane's 22 hackathon negative
+probes, with no graded loss.
 
 ### Stop identity substitution on spelling-corrected matches
 
@@ -623,8 +623,10 @@ checks.
 
 ### Reconcile hackathon winner goldens with the submission-detail operation
 
-Trigger: the Scout 1.9.71 absorb lands. `scout.getHackathonSubmission` then returns explicit
-`placement` for one stored submission. Two
+Trigger: a reviewed exposure change makes `scout.getHackathonSubmission` callable.
+The Scout 1.9.116 acceptance keeps this operation excluded.
+The upstream operation returns explicit `placement` for one stored submission.
+Two
 existing cases still require the event-detail path as the only route: `q-scf-kale-winner-live`
 (key facts 1 and 2 require `getHackathons` then `getHackathon`) and `q-gap-hackathon-winner-order`
 (key fact 1 requires `getHackathon` detail). The independent review of the 2026-10-06 golden lane
@@ -635,10 +637,12 @@ review") and `reconciliation.md` row 15.
 Done when: both cases accept explicit placement from event or submission detail, through the
 `golden-truth` workflow, or a recorded decision keeps the event-detail path as the only route.
 
-### Activate the Scout hackathon golden proposals when the Scout 1.9.71 absorb lands
+### Activate the Scout hackathon golden proposals when their required operations are exposed
 
-Four proposals sit in `eval/qa/corpus/proposed/scf-grants-builders/`. The 2026-10-06 round held the Scout `1.9.71` absorb, so none is active
-and the two operation floors stay unmet. The independent review cleared three for activation after
+Four proposals sit in `eval/qa/corpus/proposed/scf-grants-builders/`.
+The Scout 1.9.116 acceptance keeps their required operations excluded.
+None is active, and the two operation floors stay unmet.
+The independent review cleared three for activation after
 its requested edits, which are applied: `q-scout-hackathon-winner-libraries-vs-field`,
 `q-scout-hackathon-submission-link-comet-hoops`, and `q-scout-hackathon-submission-xbid-outcome`.
 It blocked `q-scout-hackathon-placed-share-kale-vs-zk`: the complete winner totals have no witness

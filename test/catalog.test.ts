@@ -442,7 +442,12 @@ describe("build-catalog.mjs", () => {
     expect(av.description).not.toContain("recording's date");
     expect(av.description).not.toContain("quote what was said");
     expect(Object.keys((hackathon.inputSchema as { properties: Record<string, unknown> }).properties).sort()).toEqual([
+      "category",
+      "hackathon",
       "limit",
+      "mode",
+      "offset",
+      "package",
       "q",
       "track",
       "winnersOnly"
