@@ -3,7 +3,7 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 4,
+    "proposed": 6,
     "active": 501,
     "quarantined": 0,
     "retired": 0
@@ -207,6 +207,7 @@
     "q-infra-rpc-provider-archive-tier",
     "q-infra-secp256r1-passkeys",
     "q-infra-simulate-transaction-howto",
+    "q-infra-testnet-reset-schedule-recovery",
     "q-infra-testnet-vs-futurenet",
     "q-infra-which-indexer",
     "q-jutsu-cash-crypto-ramps",
@@ -395,6 +396,7 @@
     "q-sor-persistent-unbounded-collection-cap",
     "q-sor-recurring-escrow-patterns",
     "q-sor-reflector-integration-code",
+    "q-sor-reflector-testnet-contract-addresses",
     "q-sor-require-auth-propagation",
     "q-sor-sac-introspection",
     "q-sor-scval-conversion",
@@ -1903,6 +1905,13 @@
       "caseContentSha256": "f3e78317b267a37da67b452e13ca720e998bc4d4d5361b2853708c1ec0a1e0b7"
     },
     {
+      "id": "q-infra-testnet-reset-schedule-recovery",
+      "path": "eval/qa/corpus/proposed/tooling-infra/q-infra-testnet-reset-schedule-recovery.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "407503e1a86916a599cf8a4322583dbc5391319937a5378b6a1d21f809205223"
+    },
+    {
       "id": "q-infra-testnet-vs-futurenet",
       "path": "eval/qa/corpus/battery/tooling-infra/q-infra-testnet-vs-futurenet.json",
       "state": "active",
@@ -3217,6 +3226,13 @@
       "state": "active",
       "reviewState": "none",
       "caseContentSha256": "10eb4b2d6ec0d1e0e6e0b017e50b8ba1a2d3685af5a7aa6c5028836709065665"
+    },
+    {
+      "id": "q-sor-reflector-testnet-contract-addresses",
+      "path": "eval/qa/corpus/proposed/soroban/q-sor-reflector-testnet-contract-addresses.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "c38a0d12373967ffde57c54380a996e5288d67e28c6622cb2fd8e8b17fba41af"
     },
     {
       "id": "q-sor-require-auth-propagation",
