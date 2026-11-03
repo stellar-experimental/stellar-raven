@@ -1,0 +1,28 @@
+{
+  "schema": "qa-followup-budget-v1",
+  "observedAt": "2026-11-03T15:27:59.723419+00:00",
+  "totalAuthorizedUsd": 200,
+  "originalMeasurementUsd": 28.973832,
+  "knownInstrumentSubtotalUsd": 38.762622,
+  "priorGrokHelpersUsd": 40.5571226,
+  "followupGrokSessionId": "01a1a1ad-6040-7f62-8b86-5a0238054c06",
+  "followupGrokCostUsdTicks": 24890747200,
+  "usdTicksPerDollar": 10000000000,
+  "followupGrokUsd": 2.48907472,
+  "combinedGrokHelpersUsd": 43.04619732,
+  "grokAllocationUsd": 45,
+  "newMeasurementCalls": 0,
+  "codexPolicyReserveUsd": 100,
+  "codexDollars": "unreported; policy reserve is not a measured cost or proven cap",
+  "olderUnreconciledReserveUsd": 7,
+  "olderNativeReceiptUsd": 0.047416,
+  "olderReceiptAccounting": "not proven distinct from older Gateway or instrument charges; do not add twice",
+  "unassignedAllocationUsd": 9.237378,
+  "wholeSessionSpendVerified": false,
+  "limits": [
+    "Native Grok CLI costs differ from the paid measurement ledger.",
+    "This snapshot precedes the final independent review. Root updates it after that review.",
+    "No additional paid QA collection runs under the expired deadline."
+  ],
+  "nativeUsageSha256": "1f99e12b0e05acddd04932311d4fff7a87d444ea22dcf597e39136245af1bfac"
+}

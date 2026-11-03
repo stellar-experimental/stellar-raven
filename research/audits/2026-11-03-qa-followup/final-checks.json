@@ -1,0 +1,88 @@
+{
+  "schema": "qa-followup-final-checks-v1",
+  "checkedAt": "2026-11-03T15:27:59.723419+00:00",
+  "terminal": "t14b",
+  "exitCode": 0,
+  "sourceBase": "bdcf915fb552d054657b04b23abc561a65d395f3",
+  "commands": [
+    {
+      "command": "npm run typecheck",
+      "result": "pass"
+    },
+    {
+      "command": "npm test -- --exclude \"tmp/**\"",
+      "result": "pass"
+    },
+    {
+      "command": "npm run build",
+      "result": "pass"
+    },
+    {
+      "command": "npm run eval:selftest",
+      "result": "pass"
+    },
+    {
+      "command": "npm run eval:routing -- --gate",
+      "result": "pass"
+    },
+    {
+      "command": "npm run eval:qa:lint -- --since bdcf915f --stale --enforce-floors",
+      "result": "pass"
+    },
+    {
+      "command": "npm run eval:qa:register -- --check",
+      "result": "pass"
+    },
+    {
+      "command": "npm run eval:qa:sentinels -- --check",
+      "result": "pass"
+    },
+    {
+      "command": "node scripts/check-pin-review.mjs --base bdcf915f",
+      "result": "pass"
+    },
+    {
+      "command": "npm run improvements:lint",
+      "result": "pass"
+    }
+  ],
+  "unitTests": {
+    "filesPassed": 146,
+    "passed": 3093,
+    "expectedFailures": 3,
+    "unexpectedFailures": 0
+  },
+  "corpusLint": {
+    "errors": 0,
+    "warnings": 93
+  },
+  "sentinels": {
+    "count": 25,
+    "errors": 0,
+    "stale": 0
+  },
+  "improvementRecords": 137,
+  "limits": [
+    "Routing gate passes. Its separate protocol-history diagnostic still fails: top-5 7/8, controls 3/4. No routing source changes occur in this follow-up.",
+    "The dry-run build performs no deployment.",
+    "The ignored source clones are excluded from test discovery."
+  ],
+  "priorFailures": [
+    {
+      "terminal": "t11g",
+      "cause": "A lifecycle test assumes no quarantined cases. The repaired test checks all case states and digests."
+    },
+    {
+      "terminal": "t11y",
+      "cause": "The new worktree lacks generated Env bindings. Type generation fixes the setup."
+    },
+    {
+      "terminal": "t12r",
+      "cause": "INDEX contains 136 records while the newly added sd-093 makes 137. Regeneration fixes the mismatch."
+    }
+  ],
+  "output": {
+    "retainedLocalPath": "tmp/2026-11-03-qa-followup/final-checks-output.txt",
+    "sha256": "6d1a52301948e7fce5c73f874c35fd19650c8a1a24fa20d4f3e390af0590eb8a"
+  }
+}

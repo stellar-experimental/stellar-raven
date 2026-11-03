@@ -3,97 +3,112 @@
 This file is the durable verifier record for the prospective reference repair.
 The reviewer is Grok 4.7 high, independent source verifier t9r.
 The review date is 2026-11-03.
-The packet is tmp/2026-11-03-qa-followup/exact-reference-repair/review-packet.json.
-No canonical case file was changed.
-No quarantine phase was applied.
-No correction phase was applied.
+The packet is tmp/2026-11-03-qa-followup/exact-reference-repair/review-packet-v3.json.
+The prior approval stays byte-exact at research/audits/2026-11-03-qa-followup/reference-review-v2.md.
+No corrected gospel file was applied in this review.
+
+## Latest decision
+
+This section is the v4 decision.
+Earlier sections stay as history.
+The v4 packet is tmp/2026-11-03-qa-followup/exact-reference-repair/review-packet-v4.json.
+Approve the protocol v4 hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b.
+Approve the staking v4 hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea.
+No v4 file was applied.
 
 ## Verdicts
 
-Approve the protocol quarantine hash 23e4afe86e104432b305b2152574f85b1994b386d7d7f634d994843f5e24b3ee.
-Approve the staking quarantine hash f3a718d5e96c121290ac174a9847de6501480921fe1037f8b207cd1c2e2c938d.
+The protocol corrected approval stands.
 Approve the protocol corrected hash 8ece74f4f5563bf564dfb356ac80fe44d01fbaa7421f62c109b0bfcd208dd75b.
 Approve the explicit reactivation inside that protocol file.
-Hold the staking corrected hash 0ee780ac83a5f0cf98961e5de1fccbcecd667a36b97ba39c09e9db63088e55e2.
-Hold the explicit reactivation inside that staking file.
-Root may land the quarantine-only commit first.
-Root must leave the staking correction commit unlanded.
+Approve the staking corrected hash 58920d5fc4795635f6aa7c54c32e2f5ea3217c14d9e51bfc3f67e0b45c26f642.
+Approve the explicit reactivation inside that staking file.
+The held predecessor hash 0ee780ac83a5f0cf98961e5de1fccbcecd667a36b97ba39c09e9db63088e55e2 stays unapproved.
+Root must leave both correction commits unlanded until root applies them.
 
-## Current canonical bytes
+## Quarantine bytes
 
-The protocol canonical file still has hash 442c2eeeddcd8de6606479d1481dd37c94169613a68cb09398a3aaff7665dd7d.
-The staking canonical file still has hash 673d822b4a7ec68b10fd98dd9841b63e01cc86f6ce5cb38acffdf073605e0f72.
-Each quarantine file differs only in lifecycle fields.
-lifecycleProblems reported no problems for all four files on 2026-11-03.
+The protocol quarantine approval stands.
+The staking quarantine approval stands.
+The canonical protocol file now has hash 23e4afe86e104432b305b2152574f85b1994b386d7d7f634d994843f5e24b3ee.
+The canonical staking file now has hash f3a718d5e96c121290ac174a9847de6501480921fe1037f8b207cd1c2e2c938d.
+Each hash matches its approved quarantine file.
+The corrected files remain prospective.
 
-## Quarantine basis
+## Staking v3
 
-Both quarantine files use state quarantined and review state in-review.
-The trigger is proposal-verification.
-The start date and the review date are 2026-11-03.
-The review-by date is 2026-11-10.
-The author and the reviewer are different.
-The ledger file .agents/rounds/2026-11-03-qa-followup.md exists.
-The three evidence files under research/audits/2026-11-03-qa-followup exist.
-Quarantine evidence does not name this approval file.
-The causes pass the score-word check inside lifecycleProblems.
-The protocol cause says the question needs a current network observation.
-The same cause says the introduction accepts a documentation snapshot.
-The staking cause says the market survey sits outside the asked scope.
-
-## Protocol correction
-
-The corrected protocol answer requires a dated live-network observation.
-The answer must name the network and the observation time.
-The dated Protocol 29 example stays in the answer.
-The example ledger is 64717645 on 2026-10-01.
-The Bell Mainnet vote on 2026-11-23 stays a scheduled vote.
-A scheduled vote is not activation.
-One new avoid rejects a documentation list as a live measurement.
-The older avoids remain.
-asOf stays 2026-11-02.
-reverifyBy stays 2026-11-24.
-The verified-by line names this lane and this approval file.
-The verified-by line does not say that review remains pending.
-The root cause cites the TODO heading at commit bdcf915fb552d054657b04b23abc561a65d395f3.
-Git records that heading at .agents/TODO.md line 442 in that commit.
+The v3 file differs from the held file in one source note.
+That note is source item 17.
+The replaced phrase said that contract existence proves no yield mechanism.
+The new source note says this response does not establish the reward mechanism or current APY.
+The rest of the held file is unchanged.
+The held file itself is unchanged.
+A search of the new repair packet, the v3 case, and the v3 register found no old phrase.
+lifecycleProblems reported no problems for the v3 file on 2026-11-03.
 The state is active.
 The review state is resolved.
 The reactivation date is 2026-11-03.
 The reactivation author is Codex root.
 The reactivation reviewer is this lane.
-
-## Staking hold
-
-The corrected staking answer marks the product survey as optional.
-The corrected answer keeps the dated negative observation.
-The avoid list matches the canonical avoid list.
-The key facts are conditional.
-The lifecycle metadata is well formed.
-The file is still held.
-One source note still says that contract existence proves no yield mechanism.
-That note is on the Stellar Expert contract source.
-The corroboration note for the same contract was replaced.
-The replacement says the response does not establish the reward mechanism.
-The replacement also says the response does not establish the current APY.
-One false proof sentence remains.
-This hold does not approve a rewritten file.
+The verified-by line names this lane and this approval file.
+asOf stays 2026-11-02.
+reverifyBy stays 2027-01-28.
 
 ## Register
 
-Nine reopened register entries are topically consistent with the prospective member bytes.
+The closure file is tmp/2026-11-03-qa-followup/grok-register-closure-review.json.
+It reviews prospective-register-v3.json.
+Nine reopened entries stay topically consistent.
 Cluster notes, invariant values, history, and dates are unchanged.
 The Bell trap trigger remains in the future on 2026-11-03.
-The closure file is tmp/2026-11-03-qa-followup/grok-register-closure-review.json.
-The closure uses only the three allowed collections.
-Protocol hash 8ece74f4f5563bf564dfb356ac80fe44d01fbaa7421f62c109b0bfcd208dd75b is the member hash in cluster-007, cluster-025, and cluster-120.
-That same hash is the member hash in the Mainnet protocol activation history invariant.
-That same hash is the member hash in the Bell date trap.
-Staking hash 0ee780ac83a5f0cf98961e5de1fccbcecd667a36b97ba39c09e9db63088e55e2 is the member hash in cluster-017, cluster-020, cluster-048, and cluster-083.
-Root must not apply those four cluster closures against the held staking hash.
-Root may apply them only after a new staking hash is approved.
-The helper refuses a review while corpus hashes still differ.
-Root must stamp approved corpus bytes before a review command.
+Protocol hash 8ece74f4f5563bf564dfb356ac80fe44d01fbaa7421f62c109b0bfcd208dd75b stays the member hash in cluster-007, cluster-025, and cluster-120.
+That same hash stays the member hash in the Mainnet protocol activation history invariant.
+That same hash stays the member hash in the Bell date trap.
+Staking hash 58920d5fc4795635f6aa7c54c32e2f5ea3217c14d9e51bfc3f67e0b45c26f642 is the member hash in cluster-017, cluster-020, cluster-048, and cluster-083.
+Those four hashes replace the held predecessor hash.
+The live register still stores the quarantine hashes.
+Root must compare every live member hash with prospective-register-v3.json before closure.
+This review did not apply the closure.
+
+## V4 key facts
+
+The canonical protocol file still has hash 8ece74f4f5563bf564dfb356ac80fe44d01fbaa7421f62c109b0bfcd208dd75b.
+The canonical staking file still has hash 58920d5fc4795635f6aa7c54c32e2f5ea3217c14d9e51bfc3f67e0b45c26f642.
+Each v4 file changes only key facts and one evidence line.
+The protocol file drops one key fact.
+Four direct protocol key facts remain.
+The removed fact distinguishes a live observation from a document, a release, and a vote.
+That rule remains in the notes.
+That rule remains in the avoid list.
+The live-lookup key fact remains.
+A documentation-only answer stays incomplete.
+The staking file drops two conditional key facts.
+One direct native-rewards key fact remains.
+The notes still require source classification for a third-party claim.
+The notes still require a date for an absence claim.
+The avoid list is unchanged.
+The answer text is unchanged.
+Freshness, dates, sources, and lifecycle are unchanged.
+The same reactivation from the approved v3 file remains.
+Verified evidence adds the refinement rationale.
+These two current files produce four key-fact warnings.
+Each v4 file produces zero key-fact warnings.
+This review did not rerun the full corpus lint.
+This edit reduces duplicated grader instructions.
+It does not loosen the truth rule.
+No old score was changed.
+
+## V4 register
+
+Nine live closures are applied.
+They bind the approved v3 member hashes.
+prospective-register-v4.json reopens the same nine entries.
+Only the two v4 member hashes change.
+Cluster notes, invariant values, history, and dates stay unchanged.
+The Bell trap trigger stays in the future.
+The closure file binds hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b for cluster-007, cluster-025, cluster-120, the protocol invariant, and the Bell trap.
+The closure file binds hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea for cluster-017, cluster-020, cluster-048, and cluster-083.
+This review did not apply that closure.
 
 ## Limits
 

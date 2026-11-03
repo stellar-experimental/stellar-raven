@@ -1,0 +1,51 @@
+{
+  "schema": "qa-bounty-rendered-read-v1",
+  "observedAt": "2026-11-03T15:03:16.891Z",
+  "requestedUrl": "https://hackerone.com/stellar?view_policy=true",
+  "observedUrl": "https://hackerone.com/stellar?view_policy=true",
+  "bodyBytes": 103,
+  "bodySha256": "5dea4a5058afe4cf7944beb865011f4992b801ee21c2ee4db34460040ea1f1ba",
+  "events": [
+    {
+      "args": [
+        "open",
+        "https://hackerone.com/stellar?view_policy=true"
+      ],
+      "status": 0
+    },
+    {
+      "args": [
+        "wait",
+        "--text",
+        "Stellar"
+      ],
+      "status": 1,
+      "error": "Command failed: agent-browser --session qa-policy-50f7f10c70c9 wait --text Stellar"
+    },
+    {
+      "args": [
+        "get",
+        "url"
+      ],
+      "status": 0
+    },
+    {
+      "args": [
+        "read"
+      ],
+      "status": 0
+    }
+  ],
+  "textContains": {
+    "stellar": false,
+    "policy": false,
+    "points": false,
+    "core": false
+  },
+  "readOnly": true,
+  "authenticated": false,
+  "conclusion": "The anonymous rendered page shows an application error. No current bounty amount or carveout is established.",
+  "policyVerified": false,
+  "additionalMeasurements": 0,
+  "browserClosedByFinally": true
+}

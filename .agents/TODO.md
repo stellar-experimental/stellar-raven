@@ -441,19 +441,40 @@ control-model lane, or a reviewed change omits the field for that transport.
 
 ### Resolve diagnostic noncompletions and judge ambiguities
 
-The 2026-11-02 direct-Grok diagnostic ends all 100 selected cases, with 97 judgments and three answer-step limits.
-The incomplete answers concern quantum preparedness, forced archival on localnet, and custodial account generation.
-All original grades remain frozen; quality aggregates stay withheld.
-Two source-backed reference corrections are reviewed and applied after collection.
+Done on 2026-11-03: the bounded proposal task is complete.
+The [follow-up](../research/audits/2026-11-03-qa-followup/README.md) maps 100 cases and 314 observations to actions.
+It records 15 verified source findings, three local patches, and two approved and applied v4 golden corrections.
+Eight local SDK checks support three finding promotions.
+The separate five-file finalization candidate remains unmeasured and preserves the 16-request ceiling and expired deadline.
 
-Review evidence stopping behavior and source retrieval before changing the 16-request limit.
-Resolve the protocol-version live-lookup and liquid-staking behavior ambiguities through golden-truth.
-Judge calls consume 119.28 minutes of provider time, compared with 90.27 minutes for answers.
-Any effort or evidence-context change needs its own calibrated contract and separately authorized paid collection.
-Keep the experimental method separate from canonical QA and historical baselines.
+Original results retain 97 grades, three limits, and $28.973832; quality remains withheld.
+The [final checks](../research/audits/2026-11-03-qa-followup/final-checks.json) pass with their recorded warnings and separate protocol-history diagnostic failure.
+The [final independent review](../research/audits/2026-11-03-qa-followup/independent-review.md) clears the follow-up.
 
-Done when: bounded proposals address the three noncompletions and ambiguities, with independent review and applicable free checks.
-Evidence: [overnight report](../research/audits/2026-11-02-golden-overnight/README.md) and [round ledger](rounds/2026-11-02-golden-overnight.md).
+### Review a fresh finalization comparison and capability canary
+
+The [candidate](../research/audits/2026-11-03-qa-followup/finalization-candidate.md) has no measured completion or quality benefit.
+Its expired deadline authorizes no collection.
+Prepare a separate paired protocol with fresh control and candidate results.
+Match the selection and corpus, and pin source and provider identities.
+Keep the judge contract fixed across both arms.
+Obtain independent review, explicit paid authorization, and an approved active deadline before any capability canary or collection.
+
+Done when: an authorized canary checks `tool_choice: "none"`.
+Fresh paired evidence must measure completion, factual quality, refusals, violations, latency, and cost.
+Preserve every selected failure and keep historical results separate.
+No current document grants that authorization.
+
+### Resolve held source ownership and bounty policy
+
+The [source triage](../research/audits/2026-11-03-qa-followup/additional-source-triage.md) and [bounty access record](../research/audits/2026-11-03-qa-followup/bounty-policy-access.json) retain these holds:
+
+- RWA: identify the source owner, measurement period, denominator, and component set before correcting a growth rate.
+- Phoenix: identify the source owner and dated submission IDs; reconcile the headline with the same award-status filter.
+- Bounty: obtain the current controlling policy and its revision before settling scope, severity, or reward claims.
+
+Done when: primary owner and policy evidence supports a reviewed correction or an explicit continued hold.
+Do not infer an owner, denominator, deployment, or controlling policy from search snippets.
 
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 

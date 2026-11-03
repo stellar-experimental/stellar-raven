@@ -195,7 +195,6 @@
     "status": "blind-with-one-disclosed-index-exposure"
   },
   "lane": "blind-independent-source-derivation",
-  "paidModelCalls": 0,
   "primaryReadCap": 6,
   "primaryReadsUsed": 6,
   "reads": [
@@ -329,5 +328,7 @@
   },
   "originalFileSha256": "47bfe35cd53f9766810db8af42a378578fb0e09939d8d0054aedd0787826ae4a",
   "originalContentSha256": "71613d857fce1aeacde402866fbfb2eb549424e3af4695e1df76c0b9357ddde0",
-  "projection": "Quotes, local body paths, session details and the original self-digest are omitted. Claims and source identities remain."
+  "projection": "Quotes, local body paths, session details and the original self-digest are omitted. Claims and source identities remain.",
+  "additionalMeasurementCalls": 0,
+  "helperCliBillingReportedSeparately": true
 }

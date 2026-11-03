@@ -1,0 +1,361 @@
+diff --git a/docs/build/guides/dapps/working-with-contract-specs.mdx b/docs/build/guides/dapps/working-with-contract-specs.mdx
+index 90c058d..fbcf2e6 100644
+--- a/docs/build/guides/dapps/working-with-contract-specs.mdx
++++ b/docs/build/guides/dapps/working-with-contract-specs.mdx
+@@ -887,7 +887,7 @@ XdrSCVal::forVec(
+ 
+ ### Enum (unit and tuple variants)
+ 
+-Enums are generally represented with `ScVec`, their unit types are represented as `ScSymbol` and their tuple variants are represented as the underlying types.
++Each tagged enum value is a `ScVec` whose first element is the selected variant’s `ScSymbol`. A unit variant has no further elements. A tuple variant places its values after the symbol, using their underlying types.
+ 
+ <CodeGroup>
+ 
+@@ -928,52 +928,33 @@ pub enum Enum {
+ 
+ ```python Python
+ from stellar_sdk import scval
+-scval.to_vec(
+-    [
+-        scval.to_symbol("A"),
+-        scval.to_map(
+-            {
+-                scval.to_symbol("B"): scval.to_uint32(0),
+-            }
+-        ),
+-    ]
+-)
++
++a = scval.to_vec([scval.to_symbol("A")])
++b = scval.to_vec([scval.to_symbol("B"), scval.to_uint32(0)])
+ ```
+ 
+ ```java Java
+ import org.stellar.sdk.xdr.SCVal;
+ import org.stellar.sdk.scval.Scv;
+-import java.util.LinkedHashMap;
++import java.util.Arrays;
+ 
+-List<SCVal> vec = new ArrayList<SCVal>();
+-vec.add(Scv.toSymbol("A"));
+-LinkedHashMap<SCVal, SCVal> map = new LinkedHashMap<SCVal, SCVal>();
+-map.put(Scv.toSymbol("B"), Scv.toUint32(0));
+-vec.add(Scv.toMap(map));
+-SCVal val = Scv.toVec(vec);
++SCVal a = Scv.toVec(Arrays.asList(Scv.toSymbol("A")));
++SCVal b = Scv.toVec(Arrays.asList(Scv.toSymbol("B"), Scv.toUint32(0)));
+ ```
+ 
+ ```php PHP
+ <?php
+ use Soneso\StellarSDK\Xdr\XdrSCVal;
+ 
+-XdrSCVal::forVec(
+-    [
+-        XdrSCVal::forSymbol("A"),
+-        XdrSCVal::forMap(
+-            [
+-                XdrSCVal::forSymbol("B") => XdrSCVal::forU32(0),
+-            ]
+-        ),
+-    ]
+-);
++$a = XdrSCVal::forVec([XdrSCVal::forSymbol("A")]);
++$b = XdrSCVal::forVec([XdrSCVal::forSymbol("B"), XdrSCVal::forU32(0)]);
+ ```
+ 
+ </CodeGroup>
+ 
+ ### Enum (integer variants)
+ 
+-Enums are generally represented with `ScVec`, the integer variant has no keys so it's just a `ScVec` of the underlying type.
++An enum declared with `#[repr(u32)]` is represented as one `ScU32` containing the selected variant’s declared value. For this enum, `A` is `1` and `B` is `2`.
+ 
+ <CodeGroup>
+ 
+@@ -990,19 +971,19 @@ pub enum Enum {
+ ```json JSON
+ [
+   {
+-    "type": "struct",
++    "type": "enum",
+     "doc": "",
+     "name": "Enum",
+-    "fields": [
++    "cases": [
+       {
+         "doc": "",
+         "name": "A",
+-        "type": "u32"
++        "value": 1
+       },
+       {
+         "doc": "",
+         "name": "B",
+-        "type": "u32"
++        "value": 2
+       }
+     ]
+   }
+@@ -1011,35 +992,25 @@ pub enum Enum {
+ 
+ ```python Python
+ from stellar_sdk import scval
+-scval.to_vec(
+-    [
+-        scval.to_uint32(0),
+-        scval.to_uint32(0),
+-    ]
+-)
++
++a = scval.to_uint32(1)
++b = scval.to_uint32(2)
+ ```
+ 
+ ```java Java
+ import org.stellar.sdk.xdr.SCVal;
+ import org.stellar.sdk.scval.Scv;
+-import java.util.LinkedHashMap;
+ 
+-List<SCVal> vec = new ArrayList<SCVal>();
+-vec.add(Scv.toUint32(0));
+-vec.add(Scv.toUint32(0));
+-SCVal val = Scv.toVec(vec);
++SCVal a = Scv.toUint32(1);
++SCVal b = Scv.toUint32(2);
+ ```
+ 
+ ```php PHP
+ <?php
+ use Soneso\StellarSDK\Xdr\XdrSCVal;
+ 
+-XdrSCVal::forVec(
+-    [
+-        XdrSCVal::forU32(0),
+-        XdrSCVal::forU32(0),
+-    ]
+-);
++$a = XdrSCVal::forU32(1);
++$b = XdrSCVal::forU32(2);
+ ```
+ 
+ </CodeGroup>
+diff --git a/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx b/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx
+index cf3edbb..a247b02 100644
+--- a/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx
++++ b/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx
+@@ -134,12 +134,22 @@ const transaction = new TransactionBuilder(account, {
+ // If you want to get this as an XDR string directly, you would use `transaction.toXDR('base64')`
+ 
+ RpcServer.simulateTransaction(transaction).then((sim) => {
++  console.log("latestLedger:", sim.latestLedger);
++  if (StellarRpc.Api.isSimulationError(sim)) {
++    console.error("error:", sim.error);
++    return;
++  }
++  if (StellarRpc.Api.isSimulationRestore(sim)) {
++    console.log("restoration required:", sim.restorePreamble);
++    return;
++  }
++  if (!StellarRpc.Api.isSimulationSuccess(sim) || !sim.result?.retval) {
++    console.log("No invocation result returned.");
++    return;
++  }
+   console.log("cost:", sim.cost);
+   console.log("result:", sim.result);
+-  // the result is a ScVal and so we can parse that to human readable output using the sdk's `scValToNative` function:
+-  console.log("humanReadable Result:", scValToNative(sim.result?.retval));
+-  console.log("error:", sim.error);
+-  console.log("latestLedger:", sim.latestLedger);
++  console.log("humanReadable Result:", scValToNative(sim.result.retval));
+ });
+ ```
+ 
+diff --git a/docs/learn/fundamentals/stellar-data-structures/ledgers.mdx b/docs/learn/fundamentals/stellar-data-structures/ledgers.mdx
+index 81f67a7..73bb9bb 100644
+--- a/docs/learn/fundamentals/stellar-data-structures/ledgers.mdx
++++ b/docs/learn/fundamentals/stellar-data-structures/ledgers.mdx
+@@ -74,17 +74,17 @@ Hash of the previous ledger.
+ 
+ ### SCP value
+ 
+-During consensus, all the validating nodes in the network run SCP and agree on a particular value, which is a transaction set they will apply to a ledger. This value is stored here and in the following three fields (transaction set hash, close time, and upgrades).
++During consensus, validating nodes run SCP and agree on a `StellarValue`, stored in `LedgerHeader.scpValue`. This value contains the transaction set hash, close time, upgrades, and an extension (`StellarValue.ext`). The following three fields are members of `scpValue`, not direct members of `LedgerHeader`.
+ 
+-### Transaction set hash
++#### Transaction set hash
+ 
+ Hash of the transaction set applied to the previous ledger.
+ 
+-### Close time
++#### Close time
+ 
+ The close time is a UNIX timestamp indicating when the ledger closes. Its accuracy depends on the system clock of the validator proposing the block. Consequently, SCP may confirm a close time that lags a few seconds behind or up to 60 seconds ahead. It's strictly monotonic – guaranteed to be greater than the close time of an earlier ledger.
+ 
+-### Upgrades
++#### Upgrades
+ 
+ How the network adjusts overall values (like the base fee) and agrees to network-wide changes (like switching to a new protocol version). This field is usually empty. When there is a network-wide upgrade, the SDF will inform and help coordinate participants using the #validator channel on the Dev Discord and the Stellar Validators Google Group.
+ 
+diff --git a/docs/tokens/control-asset-access.mdx b/docs/tokens/control-asset-access.mdx
+index 3c28b9f..e0aa7bb 100644
+--- a/docs/tokens/control-asset-access.mdx
++++ b/docs/tokens/control-asset-access.mdx
+@@ -102,7 +102,7 @@ Here’s a payment from A to B sandwiched between `set_trust_line_flags` operati
+ - Operation 4: Issuer uses `SetTrustLineFlags` to set account B, asset X to `AUTHORIZED_TO_MAINTAIN_LIABILITIES_FLAG` state
+ - Operation 5: Issuer uses `SetTrustLineFlags` to set account A, asset X to `AUTHORIZED_TO_MAINTAIN_LIABILITIES_FLAG` state
+ 
+-The authorization sandwich allows the issuer to inspect the specific payment and to grant authorization for it and it alone. Since operations bundled in a transaction are simultaneous, A and B are only authorized for the specific, pre-approved payment operation. Complete authorization does not extend beyond the specific transaction.
++The authorization sandwich allows the issuer to inspect and approve the specific payment. Operations execute in their listed order, and their changes commit only if every operation succeeds. The first two operations authorize A and B before the payment; the final two operations reduce their authorization again. If an operation fails, all operation changes roll back. Transaction fees and sequence-number consumption can still apply to a failed transaction.
+ 
+ ### Sample code
+ 
+@@ -220,11 +220,11 @@ except BaseHorizonError as e:
+ 
+ **Warning**
+ 
+-This section details how to lock your account with the purpose of limiting the supply of your issued asset. However, locking your account means you’ll never be able to do anything with it ever again- whether that’s adjusting signers, changing the home domain, claiming any held XLM, or any other operation. Your account will be completely frozen.
++A complete issuer lock permanently prevents operations that require issuer authorization, including signer changes, home-domain changes, and XLM withdrawals. Setting the master weight to 0 alone does not guarantee this lock. Review all signers and thresholds, including any authority that can restore issuance.
+ 
+ </Danger>
+ 
+-With that warning in mind, it is possible to lock down the issuing account of an asset so that the asset’s supply cannot increase. To do this, first set the issuing account’s master weight to 0 using the Set Options operation. This prevents the issuing account from being able to sign transactions and therefore, making the issuer unable to issue any more assets. Be sure to do this only after you’ve issued all desired assets to the distribution account. If the asset has a Stellar Asset Contract, also make sure the admin for the contract was not updated from the default (which is the issuer) using the `set_admin` contract call. If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.
++To limit the supply, issue all desired assets to the distribution account before locking the issuer. Setting the issuer’s master weight to 0 with Set Options disables the master key. Other signers can still authorize operations when their combined weights meet the relevant threshold. A permanent lock requires removing all remaining authority to issue assets or restore issuance through signer or threshold changes. Check every signer and the relevant thresholds before claiming the supply cannot increase. If the asset has a Stellar Asset Contract, also make sure the admin for the contract was not updated from the default (which is the issuer) using the `set_admin` contract call. If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.
+ 
+ Learn more about signature weights in the [Signatures and Multisig section](../learn/fundamentals/transactions/signatures-multisig).
+ 
+diff --git a/docs/tokens/how-to-issue-an-asset.mdx b/docs/tokens/how-to-issue-an-asset.mdx
+index 65ee937..d3ee835 100644
+--- a/docs/tokens/how-to-issue-an-asset.mdx
++++ b/docs/tokens/how-to-issue-an-asset.mdx
+@@ -364,11 +364,11 @@ You can also create a market directly from the issuing account and issue tokens
+ 
+ <Danger>
+ 
+-This section details how to lock your account with the purpose of limiting the supply of your issued asset. However, locking your account means you’ll never be able to do anything with it ever again&mdash;whether that’s adjusting signers, changing the home domain, claiming any held XLM, or any other operation. Your account will be completely frozen.
++A complete issuer lock permanently prevents operations that require issuer authorization, including signer changes, home-domain changes, and XLM withdrawals. Setting the master weight to 0 alone does not guarantee this lock. Review all signers and thresholds, including any authority that can restore issuance.
+ 
+ </Danger>
+ 
+-You can permanently configure the exact number of an asset that will ever exist. Learn more about asset supply in our section on [Limiting the Supply of an Asset](./control-asset-access#limiting-the-supply-of-an-asset)
++The examples below use the new issuer account from this tutorial, with no additional signers. In that setup, setting the master weight to 0 disables issuer authorization. For an existing issuer, also remove any other signer authority that permits issuance or can restore it. Check the separate SAC admin condition in [Limiting the Supply of an Asset](./control-asset-access#limiting-the-supply-of-an-asset).
+ 
+ <CodeGroup>
+ 
+diff --git a/docs/tokens/publishing-asset-info.mdx b/docs/tokens/publishing-asset-info.mdx
+index 4dea356..14c1bf4 100644
+--- a/docs/tokens/publishing-asset-info.mdx
++++ b/docs/tokens/publishing-asset-info.mdx
+@@ -30,7 +30,7 @@ The four sections we’ll cover are:
+ 
+ For each of those sections, we’ll let you know which fields are required, meaning all asset issuers must include them to be listed by exchanges and wallets, and which fields are suggested. Completing suggested fields is a good way to make your asset stand out.
+ 
+-**Note:** it's a good idea to keep the sections in the order presented in SEP-1: Stellar Info File, which is also the order they're presented here. TOML requires arrays to be at the end, so if you scramble the order, you may cause errors for TOML parsers.
++**Note:** keep the sections in the order presented in SEP-1: Stellar Info File, which is also the order presented here. TOML permits a new named table after an array of tables; arrays do not have to come last. Bare root keys must precede the first table header. Each table header determines which table owns the keys that follow it, so reordering sections can change their meaning. Do not define an already defined named table again. See the [TOML table rules](https://toml.io/en/v1.0.0#table) and [array-of-tables rules](https://toml.io/en/v1.0.0#array-of-tables).
+ 
+ ### 1. General Information
+ 
+diff --git a/docs/tokens/stellar-asset-contract.mdx b/docs/tokens/stellar-asset-contract.mdx
+index cc1acec..527ac72 100644
+--- a/docs/tokens/stellar-asset-contract.mdx
++++ b/docs/tokens/stellar-asset-contract.mdx
+@@ -84,7 +84,7 @@ After the contract has been deployed, users can use their classic account (for l
+ 
+ ### Balance Authorization Required
+ 
+-In the `Address::Contract` case, if the issuer has `AUTH_REQUIRED_FLAG` set, then the specified `Address::Contract` will need to be explicitly authorized with `set_auth` before it can receive a balance. This logic lines up with how trustlines interact with the `AUTH_REQUIRED_FLAG` issuer flag, allowing asset issuers to have the same control in Soroban as they do in Stellar classic. Read more about `AUTH_REQUIRED_FLAG` [here](./control-asset-access#authorization-required-0x1).
++In the `Address::Contract` case, if the issuer has `AUTH_REQUIRED_FLAG` set, then the specified `Address::Contract` will need to be explicitly authorized with `set_authorized` before it can receive a balance. This logic lines up with how trustlines interact with the `AUTH_REQUIRED_FLAG` issuer flag, allowing asset issuers to have the same control in Soroban as they do in Stellar classic. Read more about `AUTH_REQUIRED_FLAG` [here](./control-asset-access#authorization-required-0x1).
+ 
+ ### Revoking Authorization
+ 
+diff --git a/openapi/horizon/bundled.yml b/openapi/horizon/bundled.yml
+index 18ed28f..266af6a 100644
+--- a/openapi/horizon/bundled.yml
++++ b/openapi/horizon/bundled.yml
+@@ -1903,7 +1903,7 @@ components:
+       name: destination_account
+       in: query
+       required: false
+-      description: The Stellar address of the receiver. Any returned path must end with an asset that the recipient can receive. Using either `source_account` or `source_assets` as an argument is required for strict send path payments.
++      description: The Stellar address of the receiver. Any returned path must end with an asset that the recipient can receive. Using either `destination_account` or `destination_assets` as an argument is required for strict send path payments.
+       schema:
+         type: string
+         example: GDMQQNJM4UL7QIA66P7R2PZHMQINWZBM77BEBMHLFXD5JEUAHGJ7R4JZ
+@@ -1911,7 +1911,7 @@ components:
+       name: destination_assets
+       in: query
+       required: false
+-      description: 'A comma-separated list of assets that the recipient can receive. Any returned path must end with an asset in this list. Each asset is formatted as `CODE:ISSUER_ACCOUNT`. For example: `USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX`. Using either `source_account` or `source_assets` as an argument is required for strict send path payments.'
++      description: 'A comma-separated list of assets that the recipient can receive. Any returned path must end with an asset in this list. Each asset is formatted as `CODE:ISSUER_ACCOUNT`. For example: `USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX`. Using either `destination_account` or `destination_assets` as an argument is required for strict send path payments.'
+       schema:
+         type: string
+         example: CNY:GAREELUB43IRHWEASCFBLKHURCGMHE5IF6XSE7EXDLACYHGRHM43RFOX
+diff --git a/openapi/horizon/components/parameters.yml b/openapi/horizon/components/parameters.yml
+index 992d5a7..f28b478 100644
+--- a/openapi/horizon/components/parameters.yml
++++ b/openapi/horizon/components/parameters.yml
+@@ -178,7 +178,7 @@ components:
+       name: destination_account
+       in: query
+       required: false
+-      description: The Stellar address of the receiver. Any returned path must end with an asset that the recipient can receive. Using either `source_account` or `source_assets` as an argument is required for strict send path payments.
++      description: The Stellar address of the receiver. Any returned path must end with an asset that the recipient can receive. Using either `destination_account` or `destination_assets` as an argument is required for strict send path payments.
+       schema:
+         type: string
+         example: GDMQQNJM4UL7QIA66P7R2PZHMQINWZBM77BEBMHLFXD5JEUAHGJ7R4JZ
+@@ -210,7 +210,7 @@ components:
+       name: destination_assets
+       in: query
+       required: false
+-      description: "A comma-separated list of assets that the recipient can receive. Any returned path must end with an asset in this list. Each asset is formatted as `CODE:ISSUER_ACCOUNT`. For example: `USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX`. Using either `source_account` or `source_assets` as an argument is required for strict send path payments."
++      description: "A comma-separated list of assets that the recipient can receive. Any returned path must end with an asset in this list. Each asset is formatted as `CODE:ISSUER_ACCOUNT`. For example: `USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX`. Using either `destination_account` or `destination_assets` as an argument is required for strict send path payments."
+       schema:
+         type: string
+         example: CNY:GAREELUB43IRHWEASCFBLKHURCGMHE5IF6XSE7EXDLACYHGRHM43RFOX
+diff --git a/openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json b/openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json
+index 98cad1a..a45fd8e 100644
+--- a/openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json
++++ b/openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json
+@@ -3,7 +3,7 @@
+     "name": "authMode",
+     "summary": "selects the authorization mode for simulation",
+     "required": false,
+-    "description": "Specifies the authorization mode to use when simulating the transaction. The options are 'enforce' (default, enforces all authorization checks), 'record' (records authorization without enforcement), and 'record_allow_nonroot' (records authorization while allowing non-root invocations).",
++    "description": "Specifies the authorization mode to use when simulating the transaction. 'enforce' enforces authorization checks, 'record' records authorization without enforcement, and 'record_allow_nonroot' records authorization while allowing non-root invocations. For InvokeHostFunction, omitting authMode selects 'record' when authorization entries are absent and 'enforce' when entries are present. This default depends on authorization entries, not transaction signatures. Omit this parameter for footprint extension and restoration operations.",
+     "schema": {
+       "$ref": "#/components/schemas/AuthMode"
+     }
+diff --git a/openrpc/src/stellar-rpc/schemas/AuthMode.json b/openrpc/src/stellar-rpc/schemas/AuthMode.json
+index 088c26e..20bdd6f 100644
+--- a/openrpc/src/stellar-rpc/schemas/AuthMode.json
++++ b/openrpc/src/stellar-rpc/schemas/AuthMode.json
+@@ -3,6 +3,6 @@
+     "title": "authMode",
+     "type": "string",
+     "enum": ["enforce", "record", "record_allow_nonroot"],
+-    "description": "Specifies the authorization mode to use when simulating the transaction. 'enforce' (default) enforces authorization checks, 'record' records authorization without enforcing, and 'record_allow_nonroot' records authorization while allowing non-root invocations."
++    "description": "Specifies the authorization mode to use when simulating the transaction. 'enforce' enforces authorization checks, 'record' records authorization without enforcement, and 'record_allow_nonroot' records authorization while allowing non-root invocations. For InvokeHostFunction, omitting authMode selects 'record' when authorization entries are absent and 'enforce' when entries are present. This default depends on authorization entries, not transaction signatures. Omit this parameter for footprint extension and restoration operations."
+   }
+ }
+diff --git a/stellar-rpc.openrpc.json b/stellar-rpc.openrpc.json
+index 3dede95..1db0e84 100644
+--- a/stellar-rpc.openrpc.json
++++ b/stellar-rpc.openrpc.json
+@@ -2234,7 +2234,7 @@
+           "name": "authMode",
+           "summary": "selects the authorization mode for simulation",
+           "required": false,
+-          "description": "Specifies the authorization mode to use when simulating the transaction. The options are 'enforce' (default, enforces all authorization checks), 'record' (records authorization without enforcement), and 'record_allow_nonroot' (records authorization while allowing non-root invocations).",
++          "description": "Specifies the authorization mode to use when simulating the transaction. 'enforce' enforces authorization checks, 'record' records authorization without enforcement, and 'record_allow_nonroot' records authorization while allowing non-root invocations. For InvokeHostFunction, omitting authMode selects 'record' when authorization entries are absent and 'enforce' when entries are present. This default depends on authorization entries, not transaction signatures. Omit this parameter for footprint extension and restoration operations.",
+           "schema": {
+             "title": "authMode",
+             "type": "string",
+@@ -2243,7 +2243,7 @@
+               "record",
+               "record_allow_nonroot"
+             ],
+-            "description": "Specifies the authorization mode to use when simulating the transaction. 'enforce' (default) enforces authorization checks, 'record' records authorization without enforcing, and 'record_allow_nonroot' records authorization while allowing non-root invocations."
++            "description": "Specifies the authorization mode to use when simulating the transaction. 'enforce' enforces authorization checks, 'record' records authorization without enforcement, and 'record_allow_nonroot' records authorization while allowing non-root invocations. For InvokeHostFunction, omitting authMode selects 'record' when authorization entries are absent and 'enforce' when entries are present. This default depends on authorization entries, not transaction signatures. Omit this parameter for footprint extension and restoration operations."
+           }
+         }
+       ],

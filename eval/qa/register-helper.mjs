@@ -111,11 +111,12 @@ export function updateRegister(register, hashes, { seed = false, date = new Date
   return { register, changed, reopened: reopened.sort(), missingCases: missingCases.sort((a, b) => a.entry.localeCompare(b.entry) || a.id.localeCompare(b.id)) };
 }
 
-const REVIEW_FIELDS = new Set(["verdict", "lastChecked", "reSwept", "triggerDateEvent", "disposition"]);
+const REVIEW_FIELDS = new Set(["verdict", "lastChecked", "reSwept"]);
+const TRAP_REVIEW_FIELDS = new Set([...REVIEW_FIELDS, "triggerDateEvent", "disposition"]);
 
-function applyReviewFields(entry, review, label) {
+function applyReviewFields(entry, review, label, fields = REVIEW_FIELDS) {
   for (const key of Object.keys(review)) {
-    if (!["id", "matchTriggerDateEvent", "clearReopened"].includes(key) && !REVIEW_FIELDS.has(key)) {
+    if (!["id", "matchLabel", "matchTriggerDateEvent", "clearReopened"].includes(key) && !fields.has(key)) {
       throw new Error(`${label}: unsupported review field ${key}`);
     }
   }
@@ -139,26 +140,45 @@ function applyReviewFields(entry, review, label) {
     throw new Error(`${label}: reSwept.verdict must match verdict`);
   }
   if (review.clearReopened !== true) throw new Error(`${label}: clearReopened must be true`);
-  for (const key of REVIEW_FIELDS) {
+  for (const key of fields) {
     if (review[key] !== undefined) entry[key] = review[key];
   }
   delete entry.reopened;
 }
 
 export function applyRegisterReview(register, review) {
+  if (!review || typeof review !== "object" || Array.isArray(review)) {
+    throw new Error("review must be an object");
+  }
+  const collections = new Set(["clusters", "numericInvariants", "dateContingentTraps"]);
+  for (const key of Object.keys(review)) {
+    if (!collections.has(key)) throw new Error(`unsupported review collection ${key}`);
+    if (!Array.isArray(review[key])) throw new Error(`review ${key} must be an array`);
+  }
   const clusters = clusterList(register);
+  const invariants = register.numericInvariants?.entries ?? [];
   const traps = register.dateContingentTraps?.entries ?? [];
   for (const item of review.clusters ?? []) {
     const matches = clusters.filter((entry) => entry.id === item.id);
     if (matches.length !== 1) throw new Error(`review cluster ${item.id}: expected one match, found ${matches.length}`);
     applyReviewFields(matches[0], item, `review cluster ${item.id}`);
   }
+  for (const item of review.numericInvariants ?? []) {
+    if (typeof item.matchLabel !== "string" || !item.matchLabel.trim()) {
+      throw new Error("review numeric invariant requires matchLabel");
+    }
+    const matches = invariants.filter((entry) => entry.label === item.matchLabel);
+    if (matches.length !== 1) {
+      throw new Error(`review numeric invariant ${item.matchLabel}: expected one match, found ${matches.length}`);
+    }
+    applyReviewFields(matches[0], item, `review numeric invariant ${item.matchLabel}`);
+  }
   for (const item of review.dateContingentTraps ?? []) {
     const matches = traps.filter((entry) => entry.triggerDateEvent === item.matchTriggerDateEvent);
     if (matches.length !== 1) {
       throw new Error(`review date trap ${item.matchTriggerDateEvent}: expected one match, found ${matches.length}`);
     }
-    applyReviewFields(matches[0], item, `review date trap ${item.matchTriggerDateEvent}`);
+    applyReviewFields(matches[0], item, `review date trap ${item.matchTriggerDateEvent}`, TRAP_REVIEW_FIELDS);
   }
   return register;
 }

@@ -146,3 +146,66 @@ The fixed501-case pool and505reserved-ID coverage checks remain.
 All88focused tests then pass under the valid499active/2quarantined state.
 The reviewer receives the correction to the earlier premature88-pass message.
 No case is reactivated to satisfy a test.
+
+### Exact corrected references approved
+
+Quarantine-only commit:4dfb2008.
+Grok approves both exact corrected case hashes and explicit reactivation after the last source-note repair.
+Protocol corrected SHA256:8ece74f4f5563bf564dfb356ac80fe44d01fbaa7421f62c109b0bfcd208dd75b.
+Staking corrected SHA256:58920d5fc4795635f6aa7c54c32e2f5ea3217c14d9e51bfc3f67e0b45c26f642.
+Root verifies current quarantine hashes and approved corrected hashes before copying either case.
+The original dated examples, review deadlines, artifacts and grades remain unchanged.
+The current source-verifier record is reference-approval.md; its held predecessor remains in reference-review-v2.md.
+The helper review clears the shared-field defect after numeric and cluster closures lose trap-only fields.
+Root will compare every stamped member hash with the approved prospective register before closure.
+
+### Required-fact reviewability refinement
+
+The approved reference compile passes with501active cases and no quarantine.
+The stamp-to-approval comparison matches all nine reopened member maps before closure.
+All nine closures apply and the focused88tests pass.
+Corpus lint reports97warnings, including four newly introduced key-fact warnings.
+Those four flag duplicated or unasked background in the required-fact list.
+Root prepares a narrow refinement: protocol facts keep their four direct requirements; staking keeps its native-reward requirement.
+The answer, avoids and notes retain all source, activation and conditional-background rules.
+Only duplicated key facts and verification evidence change in the prospective refinement.
+The refinement requires exact independent approval before application.
+
+### Final reference and validation state
+
+Grok approves both exact v4 case hashes and explicit reactivation.
+Root applies the approved files and recompiles the corpus: fe63fd59bfd1cb613e3f8c8e5a613c0f309601ec41a1bf14ab7f6ed762815a9c.
+The first register comparison uses the wrong container shape and fails.
+The shell then applies the older v3 closure.
+Root reconstructs the prior state through the helper, restamps it, and compares all nine v4 member maps.
+All maps match before the v4 closure applies.
+The public v4 member-check receipt records this recovery.
+The final register check passes.
+
+The final full suite passes 3093 tests across 146 files, with three expected failures.
+Type checking, dry-run build, self-test, routing gate, corpus lint, register, sentinels and improvements lint pass.
+Corpus lint retains 93 warnings; the separate protocol-history diagnostic still fails.
+The generated finding index now contains 137 records.
+No live quality gain, paid comparison, or deployment occurs.
+
+### Independent closeout
+
+Grok completes the final high-effort review and clears all reviewed bytes.
+One digest-scope omission is repaired and re-reviewed.
+All 100 case objects, 314 observations and the evidence catalog remain unchanged.
+The current action registry records both applied v4 corrections and the separate unmeasured candidate.
+The candidate local commit is dc97a0369f076a7e0d30abc1e80d93fcc5925da8.
+Three fresh temporary-index patch checks pass; both Docs orders produce identical trees.
+The first write-tree check lacks unrelated partial-clone blobs; --missing-ok fixes that check without fetching.
+Root preserves all patch bytes and the historical initial24 record.
+Secret scans pass after public member hashes move into explicit caseId/sha256 rows.
+No scanner rule or allowlist changes.
+
+Root moves $2 from unassigned allocation to the Grok helper allocation before final review completes.
+The Grok allocation becomes $47; unassigned allocation becomes $7.237378; total allocation remains $200.
+The new Grok session reports $5.43976948.
+Combined Grok helpers report $45.99689208.
+Codex dollars remain unreported, so the whole-session spending limit remains unverified.
+Root removes the three owned helpers and their completed command terminals.
+The completion receipt records legitimate source, publication and measurement holds.
+No Anthropic agent, upstream write, push or deployment occurs.

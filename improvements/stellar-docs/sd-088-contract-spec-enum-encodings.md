@@ -1,10 +1,11 @@
 ---
 id: sd-088
 service: stellar-docs
-status: proposed
+status: verified
 discovered: 2026-11-03
 upstreamTitle: "Correct tagged and integer enum encodings in the contract-spec guide"
 evidence:
+  - "2026-11-03 follow-up: eight local SDK17.4.0 fixtures passed; exact fixture SHA256 2b325c3463f53edbf841b40d4e95553c5771d837d2e4f8935eadbf5c19ef3ab3. Results: research/audits/2026-11-03-qa-followup/sdk-fixtures-result.json. Fresh published-source HTTP200 checks retain every reported defect: research/audits/2026-11-03-qa-followup/proposal-currentness.json (SHA256 0e540e8f756c004ffaf7f2c085c3541723be10d63eaeb9cf21ad5648511d206f). No network simulation or transaction ran."
   - "2026-11-03 public GET https://developers.stellar.org/docs/build/guides/dapps/working-with-contract-specs.md returned HTTP 200. Body SHA256 fba013f8c48e5b554245ca55219683bfb270ace9d654344de45115cc8c87934f. The unit/tuple sample combines Symbol A with a map for B; the integer section describes a vector."
   - "Canonical edit file: stellar/stellar-docs docs/build/guides/dapps/working-with-contract-specs.mdx at 85d2d1b8e7a4451b7a6af0931f587ce73109b816. Retained immutable-source SHA256 4a4a888536d6550be08733f3e8d18a271725e5482674f2cfaf672bbc0a732312."
   - "Independent implementation: stellar/js-stellar-sdk v17.4.0 src/contract/spec.ts, source SHA256 7890da87a28cb7c8ee90d69e0d1029441c55bf11fe77dae6dac3124b3ea88314. nativeToUnion selects one variant; nativeToEnum emits scvU32; enumToNative requires scvU32."
@@ -36,7 +37,7 @@ The SDK source uses a release tag; the receipt pins its observed bytes without i
 The Docs source and rendered page share one producer.
 The SDK implementation provides the separate encoding evidence.
 
-No live conversion or contract execution ran during preparation.
+The initial preparation ran no conversion or contract execution.
 
 ## Recommendation
 
@@ -47,3 +48,17 @@ Apply the correction to every repeated Python, Java, and PHP example in both enu
 Keep the valid struct examples unchanged.
 
 Validate each corrected example with its stated SDK version before publication.
+
+## Follow-up verification
+
+The published source still contains the reported enum examples on 2026-11-03.
+Local SDK17.4.0 fixtures serialize and reload both specifications.
+Separate A and B union values round-trip as symbol-led vectors.
+Integer values 1 and 2 round-trip as one u32; the published integer vector is rejected.
+
+The tagged decoder accepts A followed by a map and ignores that trailing map.
+It decodes only A; re-encoding removes the extra map.
+This permissiveness does not represent both variants or establish on-chain rejection.
+Python, Java, and PHP examples remain unexecuted.
+
+The [fixture](../../research/audits/2026-11-03-qa-followup/sdk-fixtures.mjs), [results](../../research/audits/2026-11-03-qa-followup/sdk-fixtures-result.json), and [current source checks](../../research/audits/2026-11-03-qa-followup/proposal-currentness.json) retain exact evidence.

@@ -1,0 +1,863 @@
+{
+  "schema": "qa-followup-local-upstream-patches-v1",
+  "createdAt": "2026-11-03T14:16:40.842600+00:00",
+  "status": "local-uncommitted-patches",
+  "sourceCurrentness": [
+    {
+      "repo": "docs",
+      "observedCommit": "85d2d1b8e7a4451b7a6af0931f587ce73109b816",
+      "matchesCloneHead": true
+    },
+    {
+      "repo": "skill",
+      "observedCommit": "9c604c2be6ae69f962fbb578bce6b681d462fea5",
+      "matchesCloneHead": true
+    }
+  ],
+  "patches": [
+    {
+      "repo": "stellar-docs",
+      "clone": "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "baseCommit": "85d2d1b8e7a4451b7a6af0931f587ce73109b816",
+      "patchPath": "research/audits/2026-11-03-qa-followup/stellar-docs.patch",
+      "patchSha256": "24f4840432a2d820a45f6fc806f5a8683ec988e834746e505c94c7c06e075c24",
+      "patchBytes": 23668,
+      "files": [
+        {
+          "path": "docs/tokens/control-asset-access.mdx",
+          "baseBlob": "3c28b9f03c80570182405ef40d727d297dde7f44",
+          "indexBlob": "3c28b9f03c80570182405ef40d727d297dde7f44",
+          "beforeSha256": "bf497d4c5ab2a6ded035e97347737df498ff5b3fc9c1184a6884673886eb3955",
+          "afterSha256": "317274635c5d71f4b56a46bba9c9500dcb800d604bedaa5037efd12883e7c3aa",
+          "afterBlob": "e0aa7bb007fef5cb3536aa2222ff5249af8858f9",
+          "role": "source"
+        },
+        {
+          "path": "docs/tokens/how-to-issue-an-asset.mdx",
+          "baseBlob": "65ee937462834b034cd5b42bbbb5e4b82d9bfe4b",
+          "indexBlob": "65ee937462834b034cd5b42bbbb5e4b82d9bfe4b",
+          "beforeSha256": "5c5d095d4bcb9c6e965c93c1d67f27808adaeb37b28992dd5c90ce3d3c4020dc",
+          "afterSha256": "ff61b382f8491ef53087f1b400239cbe8758fc1561f3ebd476ce0f236b6a11a9",
+          "afterBlob": "d3ee835cfcbc4661a5dc32bf6b7211371457c023",
+          "role": "source"
+        },
+        {
+          "path": "docs/tokens/publishing-asset-info.mdx",
+          "baseBlob": "4dea35605b5315384996639d671e9440bd2b348a",
+          "indexBlob": "4dea35605b5315384996639d671e9440bd2b348a",
+          "beforeSha256": "a8f964a5979d1b3f96bad36e02a6a66cf67d6ab01857717dfd50776582e44a38",
+          "afterSha256": "1828072838c3b61c7822a9b16d2ef7c02ffdacdb1825f151b60ba6f6342eaecc",
+          "afterBlob": "14c1bf413f632eef2ef288449540599d73676a63",
+          "role": "source"
+        },
+        {
+          "path": "docs/tokens/stellar-asset-contract.mdx",
+          "baseBlob": "cc1acec96abfb97d9b08a7f6dc3c221857ca04f5",
+          "indexBlob": "cc1acec96abfb97d9b08a7f6dc3c221857ca04f5",
+          "beforeSha256": "98c535ce66151c9ff5f1608c114ab3e5b81a4c94a2c8b8a4ab925668bee7d994",
+          "afterSha256": "8de45ad83eed2058b21279daf4be287609c085e228ab1a33594854bf3db96546",
+          "afterBlob": "527ac7219c674d4bf8d5c56f950925ed22dc5d82",
+          "role": "source"
+        },
+        {
+          "path": "docs/learn/fundamentals/stellar-data-structures/ledgers.mdx",
+          "baseBlob": "81f67a7b2f212781301f81200033ac9ca3735c6e",
+          "indexBlob": "81f67a7b2f212781301f81200033ac9ca3735c6e",
+          "beforeSha256": "bc741e2f6a0e20b0fdb50050598b71bef854bf4271d29e187051f3102c04883f",
+          "afterSha256": "ebcf9da249b12dcfd1bfb3ccfd2e9cb09e57db203156fbcdd3434ba7022967c8",
+          "afterBlob": "73bb9bb85c4a5b7d085f34adbd37da7a7f097ea8",
+          "role": "source"
+        },
+        {
+          "path": "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx",
+          "baseBlob": "cf3edbb514875b0ea72fd9dffaf13abed1546fec",
+          "indexBlob": "cf3edbb514875b0ea72fd9dffaf13abed1546fec",
+          "beforeSha256": "3d10b443ce150457aec5da83e274e1180bfa1e0c305db5f28f7c6983355a739d",
+          "afterSha256": "71aa5db8b9e0c9cb63a6ef80e5719694b81f732abcbfbf448b9eda6322ad1e12",
+          "afterBlob": "a247b0296211d5c55a4336ae45c4a4f9393bd746",
+          "role": "source"
+        },
+        {
+          "path": "docs/build/guides/dapps/working-with-contract-specs.mdx",
+          "baseBlob": "90c058d7eeaea86f7bd3901850a3405458f952cb",
+          "indexBlob": "90c058d7eeaea86f7bd3901850a3405458f952cb",
+          "beforeSha256": "4a4a888536d6550be08733f3e8d18a271725e5482674f2cfaf672bbc0a732312",
+          "afterSha256": "5414600b7f0c094645ee1e9218a48850ae9f61d2c1f937d99a58998f20e19895",
+          "afterBlob": "fbcf2e6d5a2431182f87b12da44fc17d00450787",
+          "role": "source"
+        },
+        {
+          "path": "openapi/horizon/components/parameters.yml",
+          "baseBlob": "992d5a75cf13be2990228aa4a33c3b76a5aaf361",
+          "indexBlob": "992d5a75cf13be2990228aa4a33c3b76a5aaf361",
+          "beforeSha256": "9b1f9b63f2d4ab85654852823bef35158166710a0b152b093013d0a55e0ce4c9",
+          "afterSha256": "4978a128c3fd7ef2a694f8639681b1cf6ea8fb02cf1c0e090632ee1a76a5993c",
+          "afterBlob": "f28b4784098080be89a00a340cc468376d99b1e7",
+          "role": "source"
+        },
+        {
+          "path": "openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json",
+          "baseBlob": "98cad1acac35f731fbc39e43640fc2f016a0011c",
+          "indexBlob": "98cad1acac35f731fbc39e43640fc2f016a0011c",
+          "beforeSha256": "3a8cde0577b55a64297c925de6e4ca5b9efe1c09e6a45af3288660ee7f0e2274",
+          "afterSha256": "0d2cc1ba1c633ee6b70762d925b23ab2873755ea16da23158b6424441026d508",
+          "afterBlob": "a45fd8e7bebda892fcb168a283176c82a43ca986",
+          "role": "source"
+        },
+        {
+          "path": "openrpc/src/stellar-rpc/schemas/AuthMode.json",
+          "baseBlob": "088c26ee53169207052a2bd8a317b11149fea632",
+          "indexBlob": "088c26ee53169207052a2bd8a317b11149fea632",
+          "beforeSha256": "7adde361c1e392383e107ca671da548d7abb789ff58681fc723676a98f6bb760",
+          "afterSha256": "83851f886ed1770113da66acb8a755cbdb89a11bfeb5af3402fdcb7af8518cbe",
+          "afterBlob": "20bdd6f8af750471434fb9dc50e6f8a2695d9e6a",
+          "role": "source"
+        },
+        {
+          "path": "openapi/horizon/bundled.yml",
+          "baseBlob": "18ed28ff00cda45b47dff44d6ff2c1e00e38a433",
+          "indexBlob": "18ed28ff00cda45b47dff44d6ff2c1e00e38a433",
+          "beforeSha256": "9bf505ae9397b8ac8c4aa50e863da9ff1a9e545fc5ab4f89788ceb381477112d",
+          "afterSha256": "31dcfe655e75319bc304bc41949571255ebe5603525a6491a67459801a5faab2",
+          "afterBlob": "266af6a24a0fca9ebeaa9374aa67f13c3b62dcbe",
+          "role": "generated"
+        },
+        {
+          "path": "stellar-rpc.openrpc.json",
+          "baseBlob": "3dede95d0d9c2c0aa2b52e832b8c0868c06fe2bc",
+          "indexBlob": "3dede95d0d9c2c0aa2b52e832b8c0868c06fe2bc",
+          "beforeSha256": "f2f8b6831f3b25728be6ee327df130425c734947166411c26f3bee7fe3cd3b87",
+          "afterSha256": "f9bc6887e534202cfe6759a077171050d069a20f6a1793d91d15272772c741af",
+          "afterBlob": "1db0e845734fc0fe4f48bc24f786abc0013095dc",
+          "role": "generated"
+        }
+      ],
+      "applyChecks": [
+        {
+          "command": [
+            "git",
+            "-C",
+            "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+            "apply",
+            "--check",
+            "--cached",
+            "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/stellar-docs.patch"
+          ],
+          "exitCode": 0
+        },
+        {
+          "command": [
+            "git",
+            "-C",
+            "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+            "apply",
+            "--reverse",
+            "--check",
+            "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/stellar-docs.patch"
+          ],
+          "exitCode": 0
+        }
+      ],
+      "stat": " .../guides/dapps/working-with-contract-specs.mdx   | 71 +++++++---------------\n .../transactions/simulateTransaction-Deep-Dive.mdx | 18 ++++--\n .../stellar-data-structures/ledgers.mdx            |  8 +--\n docs/tokens/control-asset-access.mdx               |  6 +-\n docs/tokens/how-to-issue-an-asset.mdx              |  4 +-\n docs/tokens/publishing-asset-info.mdx              |  2 +-\n docs/tokens/stellar-asset-contract.mdx             |  2 +-\n openapi/horizon/bundled.yml                        |  4 +-\n openapi/horizon/components/parameters.yml          |  4 +-\n .../stellar-rpc/contentDescriptors/AuthMode.json   |  2 +-\n openrpc/src/stellar-rpc/schemas/AuthMode.json      |  2 +-\n stellar-rpc.openrpc.json                           |  4 +-\n 12 files changed, 54 insertions(+), 73 deletions(-)\n"
+    },
+    {
+      "repo": "stellar-dev-skill",
+      "clone": "tmp/2026-11-03-qa-followup/upstream/stellar-dev-skill",
+      "baseCommit": "9c604c2be6ae69f962fbb578bce6b681d462fea5",
+      "patchPath": "research/audits/2026-11-03-qa-followup/stellar-dev-skill.patch",
+      "patchSha256": "eb7b6df6349ba7c379f96ffbf2c9ced0bd037e38035096da9360403bc372fe60",
+      "patchBytes": 880,
+      "files": [
+        {
+          "path": "skills/dapp/SKILL.md",
+          "baseBlob": "6b2a072e602b94874d962ce6d931d3fa3c9caf93",
+          "indexBlob": "6b2a072e602b94874d962ce6d931d3fa3c9caf93",
+          "beforeSha256": "4abc828abbfebd5452e4abc159095b5703c392b21b1abe74a5f56e8220696f75",
+          "afterSha256": "db888e108467c999aedca6a8591338df57e8b19a60094f0279cf8eb94068abfd",
+          "afterBlob": "f887138f0e23c873673d0f40ae4d024c45ef92fd",
+          "role": "source"
+        }
+      ],
+      "applyChecks": [
+        {
+          "command": [
+            "git",
+            "-C",
+            "tmp/2026-11-03-qa-followup/upstream/stellar-dev-skill",
+            "apply",
+            "--check",
+            "--cached",
+            "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/stellar-dev-skill.patch"
+          ],
+          "exitCode": 0
+        },
+        {
+          "command": [
+            "git",
+            "-C",
+            "tmp/2026-11-03-qa-followup/upstream/stellar-dev-skill",
+            "apply",
+            "--reverse",
+            "--check",
+            "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/stellar-dev-skill.patch"
+          ],
+          "exitCode": 0
+        }
+      ],
+      "stat": " skills/dapp/SKILL.md | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)\n"
+    }
+  ],
+  "findings": [
+    {
+      "id": "sd-080",
+      "paths": [
+        "docs/tokens/control-asset-access.mdx",
+        "docs/tokens/how-to-issue-an-asset.mdx"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sd-081",
+      "paths": [
+        "docs/tokens/publishing-asset-info.mdx"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sd-082",
+      "paths": [
+        "docs/tokens/control-asset-access.mdx"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sd-083",
+      "paths": [
+        "docs/tokens/stellar-asset-contract.mdx"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sd-084",
+      "paths": [
+        "openapi/horizon/components/parameters.yml",
+        "openapi/horizon/bundled.yml"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sd-085",
+      "paths": [
+        "openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json",
+        "openrpc/src/stellar-rpc/schemas/AuthMode.json",
+        "stellar-rpc.openrpc.json"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sd-086",
+      "paths": [
+        "docs/learn/fundamentals/stellar-data-structures/ledgers.mdx"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sd-087",
+      "paths": [
+        "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sd-088",
+      "paths": [
+        "docs/build/guides/dapps/working-with-contract-specs.mdx"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    },
+    {
+      "id": "sk-037",
+      "paths": [
+        "skills/dapp/SKILL.md"
+      ],
+      "state": "local-patch-prepared",
+      "hold": null
+    }
+  ],
+  "primarySourceReceipts": [
+    "tmp/2026-11-03-qa-followup/upstream-patch-work/primary/receipts.json",
+    "tmp/2026-11-03-qa-followup/upstream-patch-work/primary/extra-receipts.json",
+    "tmp/2026-11-03-qa-followup/upstream-patch-work/primary/schema-receipts.json"
+  ],
+  "validation": {
+    "dependencyInstall": "npx --yes pnpm@11.6.0 install --frozen-lockfile --ignore-scripts; exit 0",
+    "mdxAndSourceJsonFormat": "targeted Prettier check; exit 0 after formatting AuthMode.json",
+    "componentPadding": "node scripts/pad-component-tags.mjs --check <seven target MDX files>; exit 0",
+    "openrpc": "npx --yes pnpm@11.6.0 rpcspec:validate; exit 0; all three generated services validated",
+    "horizonBundle": "npx --yes pnpm@11.6.0 bundle-horizon; exit 0; two schema-name collision warnings",
+    "horizonLint": "exit 1 on both baseline and changed source; identical 1 error and 1202 warnings",
+    "horizonLintReceipt": "tmp/2026-11-03-qa-followup/upstream-patch-work/horizon-lint-comparison.json",
+    "sdkOriginalFixtureReceipt": "tmp/2026-11-03-qa-followup/upstream-patch-work/sdk-fixtures-result.json",
+    "sdkPatchedCallbackReceipt": "tmp/2026-11-03-qa-followup/upstream-patch-work/patched-fixtures-result.json",
+    "patchChecks": "tmp/2026-11-03-qa-followup/upstream-patch-work/patch-check-commands.json"
+  },
+  "generatedOutputs": [
+    {
+      "path": "openrpc/stellar-rpc.refs-openrpc.json",
+      "sha256": "2670d1361245b8bf4425059f76bd3671b45cc9aae2411db4d1dc7870f1d3edc9",
+      "includedInPatch": false
+    },
+    {
+      "path": "openrpc/stellar-rpc.openrpc.json",
+      "sha256": "f9bc6887e534202cfe6759a077171050d069a20f6a1793d91d15272772c741af",
+      "includedInPatch": false
+    },
+    {
+      "path": "stellar-rpc.openrpc.json",
+      "sha256": "f9bc6887e534202cfe6759a077171050d069a20f6a1793d91d15272772c741af",
+      "includedInPatch": true
+    },
+    {
+      "path": "stellar-rpc-beta.openrpc.json",
+      "sha256": "22aac0d128825373545b5c9af1597d1935f3020b3c5a0cc2c36ea756de766544",
+      "includedInPatch": false
+    }
+  ],
+  "limits": [
+    "The patches are local, uncommitted, unpushed, and undeployed.",
+    "Python, Java, PHP, and Rust serde examples were not executed; signatures and format use primary source verification.",
+    "No on-chain contract decoder executed.",
+    "The original tagged void decoder ignores trailing data; no rejection claim applies to that sample.",
+    "The Docs method-page generator is outside the repository; maintainer regeneration remains required for sd-085.",
+    "Full Mintlify site validation was not run in the partial checkout.",
+    "The complete Horizon lint retains its identical existing failures.",
+    "The generator also refreshed unrelated Anchor SEP-12 links; those changes were excluded and the original artifact was restored."
+  ],
+  "commandRuns": [
+    {
+      "terminal": "t108",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "python3",
+        "tmp/2026-11-03-qa-followup/upstream-patch-work/collect-primary.py"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t108.txt"
+    },
+    {
+      "terminal": "t109",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "argv": [
+        "npx",
+        "--yes",
+        "pnpm@11.6.0",
+        "install",
+        "--frozen-lockfile",
+        "--ignore-scripts"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t109.txt"
+    },
+    {
+      "terminal": "t10d",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "python3",
+        "tmp/2026-11-03-qa-followup/upstream-patch-work/collect-extra.py"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10d.txt"
+    },
+    {
+      "terminal": "t10g",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "argv": [
+        "git",
+        "checkout",
+        "HEAD",
+        "--",
+        "stellar-rpc.openrpc.json",
+        "stellar-rpc-beta.openrpc.json",
+        "docs/platforms/anchor-platform/api-reference/platform/rpc/anchor-platform.openrpc.json"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10g.txt"
+    },
+    {
+      "terminal": "t10j",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "python3",
+        "tmp/2026-11-03-qa-followup/upstream-patch-work/collect-schema.py"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10j.txt"
+    },
+    {
+      "terminal": "t10k",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "argv": [
+        "npx",
+        "--yes",
+        "pnpm@11.6.0",
+        "rpcspec:validate"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10k.txt"
+    },
+    {
+      "terminal": "t10m",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "argv": [
+        "npx",
+        "--yes",
+        "pnpm@11.6.0",
+        "bundle-horizon"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10m.txt"
+    },
+    {
+      "terminal": "t10n",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "argv": [
+        "npx",
+        "--yes",
+        "pnpm@11.6.0",
+        "exec",
+        "prettier",
+        "--config",
+        ".prettierrc.js",
+        "--check",
+        "docs/tokens/control-asset-access.mdx",
+        "docs/tokens/how-to-issue-an-asset.mdx",
+        "docs/tokens/publishing-asset-info.mdx",
+        "docs/tokens/stellar-asset-contract.mdx",
+        "docs/learn/fundamentals/stellar-data-structures/ledgers.mdx",
+        "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx",
+        "docs/build/guides/dapps/working-with-contract-specs.mdx",
+        "openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json",
+        "openrpc/src/stellar-rpc/schemas/AuthMode.json"
+      ],
+      "exitCode": 1,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10n.txt"
+    },
+    {
+      "terminal": "t10p",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "argv": [
+        "npx",
+        "--yes",
+        "pnpm@11.6.0",
+        "exec",
+        "redocly",
+        "lint",
+        "horizon"
+      ],
+      "exitCode": 1,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10p.txt"
+    },
+    {
+      "terminal": "t10q",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "argv": [
+        "npx",
+        "--yes",
+        "pnpm@11.6.0",
+        "exec",
+        "prettier",
+        "--config",
+        ".prettierrc.js",
+        "--write",
+        "openrpc/src/stellar-rpc/schemas/AuthMode.json"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10q.txt"
+    },
+    {
+      "terminal": "t10r",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "python3",
+        "tmp/2026-11-03-qa-followup/upstream-patch-work/verify-horizon.py"
+      ],
+      "exitCode": 1,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10r.txt"
+    },
+    {
+      "terminal": "t10s",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+      "argv": [
+        "npx",
+        "--yes",
+        "pnpm@11.6.0",
+        "exec",
+        "prettier",
+        "--config",
+        ".prettierrc.js",
+        "--check",
+        "docs/tokens/control-asset-access.mdx",
+        "docs/tokens/how-to-issue-an-asset.mdx",
+        "docs/tokens/publishing-asset-info.mdx",
+        "docs/tokens/stellar-asset-contract.mdx",
+        "docs/learn/fundamentals/stellar-data-structures/ledgers.mdx",
+        "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx",
+        "docs/build/guides/dapps/working-with-contract-specs.mdx",
+        "openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json",
+        "openrpc/src/stellar-rpc/schemas/AuthMode.json"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10s.txt"
+    },
+    {
+      "terminal": "t10t",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "python3",
+        "tmp/2026-11-03-qa-followup/upstream-patch-work/verify-horizon.py"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10t.txt"
+    },
+    {
+      "terminal": "t10v",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "node",
+        "research/audits/2026-11-03-qa-followup/sdk-fixtures.mjs",
+        "tmp/2026-11-03-qa-followup/sdk-fixtures/node_modules/@stellar/stellar-sdk",
+        "tmp/2026-11-03-qa-followup/upstream-patch-work/sdk-fixtures-result.json"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10v.txt"
+    },
+    {
+      "terminal": "t10w",
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "node",
+        "tmp/2026-11-03-qa-followup/upstream-patch-work/verify-patched.mjs"
+      ],
+      "exitCode": 0,
+      "log": "tmp/2026-11-03-qa-followup/upstream-patch-work/logs/t10w.txt"
+    },
+    {
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "node",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs/scripts/pad-component-tags.mjs",
+        "--check",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs/docs/tokens/control-asset-access.mdx",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs/docs/tokens/how-to-issue-an-asset.mdx",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs/docs/tokens/publishing-asset-info.mdx",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs/docs/tokens/stellar-asset-contract.mdx",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs/docs/learn/fundamentals/stellar-data-structures/ledgers.mdx",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs/docs/build/guides/dapps/working-with-contract-specs.mdx"
+      ],
+      "exitCode": 0
+    },
+    {
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "git",
+        "-C",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0
+    },
+    {
+      "cwd": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup",
+      "argv": [
+        "git",
+        "-C",
+        "tmp/2026-11-03-qa-followup/upstream/stellar-dev-skill",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "commandNotes": [
+    "The initial Prettier check failed only for AuthMode.json formatting; the targeted write and final check passed.",
+    "The first lint comparison helper assumed a JSON array. It failed before comparing sources. The corrected helper reads the problems array and passed.",
+    "Initial source discovery returned three 404 responses. Corrected primary serializer and Java source paths returned HTTP 200.",
+    "The patch-check-commands receipt records exact patch generation, index, hash, and apply-check commands."
+  ],
+  "sourceFormatAuthority": {
+    "url": "https://raw.githubusercontent.com/stellar/stellar-cli/v28.1.0/cmd/crates/soroban-spec-typescript/src/types.rs",
+    "tag": "v28.1.0",
+    "evidence": [
+      "Entry uses serde tag type with camelCase names.",
+      "Entry::Enum has cases: Vec<EnumCase>.",
+      "EnumCase has doc, name, and value: u32.",
+      "UnionCase has doc, name, and values: Vec<Type>."
+    ],
+    "runtimeLimit": "The serializer was inspected, not executed."
+  },
+  "cleanup": [
+    {
+      "terminal": "t108",
+      "command": [
+        "hc",
+        "rm",
+        "t108"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t109",
+      "command": [
+        "hc",
+        "rm",
+        "t109"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10d",
+      "command": [
+        "hc",
+        "rm",
+        "t10d"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10g",
+      "command": [
+        "hc",
+        "rm",
+        "t10g"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10j",
+      "command": [
+        "hc",
+        "rm",
+        "t10j"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10k",
+      "command": [
+        "hc",
+        "rm",
+        "t10k"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10m",
+      "command": [
+        "hc",
+        "rm",
+        "t10m"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10n",
+      "command": [
+        "hc",
+        "rm",
+        "t10n"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10p",
+      "command": [
+        "hc",
+        "rm",
+        "t10p"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10q",
+      "command": [
+        "hc",
+        "rm",
+        "t10q"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10r",
+      "command": [
+        "hc",
+        "rm",
+        "t10r"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10s",
+      "command": [
+        "hc",
+        "rm",
+        "t10s"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10t",
+      "command": [
+        "hc",
+        "rm",
+        "t10t"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10v",
+      "command": [
+        "hc",
+        "rm",
+        "t10v"
+      ],
+      "exitCode": 0
+    },
+    {
+      "terminal": "t10w",
+      "command": [
+        "hc",
+        "rm",
+        "t10w"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "dependencyInputs": [
+    {
+      "path": "package.json",
+      "beforeSha256": "ae9699ab4b836dd555aa7073cf56515f34ac18ff2726f0a3aa0f2d9f19351774",
+      "afterSha256": "ae9699ab4b836dd555aa7073cf56515f34ac18ff2726f0a3aa0f2d9f19351774",
+      "unchanged": true
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "beforeSha256": "9aa5617611f25d74883b97db4ce3208b969e708b37957290f9d5e4b717e5ef8f",
+      "afterSha256": "9aa5617611f25d74883b97db4ce3208b969e708b37957290f9d5e4b717e5ef8f",
+      "unchanged": true
+    }
+  ],
+  "sd086HeadingRepair": {
+    "reason": "Preserve the original heading titles and their anchors while demoting only their levels.",
+    "changedSourcePath": "docs/learn/fundamentals/stellar-data-structures/ledgers.mdx",
+    "beforeFileSha256": "e25d033e04c6173dd9876cd17aecec2bee4ca6ad1299a567bd520181d3637d9d",
+    "afterFileSha256": "ebcf9da249b12dcfd1bfb3ccfd2e9cb09e57db203156fbcdd3434ba7022967c8",
+    "beforePatchSha256": "8bd561844396136ada9dac65938d2ee98950a3bc33368061295b6367755a0ce7",
+    "afterPatchSha256": "24f4840432a2d820a45f6fc806f5a8683ec988e834746e505c94c7c06e075c24",
+    "allOtherPatchBytesPreservedExceptChangedFileBlobHeader": true,
+    "skillPatchUnchangedSha256": "eb7b6df6349ba7c379f96ffbf2c9ced0bd037e38035096da9360403bc372fe60",
+    "diffAndApplyChecks": "pass",
+    "targetedMdxAndPad": "pass",
+    "verifiedAt": "2026-11-03T14:40:10.610936+00:00",
+    "commands": [
+      {
+        "argv": [
+          "npx",
+          "--yes",
+          "pnpm@11.6.0",
+          "exec",
+          "prettier",
+          "--config",
+          ".prettierrc.js",
+          "--check",
+          "docs/learn/fundamentals/stellar-data-structures/ledgers.mdx"
+        ],
+        "cwd": "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+        "exitCode": 0,
+        "terminal": "t11p"
+      },
+      {
+        "argv": [
+          "node",
+          "scripts/pad-component-tags.mjs",
+          "--check",
+          "docs/learn/fundamentals/stellar-data-structures/ledgers.mdx"
+        ],
+        "cwd": "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+        "exitCode": 0
+      },
+      {
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "cwd": "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+        "exitCode": 0
+      },
+      {
+        "argv": [
+          "git",
+          "apply",
+          "--check",
+          "--cached",
+          "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/stellar-docs.patch"
+        ],
+        "cwd": "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+        "exitCode": 0
+      },
+      {
+        "argv": [
+          "git",
+          "apply",
+          "--reverse",
+          "--check",
+          "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/stellar-docs.patch"
+        ],
+        "cwd": "tmp/2026-11-03-qa-followup/upstream/stellar-docs",
+        "exitCode": 0
+      },
+      {
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "cwd": "tmp/2026-11-03-qa-followup/upstream/stellar-dev-skill",
+        "exitCode": 0
+      },
+      {
+        "argv": [
+          "git",
+          "apply",
+          "--check",
+          "--cached",
+          "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/stellar-dev-skill.patch"
+        ],
+        "cwd": "tmp/2026-11-03-qa-followup/upstream/stellar-dev-skill",
+        "exitCode": 0
+      },
+      {
+        "argv": [
+          "git",
+          "apply",
+          "--reverse",
+          "--check",
+          "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/stellar-dev-skill.patch"
+        ],
+        "cwd": "tmp/2026-11-03-qa-followup/upstream/stellar-dev-skill",
+        "exitCode": 0
+      }
+    ]
+  }
+}

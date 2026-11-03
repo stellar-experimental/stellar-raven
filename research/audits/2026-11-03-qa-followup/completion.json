@@ -1,0 +1,131 @@
+{
+  "schema": "qa-followup-completion-v1",
+  "recordedAt": "2026-11-03T15:54:18.849207+00:00",
+  "status": "local-followup-complete; source publication and new measurement remain pending",
+  "review": {
+    "path": "research/audits/2026-11-03-qa-followup/independent-review.md",
+    "sha256": "adfd997eebcaa01797a6142837237ebd05b7d1caa49a35614ed55b3ed7c7b892",
+    "model": "grok-4.7",
+    "effort": "high",
+    "verdict": "cleared",
+    "reconciledFinding": "research/audits/2026-11-03-qa-followup/review-finding-reconciliation.json",
+    "unresolvedReviewDefects": 0
+  },
+  "coverage": {
+    "cases": 100,
+    "observations": 314,
+    "sourceFindings": 15,
+    "originalOutcomesUnchanged": true,
+    "qualityAggregateProduced": false,
+    "newPaidMeasurementCalls": 0
+  },
+  "commits": {
+    "resultsBase": "bdcf915fb552d054657b04b23abc561a65d395f3",
+    "quarantineOnly": "4dfb20086d17e4229d8e02f35d9e0cc8c025c93b",
+    "separateUnmeasuredCandidate": "dc97a0369f076a7e0d30abc1e80d93fcc5925da8",
+    "followupBranch": "codex/golden-followup-2026-11-03",
+    "candidateBranch": "codex/golden-finalization-2026-11-03",
+    "currentFollowupCommit": "This receipt belongs to the final follow-up commit. Read that commit from the repository history."
+  },
+  "cost": {
+    "totalAuthorizedUsd": 200,
+    "knownInstrumentSubtotalUsd": 38.762622,
+    "priorGrokHelpersUsd": 40.5571226,
+    "followupGrokSession": "01a1a1ad-6040-7f62-8b86-5a0238054c06",
+    "followupGrokCostUsdTicks": 54397694800,
+    "usdTicksPerDollar": 10000000000,
+    "followupGrokUsd": 5.43976948,
+    "combinedGrokHelpersUsd": 45.99689208,
+    "knownInstrumentAndGrokSubtotalUsd": 84.75951408,
+    "grokAllocationUsd": 47,
+    "grokNewSessionStopUsd": 6.4,
+    "reallocatedFromUnassignedUsd": 2,
+    "unassignedAllocationUsd": 7.237378,
+    "codexPolicyReserveUsd": 100,
+    "olderUnreconciledReserveUsd": 7,
+    "olderNativeReceiptUsd": 0.047416,
+    "olderReceiptMayOverlapOtherCharges": true,
+    "codexDollars": "unreported; the reserve is not a measured charge or proven cap",
+    "wholeSessionSpendVerified": false,
+    "nativeUsageSha256": "6491f8fa7b7ab916c843105ec408ffa26d6af0ef6cf20acdae419399e38ad12d",
+    "initialBudgetSnapshot": "research/audits/2026-11-03-qa-followup/budget.json"
+  },
+  "checks": {
+    "baseline": "research/audits/2026-11-03-qa-followup/final-checks.json",
+    "digest": {
+      "passed": true,
+      "cases": 100,
+      "observations": 314,
+      "originalBindingsUnchanged": true
+    },
+    "freshPatchRecheck": {
+      "checkedAt": "2026-11-03T15:46:39.369525+00:00",
+      "rows": [
+        {
+          "label": "Docs original then additional",
+          "patches": [
+            "stellar-docs.patch",
+            "additional-stellar-docs.patch"
+          ],
+          "forwardAndReverse": true,
+          "resultTree": "e602c8e855e414e690c801088c0c8cd7f69de1f2",
+          "restoredBaseTree": "223686f521f40846a72733b4595ba7b137fc5bdb"
+        },
+        {
+          "label": "Docs additional then original",
+          "patches": [
+            "additional-stellar-docs.patch",
+            "stellar-docs.patch"
+          ],
+          "forwardAndReverse": true,
+          "resultTree": "e602c8e855e414e690c801088c0c8cd7f69de1f2",
+          "restoredBaseTree": "223686f521f40846a72733b4595ba7b137fc5bdb"
+        },
+        {
+          "label": "Developer skill",
+          "patches": [
+            "stellar-dev-skill.patch"
+          ],
+          "forwardAndReverse": true,
+          "resultTree": "3bd0c06caafb1be35acb98f2e588eb7ade404e63",
+          "restoredBaseTree": "361d4a3f60a1a5932ffc586b9ea5324de94589f3"
+        }
+      ],
+      "allPassed": true,
+      "realCloneIndexesChanged": false,
+      "networkRequired": false
+    },
+    "patchCheckSetupCorrection": "The first write-tree check fails on unmaterialized unrelated blobs. The corrected check uses --missing-ok with lazy fetching disabled. All target patch checks and base tree restoration pass.",
+    "secretScans": "The tree and staged scans pass before final receipt staging. The pre-commit hook checks final staged content.",
+    "whitespaceExceptions": "Valid unified-diff context spaces and the exact initial24 history EOF stay unchanged."
+  },
+  "approvedStatusOnlyChangesAfterReview": [
+    ".agents/TODO.md",
+    "research/audits/2026-11-03-qa-followup/README.md"
+  ],
+  "historicalManifestStatus": "Export manifests retain their original pending/uncommitted status and hashes. The independent review clears those export holds. This receipt records the current state.",
+  "cleanup": {
+    "codexHelpersRemoved": [
+      "t9p",
+      "t9q"
+    ],
+    "grokHelperRemoved": "t9r",
+    "allRootTestAndPatchCommandsRemoved": true,
+    "otherTerminalsControlled": false
+  },
+  "remaining": [
+    "Publish the three reviewed source patches through the source owners.",
+    "Regenerate simulateTransaction and getTransactions method pages with the external generator.",
+    "Resolve RWA owner and denominator, Phoenix owner and status dates, and controlling bounty-policy access.",
+    "Review and authorize a fresh paired measurement with a live capability canary. The current candidate retains its expired deadline.",
+    "The separate protocol-history diagnostic still fails; the routing gate passes.",
+    "Exact whole-session model spend remains unverified because Codex dollars and some older costs are unavailable."
+  ],
+  "externalWrites": {
+    "issues": 0,
+    "pullRequests": 0,
+    "pushes": 0,
+    "deployments": 0
+  },
+  "anthropicAgentsUsed": false
+}

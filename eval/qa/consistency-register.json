@@ -144,17 +144,17 @@
           "q-soroban-constructor-lifecycle",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-11-02",
+        "verdict": "consistent",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Compared P27/P28/P29/P30 claims across q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-version-history-list, q-protocol-27-cap-0071, q-tool-rust-soroban-sdk (all say P28 ledger 64458446 2026-09-16, P29 ledger 64717645 2026-10-01, Bell vote 2026-11-23) and the cluster-setting 1->2->3 dates in q-protocol-23-whisk-caps and q-protocol-parallel-execution; they agree. The note ends at P27 activation and no longer records the current tail the members now pin.",
+          "date": "2026-11-03",
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Updated 2026-11-02: members agree that P28/Adapter activated at ledger 64458446 on 2026-09-16 and P29 (no new CAPs) at ledger 64717645 on 2026-10-01; Bell/P30 (CAP-0084/0087/0088) votes are scheduled for 2026-11-03 (Testnet) and 2026-11-23 (Mainnet), not activated. P23 initialized ledgerMaxDependentTxClusters at 1; SLP-0004 set 2 on 2026-01-29 and SLP-0007 set 3 on 2026-10-22.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "fc0447bce6e5d995d407373daa964d6447d5e1785ba98a1d31895d2ddba7e77d",
-          "q-edge-fresh-latest-protocol-version": "23e4afe86e104432b305b2152574f85b1994b386d7d7f634d994843f5e24b3ee",
+          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
           "q-hist-soroban-launch-protocol20": "607c8d4ef8e2605f5cab2bb3de04338029e4e3d1409ab42dac4f21d7742d294b",
           "q-infra-secp256r1-passkeys": "84974f242cf37ff410c87c6cb84315b98bafe01d9403a706b96548341a7a7b6f",
           "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
@@ -169,10 +169,6 @@
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750",
           "q-soroban-constructor-lifecycle": "798e2a756125c45237bfb757cf8fc9f241341a32e53be7d56ecba91bea614d82",
           "q-tool-rust-soroban-sdk": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4"
-        },
-        "reopened": {
-          "date": "2026-11-03",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -511,12 +507,12 @@
           "q-soroban-simulate-resource-fee",
           "q-token-initial-supply-distribution"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-11-02",
+        "verdict": "consistent",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-asset-amm-fee-reserve replaced the as-of base-reserve date in notes with durable wording (the 1.0 XLM pool-share trustline reserve unchanged); q-asset-trustline-basics replaced the as-of base-reserve date with durable wording (the 0.5 XLM base reserve unchanged); q-edge-1xlm-activation-fee replaced the as-of base-reserve date with durable wording (the 0.5 XLM base reserve and 1 XLM minimum unchanged); q-pc-account-activation-not-found replaced the as-of date and the \"dated\" key fact with durable wording (the 1 XLM unsponsored minimum unchanged); q-pc-practical-fee-setting moved stable -> scheduled (the 100-stroop fee floor and the Horizon lifecycle label unchanged). No stated value changed, so the other members of \"network constants: fees, reserves, close time, supply, monetary history\" still agree."
+          "date": "2026-11-03",
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+          "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
@@ -525,7 +521,7 @@
           "q-asset-sdex-vs-amm": "d8227204dfaa1146a9a9cb7eaea525e1fbe511088dea5f81dbe4e5b9301e6606",
           "q-asset-trustline-basics": "9ad2ed91f2559b7dae886593d48f72a74e2878ee75d52de8676b77767e8d53fe",
           "q-edge-1xlm-activation-fee": "95be5544df23c2bdfc8a0b7c7feb708814e33899c17d992517c9b229a272ec50",
-          "q-edge-noinfo-stellar-pos-staking-rewards": "f3a718d5e96c121290ac174a9847de6501480921fe1037f8b207cd1c2e2c938d",
+          "q-edge-noinfo-stellar-pos-staking-rewards": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea",
           "q-hot-fee-pool-burn-deflation": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
           "q-pc-account-activation-not-found": "9f6221e40bcace23cf481e555e1c41652ed3d14796a0bcdecbbb5bddc92eefa3",
           "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615",
@@ -535,10 +531,6 @@
           "q-sor-doc-timestamping-manage-data": "1303e33b3457de47dcecd5fa9b8991f3cc6f32d41bb78a5e06ae52d9f2a3c6b6",
           "q-soroban-simulate-resource-fee": "5befbcbca0c84ea2800ec9789c2e75926c205545829bc96b6ecd52bf14b48064",
           "q-token-initial-supply-distribution": "d21261aee65d659776e78342377e944fefad8121a445914a8ab7b7d2a4adce7c"
-        },
-        "reopened": {
-          "date": "2026-11-03",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -614,25 +606,21 @@
           "q-org-sdf-structure-mandate",
           "q-protocol-tier1-requirements"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-11-02",
+        "verdict": "consistent",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-edge-deep-full-history-report, q-edge-noinfo-stellar-pos-staking-rewards, q-hist-scp-rewrite-2015, q-org-mazieres-chief-scientist, q-org-sdf-structure-mandate, q-protocol-tier1-requirements preserve dated history, founder attribution, and SCP distinctions."
+          "date": "2026-11-03",
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+          "verdict": "consistent"
         },
         "note": "SCP was authored by David Mazières and rolled out in 2015 using FBA. The causal interpretation of the 2014 fork is disputed: SDF attributed it to weaknesses in the inherited system, while Ripple rejected that conclusion. Mazières's founder/professor/paper facts remain stable, while the Founder and Chief Scientist team-page data is dated and distinguished from the rendered card. SDF structure and not-PoS/no-validator-reward facts remain separate.",
         "memberContentSha256": {
           "q-edge-deep-full-history-report": "abe6cc622a6b3d69f3ecc27a42fa869ee403f7038ab57ed80bcd7d8593439222",
-          "q-edge-noinfo-stellar-pos-staking-rewards": "f3a718d5e96c121290ac174a9847de6501480921fe1037f8b207cd1c2e2c938d",
+          "q-edge-noinfo-stellar-pos-staking-rewards": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea",
           "q-hist-scp-rewrite-2015": "5cd5e7420233297b719580af697a9bf13a267dcf5411dec726260d0ea7806379",
           "q-org-mazieres-chief-scientist": "73b0bc28f31d279e9f8c7e4cd376e73914fbd984fcacdf250928443069dc61d7",
           "q-org-sdf-structure-mandate": "ae1628b5785986fad875ee3aa2b507b1fc8a8f6d070d9bd02437039e726d61af",
           "q-protocol-tier1-requirements": "b229325c06c351a9667ffaaea846849e828fe4b0f3e75caa62c994332cf7a25f"
-        },
-        "reopened": {
-          "date": "2026-11-03",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -755,26 +743,22 @@
           "q-soroban-auth-delegation-p27",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-11-02",
+        "verdict": "consistent",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All seven members agree on the protocol tail: P27 activated at ledger 63386819 on 2026-07-08, P28 at 64458446 on 2026-09-16, P29 at 64717645 on 2026-10-01 (current as of 2026-11-02), and Bell/P30 votes are scheduled for 2026-11-03/2026-11-23. q-tool-rust-soroban-sdk now pins v29.0.1 latest stable with v30.0.0-rc.1 pre-release. The note is stale: it gives only the P27 activation as current context and says soroban-sdk and the CLI 'have stable v27 releases'. It also calls the non-activation member 'the stellar-core identity case', but that member is now q-protocol-scp-consensus-algorithm.",
+          "date": "2026-11-03",
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
           "verdict": "consistent"
         },
         "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z, and its CAP-0071 authentication delegation/address-bound credentials remain in effect. As of 2026-11-02, P28/Adapter (ledger 64458446, 2026-09-16) and P29 (ledger 64717645, 2026-10-01, no new CAPs) followed, so Mainnet runs P29; Bell/P30 votes are scheduled (Testnet 2026-11-03, Mainnet 2026-11-23), not live. As of 2026-11-02 the latest stable soroban-sdk is v29.0.1 and v30.0.0-rc.1 is a pre-release. The edge latest-version case remains behavior-gated rather than number-gated, and the SCP consensus case never carried an activation claim.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "23e4afe86e104432b305b2152574f85b1994b386d7d7f634d994843f5e24b3ee",
+          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
           "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
           "q-protocol-scp-consensus-algorithm": "ba760d5bb7ac504e53db81c2d209ecdec1994d2991aaf5cc5ec7d4bfee91c45d",
           "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750",
           "q-tool-rust-soroban-sdk": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4"
-        },
-        "reopened": {
-          "date": "2026-11-03",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -1302,23 +1286,19 @@
           "q-edge-noinfo-stellar-pos-staking-rewards",
           "q-protocol-scp-consensus-algorithm"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-11-02",
+        "verdict": "consistent",
+        "lastChecked": "2026-11-03",
         "note": "Stellar uses SCP/FBA and validators receive no monetary rewards. Issuer interest, lending, AMM/LP, vault, token-lock, RWA, and external-chain wrapper yield are not native staking. The no-live-native-XLM-LST result is dated and source-bounded to the 2026-07-10 sweep and a 2026-11-02 re-sweep. As of 2026-11-02, two members carry dated do-not-penalize cautions: StelloFi's self-described 'Native XLM Liquid Staking' sXLM is a vault share token, not validator staking, and SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for locked XLM, not proof-of-stake staking or an adopted protocol reward.",
         "memberContentSha256": {
           "q-defi-build-staking-for-own-token": "4ab3f5cefb9083abf1a5c475259437168111285028866445d61f4167bb092066",
           "q-defi-liquid-staking-whitespace": "6719f2d0823e66448f07a82fd2fb6a6e87bd42ecaac5c476fb186ef3ea3fb59a",
-          "q-edge-noinfo-stellar-pos-staking-rewards": "f3a718d5e96c121290ac174a9847de6501480921fe1037f8b207cd1c2e2c938d",
+          "q-edge-noinfo-stellar-pos-staking-rewards": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea",
           "q-protocol-scp-consensus-algorithm": "ba760d5bb7ac504e53db81c2d209ecdec1994d2991aaf5cc5ec7d4bfee91c45d"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All four members state SCP/FBA with no validator monetary rewards. q-defi-liquid-staking-whitespace and q-edge-noinfo-stellar-pos-staking-rewards both carry the 2026-07-10 plus 2026-11-02 dated negative and the StelloFi sXLM vault-share and SDF fee-pool-paper cautions that the 2026-11-02 note names.",
-          "verdict": "consistent"
-        },
-        "reopened": {
           "date": "2026-11-03",
-          "reason": "member-content-changed"
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+          "verdict": "consistent"
         }
       },
       {
@@ -2066,21 +2046,17 @@
           "q-edge-noinfo-stellar-pos-staking-rewards",
           "q-scf-eligibility-criteria"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-11-02",
+        "verdict": "consistent",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-noinfo-stellar-pos-staking-rewards adds the StelloFi vault-share caution and the undecided SDF fee-pool rewards proposal, but it still says no native staking reward exists. q-scf-eligibility-criteria does not imply compensation, so the note's 'does not imply ... staking rewards ... or free XLM' still holds.",
+          "date": "2026-11-03",
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
           "verdict": "consistent"
         },
         "note": "Legitimate community, education, content, event, operations, product, marketing, and job paths exist, but participation does not imply compensation, program eligibility, mining, staking rewards, airdrops, or free XLM.",
         "memberContentSha256": {
-          "q-edge-noinfo-stellar-pos-staking-rewards": "f3a718d5e96c121290ac174a9847de6501480921fe1037f8b207cd1c2e2c938d",
+          "q-edge-noinfo-stellar-pos-staking-rewards": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea",
           "q-scf-eligibility-criteria": "b42d75ea41de636513016271fa00148a5de8ec4c4637b3fd488754207e39840e"
-        },
-        "reopened": {
-          "date": "2026-11-03",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -2866,25 +2842,21 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-11-02",
+        "verdict": "consistent",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The note updated today (P27 at 63386819 on 2026-07-08; P28 at 64458446 on 2026-09-16; P29 at 64717645 on 2026-10-01; Mainnet P29 as of 2026-11-02; neither changed CAP-0071; Bell/P30 Mainnet vote scheduled 2026-11-23) matches q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, and q-protocol-version-history-list. q-pc-protocol-27-zipper keeps its 2026-08-30 dated check, and q-soroban-auth-delegation-p27 says only 'live since 2026-07-08'.",
+          "date": "2026-11-03",
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
           "verdict": "consistent"
         },
         "note": "P27 activated on Mainnet at ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features and remain in effect. As of 2026-11-02, Mainnet runs Protocol 29: P28 (Adapter) activated at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01, and neither changed CAP-0071 credentials. Bell/P30 has a Mainnet vote scheduled for 2026-11-23; a scheduled vote is not activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "23e4afe86e104432b305b2152574f85b1994b386d7d7f634d994843f5e24b3ee",
+          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
           "q-pc-protocol-27-zipper": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8",
           "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
           "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
-        },
-        "reopened": {
-          "date": "2026-11-03",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -3469,23 +3441,19 @@
           "q-soroban-auth-delegation-p27"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "23e4afe86e104432b305b2152574f85b1994b386d7d7f634d994843f5e24b3ee",
+          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
           "q-pc-protocol-27-zipper": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8",
           "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
         },
-        "verdict": "reopen",
+        "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-fresh-latest-protocol-version and q-pc-protocol-upgrade-timing now give P29 as current at ledger 64717645 (2026-10-01), P28 at 64458446, and a Bell/P30 Mainnet vote scheduled for 2026-11-23; q-pc-protocol-upgrade-timing also says 'current_protocol_version 29 with Core supporting 30'. q-protocol-27-cap-0071 now says P27 is no longer newest. q-pc-protocol-27-zipper and q-soroban-auth-delegation-p27 keep only the P27 activation history (ledger 63386819, 2026-07-08). All of this matches the rule.",
+          "date": "2026-11-03",
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-02",
-        "reopened": {
-          "date": "2026-11-03",
-          "reason": "member-content-changed"
-        }
+        "lastChecked": "2026-11-03"
       },
       {
         "label": "SCF #43 official total",
@@ -3759,23 +3727,19 @@
           "q-protocol-version-history-list"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "23e4afe86e104432b305b2152574f85b1994b386d7d7f634d994843f5e24b3ee",
+          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
           "q-pc-protocol-27-zipper": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8",
           "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
           "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
         },
-        "verdict": "reopen",
+        "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All five members agree that P28 activated at ledger 64458446 on 2026-09-16, P29 at ledger 64717645 on 2026-10-01, P29 is current as of 2026-11-02, and the Bell/P30 Mainnet vote is scheduled for 2026-11-23 and is not activation; q-pc-protocol-27-zipper keeps its dated 2026-08-30 check. The quoted reverifyBy 2026-11-24 dates match q-protocol-version-history-list, q-pc-protocol-upgrade-timing, and q-edge-fresh-latest-protocol-version.",
+          "date": "2026-11-03",
+          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-02",
-        "reopened": {
-          "date": "2026-11-03",
-          "reason": "member-content-changed"
-        }
+        "lastChecked": "2026-11-03"
       },
       {
         "triggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",

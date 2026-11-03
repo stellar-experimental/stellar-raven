@@ -1,0 +1,278 @@
+{
+  "schema": "unmeasured-finalization-candidate-source-v1",
+  "createdAt": "2026-11-03T14:37:30.451401+00:00",
+  "worktree": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-finalization",
+  "branch": "codex/golden-finalization-2026-11-03",
+  "baseCommit": "0aea991fd36ecd5653eef07c317568c7aa71f0e8",
+  "status": "unmeasured-uncommitted-awaiting-independent-review",
+  "resultSchema": "direct-grok-final-synthesis-candidate-v1",
+  "planSchema": "direct-grok-final-synthesis-plan-v1",
+  "answerPolicy": "reserve-last-answer-request-v1",
+  "deadline": "2026-11-03T10:00:00Z",
+  "maxAnswerRequests": 16,
+  "maxOutputTokens": 8192,
+  "patch": {
+    "path": "research/audits/2026-11-03-qa-followup/finalization-candidate.patch",
+    "sha256": "b61d421a4ef9da9a3c77c2acd30eb691319e4adeb31810cf59c340c25a779f47",
+    "bytes": 27913
+  },
+  "files": [
+    {
+      "path": "eval/qa/non-anthropic/method.mjs",
+      "sha256": "79ff047e5b4f58177bc6a779ee83af7884e9f117614f501e474a8f2d9a4414ef",
+      "blob": "2442d687a96307b01416a4e7451e96848ec3d3c5",
+      "afterSha256": "dae7fd89806d18ffea2540f571dcff8dcc20ad053071623d1700a7c24109ce77",
+      "afterBlob": "6d67cac53751f4912a689ef533958b3c36a59aff"
+    },
+    {
+      "path": "eval/qa/non-anthropic/provider.mjs",
+      "sha256": "fc5d535dfc19fb6b3922c982c7fcec31c487b4a8962c343fffa3b652fe3249ea",
+      "blob": "8e90c0cb732c70ac0322aff7cbf7508a990757b8",
+      "afterSha256": "e0c8c5e59b1756286367add26c32f420af7337e14fe817bbc14de20fb742e758",
+      "afterBlob": "6374db5529400afd725c57f26691b4fb91648a92"
+    },
+    {
+      "path": "eval/qa/non-anthropic/runner-support.mjs",
+      "sha256": "f6e65374ae1d9e4c39cde5949e68de68175f71dfc8e6c472e48a12617678698e",
+      "blob": "fa589dadb6307490953d7a3e9a5f4431105e8fb8",
+      "afterSha256": "cc049cf16816d8844099042c7eaa88d233e2d6b9e0518c5bb6107e0d0a2246c4",
+      "afterBlob": "606bc22d540b06072f24a12e843b7feac58e4cb5"
+    },
+    {
+      "path": "eval/qa/non-anthropic/README.md",
+      "sha256": "e317f187bec92b7e26a2cb15e012c499c5f2a5cf85fa9af64835bf46839ba036",
+      "blob": "0d5e790c2eb28976b2166cfd0737ff9d15820128",
+      "afterSha256": "853526d1290ba1cce5b31019be8021a2897415e61d7e4cacbab3846629f39bdf",
+      "afterBlob": "80bd08f41dce6b37747ae627a6dae3d64dafe20a"
+    },
+    {
+      "path": "test/direct-grok-runner.test.ts",
+      "sha256": "5b925e260d5f97a9ccfb1c0fcc8ba2ea14eb9d4dc6275bf6a346233d21a2278c",
+      "blob": "44132e676a665c81576dfa301b74a1c83d782a56",
+      "afterSha256": "263d8a8b3e0dfb74c9c766a428f980e7c5296077896133c8b0259bdc3a29c534",
+      "afterBlob": "e29077b3e848f81f8f05d0aec425e531b3fcfe14"
+    }
+  ],
+  "protectedSources": [
+    {
+      "path": "eval/qa/non-anthropic/core.mjs",
+      "sha256": "111f38ccdcae5bdfc53a38763049056bed8d5f3334776585212388ebfcc1a0da",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "eval/qa/non-anthropic/run.mjs",
+      "sha256": "fe8a5a9eafa6facdd771510551c64f7d7f40004237d15012b76f97d5932947e7",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "eval/qa/non-anthropic/binding-client.mjs",
+      "sha256": "cdb98c59f15b7c31a128046b9fe9d848467ad70c3d2cd04b80cc8b3e4d9cd965",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "eval/qa/non-anthropic/binding-worker.mjs",
+      "sha256": "73adbd3b645633edc02dfe26a690d93b40389cc7ddff6223752b9be3b60f75a4",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "eval/qa/spend-budget.mjs",
+      "sha256": "e798e0390d69b85cfb99c4d7b8520cacaa224cdfdce47cfbf2431111d29742b3",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "eval/qa/judge.mjs",
+      "sha256": "79accb1f1d524d8381bf62c7850b1f4864a167e4f5e2bb3c9a77e002922b9da9",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "eval/qa/evidence-pack.mjs",
+      "sha256": "b8b1a2bac35fb7742993e5de3f1f16d72bc4a873969041e53fe5325d781ae360",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "src/demo/steps.ts",
+      "sha256": "51c642ac447acca0676db56f88baade1b31c18f8ab7c235ffa3bd79a72492a98",
+      "unchangedFromBase": true
+    }
+  ],
+  "frozenMethodReadback": {
+    "path": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-02-method",
+    "head": "0aea991fd36ecd5653eef07c317568c7aa71f0e8",
+    "sourceFiles": [
+      {
+        "path": "eval/qa/non-anthropic/method.mjs",
+        "sha256": "79ff047e5b4f58177bc6a779ee83af7884e9f117614f501e474a8f2d9a4414ef",
+        "matchesCandidateBase": true
+      },
+      {
+        "path": "eval/qa/non-anthropic/provider.mjs",
+        "sha256": "fc5d535dfc19fb6b3922c982c7fcec31c487b4a8962c343fffa3b652fe3249ea",
+        "matchesCandidateBase": true
+      },
+      {
+        "path": "eval/qa/non-anthropic/runner-support.mjs",
+        "sha256": "f6e65374ae1d9e4c39cde5949e68de68175f71dfc8e6c472e48a12617678698e",
+        "matchesCandidateBase": true
+      },
+      {
+        "path": "eval/qa/non-anthropic/README.md",
+        "sha256": "e317f187bec92b7e26a2cb15e012c499c5f2a5cf85fa9af64835bf46839ba036",
+        "matchesCandidateBase": true
+      },
+      {
+        "path": "test/direct-grok-runner.test.ts",
+        "sha256": "5b925e260d5f97a9ccfb1c0fcc8ba2ea14eb9d4dc6275bf6a346233d21a2278c",
+        "matchesCandidateBase": true
+      }
+    ],
+    "writesPerformed": false,
+    "finalReadbackMatches": true
+  },
+  "checks": [
+    {
+      "command": [
+        "git",
+        "-C",
+        "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-finalization",
+        "apply",
+        "--check",
+        "--cached",
+        "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/finalization-candidate.patch"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-finalization",
+        "apply",
+        "--reverse",
+        "--check",
+        "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-03-followup/research/audits/2026-11-03-qa-followup/finalization-candidate.patch"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "commands": [
+    {
+      "terminal": "t115",
+      "exitCode": 0,
+      "command": "public provider documentation read",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t115.txt"
+    },
+    {
+      "terminal": "t117",
+      "exitCode": 0,
+      "command": "npm test -- test/direct-grok-runner.test.ts (79 tests, before new tests)",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t117.txt"
+    },
+    {
+      "terminal": "t119",
+      "exitCode": 0,
+      "command": "npm test -- test/direct-grok-runner.test.ts (88 tests)",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t119.txt"
+    },
+    {
+      "terminal": "t11b",
+      "exitCode": 1,
+      "command": "npm run typecheck (missing local Env bindings)",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t11b.txt"
+    },
+    {
+      "terminal": "t11c",
+      "exitCode": 0,
+      "command": "npm run typegen (local ignored generated types)",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t11c.txt"
+    },
+    {
+      "terminal": "t11d",
+      "exitCode": 0,
+      "command": "npm test (3215 passed, 3 expected fail)",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t11d.txt"
+    },
+    {
+      "terminal": "t11f",
+      "exitCode": 0,
+      "command": "npm run eval:selftest",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t11f.txt"
+    },
+    {
+      "terminal": "t11h",
+      "exitCode": 0,
+      "command": "npm run typecheck",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t11h.txt"
+    },
+    {
+      "terminal": "t11j",
+      "exitCode": 0,
+      "command": "npm run build (dry run)",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t11j.txt"
+    },
+    {
+      "terminal": "t11k",
+      "exitCode": 0,
+      "command": "npm run eval:qa:lint -- --since 0aea991fd36ecd5653eef07c317568c7aa71f0e8",
+      "log": "tmp/2026-11-03-qa-followup/finalization-candidate-work/logs/t11k.txt"
+    }
+  ],
+  "providerContractReceipt": "tmp/2026-11-03-qa-followup/finalization-candidate-work/provider-contract.json",
+  "liveProviderCapabilityChecked": false,
+  "modelCalls": 0,
+  "paidMeasurements": 0,
+  "serverStarted": false,
+  "limits": [
+    "The deadline remains expired. No runnable plan, selection, or deadline change is supplied.",
+    "A forced-final request can still fail or return an unsupported policy violation.",
+    "The native none setting is checked against primary documentation and local types, not a live Grok request.",
+    "Empty and refused choices remain failed evidence; tool-policy violations never execute returned calls.",
+    "No measured completion, quality, latency, or cost improvement is established.",
+    "Independent review remains pending."
+  ],
+  "cleanup": [
+    {
+      "terminal": "t115",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t117",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t119",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t11b",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t11c",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t11d",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t11f",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t11h",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t11j",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t11k",
+      "exitCode": 0
+    },
+    {
+      "terminal": "t11p",
+      "exitCode": 0
+    }
+  ]
+}

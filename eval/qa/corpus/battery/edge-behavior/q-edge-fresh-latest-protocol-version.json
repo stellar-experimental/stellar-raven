@@ -7,7 +7,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A grounded answer obtains the requested current value or state from the current official Stellar documentation, states the measurement basis, and makes the observation date visible. As of 2026-11-02, the verified sources supported this observed answer:\n\n**Freshness-honesty case — gate the behavior, not a frozen number.** As of **2026-11-02**, Mainnet runs **Protocol 29**, a security-focused release with no new CAPs; live Horizon shows the P28→P29 boundary at ledger **64717645** on **2026-10-01 17:00:07 UTC**. SDF has scheduled the Mainnet vote on **Bell, Protocol 30** for 2026-11-23 17:00 UTC; a scheduled vote is not activation. A correct answer should still perform a dated lookup against an authoritative live network source, state the observed version and as-of time, and warn that validator upgrade votes can make it stale. Software release tags are supporting context, not proof of network activation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A complete current-version answer uses a dated authoritative live-network observation and states its network and observation time. As of 2026-11-02, the verified sources supported this observed answer:\n\n**Freshness-honesty case — gate the behavior, not a frozen number.** As of **2026-11-02**, Mainnet runs **Protocol 29**, a security-focused release with no new CAPs; live Horizon shows the P28→P29 boundary at ledger **64717645** on **2026-10-01 17:00:07 UTC**. SDF has scheduled the Mainnet vote on **Bell, Protocol 30** for 2026-11-23 17:00 UTC; a scheduled vote is not activation. A correct answer should still perform a dated lookup against an authoritative live network source, state the observed version and as-of time, and warn that validator upgrade votes can make it stale. Software release tags are supporting context, not proof of network activation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents source-supported content as a current or dated observation, not a memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -18,9 +18,10 @@
       "Do NOT state a protocol version as definitively current without a dated source or staleness flag.",
       "Do NOT claim Protocol 28 or an earlier version is still current on Mainnet.",
       "Do NOT infer live network activation solely from a software release tag.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+      "Do NOT describe a documentation page's latest listed version as a current live-network measurement."
     ],
-    "notes": "FRESHNESS UPDATE 2026-11-02: Pubnet runs Protocol 29; Horizon/RPC establish activation at ledger 64717645 on 2026-10-01T17:00:07Z (Protocol 28, Adapter, at ledger 64458446 on 2026-09-16). The Bell, Protocol 30 Mainnet vote is scheduled for 2026-11-23 17:00 UTC; grade what a dated live lookup shows. A dated answer after activation may correctly report Protocol 30 (or a later version) as current. Grade a dated live-network lookup and release-versus-activation distinction, not a frozen latest-ledger number.\nAlso good if the answer: Points the user to an authoritative live source (e.g. dashboard / stellar-core release / docs) to confirm the current version.\nGolden cites: Cite a dated source for the version (docs / stellar-core release / network dashboard).\nPOST-VOTE GT-23 CORRECTION 2026-07-10: the stale P26/pending-vote paragraph is replaced rather than left as contradictory judge context."
+    "notes": "FRESHNESS UPDATE 2026-11-02: Pubnet runs Protocol 29; Horizon/RPC establish activation at ledger 64717645 on 2026-10-01T17:00:07Z (Protocol 28, Adapter, at ledger 64458446 on 2026-09-16). The Bell, Protocol 30 Mainnet vote is scheduled for 2026-11-23 17:00 UTC; grade what a dated live lookup shows. A dated answer after activation may correctly report Protocol 30 (or a later version) as current. Grade a dated live-network lookup and release-versus-activation distinction, not a frozen latest-ledger number.\nA complete answer establishes the requested live value through an identified network observation. Cite its source and observation time. A release tag, scheduled vote, or documentation snapshot alone does not establish that value. An official page can relay a live measurement if it identifies the network and observation time. If the available tools return only documentation, state that limitation and distinguish the latest documented version from live state. An honest limitation does not fabricate a version, but it does not establish the requested current value. Do not require a specific provider or an unexposed tool operation.\nPOST-VOTE GT-23 CORRECTION 2026-07-10: the stale P26/pending-vote paragraph is replaced rather than left as contradictory judge context."
   },
   "tags": {
     "category": "edge-behavior",
@@ -29,31 +30,33 @@
   },
   "truth": {
     "lifecycle": {
-      "state": "quarantined",
-      "reviewState": "in-review",
+      "state": "active",
+      "reviewState": "resolved",
       "review": {
         "queuedOn": "2026-11-03",
         "trigger": "proposal-verification",
         "evidence": [
           "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
           "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
-          "research/audits/2026-11-03-qa-followup/reference-corroboration.json"
+          "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+          "research/audits/2026-11-03-qa-followup/reference-approval.md"
         ],
         "startedOn": "2026-11-03",
         "reviewer": "Grok 4.7 high, independent source verifier t9r",
-        "ledger": ".agents/rounds/2026-11-03-qa-followup.md"
+        "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
+        "resolvedOn": "2026-11-03",
+        "resolution": "Clarified the source-backed question scope after independent review. Original answers and grades remain unchanged."
       },
-      "quarantine": {
-        "startedOn": "2026-11-03",
-        "reviewBy": "2026-11-10",
-        "author": "Codex reference proposer t9q and Codex root",
+      "reactivation": {
+        "date": "2026-11-03",
+        "author": "Codex root",
         "reviewer": "Grok 4.7 high, independent source verifier t9r",
-        "cause": "The question requires a current network observation, while the introduction and citation notes accept a documentation snapshot.",
         "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
         "evidence": [
           "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
           "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
-          "research/audits/2026-11-03-qa-followup/reference-corroboration.json"
+          "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+          "research/audits/2026-11-03-qa-followup/reference-approval.md"
         ]
       }
     },
@@ -118,6 +121,66 @@
         "ref": "https://stellar.expert/explorer/public/protocol-history",
         "note": "Ledger 64717645 2026-10-01 17:00:07 UTC Protocol version 29; Ledger 64458446 2026-09-16 17:00:06 UTC Protocol version 28",
         "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+        "observedAt": "2026-11-03",
+        "note": "The page lists Protocol 29 on Mainnet from October 1, 2026. This is documentation, not a live measurement."
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/stellar-core/releases/tags/v30.0.0",
+        "observedAt": "2026-11-03",
+        "note": "The v30.0.0 release was published on 2026-10-16. Release availability alone does not show network activation."
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/",
+        "observedAt": "2026-11-03",
+        "note": "current_protocol_version=29; core_supported_protocol_version=30; history_latest_ledger=65285576."
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+        "observedAt": "2026-11-03",
+        "note": "sequence=65285576; protocol_version=29; closed_at=2026-11-03T13:51:59Z."
+      },
+      {
+        "class": "C",
+        "ref": "https://mainnet.sorobanrpc.com",
+        "observedAt": "2026-11-03",
+        "note": "Public Global Stellar Network ; September 2015; protocolVersion=29."
+      },
+      {
+        "class": "C",
+        "ref": "https://mainnet.sorobanrpc.com",
+        "observedAt": "2026-11-03",
+        "note": "sequence=65285576; protocolVersion=29; closeTime=1793713919. XDR fields are omitted from the saved projection."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLatestLedger.md",
+        "observedAt": "2026-11-03",
+        "note": "The response describes the latest ledger known to that node when it handled the request."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades.md",
+        "observedAt": "2026-11-03",
+        "note": "Validators must agree on a new network setting before the network adopts it."
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/herder/Upgrades.cpp",
+        "observedAt": "2026-11-03",
+        "note": "createUpgradesFor compares the requested version with lclHeader.ledgerVersion before proposing LEDGER_UPGRADE_VERSION."
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/",
+        "observedAt": "2026-11-03",
+        "note": "The same response reports current protocol 29 and supported protocol 30."
       }
     ],
     "corroboration": [
@@ -252,34 +315,102 @@
             "note": "Protocol 28 (Mainnet, September 16, 2026) is followed by Protocol 29 (Mainnet, October 1, 2026)"
           }
         ]
+      },
+      {
+        "claim": "Mainnet reports Protocol 29 at ledger 65285576, closed 2026-11-03T13:51:59Z; Core supports Protocol 30.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-03",
+            "note": "The page lists Protocol 29 on Mainnet from October 1, 2026. This is documentation, not a live measurement."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-core/releases/tags/v30.0.0",
+            "observedAt": "2026-11-03",
+            "note": "The v30.0.0 release was published on 2026-10-16. Release availability alone does not show network activation."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-03",
+            "note": "current_protocol_version=29; core_supported_protocol_version=30; history_latest_ledger=65285576."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-11-03",
+            "note": "sequence=65285576; protocol_version=29; closed_at=2026-11-03T13:51:59Z."
+          },
+          {
+            "class": "C",
+            "ref": "https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-11-03",
+            "note": "Public Global Stellar Network ; September 2015; protocolVersion=29."
+          },
+          {
+            "class": "C",
+            "ref": "https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-11-03",
+            "note": "sequence=65285576; protocolVersion=29; closeTime=1793713919. XDR fields are omitted from the saved projection."
+          }
+        ]
+      },
+      {
+        "claim": "Software support, network activation, and a documentation snapshot are different evidence bases.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLatestLedger.md",
+            "observedAt": "2026-11-03",
+            "note": "The response describes the latest ledger known to that node when it handled the request."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades.md",
+            "observedAt": "2026-11-03",
+            "note": "Validators must agree on a new network setting before the network adopts it."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/herder/Upgrades.cpp",
+            "observedAt": "2026-11-03",
+            "note": "createUpgradesFor compares the requested version with lclHeader.ledgerVersion before proposing LEDGER_UPGRADE_VERSION."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-03",
+            "note": "The same response reports current protocol 29 and supported protocol 30."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task critic-cleanup)",
+      "date": "2026-11-03",
+      "by": "Codex reference proposer t9q and Codex root; independent Grok source verifier t9r; research/audits/2026-11-03-qa-followup/reference-approval.md",
       "evidence": [
-        "Live 2026-11-02: https://horizon.stellar.org/ledgers/64717644 and /64717645 — '64717644 protocol_version 28 closed_at 2026-10-01T17:00:02Z; 64717645 protocol_version 29 closed_at 2026-10-01T17:00:07Z'.",
-        "Live 2026-11-02: https://horizon.stellar.org/ — 'current_protocol_version 29, core_supported_protocol_version 30'; /ledgers?order=desc&limit=1 — ledger 65270214 protocol_version 29 at 2026-11-02T16:27:34Z.",
-        "Live 2026-11-02: https://mainnet.sorobanrpc.com getLatestLedger — '\"protocolVersion\":29,\"sequence\":65270214'.",
-        "Live 2026-11-02: https://horizon.stellar.org/ledgers/64458445 and /64458446 — '64458445 protocol 27 2026-09-16T17:00:01Z; 64458446 protocol 28 2026-09-16T17:00:06Z'.",
-        "Live 2026-11-02 (class A): https://developers.stellar.org/docs/networks/software-versions — 'Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs.'",
-        "Live 2026-11-02 (class B): https://github.com/stellar/stellar-core/releases/tag/v29.0.0 — published 2026-10-05, after activation; v30.0.0 published 2026-10-16 while Mainnet reports 29 (release tag is not activation).",
-        "Live 2026-11-02 (class A): https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar — 'November 23, 2026, 1700 UTC—Mainnet upgrade vote.'; corroborated by https://status.stellar.org/ (class D via Perplexity) 'Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00 - 17:05 UTC'.",
-        "Independent verifier (did not read the proposer matrix) accepted golden.answer, golden.avoid[1], and golden.notes (.agents/rounds/2026-11-02-golden-audit.md, pass 1 batch edge-behavior-02 verify).",
-        "reverifyBy 2026-11-24 is event-tied and matches cluster-120 siblings q-protocol-version-history-list and q-pc-protocol-upgrade-timing: re-probe Mainnet protocol_version the day after the scheduled 2026-11-23 17:00 UTC Bell, Protocol 30 vote.",
-        "Sibling sweep 2026-11-02: grep 'Protocol 2[6-9]|P2[6-9]|64717645|63386819' over eval/qa/corpus/battery → q-edge-fresh-most-recent-news, q-hist-quantum-preparedness-plan (already says Mainnet runs Protocol 29, vote 2026-11-23: consistent), q-pc-memos-reference, q-pc-protocol-26-yardstick, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-cap-process, q-protocol-ledger-close-time, q-protocol-ledger-entry-types, q-protocol-ledger-header-fields, q-protocol-version-history-list, q-raph-xlm-staking, q-sor-contract-trustlines-c-address, q-sor-cross-warmancer-zk-stack, q-sor-persistent-unbounded-collection-cap, q-soroban-auth-delegation-p27, q-soroban-wasm-size-limit, q-zk-host-functions-status; no direct contradiction with the dated P29 example. Undated 'current Protocol 27' wording in q-pc-memos-reference and q-protocol-ledger-entry-types is flagged to the round ledger for their own batches.",
-        "Gospel change (pass 3): golden.notes drops the Software Versions older-copy partial-cap caution, whose trigger expired and which lies outside the three ADR-0008 cases; it also misdated the fix as 2026-08-18. golden.notes gains the explicit post-activation P30 sentence that cluster-120 siblings carry.",
-        "Class C 2026-11-02: improvements/resolved.json sd-008 - resolved 2026-08-28, upstreamRefs stellar/stellar-docs#2574 and PR #2743; GitHub API 2026-11-02: PR #2743 'Update software versions for p27 (Mainnet) and initial p28' merged 2026-08-13T14:36:09Z (64ca6f66); issue #2574 closed 2026-08-13T15:31:59Z.",
-        "Class A 2026-11-02T18:40Z: https://developers.stellar.org/docs/networks/software-versions - 'Protocol 29 (Mainnet, October 1, 2026)', 'Protocol 28 (Mainnet, September 16, 2026)', 'Protocol 27 (Mainnet, July 8, 2026)', 'Protocol 26 (Mainnet, May 6, 2026)'; the page no longer carries the stale P26-Mainnet-current wording.",
-        "Class F 2026-11-02T18:40Z: https://horizon.stellar.org/ - current_protocol_version 29, core_supported_protocol_version 30, history_latest_ledger 65271813; https://horizon-testnet.stellar.org/ current_protocol_version 29.",
-        "Class A 2026-11-02: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide - 'November 3, 2026, 1700 UTC —Testnet upgrade vote' and 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'; class D https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json - 'Stellar Public Network Protocol Upgrade Vote' scheduled 2026-11-23T17:00:00.000Z to 17:05:00.000Z, 'Validators will vote on whether to upgrade Mainnet to to Bell, Protocol 30.'",
-        "Sibling sweep 2026-11-02 (pass 3): q-pc-protocol-upgrade-timing already removed the same caution; q-protocol-27-cap-0071 removes it in this task; q-protocol-version-history-list carries the same P30 sentence; numericInvariant 'Mainnet protocol activation history' says a dated later answer that reports P30 as current is correct. No contradiction. Register cluster-024 note still says 'fixed 2026-08-18' (orchestrator register edit)."
+        "https://horizon.stellar.org/",
+        "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+        "https://mainnet.sorobanrpc.com (getNetwork and getLatestLedger)",
+        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLatestLedger.md",
+        "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades.md",
+        "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/herder/Upgrades.cpp",
+        "research/audits/2026-11-03-qa-followup/reference-changes.md#protocol-measurement-basis",
+        "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+        "research/audits/2026-11-03-qa-followup/reference-sibling-sweep.json",
+        "Sibling sweep: 501 battery files, 4 proposal files, and 2 frozen live files; no conflicting target claim found.",
+        "Support sweep: consistency-register clusters 007, 017, 020, 025, 048, 083, 120 and the Bell vote trap; no source sentinel matches.",
+        "Dated illustrations, freshness tags and reverify dates are unchanged. Review closure and reactivation are explicit.",
+        "research/audits/2026-11-03-qa-followup/reference-approval.md",
+        "Reviewability refinement: required key facts track the question. Conditional background rules remain in golden.notes and avoid clauses."
       ],
       "rootCause": [
-        "freshness-drift",
-        "The dated illustrative example (Protocol 27, 2026-07-09) and its pending-vote avoid item went stale after Protocol 28 (2026-09-16) and Protocol 29 (2026-10-01) activated on Mainnet.",
-        "improvements/resolved.json (sd-008: upstream fix stellar/stellar-docs PR #2743 merged 2026-08-13 and issue #2574 closed 2026-08-13; finding resolved 2026-08-28 after live re-check) - expired older-copy partial-cap caution removed",
-        "Eval-side authoring flaw: pass 1 set reverifyBy 2026-12-15 while cluster-120 siblings use 2026-11-24 for the same Bell vote, and omitted their explicit post-activation P30 sentence."
+        "The question requires a current network observation, while the introduction and citation notes accept a documentation snapshot. .agents/TODO.md at Git commit bdcf915fb552d054657b04b23abc561a65d395f3, entry Resolve diagnostic noncompletions and judge ambiguities.",
+        "research/audits/2026-11-03-qa-followup/reference-changes.md"
       ]
     },
     "origin": "raven-next q-edge-fresh-latest-protocol-version"

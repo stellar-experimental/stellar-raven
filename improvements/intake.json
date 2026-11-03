@@ -334,6 +334,26 @@
     "sk-037": {
       "repo": "stellar/stellar-dev-skill",
       "reason": "The dapp skill owns its low-level invocation and mixed-operation batching guidance."
+    },
+    "sd-089": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx is verified source content in stellar/stellar-docs."
+    },
+    "sd-090": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx is verified source content in stellar/stellar-docs."
+    },
+    "sd-091": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/learn/fundamentals/contract-development/storage/persisting-data.mdx is verified source content in stellar/stellar-docs."
+    },
+    "sd-092": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/data/apis/rpc/api-reference/methods/getTransactions.mdx is verified source content in stellar/stellar-docs."
+    },
+    "sd-093": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Embedded Wallets passkey-storage explanation is verified source content in stellar/stellar-docs."
     }
   }
 }
