@@ -412,3 +412,45 @@ describe("discovery alias rewrite", () => {
     expect(body.issuer).toBeTruthy();
   });
 });
+
+describe("alias hosts", () => {
+  const ALIAS = "https://raven.stellar.buzz";
+
+  it("browser pages on an alias 308 to the same path on the canonical host", async () => {
+    for (const path of ["/", "/docs", "/terms?x=1", "/playground", "/playground/chat", "/health"]) {
+      const res = await SELF.fetch(`${ALIAS}${path}`, { redirect: "manual" });
+      expect(res.status, path).toBe(308);
+      expect(res.headers.get("location"), path).toBe(`${PUBLIC}${path}`);
+    }
+    const post = await SELF.fetch("https://agents.stellar.buzz/playground/chat", {
+      method: "POST",
+      redirect: "manual"
+    });
+    expect(post.status).toBe(308);
+    expect(post.headers.get("location")).toBe(`${PUBLIC}/playground/chat`);
+  });
+
+  it("MCP and OAuth stay on the alias with the alias as issuer and resource", async () => {
+    const mcp = await SELF.fetch(`${ALIAS}/mcp`, {
+      method: "POST",
+      redirect: "manual",
+      headers: { "content-type": "application/json", accept: "application/json, text/event-stream" },
+      body: initializeBody()
+    });
+    expect(mcp.status).toBe(401);
+    expect(mcp.headers.get("www-authenticate")).toContain(ALIAS);
+
+    const metadata = await SELF.fetch(`${ALIAS}/.well-known/oauth-authorization-server`);
+    expect(metadata.status).toBe(200);
+    expect(((await metadata.json()) as { issuer?: string }).issuer).toBe(ALIAS);
+
+    const resource = await SELF.fetch(`${ALIAS}/.well-known/oauth-protected-resource/mcp`);
+    expect(resource.status).toBe(200);
+    expect(((await resource.json()) as { resource?: string }).resource).toBe(`${ALIAS}/mcp`);
+
+    for (const path of ["/authorize", "/callback", "/token", "/register"]) {
+      const res = await SELF.fetch(`${ALIAS}${path}`, { redirect: "manual" });
+      expect(res.status, path).not.toBe(308);
+    }
+  });
+});
