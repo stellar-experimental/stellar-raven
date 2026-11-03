@@ -231,3 +231,53 @@ the Discovery ranking gap goes to whoever holds the Mintlify relationship.
   matches when both outputs are valid with equal top-five orders, or when both are non-valid (both
   fall back). Any other case is a mismatch; the gate stays at 98%. Vector keys all need cosine
   ≥ 0.999, and a replay error on a vector key fails the check.
+- C4 (R7): a timeout is raw Worker model wait > T (500 ms), the condition that triggers fallback.
+  The timeout, error, and invalid union uses that count. The p50 and p95 gates use wait plus the
+  host p95 CPU. The count of calls with wait plus CPU above 500 ms is reported as a diagnostic only.
+
+### B measurement progress (2026-11-03)
+
+- Entry repeat 1 is complete on both sources for bge-base and qwen3 (all keys `ok`). The fresh
+  bge-base capture first recorded 30 false `cf-login-failure` errors: the classifier matched
+  `\b401\b` inside embedding floats. h-capture fixed it (exit code and stderr only, tested with
+  0.401, 0.429, and 0.503) and the 30 keys were repaired once under C2.
+- Clef fixed frame: 6,203 reported input tokens for a 60-card pool. Construction screens with
+  margin: P1 USD 0.0030/1k, P5 USD 0.0130/1k, clef-flash USD 0.235/1k (worst USD 0.00031). Full
+  Clef (P7, `c-cl-k-rrf`) projects USD 1.486/1k (worst USD 0.00198), above the USD 1/1k R6
+  limit, so it stops at screening with no sample or full capture.
+- R7 runs after development grading, only for variants that pass quality and cost.
+- Q9 override catalogs (no dApp override, `compare/override.mjs`): main byte SHA-256
+  `bd28a4c2cbf327ca162e033164a9804950f99e86aae1505c6d6fe73c53512310`, fresh
+  `809c6ec9565ffb00af169ce5fc29243a4166c47fc8967a37145e309a8ae1e086`. Plans keep the frozen
+  manifest in provenance and key the override catalog by its hash.
+- C6: Q9 keys extend completed repeat-1 captures. The new keys must be disjoint from all captured
+  keys. They run under a diagnostic capture ID, old keys stay unchanged, and the packaged fixture
+  gets a new path and a manifest line naming both captures and hashes. Repeat 2 captures the full
+  extended plan at once.
+- C7: R6a output validity counts every query fixture key in a repeat (development and
+  confirmation). Validity reads no labels, so the count reveals no confirmation outcome.
+
+### Decision B: search stays lexical-only (2026-11-03)
+
+Development grading of repeat 1 (lane b-grade, hc t18p, Codex Sol high, offline) fails every
+primary variant; P7 stopped at the R6 cost screen. The coordinator cancelled repeat 2, the
+confirmation part, and R7, because no failing variant can pass. Grok 4.7 xhigh (hc t191) attacked
+the null result and confirmed it (NULL HOLDS). Spend: USD 0.256 of the USD 15 cap. Full record:
+[model-ranking/results.md](2026-11-03-model-ranking/results.md). Decision B is answered as
+option (1); the TODO decision entry is deleted.
+
+### #294 (Jev) evaluated against the same contract (2026-11-03)
+
+Lane jev-eval (hc t18s, Codex Sol high, offline) regraded the author's recorded Jev rankings. The
+headline table reproduces exactly. Jev has the largest development gain measured (legacy W − L
++20/+27 on mapped rows) but fails interference, repeat stability, the Extended lane, and forbidden
+captures, and its query leaves Cloudflare. Evidence: results.md "Independent checks".
+
+### D revisited: absorb Scout 1.9.116 (2026-11-03)
+
+With B lexical-only, the coordinator re-measured D on the unchanged scorer (lane d-absorb, hc
+t192, Codex Sol high, offline, live 1.9.116 inventory fetched 2026-11-03T15:18Z, SHA-256
+`41a168a8…b637a`). With all four new operations excluded: one strict loss (`q-scf-how-to-apply`
+top3), two gains, none of the five 1.9.71 losses recurs, holdout forbidden captures unchanged
+(10/49). Decision under the owner's delegation: absorb (option a). Lane d-ship (hc t199) reconciles
+the tests.

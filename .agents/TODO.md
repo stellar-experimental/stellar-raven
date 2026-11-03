@@ -348,8 +348,25 @@ protocol-history diagnostic stays source-expired until a separate accepted Scout
 `rounds/2026-11-02-routing-repair.md`). Nine designs ran on both sources; none passes, and the
 scorer stays. `morph` token boundaries plus the schema rule fix the short-token and schema-only
 classes, but broad retrieval and skills recall then collapses. Next direction: restore that
-recall with legitimate evidence first, then remove the spurious kind. Owner decision B covers the
-dense option.
+recall with legitimate evidence first, then remove the spurious kind. Owner decision B (a model
+call on search) was answered on 2026-11-03: search stays lexical-only. Eight pre-registered
+Workers AI variants and the recorded Jev rankings (#294) all fail the signed contract
+(`rounds/2026-11-03-model-ranking/results.md`). The closest, dense MULT and clef-flash RRF,
+fail mostly by promoting hackathon operations and unlabeled skills, so a lexical repair must
+not depend on model evidence.
+
+### Bind the `scout_hackathon_detail` card to its operation
+
+Found by the 2026-11-03 null-result attack (`rounds/2026-11-03-model-ranking/results.md`,
+"Independent checks"). `cardMatches` in `eval/lib/grade.mjs` matches the expected operation text
+`hackathon_detail` against `gethackathon`, so the card binds to no catalog operation. The
+routing eval cannot credit `scout.getHackathon` on `q-scf-hackathon-detail-results`, and
+interference checks cannot classify the row as a hackathon row. Fix the card-to-operation
+binding generally, then re-run `npm run eval:routing -- --gate` and record any cardHit5 change
+through the accepted-evidence process.
+
+Done when: every card in the routing corpus binds to at least one catalog operation or service,
+with a test that fails on an unbound card.
 
 ### Stop schema enum values and example tokens from admitting new Scout operations
 
@@ -803,16 +820,4 @@ retires the program.
 Each decision names the question, the evidence it needs, and the safe default. Record each answer
 in a round ledger, `eval/qa/README.md`, or a decision record, then delete the decision here.
 
-### B. Decide whether search may call a query-embedding model
-
-The 2026-11-02 routing round ([ledger](rounds/2026-11-02-routing-repair.md)) found that dense
-evidence is the strongest measured recall signal: W − L +20 on main and +21 on the fresh source,
-with `@cf/baai/bge-base-en-v1.5` (listed at USD 0.0666 per million tokens; about USD 0.0013 per
-1,000 queries of 20 tokens). Every pure lexical repair
-fails because it removes spurious evidence that recall depends on. A query embedding is a paid
-model call on the MCP search path. `AGENTS.md` requires host-side approval, elicitation, and
-budget enforcement for that, and search has none, so the contract (G13) ruled it out.
-
-Options: (1) keep search lexical-only (current state); (2) allow a bounded, metered query
-embedding on search with a lexical fallback, which needs an `AGENTS.md` rule change and a design
-for budget enforcement and CI measurement.
+No owner decision is open.
