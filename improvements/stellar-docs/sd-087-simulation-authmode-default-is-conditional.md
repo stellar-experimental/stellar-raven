@@ -1,7 +1,7 @@
 ---
 id: sd-087
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: Document the conditional authMode default for transaction simulation
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Current public method page and the existing local MCP reproduce the unconditional default. Public Markdown SHA-256: 0a4378f9684b69448dc72b9abd894370a1ab8aec779bff41a80fe14b4783940b. MCP page-content SHA-256: 0d08c97822b14ff1cdc02461cbf84d47da4dcf38ab29192561f7f11ecba1bbff."
   - "Public requests, timestamps, result hashes, CLI fingerprints, and scoped source evidence: research/audits/2026-11-02-golden-overnight/late-docs-receipts.json. Independent Grok review cleared this docs-content finding."
   - "Dedupe covered active findings, recurrences, resolved.json, and intake.json in both worktrees. sd-055 concerns assembly examples; sd-078 concerns restoration. Neither owns authorization defaults."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3034
 ---
 
 ## Finding
@@ -21,7 +22,7 @@ The released implementation chooses its default from the invocation's authorizat
 For `InvokeHostFunction`, an empty entry list selects `record`; a nonempty list selects `enforce`.
 The condition concerns authorization-entry presence, rather than transaction signatures.
 
-This is a `docs-content` error in generated OpenRPC descriptions, owned by `stellar/stellar-docs`.
+Both canonical OpenRPC descriptions contain this error.
 The discrepancy can cause clients to misinterpret authorization behavior when they omit `authMode`.
 It does not establish an exploit or a provider outage.
 
@@ -49,11 +50,10 @@ Extension and restoration operations reject an explicitly supplied mode; the inv
 ## Recommendation
 
 Correct both canonical OpenRPC descriptions.
-Explain the conditional default when `authMode` is omitted for `InvokeHostFunction`.
+Explain the conditional default when callers omit `authMode` for `InvokeHostFunction`.
 Keep `enforce`, `record`, and `record_allow_nonroot` and their explicit meanings.
 Do not replace the condition with a signed-versus-unsigned transaction rule.
 
 Run the documented `pnpm rpcspec:build` and `pnpm rpcspec:validate` workflows.
 Have a Docs maintainer regenerate the method page.
 Recheck the public page and its served MCP copy.
-No runtime workaround or external issue was created by this finding.

@@ -1,7 +1,7 @@
 ---
 id: sd-089
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Check simulation success before decoding the preview return value"
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "The exact served source was also visible in case77 transcript entries 5 and 6. This is source evidence, not a verdict-based truth claim."
   - "Dedupe checked every improvements namespace, recurrences, resolved.json, and intake in MAIN and the method tree. Related sd-055 covers assembly examples; sd-078 covers archived-entry restoration. Neither covers this decoding guard."
   - "research/audits/2026-11-02-golden-overnight/tail-source-receipts.json records request/result hashes, bounded public source text, currentness, and verification limits. No simulation or transaction ran."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3036
 ---
 
 ## Finding
@@ -22,17 +23,22 @@ The example does not establish the expected return-value boundary.
 
 This is a Docs example defect, separate from transaction assembly and restoration guidance.
 It can obscure the simulation error with a later conversion failure.
-No network failure or transaction submission is needed to identify the missing guard.
+The local fixtures identify the missing guard without a network failure or transaction submission.
 
 ## Evidence
 
 The current [published guide](https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md) retains the call.
 The [immutable source](https://github.com/stellar/stellar-docs/blob/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx) contains the same example.
-These are one content producer; their agreement proves source-to-render currentness, not independent authority.
-The receipt preserves the exact call and observation times.
-No original or replacement example executed during the initial preparation.
 
-The follow-up below verifies the runtime failure and local success, error, and restoration outcomes.
+### Local SDK verification
+
+The published source still contains the unguarded decode on 2026-11-03.
+Local SDK `17.4.0` fixtures reproduce a TypeError on error and restoration outcomes.
+The guarded example preserves the simulation error and handles restoration separately.
+It also handles missing results, successful values, and valid void returns.
+The SDK decodes a valid void return to null; that value is not a missing result.
+
+These checks execute no contract, simulation, or transaction.
 
 ## Recommendation
 
@@ -43,14 +49,3 @@ Keep restoration and missing-result outcomes separate from successful invocation
 Preserve the guide's correct assembled-transaction build step.
 
 Validate the corrected example with local fixtures that require no network or submitted transaction.
-
-## Follow-up verification
-
-The published source still contains the unguarded decode on 2026-11-03.
-Local SDK17.4.0 fixtures reproduce a TypeError on error and restoration outcomes.
-The guarded example preserves the simulation error and handles restoration separately.
-It also handles missing results, successful values, and valid void returns.
-The SDK decodes a valid void return to null; that value is not a missing result.
-
-The [fixture](../../research/audits/2026-11-03-qa-followup/sdk-fixtures.mjs), [results](../../research/audits/2026-11-03-qa-followup/sdk-fixtures-result.json), and [current source checks](../../research/audits/2026-11-03-qa-followup/proposal-currentness.json) retain exact evidence.
-These checks execute no contract, simulation, or transaction.

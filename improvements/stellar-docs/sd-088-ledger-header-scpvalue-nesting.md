@@ -1,7 +1,7 @@
 ---
 id: sd-088
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: Show consensus-value members beneath scpValue in the Ledgers page
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "Current public Markdown SHA-256: 542beafe9c23c70ebd321606b29342054732172d2d93fb07c4643e7a15adc37d. Current MCP page-content SHA-256: 8a53f3bb15356ed6e485184ff2bff6b60e6adcd6bc3ff5b99063328bffbd6597."
   - "Public requests, timestamps, schema identities, result hashes, and scoped source evidence: research/audits/2026-11-02-golden-overnight/late-docs-receipts.json. Independent Grok review cleared a narrow presentation clarification, not a false wire declaration."
   - "Dedupe covered both worktrees. Resolved sd-056 corrected units and the header extension; those fixes remain. Active sd-014 concerns inclusion proofs, a different boundary."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3035
 ---
 
 ## Finding
@@ -20,7 +21,6 @@ Its SCP paragraph also describes storage here and in the following three fields.
 This hierarchy can encourage an incorrect direct-field table.
 The page does not explicitly declare a false XDR wire structure.
 
-This is a verified `docs-content` presentation ambiguity owned by `stellar/stellar-docs`.
 The correction should clarify nesting, rather than claim that the wire format changed.
 
 ## Evidence
@@ -37,7 +37,6 @@ This versioned comparison does not claim that every network runs Protocol 30.
 
 The [Core implementation](https://github.com/stellar/stellar-core/blob/0e49751aa9ddf892302cca02cea7f3f5d97df9f1/src/ledger/LedgerManagerImpl.cpp#L1774) independently assigns the agreed value to `header.current().scpValue`.
 Its transaction-set validation reads that value's `txSetHash`.
-The retained receipts preserve source hashes and bounded identity evidence.
 No ledger decoder, account query, or transaction ran for this finding.
 
 ## Recommendation
@@ -49,4 +48,3 @@ Preserve the corrected stroop units and direct header-extension explanation.
 Leave the separate transaction-set application wording outside this patch.
 
 Recheck the rendered heading hierarchy and both schema structures.
-No schema, runtime, golden, or external issue changed for this finding.

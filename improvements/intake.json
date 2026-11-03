@@ -342,6 +342,10 @@
     "cs-010": {
       "repo": "cloudflare/agents",
       "reason": "The agents package metadata (npm view agents@0.32.0 repository bugs) names cloudflare/agents as its issue owner; createAI lives in packages/agents/src/models."
+    },
+    "sd-096": {
+      "repo": "stellar/stellar-docs",
+      "reason": "redirects.json at the stellar/stellar-docs repository root owns the wildcard redirect rules."
     }
   }
 }

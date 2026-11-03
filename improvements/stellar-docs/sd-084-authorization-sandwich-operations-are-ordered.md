@@ -1,7 +1,7 @@
 ---
 id: sd-084
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Describe authorization sandwich operations as ordered and atomic
 evidence:
@@ -9,29 +9,27 @@ evidence:
   - "Stellar Core TransactionFrame::applyOperations iterates over mOperations in order and applies each operation to transaction state. Source body SHA-256: fb6c9fcb85589265c3199205d247ae8ebb2aacc662b6182fe8ef098337ac9fd5. URL: https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp."
   - "2026-11-03T01:34:06Z the existing local MCP served the same simultaneous wording in a focused get_doc_page read. Request/result hashes and public HTTP receipts: research/audits/2026-11-02-golden-overnight/authorization-source-receipts.json."
   - "The new q-comp-auth-flags-overview answer repeats the wording. Its original correct grade remains unchanged; the independent review records a qualitative disagreement."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3031
 ---
 
 ## Finding
 
-The authorization sandwich explanation describes transaction operations as simultaneous.
+The asset-control page describes authorization sandwich operations as simultaneous.
 The operations execute in order, with atomic transaction results.
 The example depends on authorization before the payment and deauthorization afterward.
 The current wording confuses operation order with transaction atomicity.
 
-This is a `docs-content` defect owned by `stellar/stellar-docs` under the intake map.
 The finding concerns the explanation, rather than a demonstrated failure of the example transaction.
 
 ## Evidence
 
 The [asset-control page](https://developers.stellar.org/docs/tokens/control-asset-access.md) lists five ordered sandwich operations.
-Its next paragraph calls bundled operations simultaneous.
+Its next paragraph calls bundled operations simultaneous at line `108`.
 [Stellar Core](https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp) applies `mOperations[i]` in increasing index order.
 Later operations use the transaction state produced by earlier operations.
 The focused MCP read reproduced the documentation wording without changing source or running a transaction.
 
-Retained receipts identify the exact public response bytes and the MCP request and result.
-The original diagnostic grade stays separate from this source correction.
-The first bad release is not established.
+The checks do not establish the first affected release.
 
 ## Recommendation
 

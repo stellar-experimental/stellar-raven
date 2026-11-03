@@ -1,7 +1,7 @@
 ---
 id: sd-086
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Correct strict-send destination descriptions in the Horizon OpenAPI source
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Fresh public Horizon GET with destination_assets returns HTTP 200 and path records. Replacing that selector with source_assets returns HTTP 400 for a missing destination selector."
   - "Safe public request receipts, exact timestamps, small query descriptors, validation details, and body hashes: research/audits/2026-11-02-golden-overnight/horizon-strict-send-receipts.json. No full response bodies are retained."
   - "Dedupe covered active findings and resolved.json in MAIN and the method worktree before creation. No strict-send destination-description finding appeared."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3033
 ---
 
 ## Finding
@@ -22,7 +23,6 @@ Both descriptions instead tell readers to provide `source_account` or `source_as
 The endpoint introduction and parameter references correctly use the destination selectors.
 
 Following the incorrect descriptions can produce a rejected pathfinding request.
-This is a `docs-content` defect in documentation-owned OpenAPI descriptions.
 The parameter names, runtime contract, and endpoint implementation remain correct.
 
 ## Evidence
@@ -43,7 +43,6 @@ The source chain is explicit at that commit:
 The editing source therefore belongs to the Docs repository, rather than an inferred external API-spec generator.
 The generated bundle contains the same two incorrect sentences.
 The live [strict-send page](https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths.md) reproduces both after whitespace normalization.
-The retained receipts record the exact sentence once and identify both affected component locations.
 This record does not claim when the error first appeared.
 
 ### Runtime contract check
@@ -68,11 +67,6 @@ They execute no payment, transaction, or bridge.
 | --- | --- |
 | Valid destination selector, HTTP `200` | `3771f3fff0a558a2ba730c0e2d040e234d2998d5af6f9070c8e05d343ca860d9` |
 | Incorrect source alternative, HTTP `400` | `8e856959ebdf4d4eb62384af5df146ecb2ec5e6a81ed18a447d54434aadc6fb1` |
-
-[The safe evidence receipt](../../research/audits/2026-11-02-golden-overnight/horizon-strict-send-receipts.json) records exact URLs, timestamps, request hashes, and response hashes.
-It retains field names and validation metadata, rather than complete third-party bodies or returned prices.
-The reviewed QA answer selected the correct parameters and retains its original `correct` grade.
-Method `7` remains invalid; this finding makes no aggregate QA claim.
 
 ## Recommendation
 

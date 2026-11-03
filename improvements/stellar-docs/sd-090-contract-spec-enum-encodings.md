@@ -1,7 +1,7 @@
 ---
 id: sd-090
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Correct tagged and integer enum encodings in the contract-spec guide"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "The official SDK-author guide independently describes a symbol-led vector for a selected union variant. Retained published-body SHA256 938bbced8e584420cb1b83211964e12f446626ca5dd920fde6ce4b635560d4ad. This corroborates the implementation, rather than treating two Docs pages as independent implementations."
   - "Dedupe checked every improvements namespace, recurrences, resolved.json, and intake in MAIN and the method tree. No equivalent enum-encoding finding appeared. sd-055 concerns transaction assembly examples."
   - "research/audits/2026-11-02-golden-overnight/tail-source-receipts.json contains exact URLs, source dates, public body hashes, and bounded implementation excerpts. No contract invocation, simulation, or transaction ran."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3037
 ---
 
 ## Finding
@@ -33,11 +34,20 @@ The [immutable source](https://github.com/stellar/stellar-docs/blob/85d2d1b8e7a4
 
 The separate [SDK implementation](https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/contract/spec.ts) emits one symbol-led vector for a selected union variant.
 It emits a single `scvU32` for a declared integer-enum value and rejects a vector during conversion.
-The SDK source uses a release tag; the receipt pins its observed bytes without inventing an immutable commit.
-The Docs source and rendered page share one producer.
 The SDK implementation provides the separate encoding evidence.
 
-The initial preparation ran no conversion or contract execution.
+### Local SDK verification
+
+The published source still contains the reported enum examples on 2026-11-03.
+Local SDK `17.4.0` fixtures serialize and reload both specifications.
+Separate A and B union values round-trip as symbol-led vectors.
+Integer values 1 and 2 round-trip as one u32.
+The SDK rejects the published integer vector.
+
+The tagged decoder accepts A followed by a map and ignores that trailing map.
+It decodes only A; re-encoding removes the extra map.
+This permissiveness does not represent both variants or establish on-chain rejection.
+The local fixtures do not execute the Python, Java, or PHP examples.
 
 ## Recommendation
 
@@ -48,17 +58,3 @@ Apply the correction to every repeated Python, Java, and PHP example in both enu
 Keep the valid struct examples unchanged.
 
 Validate each corrected example with its stated SDK version before publication.
-
-## Follow-up verification
-
-The published source still contains the reported enum examples on 2026-11-03.
-Local SDK17.4.0 fixtures serialize and reload both specifications.
-Separate A and B union values round-trip as symbol-led vectors.
-Integer values 1 and 2 round-trip as one u32; the published integer vector is rejected.
-
-The tagged decoder accepts A followed by a map and ignores that trailing map.
-It decodes only A; re-encoding removes the extra map.
-This permissiveness does not represent both variants or establish on-chain rejection.
-Python, Java, and PHP examples remain unexecuted.
-
-The [fixture](../../research/audits/2026-11-03-qa-followup/sdk-fixtures.mjs), [results](../../research/audits/2026-11-03-qa-followup/sdk-fixtures-result.json), and [current source checks](../../research/audits/2026-11-03-qa-followup/proposal-currentness.json) retain exact evidence.

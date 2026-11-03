@@ -1,7 +1,7 @@
 ---
 id: sk-037
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Remove unsupported classic-operation batching from the dapp skill invocation guidance"
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "Independent SDK boundary: stellar/js-stellar-sdk v17.4.0 src/rpc/transaction.ts rejects assembly outside the single supported Soroban-operation shape. Retained source SHA256 be386ee34388e57c83c47db874ff3946e6cc381bb50cb66440bad8363847230a."
   - "Dedupe includes all skills findings, every other namespace, recurrence text, resolved.json, and intake in MAIN and the method tree. sk-033 concerns Rust try-client nesting; sk-036 concerns sendTransaction statuses. Neither covers mixed operation batching."
   - "research/audits/2026-11-02-golden-overnight/tail-source-receipts.json records the latest-branch check, immutable served evidence, public source boundaries, and pending runtime fixture checks. No simulation or transaction ran."
+  - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-dev-skill/issues/173
 ---
 
 ## Finding
@@ -18,20 +19,27 @@ evidence:
 The dapp skill recommends low-level invocation for batching a contract call with classic operations.
 That recommendation conflicts with the supported single-operation Soroban transaction shape used by its SDK preparation path.
 A reader can select this path expecting it to assemble an unsupported mixed transaction.
-The current main-branch file and the served immutable version both retain the sentence.
+The current main-branch file and the immutable version both retain the sentence.
 
 ## Evidence
 
 The affected section is “Advanced: low-level invocation without a client” in `skills/dapp/SKILL.md`.
-The [current source](https://github.com/stellar/stellar-dev-skill/blob/main/skills/dapp/SKILL.md) still contains the claim at the recorded observation time.
+The [current source](https://github.com/stellar/stellar-dev-skill/blob/main/skills/dapp/SKILL.md) contains the claim at line `332` on `2026-11-03`.
 The public contents response identifies immutable Git blob `6b2a072e602b94874d962ce6d931d3fa3c9caf93`.
-That is a blob identity, not an inferred commit hash.
-The [served source](https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/dapp/SKILL.md) pins the exposed version.
+The [served source](https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/dapp/SKILL.md) pins the observed version.
 
-Those two skill versions share one producer.
 The separate [SDK assembly implementation](https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/rpc/transaction.ts) supplies the applicable operation-shape boundary.
-The initial preparation assembled no mixed transaction and ran no network simulation.
 The first introducing commit is unknown and is not inferred from the observed versions.
+
+### Local SDK verification
+
+The latest published dapp skill still contains the batching recommendation on 2026-11-03.
+Local SDK `17.4.0` fixtures build a mixed invocation/manage-data transaction without signing it.
+The assembly method rejects that transaction before simulation processing.
+A fee-bump wrapper retains the same rejection.
+A single-invocation control assembles successfully with the same local simulation fixture.
+
+No network simulation, signature, or submission occurs.
 
 ## Recommendation
 
@@ -41,15 +49,4 @@ State that the inner Soroban transaction retains its single supported operation.
 Distinguish contract-to-contract composition from batching separate transaction operations.
 Keep valid client invocation and transaction preparation examples unchanged.
 
-Recheck adjacent operation guidance and validate a local mixed-operation rejection fixture before publication.
-
-## Follow-up verification
-
-The latest published dapp skill still contains the batching recommendation on 2026-11-03.
-Local SDK17.4.0 fixtures build a mixed invocation/manage-data transaction without signing it.
-The assembly method rejects that transaction before simulation processing.
-A fee-bump wrapper retains the same rejection.
-A single-invocation control assembles successfully with the same local simulation fixture.
-
-The [fixture](../../research/audits/2026-11-03-qa-followup/sdk-fixtures.mjs), [results](../../research/audits/2026-11-03-qa-followup/sdk-fixtures-result.json), and [current source checks](../../research/audits/2026-11-03-qa-followup/proposal-currentness.json) retain exact evidence.
-No network simulation, signature, or submission occurs.
+Recheck adjacent operation guidance and validate the correction with the local mixed-operation rejection fixture.
