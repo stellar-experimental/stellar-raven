@@ -65,10 +65,11 @@
     }
   ],
   // Production hostnames: raven.stellar.org is the canonical route; the two
-  // stellar.buzz hosts are aliases (they keep the WorkOS redirect-URI
-  // registrations valid and serve existing clients). Ignored by local
-  // wrangler dev. workers.dev stays off: the custom domains are the only
-  // front door.
+  // stellar.buzz hosts are aliases. Their pages 308 to the canonical host,
+  // and their MCP and OAuth paths keep serving existing clients
+  // (src/hosts.ts). Ignored by local wrangler dev. workers.dev stays off:
+  // the custom domains are the only front door. A wider route on this zone,
+  // such as *stellar.buzz/*, takes these custom domains from this Worker.
   "routes": [
     // raven.stellar.org arrives via Cloudflare for SaaS on the stellar.buzz
     // zone (custom hostname + CNAME to proxy-fallback.stellar.buzz). Without
