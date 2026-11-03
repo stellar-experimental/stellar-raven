@@ -71,16 +71,16 @@
           "q-sep-catalog-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
-        "note": "grader-caution candidate",
+        "lastChecked": "2026-11-03",
+        "note": "SEP-8 approval-server facts agree across both cases. The README/preamble status conflict ended on 2026-11-03.",
         "memberContentSha256": {
-          "q-sep-8-regulated-assets": "98a0f218b032550a663626af28946a9d216f20d83e3eddeb70beffd186ce4982",
-          "q-sep-catalog-list": "089d2603b1311217534a2f6b0cf551a95eb4bfe7be852f34cd9eb0aa7bed76e6"
+          "q-sep-8-regulated-assets": "09448a37a2212b029702788576f278092ae879c85f8701f555ef6c75faa88ff4",
+          "q-sep-catalog-list": "7958d07c93269e209a6f7677a43c2bb9de4d6c557ca75793e95bbfb1e1e235a7"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Neither q-sep-8-regulated-assets nor q-sep-catalog-list changed question, answer, keyFacts, avoid, or notes versus origin/main (truth metadata only, e.g. SEP-7/8 Active-vs-README-Final evidence re-observed 2026-11-02). The SEP-8 tension and grader-caution note still hold.",
-          "verdict": "consistent"
+          "date": "2026-11-03",
+          "verdict": "consistent",
+          "reason": "Live recheck 2026-11-03 at stellar-protocol ba980f02dc50025e86e83e3d9bef430b59104a15 confirms README and SEP-7/8 preambles agree on Active after PR #2058. Both member cases remove the old conflict caution. Their purpose and approval_server requirements remain consistent."
         }
       },
       {
@@ -236,13 +236,13 @@
           "q-tool-lab-what-is"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Changed members keep the note's statuses: q-sep-31-cross-border says SEP-31 and SEP-24 Active, q-crp-oz-rwa-erc3643-trex says SEP-0057 Draft (v0.4.0), q-soroban-contract-build-verification says SEP-55/58 Draft, q-sep-interactive-deposit-withdraw keeps SEP-6 interactive-only deprecation; SEP-41 Draft v0.5.2 matches the reSwept record. No status conflict.",
-          "verdict": "consistent"
+          "date": "2026-11-03",
+          "verdict": "consistent",
+          "reason": "Read all 15 member cases on 2026-11-03. The catalog still maps SEP numbers to purposes and requires no lifecycle status. Its removed SEP-7/8 caution agrees with the live README and preambles at ba980f02dc50025e86e83e3d9bef430b59104a15. Other members' status claims are unchanged; none restores the former SEP-8 conflict."
         },
-        "note": "SEP-1/9/10/12/24/31/46/48 Active; SEP-6 Active with only interactive components deprecated in favor of SEP-24 (the only-partial-deprecation nuance is stated identically in all 3 cases that touch it); SEP-30/38/39/41/43/45/55/57/58 Draft — consistent everywhere. SEP-8 moved to tensions (upstream repo itself inconsistent). Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+        "note": "SEP-1/9/10/12/24/31/46/48 Active; SEP-6 Active with only interactive components deprecated in favor of SEP-24 (the only-partial-deprecation nuance is stated identically in all 3 cases that touch it); SEP-30/38/39/41/43/45/55/57/58 Draft — consistent everywhere. SEP-7 and SEP-8 README rows and preambles agree on Active as of 2026-11-03. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-aas-sep30-recoverable-wallets": "a146e379eea481fda53f3816d5c106b11393901ad14214cab5457bc926ad347c",
           "q-comp-anchor-compliance-stack": "a4bf982e7e7add1b7be7cab3419c8081dc675e51e415c9413ec4b6fbf8d2da93",
@@ -254,7 +254,7 @@
           "q-sep-41-token-interface": "4207954623e9cd72fa6e59eb36b7de63d4b80f20a26f200981e39f36347c3837",
           "q-sep-45-contract-auth": "10e46e2c1bfe76f56ab230267414e7b6b806d597ab4eba2eb3a5a31818601a67",
           "q-sep-6-24-deprecation": "ada1ab7634d53fc26d72896dffe398aa6a7b46bddb2b1f57257cd05a7ef8ed2e",
-          "q-sep-catalog-list": "089d2603b1311217534a2f6b0cf551a95eb4bfe7be852f34cd9eb0aa7bed76e6",
+          "q-sep-catalog-list": "7958d07c93269e209a6f7677a43c2bb9de4d6c557ca75793e95bbfb1e1e235a7",
           "q-sep-interactive-deposit-withdraw": "7adf9bf1e0f8e5ad420fa415f32719d79ccc0172278d02f07d776435d951940b",
           "q-soroban-contract-build-verification": "5224569103a59b2076056f14db2c54d35aad05d85981e5666812da912ea2f6ed",
           "q-soroban-oz-token": "29eff6570011afb5aeca21a5b6eb7d1202b72718851d620404e6522c664c5ff1",
@@ -879,18 +879,18 @@
           "q-sep-catalog-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
+          "date": "2026-11-03",
           "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-eco-lobstr-wallet moved stable -> scheduled (LOBSTR operator, networks, and scale claims unchanged). No stated value changed, so the other members of \"q-eco-lobstr-wallet + q-crp-anchors-by-corridor + q-sep-catalog-list + q-sep-8-regulated-assets\" still agree."
+          "reason": "Read all four member cases on 2026-11-03. The SEP cases remove the resolved README/preamble caution. The LOBSTR and corridor cases keep their independent source and date requirements. Those requirements do not depend on the SEP-7/8 conflict."
         },
-        "note": "retain grader caution and accept accurately dated/source-scoped answers",
+        "note": "Retain the LOBSTR and corridor source/date requirements. The SEP-7/8 README/preamble conflict ended on 2026-11-03.",
         "memberContentSha256": {
           "q-crp-anchors-by-corridor": "f938892a2f1761b29ac792fa7238df687c4bf1c30eba483454b4c74bf8beab5b",
           "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
-          "q-sep-8-regulated-assets": "98a0f218b032550a663626af28946a9d216f20d83e3eddeb70beffd186ce4982",
-          "q-sep-catalog-list": "089d2603b1311217534a2f6b0cf551a95eb4bfe7be852f34cd9eb0aa7bed76e6"
+          "q-sep-8-regulated-assets": "09448a37a2212b029702788576f278092ae879c85f8701f555ef6c75faa88ff4",
+          "q-sep-catalog-list": "7958d07c93269e209a6f7677a43c2bb9de4d6c557ca75793e95bbfb1e1e235a7"
         }
       },
       {

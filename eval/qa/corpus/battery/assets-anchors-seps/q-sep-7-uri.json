@@ -15,7 +15,7 @@
       "Do NOT misnumber it (the URI scheme is SEP-7, not SEP-10 or SEP-24).",
       "Do NOT confuse SEP-7 (signing URI) with SEP-10 (web authentication)."
     ],
-    "notes": "Dossier §7.1, Q19. Verified: SEP-0007 'URI Scheme to facilitate delegated signing'. Status note: the spec preamble declares Active (v2.1.0); the ecosystem README master table lists it under Final. Status is not gated — the number + scheme + tx/pay ops are the defining facts.\nAlso good if the answer: Lets a website/app hand a wallet a transaction or pay operation to sign.\nGolden cites: SEP-0007 on the stellar-protocol repo or developers.stellar.org."
+    "notes": "Dossier §7.1, Q19. Verified: SEP-0007 'URI Scheme to facilitate delegated signing'. Lifecycle status is not required. The SEP number, URI scheme, and tx/pay operations define this case.\nAlso good if the answer: Lets a website/app hand a wallet a transaction or pay operation to sign.\nGolden cites: SEP-0007 on the stellar-protocol repo or developers.stellar.org."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -37,19 +37,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
+      "date": "2026-11-03",
+      "by": "lane cs003 (Codex gpt-6.1-sol high)",
       "evidence": [
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md — \"Title: URI Scheme to facilitate delegated signing / Status: Active / Updated: 2020-07-29 / Version: 2.1.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-        "[A] https://developers.stellar.org/docs/build/apps/wallet — \"The [Sep-7] standard defines a way for a non-wallet application to construct a URI scheme that represents a ...\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md — \"to look like this: `web+stellar:` (no forward-slashes) ... web+stellar:tx ... web+stellar:pay\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
-        "[E] stellarDocs.search_docs -> https://developers.stellar.org/docs/build/apps/wallet/sep7 — \"The scheme used is web+stellar, followed by a colon. Example: web+stellar:<operation\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md — \"origin_domain ... URI_REQUEST_SIGNING_KEY\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0007.md — \"Status: Active\" (observedAt 2026-11-02; supports golden.notes: disputed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0007] | URI Scheme to facilitate delegated signing | Interstellar | Final | ... | [SEP-0008] | Regulated Assets | Interstellar | Final |\" (observedAt 2026-11-02; supports golden.notes: disputed)",
-        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.notes: disputed)",
-        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
-        "Sibling sweep 2026-11-02: checked q-sep-catalog-list, q-sep-wallet-seps-list; no contradiction with this case's facts."
+        "[B] https://github.com/stellar/stellar-protocol/blob/ba980f02dc50025e86e83e3d9bef430b59104a15/ecosystem/README.md and sep-0007.md, sep-0008.md, sep-0014.md, sep-0039.md, sep-0054.md (live current master ba980f02dc50025e86e83e3d9bef430b59104a15, observedAt 2026-11-03): README status cells and preambles agree: SEP-0007 Active, SEP-0008 Active, SEP-0014 Active, SEP-0039 Draft, SEP-0054 Active.",
+        "[B] https://github.com/stellar/stellar-protocol/blob/ba980f02dc50025e86e83e3d9bef430b59104a15/ecosystem/README.md and https://github.com/stellar/stellar-protocol/blob/ba980f02dc50025e86e83e3d9bef430b59104a15/ecosystem/sep-0013.md (observedAt 2026-11-03): the adjacent SEP-0013 difference remains: README Abandoned; preamble Rejected (In favor of SEP-6). This does not affect these cases' purpose mappings or justify keeping SEP-7/8 disputed.",
+        "[B] https://github.com/stellar/stellar-protocol/pull/2058: merged 2026-11-03T03:39:04Z as ded60f56201478b82b341151a6c44f7d1a4aec6e; current master contains the fix.",
+        "[A] https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals (read 2026-11-03): lists SEP-7, SEP-8, and SEP-14 under Complete list of active proposals and corroborates the purpose mappings. This page does not define precedence between README status cells and SEP preambles.",
+        "Sibling sweep 2026-11-03: checked q-anchor-sdp-vs-anchor-platform, q-asset-wallet-sdk-seps, q-sep-1-toml, q-sep-7-uri, q-sep-8-regulated-assets, q-sep-catalog-list, q-sep-clawback-prereq-flag, q-sep-wallet-seps-list, q-comp-anchor-compliance-stack, q-comp-auth-flags-overview, q-comp-sep6-vs-sep12-roles, q-comp-sep8-number-lookup-no-deepresearch, q-comp-sep8-regulated-assets-approval-server, q-crp-oz-rwa-erc3643-trex, q-crp-tokenize-personal-rwa, q-rwa-projects-tokenizing-stellar, q-rwa-stellar-vs-erc20-regulated, q-rwa-tokenization-standards, q-ti-parse-raw-ledger-data. Only q-sep-7-uri, q-sep-8-regulated-assets, and q-sep-catalog-list encoded the resolved README/preamble conflict. Other siblings describe SEP purposes or transaction-response statuses and need no change. No case asserts SEP-0013 status.",
+        "[A] https://developers.stellar.org/docs/build/apps/wallet/sep7 (read 2026-11-03): corroborates SEP-7, web+stellar:, and tx/pay operations.",
+        "[B] https://github.com/stellar/stellar-protocol/blob/ba980f02dc50025e86e83e3d9bef430b59104a15/ecosystem/sep-0007.md (read 2026-11-03): defines the URI scheme, tx/pay operations, and origin_domain/signature validation. Removed the obsolete status-conflict note; answer, keyFacts, and avoid are unchanged."
+      ],
+      "rootCause": [
+        "improvements/resolved.json entry cs-003 (resolved 2026-11-03; stellar/stellar-protocol PR #2058 aligned the README status cells with the SEP preambles)"
       ]
     },
     "origin": "raven-next q-sep-7-uri",
