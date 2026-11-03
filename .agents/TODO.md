@@ -85,26 +85,6 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
 
-### Bump the `stellar-dev` skill pin to serve the sk-032 to sk-036 fixes
-
-On 2026-11-03 the pin update selected `9c604c2be6ae69f962fbb578bce6b681d462fea5` through
-`ecosystem-skills/update.sh`. The author read all nine changed file diffs and selected
-`assets/regulated-assets.md` as the existing assets skill companion. All 67 pinned files passed
-upstream hash checks. The rebuilt catalog contains 284 entries, including 204 exact-ID skill
-sections. All 544 complete routing rows remain identical, including grades, hit order, and scores.
-Only the catalog fingerprint and explanation changed in `eval/gates.json`; every threshold,
-accepted total, label, and baseline date remains unchanged. The existing dapp description override
-remains necessary. The new pin still contains the `sk-037` mixed-operation batching claim.
-
-Independent review and deployment remain with the coordinator. Keep this item open until production
-serves the new pin. Deploy only after the overnight golden QA run of 2026-11-02 ends. That run
-belongs to another session and pins the remote server identity. Its owner releases the pin.
-The run does not authorize deployment.
-
-Done when: production `codemode.skill.read` serves the fixed sections, for example
-`skills/smart-contracts/SKILL.md` with `soroban-sdk = "29"`.
-
-
 ## Routing
 
 ### `search` does not surface the research lane for protocol-history questions
@@ -831,6 +811,15 @@ Proposal pass 2026-11-03: R04 already has `q-sor-decode-hosterror-codes`; R23 ha
 proposed: `q-infra-testnet-reset-schedule-recovery` and
 `q-sor-reflector-testnet-contract-addresses`. Public-source matrices live in their truth blocks.
 See [the proposal ledger](rounds/2026-11-03-hackmeridian-golden-proposals.md).
+
+Activation hold 2026-11-03: the independent review gave ACTIVATE for both proposals
+([review](rounds/2026-11-03-hackmeridian-golden-proposals-review.md)). Activation fails the corpus
+coverage lint: the scheduled share would be 177/503 (35.2%), above the 35% cap in
+`eval/qa/lint-corpus.mjs` (the 2026-07-11 design target that limits upkeep by design). One case alone
+is 176/502 (35.06%). The coordinator kept the cap: both facts expire with the 2026-12-16 Testnet
+reset, which also removes the listed Reflector Testnet contracts. Reopen after the reset with the
+post-reset facts, or when the scheduled share has room, or by converting other scheduled cases to
+behavioral wording through `golden-truth`. Raising the cap needs an owner decision.
 Independent activation review and the later activation commit remain outstanding.
 
 Done when: the cases pass `npm run eval:qa:lint -- --stale --enforce-floors` and are merged.
