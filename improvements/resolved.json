@@ -21,6 +21,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d43cc7d548abd769ae757193d4857ff6cb5f122d/improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md"
     },
     {
+      "id": "cs-003",
+      "title": "The status table in ecosystem/README.md disagrees with the Status: preamble line of five SEPs:",
+      "service": "canonical-source",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-03",
+      "repo": "stellar/stellar-protocol",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-protocol/issues/2055",
+        "https://github.com/stellar/stellar-protocol/pull/2058"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-protocol/pull/2058"
+      ],
+      "liveRecheck": "2026-11-03: stellar/stellar-protocol master ba980f02dc50025e86e83e3d9bef430b59104a15 ecosystem/README.md status cells match the sep-NNNN.md preamble Status for SEP-0007 Active, SEP-0008 Active, SEP-0014 Active, SEP-0039 Draft, and SEP-0054 Active (author lane cs003 and reviewer each re-read all 60 rows independently). PR #2058 merged 2026-11-03T03:39:04Z as ded60f56201478b82b341151a6c44f7d1a4aec6e. Residual outside the original five rows: SEP-0013 README Abandoned vs preamble Rejected (In favor of SEP-6); tracked as successor cs-011. Source: https://github.com/stellar/stellar-protocol/blob/ba980f02dc50025e86e83e3d9bef430b59104a15/ecosystem/README.md Resolution comment: https://github.com/stellar/stellar-protocol/issues/2055#issuecomment-6611940463",
+      "reviewEvidence": "Distinct reviewer Grok 4.7 high (author Codex gpt-6.1-sol high lane cs003; coordinator Claude Opus 5.5) re-derived the fix live on 2026-11-03 without the author notes: .agents/rounds/2026-11-03-cs003-golden-pass-review.md (60-row README vs preamble compare at ba980f02, PR #2058 merge check, golden diff review, rg reference audit).",
+      "sourceCommit": "e9a845464c0e7ae01efde4c4701561abd81cfed0",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e9a845464c0e7ae01efde4c4701561abd81cfed0/improvements/canonical-source/cs-003-sep-registry-status-disagrees-with-preambles.md"
+    },
+    {
       "id": "ll-021",
       "title": "Lumenloop's SCF recap discovery lags the official round result. The accessible recap index stops at round 40, so current retrieval cannot…",
       "service": "lumenloop",

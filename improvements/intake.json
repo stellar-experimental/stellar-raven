@@ -199,9 +199,9 @@
       "repo": "cloudflare/agents",
       "reason": "The @cloudflare/codemode package metadata names cloudflare/agents as its issue owner; searchConnectors lives in packages/codemode."
     },
-    "cs-003": {
+    "cs-011": {
       "repo": "stellar/stellar-protocol",
-      "reason": "stellar/stellar-protocol owns ecosystem/README.md and every sep-NNNN.md preamble."
+      "reason": "stellar/stellar-protocol owns ecosystem/README.md and ecosystem/sep-0013.md."
     },
     "cs-004": {
       "repo": "circlefin/stellar-cctp",
