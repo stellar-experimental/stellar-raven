@@ -88,15 +88,19 @@ Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires th
 
 ### Bump the `stellar-dev` skill pin to serve the sk-032 to sk-036 fixes
 
-On 2026-11-02 stellar/stellar-dev-skill merged PRs #167 to #171, which fix `sk-032` to `sk-036` in
-the upstream skill text (main `9c604c2b`). Raven still serves the pin `cac64041`
-(`ecosystem-skills/MANIFEST.json`), so `codemode.skill.read` returns the old text until the pin
-moves. Follow the full update sequence in `ecosystem-skills/README.md`: run `./update.sh`, read the
-skill diffs, and review the selection of the new `assets/regulated-assets.md` companion. Then run
-`node scripts/check-pin-review.mjs`, the routing gate, and the exposure guards. A hand-edited commit
-SHA is not enough, because `update.sh` discovers the selected files. Deploy only after the overnight
-golden QA run of 2026-11-02 ends. That run belongs to another session, pins the remote server
-identity, and does not authorize a deploy. Its owner releases the pin.
+On 2026-11-03 the pin update selected `9c604c2be6ae69f962fbb578bce6b681d462fea5` through
+`ecosystem-skills/update.sh`. The author read all nine changed file diffs and selected
+`assets/regulated-assets.md` as the existing assets skill companion. All 67 pinned files passed
+upstream hash checks. The rebuilt catalog contains 284 entries, including 204 exact-ID skill
+sections. All 544 complete routing rows remain identical, including grades, hit order, and scores.
+Only the catalog fingerprint and explanation changed in `eval/gates.json`; every threshold,
+accepted total, label, and baseline date remains unchanged. The existing dapp description override
+remains necessary. The new pin still contains the `sk-037` mixed-operation batching claim.
+
+Independent review and deployment remain with the coordinator. Keep this item open until production
+serves the new pin. Deploy only after the overnight golden QA run of 2026-11-02 ends. That run
+belongs to another session and pins the remote server identity. Its owner releases the pin.
+The run does not authorize deployment.
 
 Done when: production `codemode.skill.read` serves the fixed sections, for example
 `skills/smart-contracts/SKILL.md` with `soroban-sdk = "29"`.
