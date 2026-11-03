@@ -439,6 +439,39 @@ control-model lane, or a reviewed change omits the field for that transport.
 
 ## Eval instruments
 
+### Correct the Audit Bank copay reference
+
+The reference assigns the Growth/Scale Audit stage exemptions to Initial Audit cohorts.
+Grok independently rederived the official stage table before reading the proposer disposition.
+The Initial Audit stage has 5% copay with a conditional refund; Growth/Scale Audit stages have 0%.
+The verified authoring error is independent of the recorded answer grade.
+
+Quarantine the existing case, preserve the frozen run, and review the exact correction before reactivation.
+Done when: corrected provenance, explicit reactivation, source sentinels, consistency review, and corpus gates pass.
+Evidence: [overnight round](rounds/2026-11-02-golden-overnight.md#audit-bank-reference-quarantine).
+
+### Establish the non-Anthropic golden QA diagnostic
+
+The owner requested an overnight Codex/Grok run on 2026-11-02, with no Anthropic agents.
+The canonical QA runner still launches Claude for both answers and judgments.
+The new direct-Grok diagnostic lives on `codex/golden-2026-11-02-method` while its gates remain open.
+
+The first transport probe exposed a Node/Miniflare response-class mismatch.
+The accounting wrapper lost its log identity, so one call has unknown cost.
+Its full `$1` allocation stays reserved; the failed method cannot resume.
+The corrected Node boundary preserves recognized Miniflare responses without changing the production Worker.
+
+The first baseline stopped after three judged rows because stale cost evidence crossed a worker request boundary.
+A free reproduction confirmed the producer defect; its repair preserves strict request identity checks.
+The incomplete method keeps its 100-case denominator and suppresses aggregates.
+Fresh source pins, self-tests, and independent review precede the next bounded collection.
+The adapter also aligns verdict extraction with the existing canonical judge parser.
+
+Done when: the corrected transport, original judge self-tests, fixed sample, result review, and independent closeout pass.
+Keep the direct-provider result separate from canonical Claude baselines.
+Record limitations and unresolved findings before closing the item.
+Evidence: [overnight round](rounds/2026-11-02-golden-overnight.md).
+
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
 The 2026-11-02 golden audit (`rounds/2026-11-02-golden-audit.md`) moved every other `reverifyBy`

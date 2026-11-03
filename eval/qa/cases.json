@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "b3d00087dc93105e3142a1b3696f392231110faa85cacbc2a066302a75b7064f",
+  "corpusContentSha256": "a29c4019a0f566eef220c3d9a543dd8ba32d32f1ff3238abcd96278af75d1364",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -40,10 +40,12 @@
       "speculation": 2
     },
     "byLifecycleState": {
-      "active": 501
+      "active": 500,
+      "quarantined": 1
     },
     "byReviewState": {
-      "none": 501
+      "in-review": 1,
+      "none": 500
     }
   },
   "cases": [
@@ -44045,8 +44047,35 @@
       },
       "truth": {
         "lifecycle": {
-          "state": "active",
-          "reviewState": "none"
+          "state": "quarantined",
+          "reviewState": "in-review",
+          "review": {
+            "queuedOn": "2026-11-03",
+            "trigger": "recurrent-eval-evidence",
+            "evidence": [
+              "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules — independently read 2026-11-03; Initial Audit 5% conditional refund, Growth/Scale Audit stages 0%.",
+              "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md — source SHA256 e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01; same policy lineage as the rendered page.",
+              "Grok independent blind fact matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71; exact correction review remains pending.",
+              "Durable source evidence: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json; independent confirmation: .agents/rounds/2026-11-02-golden-overnight.md#audit-bank-reference-quarantine."
+            ],
+            "startedOn": "2026-11-03",
+            "reviewer": "Grok 4.7 high, independent source verifier t5q",
+            "ledger": ".agents/rounds/2026-11-02-golden-overnight.md"
+          },
+          "quarantine": {
+            "startedOn": "2026-11-03",
+            "reviewBy": "2026-11-10",
+            "author": "Codex root",
+            "reviewer": "Grok 4.7 high, independent source verifier t5q",
+            "cause": "Reference text assigns Growth/Scale audit-stage copay exemptions to Initial Audit cohorts.",
+            "ledger": ".agents/rounds/2026-11-02-golden-overnight.md",
+            "evidence": [
+              "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules — independently read 2026-11-03; Initial Audit 5% conditional refund, Growth/Scale Audit stages 0%.",
+              "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md — source SHA256 e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01; same policy lineage as the rendered page.",
+              "Grok independent blind fact matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71; exact correction review remains pending.",
+              "Durable source evidence: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json; independent confirmation: .agents/rounds/2026-11-02-golden-overnight.md#audit-bank-reference-quarantine."
+            ]
+          }
         },
         "domain": "real-world",
         "status": "confirmed",
