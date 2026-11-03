@@ -179,22 +179,18 @@ export function rewriteScoutRefs(text, pairs) {
 }
 
 /**
- * Remove non-exposed Scout endpoint spellings from schema descriptions.
- *
- * Schemas are emitted through catalog signatures, codemode.describe(), and
- * the super spec. Upstream component prose can therefore advertise an
- * excluded endpoint even when its own operation never reaches the manifest.
- * Derive the replacements from the exposure data so every excluded endpoint
- * receives the same treatment. The catalog guard remains the fail-loud
- * backstop for references in non-description schema fields.
+ * Schema descriptions preserve upstream facts using non-callable labels.
+ * Operation descriptions instead drop affected clauses before scoring.
+ * Raw x-routing sources stay strict and never pass through these rewrites.
  */
-const NON_EXPOSED_SCHEMA_NAMES = new Set(
+const NON_EXPOSED_SCOUT_NAME_SPELLINGS = new Set(
   [...NON_EXPOSED_SCOUT_OP_NAMES].flatMap((name) => [name.toLowerCase(), snakeCase(name)])
 );
-const SCOUT_SCHEMA_REF_REWRITES = [
+const SCOUT_TEXT_REF_REWRITES = [
   ...[...EXCLUDED_SCOUT_OPS].flatMap((signature) => {
     const path = signature.slice(signature.indexOf(" ") + 1);
-    const label = `upstream ${path.split("/").filter(Boolean).at(-1).replaceAll("-", " ")}`;
+    const label = `upstream ${path.split("/")
+      .filter((part) => part && !/^\{.*\}$/.test(part)).at(-1).replaceAll("-", " ")}`;
     return [[signature, label], [path, label]];
   }),
   ...[...NON_EXPOSED_SCOUT_OP_NAMES].flatMap((name) => {
@@ -203,40 +199,53 @@ const SCOUT_SCHEMA_REF_REWRITES = [
   })
 ].sort((a, b) => b[0].length - a[0].length);
 
+function scrubNonExposedScoutLists(text) {
+  const description = text.replace(
+    /\((?:[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)?\s*,\s*)+[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)?\)/g,
+    (list) => {
+      const kept = list.slice(1, -1).split(/\s*,\s*/).filter((name) =>
+        !NON_EXPOSED_SCOUT_NAME_SPELLINGS.has(name.replace(/^scout\./i, "").toLowerCase())
+      );
+      if (kept.length === list.slice(1, -1).split(/\s*,\s*/).length) return list;
+      return kept.length > 0 ? `(${kept.join(", ")})` : "";
+    }
+  );
+  return description === text ? text : description
+    .replace(/[ \t]+([,.;:!?])/g, "$1").replace(/[ \t]{2,}/g, " ").trim();
+}
+
+const scoutTextRefRe = (needle) => needle.includes("/")
+  ? completePathRe(needle)
+  : new RegExp(`(?<![\\w])(?:scout\\.)?${regexEscape(needle)}(?![\\w])`, "gi");
+
+export function scrubNonExposedScoutText(text) {
+  let description = scrubNonExposedScoutLists(text);
+  for (const [needle, replacement] of SCOUT_TEXT_REF_REWRITES) {
+    description = description.replace(scoutTextRefRe(needle), replacement);
+  }
+  return description;
+}
+
+function dropNonExposedScoutClauses(text) {
+  const description = scrubNonExposedScoutLists(text);
+  // Sentence and semicolon boundaries avoid guessing the grammar around a
+  // reference. Dots inside identifiers and paths do not split the clause.
+  const clauses = description.split(/(?<=[.!?;])\s+|\n+/u);
+  const kept = clauses.filter((clause) => !SCOUT_TEXT_REF_REWRITES.some(
+    ([needle]) => scoutTextRefRe(needle).test(clause)
+  ));
+  return kept.length === clauses.length ? description : kept.join(" ").trim();
+}
+
 export function scrubNonExposedScoutSchemaRefs(value) {
   if (Array.isArray(value)) return value.map(scrubNonExposedScoutSchemaRefs);
   if (!value || typeof value !== "object") return value;
 
   const out = {};
   for (const [key, item] of Object.entries(value)) {
-    if (key !== "description" || typeof item !== "string") {
-      out[key] = scrubNonExposedScoutSchemaRefs(item);
-      continue;
-    }
-
-    // Drop excluded identifiers from comma-separated parenthesized lists.
-    // Keep prose outside these lists for the description rewrite below.
-    let description = item.replace(
-      /\((?:[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)?\s*,\s*)+[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)?\)/g,
-      (list) => {
-        const kept = list.slice(1, -1).split(/\s*,\s*/).filter((name) =>
-          !NON_EXPOSED_SCHEMA_NAMES.has(name.replace(/^scout\./i, "").toLowerCase())
-        );
-        if (kept.length === list.slice(1, -1).split(/\s*,\s*/).length) return list;
-        return kept.length > 0 ? `(${kept.join(", ")})` : "";
-      }
-    );
-    for (const [needle, replacement] of SCOUT_SCHEMA_REF_REWRITES) {
-      if (needle.includes("/")) {
-        description = description.replace(completePathRe(needle), replacement);
-      } else {
-        description = description.replace(
-          new RegExp(`(?<![\\w])(?:scout\\.)?${regexEscape(needle)}(?![\\w])`, "gi"),
-          replacement
-        );
-      }
-    }
-    out[key] = description;
+    out[key] = key === "description" && typeof item === "string"
+      ? scrubNonExposedScoutText(item)
+      : scrubNonExposedScoutSchemaRefs(item);
   }
   return out;
 }
@@ -276,25 +285,24 @@ export const SCOUT_DESCRIPTION_SCRUBS = {
 };
 
 /**
- * Remove the excluded-endpoint clauses from one op's raw upstream description.
+ * Remove authored clauses, then scrub exposure-derived references from prose.
  * Throws when a listed needle is absent (upstream prose drifted — reconcile
  * SCOUT_DESCRIPTION_SCRUBS) so a stale scrub can never silently re-leak.
  */
-export function scrubScoutDescription(opId, text) {
-  const needles = SCOUT_DESCRIPTION_SCRUBS[opId];
-  if (!needles) return text;
-  let out = text;
+export function scrubScoutDescription(opId, { summary = "", description = "" }) {
+  const needles = SCOUT_DESCRIPTION_SCRUBS[opId] ?? [];
+  const fields = { summary, description };
   for (const needle of needles) {
-    if (!out.includes(needle)) {
+    if (!Object.values(fields).some((text) => text.includes(needle))) {
       throw new Error(
         `SCOUT_DESCRIPTION_SCRUBS["${opId}"] needle not found in the upstream description: ` +
           `${JSON.stringify(needle)}. Upstream rephrased — reconcile the scrub in ` +
           `scripts/description-notes.mjs so the excluded-endpoint reference cannot re-leak.`
       );
     }
-    out = out.split(needle).join("");
+    for (const key of Object.keys(fields)) fields[key] = fields[key].split(needle).join("");
   }
-  return out;
+  return Object.fromEntries(Object.entries(fields).map(([key, text]) => [key, dropNonExposedScoutClauses(text)]));
 }
 
 export const SCOUT_DESCRIPTION_NOTES = {

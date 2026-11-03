@@ -3,13 +3,61 @@ import { readFileSync } from "node:fs";
 import {
   rewriteScoutRefs,
   scoutRefRewrites,
+  scrubNonExposedScoutText,
+  scrubScoutDescription,
   scrubNonExposedScoutSchemaRefs
 } from "../scripts/description-notes.mjs";
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
-import { NON_EXPOSED_SCOUT_OP_NAMES } from "../scripts/exposure.mjs";
+import { EXCLUDED_SCOUT_OPS, NON_EXPOSED_SCOUT_OP_NAMES } from "../scripts/exposure.mjs";
 
 const openapi = JSON.parse(readFileSync(new URL("../inventory/stellar-light.json", import.meta.url))).openapi;
 const pairs = scoutRefRewrites(openapi);
+
+describe("Scout upstream text removes excluded references", () => {
+  it.each([...NON_EXPOSED_SCOUT_OP_NAMES])("scrubs every spelling of %s", (name) => {
+    const snake = name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase();
+    const text = `Count like ${name}; use scout.${name}, ${snake}, SCOUT.${snake.toUpperCase()}. ` +
+      "Resolve events with getHackathons.";
+    const scrubbed = scrubNonExposedScoutText(text);
+    expect(() => assertNoNonExposedRefsInText(scrubbed, "upstream text")).not.toThrow();
+    expect(scrubbed).toContain("Resolve events with getHackathons.");
+    expect(scrubNonExposedScoutText(scrubbed)).toBe(scrubbed);
+  });
+
+  it("preserves clean text and longer identifiers", () => {
+    const text = "reviewSubmissionCount getRwaAssetsExtra searchResearch quality report";
+    expect(scrubNonExposedScoutText(text)).toBe(text);
+  });
+});
+
+describe("Scout operation descriptions drop excluded clauses", () => {
+  it.each([...NON_EXPOSED_SCOUT_OP_NAMES])("drops %s without adding its words", (name) => {
+    const snake = name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase();
+    for (const spelling of [name, `scout.${name}`, snake, `SCOUT.${snake.toUpperCase()}`]) {
+      expect(scrubScoutDescription("compareHackathons", {
+        summary: `Use ${spelling}. Keep the summary.`,
+        description: `Keep this sentence. Compare with ${spelling}; Keep this clause.`
+      })).toEqual({ summary: "Keep the summary.", description: "Keep this sentence. Keep this clause." });
+    }
+  });
+
+  it.each([...EXCLUDED_SCOUT_OPS])("drops excluded path clauses for %s", (signature) => {
+    const path = signature.slice(signature.indexOf(" ") + 1);
+    for (const reference of [signature, path]) {
+      expect(scrubScoutDescription("compareHackathons", {
+        description: `See ${reference}. Keep this sentence.`
+      })).toEqual({ summary: "", description: "Keep this sentence." });
+    }
+  });
+
+  it("checks authored scrubs across both fields and rejects missing needles", () => {
+    expect(scrubScoutDescription("getStatus", {
+      summary: "Use to check freshness or to discover endpoints.", description: "Read the status."
+    })).toEqual({ summary: "Use to check freshness.", description: "Read the status." });
+    expect(() => scrubScoutDescription("getStatus", { summary: "Read the status." }))
+      .toThrow("needle not found");
+  });
+});
 
 describe("Scout references use complete paths", () => {
   it.each([
@@ -116,6 +164,26 @@ describe("Scout schema descriptions remove excluded operation names", () => {
     expect(scrubNonExposedScoutSchemaRefs(clean)).toEqual(clean);
     expect(scrubNonExposedScoutSchemaRefs({ description: "(getRwaAssets, reviewSubmission)" }))
       .toEqual({ description: "" });
+  });
+
+  it.each([...EXCLUDED_SCOUT_OPS])("uses a static path label for %s", (signature) => {
+    const path = signature.slice(signature.indexOf(" ") + 1);
+    const label = path.split("/").filter((part) => part && !/^\{.*\}$/.test(part)).at(-1).replaceAll("-", " ");
+    for (const reference of [signature, path]) {
+      const scrubbed = scrubNonExposedScoutSchemaRefs({ description: `See ${reference}.` });
+      expect(scrubbed).toEqual({ description: `See upstream ${label}.` });
+      expect(scrubbed.description).not.toMatch(/[{}]/);
+    }
+  });
+
+  it.each([...NON_EXPOSED_SCOUT_OP_NAMES])("removes empty list spacing for %s", (name) => {
+    for (const [description, expected] of [
+      [`Policy (${name}, scout.${name}).`, "Policy."],
+      [`Policy (${name}, scout.${name}) applies.`, "Policy applies."],
+      [`  (${name}, scout.${name})  `, ""]
+    ]) {
+      expect(scrubNonExposedScoutSchemaRefs({ description })).toEqual({ description: expected });
+    }
   });
 
   it("preserves the existing excluded-path scrub", () => {
