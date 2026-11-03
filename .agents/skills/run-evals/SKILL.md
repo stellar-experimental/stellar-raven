@@ -350,9 +350,9 @@ Known judge failure modes (from `eval/qa/README.md`):
 
 The experimental paired stored-run verdict (`npm run eval:qa:paired`, the
 `qa-paired-ordinal-ni-v1` estimand, and the `npm run eval:qa:paired:collect` launch contract) is
-not a ship gate. Its full contract is in `eval/qa/README.md` ("Paired verdict"). Paid paired
-collection waits for owner decision A in `.agents/TODO.md`, which also holds the open margin
-question.
+not a ship gate. Its full contract is in `eval/qa/README.md` ("Paired verdict").
+The owner retired decision A and its paid paired collection on 2026-11-03
+([decision record](../../rounds/2026-11-03-owner-followup.md)).
 
 Fan out sub-agents for this review when the run is big: one per `wrong`/`partial` case, each
 re-executing the disputed claims live (production or dev `execute`) and returning a verdict
