@@ -827,6 +827,13 @@ oracle addresses). Writing the cases is free. The owner decided on 2026-11-02 no
 dedicated paid battery for them ("We don't need to overfit for any single case or instance"); they
 are graded in the next authorized QA round with the rest of the battery.
 
+Proposal pass 2026-11-03: R04 already has `q-sor-decode-hosterror-codes`; R23 has
+`q-soroban-oz-token`; R31 has `q-asset-stablecoin-issuers-discovery`. New R20 and Q18 IDs stay
+proposed: `q-infra-testnet-reset-schedule-recovery` and
+`q-sor-reflector-testnet-contract-addresses`. Public-source matrices live in their truth blocks.
+See [the proposal ledger](rounds/2026-11-03-hackmeridian-golden-proposals.md).
+Independent activation review and the later activation commit remain outstanding.
+
 Done when: the cases pass `npm run eval:qa:lint -- --stale --enforce-floors` and are merged.
 
 ## Deferred programs
