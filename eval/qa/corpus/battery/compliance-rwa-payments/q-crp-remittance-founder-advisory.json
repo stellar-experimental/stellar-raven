@@ -51,8 +51,15 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
-        "note": "class inferred at migration"
+        "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+        "note": "The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details.",
+        "observedAt": "2026-11-03"
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+        "observedAt": "2026-11-03",
+        "note": "The current MoneyGram guide documents legacy SEP-10/SEP-24 and custodial versus non-custodial integration. New partners use the widget path."
       }
     ],
     "corroboration": [
@@ -82,14 +89,15 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03; verification only, no gospel change)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/anchors — 'SEP-6: Programmatic Deposit and Withdrawal; SEP-24: Hosted Deposit and Withdrawal; SEP-31: Cross Border Payments API' and 'Anchors are Stellar's on- and off-ramps to traditional financial rails' (observedAt 2026-11-02).",
-        "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — 'Applications seeking to integrate MoneyGram Access must implement the client side of SEP-24 ... via Stellar's SEP-10 protocol.' (observedAt 2026-11-02).",
-        "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — 'MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide.' MoneyGram now brands the product 'MoneyGram Ramps'; either name passes (observedAt 2026-11-02).",
-        "Class B https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — distinct sending and receiving anchors (prior live re-check 2026-08-29, unchanged).",
-        "Sibling sweep 2026-11-02: q-crp-anchors-by-corridor, q-hist-remittance-corridors, q-sep6-sep24-sep31-choice; no contradiction. No gospel change."
+        "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide (HTTP 308, 2026-11-03): The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details. Current source: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps (HTTP 200).",
+        "https://xramps.moneygram.com/ops/developer/guides/stellar (HTTP 200, 2026-11-03): legacy Stellar SEP integration, USDC settlement, custodial/non-custodial table, and new-partner widget guidance.",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-crp-remittance-founder-advisory"

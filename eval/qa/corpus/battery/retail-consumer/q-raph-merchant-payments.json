@@ -33,9 +33,9 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/platforms/anchor-platform",
-        "observedAt": "2026-11-02",
-        "note": "Re-observed by the golden audit: \"Anchor Platform docs place KYC/compliance on the operating business (SEP-12 KYC)\""
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+        "observedAt": "2026-11-03",
+        "note": "The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows."
       },
       {
         "class": "D",
@@ -79,15 +79,14 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "A https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/setup — \"An anchor is a Stellar-specific term for the on and off-ramps that connect the Stellar network to traditional\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0]: confirmed)",
-        "C lumenloop.search_content_semantic -> https://stellar.org/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration — \"SDF launches Stellar Ramps, a suite of open standards enabling applications to connect to a global network of on and off ramps provided by Stellar anchors\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0]: confirmed)",
-        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"SDF ... DOES NOT have the capability to freeze or return XLM held in a Stellar account.\" (observedAt 2026-11-02; supports golden.avoid[1] / answer: confirmed)",
-        "F https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN — \"Circle USDC issuer flags: auth_revocable=true, auth_clawback_enabled=false, home_domain circle.com\" (observedAt 2026-11-02; supports golden.avoid[1] / answer: confirmed)",
-        "A https://developers.stellar.org/platforms/anchor-platform — \"Anchor Platform docs place KYC/compliance on the operating business (SEP-12 KYC)\" (observedAt 2026-11-02; supports golden.avoid[0] / keyFacts[1]: confirmed)",
-        "Sibling set checked by the proposer 2026-11-02: q-raph-offramp-xlm-usdc, q-jutsu-cash-crypto-ramps, q-crp-become-an-anchor-licensing; no contradiction recorded."
+        "https://developers.stellar.org/platforms/anchor-platform (HTTP 308, 2026-11-03): The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows. Current source: https://developers.stellar.org/docs/platforms/anchor-platform (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "raph merchant-accept-crypto-payments-compliant"

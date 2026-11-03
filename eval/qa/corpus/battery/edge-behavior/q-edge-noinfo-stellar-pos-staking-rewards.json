@@ -63,8 +63,9 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets/lumens",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+        "note": "The page documents historical 1% inflation and its October 28, 2019 end. CAP-26 and Core v12 source independently confirm disabled inflation and the historical rate.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "A",
@@ -141,28 +142,28 @@
         "note": "The free contradiction search returned the official validator explanation and no applicable primary contradiction."
       },
       {
-        "class": "A",
-        "ref": "https://www.stellofi.com/docs",
-        "observedAt": "2026-11-03",
-        "note": "The current page metadata describes an XLM vault and a composable share token."
-      },
-      {
         "class": "B",
         "ref": "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
         "observedAt": "2026-11-03",
         "note": "The repository describes sXLM as a vault share. It lists lending and fee sources rather than validator rewards."
       },
       {
-        "class": "C",
-        "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
-        "observedAt": "2026-11-03",
-        "note": "The explorer reports the named Mainnet contract. Source validation remains unverified; this response does not establish the reward mechanism or current APY."
-      },
-      {
         "class": "D",
         "ref": "https://www.google.com/search?q=Stellar+XLM+liquid+staking+StelloFi+sXLM",
         "observedAt": "2026-11-03",
         "note": "The free search surfaced sXLM marketing and lending/liquidity claims. It does not establish a complete market inventory."
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md",
+        "note": "CAP-26 disables inflation under protocol 12.",
+        "observedAt": "2026-11-03"
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v12.0.0/src/transactions/InflationOpFrame.cpp",
+        "note": "The implementation documents the historical 1% annual rate and rejects inflation at protocol 12 or later.",
+        "observedAt": "2026-11-03"
       }
     ],
     "corroboration": [
@@ -338,26 +339,15 @@
     ],
     "verified": {
       "date": "2026-11-03",
-      "by": "Codex reference proposer t9q and Codex root; independent Grok source verifier t9r; research/audits/2026-11-03-qa-followup/reference-approval.md",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
-        "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
-        "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
-        "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
-        "https://www.stellofi.com/docs",
-        "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
-        "research/audits/2026-11-03-qa-followup/reference-changes.md#native-rewards-question-scope",
-        "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
-        "research/audits/2026-11-03-qa-followup/reference-sibling-sweep.json",
-        "Sibling sweep: 501 battery files, 4 proposal files, and 2 frozen live files; no conflicting target claim found.",
-        "Support sweep: consistency-register clusters 007, 017, 020, 025, 048, 083, 120 and the Bell vote trap; no source sentinel matches.",
-        "Dated illustrations, freshness tags and reverify dates are unchanged. Review closure and reactivation are explicit.",
-        "research/audits/2026-11-03-qa-followup/reference-approval.md",
-        "Reviewability refinement: required key facts track the question. Conditional background rules remain in golden.notes and avoid clauses."
+        "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets/lumens (HTTP 404, 2026-11-03): The page documents historical 1% inflation and its October 28, 2019 end. CAP-26 and Core v12 source independently confirm disabled inflation and the historical rate. Current source: https://developers.stellar.org/docs/learn/fundamentals/lumens (HTTP 200).",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md (HTTP 200, class B, 2026-11-03): CAP-26 disables inflation under protocol 12.",
+        "https://raw.githubusercontent.com/stellar/stellar-core/v12.0.0/src/transactions/InflationOpFrame.cpp (HTTP 200, class B, 2026-11-03): The implementation documents the historical 1% annual rate and rejects inflation at protocol 12 or later.",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
       ],
       "rootCause": [
-        "The native-rewards question has mandatory market-survey requirements that do not match its requested scope. .agents/TODO.md at Git commit bdcf915fb552d054657b04b23abc561a65d395f3, entry Resolve diagnostic noncompletions and judge ambiguities.",
-        "research/audits/2026-11-03-qa-followup/reference-changes.md"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-edge-noinfo-stellar-pos-staking-rewards",

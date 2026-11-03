@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "b09abba9fd75169b019c073f82d2f1bfe30fa0b0ec249bfe7ae4a0ec86a6d888",
+  "corpusContentSha256": "35cb4ae201cb1265f6e40d923dbfd1b39c3a496524da4716de8dca4b2fc31757",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -1777,9 +1777,9 @@
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
-            "note": "As of 2026-11-02 this page redirects to https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps.",
-            "observedAt": "2026-11-02"
+            "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+            "note": "The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "A",
@@ -1909,21 +1909,12 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "Gospel change 2026-11-02: golden.answer now names both MoneyGram integration paths (legacy SEP-10/SEP-24 anchor for allowlisted partners; widget SDK + API keys + server sessions for new Stellar wallets); keyFacts[1] drops the non-existent 'Stellar Ramps standard'; golden.notes re-dated with a do-not-penalize caution for either path and a dated Tier-1 validator status (verifier-modified wording). avoid items unchanged.",
-            "Live A 2026-11-02: https://xramps.moneygram.com/ops/developer — 'Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24.'",
-            "Live A 2026-11-02: https://xramps.moneygram.com/ops/developer/stellar — '| Legacy Stellar only | SEP-10 + SEP-24 anchor (whitelist) | ... Do not mix SEP anchor calls into a widget integration ... Supported asset today: USDC on Solana or Stellar.'",
-            "Live A 2026-11-02: https://xramps.moneygram.com/stellar — 'Existing whitelist partners on the legacy SEP-10 / SEP-24 path can stay there'",
-            "Live A 2026-11-02: https://xramps.moneygram.com/ops/developer/guides/stellar — 'MoneyGram Ramps — Stellar Integration Guide (USDC) Version 1.2 · Stellar + USDC · July 2026 ... New Stellar wallet integrations should use the widget + API keys path'",
-            "Live F 2026-11-02: https://stellar.moneygram.com/.well-known/stellar.toml — 'WEB_AUTH_ENDPOINT = \"https://stellar.moneygram.com/stellaradapterservice/auth\" TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/sep24\"'",
-            "Live F 2026-11-02: curl -L https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — '200 final=https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps'",
-            "Live B 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/redirects.json — '{\"source\": \"/docs/build/apps/moneygram-access-integration-guide\", \"destination\": \"https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps\"}'",
-            "Live A 2026-11-02: https://stellar.org/solutions/cross-border-payments — 'One MoneyGram Ramps integration offers USDC cash-in and cash-out in 170+ countries.'",
-            "Live C 2026-11-02: https://radar.withobsrvr.com/api/v1/nodes — 'SDF 1/2/3 quorumSet (dateUpdated 2026-10-14) contain all 3 MoneyGram Validator keys; MoneyGram org subQuorum30DaysAvailability 100'",
-            "Live D 2026-11-02: https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/ — 'The new validators are expected to be fully integrated into Stellar's quorum configuration by mid-August.'",
-            "Sibling sweep 2026-11-02 (pass 2): q-pay-moneygram-ramps now names both paths (keyFact 'Identifies Stellar USDC, the widget/API-key path, and the legacy SEP-10/SEP-24 path'); q-crp-anchors-by-corridor notes gain the same widget/legacy split in pass 2; q-comp-cross-moneygram-partnership-sep24, q-scf-cross-decaf-sep24, q-hist-remittance-corridors, q-crp-custodial-vs-noncustodial-wallets, q-jutsu-cash-crypto-ramps, q-sep-interactive-deposit-withdraw describe dated or historical SEP-24 use and do not contradict the legacy-path label."
+            "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide (HTTP 308, 2026-11-03): The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details. Current source: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps (HTTP 200).",
+            "https://xramps.moneygram.com/ops/developer/guides/stellar (HTTP 200, 2026-11-03): legacy Stellar SEP integration, USDC settlement, custodial/non-custodial table, and new-partner widget guidance.",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
             "freshness-drift"
@@ -3104,8 +3095,9 @@
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+            "note": "The cookbook documents asset deploy, native SAC deployment, and deterministic contract ID lookup.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "A",
@@ -3204,16 +3196,15 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract — \"stellar contract asset deploy --source S... --network testnet --asset USDC:GCYE...\" (claim: golden.keyFacts[0] confirmed: `stellar contract asset deploy` deploys the asset's SAC)",
-            "2026-11-02 [F] stellar contract asset --help (stellar 28.1.0; latest release v28.1.0 2026-09-26 per gh api) — \"deploy Deploy builtin Soroban Asset Contract; id ... Deprecated, use `stellar contract id asset` instead\" (claim: golden.keyFacts[0] confirmed: `stellar contract asset deploy` deploys the asset's SAC)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"calling InvokeHostFunctionOp with HOST_FUNCTION_TYPE_CREATE_CONTRACT and a CONTRACT_ID_PREIMAGE_FROM_ASSET contract ID preimage\" (claim: golden.keyFacts[2] confirmed: SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET)",
-            "2026-11-02 [F] stellar contract id asset --asset native --network mainnet — \"CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA (deterministic derivation without deploy)\" (claim: golden.keyFacts[2] confirmed: SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"The asset issuer becomes the initial administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards with the SAC's set_admin function.\" (claim: golden.answer confirmed: After deployment the issuer is automatically the admin)",
-            "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md — \"The admin is initally set to the issuer (except for the XLM contract ...)\" (claim: golden.answer confirmed: After deployment the issuer is automatically the admin)",
-            "Sibling sweep 2026-11-02: proposer checked q-asset-trustline-vs-sac, q-sor-sac-introspection, q-comp-sac-inherits-flags; no gospel change in this case, so no sibling contradiction can arise from this event."
+            "https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract (HTTP 308, 2026-11-03): The cookbook documents asset deploy, native SAC deployment, and deterministic contract ID lookup. Current source: https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract (HTTP 200).",
+            "https://raw.githubusercontent.com/stellar/stellar-cli/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs (HTTP 200, class B, 2026-11-03): asset argument, asset-to-contract resolution, and asset wrapping implementation corroborate the cookbook.",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-asset-deploy-sac-cli"
@@ -3478,8 +3469,9 @@
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+            "note": "The guide documents SDEX/pool routing and Strict Send/Strict Receive limits.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "A",
@@ -3508,15 +3500,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "2026-11-02 [A] https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — \"Path payments use the Path Payment Strict Send or Path Payment Strict Receive operations.\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"just use PathPaymentStrictReceive or PathPaymentStrictSend\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
-            "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x — \"PATH_PAYMENT_STRICT_RECEIVE = 2 / PATH_PAYMENT_STRICT_SEND = 13 (operation types)\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — \"path payments cross through the SDEX and/or liquidity pools before arriving at the destination account\" (claim: golden.keyFacts[2] confirmed: Routes through DEX order book, AMM pools, or both)",
-            "2026-11-02 [F] https://horizon.stellar.org/ledgers?order=desc&limit=5 — \"ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart\" (claim: golden.answer confirmed-as-of: Settles in about one ledger close (~5 s))",
-            "Sibling sweep 2026-11-02: proposer checked q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no gospel change in this case, so no sibling contradiction can arise from this event."
+            "https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments (HTTP 308, 2026-11-03): The guide documents SDEX/pool routing and Strict Send/Strict Receive limits. Current source: https://developers.stellar.org/docs/build/guides/transactions/path-payments (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-asset-path-payment-ops"
@@ -5009,12 +5000,6 @@
             "note": "Direct source repository observed 2026-07-13; supports the Launchtube project attribution."
           },
           {
-            "class": "F",
-            "ref": "https://developers.stellar.org/meetings/authors/kalepail",
-            "note": "HTTP 404 'Page Not Found' with x-mintlify-client-version 0.0.4044; /meetings/authors/kalepail/ and /meetings/authors also return 404; no redirect rule exists.",
-            "observedAt": "2026-11-02"
-          },
-          {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-docs/pull/2941",
             "note": "'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)', merged 2026-10-22T18:00:57Z (commit 700ed32d); contributor-guide follow-up #2948 merged 2026-10-23.",
@@ -5162,26 +5147,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task peer-handoff)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "Gospel change 2026-11-02 (pass 3, task peer-handoff): golden.answer roster is re-dated 2026-11-02 and names the seven bylined 2024 meeting pages in place of the dead author index; the index 404 is dated. golden.notes replace the ll-005/ll-017 partial cap with a plain rule (ADR-0008 limits partial caps to three cases) and cite improvements/stellar-docs/sd-064. truth.sources[0] now points to a live meeting page.",
-            "Live A 2026-11-02: https://developers.stellar.org/meetings/2024/01/26, /2024/02/08, /2024/02/22, /2024/03/07, /2024/03/21, /2024/04/18, /2024/06/13 — each HTTP 200 with 'Tyler van der Hoeven , Developer Advocate Director' (for example 'January 26, 2024 · Tyler van der Hoeven , Developer Advocate Director').",
-            "Live B 2026-11-02: gh search code 'van der Hoeven' --repo stellar/stellar-docs — meetings/2024/01/26.mdx, 02/08.mdx, 02/22.mdx, 03/07.mdx, 03/21.mdx, 04/18.mdx, 06/13.mdx (plus .mintlify/skills/standards/SKILL.md, not a meeting); https://github.com/stellar/stellar-docs/blob/main/meetings/2024/01/26.mdx '_January 26, 2024_ · [Tyler van der Hoeven](https://github.com/kalepail), Developer Advocate Director' at main 635ac81e9c10719bf47475dcf342a09d274a1c2c.",
-            "Live A 2026-11-02: https://stellar.org/events/community/practical-path-payments 'April 10, 2020 at 5.00 PM UTC ... Highlighted Speakers Tyler van der Hoeven'; https://stellar.org/events/community/turing-complete-contract-proposal-for-stellar 'July 10, 2020 at 5.00 PM UTC ... tune in on June 19th 2020, 1:00 PM ET!'; https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates 'May 4, 2023 at 2.00 PM UTC'.",
-            "Live C 2026-11-02 (pass 3): Raven lumenloop.find_content_by_entity {entity:'Tyler van der Hoeven', entity_type:'person'} ok, caveat no-rows, all five groups 0; lumenloop.search_content_semantic {query:'Tyler van der Hoeven', limit:5} caveat unverified-match, top row an unrelated Velo press release. ll-005 and ll-017 still stand.",
-            "F 2026-11-02T16:31:54Z: https://developers.stellar.org/meetings/authors/kalepail returns HTTP 404 'Page Not Found' (also with a trailing slash and at /meetings/authors); https://developers.stellar.org/meetings returns HTTP 200 with x-mintlify-client-version 0.0.4044.",
-            "B 2026-11-02: https://github.com/stellar/stellar-docs/pull/2941 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)', merged 2026-10-22T18:00:57Z (commit 700ed32d); https://github.com/stellar/stellar-docs/pull/2948 merged 2026-10-23T15:44:49Z.",
-            "F 2026-11-02: HTTP 200 for https://developers.stellar.org/meetings/2024/06/13 (text contains 'van der Hoeven'), https://stellar.org/events/community/practical-path-payments, https://stellar.org/community/events/turing-complete-contract-proposal-for-stellar (301 to /events/community/...), and https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates.",
-            "B 2026-11-02: gh api repos/kalepail/passkey-kit archived=true '[MOVED → github.com/stellar/passkey-kit]'; repos/stellar/launchtube archived=true, pushed_at 2026-01-14T03:09:51Z.",
-            "C 2026-11-02: Lumenloop find_content_by_entity {entity:'Tyler van der Hoeven', entity_type:'person'} returned all five groups empty; search_content_semantic returned _weak_match true with an exact-name AV candidate that needs validation.",
-            "Change (pass 1, batch scf-grants-builders-01): golden.notes 2026-09-30 line now states the seven-post count in past tense and records the 404; an answer need not cite the dead URL. Verifier decision: accept.",
-            "Sibling sweep 2026-11-02 (pass 1): grep 'meetings/authors' over eval/qa/corpus/battery → only this case; grep 'launchtube|passkey-kit' siblings (q-passkey-wallet-recovery, q-soroban-add-signer-smart-wallet-howto, q-passkey-platform-constraints, q-tool-passkeykit-smart-wallet, q-tool-smart-wallet-repos-discovery) and q-edge-lumenloop-person-entity-empty make no claim about the author index; no contradiction.",
-            "Sibling sweep 2026-11-02 (pass 3): cluster-073 and cluster-128 members q-edge-lumenloop-person-entity-empty, q-edge-closed-world-builder-directory-miss, q-builder-justin-rice-history checked; the plain empty-lane rule matches their closed-world framing; no contradiction."
+            "https://developers.stellar.org/meetings/authors/kalepail (HTTP 404, 2026-11-03): Remove the dead author index from current sources. Seven dated meeting pages and migration repository evidence remain. The historical 404 observation stays in the answer.",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
-            "freshness-drift",
-            "improvements/stellar-docs/sd-064-meeting-author-pages-404-after-migration.md"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-builder-content-by-person"
@@ -8633,13 +8606,20 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
-            "note": "class inferred at migration"
+            "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+            "note": "The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/project/decaf",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+            "observedAt": "2026-11-03",
+            "note": "The current MoneyGram guide documents legacy SEP-10/SEP-24 and custodial versus non-custodial integration. New partners use the widget path."
           }
         ],
         "corroboration": [
@@ -8699,15 +8679,15 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-02) — verified unchanged, no gospel change",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "Re-verified unchanged 2026-11-02; no gospel change; the answer keeps its 2026-07-11 observation date.",
-            "Live A (acquired 2025-04-26): https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — \"Some applications, such as centralized exchanges, are custodial, meaning the application has access to the private keys\".",
-            "Live A (acquired 2026-10-21): https://xramps.moneygram.com/ops/dev/stellar — \"extraFields: { // Required for custodial wallets; optional for non-custodial\".",
-            "Live C 2026-11-02: Raven scout.searchProjects {q:'decaf'} — \"Decaf is a non-custodial wallet on the Solana and Stellar networks for cross-border money movement ... via MoneyGram and partner ramps\". Live A 2026-11-02: https://www.decaf.so/terms — \"Decaf does not: Hold or control your private keys (for non-custodial Wallet Services)\".",
-            "Live D (2026-10-14): https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html — \"It combines non-custodial wallets and stablecoin settlement with bank, card and cash payment partners.\" Decaf Business control model is product-specific; the existing 'marketing category alone' guard covers it.",
-            "Sibling sweep 2026-11-02: q-hist-remittance-corridors, q-scf-cross-decaf-sep24, q-anchor-moneygram-ramps, q-comp-cross-moneygram-partnership-sep24; no contradiction."
+            "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide (HTTP 308, 2026-11-03): The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details. Current source: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps (HTTP 200).",
+            "https://xramps.moneygram.com/ops/developer/guides/stellar (HTTP 200, 2026-11-03): legacy Stellar SEP integration, USDC settlement, custodial/non-custodial table, and new-partner widget guidance.",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-crp-custodial-vs-noncustodial-wallets"
@@ -8924,8 +8904,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/data/indexers/hubble",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/data/analytics/hubble",
+            "note": "Hubble documents complete historical network data hosted on BigQuery, with historical retrieval and analytical workloads.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "A",
@@ -8934,8 +8915,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/data/galexie",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/data/indexers/build-your-own/galexie",
+            "note": "Galexie documents ledger-metadata export to cloud storage and data lakes. Use the canonical path without the trailing slash.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "D",
@@ -9042,14 +9024,12 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "https://www.cointracker.io/integrations/stellar (Parallel web_fetch cache acquired 2026-09-05; direct curl HTTP 403 on 2026-11-02) — 'The easiest way to report your Stellar taxes is to connect your Stellar wallet to CoinTracker. CoinTracker automatically imports your XLM transactions' and steps '1. Download the CSV export of your transactions from Stellar 2. Reformat those transactions into our CoinTracker CSV format 3. Import your CSV export'.",
-            "Class D (Perplexity search, observedAt 2026-11-02) https://www.cointracker.com/integrations/cryptocom-wallet — 'CoinTracker automatically syncs the transactions from a public address you add. We currently support ADA, ... XLM'. The independent verifier modified the proposed note to accept a dated sync claim as well as a CSV answer.",
-            "Class F (observedAt 2026-11-02) https://horizon.stellar.org/ — history_elder_ledger 58962241, history_latest_ledger 65269766; https://mainnet.sorobanrpc.com getTransactions startLedger=100 — 'start ledger (100) must be between the oldest ledger: 65148808 and the latest ledger: 65269767'.",
-            "Class A https://developers.stellar.org/docs/data/analytics/hubble — 'Hubble is an open-source, publicly available dataset that provides a complete historical record of the Stellar network.' (observedAt 2026-11-02)",
-            "Sibling sweep 2026-11-02: grep -i cointracker across eval/qa/corpus/battery → only this case; no contradiction."
+            "https://developers.stellar.org/docs/data/indexers/hubble (HTTP 404, 2026-11-03): Hubble documents complete historical network data hosted on BigQuery, with historical retrieval and analytical workloads. Current source: https://developers.stellar.org/docs/data/analytics/hubble (HTTP 200).",
+            "https://developers.stellar.org/docs/data/galexie (HTTP 308, 2026-11-03): Galexie documents ledger-metadata export to cloud storage and data lakes. Use the canonical path without the trailing slash. Current source: https://developers.stellar.org/docs/data/indexers/build-your-own/galexie (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
             "freshness-drift"
@@ -9587,8 +9567,15 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
-            "note": "class inferred at migration"
+            "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+            "note": "The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details.",
+            "observedAt": "2026-11-03"
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+            "observedAt": "2026-11-03",
+            "note": "The current MoneyGram guide documents legacy SEP-10/SEP-24 and custodial versus non-custodial integration. New partners use the widget path."
           }
         ],
         "corroboration": [
@@ -9618,14 +9605,15 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03; verification only, no gospel change)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "https://developers.stellar.org/docs/learn/fundamentals/anchors — 'SEP-6: Programmatic Deposit and Withdrawal; SEP-24: Hosted Deposit and Withdrawal; SEP-31: Cross Border Payments API' and 'Anchors are Stellar's on- and off-ramps to traditional financial rails' (observedAt 2026-11-02).",
-            "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — 'Applications seeking to integrate MoneyGram Access must implement the client side of SEP-24 ... via Stellar's SEP-10 protocol.' (observedAt 2026-11-02).",
-            "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — 'MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide.' MoneyGram now brands the product 'MoneyGram Ramps'; either name passes (observedAt 2026-11-02).",
-            "Class B https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — distinct sending and receiving anchors (prior live re-check 2026-08-29, unchanged).",
-            "Sibling sweep 2026-11-02: q-crp-anchors-by-corridor, q-hist-remittance-corridors, q-sep6-sep24-sep31-choice; no contradiction. No gospel change."
+            "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide (HTTP 308, 2026-11-03): The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details. Current source: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps (HTTP 200).",
+            "https://xramps.moneygram.com/ops/developer/guides/stellar (HTTP 200, 2026-11-03): legacy Stellar SEP integration, USDC settlement, custodial/non-custodial table, and new-partner widget guidance.",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-crp-remittance-founder-advisory"
@@ -15496,8 +15484,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/list-all-trades-for-a-given-offer",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/get-trades-by-offer-id",
+            "note": "The endpoint documents GET /offers/{offer_id}/trades, cursor pagination, and streaming.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "B",
@@ -15592,20 +15581,12 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-03)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "2026-11-02 [B] gh api repos/stellar/go — \"\"archived\":true,\"description\":\"Archived public monorepo of go code\"\" (verifier accept of golden.answer)",
-            "2026-11-02 [B] https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go — \"// unused\n// EffectOfferCreated occurs when an account offers to trade an asset\n// EffectOfferCreated EffectType = 30 ... // EffectOfferRemoved EffectType = 31 ... // EffectOfferUpdated EffectType = 32\" (verifier accept of golden.answer)",
-            "2026-11-02 [D] Perplexity search -> github.com/stellar/go release page — \"This repository was archived by the owner on Dec 16, 2025. It is now read-only.\" (verifier accept of golden.answer)",
-            "2026-11-02 [B] gh api repos/stellar/stellar-horizon — \"\"archived\":false,\"description\":\"Stellar's Horizon API service\",\"pushed_at\":\"2026-10-30T19:54:38Z\"\" (verifier accept of truth.sources[3].ref)",
-            "2026-11-02 [B] https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x — \"/* Creates, updates or deletes an offer ... // 0=create a new offer, otherwise edit an existing offer int64 offerID;\" (proposer claim, confirmed: offer_id 0 creates; nonzero updates; amount 0 deletes.)",
-            "2026-11-02 [E] Raven stellarDocs.search_docs 'manage sell offer offer id 0 create delete amount 0' — \"list-of-operations#manage-sell-offer; result-codes manage-sell-offer MANAGE_SELL_OFFER_NOT_FOUND\" (proposer claim, confirmed: offer_id 0 creates; nonzero updates; amount 0 deletes.)",
-            "2026-11-02 [B] https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go — \"// unused // EffectOfferCreated ... EffectType = 30 ... EffectOfferRemoved ... = 31 ... EffectOfferUpdated ... = 32\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
-            "2026-11-02 [B] https://github.com/stellar/go-stellar-sdk/blob/main/protocols/horizon/effects/main.go — \"// unused // EffectOfferCreated: \"offer_created\", ...\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
-            "2026-11-02 [B] https://github.com/stellar/go (README) — \"REPOSITORY DEPRECATED ... This repository has been moved to: github.com/stellar/go-stellar-sdk (repo archived:true)\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
-            "2026-11-02 [B] https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x — \"OfferEntry fields sellerID, offerID, selling, buying, amount, price, flags (no expiry field)\" (proposer claim, confirmed: Classic offers have no protocol-level expiry.)",
-            "Sibling sweep 2026-11-02: grep github.com/stellar/go across the battery → q-tool-go-sdk-ingest, q-ti-parse-raw-ledger-data, q-tool-which-sdk-comparison, and others cite stellar/go for SDK/ingest topics, not for Horizon offer-effect status; none asserts offer effects are used; no contradiction."
+            "https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/list-all-trades-for-a-given-offer (HTTP 404, 2026-11-03): The endpoint documents GET /offers/{offer_id}/trades, cursor pagination, and streaming. Current source: https://developers.stellar.org/docs/data/apis/horizon/api-reference/get-trades-by-offer-id (HTTP 200).",
+            "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/ManageOfferOpFrameBase.cpp (HTTP 200, class B, 2026-11-03): offer creation, update, crossing, and resulting offer state remain implemented. The canonical endpoint supports the same fill-history fact.",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
             "freshness-drift"
@@ -22532,8 +22513,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets/lumens",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+            "note": "The page documents historical 1% inflation and its October 28, 2019 end. CAP-26 and Core v12 source independently confirm disabled inflation and the historical rate.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "A",
@@ -22610,28 +22592,28 @@
             "note": "The free contradiction search returned the official validator explanation and no applicable primary contradiction."
           },
           {
-            "class": "A",
-            "ref": "https://www.stellofi.com/docs",
-            "observedAt": "2026-11-03",
-            "note": "The current page metadata describes an XLM vault and a composable share token."
-          },
-          {
             "class": "B",
             "ref": "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
             "observedAt": "2026-11-03",
             "note": "The repository describes sXLM as a vault share. It lists lending and fee sources rather than validator rewards."
           },
           {
-            "class": "C",
-            "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
-            "observedAt": "2026-11-03",
-            "note": "The explorer reports the named Mainnet contract. Source validation remains unverified; this response does not establish the reward mechanism or current APY."
-          },
-          {
             "class": "D",
             "ref": "https://www.google.com/search?q=Stellar+XLM+liquid+staking+StelloFi+sXLM",
             "observedAt": "2026-11-03",
             "note": "The free search surfaced sXLM marketing and lending/liquidity claims. It does not establish a complete market inventory."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md",
+            "note": "CAP-26 disables inflation under protocol 12.",
+            "observedAt": "2026-11-03"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v12.0.0/src/transactions/InflationOpFrame.cpp",
+            "note": "The implementation documents the historical 1% annual rate and rejects inflation at protocol 12 or later.",
+            "observedAt": "2026-11-03"
           }
         ],
         "corroboration": [
@@ -22807,26 +22789,15 @@
         ],
         "verified": {
           "date": "2026-11-03",
-          "by": "Codex reference proposer t9q and Codex root; independent Grok source verifier t9r; research/audits/2026-11-03-qa-followup/reference-approval.md",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
-            "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
-            "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
-            "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
-            "https://www.stellofi.com/docs",
-            "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
-            "research/audits/2026-11-03-qa-followup/reference-changes.md#native-rewards-question-scope",
-            "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
-            "research/audits/2026-11-03-qa-followup/reference-sibling-sweep.json",
-            "Sibling sweep: 501 battery files, 4 proposal files, and 2 frozen live files; no conflicting target claim found.",
-            "Support sweep: consistency-register clusters 007, 017, 020, 025, 048, 083, 120 and the Bell vote trap; no source sentinel matches.",
-            "Dated illustrations, freshness tags and reverify dates are unchanged. Review closure and reactivation are explicit.",
-            "research/audits/2026-11-03-qa-followup/reference-approval.md",
-            "Reviewability refinement: required key facts track the question. Conditional background rules remain in golden.notes and avoid clauses."
+            "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets/lumens (HTTP 404, 2026-11-03): The page documents historical 1% inflation and its October 28, 2019 end. CAP-26 and Core v12 source independently confirm disabled inflation and the historical rate. Current source: https://developers.stellar.org/docs/learn/fundamentals/lumens (HTTP 200).",
+            "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0026.md (HTTP 200, class B, 2026-11-03): CAP-26 disables inflation under protocol 12.",
+            "https://raw.githubusercontent.com/stellar/stellar-core/v12.0.0/src/transactions/InflationOpFrame.cpp (HTTP 200, class B, 2026-11-03): The implementation documents the historical 1% annual rate and rejects inflation at protocol 12 or later.",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
-            "The native-rewards question has mandatory market-survey requirements that do not match its requested scope. .agents/TODO.md at Git commit bdcf915fb552d054657b04b23abc561a65d395f3, entry Resolve diagnostic noncompletions and judge ambiguities.",
-            "research/audits/2026-11-03-qa-followup/reference-changes.md"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-edge-noinfo-stellar-pos-staking-rewards",
@@ -30003,7 +29974,9 @@
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/platforms/anchor-platform"
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+            "note": "The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "D",
@@ -30029,13 +30002,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "2026-10-22 [A] https://stellar.org/use-cases/payments — \"170+ Countries with USDC cash-out ... 475K+ MoneyGram locations ... Regulated anchors bridge fiat rails to onchain balances across 180+ countries.\" (claim: golden.keyFacts[0] confirmed-as-of: Any network-wide ramp count is a dated snapshot)",
-            "2026-11-02 [E] https://developers.stellar.org/docs/tools/ramps — \"Stellar has anchor services operating worldwide. View the Anchor Directory for information on Stellar anchors.\" (claim: golden.keyFacts[0] confirmed-as-of: Any network-wide ramp count is a dated snapshot)",
-            "2026-10-07 [A] https://stellar.org/use-cases/ramps — \"Supported fiat payment methods will differ depending on the on and off-ramp institution.\" (claim: golden.keyFacts[1] confirmed: Availability is corridor- and provider-specific)",
-            "Sibling sweep 2026-11-02: siblings checked q-crp-anchors-by-corridor, q-anchor-moneygram-ramps, q-raph-offramp-xlm-usdc, q-pay-anchor-msb-licensing; no gospel change in this case, no contradiction found."
+            "https://developers.stellar.org/platforms/anchor-platform (HTTP 308, 2026-11-03): The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows. Current source: https://developers.stellar.org/docs/platforms/anchor-platform (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "authored 2026-07 (jutsu phrasing)"
@@ -38232,8 +38206,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/encyclopedia/contract-development/contract-interactions/stellar-ecosystem-proposals",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+            "note": "The redirect target also returns HTTP 404. The current SEPs page distinguishes ecosystem standards from core protocol CAPs, corroborated by stellar-protocol README.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "B",
@@ -38269,14 +38244,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/README.md — 'CAPs deal with changes to the core protocol of the Stellar network. ... SEPs deal with changes to the standards, protocols, and methods used in the ecosystem built on top of the Stellar network.'",
-            "Class B 2026-11-02: gh api repos/stellar/stellar-protocol/contents/ — core/ and ecosystem/ directories, cap-template.md and sep-template.md.",
-            "Class A 2026-11-02: https://stellar.org/blog/developers/protocol-22-upgrade-guide — validators arm 'upgrades?mode=set&upgradetime=2024-12-05T17:00:00Z&protocolversion=22'.",
-            "Class C 2026-11-02: https://horizon.stellar.org/ — current_protocol_version 29, core_supported_protocol_version 30 (P30 CAPs such as CAP-0087 are Implemented but not active).",
-            "No gospel change. Sibling sweep: q-protocol-cap-process — consistent."
+            "https://developers.stellar.org/docs/learn/encyclopedia/contract-development/contract-interactions/stellar-ecosystem-proposals (HTTP 308, 2026-11-03): The redirect target also returns HTTP 404. The current SEPs page distinguishes ecosystem standards from core protocol CAPs, corroborated by stellar-protocol README. Current source: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-protocol-cap-vs-sep"
@@ -39187,13 +39162,9 @@
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/networks",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "A",
             "ref": "https://developers.stellar.org/docs/networks",
-            "note": "class inferred at migration"
+            "note": "The page lists all three exact network passphrases. Live Horizon roots independently return the same strings.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "F",
@@ -39253,19 +39224,15 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "Class A 2026-11-02: https://developers.stellar.org/docs/networks — 'Mainnet: Public Global Stellar Network ; September 2015 Testnet: Test SDF Network ; September 2015 Futurenet: Test SDF Future Network ; October 2022'.",
-            "Class F 2026-11-02: https://horizon.stellar.org/, https://horizon-testnet.stellar.org/, https://horizon-futurenet.stellar.org/ — network_passphrase fields match exactly.",
-            "Class E 2026-11-02: stellarDocs.search_docs → https://developers.stellar.org/docs/networks#network-passphrases.",
-            "Repo evidence 2026-11-02: eval/qa/corpus/migration-ledger.json records q-protocol-network-passphrases as a documented drop (ABSORB-TRIAGE), so the judge-facing cross-reference pointed at a retired case.",
-            "Change: removed the answer's parenthetical cross-reference to the retired case and replaced the dated review history in golden.notes with a scope line ('rationale is not required'); strings, keyFacts, and avoid items unchanged (verifier accept on both fields).",
-            "Sibling sweep 2026-11-02: grep 'Public Global Stellar Network|Test SDF Future Network' over eval/qa/corpus/battery — q-eco-defi-market-map, q-defi-named-newer-protocols, q-defi-perps-whitespace, q-n3-pi-network-wrong-chain; q-protocol-futurenet-vs-testnet, q-ti-testnet-mainnet-migration, q-tool-cli-testnet-identity-howto checked; no conflicting string.",
-            "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) modify truth.verified.rootCause[0]: The proposal is right to drop the '.agents/TODO.md' pointer: TODO.md has no passphrase entry. But the new text says the flaw is 'recorded in the round ledger', and the ledger has no such record (Results: Pending). The newText states the flaw without an unverified pointer. The migration-ledger reference is confirmed."
+            "https://developers.stellar.org/docs/learn/fundamentals/networks (HTTP 308, 2026-11-03): The page lists all three exact network passphrases. Live Horizon roots independently return the same strings. Current source: https://developers.stellar.org/docs/networks (HTTP 200).",
+            "Class F, HTTP 200 on 2026-11-03: https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://horizon-futurenet.stellar.org/ . Each network_passphrase exactly matches the current Networks page and the unchanged golden.",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
-            "Eval-side authoring flaw: golden.answer kept a judge-facing cross-reference to q-protocol-network-passphrases after the corpus migration dropped that case (eval/qa/corpus/migration-ledger.json, ABSORB-TRIAGE)."
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-protocol-network-passphrases-list"
@@ -41733,9 +41700,9 @@
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/platforms/anchor-platform",
-            "observedAt": "2026-11-02",
-            "note": "Re-observed by the golden audit: \"Anchor Platform docs place KYC/compliance on the operating business (SEP-12 KYC)\""
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+            "observedAt": "2026-11-03",
+            "note": "The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows."
           },
           {
             "class": "D",
@@ -41779,15 +41746,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "A https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/setup — \"An anchor is a Stellar-specific term for the on and off-ramps that connect the Stellar network to traditional\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0]: confirmed)",
-            "C lumenloop.search_content_semantic -> https://stellar.org/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration — \"SDF launches Stellar Ramps, a suite of open standards enabling applications to connect to a global network of on and off ramps provided by Stellar anchors\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0]: confirmed)",
-            "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"SDF ... DOES NOT have the capability to freeze or return XLM held in a Stellar account.\" (observedAt 2026-11-02; supports golden.avoid[1] / answer: confirmed)",
-            "F https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN — \"Circle USDC issuer flags: auth_revocable=true, auth_clawback_enabled=false, home_domain circle.com\" (observedAt 2026-11-02; supports golden.avoid[1] / answer: confirmed)",
-            "A https://developers.stellar.org/platforms/anchor-platform — \"Anchor Platform docs place KYC/compliance on the operating business (SEP-12 KYC)\" (observedAt 2026-11-02; supports golden.avoid[0] / keyFacts[1]: confirmed)",
-            "Sibling set checked by the proposer 2026-11-02: q-raph-offramp-xlm-usdc, q-jutsu-cash-crypto-ramps, q-crp-become-an-anchor-licensing; no contradiction recorded."
+            "https://developers.stellar.org/platforms/anchor-platform (HTTP 308, 2026-11-03): The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows. Current source: https://developers.stellar.org/docs/platforms/anchor-platform (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raph merchant-accept-crypto-payments-compliant"
@@ -41955,7 +41921,9 @@
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/platforms/anchor-platform"
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+            "note": "The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "D",
@@ -42005,15 +41973,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "A https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/setup — \"An anchor is a Stellar-specific term for the on and off-ramps that connect the Stellar network to traditional\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0] / avoid[0]: confirmed-as-of)",
-            "C lumenloop.search_content_semantic -> https://stellar.org/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration — \"connect to a global network of on and off ramps provided by Stellar anchors\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0] / avoid[0]: confirmed-as-of)",
-            "A https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — \"To hold a specific asset, an account must establish a trustline with the issuing account\" (observedAt 2026-11-02; supports golden.keyFacts[1] / avoid[1]: confirmed)",
-            "F https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN — \"Circle USDC issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN home_domain circle.com\" (observedAt 2026-11-02; supports golden.keyFacts[1] / avoid[1]: confirmed)",
-            "A https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — \"most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account ... an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos.\" (observedAt 2026-11-02; supports golden.keyFacts[1] / avoid[1]: confirmed)",
-            "Sibling set checked by the proposer 2026-11-02: q-jutsu-cash-crypto-ramps, q-raph-merchant-payments, q-raph-usdc-onto-stellar, q-asset-usdc-eurc-issuer; no contradiction recorded."
+            "https://developers.stellar.org/platforms/anchor-platform (HTTP 308, 2026-11-03): The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows. Current source: https://developers.stellar.org/docs/platforms/anchor-platform (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raph offramp-xlm-usdc-to-bank-fiat"
@@ -52352,7 +52319,9 @@
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/anchoring-assets/anchor-platform"
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+            "note": "The page documents SEP-6, SEP-24, SEP-31, SEP-38 and anchor workflows; existing SEP specifications remain the detailed authority.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "B",
@@ -52622,38 +52591,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task payments-assets)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"Title: Hosted Deposit and Withdrawal / Status: Active / Updated: 2025-09-10 / Version 3.8.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md — \"Status: Active (Interactive components are deprecated in favor of SEP-24) ... Updated: 2025-09-10 ... Version 4.3.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-            "[A] https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — \"SEP-24 is the alternative to SEP-6 which supports hosted deposits and withdrawals. ... SEP-6 is the alternative to SEP-24 that supports an API-style solution for the same use case.\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-            "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed-as-of)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md — \"Must have a business relationship with the Receiving Anchor. ... The Sending and Receiving Anchors must create bi-lateral agreements\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-            "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration — \"To request funds from the Sending Anchor, the Receiving ...\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"SEP-0006 Active; SEP-0024 Active; SEP-0031 Active; SEP-0038 Anchor RFQ API Draft\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md — \"Title: Anchor RFQ API / Status: Draft / Updated: 2025-02-26 / Version 2.5.0\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md — \"TRANSFER_SERVER ... SEP-6; TRANSFER_SERVER_SEP0024 ... SEP-24; DIRECT_PAYMENT_SERVER ... SEP-31\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed)",
-            "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep1#overview — \"SEP endpoints for SEP-6, SEP-24, SEP-31, SEP-38, SEP-45\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0038](sep-0038.md) | Anchor RFQ API | Jake Urban and Leigh McCulloch | Draft |\" (observedAt 2026-11-02; supports golden.avoid[2]: contradicted)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"Handle anchor KYC needs, including handling KYC info within an interactive webapp hosted by the anchor\" (observedAt 2026-11-02; supports golden.avoid[1]: contradicted)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0038](sep-0038.md) | Anchor RFQ API | Jake Urban and Leigh McCulloch | Draft |\" (observedAt 2026-11-02; independent verifier)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md — \"Title: Anchor RFQ API / Status: Draft / Updated: 2025-02-26 / Version 2.5.0\" (observedAt 2026-11-02; independent verifier)",
-            "[D] https://github.com/Soneso/kmp-stellar-sdk/blob/main/compatibility/sep/SEP-0038_COMPATIBILITY_MATRIX.md (via Parallel web_search) — \"Generated: 2026-10-24 16:58:07 SEP Version: 2.5.0 SEP Status: Draft\" (observedAt 2026-11-02; independent verifier)",
-            "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"SEP-0006 ... Active; SEP-0024 Hosted Deposit and Withdrawal ... Active; SEP-0031 Cross-Border Payments API ... Active\" (observedAt 2026-11-02; independent verifier)",
-            "[D] https://stellar-standards.lovable.app/ (unofficial explorer, via Parallel web_search) — \"SEP - 0038 Anchor RFQ API ... Draft 2025-02-26\" (observedAt 2026-11-02; independent verifier)",
-            "Applied fields: golden.keyFacts[3] (verifier decision: accept).",
-            "Sibling sweep 2026-11-02: checked q-sep-38-quotes, q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw; no contradiction with this case's facts. q-sep-38-quotes states SEP-38 Draft, matching the separated keyFact.",
-            "Pass 2 gospel change 2026-11-02: golden.answer date moves from 2026-07-11 to 2026-11-02 to match truth.asOf; keyFacts[3] keeps one predicate (dated Active status) and SEP-38 moves to an 'Also good' line, as golden.answer already states it; avoid and the sd-009 caution unchanged.",
-            "Live B 2026-11-02: curl raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md - 'Status: Active (Interactive components are deprecated in favor of SEP-24)'; sep-0024.md 'Status: Active'; sep-0031.md 'Status: Active' (Updated 2024-11-05); sep-0038.md 'Status: Draft'; README.md rows SEP-0006/0024/0031 Active, SEP-0038 Draft.",
-            "Live A 2026-11-02 (perplexity_search): https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals - 'Complete list of active proposals' includes 'SEP-6|Deposit and Withdrawal API', 'SEP-24|Hosted Deposit and Withdrawal', and 'SEP-31|Cross-Border Payments API'; SEP-38 is not in that list.",
-            "Sibling sweep 2026-11-02 (pass 2): q-sep-38-quotes (SEP-38 Draft), q-sep-6-24-deprecation (sd-009 caution), q-sep-interactive-deposit-withdraw, cluster-009 SEP statuses; no contradiction.",
-            "Pass 1 verification event (batch assets-anchors-seps-04, .agents/rounds/2026-11-02-golden-audit.md) produced the earlier 2026-11-02 evidence rows and edits in this branch diff; the pass-2 rows follow."
+            "https://developers.stellar.org/docs/anchoring-assets/anchor-platform (HTTP 308, 2026-11-03): The page documents SEP-6, SEP-24, SEP-31, SEP-38 and anchor workflows; existing SEP specifications remain the detailed authority. Current source: https://developers.stellar.org/docs/learn/fundamentals/anchors (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
-            "freshness-drift",
-            "eval-authoring: pass 1 moved truth.asOf to 2026-11-02 but left the answer's 'As of 2026-07-11' date, and keyFacts[3] joined two predicates (consistency-entities F16; consistency-rubric L4).",
-            "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md (declined-upstream; the retained golden.notes caution on the SEP-6 deprecation depends on it; recurrence 2026-11-02)."
+            "freshness-drift"
           ]
         },
         "origin": "kaan sep24-vs-sep31-vs-sep6"
@@ -52846,7 +52791,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/encyclopedia/sponsored-reserves"
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
+            "note": "The guide documents begin/end operations and the transfer of reserve liability. CAP-33 independently defines the accounting.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "A",
@@ -53046,16 +52993,11 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "curl -L https://developers.stellar.org/docs/build/apps/smart-wallets/fee-sponsorship (observedAt 2026-11-02): 404 after redirect to /docs/build/guides/contract-accounts/fee-sponsorship.",
-            "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship (observedAt 2026-11-02): 200, title 'Choose a fee sponsorship approach'; \"contract accounts can't sign transaction envelopes, so a separate G-account must act as the transaction source\"; \"Current recommendation (as of October 2026) For managed fee sponsorship, see the OpenZeppelin Relayer page.\"",
-            "https://developers.stellar.org/docs/tokens/stellar-asset-contract (observedAt 2026-11-02): \"When the SAC transfers assets between contracts, it uses Contract Data ledger entries to store the balances for contracts. ... Stellar account balances for issued assets are always stored in trust lines\".",
-            "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/fee-abstraction/README.md (observedAt 2026-11-02): FeeForwarder \"enforces that the user is charged at most `max_fee_amount`\".",
-            "Raven stellarDocs.search_docs 'choose a fee sponsorship approach relayer fee-bump sponsored reserves' (observedAt 2026-11-02): top hit https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship#combining-approaches (the moved page is indexed).",
-            "Independent verifier 2026-11-02 accepted golden.notes and truth.sources[0].ref (.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-04.json).",
-            "Sibling sweep 2026-11-02: q-x402-payment-verification, q-pc-sponsored-reserves, q-defi-x402-on-stellar-what (grep FeeForwarder|hosted facilitator); no contradiction."
+            "https://developers.stellar.org/docs/learn/encyclopedia/sponsored-reserves (HTTP 308, 2026-11-03): The guide documents begin/end operations and the transfer of reserve liability. CAP-33 independently defines the accounting. Current source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
             "freshness-drift"
@@ -60302,8 +60244,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/data/apis/rpc/guide",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation",
+            "note": "The conceptual guide explains footprints, authorization, stale snapshots, and resimulation. The existing simulateTransaction API page documents resource fees, restorePreamble, and instructionLeeway.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "B",
@@ -60370,13 +60313,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction (observedAt 2026-10-27): \"minResourceFee ... Recommended minimum resource fee to add when submitting the transaction\"; \"instructionLeeway number Allow this many extra instructions when budgeting resources\"; \"restorePreamble ... indicates that the simulation detected archived ledger entries\".",
-            "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/methods/simulate_transaction.go (observedAt 2026-11-02): func getRestorePreamble(...) and validateAuthMode(op.Body, &request.AuthMode); gh api search/code repo:stellar/stellar-rpc instructionLeeway → cmd/stellar-rpc/internal/preflight/preflight.go.",
-            "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (observedAt 2026-10-26): \"A Soroban transaction that has a key to an archived Persistent entry in the footprint, but not in the transaction's restore list, will fail immediately\"; stellar tx simulate --help (CLI 28.1.0, observedAt 2026-11-02) runs.",
-            "Verification only: no gospel change; no contradicting change in P28/P29. Sibling sweep 2026-11-02: q-infra-simulate-transaction-howto, q-soroban-resource-limits; no contradiction."
+            "https://developers.stellar.org/docs/data/apis/rpc/guide (HTTP 404, 2026-11-03): The conceptual guide explains footprints, authorization, stale snapshots, and resimulation. The existing simulateTransaction API page documents resource fees, restorePreamble, and instructionLeeway. Current source: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-soroban-simulate-resource-fee"
@@ -63442,8 +63386,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival",
-            "note": "class inferred at migration"
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+            "note": "The page defines TTL expiry and archived persistent/instance entries, supporting the live versus archived contract distinction.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "A",
@@ -63501,13 +63446,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries — 'The maximum number of ledger keys accepted is 200.'; getEvents keeps a bounded 120960-ledger default.",
-            "Live B 2026-11-02: https://github.com/stellar/laboratory/blob/main/src/query/external/useSEContractsList.ts (main a9bd4ee49c, 2026-10-29) — 'StellarExpert API to get smart contracts list ... fetch(`${STELLAR_EXPERT_API}/${network}/contract?...'.",
-            "Live A 2026-11-02: https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/contract-data — contract_id and deleted columns.",
-            "Sibling sweep 2026-11-02: q-ti-enumerate-holders-airdrop, q-infra-which-indexer; no contradiction. No gospel change."
+            "https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival (HTTP 308, 2026-11-03): The page defines TTL expiry and archived persistent/instance entries, supporting the live versus archived contract distinction. Current source: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-ti-enumerate-all-contracts"
@@ -73574,7 +73520,9 @@
           },
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage-state-archival"
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+            "note": "The page distinguishes persistent archival/restoration from temporary deletion. The existing canonical source and SDK/protocol sources remain.",
+            "observedAt": "2026-11-03"
           },
           {
             "class": "B",
@@ -73583,12 +73531,6 @@
           {
             "class": "D",
             "ref": "https://zips.z.cash/protocol/protocol.pdf"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
-            "note": "Current URL of the state-archival page (the older storage-state-archival path returned 404 on 2026-11-02). Protocol 23 auto-restore needs a restore list; expired Temporary entries are deleted permanently.",
-            "observedAt": "2026-11-02"
           },
           {
             "class": "B",
@@ -73824,18 +73766,14 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-07)",
+          "date": "2026-11-03",
+          "by": "lane urls (Codex gpt-6.1-sol high)",
           "evidence": [
-            "Gospel change: avoid[3] reworded to bind only the false claims (Temporary restore; auto-restore without a restore list or fees); golden.notes added as a Protocol 23 leniency note. Verifier decisions accept (both).",
-            "A https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — 'archived Persistent or Instance contract entries can be automatically restored before a host function runs, but only if they're included in the transaction's restore list ... normal rent and fees still apply.' (observedAt 2026-11-02).",
-            "A https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — 'When a Temporary entry's TTL is 0, it is deleted from the ledger and is permanently inaccessible' (observedAt 2026-11-02).",
-            "B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md — 'Status: Final ... Protocol version: 23'; 'All archived keys must be declared in the archivedEntries vector'; 'Restored state is still subject to the same minimum rent and write fees' (observedAt 2026-11-02).",
-            "B https://github.com/NethermindEth/stellar-private-payments/blob/main/contracts/pool/src/pool.rs — 'Spent nullifier marker keyed by nullifier (presence-only; value unused). Nullifier(U256),' (observedAt 2026-11-02).",
-            "Sibling sweep 2026-11-02: q-soroban-storage-types, q-sor-p23-auto-restore-extendto, q-protocol-state-archival-ttl, q-sor-ttl-defaults-extend, q-sor-persistent-unbounded-collection-cap, q-sor-cross-warmancer-zk-stack, q-infra-simulate-transaction-howto checked; the old avoid[3] conflicted with siblings that require stating Protocol 23 auto-restore; the new wording agrees with all of them."
+            "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage-state-archival (HTTP 404, 2026-11-03): The page distinguishes persistent archival/restoration from temporary deletion. The existing canonical source and SDK/protocol sources remain. Current source: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (HTTP 200).",
+            "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
           ],
           "rootCause": [
-            "Eval-side authoring flaw: avoid[3] was written without Protocol 23 (CAP-0066) automatic restoration, so it bound a true claim that sibling goldens require; recorded in .agents/rounds/2026-11-02-golden-audit.md (batch soroban-07)."
+            "freshness-drift"
           ]
         },
         "origin": "kaan privacy-pool-nullifier-storage"

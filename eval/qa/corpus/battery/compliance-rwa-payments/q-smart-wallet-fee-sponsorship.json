@@ -46,7 +46,9 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/learn/encyclopedia/sponsored-reserves"
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
+        "note": "The guide documents begin/end operations and the transfer of reserve liability. CAP-33 independently defines the accounting.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "A",
@@ -246,16 +248,11 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "curl -L https://developers.stellar.org/docs/build/apps/smart-wallets/fee-sponsorship (observedAt 2026-11-02): 404 after redirect to /docs/build/guides/contract-accounts/fee-sponsorship.",
-        "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship (observedAt 2026-11-02): 200, title 'Choose a fee sponsorship approach'; \"contract accounts can't sign transaction envelopes, so a separate G-account must act as the transaction source\"; \"Current recommendation (as of October 2026) For managed fee sponsorship, see the OpenZeppelin Relayer page.\"",
-        "https://developers.stellar.org/docs/tokens/stellar-asset-contract (observedAt 2026-11-02): \"When the SAC transfers assets between contracts, it uses Contract Data ledger entries to store the balances for contracts. ... Stellar account balances for issued assets are always stored in trust lines\".",
-        "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/fee-abstraction/README.md (observedAt 2026-11-02): FeeForwarder \"enforces that the user is charged at most `max_fee_amount`\".",
-        "Raven stellarDocs.search_docs 'choose a fee sponsorship approach relayer fee-bump sponsored reserves' (observedAt 2026-11-02): top hit https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship#combining-approaches (the moved page is indexed).",
-        "Independent verifier 2026-11-02 accepted golden.notes and truth.sources[0].ref (.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-04.json).",
-        "Sibling sweep 2026-11-02: q-x402-payment-verification, q-pc-sponsored-reserves, q-defi-x402-on-stellar-what (grep FeeForwarder|hosted facilitator); no contradiction."
+        "https://developers.stellar.org/docs/learn/encyclopedia/sponsored-reserves (HTTP 308, 2026-11-03): The guide documents begin/end operations and the transfer of reserve liability. CAP-33 independently defines the accounting. Current source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
       ],
       "rootCause": [
         "freshness-drift"

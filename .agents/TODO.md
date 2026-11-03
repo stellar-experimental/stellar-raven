@@ -22,13 +22,12 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Stellar Docs migration to Mintlify
 
-### Repair or retire stale golden docs references
+### Repair or retire stale golden docs references — completed 2026-11-03
 
-The 2026-11-02 page-coverage check (`rounds/2026-11-02-mintlify-migration/page-coverage.json`)
-found 21 golden source URLs that no longer resolve: 11 site 308 redirects and 10 404s, all also
-absent from the retired Algolia index. `get_doc_page` follows the redirects, but the goldens should
-cite the canonical paths. Use the `golden-truth` skill. Done when the page-coverage check reports
-zero 404s and zero redirects for active cases.
+Rechecked all 21 stale URLs live. Repaired current sources in 19 active cases, including three
+retail siblings found by the full source sweep. The final check returned HTTP 200 for all 249
+current Stellar Docs source URLs, with zero 404s and zero redirects. Questions and goldens stayed
+unchanged. Required gates passed. See [the round ledger](rounds/2026-11-03-golden-urls.md).
 
 ### Point agents at the page when a docs hit has no body
 
@@ -88,15 +87,19 @@ Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires th
 
 ### Bump the `stellar-dev` skill pin to serve the sk-032 to sk-036 fixes
 
-On 2026-11-02 stellar/stellar-dev-skill merged PRs #167 to #171, which fix `sk-032` to `sk-036` in
-the upstream skill text (main `9c604c2b`). Raven still serves the pin `cac64041`
-(`ecosystem-skills/MANIFEST.json`), so `codemode.skill.read` returns the old text until the pin
-moves. Follow the full update sequence in `ecosystem-skills/README.md`: run `./update.sh`, read the
-skill diffs, and review the selection of the new `assets/regulated-assets.md` companion. Then run
-`node scripts/check-pin-review.mjs`, the routing gate, and the exposure guards. A hand-edited commit
-SHA is not enough, because `update.sh` discovers the selected files. Deploy only after the overnight
-golden QA run of 2026-11-02 ends. That run belongs to another session, pins the remote server
-identity, and does not authorize a deploy. Its owner releases the pin.
+On 2026-11-03 the pin update selected `9c604c2be6ae69f962fbb578bce6b681d462fea5` through
+`ecosystem-skills/update.sh`. The author read all nine changed file diffs and selected
+`assets/regulated-assets.md` as the existing assets skill companion. All 67 pinned files passed
+upstream hash checks. The rebuilt catalog contains 284 entries, including 204 exact-ID skill
+sections. All 544 complete routing rows remain identical, including grades, hit order, and scores.
+Only the catalog fingerprint and explanation changed in `eval/gates.json`; every threshold,
+accepted total, label, and baseline date remains unchanged. The existing dapp description override
+remains necessary. The new pin still contains the `sk-037` mixed-operation batching claim.
+
+Independent review and deployment remain with the coordinator. Keep this item open until production
+serves the new pin. Deploy only after the overnight golden QA run of 2026-11-02 ends. That run
+belongs to another session and pins the remote server identity. Its owner releases the pin.
+The run does not authorize deployment.
 
 Done when: production `codemode.skill.read` serves the fixed sections, for example
 `skills/smart-contracts/SKILL.md` with `soroban-sdk = "29"`.
@@ -822,6 +825,13 @@ Use the `golden-truth` skill. First cases: R04 (`try_` nesting), R20 (testnet re
 oracle addresses). Writing the cases is free. The owner decided on 2026-11-02 not to run a
 dedicated paid battery for them ("We don't need to overfit for any single case or instance"); they
 are graded in the next authorized QA round with the rest of the battery.
+
+Proposal pass 2026-11-03: R04 already has `q-sor-decode-hosterror-codes`; R23 has
+`q-soroban-oz-token`; R31 has `q-asset-stablecoin-issuers-discovery`. New R20 and Q18 IDs stay
+proposed: `q-infra-testnet-reset-schedule-recovery` and
+`q-sor-reflector-testnet-contract-addresses`. Public-source matrices live in their truth blocks.
+See [the proposal ledger](rounds/2026-11-03-hackmeridian-golden-proposals.md).
+Independent activation review and the later activation commit remain outstanding.
 
 Done when: the cases pass `npm run eval:qa:lint -- --stale --enforce-floors` and are merged.
 

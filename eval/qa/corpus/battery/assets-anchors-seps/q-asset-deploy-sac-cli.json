@@ -36,8 +36,9 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+        "note": "The cookbook documents asset deploy, native SAC deployment, and deterministic contract ID lookup.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "A",
@@ -136,16 +137,15 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract — \"stellar contract asset deploy --source S... --network testnet --asset USDC:GCYE...\" (claim: golden.keyFacts[0] confirmed: `stellar contract asset deploy` deploys the asset's SAC)",
-        "2026-11-02 [F] stellar contract asset --help (stellar 28.1.0; latest release v28.1.0 2026-09-26 per gh api) — \"deploy Deploy builtin Soroban Asset Contract; id ... Deprecated, use `stellar contract id asset` instead\" (claim: golden.keyFacts[0] confirmed: `stellar contract asset deploy` deploys the asset's SAC)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"calling InvokeHostFunctionOp with HOST_FUNCTION_TYPE_CREATE_CONTRACT and a CONTRACT_ID_PREIMAGE_FROM_ASSET contract ID preimage\" (claim: golden.keyFacts[2] confirmed: SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET)",
-        "2026-11-02 [F] stellar contract id asset --asset native --network mainnet — \"CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA (deterministic derivation without deploy)\" (claim: golden.keyFacts[2] confirmed: SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"The asset issuer becomes the initial administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards with the SAC's set_admin function.\" (claim: golden.answer confirmed: After deployment the issuer is automatically the admin)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md — \"The admin is initally set to the issuer (except for the XLM contract ...)\" (claim: golden.answer confirmed: After deployment the issuer is automatically the admin)",
-        "Sibling sweep 2026-11-02: proposer checked q-asset-trustline-vs-sac, q-sor-sac-introspection, q-comp-sac-inherits-flags; no gospel change in this case, so no sibling contradiction can arise from this event."
+        "https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract (HTTP 308, 2026-11-03): The cookbook documents asset deploy, native SAC deployment, and deterministic contract ID lookup. Current source: https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract (HTTP 200).",
+        "https://raw.githubusercontent.com/stellar/stellar-cli/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs (HTTP 200, class B, 2026-11-03): asset argument, asset-to-contract resolution, and asset wrapping implementation corroborate the cookbook.",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-asset-deploy-sac-cli"

@@ -43,8 +43,9 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/data/apis/rpc/guide",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation",
+        "note": "The conceptual guide explains footprints, authorization, stale snapshots, and resimulation. The existing simulateTransaction API page documents resource fees, restorePreamble, and instructionLeeway.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "B",
@@ -111,13 +112,14 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction (observedAt 2026-10-27): \"minResourceFee ... Recommended minimum resource fee to add when submitting the transaction\"; \"instructionLeeway number Allow this many extra instructions when budgeting resources\"; \"restorePreamble ... indicates that the simulation detected archived ledger entries\".",
-        "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/methods/simulate_transaction.go (observedAt 2026-11-02): func getRestorePreamble(...) and validateAuthMode(op.Body, &request.AuthMode); gh api search/code repo:stellar/stellar-rpc instructionLeeway → cmd/stellar-rpc/internal/preflight/preflight.go.",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (observedAt 2026-10-26): \"A Soroban transaction that has a key to an archived Persistent entry in the footprint, but not in the transaction's restore list, will fail immediately\"; stellar tx simulate --help (CLI 28.1.0, observedAt 2026-11-02) runs.",
-        "Verification only: no gospel change; no contradicting change in P28/P29. Sibling sweep 2026-11-02: q-infra-simulate-transaction-howto, q-soroban-resource-limits; no contradiction."
+        "https://developers.stellar.org/docs/data/apis/rpc/guide (HTTP 404, 2026-11-03): The conceptual guide explains footprints, authorization, stale snapshots, and resimulation. The existing simulateTransaction API page documents resource fees, restorePreamble, and instructionLeeway. Current source: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-soroban-simulate-resource-fee"

@@ -505,8 +505,8 @@ describe("golden lifecycle", () => {
     const activeCount = current.cases.filter((item) => item.truth.lifecycle.state === "active").length;
     const quarantinedCount = current.cases.filter((item) => item.truth.lifecycle.state === "quarantined").length;
     expect(activeCount + quarantinedCount).toBe(current.cases.length);
-    expect(currentRegistry.counts).toMatchObject({ active: activeCount, proposed: 4, quarantined: quarantinedCount, retired: 0 });
-    expect(currentRegistry.reservedIds).toHaveLength(505);
+    expect(currentRegistry.counts).toMatchObject({ active: activeCount, proposed: 6, quarantined: quarantinedCount, retired: 0 });
+    expect(currentRegistry.reservedIds).toHaveLength(507);
     for (const item of current.cases) {
       const entry = currentRegistry.entries.find((candidate) => candidate.id === item.id);
       expect(entry.state).toBe(item.truth.lifecycle.state);

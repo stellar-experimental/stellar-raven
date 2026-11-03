@@ -42,8 +42,9 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/list-all-trades-for-a-given-offer",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/get-trades-by-offer-id",
+        "note": "The endpoint documents GET /offers/{offer_id}/trades, cursor pagination, and streaming.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "B",
@@ -138,20 +139,12 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-03)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "2026-11-02 [B] gh api repos/stellar/go — \"\"archived\":true,\"description\":\"Archived public monorepo of go code\"\" (verifier accept of golden.answer)",
-        "2026-11-02 [B] https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go — \"// unused\n// EffectOfferCreated occurs when an account offers to trade an asset\n// EffectOfferCreated EffectType = 30 ... // EffectOfferRemoved EffectType = 31 ... // EffectOfferUpdated EffectType = 32\" (verifier accept of golden.answer)",
-        "2026-11-02 [D] Perplexity search -> github.com/stellar/go release page — \"This repository was archived by the owner on Dec 16, 2025. It is now read-only.\" (verifier accept of golden.answer)",
-        "2026-11-02 [B] gh api repos/stellar/stellar-horizon — \"\"archived\":false,\"description\":\"Stellar's Horizon API service\",\"pushed_at\":\"2026-10-30T19:54:38Z\"\" (verifier accept of truth.sources[3].ref)",
-        "2026-11-02 [B] https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x — \"/* Creates, updates or deletes an offer ... // 0=create a new offer, otherwise edit an existing offer int64 offerID;\" (proposer claim, confirmed: offer_id 0 creates; nonzero updates; amount 0 deletes.)",
-        "2026-11-02 [E] Raven stellarDocs.search_docs 'manage sell offer offer id 0 create delete amount 0' — \"list-of-operations#manage-sell-offer; result-codes manage-sell-offer MANAGE_SELL_OFFER_NOT_FOUND\" (proposer claim, confirmed: offer_id 0 creates; nonzero updates; amount 0 deletes.)",
-        "2026-11-02 [B] https://github.com/stellar/stellar-horizon/blob/main/internal/db2/history/main.go — \"// unused // EffectOfferCreated ... EffectType = 30 ... EffectOfferRemoved ... = 31 ... EffectOfferUpdated ... = 32\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
-        "2026-11-02 [B] https://github.com/stellar/go-stellar-sdk/blob/main/protocols/horizon/effects/main.go — \"// unused // EffectOfferCreated: \"offer_created\", ...\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
-        "2026-11-02 [B] https://github.com/stellar/go (README) — \"REPOSITORY DEPRECATED ... This repository has been moved to: github.com/stellar/go-stellar-sdk (repo archived:true)\" (proposer claim, confirmed: Horizon offer-created/updated/removed effect types are unused in current source.)",
-        "2026-11-02 [B] https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x — \"OfferEntry fields sellerID, offerID, selling, buying, amount, price, flags (no expiry field)\" (proposer claim, confirmed: Classic offers have no protocol-level expiry.)",
-        "Sibling sweep 2026-11-02: grep github.com/stellar/go across the battery → q-tool-go-sdk-ingest, q-ti-parse-raw-ledger-data, q-tool-which-sdk-comparison, and others cite stellar/go for SDK/ingest topics, not for Horizon offer-effect status; none asserts offer effects are used; no contradiction."
+        "https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/list-all-trades-for-a-given-offer (HTTP 404, 2026-11-03): The endpoint documents GET /offers/{offer_id}/trades, cursor pagination, and streaming. Current source: https://developers.stellar.org/docs/data/apis/horizon/api-reference/get-trades-by-offer-id (HTTP 200).",
+        "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/ManageOfferOpFrameBase.cpp (HTTP 200, class B, 2026-11-03): offer creation, update, crossing, and resulting offer state remain implemented. The canonical endpoint supports the same fill-history fact.",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
       ],
       "rootCause": [
         "freshness-drift"

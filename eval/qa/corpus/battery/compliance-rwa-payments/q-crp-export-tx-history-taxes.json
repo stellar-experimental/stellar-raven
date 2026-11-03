@@ -44,8 +44,9 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/data/indexers/hubble",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/data/analytics/hubble",
+        "note": "Hubble documents complete historical network data hosted on BigQuery, with historical retrieval and analytical workloads.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "A",
@@ -54,8 +55,9 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/data/galexie",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/data/indexers/build-your-own/galexie",
+        "note": "Galexie documents ledger-metadata export to cloud storage and data lakes. Use the canonical path without the trailing slash.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "D",
@@ -162,14 +164,12 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "https://www.cointracker.io/integrations/stellar (Parallel web_fetch cache acquired 2026-09-05; direct curl HTTP 403 on 2026-11-02) — 'The easiest way to report your Stellar taxes is to connect your Stellar wallet to CoinTracker. CoinTracker automatically imports your XLM transactions' and steps '1. Download the CSV export of your transactions from Stellar 2. Reformat those transactions into our CoinTracker CSV format 3. Import your CSV export'.",
-        "Class D (Perplexity search, observedAt 2026-11-02) https://www.cointracker.com/integrations/cryptocom-wallet — 'CoinTracker automatically syncs the transactions from a public address you add. We currently support ADA, ... XLM'. The independent verifier modified the proposed note to accept a dated sync claim as well as a CSV answer.",
-        "Class F (observedAt 2026-11-02) https://horizon.stellar.org/ — history_elder_ledger 58962241, history_latest_ledger 65269766; https://mainnet.sorobanrpc.com getTransactions startLedger=100 — 'start ledger (100) must be between the oldest ledger: 65148808 and the latest ledger: 65269767'.",
-        "Class A https://developers.stellar.org/docs/data/analytics/hubble — 'Hubble is an open-source, publicly available dataset that provides a complete historical record of the Stellar network.' (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: grep -i cointracker across eval/qa/corpus/battery → only this case; no contradiction."
+        "https://developers.stellar.org/docs/data/indexers/hubble (HTTP 404, 2026-11-03): Hubble documents complete historical network data hosted on BigQuery, with historical retrieval and analytical workloads. Current source: https://developers.stellar.org/docs/data/analytics/hubble (HTTP 200).",
+        "https://developers.stellar.org/docs/data/galexie (HTTP 308, 2026-11-03): Galexie documents ledger-metadata export to cloud storage and data lakes. Use the canonical path without the trailing slash. Current source: https://developers.stellar.org/docs/data/indexers/build-your-own/galexie (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
       ],
       "rootCause": [
         "freshness-drift"

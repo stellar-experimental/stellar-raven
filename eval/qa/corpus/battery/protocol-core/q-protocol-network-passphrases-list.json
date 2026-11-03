@@ -31,13 +31,9 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/learn/fundamentals/networks",
-        "note": "class inferred at migration"
-      },
-      {
-        "class": "A",
         "ref": "https://developers.stellar.org/docs/networks",
-        "note": "class inferred at migration"
+        "note": "The page lists all three exact network passphrases. Live Horizon roots independently return the same strings.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "F",
@@ -97,19 +93,15 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "Class A 2026-11-02: https://developers.stellar.org/docs/networks — 'Mainnet: Public Global Stellar Network ; September 2015 Testnet: Test SDF Network ; September 2015 Futurenet: Test SDF Future Network ; October 2022'.",
-        "Class F 2026-11-02: https://horizon.stellar.org/, https://horizon-testnet.stellar.org/, https://horizon-futurenet.stellar.org/ — network_passphrase fields match exactly.",
-        "Class E 2026-11-02: stellarDocs.search_docs → https://developers.stellar.org/docs/networks#network-passphrases.",
-        "Repo evidence 2026-11-02: eval/qa/corpus/migration-ledger.json records q-protocol-network-passphrases as a documented drop (ABSORB-TRIAGE), so the judge-facing cross-reference pointed at a retired case.",
-        "Change: removed the answer's parenthetical cross-reference to the retired case and replaced the dated review history in golden.notes with a scope line ('rationale is not required'); strings, keyFacts, and avoid items unchanged (verifier accept on both fields).",
-        "Sibling sweep 2026-11-02: grep 'Public Global Stellar Network|Test SDF Future Network' over eval/qa/corpus/battery — q-eco-defi-market-map, q-defi-named-newer-protocols, q-defi-perps-whitespace, q-n3-pi-network-wrong-chain; q-protocol-futurenet-vs-testnet, q-ti-testnet-mainnet-migration, q-tool-cli-testnet-identity-howto checked; no conflicting string.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) modify truth.verified.rootCause[0]: The proposal is right to drop the '.agents/TODO.md' pointer: TODO.md has no passphrase entry. But the new text says the flaw is 'recorded in the round ledger', and the ledger has no such record (Results: Pending). The newText states the flaw without an unverified pointer. The migration-ledger reference is confirmed."
+        "https://developers.stellar.org/docs/learn/fundamentals/networks (HTTP 308, 2026-11-03): The page lists all three exact network passphrases. Live Horizon roots independently return the same strings. Current source: https://developers.stellar.org/docs/networks (HTTP 200).",
+        "Class F, HTTP 200 on 2026-11-03: https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://horizon-futurenet.stellar.org/ . Each network_passphrase exactly matches the current Networks page and the unchanged golden.",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
       ],
       "rootCause": [
-        "Eval-side authoring flaw: golden.answer kept a judge-facing cross-reference to q-protocol-network-passphrases after the corpus migration dropped that case (eval/qa/corpus/migration-ledger.json, ABSORB-TRIAGE)."
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-protocol-network-passphrases-list"
