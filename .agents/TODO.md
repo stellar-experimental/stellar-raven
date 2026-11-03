@@ -85,26 +85,6 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
 
-### Bump the `stellar-dev` skill pin to serve the sk-032 to sk-036 fixes
-
-On 2026-11-03 the pin update selected `9c604c2be6ae69f962fbb578bce6b681d462fea5` through
-`ecosystem-skills/update.sh`. The author read all nine changed file diffs and selected
-`assets/regulated-assets.md` as the existing assets skill companion. All 67 pinned files passed
-upstream hash checks. The rebuilt catalog contains 284 entries, including 204 exact-ID skill
-sections. All 544 complete routing rows remain identical, including grades, hit order, and scores.
-Only the catalog fingerprint and explanation changed in `eval/gates.json`; every threshold,
-accepted total, label, and baseline date remains unchanged. The existing dapp description override
-remains necessary. The new pin still contains the `sk-037` mixed-operation batching claim.
-
-Independent review and deployment remain with the coordinator. Keep this item open until production
-serves the new pin. Deploy only after the overnight golden QA run of 2026-11-02 ends. That run
-belongs to another session and pins the remote server identity. Its owner releases the pin.
-The run does not authorize deployment.
-
-Done when: production `codemode.skill.read` serves the fixed sections, for example
-`skills/smart-contracts/SKILL.md` with `soroban-sdk = "29"`.
-
-
 ## Routing
 
 ### `search` does not surface the research lane for protocol-history questions
