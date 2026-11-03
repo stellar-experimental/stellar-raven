@@ -220,7 +220,7 @@ No finding claims a simulation.
 
 No finding claims a transaction.
 
-`sd-087` SHA256:
+`sd-089` SHA256:
 
 `11f86ce466e082314c0ccef2b3cda21d30511e6932f36abad3658d643dd1e55f`
 
@@ -232,7 +232,7 @@ Dedupe separates the claim from `sd-055`.
 
 Dedupe separates the claim from `sd-078`.
 
-`sd-088` SHA256:
+`sd-090` SHA256:
 
 `1a5d13abbd9897f188a6864fa77d083a5733956d314007667f3d010bba8cc5b0`
 
@@ -266,9 +266,9 @@ Public receipt SHA256:
 
 `06680d93fc8a58145997d3684172f07bd4d2efdf6884d8af85aabc23072a8a01`
 
-Intake maps `sd-087` to `stellar/stellar-docs`.
+Intake maps `sd-089` to `stellar/stellar-docs`.
 
-Intake maps `sd-088` to `stellar/stellar-docs`.
+Intake maps `sd-090` to `stellar/stellar-docs`.
 
 Intake maps `sk-037` to `stellar/stellar-dev-skill`.
 

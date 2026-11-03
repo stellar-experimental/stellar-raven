@@ -8,17 +8,17 @@ This reviewer made no additional HTTP request.
 
 | Candidate | Current classification | Record or disposition |
 | --- | --- | --- |
-| OC-JSON-PARSE | confirmed-error | sd-089 |
+| OC-JSON-PARSE | confirmed-error | sd-091 |
 | OC-RWA-ARITHMETIC | confirmed-internal-inconsistency | held-owner-and-denominator |
 | OC-PHOENIX-COUNT | confirmed-page-denominator-mismatch | held-owner-and-status-dates |
-| OC-PASSKEY-STORAGE | source-wording-correction | sd-093 |
-| OC-MUXED-SOURCE | confirmed-error | sd-090 |
-| OC-FOOTPRINT-CONFLICT | confirmed-error | sd-091 |
+| OC-PASSKEY-STORAGE | source-wording-correction | sd-095 |
+| OC-MUXED-SOURCE | confirmed-error | sd-092 |
+| OC-FOOTPRINT-CONFLICT | confirmed-error | sd-093 |
 | OC-CHANGE-TRUST | deletion-concern-disproven | ambiguous-description-no-new-finding |
-| OC-META-TYPE | confirmed-error | sd-092 |
+| OC-META-TYPE | confirmed-error | sd-094 |
 
-Five source corrections now map to sd-089 through sd-093.
-Root created sd-093. The passkey correction remains pending final Grok closeout.
+Five source corrections now map to sd-091 through sd-095.
+Root created sd-095. The passkey correction remains pending final Grok closeout.
 The current active finding count is 137. Root owns intake and INDEX.
 
 ## Passkey source review

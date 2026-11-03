@@ -31,20 +31,20 @@ const success = {
   _parsed: true, transactionData: new SorobanDataBuilder(), minResourceFee: "0",
   result: { auth: [], retval: xdr.ScVal.scvU32(7) }
 };
-check("sd-087-error-path", () => {
+check("sd-089-error-path", () => {
   const sim = { error: "fixture simulation error" };
   assert.throws(() => publishedPreview(sim), TypeError);
   assert.deepEqual(guardedPreview(sim), { status: "error", error: sim.error });
   return "The original decode throws; the guard preserves the simulation error.";
 });
-check("sd-087-restore-path", () => {
+check("sd-089-restore-path", () => {
   const sim = { _parsed: true, transactionData: new SorobanDataBuilder(),
     restorePreamble: { transactionData: new SorobanDataBuilder() } };
   assert.throws(() => publishedPreview(sim), TypeError);
   assert.deepEqual(guardedPreview(sim), { status: "restore" });
   return "Restoration remains distinct from an invocation result.";
 });
-check("sd-087-success-and-missing-result", () => {
+check("sd-089-success-and-missing-result", () => {
   assert.equal(publishedPreview(success), 7);
   assert.deepEqual(guardedPreview(success), { status: "success", value: 7 });
   assert.deepEqual(guardedPreview({ _parsed: true, transactionData: new SorobanDataBuilder() }), { status: "no-result" });
@@ -69,7 +69,7 @@ const enumEntry = xdr.ScSpecEntry.scSpecEntryUdtEnumV0(new xdr.ScSpecUdtEnumV0({
 const spec = new contract.Spec([unionEntry.toXdr("base64"), enumEntry.toXdr("base64")]);
 const taggedType = xdr.ScSpecTypeDef.scSpecTypeUdt(new xdr.ScSpecTypeUdt({ name: "TaggedEnum" }));
 const numberType = xdr.ScSpecTypeDef.scSpecTypeUdt(new xdr.ScSpecTypeUdt({ name: "NumberEnum" }));
-check("sd-088-selected-tagged-variants", () => {
+check("sd-090-selected-tagged-variants", () => {
   for (const native of [{ tag: "A" }, { tag: "B", values: [0] }]) {
     const encoded = spec.nativeToScVal(native, taggedType);
     assert.deepEqual(spec.scValToNative(xdr.ScVal.fromXdr(encoded.toXdr("base64"), "base64"), taggedType), native);
@@ -77,7 +77,7 @@ check("sd-088-selected-tagged-variants", () => {
   }
   return "A and B encode separately as a symbol-led vector.";
 });
-check("sd-088-noncanonical-combined-example", () => {
+check("sd-090-noncanonical-combined-example", () => {
   const combined = xdr.ScVal.scvVec([xdr.ScVal.scvSymbol("A"), xdr.ScVal.scvMap([
     new xdr.ScMapEntry({ key: xdr.ScVal.scvSymbol("B"), val: xdr.ScVal.scvU32(0) })
   ])]);
@@ -87,7 +87,7 @@ check("sd-088-noncanonical-combined-example", () => {
   assert.notEqual(canonical.toXdr("base64"), combined.toXdr("base64"));
   return "This SDK decoder ignores the trailing map for A; it does not decode both variants.";
 });
-check("sd-088-integer-enum", () => {
+check("sd-090-integer-enum", () => {
   for (const value of [1, 2]) {
     const encoded = spec.nativeToScVal(value, numberType);
     assert.equal(encoded.type, "scvU32");

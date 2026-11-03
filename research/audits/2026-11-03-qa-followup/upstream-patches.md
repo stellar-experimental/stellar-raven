@@ -21,15 +21,15 @@ The patches contain no unrelated staged deletions.
 
 | Finding | Local change |
 |---|---|
-| `sd-080` | Qualify issuer locking on both pages with signer, threshold, restoration, and SAC-admin conditions. |
-| `sd-081` | Replace the universal TOML array-order claim with table context and root-key rules. |
-| `sd-082` | Explain ordered, atomic operation changes and separate fee and sequence effects. |
-| `sd-083` | Use `set_authorized` in the SAC authorization paragraph. |
-| `sd-084` | Correct both destination-selector descriptions and regenerate the Horizon bundle. |
-| `sd-085` | Correct both conditional `authMode` descriptions and generate the served OpenRPC specification. |
-| `sd-086` | Name `LedgerHeader.scpValue` and nest its three member headings. |
-| `sd-087` | Guard simulation decoding for errors, restoration, missing results, success, and valid void. |
-| `sd-088` | Show separate tagged variants and single-u32 values in all three language examples and the enum JSON. |
+| `sd-082` | Qualify issuer locking on both pages with signer, threshold, restoration, and SAC-admin conditions. |
+| `sd-083` | Replace the universal TOML array-order claim with table context and root-key rules. |
+| `sd-084` | Explain ordered, atomic operation changes and separate fee and sequence effects. |
+| `sd-085` | Use `set_authorized` in the SAC authorization paragraph. |
+| `sd-086` | Correct both destination-selector descriptions and regenerate the Horizon bundle. |
+| `sd-087` | Correct both conditional `authMode` descriptions and generate the served OpenRPC specification. |
+| `sd-088` | Name `LedgerHeader.scpValue` and nest its three member headings. |
+| `sd-089` | Guard simulation decoding for errors, restoration, missing results, success, and valid void. |
+| `sd-090` | Show separate tagged variants and single-u32 values in all three language examples and the enum JSON. |
 | `sk-037` | Replace mixed-operation batching with manual invocation control and the single-operation boundary. |
 
 The issuer tutorial keeps its valid new-account example.

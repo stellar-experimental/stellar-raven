@@ -752,101 +752,101 @@
         "sha256": "13566227a188ecdfcdbb21d25151ef8e46a15f097ea84646aa48d9920b6fb8da"
       },
       {
-        "id": "sd-080",
-        "namespace": "stellar-docs",
-        "status": "verified",
-        "path": "improvements/stellar-docs/sd-080-issuer-lock-omits-other-signers.md",
-        "sha256": "b564cba9b3896e9ccdf6058d1204a16b794c501a04a0e81301e0bc459ccb126f"
-      },
-      {
-        "id": "sd-081",
-        "namespace": "stellar-docs",
-        "status": "verified",
-        "path": "improvements/stellar-docs/sd-081-toml-array-order-is-not-universal.md",
-        "sha256": "c495b72b0e46320ca6a42e219ad43eea6fa850e601468f30379d92e74850417f"
-      },
-      {
         "id": "sd-082",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-082-authorization-sandwich-operations-are-ordered.md",
-        "sha256": "de597c11108216feaabb4c1cf165f0611bd5a4122b91a546bd596f9a6b8d31ed"
+        "path": "improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md",
+        "sha256": "b564cba9b3896e9ccdf6058d1204a16b794c501a04a0e81301e0bc459ccb126f"
       },
       {
         "id": "sd-083",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-083-sac-authorization-prose-names-set-auth.md",
-        "sha256": "e578ee14d348ca29d34f500b7e56b8c335f05cc3347d86c00f2b7801be318f3c"
+        "path": "improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md",
+        "sha256": "c495b72b0e46320ca6a42e219ad43eea6fa850e601468f30379d92e74850417f"
       },
       {
         "id": "sd-084",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-084-strict-send-destination-parameter-descriptions.md",
-        "sha256": "ac82eeb7bb70dc3180fcb252c3591ab4482053b2d7e7ba7fe87c61e88bc90eab"
+        "path": "improvements/stellar-docs/sd-084-authorization-sandwich-operations-are-ordered.md",
+        "sha256": "de597c11108216feaabb4c1cf165f0611bd5a4122b91a546bd596f9a6b8d31ed"
       },
       {
         "id": "sd-085",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-085-simulation-authmode-default-is-conditional.md",
-        "sha256": "3d366082e7ea41bbc371ff8bb05c583d536e31a992b58c5ea06a22633d8a1a71"
+        "path": "improvements/stellar-docs/sd-085-sac-authorization-prose-names-set-auth.md",
+        "sha256": "e578ee14d348ca29d34f500b7e56b8c335f05cc3347d86c00f2b7801be318f3c"
       },
       {
         "id": "sd-086",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-086-ledger-header-scpvalue-nesting.md",
-        "sha256": "3e65951d04bd388998b039a93a6a478f86bcd862409713577cc2528617ce22d5"
+        "path": "improvements/stellar-docs/sd-086-strict-send-destination-parameter-descriptions.md",
+        "sha256": "ac82eeb7bb70dc3180fcb252c3591ab4482053b2d7e7ba7fe87c61e88bc90eab"
       },
       {
         "id": "sd-087",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-087-simulation-preview-decodes-before-success-check.md",
-        "sha256": "682a774c2fe70257a7c0b62b875ac67f5316a68f5e4c454afaea1c07c01b9587"
+        "path": "improvements/stellar-docs/sd-087-simulation-authmode-default-is-conditional.md",
+        "sha256": "3d366082e7ea41bbc371ff8bb05c583d536e31a992b58c5ea06a22633d8a1a71"
       },
       {
         "id": "sd-088",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-088-contract-spec-enum-encodings.md",
-        "sha256": "a50581115b884009eb19efd28ff3d3ff85133321c36dee2fa4ca9e6d8ea77862"
+        "path": "improvements/stellar-docs/sd-088-ledger-header-scpvalue-nesting.md",
+        "sha256": "3e65951d04bd388998b039a93a6a478f86bcd862409713577cc2528617ce22d5"
       },
       {
         "id": "sd-089",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-089-json-response-double-parse.md",
-        "sha256": "6fd3239aa0bdc733dd7c4bea8e2e0c510d7772aeaf7420b90db71b5007888ae3"
+        "path": "improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md",
+        "sha256": "682a774c2fe70257a7c0b62b875ac67f5316a68f5e4c454afaea1c07c01b9587"
       },
       {
         "id": "sd-090",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-090-muxed-source-invoke-host-function-exception.md",
-        "sha256": "a169b70160ee35f26a30266b84f6e361e2955580b3613948ddd2156eaf634be8"
+        "path": "improvements/stellar-docs/sd-090-contract-spec-enum-encodings.md",
+        "sha256": "a50581115b884009eb19efd28ff3d3ff85133321c36dee2fa4ca9e6d8ea77862"
       },
       {
         "id": "sd-091",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-091-footprint-overlap-read-only-exception.md",
-        "sha256": "b5700578d96c43847de94f912a10077bad543b5f22b43441f6416fcebfa92212"
+        "path": "improvements/stellar-docs/sd-091-json-response-double-parse.md",
+        "sha256": "6fd3239aa0bdc733dd7c4bea8e2e0c510d7772aeaf7420b90db71b5007888ae3"
       },
       {
         "id": "sd-092",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-092-gettransactions-result-meta-xdr-type.md",
-        "sha256": "6ed0db9da5c72d6f1e5eb170dce8e392c8ec6473b3c9f37430977ae211a2ee38"
+        "path": "improvements/stellar-docs/sd-092-muxed-source-invoke-host-function-exception.md",
+        "sha256": "a169b70160ee35f26a30266b84f6e361e2955580b3613948ddd2156eaf634be8"
       },
       {
         "id": "sd-093",
         "namespace": "stellar-docs",
         "status": "verified",
-        "path": "improvements/stellar-docs/sd-093-sdp-passkey-synchronization-boundary.md",
+        "path": "improvements/stellar-docs/sd-093-footprint-overlap-read-only-exception.md",
+        "sha256": "b5700578d96c43847de94f912a10077bad543b5f22b43441f6416fcebfa92212"
+      },
+      {
+        "id": "sd-094",
+        "namespace": "stellar-docs",
+        "status": "verified",
+        "path": "improvements/stellar-docs/sd-094-gettransactions-result-meta-xdr-type.md",
+        "sha256": "6ed0db9da5c72d6f1e5eb170dce8e392c8ec6473b3c9f37430977ae211a2ee38"
+      },
+      {
+        "id": "sd-095",
+        "namespace": "stellar-docs",
+        "status": "verified",
+        "path": "improvements/stellar-docs/sd-095-sdp-passkey-synchronization-boundary.md",
         "sha256": "e22a3b79d2db5b3118d4e10556618af1fa71e419430113832bcb472f022713d7"
       },
       {
@@ -2627,66 +2627,66 @@
           "sha256": "13566227a188ecdfcdbb21d25151ef8e46a15f097ea84646aa48d9920b6fb8da"
         },
         {
-          "id": "sd-080",
-          "namespace": "stellar-docs",
-          "status": "verified",
-          "path": "improvements/stellar-docs/sd-080-issuer-lock-omits-other-signers.md",
-          "sha256": "b564cba9b3896e9ccdf6058d1204a16b794c501a04a0e81301e0bc459ccb126f"
-        },
-        {
-          "id": "sd-081",
-          "namespace": "stellar-docs",
-          "status": "verified",
-          "path": "improvements/stellar-docs/sd-081-toml-array-order-is-not-universal.md",
-          "sha256": "c495b72b0e46320ca6a42e219ad43eea6fa850e601468f30379d92e74850417f"
-        },
-        {
           "id": "sd-082",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-082-authorization-sandwich-operations-are-ordered.md",
-          "sha256": "de597c11108216feaabb4c1cf165f0611bd5a4122b91a546bd596f9a6b8d31ed"
+          "path": "improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md",
+          "sha256": "b564cba9b3896e9ccdf6058d1204a16b794c501a04a0e81301e0bc459ccb126f"
         },
         {
           "id": "sd-083",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-083-sac-authorization-prose-names-set-auth.md",
-          "sha256": "e578ee14d348ca29d34f500b7e56b8c335f05cc3347d86c00f2b7801be318f3c"
+          "path": "improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md",
+          "sha256": "c495b72b0e46320ca6a42e219ad43eea6fa850e601468f30379d92e74850417f"
         },
         {
           "id": "sd-084",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-084-strict-send-destination-parameter-descriptions.md",
-          "sha256": "ac82eeb7bb70dc3180fcb252c3591ab4482053b2d7e7ba7fe87c61e88bc90eab"
+          "path": "improvements/stellar-docs/sd-084-authorization-sandwich-operations-are-ordered.md",
+          "sha256": "de597c11108216feaabb4c1cf165f0611bd5a4122b91a546bd596f9a6b8d31ed"
         },
         {
           "id": "sd-085",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-085-simulation-authmode-default-is-conditional.md",
-          "sha256": "3d366082e7ea41bbc371ff8bb05c583d536e31a992b58c5ea06a22633d8a1a71"
+          "path": "improvements/stellar-docs/sd-085-sac-authorization-prose-names-set-auth.md",
+          "sha256": "e578ee14d348ca29d34f500b7e56b8c335f05cc3347d86c00f2b7801be318f3c"
         },
         {
           "id": "sd-086",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-086-ledger-header-scpvalue-nesting.md",
-          "sha256": "3e65951d04bd388998b039a93a6a478f86bcd862409713577cc2528617ce22d5"
+          "path": "improvements/stellar-docs/sd-086-strict-send-destination-parameter-descriptions.md",
+          "sha256": "ac82eeb7bb70dc3180fcb252c3591ab4482053b2d7e7ba7fe87c61e88bc90eab"
         },
         {
           "id": "sd-087",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-087-simulation-preview-decodes-before-success-check.md",
-          "sha256": "682a774c2fe70257a7c0b62b875ac67f5316a68f5e4c454afaea1c07c01b9587"
+          "path": "improvements/stellar-docs/sd-087-simulation-authmode-default-is-conditional.md",
+          "sha256": "3d366082e7ea41bbc371ff8bb05c583d536e31a992b58c5ea06a22633d8a1a71"
         },
         {
           "id": "sd-088",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-088-contract-spec-enum-encodings.md",
+          "path": "improvements/stellar-docs/sd-088-ledger-header-scpvalue-nesting.md",
+          "sha256": "3e65951d04bd388998b039a93a6a478f86bcd862409713577cc2528617ce22d5"
+        },
+        {
+          "id": "sd-089",
+          "namespace": "stellar-docs",
+          "status": "verified",
+          "path": "improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md",
+          "sha256": "682a774c2fe70257a7c0b62b875ac67f5316a68f5e4c454afaea1c07c01b9587"
+        },
+        {
+          "id": "sd-090",
+          "namespace": "stellar-docs",
+          "status": "verified",
+          "path": "improvements/stellar-docs/sd-090-contract-spec-enum-encodings.md",
           "sha256": "a50581115b884009eb19efd28ff3d3ff85133321c36dee2fa4ca9e6d8ea77862"
         },
         {
@@ -2990,9 +2990,9 @@
     },
     "OC-JSON-PARSE": {
       "kind": "new-verified-finding",
-      "target": "improvements/stellar-docs/sd-089-json-response-double-parse.md",
+      "target": "improvements/stellar-docs/sd-091-json-response-double-parse.md",
       "action": "Remove the second JSON.parse and retain separate JSON-RPC success/error handling.",
-      "findingId": "sd-089",
+      "findingId": "sd-091",
       "classification": "confirmed-error"
     },
     "OC-RWA-ARITHMETIC": {
@@ -3011,23 +3011,23 @@
     },
     "OC-PASSKEY-STORAGE": {
       "kind": "verified-wording-correction-pending-final-closeout",
-      "target": "improvements/stellar-docs/sd-093-sdp-passkey-synchronization-boundary.md",
-      "action": "Use sd-093. Preserve provider-dependent availability, website non-disclosure, and the maintained-source scope.",
-      "findingId": "sd-093",
+      "target": "improvements/stellar-docs/sd-095-sdp-passkey-synchronization-boundary.md",
+      "action": "Use sd-095. Preserve provider-dependent availability, website non-disclosure, and the maintained-source scope.",
+      "findingId": "sd-095",
       "classification": "source-wording-correction"
     },
     "OC-MUXED-SOURCE": {
       "kind": "new-verified-finding",
-      "target": "improvements/stellar-docs/sd-090-muxed-source-invoke-host-function-exception.md",
+      "target": "improvements/stellar-docs/sd-092-muxed-source-invoke-host-function-exception.md",
       "action": "Exclude muxed inner transaction and operation sources for this invocation from Protocol 25 onward.",
-      "findingId": "sd-090",
+      "findingId": "sd-092",
       "classification": "confirmed-error"
     },
     "OC-FOOTPRINT-CONFLICT": {
       "kind": "new-verified-finding",
-      "target": "improvements/stellar-docs/sd-091-footprint-overlap-read-only-exception.md",
+      "target": "improvements/stellar-docs/sd-093-footprint-overlap-read-only-exception.md",
       "action": "Distinguish RO/RO overlap from RO/RW and RW/RW conflicts. Preserve may-execute wording and scheduling limits.",
-      "findingId": "sd-091",
+      "findingId": "sd-093",
       "classification": "confirmed-error"
     },
     "OC-CHANGE-TRUST": {
@@ -3039,9 +3039,9 @@
     },
     "OC-META-TYPE": {
       "kind": "new-verified-finding",
-      "target": "improvements/stellar-docs/sd-092-gettransactions-result-meta-xdr-type.md",
+      "target": "improvements/stellar-docs/sd-094-gettransactions-result-meta-xdr-type.md",
       "action": "Correct only the field type and link. Preserve the declined operational-limit policy.",
-      "findingId": "sd-092",
+      "findingId": "sd-094",
       "classification": "confirmed-error"
     },
     "cs-001": {
@@ -3626,87 +3626,87 @@
       "status": "reported-upstream",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
-    "sd-080": {
-      "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-080-issuer-lock-omits-other-signers.md",
-      "status": "verified",
-      "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
-    },
-    "sd-081": {
-      "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-081-toml-array-order-is-not-universal.md",
-      "status": "verified",
-      "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
-    },
     "sd-082": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-082-authorization-sandwich-operations-are-ordered.md",
+      "target": "improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-083": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-083-sac-authorization-prose-names-set-auth.md",
+      "target": "improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-084": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-084-strict-send-destination-parameter-descriptions.md",
+      "target": "improvements/stellar-docs/sd-084-authorization-sandwich-operations-are-ordered.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-085": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-085-simulation-authmode-default-is-conditional.md",
+      "target": "improvements/stellar-docs/sd-085-sac-authorization-prose-names-set-auth.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-086": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-086-ledger-header-scpvalue-nesting.md",
+      "target": "improvements/stellar-docs/sd-086-strict-send-destination-parameter-descriptions.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-087": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-087-simulation-preview-decodes-before-success-check.md",
+      "target": "improvements/stellar-docs/sd-087-simulation-authmode-default-is-conditional.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-088": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-088-contract-spec-enum-encodings.md",
+      "target": "improvements/stellar-docs/sd-088-ledger-header-scpvalue-nesting.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-089": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-089-json-response-double-parse.md",
+      "target": "improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-090": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-090-muxed-source-invoke-host-function-exception.md",
+      "target": "improvements/stellar-docs/sd-090-contract-spec-enum-encodings.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-091": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-091-footprint-overlap-read-only-exception.md",
+      "target": "improvements/stellar-docs/sd-091-json-response-double-parse.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-092": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-092-gettransactions-result-meta-xdr-type.md",
+      "target": "improvements/stellar-docs/sd-092-muxed-source-invoke-host-function-exception.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
     "sd-093": {
       "kind": "existing-finding",
-      "target": "improvements/stellar-docs/sd-093-sdp-passkey-synchronization-boundary.md",
+      "target": "improvements/stellar-docs/sd-093-footprint-overlap-read-only-exception.md",
+      "status": "verified",
+      "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
+    },
+    "sd-094": {
+      "kind": "existing-finding",
+      "target": "improvements/stellar-docs/sd-094-gettransactions-result-meta-xdr-type.md",
+      "status": "verified",
+      "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
+    },
+    "sd-095": {
+      "kind": "existing-finding",
+      "target": "improvements/stellar-docs/sd-095-sdp-passkey-synchronization-boundary.md",
       "status": "verified",
       "action": "Use the existing record. Add only dated recurrence evidence after root integration; create no duplicate."
     },
@@ -3929,8 +3929,8 @@
       "evidenceRefs": [
         "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-aas-list-token-on-exchanges-aggregators.md",
         "original-method:eval/local-lanes/direct-grok/2026-11-02/review-packets-v4/q-aas-list-token-on-exchanges-aggregators.json",
-        "original-main:improvements/stellar-docs/sd-080-issuer-lock-omits-other-signers.md",
-        "original-main:improvements/stellar-docs/sd-081-toml-array-order-is-not-universal.md",
+        "original-main:improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md",
+        "original-main:improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md",
         "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/evidence/shard01/case-evidence.json",
         "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/shard01.md"
       ],
@@ -3951,8 +3951,8 @@
           "observation": "The answer repeats universal issuer-lock and TOML-order claims.",
           "action": "Attach this dated evidence to the existing finding. Create no duplicate.",
           "actionRefs": [
-            "sd-080",
-            "sd-081"
+            "sd-082",
+            "sd-083"
           ],
           "id": "D002-02",
           "evidenceRefs": [
@@ -4144,8 +4144,8 @@
       "evidenceRefs": [
         "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-asset-issue-asset-howto.md",
         "original-method:eval/local-lanes/direct-grok/2026-11-02/review-packets-v4/q-asset-issue-asset-howto.json",
-        "original-main:improvements/stellar-docs/sd-080-issuer-lock-omits-other-signers.md",
-        "original-main:improvements/stellar-docs/sd-081-toml-array-order-is-not-universal.md",
+        "original-main:improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md",
+        "original-main:improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md",
         "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/evidence/shard04/case-evidence.json",
         "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/shard04.md"
       ],
@@ -4166,8 +4166,8 @@
           "observation": "The answer repeats unrestricted lock and TOML-order rules.",
           "action": "Attach this dated evidence to the existing finding. Create no duplicate.",
           "actionRefs": [
-            "sd-080",
-            "sd-081"
+            "sd-082",
+            "sd-083"
           ],
           "id": "D006-02",
           "evidenceRefs": [
@@ -4437,7 +4437,7 @@
           "observation": "The answer promotes master weight 0 into a permanent loss of every signing path.",
           "action": "Attach this dated evidence to the existing finding. Create no duplicate.",
           "actionRefs": [
-            "sd-080"
+            "sd-082"
           ],
           "id": "D009-02",
           "evidenceRefs": [
@@ -4777,7 +4777,7 @@
           "observation": "The candidate notices strict-send description drift and follows the correct destination parameters.",
           "action": "Attach this dated evidence to the existing finding. Create no duplicate.",
           "actionRefs": [
-            "sd-084"
+            "sd-086"
           ],
           "id": "D016-02",
           "evidenceRefs": [
@@ -6237,7 +6237,7 @@
           "observation": "The answer repeats an unconditional enforce default despite a conditional implementation default.",
           "action": "Attach this dated evidence to the existing finding. Create no duplicate.",
           "actionRefs": [
-            "sd-085"
+            "sd-087"
           ],
           "id": "D042-01",
           "evidenceRefs": [
@@ -6296,7 +6296,7 @@
           "observation": "The deep-dive example calls JSON.parse after response.json. The candidate correctly identifies the redundant parse.",
           "action": "Use the verified finding and separate Docs patch. Keep deployment and publication status explicit.",
           "actionRefs": [
-            "sd-089",
+            "sd-091",
             "OC-JSON-PARSE"
           ],
           "id": "D042-06",
@@ -6304,13 +6304,13 @@
             "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-infra-simulate-transaction-howto.md",
             "original-method:eval/local-lanes/direct-grok/2026-11-02/review-packets-v4/q-infra-simulate-transaction-howto.json",
             "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
-            "improvements/stellar-docs/sd-089-json-response-double-parse.md",
+            "improvements/stellar-docs/sd-091-json-response-double-parse.md",
             "research/audits/2026-11-03-qa-followup/additional-stellar-docs-manifest.json"
           ],
           "followupDisposition": {
             "classification": "confirmed-error",
             "disposition": "new-verified-finding",
-            "findingId": "sd-089",
+            "findingId": "sd-091",
             "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
             "publicationComplete": false
           }
@@ -6604,9 +6604,9 @@
         {
           "category": "existing-finding",
           "observation": "Maintained SDP code and provider documentation support a device/provider distinction. Deployment behavior and actual synchronization remain unobserved.",
-          "action": "Use sd-093 and the fifth Docs subpatch. Keep final closeout pending and avoid deployment or recovery guarantees.",
+          "action": "Use sd-095 and the fifth Docs subpatch. Keep final closeout pending and avoid deployment or recovery guarantees.",
           "actionRefs": [
-            "sd-093",
+            "sd-095",
             "OC-PASSKEY-STORAGE"
           ],
           "id": "D048-03",
@@ -6614,7 +6614,7 @@
             "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-passkey-platform-constraints.md",
             "original-method:eval/local-lanes/direct-grok/2026-11-02/review-packets-v4/q-passkey-platform-constraints.json",
             "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
-            "improvements/stellar-docs/sd-093-sdp-passkey-synchronization-boundary.md",
+            "improvements/stellar-docs/sd-095-sdp-passkey-synchronization-boundary.md",
             "research/audits/2026-11-03-qa-followup/additional-stellar-docs-manifest.json",
             "research/audits/2026-11-03-qa-followup/passkey-source-supplement.json",
             "tmp/2026-11-03-qa-followup/additional-passkey-source-review.json"
@@ -6622,7 +6622,7 @@
           "followupDisposition": {
             "classification": "source-wording-correction",
             "disposition": "verified-wording-correction-pending-final-closeout",
-            "findingId": "sd-093",
+            "findingId": "sd-095",
             "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
             "publicationComplete": false,
             "reviewState": "pending-final-Grok-closeout",
@@ -6775,7 +6775,7 @@
           "observation": "The source matrix lacks an explicit InvokeHostFunction muxed-source exception. Core rejects both source positions.",
           "action": "Use the verified finding and separate Docs patch. Keep deployment and publication status explicit.",
           "actionRefs": [
-            "sd-090",
+            "sd-092",
             "OC-MUXED-SOURCE"
           ],
           "id": "D051-02",
@@ -6783,13 +6783,13 @@
             "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-pc-muxed-accounts.md",
             "original-method:eval/local-lanes/direct-grok/2026-11-02/review-packets-v4/q-pc-muxed-accounts.json",
             "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
-            "improvements/stellar-docs/sd-090-muxed-source-invoke-host-function-exception.md",
+            "improvements/stellar-docs/sd-092-muxed-source-invoke-host-function-exception.md",
             "research/audits/2026-11-03-qa-followup/additional-stellar-docs-manifest.json"
           ],
           "followupDisposition": {
             "classification": "confirmed-error",
             "disposition": "new-verified-finding",
-            "findingId": "sd-090",
+            "findingId": "sd-092",
             "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
             "publicationComplete": false
           }
@@ -7068,7 +7068,7 @@
           "observation": "Flat source headings propagate nested StellarValue members as direct LedgerHeader fields.",
           "action": "Attach this dated evidence to the existing finding. Create no duplicate.",
           "actionRefs": [
-            "sd-086"
+            "sd-088"
           ],
           "id": "D056-01",
           "evidenceRefs": [
@@ -7142,7 +7142,7 @@
           "observation": "The storage page says overlapping footprints serialize. Shared read-only keys need no such conflict.",
           "action": "Use the verified finding and separate Docs patch. Keep deployment and publication status explicit.",
           "actionRefs": [
-            "sd-091",
+            "sd-093",
             "OC-FOOTPRINT-CONFLICT"
           ],
           "id": "D057-03",
@@ -7150,13 +7150,13 @@
             "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-protocol-parallel-execution.md",
             "original-method:eval/local-lanes/direct-grok/2026-11-02/review-packets-v4/q-protocol-parallel-execution.json",
             "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
-            "improvements/stellar-docs/sd-091-footprint-overlap-read-only-exception.md",
+            "improvements/stellar-docs/sd-093-footprint-overlap-read-only-exception.md",
             "research/audits/2026-11-03-qa-followup/additional-stellar-docs-manifest.json"
           ],
           "followupDisposition": {
             "classification": "confirmed-error",
             "disposition": "new-verified-finding",
-            "findingId": "sd-091",
+            "findingId": "sd-093",
             "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
             "publicationComplete": false
           }
@@ -8137,7 +8137,7 @@
           "action": "Attach this dated evidence to the existing finding. Create no duplicate.",
           "actionRefs": [
             "sk-037",
-            "sd-087"
+            "sd-089"
           ],
           "id": "D077-01",
           "evidenceRefs": [
@@ -8253,7 +8253,7 @@
           "observation": "Conflicting tagged and integer enum examples already have an existing source finding.",
           "action": "Attach this dated evidence to the existing finding. Create no duplicate.",
           "actionRefs": [
-            "sd-088"
+            "sd-090"
           ],
           "id": "D079-02",
           "evidenceRefs": [
@@ -8661,7 +8661,7 @@
           "observation": "A recovered SAC source read repeats set_auth before any final answer exists.",
           "action": "Keep this source recurrence separate from absent-answer grading.",
           "actionRefs": [
-            "sd-083"
+            "sd-085"
           ],
           "id": "D089-03",
           "evidenceRefs": [
@@ -8762,9 +8762,9 @@
         {
           "category": "existing-finding",
           "observation": "The RPC page labels TransactionMeta as TransactionResultMeta, which is a distinct wrapper type.",
-          "action": "Use sd-092. The canonical input and bundle are patched; external method-page regeneration remains pending.",
+          "action": "Use sd-094. The canonical input and bundle are patched; external method-page regeneration remains pending.",
           "actionRefs": [
-            "sd-092",
+            "sd-094",
             "OC-META-TYPE"
           ],
           "id": "D091-03",
@@ -8772,13 +8772,13 @@
             "original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-ti-rpc-gettransactions-pagination-xdr.md",
             "original-method:eval/local-lanes/direct-grok/2026-11-02/review-packets-v4/q-ti-rpc-gettransactions-pagination-xdr.json",
             "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
-            "improvements/stellar-docs/sd-092-gettransactions-result-meta-xdr-type.md",
+            "improvements/stellar-docs/sd-094-gettransactions-result-meta-xdr-type.md",
             "research/audits/2026-11-03-qa-followup/additional-stellar-docs-manifest.json"
           ],
           "followupDisposition": {
             "classification": "confirmed-error",
             "disposition": "new-verified-finding",
-            "findingId": "sd-092",
+            "findingId": "sd-094",
             "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
             "publicationComplete": false,
             "generatedMdxRegenerationRequired": true
@@ -9238,7 +9238,7 @@
       "next": "Remove the second JSON.parse and retain separate JSON-RPC success/error handling.",
       "related": [
         "sd-055",
-        "sd-087"
+        "sd-089"
       ],
       "distinct": "Builder signing and simulation-result decoding guards do not own this independent response-parsing failure.",
       "caseId": "q-infra-simulate-transaction-howto",
@@ -9261,22 +9261,22 @@
           "sha256": "3c149e85f52a0d6ef091be24f05210d1a7fb7a74bcea3710dea014c5c89e1c88"
         },
         {
-          "id": "sd-087",
-          "namespace": "stellar-docs",
-          "status": "verified",
-          "path": "improvements/stellar-docs/sd-087-simulation-preview-decodes-before-success-check.md",
-          "sha256": "682a774c2fe70257a7c0b62b875ac67f5316a68f5e4c454afaea1c07c01b9587"
-        },
-        {
           "id": "sd-089",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-089-json-response-double-parse.md",
+          "path": "improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md",
+          "sha256": "682a774c2fe70257a7c0b62b875ac67f5316a68f5e4c454afaea1c07c01b9587"
+        },
+        {
+          "id": "sd-091",
+          "namespace": "stellar-docs",
+          "status": "verified",
+          "path": "improvements/stellar-docs/sd-091-json-response-double-parse.md",
           "sha256": "6fd3239aa0bdc733dd7c4bea8e2e0c510d7772aeaf7420b90db71b5007888ae3"
         }
       ],
       "classification": "confirmed-error",
-      "findingId": "sd-089",
+      "findingId": "sd-091",
       "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
       "verificationEvidenceSha256": "c57e90ab874831a8bca8f37de968243e56ae3aebcb6307eb5ff4110b3ca21cb0",
       "verificationLimits": [
@@ -9383,7 +9383,7 @@
       "owner": "stellar/stellar-docs",
       "surface": "docs-content",
       "observation": "Maintained SDP source and provider documentation support authenticator/provider management and encrypted synchronization wording.",
-      "next": "Use sd-093. Preserve provider-dependent availability, website non-disclosure, and the maintained-source scope.",
+      "next": "Use sd-095. Preserve provider-dependent availability, website non-disclosure, and the maintained-source scope.",
       "related": [
         "sd-027",
         "sd-034",
@@ -9417,15 +9417,15 @@
           "receiptSha256": "6d28f7d99d85ade2a86a97651a5c411ff9de2f426408a956313c8686a98e1ee4"
         },
         {
-          "id": "sd-093",
+          "id": "sd-095",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-093-sdp-passkey-synchronization-boundary.md",
+          "path": "improvements/stellar-docs/sd-095-sdp-passkey-synchronization-boundary.md",
           "sha256": "e22a3b79d2db5b3118d4e10556618af1fa71e419430113832bcb472f022713d7"
         }
       ],
       "classification": "source-wording-correction",
-      "findingId": "sd-093",
+      "findingId": "sd-095",
       "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
       "verificationEvidenceSha256": "c57e90ab874831a8bca8f37de968243e56ae3aebcb6307eb5ff4110b3ca21cb0",
       "verificationLimits": [
@@ -9463,15 +9463,15 @@
           "receiptSha256": "be917fba1e86e83fb411e9113b5d2ffecb9dbf19aaab9c329f3eefe806149648"
         },
         {
-          "id": "sd-090",
+          "id": "sd-092",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-090-muxed-source-invoke-host-function-exception.md",
+          "path": "improvements/stellar-docs/sd-092-muxed-source-invoke-host-function-exception.md",
           "sha256": "a169b70160ee35f26a30266b84f6e361e2955580b3613948ddd2156eaf634be8"
         }
       ],
       "classification": "confirmed-error",
-      "findingId": "sd-090",
+      "findingId": "sd-092",
       "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
       "verificationEvidenceSha256": "c57e90ab874831a8bca8f37de968243e56ae3aebcb6307eb5ff4110b3ca21cb0",
       "verificationLimits": [
@@ -9516,15 +9516,15 @@
           "sha256": "424a9891b54be87dc0e846e6fac36d3d53131948dc787c3c5cd477fa5cf41bbb"
         },
         {
-          "id": "sd-091",
+          "id": "sd-093",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-091-footprint-overlap-read-only-exception.md",
+          "path": "improvements/stellar-docs/sd-093-footprint-overlap-read-only-exception.md",
           "sha256": "b5700578d96c43847de94f912a10077bad543b5f22b43441f6416fcebfa92212"
         }
       ],
       "classification": "confirmed-error",
-      "findingId": "sd-091",
+      "findingId": "sd-093",
       "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
       "verificationEvidenceSha256": "c57e90ab874831a8bca8f37de968243e56ae3aebcb6307eb5ff4110b3ca21cb0",
       "verificationLimits": [
@@ -9610,15 +9610,15 @@
           "receiptSha256": "0d2cbd664ef89b3467fd9e113009a6de5090d5919e92930b5106352f67cfc292"
         },
         {
-          "id": "sd-092",
+          "id": "sd-094",
           "namespace": "stellar-docs",
           "status": "verified",
-          "path": "improvements/stellar-docs/sd-092-gettransactions-result-meta-xdr-type.md",
+          "path": "improvements/stellar-docs/sd-094-gettransactions-result-meta-xdr-type.md",
           "sha256": "6ed0db9da5c72d6f1e5eb170dce8e392c8ec6473b3c9f37430977ae211a2ee38"
         }
       ],
       "classification": "confirmed-error",
-      "findingId": "sd-092",
+      "findingId": "sd-094",
       "verificationEvidence": "research/audits/2026-11-03-qa-followup/additional-source-findings.json",
       "verificationEvidenceSha256": "c57e90ab874831a8bca8f37de968243e56ae3aebcb6307eb5ff4110b3ca21cb0",
       "verificationLimits": [
@@ -10400,59 +10400,59 @@
       "sha256": "13566227a188ecdfcdbb21d25151ef8e46a15f097ea84646aa48d9920b6fb8da"
     },
     {
-      "locator": "improvements/stellar-docs/sd-080-issuer-lock-omits-other-signers.md",
+      "locator": "improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md",
       "sha256": "b564cba9b3896e9ccdf6058d1204a16b794c501a04a0e81301e0bc459ccb126f"
     },
     {
-      "locator": "improvements/stellar-docs/sd-081-toml-array-order-is-not-universal.md",
+      "locator": "improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md",
       "sha256": "c495b72b0e46320ca6a42e219ad43eea6fa850e601468f30379d92e74850417f"
     },
     {
-      "locator": "improvements/stellar-docs/sd-082-authorization-sandwich-operations-are-ordered.md",
+      "locator": "improvements/stellar-docs/sd-084-authorization-sandwich-operations-are-ordered.md",
       "sha256": "de597c11108216feaabb4c1cf165f0611bd5a4122b91a546bd596f9a6b8d31ed"
     },
     {
-      "locator": "improvements/stellar-docs/sd-083-sac-authorization-prose-names-set-auth.md",
+      "locator": "improvements/stellar-docs/sd-085-sac-authorization-prose-names-set-auth.md",
       "sha256": "e578ee14d348ca29d34f500b7e56b8c335f05cc3347d86c00f2b7801be318f3c"
     },
     {
-      "locator": "improvements/stellar-docs/sd-084-strict-send-destination-parameter-descriptions.md",
+      "locator": "improvements/stellar-docs/sd-086-strict-send-destination-parameter-descriptions.md",
       "sha256": "ac82eeb7bb70dc3180fcb252c3591ab4482053b2d7e7ba7fe87c61e88bc90eab"
     },
     {
-      "locator": "improvements/stellar-docs/sd-085-simulation-authmode-default-is-conditional.md",
+      "locator": "improvements/stellar-docs/sd-087-simulation-authmode-default-is-conditional.md",
       "sha256": "3d366082e7ea41bbc371ff8bb05c583d536e31a992b58c5ea06a22633d8a1a71"
     },
     {
-      "locator": "improvements/stellar-docs/sd-086-ledger-header-scpvalue-nesting.md",
+      "locator": "improvements/stellar-docs/sd-088-ledger-header-scpvalue-nesting.md",
       "sha256": "3e65951d04bd388998b039a93a6a478f86bcd862409713577cc2528617ce22d5"
     },
     {
-      "locator": "improvements/stellar-docs/sd-087-simulation-preview-decodes-before-success-check.md",
+      "locator": "improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md",
       "sha256": "682a774c2fe70257a7c0b62b875ac67f5316a68f5e4c454afaea1c07c01b9587"
     },
     {
-      "locator": "improvements/stellar-docs/sd-088-contract-spec-enum-encodings.md",
+      "locator": "improvements/stellar-docs/sd-090-contract-spec-enum-encodings.md",
       "sha256": "a50581115b884009eb19efd28ff3d3ff85133321c36dee2fa4ca9e6d8ea77862"
     },
     {
-      "locator": "improvements/stellar-docs/sd-089-json-response-double-parse.md",
+      "locator": "improvements/stellar-docs/sd-091-json-response-double-parse.md",
       "sha256": "6fd3239aa0bdc733dd7c4bea8e2e0c510d7772aeaf7420b90db71b5007888ae3"
     },
     {
-      "locator": "improvements/stellar-docs/sd-090-muxed-source-invoke-host-function-exception.md",
+      "locator": "improvements/stellar-docs/sd-092-muxed-source-invoke-host-function-exception.md",
       "sha256": "a169b70160ee35f26a30266b84f6e361e2955580b3613948ddd2156eaf634be8"
     },
     {
-      "locator": "improvements/stellar-docs/sd-091-footprint-overlap-read-only-exception.md",
+      "locator": "improvements/stellar-docs/sd-093-footprint-overlap-read-only-exception.md",
       "sha256": "b5700578d96c43847de94f912a10077bad543b5f22b43441f6416fcebfa92212"
     },
     {
-      "locator": "improvements/stellar-docs/sd-092-gettransactions-result-meta-xdr-type.md",
+      "locator": "improvements/stellar-docs/sd-094-gettransactions-result-meta-xdr-type.md",
       "sha256": "6ed0db9da5c72d6f1e5eb170dce8e392c8ec6473b3c9f37430977ae211a2ee38"
     },
     {
-      "locator": "improvements/stellar-docs/sd-093-sdp-passkey-synchronization-boundary.md",
+      "locator": "improvements/stellar-docs/sd-095-sdp-passkey-synchronization-boundary.md",
       "sha256": "e22a3b79d2db5b3118d4e10556618af1fa71e419430113832bcb472f022713d7"
     },
     {
@@ -10560,11 +10560,11 @@
       "sha256": "7c60d5f4e6e4f882fefd9b3f258b98e9f9a68c0318aade00c912e1043e0fd073"
     },
     {
-      "locator": "original-main:improvements/stellar-docs/sd-080-issuer-lock-omits-other-signers.md",
+      "locator": "original-main:improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md",
       "sha256": "b564cba9b3896e9ccdf6058d1204a16b794c501a04a0e81301e0bc459ccb126f"
     },
     {
-      "locator": "original-main:improvements/stellar-docs/sd-081-toml-array-order-is-not-universal.md",
+      "locator": "original-main:improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md",
       "sha256": "c495b72b0e46320ca6a42e219ad43eea6fa850e601468f30379d92e74850417f"
     },
     {
@@ -12006,11 +12006,11 @@
     "additionalPatch": "research/audits/2026-11-03-qa-followup/additional-stellar-docs.patch",
     "additionalPatchSha256": "092e6bb27c62914cdbd2e0617c9d8e298990768c0a761ca7c2f786568be21302",
     "newVerifiedFindingIds": [
-      "sd-089",
-      "sd-090",
       "sd-091",
       "sd-092",
-      "sd-093"
+      "sd-093",
+      "sd-094",
+      "sd-095"
     ],
     "heldOrNoNewFindingCandidates": [
       "OC-RWA-ARITHMETIC",
@@ -12061,8 +12061,8 @@
     "originalOutcomesAndBindingsPreserved": true,
     "observationCount": 314,
     "rootThreePromotionsPreserved": [
-      "sd-087",
-      "sd-088",
+      "sd-089",
+      "sd-090",
       "sk-037"
     ],
     "passkeySourceSupplement": {

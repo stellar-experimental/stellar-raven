@@ -684,7 +684,7 @@ This explicit separation resolves the source-attribution concern without changin
 The accepted parser alignment still throws on invalid scores, while the canonical adapter returns a parse-error verdict.
 Both paths represent infrastructure errors, and neither assigns an answer failure from malformed judge output.
 
-The verified local source finding is method-worktree `improvements/stellar-docs/sd-080-issuer-lock-omits-other-signers.md`.
+The verified local source finding is method-worktree `improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md`.
 Its generated index and improvements lint passed.
 Grok independently reviews its primary evidence and claim scope before closeout.
 No external filing is authorized.
@@ -865,7 +865,7 @@ The reviewers use public primary reads or the existing local MCP server.
 They cannot rerun answering or judging, change source or goldens, or send external messages.
 All aggregate claims remain withheld while collection continues.
 
-The verified `sd-080` finding and its request receipts now exist in the main worktree.
+The verified `sd-082` finding and its request receipts now exist in the main worktree.
 Its retained receipt is `research/audits/2026-11-02-golden-overnight/issuer-lock-receipts.json`.
 The main generated improvements index and lint passed after that copy.
 The only finding change replaces a temporary receipt path with the retained path.
@@ -881,7 +881,7 @@ Its review separates canonical README facts from the model's fetched documentati
 These reviews support no aggregate quality claim while collection remains open.
 
 The coordinator independently fetched the publishing guide and reproduced its TOML syntax counterexample.
-The general false syntax claim now has local finding `sd-081-toml-array-order-is-not-universal.md`.
+The general false syntax claim now has local finding `sd-083-toml-array-order-is-not-universal.md`.
 Its retained receipts, small fixture, and parser result live under the dated research directory.
 The generated improvements index and lint passed with 124 findings.
 The finding preserves SEP-1 ordering guidance and qualifies its syntax claim without promising arbitrary reordering safety.
@@ -1036,7 +1036,7 @@ The result is method-worktree `eval/local-lanes/direct-grok/2026-11-02/baseline-
 New packets use `review-packets-v3/`; new reviews use `reviews-v3/`.
 The initial three answers completed without a provider failure.
 Grok `t56` reviews those three rows in `reviews-v3/shard01.md`.
-Codex `t55` checks the separately verified strict-send documentation inconsistency for a possible `sd-084` finding.
+Codex `t55` checks the separately verified strict-send documentation inconsistency for a possible `sd-086` finding.
 The collection review pair uses at most two active helper lanes while the answering or judge model runs.
 Other helpers remain available and idle.
 
@@ -1046,7 +1046,7 @@ The proof is method-worktree `eval/local-lanes/direct-grok/2026-11-02/baseline-v
 All original scores remain unchanged, including the null Axelar verdict.
 Offline telemetry and plan review also retain the selected denominator `100` and suppress quality aggregates.
 
-The main worktree contains four new verified documentation findings, `sd-080` through `sd-083`.
+The main worktree contains four new verified documentation findings, `sd-082` through `sd-085`.
 Grok independently cleared all four claim scopes and source evidence.
 The additional `sls-107` evidence updates its existing recurrence record.
 The immutable-flag parenthesis remains monitor-only, without a new verified claim.
@@ -1074,7 +1074,7 @@ Codex reviews cases 11–14 in `reviews-v3/shard05.md`, with the partial FinClus
 Grok reviews cases 7–10 in `reviews-v3/shard04.md`, with the partial issuer-discovery answer first.
 The judge timeout for case 5 remains a null verdict.
 
-Grok independently cleared `sd-084` against the canonical OpenAPI components and read-only Horizon responses.
+Grok independently cleared `sd-086` against the canonical OpenAPI components and read-only Horizon responses.
 The five new Docs findings now have explicit `stellar/stellar-docs` intake overrides.
 These overrides resolve the mixed service owner without posting an external issue.
 The latest observed Grok helper costs total `$24.73918052`.
@@ -1334,7 +1334,7 @@ They retain explicit cost sources and unaccepted completion evidence.
 Full provider payloads remain in the original local artifact.
 
 The first two new cases receive Codex reviews in `reviews-v4/shard01.md`.
-Their original correct grades remain unchanged, with qualitative qualifications and repeated `sd-080`/`sd-081` source defects.
+Their original correct grades remain unchanged, with qualitative qualifications and repeated `sd-082`/`sd-083` source defects.
 Grok receives the new SEP-30 and ERC-8004 cases in `reviews-v4/shard02.md`.
 Root reviews the new platform comparison in `reviews-v4/shard03.md`.
 That original partial verdict matches omitted architecture and Wallet SDK coverage.
@@ -1523,7 +1523,7 @@ The experimental code stays on `codex/golden-2026-11-02-method`.
 
 ### Late documentation findings
 
-The independently reviewed local findings add `sd-085` and `sd-086`.
+The independently reviewed local findings add `sd-087` and `sd-088`.
 The first corrects the conditional invocation `authMode` default in two OpenRPC source descriptions.
 The second clarifies consensus-value nesting; it makes no claim of an explicit false wire declaration.
 Both target `stellar/stellar-docs` at `85d2d1b8e7a4451b7a6af0931f587ce73109b816`.
@@ -1631,13 +1631,13 @@ The method branch stays separate from production source and the results branch.
 Working, snapshot, staged, and committed blobs match freeze-v5; five shared-source hashes also match.
 Both the tree secret scan and normal staged commit scan pass.
 The method working tree is clean.
-Its stale owned sd-080 copy and 123-record index delta are removed after ownership and preservation checks.
+Its stale owned sd-082 copy and 123-record index delta are removed after ownership and preservation checks.
 MAIN retains the complete newer finding and index.
 
 Root runs four focused corpus, lifecycle, register, and sentinel test files in `t9j`.
 All 109 tests pass in four files.
 The pin-review check in `t9g` passes with no skill-pin or file-selection change.
-Three additional local proposals add `sd-087`, `sd-088`, and `sk-037`.
+Three additional local proposals add `sd-089`, `sd-090`, and `sk-037`.
 Public receipt `research/audits/2026-11-02-golden-overnight/tail-source-receipts.json` preserves currentness and verification limits.
 Exactly four further primary GETs confirm the published examples and the latest dapp skill branch.
 No simulation, conversion fixture, or transaction runs; all three records retain proposed status.

@@ -16,7 +16,7 @@ Root may append the completion receipt after this clearance.
 
 ## Source patches
 
-The review covers `sd-080` through `sd-093` and `sk-037`.
+The review covers `sd-082` through `sd-095` and `sk-037`.
 Each original finding state is `local-patch-prepared`.
 The Docs patch SHA-256 is `24f4840432a2d820a45f6fc806f5a8683ec988e834746e505c94c7c06e075c24`.
 Its size is 23668 bytes.
@@ -33,7 +33,7 @@ It allows device-bound credentials or provider synchronization with end-to-end e
 It gives no recovery promise and no other-device promise.
 The supplement records develop revision `4aff0437810d12e020571c1dc075597d032a0bb7`.
 This review clears the passkey wording closeout.
-Method-page generation stays pending for `sd-085` and `sd-092`.
+Method-page generation stays pending for `sd-087` and `sd-094`.
 The patches stay local.
 The combined compatibility check used the heading-repaired Docs patch hash above.
 `tmp/2026-11-03-qa-followup/root-patch-recheck.json` SHA-256 is `35a06facc1e4a365a9fddd9baf9996e25ff9315f547833754e6a06077f362fc8`.
@@ -213,7 +213,7 @@ These limits stay open:
 - Phoenix still needs an owner and dated submission IDs with one status filter.
 - Bounty policy still needs direct authoritative access.
 - The candidate stays unmeasured behind the expired deadline.
-- `sd-085` and `sd-092` still need external method-page generation.
+- `sd-087` and `sd-094` still need external method-page generation.
 - The three patches stay local and unpublished.
 - The protocol-history diagnostic still fails.
 - Native cost, the budget reallocation, commit IDs, and terminal cleanup belong in `completion.json`.

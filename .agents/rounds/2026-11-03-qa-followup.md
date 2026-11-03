@@ -40,7 +40,7 @@ Pending independent source derivation and exact proposals.
 
 ## Improvements/issues/PR verdict
 
-Pending local fixtures for sd-087,sd-088,sk-037; no external filing.
+Pending local fixtures for sd-089,sd-090,sk-037; no external filing.
 
 ## Own-repo todos
 
@@ -80,7 +80,7 @@ The final fixture serializes and reloads valid specifications and passes all eig
 No simulation, signing operation or transaction submission occurs.
 The tagged void decoder ignores trailing map data; this permissiveness stays explicit.
 Fresh HTTP200reads confirm all three reported source defects still appear.
-Root changes sd-087,sd-088,sk-037 from proposed to verified, pending final independent closeout.
+Root changes sd-089,sd-090,sk-037 from proposed to verified, pending final independent closeout.
 The records retain limits for foreign-language examples and on-chain decoding.
 
 ### Reference source independence

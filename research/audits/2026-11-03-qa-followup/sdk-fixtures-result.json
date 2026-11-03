@@ -27,32 +27,32 @@
   "fixtureSha256": "2b325c3463f53edbf841b40d4e95553c5771d837d2e4f8935eadbf5c19ef3ab3",
   "checks": [
     {
-      "id": "sd-087-error-path",
+      "id": "sd-089-error-path",
       "passed": true,
       "observation": "The original decode throws; the guard preserves the simulation error."
     },
     {
-      "id": "sd-087-restore-path",
+      "id": "sd-089-restore-path",
       "passed": true,
       "observation": "Restoration remains distinct from an invocation result."
     },
     {
-      "id": "sd-087-success-and-missing-result",
+      "id": "sd-089-success-and-missing-result",
       "passed": true,
       "observation": "The guard retains successful values, including a valid void return."
     },
     {
-      "id": "sd-088-selected-tagged-variants",
+      "id": "sd-090-selected-tagged-variants",
       "passed": true,
       "observation": "A and B encode separately as a symbol-led vector."
     },
     {
-      "id": "sd-088-noncanonical-combined-example",
+      "id": "sd-090-noncanonical-combined-example",
       "passed": true,
       "observation": "This SDK decoder ignores the trailing map for A; it does not decode both variants."
     },
     {
-      "id": "sd-088-integer-enum",
+      "id": "sd-090-integer-enum",
       "passed": true,
       "observation": "Declared values encode as one u32; the published vector is rejected."
     },

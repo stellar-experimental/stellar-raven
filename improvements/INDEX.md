@@ -94,20 +94,20 @@ Total findings: 137
 | sd-077 | Two stellar.org pages describe Marketing Grants eligibility differently for a project that has not launched                                 | verified          | 2026-11-02 | 0           |
 | sd-078 | The simulateTransaction deep-dive guide tells readers that an archived ledger entry must be restored before the transaction can be…         | reported-upstream | 2026-11-02 | 0           |
 | sd-079 | The "Building with AI" page tells readers to connect Raven at https://raven.stellar.buzz/mcp. The "For agents" card on every docs page…     | reported-upstream | 2026-11-02 | 0           |
-| sd-080 | The asset-control page equates setting issuer master weight 0 with disabling issuer transactions and further issuance. That step disables…  | verified          | 2026-11-02 | 1           |
-| sd-081 | The asset publishing guide presents a false universal TOML syntax rule. Its section-order note says that TOML requires arrays at the end.…  | verified          | 2026-11-02 | 0           |
-| sd-082 | The authorization sandwich explanation describes transaction operations as simultaneous. The operations execute in order, with atomic…      | verified          | 2026-11-02 | 0           |
-| sd-083 | The SAC page gives two names for its balance authorization function. The Balance Authorization Required paragraph uses set_auth. The…       | verified          | 2026-11-02 | 0           |
-| sd-084 | The Horizon strict-send destination parameter descriptions name the wrong alternative parameters. DestinationAccountParam correctly…        | verified          | 2026-11-02 | 0           |
-| sd-085 | The simulateTransaction documentation describes enforce as the unconditional authorization-mode default. The released implementation…       | verified          | 2026-11-03 | 0           |
-| sd-086 | The Ledgers page gives direct header fields and nested consensus-value members identical heading levels. Its SCP paragraph also describes…  | verified          | 2026-11-03 | 0           |
-| sd-087 | The simulation deep-dive example decodes a possible return value before it checks simulation success. It calls…                             | verified          | 2026-11-03 | 0           |
-| sd-088 | The contract-spec guide gives incorrect encodings for tagged enums and integer enums. The declared tagged enum has variants A and B(u32).…  | verified          | 2026-11-03 | 0           |
-| sd-089 | The simulation deep-dive example calls JSON.parse on the object returned by response.json(). A normal JSON-RPC object causes SyntaxError…   | verified          | 2026-11-03 | 0           |
-| sd-090 | The pooled-account guide permits a muxed source for any operation or transaction. Core rejects muxed sources for a single…                  | verified          | 2026-11-03 | 0           |
-| sd-091 | The storage page says transactions with overlapping footprints must execute sequentially. CAP-0063 defines a conflict only when at least…   | verified          | 2026-11-03 | 0           |
-| sd-092 | The getTransactions page names TransactionResultMeta for resultMetaXdr. The payload type is TransactionMeta. TransactionResultMeta is a…    | verified          | 2026-11-03 | 0           |
-| sd-093 | The SDP Embedded Wallets guide says the private key never leaves the receiver's device. Some passkey providers synchronize credentials…     | verified          | 2026-11-03 | 0           |
+| sd-082 | The asset-control page equates setting issuer master weight 0 with disabling issuer transactions and further issuance. That step disables…  | verified          | 2026-11-02 | 1           |
+| sd-083 | The asset publishing guide presents a false universal TOML syntax rule. Its section-order note says that TOML requires arrays at the end.…  | verified          | 2026-11-02 | 0           |
+| sd-084 | The authorization sandwich explanation describes transaction operations as simultaneous. The operations execute in order, with atomic…      | verified          | 2026-11-02 | 0           |
+| sd-085 | The SAC page gives two names for its balance authorization function. The Balance Authorization Required paragraph uses set_auth. The…       | verified          | 2026-11-02 | 0           |
+| sd-086 | The Horizon strict-send destination parameter descriptions name the wrong alternative parameters. DestinationAccountParam correctly…        | verified          | 2026-11-02 | 0           |
+| sd-087 | The simulateTransaction documentation describes enforce as the unconditional authorization-mode default. The released implementation…       | verified          | 2026-11-03 | 0           |
+| sd-088 | The Ledgers page gives direct header fields and nested consensus-value members identical heading levels. Its SCP paragraph also describes…  | verified          | 2026-11-03 | 0           |
+| sd-089 | The simulation deep-dive example decodes a possible return value before it checks simulation success. It calls…                             | verified          | 2026-11-03 | 0           |
+| sd-090 | The contract-spec guide gives incorrect encodings for tagged enums and integer enums. The declared tagged enum has variants A and B(u32).…  | verified          | 2026-11-03 | 0           |
+| sd-091 | The simulation deep-dive example calls JSON.parse on the object returned by response.json(). A normal JSON-RPC object causes SyntaxError…   | verified          | 2026-11-03 | 0           |
+| sd-092 | The pooled-account guide permits a muxed source for any operation or transaction. Core rejects muxed sources for a single…                  | verified          | 2026-11-03 | 0           |
+| sd-093 | The storage page says transactions with overlapping footprints must execute sequentially. CAP-0063 defines a conflict only when at least…   | verified          | 2026-11-03 | 0           |
+| sd-094 | The getTransactions page names TransactionResultMeta for resultMetaXdr. The payload type is TransactionMeta. TransactionResultMeta is a…    | verified          | 2026-11-03 | 0           |
+| sd-095 | The SDP Embedded Wallets guide says the private key never leaves the receiver's device. Some passkey providers synchronize credentials…     | verified          | 2026-11-03 | 0           |
 
 ## lumenloop
 

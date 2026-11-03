@@ -36,19 +36,19 @@ Evidence locators use original-method and original-main aliases for local retain
 | ll-012 | reported-upstream | 23 |
 | sd-004 | declined-upstream | 91 |
 | sd-078 | reported-upstream | 78 |
-| sd-080 | verified | 2, 6, 9 |
-| sd-081 | verified | 2, 6 |
-| sd-083 | verified | 89 |
-| sd-084 | verified | 16 |
-| sd-085 | verified | 42 |
-| sd-086 | verified | 56 |
-| sd-087 | verified | 77 |
-| sd-088 | verified | 79 |
-| sd-089 | verified | 42 |
-| sd-090 | verified | 51 |
-| sd-091 | verified | 57 |
-| sd-092 | verified | 91 |
-| sd-093 | verified | 48 |
+| sd-082 | verified | 2, 6, 9 |
+| sd-083 | verified | 2, 6 |
+| sd-085 | verified | 89 |
+| sd-086 | verified | 16 |
+| sd-087 | verified | 42 |
+| sd-088 | verified | 56 |
+| sd-089 | verified | 77 |
+| sd-090 | verified | 79 |
+| sd-091 | verified | 42 |
+| sd-092 | verified | 51 |
+| sd-093 | verified | 57 |
+| sd-094 | verified | 91 |
+| sd-095 | verified | 48 |
 | sk-022 | reported-upstream | 84 |
 | sk-037 | verified | 77 |
 | sls-024 | reported-upstream | 18, 20, 26 |
@@ -72,7 +72,7 @@ Three remain held or need no finding. The passkey correction awaits final closeo
 - OC-JSON-PARSE; case 42; new-verified-finding. The current example parses the object returned by response.json() a second time. Remove the second JSON.parse and retain separate JSON-RPC success/error handling.
 - OC-RWA-ARITHMETIC; case 7; held-owner-and-denominator. The rounded endpoint intervals imply 77.2655% to 78.4565%, outside the displayed 91% interval. Ask the site editor to identify the period, denominator, and component set before correcting any rate.
 - OC-PHOENIX-COUNT; case 21; held-owner-and-status-dates. The page labels seven awarded submissions, but its seven distinct IDs contain four Awarded statuses. Make the statistic use the same status-filtered submission IDs, or name a different authoritative denominator.
-- OC-PASSKEY-STORAGE; case 48; verified-wording-correction-pending-final-closeout. Maintained SDP source and provider documentation support authenticator/provider management and encrypted synchronization wording. Use sd-093. Preserve provider-dependent availability, website non-disclosure, and the maintained-source scope.
+- OC-PASSKEY-STORAGE; case 48; verified-wording-correction-pending-final-closeout. Maintained SDP source and provider documentation support authenticator/provider management and encrypted synchronization wording. Use sd-095. Preserve provider-dependent availability, website non-disclosure, and the maintained-source scope.
 - OC-MUXED-SOURCE; case 51; new-verified-finding. The generic source matrix omits the InvokeHostFunction exception enforced by Core v29.0.0 and v30.0.0. Exclude muxed inner transaction and operation sources for this invocation from Protocol 25 onward.
 - OC-FOOTPRINT-CONFLICT; case 57; new-verified-finding. The page treats every overlapping footprint as contention. CAP-0063 requires at least one write access. Distinguish RO/RO overlap from RO/RW and RW/RW conflicts. Preserve may-execute wording and scheduling limits.
 - OC-CHANGE-TRUST; case 61; ambiguous-description-no-new-finding. The error belongs to a new positive-limit pool-share line and an underlying asset authorization check. Keep the candidate deletion claim false. An optional table clarification can name the underlying pool asset and authorization predicate.
@@ -117,7 +117,7 @@ Source row SHA-256: `26c85c22cef1c0182aabb5c27a3c87460ef4971036fb5e4a3fd8d8cea94
 Packet SHA-256: `0cc6dfc25e889c2c5b35936636a7eb635e1558aefe2a8bdd97e20affe77e54b5`.
 
 - `D002-01` (supported-no-action): The listing checklist covers issuance, metadata, markets, and venue discretion. Keep the supported distinctions. Make no source or corpus change.
-- `D002-02` (existing-finding): The answer repeats universal issuer-lock and TOML-order claims. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-080`, `sd-081`.
+- `D002-02` (existing-finding): The answer repeats universal issuer-lock and TOML-order claims. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-082`, `sd-083`.
 - `D002-03` (candidate-synthesis-error): Classic trustlines, contract balances, and native pool reserves require different conditions. Qualify holder and depositor instructions by account and asset type.
 - `D002-04` (candidate-synthesis-error): Venue flag restrictions and universal client priorities lack current venue evidence. Verify each venue policy. Treat metadata as discovery information.
 - `D002-05` (candidate-synthesis-error): ACCOUNTS scope and asset.contractId(...) do not prove complete account disclosure or contract deployment. Keep account metadata, deterministic address derivation, and deployment separate.
@@ -170,7 +170,7 @@ Source row SHA-256: `c5b0ac7f2242575e0c8b9758faef0d12eb9888847f0ce47d2ab439dcea1
 Packet SHA-256: `3127f79be73b1f917befd659fe06150eb7d7894947646ebd3d495a027f32e5dc`.
 
 - `D006-01` (supported-no-action): The issuance example uses code/issuer identity, ChangeTrust, issuer Payment, and valid fresh-account assumptions. Keep the supported distinctions. Make no source or corpus change.
-- `D006-02` (existing-finding): The answer repeats unrestricted lock and TOML-order rules. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-080`, `sd-081`.
+- `D006-02` (existing-finding): The answer repeats unrestricted lock and TOML-order rules. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-082`, `sd-083`.
 - `D006-03` (golden-correction): The later issuer correction adds signer conditions. The fresh-account example remains valid. Retain the corrected reference epoch. Preserve the original measured grade. Actions: `GC-ISSUER`.
 - `D006-04` (candidate-synthesis-error): The polling comment mixes PENDING submission status with getTransaction status. Poll NOT_FOUND until SUCCESS or FAILED, subject to bounded retention and expiry checks.
 - `D006-05` (candidate-synthesis-error): Amount limits need decimal units. Contract balances do not require classic trustlines. Keep the displayed amount scale and account-type conditions explicit.
@@ -218,7 +218,7 @@ Source row SHA-256: `b7014f4ee36f3d0110b880eed7e5c774bf44a14c09d6ae01e79dc361a9c
 Packet SHA-256: `f6bbfdc20f196de0d1ac62b4f754e7028418c0418ce062c29b40198e381dd187`.
 
 - `D009-01` (supported-no-action): Two accounts remain a recommendation. Payments, offers, or pool deposits can issue the asset. Keep the supported distinctions. Make no source or corpus change.
-- `D009-02` (existing-finding): The answer promotes master weight 0 into a permanent loss of every signing path. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-080`.
+- `D009-02` (existing-finding): The answer promotes master weight 0 into a permanent loss of every signing path. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-082`.
 
 Evidence: `original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-asset-two-account-issuer.md`.
 
@@ -308,7 +308,7 @@ Source row SHA-256: `5b0be804c1d0fc9258eb5cce1f392e217b959d8ac14801869dc21ff4c82
 Packet SHA-256: `e8528641a0ae13abdaf171d45f9dd22c7d356db490efee2a7c3de018dd1ceac5`.
 
 - `D016-01` (supported-no-action): The answer rejects reliable low-capital profit and describes both path-payment bounds and unreserved quotes. Keep the supported distinctions. Make no source or corpus change.
-- `D016-02` (existing-finding): The candidate notices strict-send description drift and follows the correct destination parameters. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-084`.
+- `D016-02` (existing-finding): The candidate notices strict-send description drift and follows the correct destination parameters. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-086`.
 - `D016-03` (candidate-synthesis-error): Universal fee economics and the five-hop shorthand exceed the checked evidence. Separate array length, search depth, and measured profitability. Keep economic claims conditional.
 
 Evidence: `original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-defi-arbitrage-pathpayment-bots.md`.
@@ -656,12 +656,12 @@ Review SHA-256: `bd938e28e69fd4dc8941e2e65ee1c10b89aac4d94a48db511eb340c663a60df
 Source row SHA-256: `237f89f8b156259898676a5e9146db5c5cd08e05d81626f4b3ef002719db3550`.
 Packet SHA-256: `a4cf3f90a8ee33c79629c0f4f79854d2cce08391ab400d3a86e0a5908d55a99b`.
 
-- `D042-01` (existing-finding): The answer repeats an unconditional enforce default despite a conditional implementation default. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-085`.
+- `D042-01` (existing-finding): The answer repeats an unconditional enforce default despite a conditional implementation default. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-087`.
 - `D042-02` (candidate-synthesis-error): Confirmation polling and restored-state confirmation or renewed simulation remain incomplete. Separate submission, finality, restoration, and renewed invocation phases.
 - `D042-03` (candidate-synthesis-error): prepareTransaction repeats simulation. Fee wording compresses refundable and non-refundable resources. Avoid redundant simulation unless needed. Preserve complete resource-fee meaning.
 - `D042-04` (calibration-issue): The judge misses the default-mode source defect. Required post-submission polling exceeds the explicit pre-submission scope. Keep the original grade. Review this concern in a separate calibration proposal. Actions: `CAL`.
 - `D042-05` (supported-no-action): The method, CLI name, assembly order, and visible placeholder remain supported. No transaction runs. Keep the supported distinctions. Make no source or corpus change.
-- `D042-06` (existing-finding): The deep-dive example calls JSON.parse after response.json. The candidate correctly identifies the redundant parse. Use the verified finding and separate Docs patch. Keep deployment and publication status explicit. Actions: `sd-089`, `OC-JSON-PARSE`.
+- `D042-06` (existing-finding): The deep-dive example calls JSON.parse after response.json. The candidate correctly identifies the redundant parse. Use the verified finding and separate Docs patch. Keep deployment and publication status explicit. Actions: `sd-091`, `OC-JSON-PARSE`.
 
 Evidence: `original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-infra-simulate-transaction-howto.md`.
 
@@ -738,7 +738,7 @@ Packet SHA-256: `84f00279d5c0e123a5727f797ecdf0474f38c983694bca7a784763e45a1faef
 
 - `D048-01` (candidate-synthesis-error): Native APIs, authorization binding, provider names, Mozilla limits, recovery, and current observation dates remain absent. Use provider-specific evidence and an explicit recovery plan.
 - `D048-02` (candidate-synthesis-error): The answer conflates client/authenticator and origin/RP ID. Its subdomain rule is too restrictive. Use WebAuthn role definitions and distinguish parent RP IDs from related-origin requests.
-- `D048-03` (existing-finding): Maintained SDP code and provider documentation support a device/provider distinction. Deployment behavior and actual synchronization remain unobserved. Use sd-093 and the fifth Docs subpatch. Keep final closeout pending and avoid deployment or recovery guarantees. Actions: `sd-093`, `OC-PASSKEY-STORAGE`.
+- `D048-03` (existing-finding): Maintained SDP code and provider documentation support a device/provider distinction. Deployment behavior and actual synchronization remain unobserved. Use sd-095 and the fifth Docs subpatch. Keep final closeout pending and avoid deployment or recovery guarantees. Actions: `sd-095`, `OC-PASSKEY-STORAGE`.
 - `D048-04` (candidate-synthesis-error): Browser-only and indexer-based recovery conclusions exceed the guestbook implementation evidence. Separate this implementation from native APIs and account-recovery design.
 - `D048-05` (calibration-issue): The judge misses additional role, domain, synchronization, and browser-only overstatements. Keep the original grade. Review this concern in a separate calibration proposal. Actions: `CAL`.
 
@@ -777,7 +777,7 @@ Source row SHA-256: `003eda477402f2e86554d0ba00d5cb01040b824e2ebda939448371ce6ca
 Packet SHA-256: `1c8b6c7941e2ab6fd10a19e43363c47c483140ae89ce7c9d7c6d45b56ec37a19`.
 
 - `D051-01` (supported-no-action): Muxed identity, shared account state, classic positions, decoding, and service support limits remain supported. Keep the supported distinctions. Make no source or corpus change.
-- `D051-02` (existing-finding): The source matrix lacks an explicit InvokeHostFunction muxed-source exception. Core rejects both source positions. Use the verified finding and separate Docs patch. Keep deployment and publication status explicit. Actions: `sd-090`, `OC-MUXED-SOURCE`.
+- `D051-02` (existing-finding): The source matrix lacks an explicit InvokeHostFunction muxed-source exception. Core rejects both source positions. Use the verified finding and separate Docs patch. Keep deployment and publication status explicit. Actions: `sd-092`, `OC-MUXED-SOURCE`.
 - `D051-03` (candidate-synthesis-error): The answer omits that invocation exception and overcompresses memo fallback and ID validation. Verify receiver acceptance and distinguish identifier existence from address-format checks.
 
 Evidence: `original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-pc-muxed-accounts.md`.
@@ -844,7 +844,7 @@ Review SHA-256: `ac3e75e895069716211dff7794af0b887227abac0709591751d4fad430af948
 Source row SHA-256: `999e51cda163cc82345357499516e532cf70b0a7d0fc2b306594b62ab2c9184f`.
 Packet SHA-256: `25fdab4e6b35b4716413b89d29af8ba2cb5e1971ed26e7a8eb9038aeaad1bc1a`.
 
-- `D056-01` (existing-finding): Flat source headings propagate nested StellarValue members as direct LedgerHeader fields. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-086`.
+- `D056-01` (existing-finding): Flat source headings propagate nested StellarValue members as direct LedgerHeader fields. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-088`.
 - `D056-02` (supported-no-action): Correct units and the header extension do not recur as resolved sd-056 defects. sd-014 owns a different boundary. Keep the supported distinctions. Make no source or corpus change.
 - `D056-03` (candidate-synthesis-error): Applying the agreed set to prior state must not imply the hash identifies the previous ledger transaction set. Describe state input and current transaction-set commitment separately.
 
@@ -859,7 +859,7 @@ Packet SHA-256: `2b8da6b11aa1f122e601bd2455a4a4c30da7ff0270c9bde3142a20cb409e4aa
 
 - `D057-01` (supported-no-action): The answer identifies CAP-0063 and sequential clusters without claiming universal concurrency or sharding. Keep the supported distinctions. Make no source or corpus change.
 - `D057-02` (candidate-synthesis-error): The answer conflates Protocol 23 support with later multi-cluster activation and omits bounded setting values. Separate protocol capability, initial settings, later votes, and dated current configuration.
-- `D057-03` (existing-finding): The storage page says overlapping footprints serialize. Shared read-only keys need no such conflict. Use the verified finding and separate Docs patch. Keep deployment and publication status explicit. Actions: `sd-091`, `OC-FOOTPRINT-CONFLICT`.
+- `D057-03` (existing-finding): The storage page says overlapping footprints serialize. Shared read-only keys need no such conflict. Use the verified finding and separate Docs patch. Keep deployment and publication status explicit. Actions: `sd-093`, `OC-FOOTPRINT-CONFLICT`.
 - `D057-04` (supported-no-action): The Thruput preview and current settings do not measure Mainnet throughput or historical setting transitions. Keep the supported distinctions. Make no source or corpus change.
 
 Evidence: `original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-protocol-parallel-execution.md`.
@@ -1115,7 +1115,7 @@ Review SHA-256: `666330af38205bec334ac8c4ed5c0beecf19010217c84fa829ebec5cae11810
 Source row SHA-256: `c5aad1a479c1ae1dfc1038fdeb7b0ae9d1d60c70387d195f066cb18941bb4692`.
 Packet SHA-256: `c8251221847152c859dae17a3453c7ebe718bca319dd3aaf307ef04956b8eb6b`.
 
-- `D077-01` (existing-finding): The answer repeats mixed-operation batching advice and unguarded simulation-result decoding. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sk-037`, `sd-087`.
+- `D077-01` (existing-finding): The answer repeats mixed-operation batching advice and unguarded simulation-result decoding. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sk-037`, `sd-089`.
 - `D077-02` (calibration-issue): The judge credits a simulation-success boundary that the preview does not establish. Keep the original grade. Review this concern in a separate calibration proposal. Actions: `CAL`.
 - `D077-03` (supported-no-action): Upload, creation, constructor arguments, assembly, signing, submission, and polling remain supported. Keep the supported distinctions. Make no source or corpus change.
 
@@ -1142,7 +1142,7 @@ Source row SHA-256: `45dcaec60d6e2d82380facf538134e55484cab1acc870cfd2221f0b1bf9
 Packet SHA-256: `f059cb66f12a5fb8222eb1c3c7e6cef7c1f6e40ee048ff1304d8039e1f5a7419`.
 
 - `D079-01` (supported-no-action): The candidate preserves typed clients, wide integers, byte lengths, one-variant encoding, and token-specific decimals. Keep the supported distinctions. Make no source or corpus change.
-- `D079-02` (existing-finding): Conflicting tagged and integer enum examples already have an existing source finding. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-088`.
+- `D079-02` (existing-finding): Conflicting tagged and integer enum examples already have an existing source finding. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-090`.
 - `D079-03` (candidate-synthesis-error): One ordering sentence compresses transaction construction and preparation. A hits-read error later recovers. Construct the invocation transaction before preparation. Preserve recovered model misuse separately.
 
 Evidence: `original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-sor-scval-conversion.md`.
@@ -1264,7 +1264,7 @@ Packet SHA-256: `c44efeae1f99a10253fb2a6b71eb7cdcb249ae3ff9cb24810fb6d66ee58937d
 
 - `D089-01` (own-repo-mechanism): Sixteen accepted requests end without an answer. A projection error and repeated account/vanity discovery consume remaining steps. Recover decisive sections once, preserve unresolved exchange support, and synthesize without increasing the request limit. Actions: `MR-STOP`.
 - `D089-02` (supported-no-action): There is no judge request or provider failure. Accepted tool steps do not establish a completed answer. Keep the supported distinctions. Make no source or corpus change.
-- `D089-03` (existing-finding): A recovered SAC source read repeats set_auth before any final answer exists. Keep this source recurrence separate from absent-answer grading. Actions: `sd-083`.
+- `D089-03` (existing-finding): A recovered SAC source read repeats set_auth before any final answer exists. Keep this source recurrence separate from absent-answer grading. Actions: `sd-085`.
 
 Evidence: `original-method:eval/local-lanes/direct-grok/2026-11-02/reviews-v4/q-ti-custodial-account-generation-c-address.md`.
 
@@ -1290,7 +1290,7 @@ Packet SHA-256: `7d6d68cbd706047f8684b5085b10f366e76239729851f63bd2961171af41a87
 
 - `D091-01` (supported-no-action): The answer preserves inclusive startLedger, unchanged cursor, separate event limits, retention loss, and metadata union handling. Keep the supported distinctions. Make no source or corpus change.
 - `D091-02` (existing-finding): Hardcoded-limit wording remains a declined source issue with an existing attributed partial caution. Attach this dated evidence to the existing finding. Create no duplicate. Actions: `sd-004`.
-- `D091-03` (existing-finding): The RPC page labels TransactionMeta as TransactionResultMeta, which is a distinct wrapper type. Use sd-092. The canonical input and bundle are patched; external method-page regeneration remains pending. Actions: `sd-092`, `OC-META-TYPE`.
+- `D091-03` (existing-finding): The RPC page labels TransactionMeta as TransactionResultMeta, which is a distinct wrapper type. Use sd-094. The canonical input and bundle are patched; external method-page regeneration remains pending. Actions: `sd-094`, `OC-META-TYPE`.
 - `D091-04` (candidate-synthesis-error): The short-page break returns an earlier cursor. Full pages do not prove another row exists. Update the cursor from every processed page and persist it only after downstream writes.
 - `D091-05` (candidate-synthesis-error): Defaults, configurable-provider limits, parsed SDK values, JSON names, and event-type mapping remain incomplete. Keep API, SDK, XDR, and persistence phases explicit.
 

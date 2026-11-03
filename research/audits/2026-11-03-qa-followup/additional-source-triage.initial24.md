@@ -6,16 +6,16 @@ This pass makes no model call, network simulation, paid dataset query, or extern
 
 | Candidate | Disposition | Action |
 | --- | --- | --- |
-| OC-JSON-PARSE | confirmed-error; new-verified-finding | sd-089; Remove the second JSON.parse and retain separate JSON-RPC success/error handling. |
+| OC-JSON-PARSE | confirmed-error; new-verified-finding | sd-091; Remove the second JSON.parse and retain separate JSON-RPC success/error handling. |
 | OC-RWA-ARITHMETIC | confirmed-internal-inconsistency; held-owner-and-denominator | Ask the site editor to identify the period, denominator, and component set before correcting any rate. |
 | OC-PHOENIX-COUNT | confirmed-page-denominator-mismatch; held-owner-and-status-dates | Make the statistic use the same status-filtered submission IDs, or name a different authoritative denominator. |
 | OC-PASSKEY-STORAGE | ambiguous-overbroad-wording; held-actual-flow-scope | Clarify device-bound versus synchronized credentials and website non-disclosure after checking the SDP registration configuration. |
-| OC-MUXED-SOURCE | confirmed-error; new-verified-finding | sd-090; Exclude muxed inner transaction and operation sources for this invocation from Protocol 25 onward. |
-| OC-FOOTPRINT-CONFLICT | confirmed-error; new-verified-finding | sd-091; Distinguish RO/RO overlap from RO/RW and RW/RW conflicts. Preserve may-execute wording and scheduling limits. |
+| OC-MUXED-SOURCE | confirmed-error; new-verified-finding | sd-092; Exclude muxed inner transaction and operation sources for this invocation from Protocol 25 onward. |
+| OC-FOOTPRINT-CONFLICT | confirmed-error; new-verified-finding | sd-093; Distinguish RO/RO overlap from RO/RW and RW/RW conflicts. Preserve may-execute wording and scheduling limits. |
 | OC-CHANGE-TRUST | deletion-concern-disproven; ambiguous-description-no-new-finding | Keep the candidate deletion claim false. An optional table clarification can name the underlying pool asset and authorization predicate. |
-| OC-META-TYPE | confirmed-error; new-verified-finding | sd-092; Correct only the field type and link. Preserve the declined operational-limit policy. |
+| OC-META-TYPE | confirmed-error; new-verified-finding | sd-094; Correct only the field type and link. Preserve the declined operational-limit policy. |
 
-Four new verified findings use sd-089 through sd-092.
+Four new verified findings use sd-091 through sd-094.
 Four candidates receive precise held or no-new-finding dispositions.
 No original answer, grade, digest hash, reference, or measurement contract changes.
 
@@ -164,7 +164,7 @@ Both concerns remain held for exact source ownership and any missing denominator
 The live sd-004 issue, maintainer comment, and merged PR files concern operational pagination limits.
 The PR changes only the pagination structure page.
 They contain no TransactionMeta or TransactionResultMeta correction.
-The new sd-092 record addresses only the field type and malformed link.
+The new sd-094 record addresses only the field type and malformed link.
 It preserves the owner decline and makes no limit request.
 
 ## Local fixture limits

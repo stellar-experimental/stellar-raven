@@ -39,7 +39,7 @@ That reviewer lookup does not become answering-agent evidence.
 The answer's explicit documentation-only basis still misses the live-network measurement requirement.
 
 Other reviews identify incorrect extra statements in originally correct answers.
-Issuer-lock qualifications and the TOML claim appear in `sd-080` and `sd-081`.
+Issuer-lock qualifications and the TOML claim appear in `sd-082` and `sd-083`.
 The fresh-account issuance recipe remains valid; its general locking shorthand needs the signer condition.
 Those source defects, synthesis errors, and missed judge checks remain separate observations.
 They establish no aggregate error prevalence.

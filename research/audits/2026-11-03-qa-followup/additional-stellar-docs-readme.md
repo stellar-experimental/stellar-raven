@@ -1,6 +1,6 @@
 # Additional Stellar Docs patch
 
-This separate patch addresses sd-089, sd-090, sd-091, sd-092, and sd-093.
+This separate patch addresses sd-091, sd-092, sd-093, sd-094, and sd-095.
 Its exact base is `85d2d1b8e7a4451b7a6af0931f587ce73109b816`.
 It uses a separate source worktree and index.
 It preserves the original two patches and their manifest.

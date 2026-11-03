@@ -10,8 +10,8 @@ No historical answer was regraded, and no new paid measurement ran.
 
 ## Verified source work
 
-The final set contains 15 verified source findings: `sd-080` through `sd-093`, plus `sk-037`.
-Eight [local SDK checks](sdk-fixtures-result.json) support three promotions: `sd-087`, `sd-088`, and `sk-037`.
+The final set contains 15 verified source findings: `sd-082` through `sd-095`, plus `sk-037`.
+Eight [local SDK checks](sdk-fixtures-result.json) support three promotions: `sd-089`, `sd-090`, and `sk-037`.
 The checks cover simulation decoding, enum encoding, and unsupported mixed-operation assembly.
 Python, Java, PHP, and on-chain contract decoding remain outside those runtime checks.
 
@@ -19,15 +19,15 @@ Three local source patches are ready for owner review:
 
 | Patch | Findings | Evidence |
 |---|---|---|
-| [Stellar Docs](stellar-docs.patch) | `sd-080` through `sd-088` | [Manifest](upstream-patch-manifest.json), [repair notes](upstream-patches.md) |
+| [Stellar Docs](stellar-docs.patch) | `sd-082` through `sd-090` | [Manifest](upstream-patch-manifest.json), [repair notes](upstream-patches.md) |
 | [Stellar developer skill](stellar-dev-skill.patch) | `sk-037` | [Manifest](upstream-patch-manifest.json), [repair notes](upstream-patches.md) |
-| [Additional Stellar Docs](additional-stellar-docs.patch) | `sd-089` through `sd-093` | [Manifest](additional-stellar-docs-manifest.json), [repair notes](additional-stellar-docs-readme.md) |
+| [Additional Stellar Docs](additional-stellar-docs.patch) | `sd-091` through `sd-095` | [Manifest](additional-stellar-docs-manifest.json), [repair notes](additional-stellar-docs-readme.md) |
 
 The ledger patch retains the original heading titles and changes only their heading levels.
 The passkey correction concerns maintained source and provider behavior; it establishes no deployed revision or universal synchronization support.
 The patches remain local and do not establish upstream fixes or production gains.
 
-Method-page generation remains pending for `sd-085` and `sd-092`.
+Method-page generation remains pending for `sd-087` and `sd-094`.
 Their patches include corrected OpenRPC inputs and generated specifications.
 A maintainer must regenerate the `simulateTransaction` and `getTransactions` MDX pages with the external generator.
 No generated method page was edited manually.

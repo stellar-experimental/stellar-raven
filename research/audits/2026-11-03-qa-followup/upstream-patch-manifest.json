@@ -209,7 +209,7 @@
   ],
   "findings": [
     {
-      "id": "sd-080",
+      "id": "sd-082",
       "paths": [
         "docs/tokens/control-asset-access.mdx",
         "docs/tokens/how-to-issue-an-asset.mdx"
@@ -218,7 +218,7 @@
       "hold": null
     },
     {
-      "id": "sd-081",
+      "id": "sd-083",
       "paths": [
         "docs/tokens/publishing-asset-info.mdx"
       ],
@@ -226,7 +226,7 @@
       "hold": null
     },
     {
-      "id": "sd-082",
+      "id": "sd-084",
       "paths": [
         "docs/tokens/control-asset-access.mdx"
       ],
@@ -234,7 +234,7 @@
       "hold": null
     },
     {
-      "id": "sd-083",
+      "id": "sd-085",
       "paths": [
         "docs/tokens/stellar-asset-contract.mdx"
       ],
@@ -242,7 +242,7 @@
       "hold": null
     },
     {
-      "id": "sd-084",
+      "id": "sd-086",
       "paths": [
         "openapi/horizon/components/parameters.yml",
         "openapi/horizon/bundled.yml"
@@ -251,7 +251,7 @@
       "hold": null
     },
     {
-      "id": "sd-085",
+      "id": "sd-087",
       "paths": [
         "openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json",
         "openrpc/src/stellar-rpc/schemas/AuthMode.json",
@@ -261,7 +261,7 @@
       "hold": null
     },
     {
-      "id": "sd-086",
+      "id": "sd-088",
       "paths": [
         "docs/learn/fundamentals/stellar-data-structures/ledgers.mdx"
       ],
@@ -269,7 +269,7 @@
       "hold": null
     },
     {
-      "id": "sd-087",
+      "id": "sd-089",
       "paths": [
         "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx"
       ],
@@ -277,7 +277,7 @@
       "hold": null
     },
     {
-      "id": "sd-088",
+      "id": "sd-090",
       "paths": [
         "docs/build/guides/dapps/working-with-contract-specs.mdx"
       ],
@@ -337,7 +337,7 @@
     "Python, Java, PHP, and Rust serde examples were not executed; signatures and format use primary source verification.",
     "No on-chain contract decoder executed.",
     "The original tagged void decoder ignores trailing data; no rejection claim applies to that sample.",
-    "The Docs method-page generator is outside the repository; maintainer regeneration remains required for sd-085.",
+    "The Docs method-page generator is outside the repository; maintainer regeneration remains required for sd-087.",
     "Full Mintlify site validation was not run in the partial checkout.",
     "The complete Horizon lint retains its identical existing failures.",
     "The generator also refreshed unrelated Anchor SEP-12 links; those changes were excluded and the original artifact was restored."

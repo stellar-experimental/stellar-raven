@@ -1,5 +1,5 @@
 ---
-id: sd-080
+id: sd-082
 service: stellar-docs
 status: verified
 discovered: 2026-11-02

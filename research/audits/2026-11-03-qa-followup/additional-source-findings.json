@@ -378,10 +378,10 @@
         2,
         10
       ],
-      "findingId": "sd-089",
+      "findingId": "sd-091",
       "relatedFindingIds": [
         "sd-055",
-        "sd-087"
+        "sd-089"
       ],
       "limits": [
         "The local fixture mocks HTTP. No network simulation or transaction executes."
@@ -473,14 +473,14 @@
       "classification": "source-wording-correction",
       "disposition": "verified-wording-correction-pending-final-closeout",
       "summary": "Maintained SDP source and provider documentation support authenticator/provider management and encrypted synchronization wording.",
-      "action": "Use sd-093. Preserve provider-dependent availability, website non-disclosure, and the maintained-source scope.",
+      "action": "Use sd-095. Preserve provider-dependent availability, website non-disclosure, and the maintained-source scope.",
       "primaryReads": [
         1,
         5,
         11,
         19
       ],
-      "findingId": "sd-093",
+      "findingId": "sd-095",
       "relatedFindingIds": [
         "sd-027",
         "sd-034",
@@ -614,7 +614,7 @@
         15,
         16
       ],
-      "findingId": "sd-090",
+      "findingId": "sd-092",
       "relatedFindingIds": [
         "sd-041"
       ],
@@ -651,7 +651,7 @@
         13,
         18
       ],
-      "findingId": "sd-091",
+      "findingId": "sd-093",
       "relatedFindingIds": [
         "sd-016",
         "sk-034"
@@ -730,7 +730,7 @@
         23,
         24
       ],
-      "findingId": "sd-092",
+      "findingId": "sd-094",
       "relatedFindingIds": [
         "sd-004",
         "sd-024"
@@ -1087,11 +1087,11 @@
     "intakeSha256": "1c5b7e51592ccbfddab3037be2b3934048d6d86f85f6ae8f4d52e32e1bfc6ea5",
     "nextSdBefore": 89,
     "newFindingIds": [
-      "sd-089",
-      "sd-090",
       "sd-091",
       "sd-092",
-      "sd-093"
+      "sd-093",
+      "sd-094",
+      "sd-095"
     ],
     "namespaces": [
       "canonical-source",
@@ -1102,36 +1102,36 @@
       "workers-ai-provider"
     ],
     "initialPassNewFindingIds": [
-      "sd-089",
-      "sd-090",
       "sd-091",
-      "sd-092"
+      "sd-092",
+      "sd-093",
+      "sd-094"
     ],
     "currentActiveRecords": 137
   },
   "requiredIntakeMappings": [
     {
-      "id": "sd-089",
+      "id": "sd-091",
       "repo": "stellar/stellar-docs",
       "reason": "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx is verified source content in stellar/stellar-docs."
     },
     {
-      "id": "sd-090",
+      "id": "sd-092",
       "repo": "stellar/stellar-docs",
       "reason": "docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx is verified source content in stellar/stellar-docs."
     },
     {
-      "id": "sd-091",
+      "id": "sd-093",
       "repo": "stellar/stellar-docs",
       "reason": "docs/learn/fundamentals/contract-development/storage/persisting-data.mdx is verified source content in stellar/stellar-docs."
     },
     {
-      "id": "sd-092",
+      "id": "sd-094",
       "repo": "stellar/stellar-docs",
       "reason": "docs/data/apis/rpc/api-reference/methods/getTransactions.mdx is verified source content in stellar/stellar-docs."
     },
     {
-      "id": "sd-093",
+      "id": "sd-095",
       "repo": "stellar/stellar-docs",
       "reason": "The Embedded Wallets guide is verified source content at Git blob 8a19af6652948dd9778f41cf39fc57934cab1ab9."
     }
@@ -1152,7 +1152,7 @@
   ],
   "rootIntegration": [
     "Root owns the five exact intake mappings and INDEX regeneration.",
-    "The sd-093 wording correction remains pending final Grok closeout.",
+    "The sd-095 wording correction remains pending final Grok closeout.",
     "No backend code or deployment claim changes.",
     "No external filing or additional HTTP read occurs in this integration lane."
   ],
@@ -1165,10 +1165,10 @@
     "triageSha256": "bc21e6d18aa2e8ef369b83c8f6ca1d53e63a31e2b3691498a0979248c8652084",
     "primaryReads": 24,
     "newFindingsAtThatStage": [
-      "sd-089",
-      "sd-090",
       "sd-091",
-      "sd-092"
+      "sd-092",
+      "sd-093",
+      "sd-094"
     ]
   },
   "rootPasskeySupplement": {
@@ -1181,7 +1181,7 @@
     "pinnedSourceReads": 4,
     "providerReadReusedFromInitialPass": 19,
     "independentReviewerAdditionalHttpReads": 0,
-    "rootCreatedFinding": "sd-093",
+    "rootCreatedFinding": "sd-095",
     "reviewState": "pending-final-Grok-closeout",
     "initialSixReadSupplementSha256": "b61a40c74fb2e2e16074c73eb44c31313961a1296417353f2ca31087d2349646",
     "initialSupplementReads": 6,
