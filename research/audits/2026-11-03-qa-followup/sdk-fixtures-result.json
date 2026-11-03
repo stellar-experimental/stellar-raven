@@ -1,0 +1,80 @@
+{
+  "schema": "golden-followup-sdk-fixtures-v1",
+  "executedAt": "2026-11-03T13:58:05.082Z",
+  "nodeVersion": "v24.13.0",
+  "sdk": {
+    "name": "@stellar/stellar-sdk",
+    "version": "17.4.0",
+    "sources": [
+      {
+        "relativePath": "package.json",
+        "sha256": "ee981053db93fce5c81310620d8198a493aa134ecd35d3e64540296687d72a62"
+      },
+      {
+        "relativePath": "lib/esm/rpc/api.js",
+        "sha256": "e44949fd9836f90410f0a94814d6eaee5866b3cc9b049af07f87b5fa55a6c3f1"
+      },
+      {
+        "relativePath": "lib/esm/rpc/transaction.js",
+        "sha256": "6af0b8ff8b61de5238429667ae7e5c289040194f98d14f118c75f9fa8deebd56"
+      },
+      {
+        "relativePath": "lib/esm/contract/spec.js",
+        "sha256": "c056d6537876d03edddb51f012d48f401f19d54ffbbbf963bbf95d4749d571dc"
+      }
+    ]
+  },
+  "fixtureSha256": "2b325c3463f53edbf841b40d4e95553c5771d837d2e4f8935eadbf5c19ef3ab3",
+  "checks": [
+    {
+      "id": "sd-089-error-path",
+      "passed": true,
+      "observation": "The original decode throws; the guard preserves the simulation error."
+    },
+    {
+      "id": "sd-089-restore-path",
+      "passed": true,
+      "observation": "Restoration remains distinct from an invocation result."
+    },
+    {
+      "id": "sd-089-success-and-missing-result",
+      "passed": true,
+      "observation": "The guard retains successful values, including a valid void return."
+    },
+    {
+      "id": "sd-090-selected-tagged-variants",
+      "passed": true,
+      "observation": "A and B encode separately as a symbol-led vector."
+    },
+    {
+      "id": "sd-090-noncanonical-combined-example",
+      "passed": true,
+      "observation": "This SDK decoder ignores the trailing map for A; it does not decode both variants."
+    },
+    {
+      "id": "sd-090-integer-enum",
+      "passed": true,
+      "observation": "Declared values encode as one u32; the published vector is rejected."
+    },
+    {
+      "id": "sk-037-mixed-operation-rejection",
+      "passed": true,
+      "observation": "The SDK rejects mixed inner operations, including a fee-bump wrapper."
+    },
+    {
+      "id": "sk-037-single-operation-control",
+      "passed": true,
+      "observation": "The same fixture assembles one supported invocation successfully."
+    }
+  ],
+  "networkCalls": 0,
+  "modelCalls": 0,
+  "simulations": 0,
+  "signedTransactions": 0,
+  "submittedTransactions": 0,
+  "limits": [
+    "Local JavaScript SDK behavior only; no on-chain contract decoder ran.",
+    "Python, Java and PHP examples were not executed.",
+    "The tagged decoder accepts trailing data for a void variant; this is recorded, not hidden."
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "schema": "qa-followup-proposer-matrix-projection-v1",
+  "originalFileSha256": "3e2853647bee0a031fe5f66140c2dc890fb55f7c37b5cadb2f6402a6778b2bb3",
+  "matrix": {
+    "blindness": "No overnight answers, grades, per-case reviews, or independent Grok output informed these derivations.",
+    "protocol": [
+      {
+        "claim": "Mainnet reports Protocol 29 at ledger 65285576, closed 2026-11-03T13:51:59Z; Core supports Protocol 30.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-03",
+            "note": "The page lists Protocol 29 on Mainnet from October 1, 2026. This is documentation, not a live measurement."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-core/releases/tags/v30.0.0",
+            "observedAt": "2026-11-03",
+            "note": "The v30.0.0 release was published on 2026-10-16. Release availability alone does not show network activation."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-03",
+            "note": "current_protocol_version=29; core_supported_protocol_version=30; history_latest_ledger=65285576."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-11-03",
+            "note": "sequence=65285576; protocol_version=29; closed_at=2026-11-03T13:51:59Z."
+          },
+          {
+            "class": "C",
+            "ref": "https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-11-03",
+            "note": "Public Global Stellar Network ; September 2015; protocolVersion=29."
+          },
+          {
+            "class": "C",
+            "ref": "https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-11-03",
+            "note": "sequence=65285576; protocolVersion=29; closeTime=1793713919. XDR fields are omitted from the saved projection."
+          }
+        ]
+      },
+      {
+        "claim": "Software support, network activation, and a documentation snapshot are different evidence bases.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLatestLedger.md",
+            "observedAt": "2026-11-03",
+            "note": "The response describes the latest ledger known to that node when it handled the request."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades.md",
+            "observedAt": "2026-11-03",
+            "note": "Validators must agree on a new network setting before the network adopts it."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/herder/Upgrades.cpp",
+            "observedAt": "2026-11-03",
+            "note": "createUpgradesFor compares the requested version with lclHeader.ledgerVersion before proposing LEDGER_UPGRADE_VERSION."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-03",
+            "note": "The same response reports current protocol 29 and supported protocol 30."
+          }
+        ]
+      }
+    ],
+    "staking": [
+      {
+        "claim": "Stellar uses SCP/FBA rather than proof of stake; validators receive no native monetary rewards.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+            "observedAt": "2026-11-03",
+            "note": "The official overview identifies SCP as FBA and explicitly states that validators receive no monetary rewards."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
+            "observedAt": "2026-11-03",
+            "note": "isQuorumSliceInternal counts validators and inner quorum sets against qset.threshold. It does not use a stake balance."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+            "observedAt": "2026-11-03",
+            "note": "SDF explicitly excludes block rewards, staking yield, MEV awards, and transaction-fee shares for validators."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+native+proof+of+stake+validator+rewards+November+2026",
+            "observedAt": "2026-11-03",
+            "note": "The free contradiction search returned the official validator explanation and no applicable primary contradiction."
+          }
+        ]
+      },
+      {
+        "claim": "A deployed sXLM contract and a vault share do not establish native validator staking or its rewards.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.stellofi.com/docs",
+            "observedAt": "2026-11-03",
+            "note": "The current page metadata describes an XLM vault and a composable share token."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
+            "observedAt": "2026-11-03",
+            "note": "The repository describes sXLM as a vault share. It lists lending and fee sources rather than validator rewards."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+            "observedAt": "2026-11-03",
+            "note": "The explorer reports the named Mainnet contract. Source validation remains unverified. This response does not establish its reward mechanism, current APY, or validator rewards."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+XLM+liquid+staking+StelloFi+sXLM",
+            "observedAt": "2026-11-03",
+            "note": "The free search surfaced sXLM marketing and lending/liquidity claims. It does not establish a complete market inventory."
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "Class C observations establish network state or contract existence, not a universal LST absence.",
+      "The existing 2026-11-02 LST sweep remains historical and is not renewed.",
+      "Source code quorum logic corroborates SCP mechanics; it is not an exhaustive code audit for every reward path.",
+      "The fetched rewards paper was not text-extracted and does not count as new corroboration."
+    ],
+    "sourceQuotes": {
+      "consensus": {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+        "quote": "There are no monetary rewards for being a validator on the Stellar network.",
+        "observedAt": "2026-11-03"
+      },
+      "versions": {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+        "quote": "Protocol 29 (Mainnet, October 1, 2026)",
+        "observedAt": "2026-11-03"
+      },
+      "rpc-doc": {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLatestLedger.md",
+        "quote": "Stellar Core protocol version associated with the latest ledger.",
+        "observedAt": "2026-11-03"
+      },
+      "upgrades-doc": {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades.md",
+        "quote": "For a new value to be adopted, the same level of consensus between nodes needs to be reached as for transaction sets.",
+        "observedAt": "2026-11-03"
+      },
+      "release30": {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/stellar-core/releases/tags/v30.0.0",
+        "quote": "This release bumps the protocol to version 30",
+        "observedAt": "2026-11-03"
+      },
+      "upgrades-code": {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/herder/Upgrades.cpp",
+        "quote": "result.emplace_back(LEDGER_UPGRADE_VERSION);",
+        "observedAt": "2026-11-03"
+      },
+      "localnode-code": {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
+        "quote": "uint32 thresholdLeft = qset.threshold;",
+        "observedAt": "2026-11-03"
+      },
+      "horizon-root": {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/",
+        "quote": "\"current_protocol_version\": 29",
+        "observedAt": "2026-11-03"
+      },
+      "rpc-latest": {
+        "class": "C",
+        "ref": "https://mainnet.sorobanrpc.com getLatestLedger",
+        "quote": "\"protocolVersion\":29,\"sequence\":65285576",
+        "observedAt": "2026-11-03"
+      },
+      "stellofi-docs": {
+        "class": "A",
+        "ref": "https://www.stellofi.com/docs",
+        "quote": "StelloFi — An XLM Vault on Stellar",
+        "observedAt": "2026-11-03"
+      },
+      "stellofi-readme": {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
+        "quote": "a share token representing a proportional claim on pooled XLM",
+        "observedAt": "2026-11-03"
+      },
+      "stellofi-contract": {
+        "class": "C",
+        "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+        "quote": "\"validation\":{\"status\":\"unverified\"}",
+        "observedAt": "2026-11-03"
+      }
+    }
+  },
+  "projectionCorrections": [
+    "The initial exact review rejects the contract-existence proof sentence. The public projection limits that evidence to existence."
+  ]
+}

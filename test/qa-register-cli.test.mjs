@@ -218,4 +218,91 @@ describe("QA register CLI", () => {
       rmSync(root, { recursive: true, force: true });
     }
   });
+
+  it("closes a reviewed numeric invariant once while preserving its value and member hashes", () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-register-numeric-review-"));
+    try {
+      const corpus = join(root, "corpus");
+      const register = join(root, "register.json");
+      const review = join(root, "review.json");
+      mkdirSync(corpus);
+      writeFileSync(join(corpus, "case.json"), '{"id":"q-temp"}\n');
+      writeFileSync(register, JSON.stringify({ numericInvariants: { entries: [{
+        label: "Activation history", authoritativeValue: "An unchanged dated boundary",
+        affectedCaseIds: ["q-temp"], verdict: "reopen",
+        reopened: { date: "2026-09-02", reason: "member-content-changed" }
+      }] } }));
+      const run = (...args) => spawnSync(process.execPath, [
+        CLI, "--corpus", corpus, "--register", register, "--date", "2026-09-02", ...args
+      ], { cwd: root, encoding: "utf8" });
+      expect(run("--seed").status).toBe(0);
+      const baseline = JSON.parse(readFileSync(register, "utf8")).numericInvariants.entries[0];
+      const closure = {
+        matchLabel: "Activation history", verdict: "consistent", lastChecked: "2026-09-02",
+        reSwept: { date: "2026-09-02", reason: "Independent boundary review.", verdict: "consistent" },
+        clearReopened: true
+      };
+      const baselineBytes = readFileSync(register, "utf8");
+      for (const field of ["triggerDateEvent", "disposition", "authoritativeValue", "memberContentSha256"]) {
+        writeFileSync(review, JSON.stringify({ numericInvariants: [{ ...closure, [field]: "unexpected" }] }));
+        const rejected = run("--review", review);
+        expect(rejected.status).toBe(1);
+        expect(rejected.stderr).toContain(`unsupported review field ${field}`);
+        expect(readFileSync(register, "utf8")).toBe(baselineBytes);
+      }
+      writeFileSync(review, JSON.stringify({ numericInvariants: [closure] }));
+      expect(run("--review", review).status).toBe(0);
+      const closedBytes = readFileSync(register, "utf8");
+      const closed = JSON.parse(closedBytes).numericInvariants.entries[0];
+      expect(closed.verdict).toBe("consistent");
+      expect(closed.reopened).toBeUndefined();
+      expect(closed.authoritativeValue).toBe(baseline.authoritativeValue);
+      expect(closed.memberContentSha256).toEqual(baseline.memberContentSha256);
+      expect(run("--check").status).toBe(0);
+      expect(run("--review", review).stderr).toContain("target must be reopened");
+      expect(readFileSync(register, "utf8")).toBe(closedBytes);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects ambiguous numeric labels and unsupported review collections without writing", () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-register-numeric-reject-"));
+    try {
+      const corpus = join(root, "corpus");
+      const register = join(root, "register.json");
+      const review = join(root, "review.json");
+      mkdirSync(corpus);
+      writeFileSync(join(corpus, "case.json"), '{"id":"q-temp"}\n');
+      const invariant = {
+        label: "Duplicated label", affectedCaseIds: ["q-temp"], verdict: "reopen",
+        reopened: { date: "2026-09-02", reason: "member-content-changed" }
+      };
+      writeFileSync(register, JSON.stringify({ numericInvariants: { entries: [invariant, invariant] } }));
+      const run = (...args) => spawnSync(process.execPath, [
+        CLI, "--corpus", corpus, "--register", register, "--date", "2026-09-02", ...args
+      ], { cwd: root, encoding: "utf8" });
+      expect(run("--seed").status).toBe(0);
+      const baseline = readFileSync(register, "utf8");
+      const closure = {
+        matchLabel: "Duplicated label", verdict: "consistent", lastChecked: "2026-09-02",
+        reSwept: { date: "2026-09-02", reason: "Reviewed.", verdict: "consistent" }, clearReopened: true
+      };
+      for (const [payload, message] of [
+        [{ numericInvariants: [closure] }, "expected one match, found 2"],
+        [{ numericInvariants: [{ ...closure, matchLabel: "Missing" }] }, "expected one match, found 0"],
+        [{ numericInvariants: [{ ...closure, matchLabel: "" }] }, "requires matchLabel"],
+        [{ numericInvariant: [closure] }, "unsupported review collection"],
+        [{ numericInvariants: {} }, "must be an array"]
+      ]) {
+        writeFileSync(review, JSON.stringify(payload));
+        const result = run("--review", review);
+        expect(result.status).toBe(1);
+        expect(result.stderr).toContain(message);
+        expect(readFileSync(register, "utf8")).toBe(baseline);
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
 });

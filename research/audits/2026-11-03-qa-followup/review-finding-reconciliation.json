@@ -1,0 +1,69 @@
+{
+  "schema": "qa-review-finding-reconciliation-v1",
+  "checkedAt": "2026-11-03T15:49:32.237671+00:00",
+  "finding": "The digest scope can conceal the two applied golden corrections.",
+  "fix": "Name both exact v4 corpus corrections, scope digest-only boundaries, and mark the related actions completed or prepared.",
+  "all100CasesAnd314ObservationsByteEquivalentAsParsed": true,
+  "evidenceCatalogUnchanged": true,
+  "changedActionRecords": [
+    "GC-PROTOCOL",
+    "GC-STAKING",
+    "MR-STOP"
+  ],
+  "changedFiles": [
+    {
+      "path": "research/audits/2026-11-03-qa-followup/case-dispositions.json",
+      "sha256": "99aa13de40ae511d9c9c0e030b8e82445ea4753df033e34c8af6501e8c6437ed"
+    },
+    {
+      "path": "research/audits/2026-11-03-qa-followup/case-dispositions.md",
+      "sha256": "4996a95fecf35b8e91ea4937021b054aee80f92baf81e18f37419d8ca6be1ca0"
+    }
+  ],
+  "sourceOrGoldenChanges": false,
+  "validation": {
+    "passed": true,
+    "uniqueCases": 100,
+    "individualNotesHashMatched": 100,
+    "boundedPacketsHashMatched": 100,
+    "allObservationsHaveActions": true,
+    "observationCount": 314,
+    "originalOutcomesPreserved": true,
+    "qualityAggregateProduced": false,
+    "fullRawArtifactRead": false,
+    "publicPrivacyChecksPassed": true,
+    "noncompletionPacketsChecked": 3,
+    "newAgentsOrPaidCalls": false,
+    "noncompletionLimitUnchanged": 16,
+    "sourceChangesSinceBuild": [],
+    "describeRecoveryEvidence": [
+      {
+        "caseId": "q-defi-bridge-evm-to-stellar-axelar",
+        "recoveryTranscriptIndex": 11,
+        "recoveryResultSha256": "56acfbedff341f5c0e0854bdab62b74bde2b5098a56589e3b2379f61df588513",
+        "visibleFlatKeys": [],
+        "verifiedByPacket": true
+      },
+      {
+        "caseId": "q-protocol-27-cap-0071",
+        "recoveryTranscriptIndex": 9,
+        "recoveryResultSha256": "d63a607d5f3a39491e996510e23f0266b82fec6634b664969b174c6c9ef25b49",
+        "visibleFlatKeys": [
+          "ok",
+          "id",
+          "service",
+          "kind",
+          "description",
+          "retrievalProfile",
+          "signature",
+          "inputSchema",
+          "outputSchema",
+          "usage"
+        ],
+        "verifiedByPacket": true
+      }
+    ],
+    "publicJsonSha256": "99aa13de40ae511d9c9c0e030b8e82445ea4753df033e34c8af6501e8c6437ed",
+    "publicMarkdownSha256": "4996a95fecf35b8e91ea4937021b054aee80f92baf81e18f37419d8ca6be1ca0"
+  }
+}

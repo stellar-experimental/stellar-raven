@@ -1,0 +1,292 @@
+{
+  "schema": "tail-source-local-finding-evidence-v1",
+  "preparedAt": "2026-11-03T08:58:35.882215+00:00",
+  "newRequests": [
+    {
+      "label": "latest-dapp-skill",
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-dev-skill/contents/skills/dapp/SKILL.md?ref=main"
+      },
+      "requestSha256": "d8204f6377ee91f3db66a466af3de038cb33b8de419b8e4083f864005449f3b4",
+      "startedAt": "2026-11-03T08:58:35.572416+00:00",
+      "status": 200,
+      "resolvedUrl": "https://api.github.com/repos/stellar/stellar-dev-skill/contents/skills/dapp/SKILL.md?ref=main",
+      "responseBodySha256": "b1ef0e16c0f2679a2db904f102296991a1ee53bc059c4d1a8beadf14be907792",
+      "responseBytes": 27019,
+      "sourceIdentity": {
+        "path": "skills/dapp/SKILL.md",
+        "sha": "6b2a072e602b94874d962ce6d931d3fa3c9caf93",
+        "git_url": "https://api.github.com/repos/stellar/stellar-dev-skill/git/blobs/6b2a072e602b94874d962ce6d931d3fa3c9caf93",
+        "html_url": "https://github.com/stellar/stellar-dev-skill/blob/main/skills/dapp/SKILL.md",
+        "size": 18967,
+        "branch": "main"
+      },
+      "decodedSourceSha256": "4abc828abbfebd5452e4abc159095b5703c392b21b1abe74a5f56e8220696f75",
+      "decodedSourceBytes": 18967,
+      "contexts": [
+        {
+          "term": "batching a contract call with classic operations",
+          "line": 332,
+          "text": "ides/07-contract-auth).\n\n<details>\n<summary><b>Advanced: low-level invocation without a client</b></summary>\n\nUse this only when you need direct control over the transaction (e.g. batching a contract call with classic operations). Otherwise prefer `contract.Client` above.\n\n```typescript\nimport * as StellarSdk from \"@stellar/stellar-sdk\";\nimport { rpc, config } from \"@/lib/stellar\";\n\nexport async function invokeContract(\n  sourceAddress: string,\n  contractId: string,\n  method: string,\n  args: StellarSdk.xdr.ScVal[]\n) {\n  const account = await rpc.getAccount(sourceAddress);\n  const contract = new StellarSdk.Contract(contractId);\n\n  const transaction = new StellarSdk.TransactionBuilder(account, {\n    fee: StellarSdk.BASE_FEE,\n    networkPassphrase: config.networkPassphrase,\n  })\n    .addOperation(contract.call(method, ...args))\n    .setTimeout(180)\n    .build();\n\n  // `prepareTransaction` simulates and applies footprint/auth/fees in one step.\n  // (Equivalent to simulateTransaction + rpc.assembleTransaction.)\n  const prepared = await rpc.prepareTransaction(transaction);\n  return prepared.toXDR();\n}\n```\n\n**Building"
+        }
+      ],
+      "observedClaims": {
+        "batching a contract call with classic operations": true
+      },
+      "fullBodyRetained": false,
+      "endedAt": "2026-11-03T08:58:35.855569+00:00"
+    },
+    {
+      "label": "published-preview",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md"
+      },
+      "requestSha256": "36189acf30bf1225660ca143f357d18c86f80d062f91ba51a4aa35d6d20be608",
+      "startedAt": "2026-11-03T08:58:35.572835+00:00",
+      "status": 200,
+      "resolvedUrl": "https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md",
+      "responseBodySha256": "2026dff38b62338b268df83e63ce596d838dec6a518b32cc2b4c7352d462942c",
+      "responseBytes": 19254,
+      "contexts": [
+        {
+          "term": "scValToNative(sim.result?.retval)",
+          "line": 143,
+          "text": "esult:\", sim.result);\n  // the result is a ScVal and so we can parse that to human readable output using the sdk's `scValToNative` function:\n  console.log(\"humanReadable Result:\", scValToNative(sim.result?.retval));\n  console.log(\"error:\", sim.error);\n  console.log(\"latestLedger:\", sim.latestLedger);\n});\n```\n\n#### Running the example\n\nTo run the above code, you will need to install the Stellar SDK into your project. You can do this by running the following command in your project directory:\n\n`npm install @stellar/stellar-sdk`\n\nOnce your project is set up, you can create a new mjs file and paste the code above. You can then run the file using Node.js by running:\n\n`node <filename>.mjs`\n\n## Understanding the Footprint\n\nA footprint is a set of ledger keys that the transaction will read or write. These keys are marked as either read-only or read-write:\n\n* **Read-Only Keys**: Available for reading only.\n* **Read-Write Keys**: Available for reading and writing.\n\nThe footprint ensures that a transaction is aware of all the ledger entries it will interact with, preventing unexpected errors during executio"
+        }
+      ],
+      "observedClaims": {
+        "scValToNative(sim.result?.retval)": true
+      },
+      "fullBodyRetained": false,
+      "endedAt": "2026-11-03T08:58:35.694792+00:00"
+    },
+    {
+      "label": "published-enums",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/build/guides/dapps/working-with-contract-specs.md"
+      },
+      "requestSha256": "4d0384406db3669973b3258b92f36e47f6f854aa87e1ed7eb55098cc149b5142",
+      "startedAt": "2026-11-03T08:58:35.572945+00:00",
+      "status": 200,
+      "resolvedUrl": "https://developers.stellar.org/docs/build/guides/dapps/working-with-contract-specs.md",
+      "responseBodySha256": "fba013f8c48e5b554245ca55219683bfb270ace9d654344de45115cc8c87934f",
+      "responseBytes": 42720,
+      "contexts": [
+        {
+          "term": "### Enum (integer",
+          "line": 949,
+          "text": "[\n        XdrSCVal::forSymbol(\"A\"),\n        XdrSCVal::forMap(\n            [\n                XdrSCVal::forSymbol(\"B\") => XdrSCVal::forU32(0),\n            ]\n        ),\n    ]\n);\n```\n\n### Enum (integer variants)\n\nEnums are generally represented with `ScVec`, the integer variant has no keys so it's just a `ScVec` of the underlying type.\n\n```rust Rust theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\n#[contracttype]\n#[derive(Copy, Clone, Debug, Eq, PartialEq)]\n#[repr(u32)]\npub enum Enum {\n    A = 1,\n    B = 2,\n}\n```\n\n```json JSON theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\n[\n  {\n    \"type\": \"struct\",\n    \"doc\": \"\",\n    \"name\": \"Enum\",\n    \"fields\": [\n      {\n        \"doc\": \"\",\n        \"name\": \"A\",\n        \"type\": \"u32\"\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"B\",\n        \"type\": \"u32\"\n      }\n    ]\n  }\n]\n```\n\n```python Python theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\nfrom stellar_sdk import scval\nscval.to_vec(\n    [\n        scval.to_uint32(0),\n        scval.to_uint32(0),\n    ]\n)\n```\n\n```java Java theme={\"theme\":{\"light\":\"gith"
+        },
+        {
+          "term": "integer variant has no keys",
+          "line": 951,
+          "text": "             XdrSCVal::forSymbol(\"B\") => XdrSCVal::forU32(0),\n            ]\n        ),\n    ]\n);\n```\n\n### Enum (integer variants)\n\nEnums are generally represented with `ScVec`, the integer variant has no keys so it's just a `ScVec` of the underlying type.\n\n```rust Rust theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\n#[contracttype]\n#[derive(Copy, Clone, Debug, Eq, PartialEq)]\n#[repr(u32)]\npub enum Enum {\n    A = 1,\n    B = 2,\n}\n```\n\n```json JSON theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\n[\n  {\n    \"type\": \"struct\",\n    \"doc\": \"\",\n    \"name\": \"Enum\",\n    \"fields\": [\n      {\n        \"doc\": \"\",\n        \"name\": \"A\",\n        \"type\": \"u32\"\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"B\",\n        \"type\": \"u32\"\n      }\n    ]\n  }\n]\n```\n\n```python Python theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\nfrom stellar_sdk import scval\nscval.to_vec(\n    [\n        scval.to_uint32(0),\n        scval.to_uint32(0),\n    ]\n)\n```\n\n```java Java theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\nimport org.stellar.sdk.xdr.SCVal;\nimport org.stellar.sdk"
+        },
+        {
+          "term": "scval.to_symbol(\"A\")",
+          "line": 910,
+          "text": "      }\n        ]\n      }\n    ]\n  }\n]\n```\n\n```python Python theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\nfrom stellar_sdk import scval\nscval.to_vec(\n    [\n        scval.to_symbol(\"A\"),\n        scval.to_map(\n            {\n                scval.to_symbol(\"B\"): scval.to_uint32(0),\n            }\n        ),\n    ]\n)\n```\n\n```java Java theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\nimport org.stellar.sdk.xdr.SCVal;\nimport org.stellar.sdk.scval.Scv;\nimport java.util.LinkedHashMap;\n\nList<SCVal> vec = new ArrayList<SCVal>();\nvec.add(Scv.toSymbol(\"A\"));\nLinkedHashMap<SCVal, SCVal> map = new LinkedHashMap<SCVal, SCVal>();\nmap.put(Scv.toSymbol(\"B\"), Scv.toUint32(0));\nvec.add(Scv.toMap(map));\nSCVal val = Scv.toVec(vec);\n```\n\n```php PHP theme={\"theme\":{\"light\":\"github-light\",\"dark\":\"github-dark\"}}\n<?php\nuse Soneso\\StellarSDK\\Xdr\\XdrSCVal;\n\nXdrSCVal::forVec(\n    [\n        XdrSCVal::forSymbol(\"A\"),\n        XdrSCVal::forMap(\n            [\n                XdrSCVal::forSymbol(\"B\") => XdrSCVal::forU32(0),\n            ]\n        ),\n    ]\n);\n```\n\n### Enum (integer variants)\n\nE"
+        }
+      ],
+      "observedClaims": {
+        "### Enum (integer": true,
+        "integer variant has no keys": true,
+        "scval.to_symbol(\"A\")": true
+      },
+      "fullBodyRetained": false,
+      "endedAt": "2026-11-03T08:58:35.694152+00:00"
+    },
+    {
+      "label": "pinned-preview-source",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx"
+      },
+      "requestSha256": "740e5adeeb75337f0fad47dd9ced71962bb73dc4376483c8a898280e95c9f66e",
+      "startedAt": "2026-11-03T08:59:59.739914+00:00",
+      "status": 200,
+      "responseBodySha256": "3d10b443ce150457aec5da83e274e1180bfa1e0c305db5f28f7c6983355a739d",
+      "responseBytes": 18589,
+      "fullBodyRetained": false,
+      "contexts": [
+        {
+          "term": "scValToNative(sim.result?.retval)",
+          "line": 140,
+          "text": "im.result);\n  // the result is a ScVal and so we can parse that to human readable output using the sdk's `scValToNative` function:\n  console.log(\"humanReadable Result:\", scValToNative(sim.result?.retval));\n  console.log(\"error:\", sim.error);\n  console.log(\"latestLedger:\", sim.latestLedger);\n});\n```\n\n#### Running the example\n\nTo run the above code, you will need to install the Stellar SDK into your project. You can do this by running the following command in your project directory:\n\n`npm install @stellar/stellar-sdk`\n\nOnce your project is set up, you can create a new mjs file and paste the code above. You can then run the file using Node.js by running:\n\n`node <filename>.mjs`\n\n## Understanding the Footprint\n\nA footprint is a set of ledger keys that the transaction will read or write. These keys are marked as either read-only or read-write:\n\n- "
+        }
+      ],
+      "endedAt": "2026-11-03T08:59:59.911172+00:00"
+    }
+  ],
+  "latestSkillBranchRequests": 1,
+  "priorReceipts": [
+    {
+      "path": "tmp/2026-11-02-golden-overnight/tail-source-triage/receipts/reused-receipts.json",
+      "sha256": "b0a824d2c01a9d3fd5780b1473519934bb22ca0aa23bfc6ac2cd28b4b561980c"
+    },
+    {
+      "path": "tmp/2026-11-02-golden-overnight/tail-source-triage/receipts/source-excerpts.json",
+      "sha256": "b89ef990798383ec43231156609e39fc2c908a35759fafd40f40ea367756ca77"
+    },
+    {
+      "path": "tmp/2026-11-02-golden-overnight/tail-source-triage/receipts/enum-implementation-excerpts.json",
+      "sha256": "1c9fed10e7231457e5b4317ece1b92b64f7a5cc10b2b8adbf93add4871e8a080"
+    },
+    {
+      "path": "tmp/2026-11-02-golden-overnight/tail-source-triage/receipts/review-evidence-projections.json",
+      "sha256": "bb234a813e71b64d367727568314c948afa0c54327c4ec1618ce01923c372f79"
+    },
+    {
+      "path": "tmp/2026-11-02-golden-overnight/tail-source-triage/dedupe.json",
+      "sha256": "f4cc8942ab30644b9989b23c0173889e723340615aca28bd242f892c8af2823f"
+    }
+  ],
+  "namespaceAvailability": [
+    {
+      "namespace": "sd",
+      "maximumActiveOrResolvedId": 86,
+      "nextAvailableId": "sd-089"
+    },
+    {
+      "namespace": "sk",
+      "maximumActiveOrResolvedId": 36,
+      "nextAvailableId": "sk-037"
+    }
+  ],
+  "scope": "Public source text and metadata only; no full external bodies, account data, model calls, simulations, or transactions.",
+  "reusedPrimaryReceipts": [
+    {
+      "sha256": "7cbfdc7c8f044e1aefed371fc91c45a7ef01a2a20fd04374b450e13526ee8c4e",
+      "receipt": {
+        "schema": "bounded-case-primary-reads-v1",
+        "caseId": "q-sor-deploy-invoke-from-js-sdk",
+        "receipts": [
+          {
+            "label": "served-dapp-skill",
+            "url": "https://raw.githubusercontent.com/stellar/stellar-dev-skill/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/dapp/SKILL.md",
+            "observedAt": "2026-11-03T07:14:45.823073+00:00",
+            "status": 200,
+            "sha256": "18813d453677e8808808db68d82626f841f20eade68c3525cf53b1a4160c7faf",
+            "bytes": 18137,
+            "searchedText": "batching a contract call with classic operations",
+            "textPresent": true
+          },
+          {
+            "label": "sdk-17.4-assembly",
+            "url": "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/rpc/transaction.ts",
+            "observedAt": "2026-11-03T07:14:45.905800+00:00",
+            "status": 200,
+            "sha256": "be386ee34388e57c83c47db874ff3946e6cc381bb50cb66440bad8363847230a",
+            "bytes": 4458,
+            "searchedText": "must contain exactly one",
+            "textPresent": true
+          }
+        ],
+        "limit": "These source reads do not execute transactions or replace a grade."
+      },
+      "methodWorktreeRelativePath": "eval/local-lanes/direct-grok/2026-11-02/reviews-v4/evidence/review71-84-batch04/primary-receipts.json"
+    },
+    {
+      "sha256": "ec8ff3c4a15332a11c16912df6b1a91d24c82936d562205d1fa293047018d8c1",
+      "receipt": {
+        "schema": "bounded-case-primary-reads-v1",
+        "caseId": "q-sor-scval-conversion",
+        "receipts": [
+          {
+            "label": "canonical-sdk-unions",
+            "url": "https://developers.stellar.org/docs/tools/sdks/build-your-own.md",
+            "observedAt": "2026-11-03T07:16:16.610125+00:00",
+            "status": 200,
+            "sha256": "938bbced8e584420cb1b83211964e12f446626ca5dd920fde6ce4b635560d4ad",
+            "bytes": 6037,
+            "textChecks": {
+              "first element as a `Symbol`": true,
+              "zero or more additional elements": true
+            }
+          },
+          {
+            "label": "contract-spec-examples",
+            "url": "https://developers.stellar.org/docs/build/guides/dapps/working-with-contract-specs.md",
+            "observedAt": "2026-11-03T07:16:16.969881+00:00",
+            "status": 200,
+            "sha256": "fba013f8c48e5b554245ca55219683bfb270ace9d654344de45115cc8c87934f",
+            "bytes": 42720,
+            "textChecks": {
+              "scval.to_symbol(\"A\")": true,
+              "scval.to_map(": true,
+              "the integer variant has no keys": true
+            }
+          }
+        ],
+        "limit": "The review preserves the original grade and does not execute transactions."
+      },
+      "methodWorktreeRelativePath": "eval/local-lanes/direct-grok/2026-11-02/reviews-v4/evidence/review71-84-batch04/scval-primary-receipts.json"
+    }
+  ],
+  "enumImplementationExcerpts": [
+    {
+      "function": "private nativeToUnion",
+      "firstLine": 943,
+      "text": "private nativeToUnion(val: Union<any>, union_: ScSpecUdtUnionV0): ScVal {\n    const entryName = val.tag;\n    const caseFound = union_.cases.find((entry: ScSpecUdtUnionCaseV0) => {\n      return entry.value.name.toString() === entryName;\n    });\n    if (!caseFound) {\n      throw new TypeError(`no such enum entry: ${entryName} in ${union_}`);\n    }\n    const key = ScVal.scvSymbol(entryName);\n    switch (caseFound.type) {\n      case \"scSpecUdtUnionCaseVoidV0\": {\n        return ScVal.scvVec([key]);\n      }\n      case \"scSpecUdtUnionCaseTupleV0\": {\n        const types = caseFound.value.type;\n        if (Array.isArray(val.values)) {\n          if (val.values.length !== types.length) {\n            throw new TypeError(\n              `union ${union_} expects ${types.length} values, but got ${val.values.length}`,\n            );\n          }\n          const scvals = val.values.map((v: any, i: number) =>\n            this.nativeToScVal(v, types[i]),\n          );\n          scvals.unshift(key);\n          return ScVal.scvVec(scvals);\n        }\n        throw new Error(`failed to parse union case ${caseFound} with ${val}`);\n      }\n      default:\n        throw new Error(`failed to parse union ${union_} with ${val}`);\n    }\n  }\n\n  private nativeToStruct(val: any, struct: ScSpecUdtStructV0): ScVal {\n    const fields = struct.fields;\n    if (fields.some(isNumeric)) {\n      if (!fields.every(isNumeric)) {\n        throw new Error(\n          \"mixed numeric and non-numeric field names are not allowed\",\n        );\n      }\n      return ScVal.scvVec(\n        fields.map((_: ScSpecUdtStructFieldV0, i: number) =>\n          this.nativeToScVal(val[i], fields[i].type),\n        ),\n      );\n    }\n    return ScVal.scvMap(\n      fields.map((field: ScSpecUdtStructFieldV0) => {\n        const name = field.name.toString();\n        const fieldVal = val[name];\n        // A field named like an inherited `Object.pro"
+    },
+    {
+      "function": "private nativeToEnum",
+      "firstLine": 1013,
+      "text": "private nativeToEnum(val: number, enum_: ScSpecUdtEnumV0): ScVal {\n    if (enum_.cases.some((entry: { value: number }) => entry.value === val)) {\n      return ScVal.scvU32(val);\n    }\n    throw new TypeError(`no such enum entry: ${val} in ${enum_}`);\n  }\n\n  /**\n   * Converts an base64 encoded ScVal back to a native JS value based on the given type.\n   *\n   * @param scv - the base64 encoded ScVal\n   * @param typeDef - the expected type\n   * @returns the converted native JS value\n   *\n   * @throws"
+    },
+    {
+      "function": "private enumToNative",
+      "firstLine": 1231,
+      "text": "private enumToNative(scv: ScVal): number {\n    if (scv.type !== \"scvU32\") {\n      throw new Error(`Enum must have a u32 value`);\n    }\n    const num = scv.value;\n    return num;\n  }\n\n  /**\n   * Gets the XDR error cases from the spec.\n   *\n   * @returns all contract functions\n   *\n   */\n  errorCases(): ScSpecUdtErrorEnumCaseV0[] {\n    return this.entries\n      .filter((entry) => entry.type === \"scSpecEntryUdtErrorEnumV0\")\n      .flatMap((entry) => (entry.value as ScSpecUdtErrorEnumV0).cases);\n  }"
+    }
+  ],
+  "pinnedEnumSourceExcerpts": [
+    {
+      "label": "scval-docs-pinned",
+      "sourceBodySha256": "4a4a888536d6550be08733f3e8d18a271725e5482674f2cfaf672bbc0a732312",
+      "sourceBytes": 39697,
+      "contexts": [
+        {
+          "term": "### Enum (unit",
+          "firstLine": 888,
+          "text": "forVec(\n    [\n        XdrSCVal::forU32(0),\n        XdrSCVal::forU32(0),\n    ]\n);\n```\n\n</CodeGroup>\n\n### Enum (unit and tuple variants)\n\nEnums are generally represented with `ScVec`, their unit types are represented as `ScSymbol` and their tuple variants are represented as the underlying types.\n\n<CodeGroup>\n\n```rust Rust\n#[contracttype]\n#[derive(Clone, Debug, Eq, PartialEq)]\npub enum Enum {\n    A,\n    B(u32),\n}\n```\n\n```json JSON\n[\n  {\n    \"type\": \"union\",\n    \"doc\": \"\",\n    \"name\": \"Enum\",\n    \"cases\": [\n      {\n        \"doc\": \"\",\n        \"name\": \"A\",\n        \"values\": []\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"B\",\n        \"values\": [\n          {\n            \"type\": \"u32\"\n          }\n        ]\n      }\n    ]\n  }\n]\n```\n\n```python Python\nfrom stellar_sdk import scval\nscval.to_vec(\n    [\n        scval.to_symbol(\"A\"),\n        scval.to_map(\n            {\n                scval.to_symbol(\"B\"): scval.to_uint32(0),\n            }\n        ),\n    ]\n)\n```\n\n```java Java\nimport org.stellar.sdk.xdr.SCVal;\nimport org.stellar.sdk.scval.Scv;\nimport java.util.LinkedHashMap;\n\nList<SCVal> vec = new ArrayList<SCVal>();\nvec.add(Scv.toSymbol(\"A\"));\nLinkedHashMap<SCVal, SCVal> map = new LinkedHashMap<SCVal, SCVal>();\nmap.put(Scv.toSymbol(\"B\"), Scv.toUint32(0));\nvec.add(Scv.toMap(map));\nSCVal val = Scv.toVec(vec);\n```\n\n```php PHP\n<?php\nuse Soneso\\StellarSDK\\Xdr\\XdrSCVal;\n\nXdrSCVal::forVec(\n    [\n        XdrSCVal::forSymbol(\"A\"),\n        XdrSCVal::forMap(\n            [\n                XdrSCVal::forSymbol(\"B\") => XdrSCVal::forU32(0),\n            ]\n        ),\n    ]\n);\n```\n\n</CodeGroup>\n\n### Enum (integer variants)\n\nEnums are generally represented with `ScVec`, the integer variant has no keys so it's just a `ScVec` of the underlying type.\n\n<CodeGroup>\n\n```rust Rust\n#[contracttype]\n#[derive(Copy, Clone, Debug, Eq, PartialEq)]\n#[repr(u32)]\npub enum Enum {\n    A = 1,\n    B = 2,\n}\n```\n\n```json JSON\n[\n  {\n    \"type\": \"struct\",\n    \"doc\": \"\",\n    \"name\": \"Enum\",\n    \"fields\": [\n      {\n        \"doc\": \"\",\n        \"name\": \"A\",\n        \"type\": \"u32\"\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"B\",\n        \"type\": \"u32\"\n      }\n    ]\n  }\n]\n```\n\n```python Python\nfrom stellar_sdk import scval\nscval.to_vec(\n    [\n        scval.to_uint32(0),\n        scval.to_uint32(0),\n    ]\n)\n```\n\n```java Java\nimport org.stellar.sdk.xdr.SCVal;\nimport org.stellar.sdk.scval.Scv;\nimport java.util.LinkedHashMap;\n\nList<SCVal> vec = new ArrayList<SCVal>();\nvec.add(Scv.toUint32(0));\nvec.add(Scv.toUint32(0));\nSCVal val = Scv.toVec(vec);\n```\n\n```php PHP\n<?php\nuse Soneso\\StellarSDK\\Xdr\\XdrSCVal;\n\nXdrSCVal::forVec(\n    [\n        XdrSCVal::forU32(0),\n        XdrSCVal::forU32(0),\n    ]\n);\n```\n\n</CodeGroup>\n\n### A complex example\n\nLet's use the [timelock contract](https://github.com/stellar/soroban-examples/blob/main/timelock/src/lib.rs) example to show how to interact with a contract that has complex data types.\n\nThis example uses a `TimeBound` struct that has a `TimeBoundKind` enum as one of its fields, which are parameters to the `deposit` function. This example combines most of the concepts we have discussed so far.\n\n<CodeGroup>\n\n```rust Rust\n#[derive(Clone)]\n#[contracttype]\npub enum TimeBound"
+        },
+        {
+          "term": "### Enum (integer",
+          "firstLine": 974,
+          "text": "rSCVal::forSymbol(\"B\") => XdrSCVal::forU32(0),\n            ]\n        ),\n    ]\n);\n```\n\n</CodeGroup>\n\n### Enum (integer variants)\n\nEnums are generally represented with `ScVec`, the integer variant has no keys so it's just a `ScVec` of the underlying type.\n\n<CodeGroup>\n\n```rust Rust\n#[contracttype]\n#[derive(Copy, Clone, Debug, Eq, PartialEq)]\n#[repr(u32)]\npub enum Enum {\n    A = 1,\n    B = 2,\n}\n```\n\n```json JSON\n[\n  {\n    \"type\": \"struct\",\n    \"doc\": \"\",\n    \"name\": \"Enum\",\n    \"fields\": [\n      {\n        \"doc\": \"\",\n        \"name\": \"A\",\n        \"type\": \"u32\"\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"B\",\n        \"type\": \"u32\"\n      }\n    ]\n  }\n]\n```\n\n```python Python\nfrom stellar_sdk import scval\nscval.to_vec(\n    [\n        scval.to_uint32(0),\n        scval.to_uint32(0),\n    ]\n)\n```\n\n```java Java\nimport org.stellar.sdk.xdr.SCVal;\nimport org.stellar.sdk.scval.Scv;\nimport java.util.LinkedHashMap;\n\nList<SCVal> vec = new ArrayList<SCVal>();\nvec.add(Scv.toUint32(0));\nvec.add(Scv.toUint32(0));\nSCVal val = Scv.toVec(vec);\n```\n\n```php PHP\n<?php\nuse Soneso\\StellarSDK\\Xdr\\XdrSCVal;\n\nXdrSCVal::forVec(\n    [\n        XdrSCVal::forU32(0),\n        XdrSCVal::forU32(0),\n    ]\n);\n```\n\n</CodeGroup>\n\n### A complex example\n\nLet's use the [timelock contract](https://github.com/stellar/soroban-examples/blob/main/timelock/src/lib.rs) example to show how to interact with a contract that has complex data types.\n\nThis example uses a `TimeBound` struct that has a `TimeBoundKind` enum as one of its fields, which are parameters to the `deposit` function. This example combines most of the concepts we have discussed so far.\n\n<CodeGroup>\n\n```rust Rust\n#[derive(Clone)]\n#[contracttype]\npub enum TimeBoundKind {\n    Before,\n    After,\n}\n\n#[derive(Clone)]\n#[contracttype]\npub struct TimeBound {\n    pub kind: TimeBoundKind,\n    pub timestamp: u64,\n}\n\n#[contracttype]\n#[contractimpl]\nimpl ClaimableBalanceContract {\n    pub fn deposit(\n        env: Env,\n        from: Address,\n        token: Address,\n        amount: i128,\n        claimants: Vec<Address>,\n        time_bound: TimeBound,\n    )  {}\n}\n```\n\n```json JSON\n[\n  {\n    \"type\": \"union\",\n    \"doc\": \"\",\n    \"name\": \"TimeBoundKind\",\n    \"cases\": [\n      {\n        \"doc\": \"\",\n        \"name\": \"Before\",\n        \"values\": []\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"After\",\n        \"values\": []\n      }\n    ]\n  },\n  {\n    \"type\": \"struct\",\n    \"doc\": \"\",\n    \"name\": \"TimeBound\",\n    \"fields\": [\n      {\n        \"doc\": \"\",\n        \"name\": \"kind\",\n        \"value\": {\n          \"type\": \"custom\",\n          \"name\": \"TimeBoundKind\"\n        }\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"timestamp\",\n        \"value\": {\n          \"type\": \"u64\"\n        }\n      }\n    ]\n  },\n  {\n    \"type\": \"function\",\n    \"doc\": \"\",\n    \"name\": \"deposit\",\n    \"inputs\": [\n      {\n        \"doc\": \"\",\n        \"name\": \"from\",\n        \"value\": {\n          \"type\": \"address\"\n        }\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"token\",\n        \"value\": {\n          \"type\": \"address\"\n        }\n      },\n      {\n        \"doc\": \"\",\n        \"name\": \"amount\",\n        \"value\": {\n          \"type\": \"i128\"\n        }\n      },\n      {\n        \"doc\": \"\",\n   "
+        }
+      ]
+    }
+  ],
+  "sourceBoundaries": {
+    "docsRenderAndDocsRepository": "Same content producer; their agreement proves source-to-render currentness, not independent authority.",
+    "sdkImplementation": "A separate shipped SDK implementation checks the claimed value and operation shapes; no simulation or transaction executed.",
+    "latestSkill": "One public contents request reads current main and returns its immutable Git blob identity.",
+    "runtimeFixtures": "No original or replacement snippet executed. Success, error, restoration, enum, and mixed-operation fixture checks remain pending independent review."
+  },
+  "newLocalFindings": [
+    {
+      "id": "sd-089",
+      "path": "improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md",
+      "status": "proposed",
+      "requiredRepo": "stellar/stellar-docs"
+    },
+    {
+      "id": "sd-090",
+      "path": "improvements/stellar-docs/sd-090-contract-spec-enum-encodings.md",
+      "status": "proposed",
+      "requiredRepo": "stellar/stellar-docs"
+    },
+    {
+      "id": "sk-037",
+      "path": "improvements/skills/sk-037-dapp-mixed-classic-soroban-batching.md",
+      "status": "proposed",
+      "requiredRepo": "stellar/stellar-dev-skill"
+    }
+  ],
+  "latestSkillDisposition": "Still wrong on current main; local finding created with both latest Git blob and served immutable source evidence."
+}

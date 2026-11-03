@@ -1,0 +1,43 @@
+{
+  "schema": "native-cost-contract-receipts-v1",
+  "receipts": [
+    {
+      "url": "https://docs.x.ai/developers/cost-tracking",
+      "finalUrl": "https://docs.x.ai/developers/cost-tracking",
+      "status": 200,
+      "observedAt": "2026-11-03T02:48:47.008Z",
+      "bytes": 546885,
+      "sha256": "604c23115f546e9b89fd7d11cd953b6efc2505c06051a8ba1d6dd89c5d8c29e1",
+      "containsCostField": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/xai-org/xai-proto/main/proto/xai/api/v1/usage.proto",
+      "finalUrl": "https://raw.githubusercontent.com/xai-org/xai-proto/main/proto/xai/api/v1/usage.proto",
+      "status": 200,
+      "observedAt": "2026-11-03T02:48:46.984Z",
+      "bytes": 2678,
+      "sha256": "9d257b7c52c6d6f4432e19d0d80481e768982e05a83a54a7236486b48622c104",
+      "containsCostField": true
+    }
+  ],
+  "conversion": {
+    "usdTicksPerDollar": 10000000000,
+    "method": "provider-reported ticks divided by the documented divisor"
+  },
+  "observedDiagnostic": {
+    "artifactSha256": "930d934cb2cf5ce5418ec87eb1202a88ecec6dd567dda6aa27a787017cc93516",
+    "pairedNativeAndGatewayCosts": 117,
+    "pairedCostsMatch": true,
+    "gatewayOnlyHttp504": 1,
+    "nativeOnlyHttp200": 1,
+    "lastNativeTicks": 474160000,
+    "lastNativeUsd": 0.047416,
+    "lastCollectionCostUsd": null,
+    "originalArtifactRemainsInvalid": true
+  },
+  "limits": [
+    "The xAI contract describes provider billing; Gateway observations remain a separate instrument.",
+    "These observations do not define missing Codex charges or an exact session bill.",
+    "A later conflicting report invalidates acceptance; missing values never become zero."
+  ]
+}

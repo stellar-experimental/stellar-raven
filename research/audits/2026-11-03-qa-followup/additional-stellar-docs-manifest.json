@@ -1,0 +1,185 @@
+{
+  "schema": "additional-stellar-docs-patch-v1",
+  "repo": "stellar/stellar-docs",
+  "baseCommit": "85d2d1b8e7a4451b7a6af0931f587ce73109b816",
+  "sourceWorktree": "tmp/2026-11-03-qa-followup/upstream/additional-stellar-docs",
+  "separateIndex": true,
+  "patchPath": "research/audits/2026-11-03-qa-followup/additional-stellar-docs.patch",
+  "patchSha256": "092e6bb27c62914cdbd2e0617c9d8e298990768c0a761ca7c2f786568be21302",
+  "patchBytes": 6741,
+  "findingIds": [
+    "sd-091",
+    "sd-092",
+    "sd-093",
+    "sd-094",
+    "sd-095"
+  ],
+  "files": [
+    {
+      "path": "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx",
+      "role": "source",
+      "baseBlob": "cf3edbb514875b0ea72fd9dffaf13abed1546fec",
+      "indexBlob": "cf3edbb514875b0ea72fd9dffaf13abed1546fec",
+      "beforeSha256": "3d10b443ce150457aec5da83e274e1180bfa1e0c305db5f28f7c6983355a739d",
+      "afterSha256": "cfc090956caf91450b5b727b4d2689fb6fdcbe64fd84181d460314fe662ad711",
+      "afterBlob": "1d2b8ef0d2834dde47bca82cf27b1ff6f3f21573"
+    },
+    {
+      "path": "docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx",
+      "role": "source",
+      "baseBlob": "af7ecae3202b86f227b03338f968842d1df93539",
+      "indexBlob": "af7ecae3202b86f227b03338f968842d1df93539",
+      "beforeSha256": "7b8584dd15e756006aec21823b560a57ba0ec1bc7d0a6eb22cb8dc875e667a08",
+      "afterSha256": "21dca4438f11131a8771087c16fbdfb2d0a2ca283e29aebd3a84cb27ebb9bd84",
+      "afterBlob": "028b3176ed30a8660979aef6ba6c55c01f148cd0"
+    },
+    {
+      "path": "docs/learn/fundamentals/contract-development/storage/persisting-data.mdx",
+      "role": "source",
+      "baseBlob": "ad0715f7d4ef1123ca354af114076e70bc0f6ee3",
+      "indexBlob": "ad0715f7d4ef1123ca354af114076e70bc0f6ee3",
+      "beforeSha256": "96d9869f47d9be00d5fbf87b8d158e312b2757d48bec49569e5d115cb2cad403",
+      "afterSha256": "4062bb28a98bf5713da4558639d936540d23eb0850ddceab332e2d2db60c56d4",
+      "afterBlob": "12cd767b8e4268fd5975223df9900c5279edbbbb"
+    },
+    {
+      "path": "openrpc/src/stellar-rpc/schemas/Transactions.json",
+      "role": "source",
+      "baseBlob": "f86df475fe32e990b0450b273cdcc1b57f85cbfe",
+      "indexBlob": "f86df475fe32e990b0450b273cdcc1b57f85cbfe",
+      "beforeSha256": "9ede2326edb250b1a75fcc3d69870fa6a080a46bf8f38bb76dbee8e65189953b",
+      "afterSha256": "2c5938a65840351b280df9275c81b75ad5dd1cf47847a608a3dee1330c50f272",
+      "afterBlob": "7a7afd899aa5ca04ff6b632bf1a465c9c9d411c8"
+    },
+    {
+      "path": "stellar-rpc.openrpc.json",
+      "role": "generated",
+      "baseBlob": "3dede95d0d9c2c0aa2b52e832b8c0868c06fe2bc",
+      "indexBlob": "3dede95d0d9c2c0aa2b52e832b8c0868c06fe2bc",
+      "beforeSha256": "f2f8b6831f3b25728be6ee327df130425c734947166411c26f3bee7fe3cd3b87",
+      "afterSha256": "c69e5c100a4d511ee3b1ac8b21dcfd93b049394e1f285df5935b94847bf37da3",
+      "afterBlob": "d5c3c42076e3214c38a49e33089fc94f0dad8a67"
+    },
+    {
+      "path": "docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx",
+      "role": "source",
+      "baseBlob": "8a19af6652948dd9778f41cf39fc57934cab1ab9",
+      "indexBlob": "8a19af6652948dd9778f41cf39fc57934cab1ab9",
+      "beforeSha256": "0b09a16ef1a1511ce5f666aee7b5a9e4e3e01e2b66d48bc72f6bf5fc899ba2ef",
+      "afterSha256": "95400a873b67956195875300a302f4f4290c8d1656f30a76ccbca888d1fca261",
+      "afterBlob": "0a2b05d8b5449b3498b62e17e1a82d12ab0921a5"
+    }
+  ],
+  "generator": {
+    "command": "npm run rpcspec:validate",
+    "buildScript": "openrpc/scripts/build.mjs",
+    "buildScriptSha256": "83a1c4189d902426228178bbd2895fa80c0f98a2351cf7dc76370a539fc473de",
+    "canonicalInput": "openrpc/src/stellar-rpc/schemas/Transactions.json",
+    "affectedTrackedOutput": "stellar-rpc.openrpc.json",
+    "structuralChanges": [
+      "$.methods[8].result.schema.properties.transactions.items.properties.resultMetaXdr.description"
+    ],
+    "baselineOutputs": {
+      "stellar-rpc.openrpc.json": {
+        "sha256": "f2f8b6831f3b25728be6ee327df130425c734947166411c26f3bee7fe3cd3b87",
+        "matchesCommittedBase": true
+      },
+      "stellar-rpc-beta.openrpc.json": {
+        "sha256": "22aac0d128825373545b5c9af1597d1935f3020b3c5a0cc2c36ea756de766544",
+        "matchesCommittedBase": true
+      },
+      "docs/platforms/anchor-platform/api-reference/platform/rpc/anchor-platform.openrpc.json": {
+        "sha256": "77860372b626374ccad567c80ad1c0b6dd9467e2b355a97113b5a6d3b188e109",
+        "matchesCommittedBase": false
+      }
+    },
+    "unrelatedAnchorDriftExcluded": true,
+    "unrelatedAnchorDriftReason": "The unmodified base generator already changes two SEP-12 links in the committed Anchor Platform bundle. The additional patch excludes that baseline drift.",
+    "combinedOriginalAndAdditionalBundleSha256": "74f16afab9b9456418a7ca6629f383efd07cc0609df415fa2e4439c364f9505e"
+  },
+  "externalMdxGeneration": {
+    "path": "docs/data/apis/rpc/api-reference/methods/getTransactions.mdx",
+    "baseSha256": "377dd24ee85a212ecc0ccb722ed386f215d2f321f05ef02f23b99edca9cc302e",
+    "edited": false,
+    "regenerationRequired": true,
+    "generatorInFrozenRepository": false,
+    "ownershipProof": "openrpc/README.md says method regions are generated from bundled OpenRPC and requires a maintainer generator outside this repository.",
+    "readerImpact": "The served method MDX still has the old type/link until that external generator runs. This patch is not publication-complete."
+  },
+  "checks": {
+    "exactBase": true,
+    "targetFormat": true,
+    "targetPadding": true,
+    "openRpcValidation": true,
+    "baseForwardApply": true,
+    "baseReverseApply": true,
+    "workingTreeReverseCheck": true,
+    "originalPatchThenAdditional": true,
+    "additionalThenOriginal": true,
+    "bothOrdersProduceSameBundle": true,
+    "combinedCanonicalInputsRegenerateCombinedBundle": true,
+    "originalPatchesManifestAndIndexPreserved": true,
+    "otherTargetsUnchangedFromFourFindingPatch": true,
+    "earlierFivePatchFileSectionsByteIdentical": true
+  },
+  "boundaries": {
+    "primaryReads": 0,
+    "modelCalls": 0,
+    "agents": 0,
+    "networkSimulations": 0,
+    "installs": 0,
+    "commits": 0,
+    "externalWrites": 0,
+    "externalMessages": 0
+  },
+  "publicationComplete": false,
+  "passkeySupplement": {
+    "path": "research/audits/2026-11-03-qa-followup/passkey-source-supplement.json",
+    "sha256": "2e340d9abe8622a8f484ec8fcbf3453b46393dfe31764c11d32eb6bf6ce14018",
+    "independentReviewPath": "tmp/2026-11-03-qa-followup/additional-passkey-source-review.json",
+    "independentReviewSha256": "65a1cf21b1b1eb89b14cb6ff237b461faa4342caae08c083e8e16b1155d25714",
+    "classification": "source-wording-correction",
+    "sourceScope": "Maintained develop source, not observed deployment.",
+    "reviewState": "pending-final-Grok-closeout",
+    "accounting": {
+      "initialPrimaryPass": 24,
+      "rootInitialSupplement": 6,
+      "rootLaterProvenanceReads": 2,
+      "rootSupplementTotal": 8,
+      "rootRepoTreeOrCommitReads": 3,
+      "rootPinnedSourceAndRepeatReads": 5,
+      "thisReviewerAdditionalHttpReads": 0
+    },
+    "initialSixReadSupplementSha256": "b61a40c74fb2e2e16074c73eb44c31313961a1296417353f2ca31087d2349646",
+    "treeEndpointSha": "4aff0437810d12e020571c1dc075597d032a0bb7",
+    "commitTreeSha": "e39729a74c0755d1cd98fc99254a60b65db69e3a",
+    "rootAdditionalSourceReads": 8
+  },
+  "localFixtures": {
+    "path": "tmp/2026-11-03-qa-followup/additional-patch-fixtures.json",
+    "sha256": "bdc46676ae53b11f887e06c41756a3f2a7b0460f67124d529b30000f38d8fc8f",
+    "fixtureScript": "tmp/2026-11-03-qa-followup/additional-patch-fixtures.mjs",
+    "fixtureScriptSha256": "10cffb58782a4e3143b02af80b44663e53b94ca37c2fff7ca3a32b1fcc3ddf4d",
+    "passed": true,
+    "checks": [
+      "rpc-success",
+      "rpc-zero-result",
+      "rpc-error",
+      "canonical-metadata-description-reaches-generated-bundle",
+      "external-generated-mdx-limit-retained-explicitly",
+      "passkey-provider-and-availability-boundaries"
+    ],
+    "networkRequests": 0,
+    "modelCalls": 0
+  },
+  "canonicalTargetCount": 5,
+  "canonicalTargets": [
+    "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx",
+    "docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx",
+    "docs/learn/fundamentals/contract-development/storage/persisting-data.mdx",
+    "docs/data/apis/rpc/api-reference/methods/getTransactions.mdx",
+    "docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx"
+  ],
+  "compatibilityOriginalPatchSha256": "24f4840432a2d820a45f6fc806f5a8683ec988e834746e505c94c7c06e075c24",
+  "compatibilityRefreshAssessment": "The original patch bytes match the patch used by the prior forward/reverse and both-order checks. No source regeneration is required."
+}

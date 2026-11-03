@@ -5,17 +5,15 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "You cannot earn a native protocol XLM staking APY: Stellar uses **SCP/FBA**, not proof of stake, and official docs state validators receive **no monetary rewards**. There is no native stake/delegation position or validator-reward schedule to quote. The historical 1% inflation mechanism ended on 2019-10-28 and was not PoS staking. Products marketed as XLM staking or yield must disclose their actual source: issuer/anchor interest (such as yXLM), lending, AMM/LP emissions, vault rewards, token locks, RWA yield, or external-asset staking wrappers are not native validator staking. As of the 2026-07-10 audited source sweep and a 2026-11-02 re-sweep, no live native-XLM liquid-staking protocol was identified; keep that negative dated and source-bounded.",
+    "answer": "You cannot earn a native protocol XLM staking APY: Stellar uses **SCP/FBA**, not proof of stake, and official docs state validators receive **no monetary rewards**. There is no native stake/delegation position or validator-reward schedule to quote.\n\nOptional background; this question does not require a product survey:\nThe historical 1% inflation mechanism ended on 2019-10-28 and was not PoS staking. Products marketed as XLM staking or yield must disclose their actual source: issuer/anchor interest (such as yXLM), lending, AMM/LP emissions, vault rewards, token locks, RWA yield, or external-asset staking wrappers are not native validator staking.\n\nOptional dated source observation; it is not a required part of the native-rewards answer:\nAs of the 2026-07-10 audited source sweep and a 2026-11-02 re-sweep, no live native-XLM liquid-staking protocol was identified; keep that negative dated and source-bounded.",
     "keyFacts": [
-      "States SCP/FBA is not PoS and validators receive no native monetary/staking rewards.",
-      "Classifies third-party XLM yield by its reward source.",
-      "Keeps the no-native-XLM-LST finding dated and source-bounded."
+      "States SCP/FBA is not PoS and validators receive no native monetary/staking rewards."
     ],
     "avoid": [
       "Do NOT invent a protocol APY, delegation position, or validator reward schedule.",
       "Do NOT label issuer, lending, AMM, vault, RWA, or external-chain yield as native XLM liquid staking."
     ],
-    "notes": "GT-25 CORRECTION 2026-07-10: Stellar is SCP/FBA with no validator monetary rewards. Third-party yield must be classified by source; do not imply a verified native-XLM liquid-staking category. The no-live-native-LST result is dated/source-bounded.\nGT-25 independently confirmed by processes 3268/3273.\nFRESHNESS NOTE 2026-11-02: StelloFi (stellofi.com) markets sXLM as 'Native XLM Liquid Staking' and says its unaudited contracts are deployed on Stellar Mainnet, but its own docs call sXLM a vault share token, say no strategy allocation is implemented, show a flat APY, and state Stellar has no native staking yield. Naming such a product while classifying it as a vault share is not a wrong claim; calling it native validator staking remains wrong.\n2026-11-02 caution: SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for rewards on XLM locked for a fixed term; SDF says it has not decided to fund or support it, and locked XLM would not secure the network or confer validator rights. An accurate dated mention is not a wrong claim and does not contradict the no-native-reward fact; calling it adopted, a protocol APY, or proof-of-stake staking is wrong."
+    "notes": "GT-25 CORRECTION 2026-07-10: Stellar is SCP/FBA with no validator monetary rewards. Third-party yield must be classified by source; do not imply a verified native-XLM liquid-staking category. The no-live-native-LST result is dated/source-bounded.\nGT-25 independently confirmed by processes 3268/3273.\nFRESHNESS NOTE 2026-11-02: StelloFi (stellofi.com) markets sXLM as 'Native XLM Liquid Staking' and says its unaudited contracts are deployed on Stellar Mainnet, but its own docs call sXLM a vault share token, say no strategy allocation is implemented, show a flat APY, and state Stellar has no native staking yield. Naming such a product while classifying it as a vault share is not a wrong claim; calling it native validator staking remains wrong.\n2026-11-02 caution: SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for rewards on XLM locked for a fixed term; SDF says it has not decided to fund or support it, and locked XLM would not secure the network or confer validator rights. An accurate dated mention is not a wrong claim and does not contradict the no-native-reward fact; calling it adopted, a protocol APY, or proof-of-stake staking is wrong.\nQUESTION SCOPE 2026-11-03: This question asks about native protocol staking and validator rewards. A correct answer need not survey LST products or repeat the dated absence finding. Third-party examples are optional. If the answer discusses them, require accurate reward-source classification. If it makes an absence claim, require its source scope and observation date. Preserve the SCP/FBA correction and the lack of native validator rewards. The 2026-11-02 LST sweep remains a dated finding; this edit does not renew it."
   },
   "tags": {
     "category": "edge-behavior",
@@ -26,7 +24,34 @@
   "truth": {
     "lifecycle": {
       "state": "active",
-      "reviewState": "none"
+      "reviewState": "resolved",
+      "review": {
+        "queuedOn": "2026-11-03",
+        "trigger": "proposal-verification",
+        "evidence": [
+          "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
+          "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
+          "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+          "research/audits/2026-11-03-qa-followup/reference-approval.md"
+        ],
+        "startedOn": "2026-11-03",
+        "reviewer": "Grok 4.7 high, independent source verifier t9r",
+        "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
+        "resolvedOn": "2026-11-03",
+        "resolution": "Clarified the source-backed question scope after independent review. Original answers and grades remain unchanged."
+      },
+      "reactivation": {
+        "date": "2026-11-03",
+        "author": "Codex root",
+        "reviewer": "Grok 4.7 high, independent source verifier t9r",
+        "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
+        "evidence": [
+          "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
+          "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
+          "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+          "research/audits/2026-11-03-qa-followup/reference-approval.md"
+        ]
+      }
     },
     "domain": "mixed",
     "status": "confirmed",
@@ -90,6 +115,54 @@
       {
         "class": "D",
         "ref": "https://api.llama.fi/protocols"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+        "observedAt": "2026-11-03",
+        "note": "The official overview identifies SCP as FBA and explicitly states that validators receive no monetary rewards."
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
+        "observedAt": "2026-11-03",
+        "note": "isQuorumSliceInternal counts validators and inner quorum sets against qset.threshold. It does not use a stake balance."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+        "observedAt": "2026-11-03",
+        "note": "SDF explicitly excludes block rewards, staking yield, MEV awards, and transaction-fee shares for validators."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.google.com/search?q=Stellar+native+proof+of+stake+validator+rewards+November+2026",
+        "observedAt": "2026-11-03",
+        "note": "The free contradiction search returned the official validator explanation and no applicable primary contradiction."
+      },
+      {
+        "class": "A",
+        "ref": "https://www.stellofi.com/docs",
+        "observedAt": "2026-11-03",
+        "note": "The current page metadata describes an XLM vault and a composable share token."
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
+        "observedAt": "2026-11-03",
+        "note": "The repository describes sXLM as a vault share. It lists lending and fee sources rather than validator rewards."
+      },
+      {
+        "class": "C",
+        "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+        "observedAt": "2026-11-03",
+        "note": "The explorer reports the named Mainnet contract. Source validation remains unverified; this response does not establish the reward mechanism or current APY."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.google.com/search?q=Stellar+XLM+liquid+staking+StelloFi+sXLM",
+        "observedAt": "2026-11-03",
+        "note": "The free search surfaced sXLM marketing and lending/liquidity claims. It does not establish a complete market inventory."
       }
     ],
     "corroboration": [
@@ -201,26 +274,90 @@
             "note": "Page description: 'Mechanics are not defined yet.' (a discussion, not a CAP)."
           }
         ]
+      },
+      {
+        "claim": "Stellar uses SCP/FBA rather than proof of stake; validators receive no native monetary rewards.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+            "observedAt": "2026-11-03",
+            "note": "The official overview identifies SCP as FBA and explicitly states that validators receive no monetary rewards."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
+            "observedAt": "2026-11-03",
+            "note": "isQuorumSliceInternal counts validators and inner quorum sets against qset.threshold. It does not use a stake balance."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+            "observedAt": "2026-11-03",
+            "note": "SDF explicitly excludes block rewards, staking yield, MEV awards, and transaction-fee shares for validators."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+native+proof+of+stake+validator+rewards+November+2026",
+            "observedAt": "2026-11-03",
+            "note": "The free contradiction search returned the official validator explanation and no applicable primary contradiction."
+          }
+        ]
+      },
+      {
+        "claim": "A deployed sXLM contract and a vault share do not establish native validator staking or its rewards.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.stellofi.com/docs",
+            "observedAt": "2026-11-03",
+            "note": "The current page metadata describes an XLM vault and a composable share token."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
+            "observedAt": "2026-11-03",
+            "note": "The repository describes sXLM as a vault share. It lists lending and fee sources rather than validator rewards."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+            "observedAt": "2026-11-03",
+            "note": "The explorer reports the named Mainnet contract. Source validation remains unverified. This response does not establish its reward mechanism, current APY, or validator rewards."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+XLM+liquid+staking+StelloFi+sXLM",
+            "observedAt": "2026-11-03",
+            "note": "The free search surfaced sXLM marketing and lending/liquidity claims. It does not establish a complete market inventory."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task scf-population-staking)",
+      "date": "2026-11-03",
+      "by": "Codex reference proposer t9q and Codex root; independent Grok source verifier t9r; research/audits/2026-11-03-qa-followup/reference-approval.md",
       "evidence": [
-        "Live 2026-11-02 (class A): https://stellofi.com — 'sXLM is a vault share token representing a proportional claim on the XLM the vault holds. ... There is no strategy allocation yet, so it is currently flat. ... Native XLM Liquid Staking on Stellar'.",
-        "Live 2026-11-02 (class A): https://www.stellofi.com/docs — 'StelloFi does not assume native Stellar staking rewards — Stellar has no native staking yield or validator slashing mechanism ... All contracts deployed on Stellar Mainnet'; https://www.stellofi.com/stake — '0.00% APY ... 1 sXLM = 1.0000 XLM'. https://stellofi.com/app is a 404.",
-        "Live 2026-11-02 (class F): https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ — public-network contract, validation status 'unverified'.",
-        "Live 2026-11-02 (class E): Raven stellarDocs.search_docs → https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator on the Stellar' network; SCP is a construction of Federated Byzantine Agreement.",
-        "Live 2026-11-02 (class D): https://www.stakingrewards.com/asset/stellar — 'Stellar doesn't have a staking mechanism and you can't stake XLM directly'.",
-        "Independent verifier modified the proposed note: StelloFi does not label its app Stellar Mainnet (the /app page is a 404); its docs state unaudited contracts are deployed on Mainnet. The verifier also added the symmetric half: calling sXLM native validator staking remains wrong. Ledger: .agents/rounds/2026-11-02-golden-audit.md (pass 1, batch edge-behavior-02, verifier record).",
-        "Sibling sweep 2026-11-02: grep 'liquid.staking|sXLM|StelloFi' over eval/qa/corpus/battery → q-defi-liquid-staking-whitespace (dated 2026-07-10 negative and its avoid 'call any XLM yield token a native LST without a validator-staking reward source' stay consistent; StelloFi caution flagged to the round ledger for that batch), q-raph-xlm-staking, q-eco-defi-tvl-current, q-eco-defi-market-map, q-protocol-scp-consensus-algorithm, q-edge-fresh-latest-blend-tvl; no contradiction.",
-        "Pass 2 2026-11-02: golden.answer adds the 2026-11-02 re-sweep date to the dated no-native-LST negative; golden.notes adds the SDF fee-pool paper caution (aligned with q-raph-xlm-staking and q-hot-fee-pool-burn-deflation); tags.freshness stable -> scheduled with truth.reverifyBy 2027-01-28 (consistency findings F15, M6).",
-        "Re-sweep 2026-11-02 (pass 2): C Scout project search (liquid staking, sXLM, StelloFi, staked XLM) and Lumenloop search_directory 'liquid staking' -> no native LST; D https://api.llama.fi/protocols -> no Stellar Liquid Staking category; D Parallel web_search -> only stst-lake.vercel.app and stellofi.com vault tokens. A https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf -> 'SDF has not decided to fund or support any such mechanism'.",
-        "Sibling sweep 2026-11-02 (pass 2): q-defi-liquid-staking-whitespace (same re-sweep date and cautions after pass 2), q-raph-xlm-staking, q-hot-fee-pool-burn-deflation; no contradiction. Consistency-register clusters cluster-017 and cluster-020 need a re-stamp by the orchestrator's register run."
+        "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+        "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+        "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
+        "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
+        "https://www.stellofi.com/docs",
+        "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+        "research/audits/2026-11-03-qa-followup/reference-changes.md#native-rewards-question-scope",
+        "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+        "research/audits/2026-11-03-qa-followup/reference-sibling-sweep.json",
+        "Sibling sweep: 501 battery files, 4 proposal files, and 2 frozen live files; no conflicting target claim found.",
+        "Support sweep: consistency-register clusters 007, 017, 020, 025, 048, 083, 120 and the Bell vote trap; no source sentinel matches.",
+        "Dated illustrations, freshness tags and reverify dates are unchanged. Review closure and reactivation are explicit.",
+        "research/audits/2026-11-03-qa-followup/reference-approval.md",
+        "Reviewability refinement: required key facts track the question. Conditional background rules remain in golden.notes and avoid clauses."
       ],
       "rootCause": [
-        "freshness-drift",
-        "A self-described 'Native XLM Liquid Staking' vault (StelloFi sXLM) appeared on Mainnet after the 2026-07-10 dated negative; the notes had no caution to keep a true, correctly classified answer from being graded as contradicting the bounded negative."
+        "The native-rewards question has mandatory market-survey requirements that do not match its requested scope. .agents/TODO.md at Git commit bdcf915fb552d054657b04b23abc561a65d395f3, entry Resolve diagnostic noncompletions and judge ambiguities.",
+        "research/audits/2026-11-03-qa-followup/reference-changes.md"
       ]
     },
     "origin": "raven-next q-edge-noinfo-stellar-pos-staking-rewards",

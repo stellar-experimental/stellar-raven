@@ -1,0 +1,48 @@
+{
+  "schema": "golden-overnight-cost-observations-v1",
+  "observedAt": "2026-11-03T09:22:47.954Z",
+  "ownerTotalAllocationUsd": 200,
+  "knownInstrumentLedgerUsd": 38.762622,
+  "earlierInstrumentLedgerUsd": 9.78879,
+  "finalCollectionReportedUsd": 28.973832,
+  "grokHelpers": {
+    "status": "completed-turn CLI records, not an audited invoice",
+    "ticksDivisor": 10000000000,
+    "rows": [
+      {
+        "role": "Grok planning and source review",
+        "ticks": 213239995600,
+        "usd": 21.32399956,
+        "rawReceiptSha256": "736f7da34a5982a7dbbc8a6c374f22524fcd763df068f574a16fe9e43aaee119"
+      },
+      {
+        "role": "Grok method and final review",
+        "ticks": 192331230400,
+        "usd": 19.23312304,
+        "rawReceiptSha256": "318df6034cefead885ff2b5b6a0e710cf87dc3a36523384bc5b95b3eebda0d82"
+      }
+    ],
+    "totalUsd": 40.5571226,
+    "allocationUsd": 45,
+    "remainingAllocationUsd": 4.4428774
+  },
+  "unreported": {
+    "codexDollarCharges": null,
+    "codexPolicyReserveUsd": 100,
+    "olderUnknownChargePolicyReserveUsd": 7,
+    "reservesAreEstimates": false,
+    "reservesAreProvenUpperBounds": false,
+    "separateEarlierNativeObservationUsd": 0.047416,
+    "separateNativeObservationRepairsOldLedger": false
+  },
+  "assignedAllocationsUsd": 190.762622,
+  "unassignedAllocationUsd": 9.237378,
+  "wholeSessionAuditedBillUsd": null,
+  "wholeSessionLimitVerified": false,
+  "limitations": [
+    "Reported amounts and reserves do not establish a complete or audited bill.",
+    "Native and equal Gateway observations count once.",
+    "The older separate native observation does not resolve its missing Gateway ledger.",
+    "No more paid measurement is authorized."
+  ]
+}

@@ -1,0 +1,393 @@
+diff --git a/eval/qa/non-anthropic/README.md b/eval/qa/non-anthropic/README.md
+index 0d5e790c..80bd08f4 100644
+--- a/eval/qa/non-anthropic/README.md
++++ b/eval/qa/non-anthropic/README.md
+@@ -1,4 +1,4 @@
+-# Direct Grok diagnostic
++# Unmeasured final-synthesis candidate
+ 
+ This runner measures a custom host loop through the remote Workers AI binding.
+ It does not measure the Grok CLI or the canonical QA answering agent.
+@@ -8,7 +8,24 @@ No inference is authorized by these instructions.
+ The fixed model is `xai/grok-4.7`, with reasoning effort `high`.
+ The runner has no fallback, panel, inference retry, or resume path.
+ The root owns plan files, review, allocations, and paid launch.
+-The deadline is `2026-11-03T10:00:00Z`.
++The deadline is `2026-11-03T10:00:00Z` and has expired.
++This candidate does not extend it or authorize a new collection.
++
++The candidate uses result schema `direct-grok-final-synthesis-candidate-v1`.
++Plans require schema `direct-grok-final-synthesis-plan-v1` and `answerPolicy: "reserve-last-answer-request-v1"`.
++The runner rejects older reviewed plans.
++Its last existing answer request uses provider `tool_choice: "none"` and a short synthesis reminder.
++The 16-request ceiling remains unchanged; earlier completion remains valid.
++Returned tools on that final request never execute.
++Empty, refused, and violating responses remain failures.
++Artifacts retain the actual request messages, tool choice, policy identity, response choice, and reported costs.
++The judge model, effort, prompt, and evidence pack remain unchanged.
++
++Local contract checks support the `none` setting; no live provider capability check ran.
++Future collection needs an independently reviewed paired experiment, explicit spend authorization, and a separately approved deadline.
++It also needs fresh source, selection, corpus, remote, and provider identity pins.
++Measure completion, factual quality, refusal, tool-policy violations, latency, and reported cost under both policies.
++Keep original results frozen and report the new experiment separately.
+ 
+ ## Entry points
+ 
+diff --git a/eval/qa/non-anthropic/method.mjs b/eval/qa/non-anthropic/method.mjs
+index 2442d687..6d67cac5 100644
+--- a/eval/qa/non-anthropic/method.mjs
++++ b/eval/qa/non-anthropic/method.mjs
+@@ -5,7 +5,7 @@ import { createSpendLedger, authorizeSpend, recordSpend, spendLedgerRecord,
+   MissingReportedCostError, BudgetAuthorizationExceededError, BudgetExhaustedError } from "../spend-budget.mjs";
+ import { caseInputPayload, caseInputSha256 } from "../paired-verdict.mjs";
+ import { diagnosticCompleteness, judgeInput, parseVerdict, validateToolCall, validateTools } from "./core.mjs";
+-import { RUN_SCHEMA, MODEL, assertDeadline, jsonSha } from "./runner-support.mjs";
++import { RUN_SCHEMA, MODEL, ANSWER_POLICY, FINAL_ANSWER_REMINDER, assertDeadline, jsonSha } from "./runner-support.mjs";
+ import { resolveReportedCost } from "./provider.mjs";
+ 
+ const reason = (error) => {
+@@ -37,11 +37,14 @@ function retainCompletion(attempt, completion) {
+ export async function runMethod({ plan, cases, tools, instructions, evidence = {},
+   provider, guard, callTool, remote, finalize = async () => {}, write }) {
+   assertRunPlan(cases.map((row) => row.id));
++  if (plan.answerPolicy !== ANSWER_POLICY) throw new Error("answer-policy-mismatch");
+   const transportCanary = plan.method === "transport-canary";
+   const functionTools = transportCanary ? [] : validateTools(tools);
+   const ledger = createSpendLedger(plan.maxBudgetUsd);
+   const artifact = {
+     schema: RUN_SCHEMA, diagnostic: true, method: plan.method,
++    answerPolicy: { id: ANSWER_POLICY, reminder: FINAL_ANSWER_REMINDER, reminderSha256: jsonSha(FINAL_ANSWER_REMINDER),
++      maxAnswerRequests: plan.maxAnswerSteps, finalToolChoice: "none" },
+     historicalQaComparable: false, canonicalFiveTrack: false,
+     model: MODEL, effort: "high", fallback: [], retries: 0, panels: 0, resume: false,
+     startedAt: new Date().toISOString(), finishedAt: null, status: "started",
+@@ -73,7 +76,7 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
+     write(artifact);
+   };
+ 
+-  async function infer(row, role, messages, perCallCap = null) {
++  async function infer(row, role, messages, perCallCap = null, toolChoice = "auto") {
+     assertDeadline(plan.deadline);
+     if (artifact.providerAttempts.length >= plan.maxProviderCalls || artifact.rawProviderCalls >= plan.maxProviderCalls) throw new Error("provider-call-limit");
+     const authorization = authorizeSpend(ledger, { method: role, id: row.id, attempt: artifact.providerAttempts.length + 1 });
+@@ -84,6 +87,7 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
+       number: artifact.providerAttempts.length + 1, id: row.id, role,
+       startedAt: new Date().toISOString(), endedAt: null, rawStarted: false,
+       inputSha256: jsonSha(messages), requestMessages: structuredClone(messages),
++      requestToolChoice: role === "answer" ? toolChoice : null,
+       costUsd: null, costSource: null, gatewayCostComplete: false, completionAccepted: false, unacceptedEvidence: null,
+       result: null, response: null, responseBrand: null, reportedCosts: [], failure: null
+     };
+@@ -107,6 +111,7 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
+         requestId: String(attempt.number),
+         options: { gatewayId: plan.gatewayId, maxBudgetUsd: authorization.maxBudgetUsd,
+           messages, tools: role === "answer" ? functionTools : undefined,
++          ...(role === "answer" ? { toolChoice } : {}),
+           maxOutputTokens: plan.maxOutputTokens, judge: role !== "answer" },
+         onEvidence(event) {
+           if (event.type === "raw-started") {
+@@ -230,7 +235,17 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
+             const messages = [{ role: "system", content: instructions }, { role: "user", content: kase.question }];
+             const toolIds = new Set();
+             for (let step = 1; step <= plan.maxAnswerSteps; step++) {
+-              const result = await infer(row, "answer", messages);
++              const finalRequest = step === plan.maxAnswerSteps;
++              if (finalRequest) messages.push({ role: "system", content: FINAL_ANSWER_REMINDER });
++              const result = await infer(row, "answer", messages, null, finalRequest ? "none" : "auto");
++              if (finalRequest && (result.message?.tool_calls?.length || result.finishReason === "tool_calls")) {
++                row.failure = "answer-final-tool-violation";
++                break;
++              }
++              if (finalRequest && (result.finishReason !== "stop" || result.message?.refusal || !result.answer?.trim())) {
++                row.failure = "answer-final-incomplete";
++                break;
++              }
+               messages.push(result.message);
+               if (result.finishReason === "stop") { finalAnswer = result.answer; break; }
+               const calls = result.message.tool_calls.map((call) => validateToolCall(call));
+@@ -255,7 +270,7 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
+                 messages.push({ role: "tool", tool_call_id: call.id, content: entry.result });
+               }
+             }
+-            turnSucceeded = true;
++            turnSucceeded = row.failure === null;
+           } finally {
+             await remote.afterCall(context, { completed: row.providerAttemptNumbers.length > 0 });
+             assertDeadline(plan.deadline);
+@@ -265,8 +280,8 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
+             }
+           }
+           if (finalAnswer === null) {
+-            row.failure = "answer-step-limit";
+-            row.verdict = { score: "error", coreAnswer: null, failureClass: "answer-step-limit" };
++            row.failure ??= "answer-step-limit";
++            row.verdict = { score: "error", coreAnswer: null, failureClass: row.failure };
+           } else {
+             row.answer = finalAnswer;
+             save();
+diff --git a/eval/qa/non-anthropic/provider.mjs b/eval/qa/non-anthropic/provider.mjs
+index 8e90c0cb..6374db55 100644
+--- a/eval/qa/non-anthropic/provider.mjs
++++ b/eval/qa/non-anthropic/provider.mjs
+@@ -33,8 +33,9 @@ export function resolveReportedCost({ receipt, usage, status, model, stream, par
+ }
+ 
+ /** One call, with no SDK, provider fallback, or automatic inference retry. */
+-export async function providerCall(ai, { gatewayId, maxBudgetUsd, messages, tools, maxOutputTokens, judge = false,
++export async function providerCall(ai, { gatewayId, maxBudgetUsd, messages, tools, maxOutputTokens, judge = false, toolChoice = "auto",
+   beforeDispatch = () => {}, onCompletion = () => {} }) {
++  if (!["auto", "none"].includes(toolChoice)) throw new Error("invalid-answer-tool-choice");
+   const accounting = createEvalCostBinding(ai, gatewayId, maxBudgetUsd);
+   const startedAt = new Date().toISOString();
+   const start = performance.now();
+@@ -47,7 +48,7 @@ export async function providerCall(ai, { gatewayId, maxBudgetUsd, messages, tool
+     beforeDispatch();
+     const response = await accounting.binding.run(MODEL, {
+       messages,
+-      ...(judge ? {} : { tools, tool_choice: "auto" }),
++      ...(judge ? {} : { tools, tool_choice: toolChoice }),
+       reasoning_effort: "high",
+       max_tokens: maxOutputTokens,
+       stream: false
+@@ -71,6 +72,6 @@ export async function providerCall(ai, { gatewayId, maxBudgetUsd, messages, tool
+   const observations = { receipt, usage: body?.usage ?? null, status, model: body?.model ?? null, stream: false, parsed };
+   return {
+     startedAt, endedAt: new Date().toISOString(), latencyMs: performance.now() - start,
+-    logId, error, ...observations, ...resolveReportedCost(observations)
++    logId, error, rejectedCompletion: parsed ? null : body?.choices?.[0] ?? null, ...observations, ...resolveReportedCost(observations)
+   };
+ }
+diff --git a/eval/qa/non-anthropic/runner-support.mjs b/eval/qa/non-anthropic/runner-support.mjs
+index fa589dad..606bc22d 100644
+--- a/eval/qa/non-anthropic/runner-support.mjs
++++ b/eval/qa/non-anthropic/runner-support.mjs
+@@ -7,8 +7,10 @@ import { loadCases, lifecycleSnapshot, lifecycleSnapshotSha256, partitionLifecyc
+ import { runJudgeSelfTestCandidate } from "../judge.mjs";
+ import { parseMaxBudgetUsd } from "../spend-budget.mjs";
+ 
+-export const RUN_SCHEMA = "direct-grok-host-loop-diagnostic-v3";
+-export const PLAN_SCHEMA = "direct-grok-host-loop-plan-v1";
++export const RUN_SCHEMA = "direct-grok-final-synthesis-candidate-v1";
++export const PLAN_SCHEMA = "direct-grok-final-synthesis-plan-v1";
++export const ANSWER_POLICY = "reserve-last-answer-request-v1";
++export const FINAL_ANSWER_REMINDER = "This is the final request. Answer from the retrieved evidence. State what remains unknown. Do not invent facts or request tools.";
+ export const MODEL = "xai/grok-4.7";
+ export const DEADLINE = "2026-11-03T10:00:00Z";
+ export const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
+@@ -87,10 +89,11 @@ export function readPinnedJson(file, expected) {
+ }
+ 
+ export function validateRunnerPlan(plan, { mode, budgetUsd, preparing = false }) {
+-  const keys = new Set(["schema", "method", "model", "effort", "gatewayId", "accountId", "deadline", "maxBudgetUsd", "maxProviderCalls", "maxAnswerSteps", "maxOutputTokens", "requestTimeoutMs", "hostBackstopMs", "settlementGraceMs", "server", "remote", "corpus", "selection", "sourcePins"]);
++  const keys = new Set(["schema", "method", "model", "effort", "gatewayId", "accountId", "deadline", "maxBudgetUsd", "maxProviderCalls", "maxAnswerSteps", "maxOutputTokens", "requestTimeoutMs", "hostBackstopMs", "settlementGraceMs", "server", "remote", "corpus", "selection", "sourcePins", "answerPolicy"]);
+   if (Object.keys(plan).some((key) => !keys.has(key))) throw new Error("unknown-plan-field");
+   if (plan.schema !== PLAN_SCHEMA || !["baseline", "selftest", "transport-canary"].includes(plan.method)) throw new Error("invalid-plan-contract");
+   if (["baseline", "selftest", "transport-canary"].includes(mode) && mode !== plan.method) throw new Error("method-plan-mismatch");
++  if (plan.answerPolicy !== ANSWER_POLICY) throw new Error("answer-policy-mismatch");
+   if (plan.model !== MODEL || plan.effort !== "high" || plan.gatewayId !== "stellar-raven-demo" || plan.accountId !== "ba55b7ae9acfb3ed152103e3497c0752") throw new Error("model-or-account-mismatch");
+   if (plan.deadline !== DEADLINE) throw new Error("deadline-plan-mismatch");
+   assertDeadline(plan.deadline);
+diff --git a/test/direct-grok-runner.test.ts b/test/direct-grok-runner.test.ts
+index 44132e67..e29077b3 100644
+--- a/test/direct-grok-runner.test.ts
++++ b/test/direct-grok-runner.test.ts
+@@ -2,7 +2,7 @@ import { EventEmitter } from "node:events";
+ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+ import os from "node:os";
+ import path from "node:path";
+-import { afterEach, describe, expect, it, vi } from "vitest";
++import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+ import { Response as MiniflareResponse } from "miniflare";
+ // @ts-expect-error The standalone diagnostic uses Node JavaScript modules.
+ import { runMethod } from "../eval/qa/non-anthropic/method.mjs";
+@@ -13,7 +13,7 @@ import { providerCall, resolveReportedCost } from "../eval/qa/non-anthropic/prov
+ // @ts-expect-error The standalone diagnostic uses Node JavaScript modules.
+ import { normalizeProxyResponse } from "../eval/qa/non-anthropic/proxy-response.mjs";
+ // @ts-expect-error The standalone diagnostic uses Node JavaScript modules.
+-import { environmentIdentity, filePins, checkFilePins, parseRunnerArgs, selftestInputs, validateRunnerPlan, loadSelection, jsonSha } from "../eval/qa/non-anthropic/runner-support.mjs";
++import { ANSWER_POLICY, FINAL_ANSWER_REMINDER, PLAN_SCHEMA, RUN_SCHEMA, environmentIdentity, filePins, checkFilePins, parseRunnerArgs, selftestInputs, validateRunnerPlan, loadSelection, jsonSha } from "../eval/qa/non-anthropic/runner-support.mjs";
+ // @ts-expect-error The standalone diagnostic uses Node JavaScript modules.
+ import { BindingClient } from "../eval/qa/non-anthropic/binding-client.mjs";
+ 
+@@ -21,7 +21,7 @@ const tools = ["search", "execute"].map((name) => ({ name, description: name,
+   inputSchema: { type: "object", properties: name === "execute" ? { code: { type: "string" } } : { query: { type: "string" } } } }));
+ const cases = ["a", "b"].map((id) => ({ id, question: `Question ${id}?`, tags: { freshness: "stable" },
+   golden: { answer: `Golden ${id}`, keyFacts: [`Fact ${id}`], avoid: [] } }));
+-const plan = { method: "baseline", gatewayId: "stellar-raven-demo", deadline: "2026-11-03T10:00:00Z",
++const plan = { method: "baseline", answerPolicy: ANSWER_POLICY, gatewayId: "stellar-raven-demo", deadline: "2026-11-03T10:00:00Z",
+   maxBudgetUsd: 1, maxProviderCalls: 34, maxAnswerSteps: 16, maxOutputTokens: 8192 };
+ const correct = JSON.stringify({ rationale: "The answer agrees.", coreAnswer: "correct", missingFacts: [], wrongClaims: [], avoidMatches: [], score: "correct" });
+ 
+@@ -31,7 +31,7 @@ function completed(content: string, calls?: unknown[]) {
+   }], usage: { prompt_tokens: 10, completion_tokens: 2 } });
+ }
+ 
+-type Request = { requestId: string; options: { judge: boolean; tools?: unknown; messages: { role: string; content: string }[] }; onEvidence: (value: unknown) => void };
++type Request = { requestId: string; options: { judge: boolean; toolChoice?: string; tools?: unknown; messages: { role: string; content: string }[] }; onEvidence: (value: unknown) => void };
+ type ProviderReply = { requestId: string; rawCalls: number; result: { parsed: unknown; costUsd: number | null; error: string | null; logId: string | null;
+   receipt: { calls: number; reportedCalls: number; costUsd: number | null; reportedCostUsd?: number; error: string | null } } };
+ type Snapshot = { rows: unknown[]; providerAttempts: { costUsd: number | null; result: unknown; requestMessages: unknown[]; reportedCosts: unknown[];
+@@ -137,6 +137,7 @@ async function workerFixture(getLog: (logId: string) => Promise<{ cost?: number
+ }
+ 
+ describe("direct Grok host-loop runner", () => {
++  beforeEach(() => { vi.useFakeTimers({ now: new Date("2026-11-02T23:00:00Z") }); });
+   afterEach(() => {
+     vi.useRealTimers();
+     vi.unstubAllGlobals();
+@@ -158,7 +159,7 @@ describe("direct Grok host-loop runner", () => {
+       snapshot.providerAttempts[0]?.unacceptedEvidence?.usage?.cost_in_usd_ticks === 474160000 && !snapshot.providerAttempts[0]?.result)).toBe(true);
+     await vi.advanceTimersByTimeAsync(6001);
+     const result = await pending;
+-    expect(result).toMatchObject({ schema: "direct-grok-host-loop-diagnostic-v3", status: "complete",
++    expect(result).toMatchObject({ schema: RUN_SCHEMA, status: "complete",
+       totalCompleteCostUsd: 0.067416, completeCostAccounting: true, completeGatewayCostAccounting: false,
+       gatewayReportedCalls: 1, gatewayReportedCostUsd: 0.02, budget: { missingCosts: 0 } });
+     expect(result.providerAttempts[0]).toMatchObject({ costUsd: 0.047416, costSource: "native-reported", completionAccepted: true,
+@@ -455,7 +456,7 @@ describe("direct Grok host-loop runner", () => {
+     expect(result.rows[1]).toMatchObject({ answer: "B", failure: null, verdict: { score: "correct" } });
+     expect(result.providerAttempts[1]).toMatchObject({ role: "judge", costUsd: 0, result: { status: 504,
+       error: "provider-response-invalid", receipt: { calls: 1, reportedCalls: 1, costUsd: 0, reportedCostUsd: 0 } } });
+-    expect(result).toMatchObject({ schema: "direct-grok-host-loop-diagnostic-v3", status: "invalid-or-incomplete",
++    expect(result).toMatchObject({ schema: RUN_SCHEMA, status: "invalid-or-incomplete",
+       attemptedAllSelectedCases: true, gradedAllSelectedCases: false, aggregatesSuppressed: true, summary: null,
+       failedIds: ["case-0"], incompleteIds: ["case-0"], unattemptedIds: [], totalReportedCostUsd: 3.98,
+       totalCompleteCostUsd: 3.98, completeCostAccounting: true, completeness: { expectedCases: 100, judgedRows: 99 } });
+@@ -730,12 +731,119 @@ describe("direct Grok host-loop runner", () => {
+     expect(f.provider).toHaveBeenCalledTimes(1);
+   });
+ 
+-  it("preserves an answer-limit failure as a selected row", async () => {
++  function toolSequence(count: number) {
++    return Array.from({ length: count }, (_, index) => completed("", [{ id: `lookup-${index}`, type: "function",
++      function: { name: "search", arguments: '{"query":"Stellar"}' } }]));
++  }
++
++  it("uses request 16 for synthesis without another answer or tool request", async () => {
++    const f = fixture([...toolSequence(15), completed("The retrieved fact is A."), completed(correct)], { cases: [cases[0]] });
++    const result = await runMethod(f.args);
++    expect(f.provider).toHaveBeenCalledTimes(17);
++    expect(f.callTool).toHaveBeenCalledTimes(15);
++    expect(f.requests.slice(0, 15).every((request) => request.options.toolChoice === "auto")).toBe(true);
++    const finalRequest = f.requests[15]!;
++    expect(finalRequest.options.toolChoice).toBe("none");
++    expect(finalRequest.options.messages.at(-1)).toEqual({ role: "system", content: FINAL_ANSWER_REMINDER });
++    expect(finalRequest.options.messages.some((message) => message.role === "tool" && message.content.includes('"fact":"A"'))).toBe(true);
++    expect(result.providerAttempts[15]).toMatchObject({ requestToolChoice: "none", requestMessages: finalRequest.options.messages });
++    expect(result.answerPolicy).toMatchObject({ id: ANSWER_POLICY, maxAnswerRequests: 16, finalToolChoice: "none",
++      reminder: FINAL_ANSWER_REMINDER, reminderSha256: jsonSha(FINAL_ANSWER_REMINDER) });
++    expect(result.rows[0]).toMatchObject({ answer: "The retrieved fact is A.", failure: null, verdict: { score: "correct" } });
++    expect(f.requests[16]?.options.judge).toBe(true);
++    expect(f.requests[16]?.options.messages.map((message) => message.content).join("\n")).not.toContain(FINAL_ANSWER_REMINDER);
++  });
++
++  it("preserves early completion without adding a synthesis request", async () => {
++    const f = fixture([completed("Early answer"), completed(correct)], { cases: [cases[0]] });
++    const result = await runMethod(f.args);
++    expect(result.rows[0].answer).toBe("Early answer");
++    expect(f.provider).toHaveBeenCalledTimes(2);
++    expect(f.requests[0]?.options.toolChoice).toBe("auto");
++    expect(f.requests[0]?.options.messages).toEqual([
++      { role: "system", content: f.args.instructions }, { role: "user", content: cases[0]!.question }
++    ]);
++    expect(f.callTool).not.toHaveBeenCalled();
++  });
++
++  it("never executes tools returned against the terminal request policy", async () => {
++    const f = fixture(toolSequence(16), { cases: [cases[0]] });
++    const result = await runMethod(f.args);
++    expect(f.provider).toHaveBeenCalledTimes(16);
++    expect(f.callTool).toHaveBeenCalledTimes(15);
++    expect(result.rows[0]).toMatchObject({ answer: "", failure: "answer-final-tool-violation",
++      verdict: { score: "error", failureClass: "answer-final-tool-violation" } });
++    expect(result.providerAttempts[15]).toMatchObject({ requestToolChoice: "none", completionAccepted: false,
++      result: { parsed: { message: { tool_calls: [{ id: "lookup-15" }] } } } });
++    expect(result).toMatchObject({ status: "invalid-or-incomplete", failedIds: ["a"], summary: null, aggregatesSuppressed: true });
++  });
++
++  it.each(["empty", "refused"])("keeps a %s terminal completion as a failed output", async (kind) => {
++    const f = fixture(toolSequence(15), { cases: [cases[0]] });
++    const normal = f.provider.getMockImplementation()!;
++    for (let index = 0; index < 15; index++) f.provider.mockImplementationOnce(normal);
++    const message = { role: "assistant", content: kind === "empty" ? "" : null,
++      ...(kind === "refused" ? { refusal: "Cannot provide an answer." } : {}) };
++    f.provider.mockImplementationOnce((request: Request) => httpFailure(request, 200, 0.02, `log-${request.requestId}`,
++      JSON.stringify({ model: "grok-4.7", choices: [{ message, finish_reason: "stop" }] })));
++    const result = await runMethod(f.args);
++    expect(f.provider).toHaveBeenCalledTimes(16);
++    expect(f.callTool).toHaveBeenCalledTimes(15);
++    expect(result.rows[0]).toMatchObject({ answer: "", verdict: null, failure: "invalid-provider-outcome" });
++    expect(result.providerAttempts[15]).toMatchObject({ requestToolChoice: "none", completionAccepted: false,
++      result: { rejectedCompletion: { message, finish_reason: "stop" } } });
++    expect(result).toMatchObject({ status: "invalid-or-incomplete", summary: null, aggregatesSuppressed: true });
++  });
++
++  it.each(["missing-cost", "identity"])("keeps final synthesis fail-closed after %s failure", async (kind) => {
++    const f = fixture([...toolSequence(15), completed("UNACCEPTED FINAL")], { cases: [cases[0]] });
++    if (kind === "identity") {
++      f.args.guard = vi.fn(async () => { if (f.provider.mock.calls.length === 16) throw new Error("source-identity-changed"); });
++    } else {
++      const normal = f.provider.getMockImplementation()!;
++      for (let index = 0; index < 15; index++) f.provider.mockImplementationOnce(normal);
++      f.provider.mockImplementationOnce(async (request: Request) => {
++        const reply = await normal(request);
++        reply.result.receipt = { calls: 1, reportedCalls: 0, costUsd: null, reportedCostUsd: 0, error: "missing-answer-cost" };
++        return reply;
++      });
++    }
++    const result = await runMethod(f.args);
++    expect(f.provider).toHaveBeenCalledTimes(16);
++    expect(f.callTool).toHaveBeenCalledTimes(15);
++    expect(result.rows[0]).toMatchObject({ answer: "", verdict: null });
++    expect(result.providerAttempts[15]).toMatchObject({ completionAccepted: false,
++      failure: kind === "identity" ? "source-identity-changed" : "provider-cost-missing",
++      unacceptedEvidence: { answer: "UNACCEPTED FINAL" } });
++    expect(result).toMatchObject({ status: "invalid-or-incomplete", summary: null, aggregatesSuppressed: true });
++    expect(result.completeCostAccounting).toBe(kind === "identity");
++  });
++
++  it("passes the none policy to the native provider payload in one request", async () => {
++    const run = vi.fn(async (_model: string, _input: Record<string, unknown>) => new Response(JSON.stringify({ model: "grok-4.7",
++      choices: [{ message: { role: "assistant", content: "Final answer" }, finish_reason: "stop" }] }),
++    { headers: { "cf-aig-log-id": "final-policy-log" } }));
++    const ai = { run, gateway: () => ({ getLog: async () => ({ cost: 0.02 }) }) };
++    const result = await providerCall(ai, { gatewayId: plan.gatewayId, maxBudgetUsd: 1, messages: [], tools: [],
++      maxOutputTokens: 8192, toolChoice: "none" });
++    expect(run).toHaveBeenCalledTimes(1);
++    expect(run.mock.calls[0]?.[1]).toMatchObject({ tool_choice: "none", tools: [], stream: false, reasoning_effort: "high" });
++    expect(result).toMatchObject({ error: null, parsed: { answer: "Final answer" }, rejectedCompletion: null });
++  });
++
++  it("rejects an unacknowledged answer policy before any provider call", async () => {
++    const f = fixture([], { plan: { ...plan, answerPolicy: undefined } });
++    await expect(runMethod(f.args)).rejects.toThrow("answer-policy-mismatch");
++    expect(f.provider).not.toHaveBeenCalled();
++    expect(f.callTool).not.toHaveBeenCalled();
++  });
++
++  it("preserves a final-request tool violation as a selected row", async () => {
+     const search = { id: "limited", type: "function", function: { name: "search", arguments: '{"query":"Stellar"}' } };
+     const f = fixture([completed("", [search]), completed("B"), completed(correct)], { plan: { ...plan, maxAnswerSteps: 1 } });
+     const result = await runMethod(f.args);
+     expect(result.rows.map((row: { id: string }) => row.id)).toEqual(["a", "b"]);
+-    expect(result.rows[0]).toMatchObject({ failure: "answer-step-limit" });
++    expect(result.rows[0]).toMatchObject({ failure: "answer-final-tool-violation" });
+     expect(result.unattemptedIds).toEqual([]);
+     expect(result.aggregatesSuppressed).toBe(true);
+   });
+@@ -770,11 +878,13 @@ describe("direct Grok host-loop runner", () => {
+ 
+   it("validates fixed transport limits without accepting QA identity claims", async () => {
+     const selected = [{ id: "provider-ready", question: "Reply with exactly READY." }];
+-    const candidate = { ...plan, schema: "direct-grok-host-loop-plan-v1", method: "transport-canary",
++    const candidate = { ...plan, schema: PLAN_SCHEMA, method: "transport-canary",
+       model: "xai/grok-4.7", effort: "high", accountId: "ba55b7ae9acfb3ed152103e3497c0752",
+       maxProviderCalls: 1, maxAnswerSteps: 0, maxOutputTokens: 256, requestTimeoutMs: 1000, hostBackstopMs: 2000, settlementGraceMs: 1000,
+       selection: { ids: ["provider-ready"], idsSha256: jsonSha(["provider-ready"]), contentSha256: jsonSha(selected), lifecycleSha256: jsonSha(null) } };
+     expect(validateRunnerPlan(candidate, { mode: "prepare-pins", preparing: true })).toBe(candidate);
++    expect(() => validateRunnerPlan({ ...candidate, schema: "direct-grok-host-loop-plan-v1" }, { preparing: true })).toThrow("invalid-plan-contract");
++    expect(() => validateRunnerPlan({ ...candidate, answerPolicy: undefined }, { preparing: true })).toThrow("answer-policy-mismatch");
+     expect(await loadSelection(candidate)).toEqual({ cases: selected, lifecycle: null });
+     expect(() => validateRunnerPlan({ ...candidate, maxProviderCalls: 2 }, { preparing: true })).toThrow(/limit/);
+     expect(() => validateRunnerPlan({ ...candidate, server: {} }, { preparing: true })).toThrow(/not-qa/);

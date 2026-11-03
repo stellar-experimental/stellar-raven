@@ -668,7 +668,7 @@
       "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-issue-asset-howto.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "c2f92a63f3d5eda99e1da0b845293215a96c88d37b75582e277b920661f0cab9"
+      "caseContentSha256": "e910a5ff7fff7d3ee97f3a122cb3be5a3782247702d678b27acbb5b410b6b693"
     },
     {
       "id": "q-asset-path-payment-ops",
@@ -1444,8 +1444,8 @@
       "id": "q-edge-fresh-latest-protocol-version",
       "path": "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-protocol-version.json",
       "state": "active",
-      "reviewState": "none",
-      "caseContentSha256": "951abcb0e4e29a8bed1ea49ac4cf6f771353a48f95c642e8d53dd760ea2da2d5"
+      "reviewState": "resolved",
+      "caseContentSha256": "d623e9e1b4e9812610b3af8e51fc90d31a3000d7a1968136e8dceba13bda530d"
     },
     {
       "id": "q-edge-fresh-latest-scf-round",
@@ -1514,8 +1514,8 @@
       "id": "q-edge-noinfo-stellar-pos-staking-rewards",
       "path": "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-stellar-pos-staking-rewards.json",
       "state": "active",
-      "reviewState": "none",
-      "caseContentSha256": "6b8cb779e2cf03bd99943338d6ef15ac7bd8726fe2e2ac2e1a2d2bd71998f16f"
+      "reviewState": "resolved",
+      "caseContentSha256": "e9f60a3d100e3d0b81998ba2fa0c5b658fac16f29acbc10baed64bce58043fa1"
     },
     {
       "id": "q-edge-oos-bitcoin-price-prediction",
@@ -2648,8 +2648,8 @@
       "id": "q-scf-audit-bank",
       "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-audit-bank.json",
       "state": "active",
-      "reviewState": "none",
-      "caseContentSha256": "2d538a6337432ff2f6ed44e12eba1293c3e9aaf8b5d77c1f8858b09a57604e1e"
+      "reviewState": "resolved",
+      "caseContentSha256": "2263c8a7e79cc93dbd544b79d2d0064e23e8e1c563158bc1e4f67ed4ee9cdb3c"
     },
     {
       "id": "q-scf-blend-winners-live",

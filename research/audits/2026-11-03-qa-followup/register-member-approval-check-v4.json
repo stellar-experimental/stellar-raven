@@ -1,0 +1,329 @@
+{
+  "schema": "qa-reviewed-register-member-check-v1",
+  "checkedAt": "2026-11-03T15:26:22.362Z",
+  "reopenedEntries": 9,
+  "actualPreClosureRegisterSha256": "793d0acaffadf7a7995e8f3480a442f6b395cfed137aed7766fd92dcb6eb2885",
+  "rows": [
+    {
+      "selector": "cluster-007",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-comp-clawback-cap0035",
+          "sha256": "fc0447bce6e5d995d407373daa964d6447d5e1785ba98a1d31895d2ddba7e77d"
+        },
+        {
+          "caseId": "q-edge-fresh-latest-protocol-version",
+          "sha256": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b"
+        },
+        {
+          "caseId": "q-hist-soroban-launch-protocol20",
+          "sha256": "607c8d4ef8e2605f5cab2bb3de04338029e4e3d1409ab42dac4f21d7742d294b"
+        },
+        {
+          "caseId": "q-infra-secp256r1-passkeys",
+          "sha256": "84974f242cf37ff410c87c6cb84315b98bafe01d9403a706b96548341a7a7b6f"
+        },
+        {
+          "caseId": "q-pc-protocol-upgrade-timing",
+          "sha256": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad"
+        },
+        {
+          "caseId": "q-protocol-23-whisk-caps",
+          "sha256": "9e5e48b2dec70743bd49557b294db491ac32a0776f1f64cd91f54aed13971057"
+        },
+        {
+          "caseId": "q-protocol-24-whisk-incident",
+          "sha256": "d82dde59240f2f29304d51647f0b1ce47c7278ce931789c7d678bc98d379aa8c"
+        },
+        {
+          "caseId": "q-protocol-27-cap-0071",
+          "sha256": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7"
+        },
+        {
+          "caseId": "q-protocol-amm-cap-0038",
+          "sha256": "86e626e8ca19a27f40a8f1fa9987e064d7175aaf3dec9ca6f774d8f85472607f"
+        },
+        {
+          "caseId": "q-protocol-bls12-381-cap59",
+          "sha256": "2f4041263cdba995e966ef8dbbed03261d48e86d9aee31d9e495fe1679db4eda"
+        },
+        {
+          "caseId": "q-protocol-bn254-poseidon-xray",
+          "sha256": "ee9a9247f02c80e1a134f681726ab498a0040b5d68b3230f2aaa34e77b649300"
+        },
+        {
+          "caseId": "q-protocol-parallel-execution",
+          "sha256": "5a334961610d0deeeeda4eb29fc9a11613be0a836cb3b3772e5ac2042fd6e869"
+        },
+        {
+          "caseId": "q-protocol-version-history-list",
+          "sha256": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+        },
+        {
+          "caseId": "q-soroban-auth-delegation-p27",
+          "sha256": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
+        },
+        {
+          "caseId": "q-soroban-constructor-lifecycle",
+          "sha256": "798e2a756125c45237bfb757cf8fc9f241341a32e53be7d56ecba91bea614d82"
+        },
+        {
+          "caseId": "q-tool-rust-soroban-sdk",
+          "sha256": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4"
+        }
+      ]
+    },
+    {
+      "selector": "cluster-017",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-asset-amm-fee-reserve",
+          "sha256": "b97034d24ed541057359418d10b89804a9cf8c88f2ee3be318bbbafdbfe87014"
+        },
+        {
+          "caseId": "q-asset-path-payment-ops",
+          "sha256": "a57dfde823c42b6250cc8849b85eadd58ba46b96dd01992ee4b0b024f0268df1"
+        },
+        {
+          "caseId": "q-asset-sdex-vs-amm",
+          "sha256": "d8227204dfaa1146a9a9cb7eaea525e1fbe511088dea5f81dbe4e5b9301e6606"
+        },
+        {
+          "caseId": "q-asset-trustline-basics",
+          "sha256": "9ad2ed91f2559b7dae886593d48f72a74e2878ee75d52de8676b77767e8d53fe"
+        },
+        {
+          "caseId": "q-edge-1xlm-activation-fee",
+          "sha256": "95be5544df23c2bdfc8a0b7c7feb708814e33899c17d992517c9b229a272ec50"
+        },
+        {
+          "caseId": "q-edge-noinfo-stellar-pos-staking-rewards",
+          "sha256": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea"
+        },
+        {
+          "caseId": "q-hot-fee-pool-burn-deflation",
+          "sha256": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4"
+        },
+        {
+          "caseId": "q-pc-account-activation-not-found",
+          "sha256": "9f6221e40bcace23cf481e555e1c41652ed3d14796a0bcdecbbb5bddc92eefa3"
+        },
+        {
+          "caseId": "q-pc-practical-fee-setting",
+          "sha256": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615"
+        },
+        {
+          "caseId": "q-pc-sponsored-reserves",
+          "sha256": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666"
+        },
+        {
+          "caseId": "q-protocol-base-reserve-min-balance",
+          "sha256": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086"
+        },
+        {
+          "caseId": "q-protocol-ledger-close-time",
+          "sha256": "b6d6438972116ef0e6c1935e2cd66370c87da8543911166ef1bee7187c5a9b7e"
+        },
+        {
+          "caseId": "q-sor-doc-timestamping-manage-data",
+          "sha256": "1303e33b3457de47dcecd5fa9b8991f3cc6f32d41bb78a5e06ae52d9f2a3c6b6"
+        },
+        {
+          "caseId": "q-soroban-simulate-resource-fee",
+          "sha256": "5befbcbca0c84ea2800ec9789c2e75926c205545829bc96b6ecd52bf14b48064"
+        },
+        {
+          "caseId": "q-token-initial-supply-distribution",
+          "sha256": "d21261aee65d659776e78342377e944fefad8121a445914a8ab7b7d2a4adce7c"
+        }
+      ]
+    },
+    {
+      "selector": "cluster-020",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-edge-deep-full-history-report",
+          "sha256": "abe6cc622a6b3d69f3ecc27a42fa869ee403f7038ab57ed80bcd7d8593439222"
+        },
+        {
+          "caseId": "q-edge-noinfo-stellar-pos-staking-rewards",
+          "sha256": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea"
+        },
+        {
+          "caseId": "q-hist-scp-rewrite-2015",
+          "sha256": "5cd5e7420233297b719580af697a9bf13a267dcf5411dec726260d0ea7806379"
+        },
+        {
+          "caseId": "q-org-mazieres-chief-scientist",
+          "sha256": "73b0bc28f31d279e9f8c7e4cd376e73914fbd984fcacdf250928443069dc61d7"
+        },
+        {
+          "caseId": "q-org-sdf-structure-mandate",
+          "sha256": "ae1628b5785986fad875ee3aa2b507b1fc8a8f6d070d9bd02437039e726d61af"
+        },
+        {
+          "caseId": "q-protocol-tier1-requirements",
+          "sha256": "b229325c06c351a9667ffaaea846849e828fe4b0f3e75caa62c994332cf7a25f"
+        }
+      ]
+    },
+    {
+      "selector": "cluster-025",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-edge-fresh-latest-protocol-version",
+          "sha256": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b"
+        },
+        {
+          "caseId": "q-pc-protocol-upgrade-timing",
+          "sha256": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad"
+        },
+        {
+          "caseId": "q-protocol-27-cap-0071",
+          "sha256": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7"
+        },
+        {
+          "caseId": "q-protocol-scp-consensus-algorithm",
+          "sha256": "ba760d5bb7ac504e53db81c2d209ecdec1994d2991aaf5cc5ec7d4bfee91c45d"
+        },
+        {
+          "caseId": "q-protocol-version-history-list",
+          "sha256": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+        },
+        {
+          "caseId": "q-soroban-auth-delegation-p27",
+          "sha256": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
+        },
+        {
+          "caseId": "q-tool-rust-soroban-sdk",
+          "sha256": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4"
+        }
+      ]
+    },
+    {
+      "selector": "cluster-048",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-defi-build-staking-for-own-token",
+          "sha256": "4ab3f5cefb9083abf1a5c475259437168111285028866445d61f4167bb092066"
+        },
+        {
+          "caseId": "q-defi-liquid-staking-whitespace",
+          "sha256": "6719f2d0823e66448f07a82fd2fb6a6e87bd42ecaac5c476fb186ef3ea3fb59a"
+        },
+        {
+          "caseId": "q-edge-noinfo-stellar-pos-staking-rewards",
+          "sha256": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea"
+        },
+        {
+          "caseId": "q-protocol-scp-consensus-algorithm",
+          "sha256": "ba760d5bb7ac504e53db81c2d209ecdec1994d2991aaf5cc5ec7d4bfee91c45d"
+        }
+      ]
+    },
+    {
+      "selector": "cluster-083",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-edge-noinfo-stellar-pos-staking-rewards",
+          "sha256": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea"
+        },
+        {
+          "caseId": "q-scf-eligibility-criteria",
+          "sha256": "b42d75ea41de636513016271fa00148a5de8ec4c4637b3fd488754207e39840e"
+        }
+      ]
+    },
+    {
+      "selector": "cluster-120",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-edge-fresh-latest-protocol-version",
+          "sha256": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b"
+        },
+        {
+          "caseId": "q-pc-protocol-27-zipper",
+          "sha256": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8"
+        },
+        {
+          "caseId": "q-pc-protocol-upgrade-timing",
+          "sha256": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad"
+        },
+        {
+          "caseId": "q-protocol-27-cap-0071",
+          "sha256": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7"
+        },
+        {
+          "caseId": "q-protocol-version-history-list",
+          "sha256": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+        },
+        {
+          "caseId": "q-soroban-auth-delegation-p27",
+          "sha256": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
+        }
+      ]
+    },
+    {
+      "selector": "Mainnet protocol activation history",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-edge-fresh-latest-protocol-version",
+          "sha256": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b"
+        },
+        {
+          "caseId": "q-pc-protocol-27-zipper",
+          "sha256": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8"
+        },
+        {
+          "caseId": "q-pc-protocol-upgrade-timing",
+          "sha256": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad"
+        },
+        {
+          "caseId": "q-protocol-27-cap-0071",
+          "sha256": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7"
+        },
+        {
+          "caseId": "q-soroban-auth-delegation-p27",
+          "sha256": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
+        }
+      ]
+    },
+    {
+      "selector": "Protocol 30 (Bell) Mainnet vote on 2026-11-23, any later Mainnet protocol activation, or any AddressV2 successor change",
+      "matched": true,
+      "members": [
+        {
+          "caseId": "q-edge-fresh-latest-protocol-version",
+          "sha256": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b"
+        },
+        {
+          "caseId": "q-pc-protocol-27-zipper",
+          "sha256": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8"
+        },
+        {
+          "caseId": "q-pc-protocol-upgrade-timing",
+          "sha256": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad"
+        },
+        {
+          "caseId": "q-protocol-27-cap-0071",
+          "sha256": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7"
+        },
+        {
+          "caseId": "q-protocol-version-history-list",
+          "sha256": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+        }
+      ]
+    }
+  ],
+  "result": "all maps match approved prospective v4 register",
+  "recovery": "The first gate used an incorrect container shape. An old v3 closure applied afterward. This script reconstructs the v3 closed register, restamps with the helper, and checks all v4 maps before the v4 closure.",
+  "publicRepresentation": "Member maps use caseId/sha256 rows. The checked map content is unchanged. This avoids a false secret assignment match on a case ID ending in token."
+}

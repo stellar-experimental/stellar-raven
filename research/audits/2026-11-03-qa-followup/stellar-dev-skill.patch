@@ -1,0 +1,13 @@
+diff --git a/skills/dapp/SKILL.md b/skills/dapp/SKILL.md
+index 6b2a072..f887138 100644
+--- a/skills/dapp/SKILL.md
++++ b/skills/dapp/SKILL.md
+@@ -329,7 +329,7 @@ export async function increment(client: contract.Client & CounterContract) {
+ <details>
+ <summary><b>Advanced: low-level invocation without a client</b></summary>
+ 
+-Use this only when you need direct control over the transaction (e.g. batching a contract call with classic operations). Otherwise prefer `contract.Client` above.
++Use this when you need direct control over the invocation arguments and transaction settings. Keep exactly one supported Soroban operation in the inner transaction, including when a fee-bump transaction wraps it. Compose multiple contract calls inside the contract invocation. Otherwise prefer `contract.Client` above.
+ 
+ ```typescript
+ import * as StellarSdk from "@stellar/stellar-sdk";

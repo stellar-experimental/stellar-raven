@@ -1,0 +1,107 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-007",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-017",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-020",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-025",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-048",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-083",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-120",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "numericInvariants": [
+    {
+      "matchLabel": "Mainnet protocol activation history",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "dateContingentTraps": [
+    {
+      "matchTriggerDateEvent": "Protocol 30 (Bell) Mainnet vote on 2026-11-23, any later Mainnet protocol activation, or any AddressV2 successor change",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-03",
+      "reSwept": {
+        "date": "2026-11-03",
+        "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

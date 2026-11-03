@@ -1,0 +1,212 @@
+{
+  "schema": "issuer-lock-core-source-receipts-v1",
+  "sourceReceiptSha256": "37dda1052a03d8e96ca2e7b3d926210e409e69e17182eb06ed41a5ae24637ba7",
+  "coreRevision": "b8c4f12d6f1159d67be8743c87a3c7df839ae7f4",
+  "receipts": [
+    {
+      "id": "core-revision",
+      "class": "B",
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-core/commits/master",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "c63166aab3aa6fe4c61092d3daeee7fea6f560077cf2c0c914a0318da2baa303",
+      "startedAt": "2026-11-03T04:29:20.502369+00:00",
+      "observedAt": "2026-11-03T04:29:20.815452+00:00",
+      "status": 200,
+      "resolvedUrl": "https://api.github.com/repos/stellar/stellar-core/commits/master",
+      "bodyBytes": 23963,
+      "bodySha256": "69b60843b4173d45045d872609ec5845497f2de7c7466cb975d9788b56a8b7b6",
+      "bodyRetained": false
+    },
+    {
+      "id": "multisig",
+      "class": "A",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig.md",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "99ec6d928def5527dc42439b00b24b12ba399e07951265f16e6cd3fbf2fca181",
+      "startedAt": "2026-11-03T04:29:20.816717+00:00",
+      "observedAt": "2026-11-03T04:29:20.893234+00:00",
+      "status": 200,
+      "resolvedUrl": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig.md",
+      "bodyBytes": 10182,
+      "bodySha256": "6e2a70e0c425a38a12abf42c6383ce2f54c070b92504240e3788fd4202a98b80",
+      "bodyRetained": false
+    },
+    {
+      "id": "issuance",
+      "class": "A",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset.md",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "8767f1d7fd48b6358240b4dafc622a909376f8fb6b24ffacf68675b4e0d3437d",
+      "startedAt": "2026-11-03T04:29:20.818922+00:00",
+      "observedAt": "2026-11-03T04:29:20.890111+00:00",
+      "status": 200,
+      "resolvedUrl": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset.md",
+      "bodyBytes": 30628,
+      "bodySha256": "da98324edb693f04aef1c20fbf17274cc26d28a4ff24bbfddc02cde7faeda314",
+      "bodyRetained": false
+    },
+    {
+      "id": "control",
+      "class": "A",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "851c972645cfb30707ac72f971ce69cf2ab6b5d4a61276e50191eb0400b36359",
+      "startedAt": "2026-11-03T04:29:20.819026+00:00",
+      "observedAt": "2026-11-03T04:29:20.887561+00:00",
+      "status": 200,
+      "resolvedUrl": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+      "bodyBytes": 14901,
+      "bodySha256": "2f53ab8331b4ec0c9d3b2e9fdb00af6bab1d109bd9f432790037260a1df78ce8",
+      "bodyRetained": false
+    },
+    {
+      "id": "OperationFrame",
+      "class": "B",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/OperationFrame.cpp",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "f32f019a3f6bb6a365379c647991df49a49a1de67d3e3188ef1663018b1709fe",
+      "startedAt": "2026-11-03T04:29:20.821164+00:00",
+      "observedAt": "2026-11-03T04:29:20.996756+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/OperationFrame.cpp",
+      "bodyBytes": 15294,
+      "bodySha256": "3b3b023d1a4ebd7b0afcaf100b2894ce96519905f68f19db0df06ab3fc25ac41",
+      "bodyRetained": false
+    },
+    {
+      "id": "SetOptionsOpFrame",
+      "class": "B",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/SetOptionsOpFrame.cpp",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "0720969c8dc82fb298f764c8ba456a045bdbec5bd4e5be58cafb4e75a5153e32",
+      "startedAt": "2026-11-03T04:29:20.825363+00:00",
+      "observedAt": "2026-11-03T04:29:20.988925+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/SetOptionsOpFrame.cpp",
+      "bodyBytes": 10036,
+      "bodySha256": "985a681225ffeafd43d9310ac947d3c73c987a28f773ac9b316f884af2a6c7c3",
+      "bodyRetained": false
+    },
+    {
+      "id": "CreateAccountOpFrame",
+      "class": "B",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/CreateAccountOpFrame.cpp",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "f70db0ecb427f052d4cca816863791264af2b613fffae2edefe01290e3e6346a",
+      "startedAt": "2026-11-03T04:29:20.825488+00:00",
+      "observedAt": "2026-11-03T04:29:20.994273+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/CreateAccountOpFrame.cpp",
+      "bodyBytes": 6410,
+      "bodySha256": "100bcc573e6ba23789189e075f718761a048c169de8b2c5f74dadbfd1e8b3cd3",
+      "bodyRetained": false
+    },
+    {
+      "id": "SignatureChecker",
+      "class": "B",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/SignatureChecker.cpp",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "ec76ae581099ee9214f1e197e828a7855d7fd18029380a2c7ccfee3537eaf3b9",
+      "startedAt": "2026-11-03T04:29:20.887601+00:00",
+      "observedAt": "2026-11-03T04:29:21.050594+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/SignatureChecker.cpp",
+      "bodyBytes": 6788,
+      "bodySha256": "52935b39e4e6353648b8e4c24cccea61ee9db50e104e0eaff716a32010e46a04",
+      "bodyRetained": false
+    },
+    {
+      "id": "TransactionFrame",
+      "class": "B",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "16b70ee2a8f718f7cea231e005249538578e024e7aa6b78fd82d87f896e1ec8c",
+      "startedAt": "2026-11-03T04:29:20.890144+00:00",
+      "observedAt": "2026-11-03T04:29:21.065400+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp",
+      "bodyBytes": 87484,
+      "bodySha256": "fb6c9fcb85589265c3199205d247ae8ebb2aacc662b6182fe8ef098337ac9fd5",
+      "bodyRetained": false
+    },
+    {
+      "id": "PaymentOpFrame",
+      "class": "B",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/PaymentOpFrame.cpp",
+        "headers": {
+          "Accept": "text/plain,application/json",
+          "User-Agent": "Raven-issuer-lock-golden-proposal/1"
+        }
+      },
+      "requestDescriptorSha256": "59590f0a19fea1964bbb5a8fd4f3d490433e8e7cfe5d1f8a0ee5bebfdff6451e",
+      "startedAt": "2026-11-03T04:29:20.893259+00:00",
+      "observedAt": "2026-11-03T04:29:21.061710+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/PaymentOpFrame.cpp",
+      "bodyBytes": 6198,
+      "bodySha256": "0553d1e3e1dbe0924d50e5a95f7772529fef720e4fe4beee5a1541377a7cb150",
+      "bodyRetained": false
+    }
+  ],
+  "limits": [
+    "These are public source receipts, not transaction experiments.",
+    "No full source body, private account, model request, credential, or billing state is copied.",
+    "The separate exact independent review is recorded in the overnight round ledger."
+  ]
+}

@@ -1,0 +1,96 @@
+diff --git a/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx b/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx
+index af7ecae..028b317 100644
+--- a/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx
++++ b/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx
+@@ -44,7 +44,7 @@ Both of these addresses will act on the underlying `GA7Q…` address when used w
+ 
+ Not all operations can be used with muxed accounts. Here is what you can use them for:
+ 
+-- The source account of any operation or transaction;
++- The source account of an operation or transaction, subject to the contract-invocation restriction below;
+ - The fee source of a fee-bump transaction;
+ - The destination of all three types of payments:
+   - `Payment`,
+@@ -53,6 +53,8 @@ Not all operations can be used with muxed accounts. Here is what you can use the
+ - The destination of an AccountMerge; and
+ - The target of a `Clawback` operation (i.e. the from field).
+ 
++From Protocol 25, a transaction with one `InvokeHostFunction` operation cannot use a muxed inner transaction source. The `InvokeHostFunction` operation source also cannot be muxed. The outer fee-bump fee source remains a separate position.
++
+ We will demonstrate some of these in the examples section.
+ 
+ There’s no validation on IDs and as far as the Stellar network is concerned, all supported operations operate exactly as if you did not use a muxed account.
+diff --git a/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx b/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx
+index cf3edbb..1d2b8ef 100644
+--- a/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx
++++ b/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx
+@@ -71,7 +71,11 @@ async function simulateTransaction(transactionXDR) {
+   });
+ 
+   const result = await response.json();
+-  console.log(JSON.parse(result));
++  if (result.error) {
++    console.error("RPC error:", result.error);
++    return;
++  }
++  console.log(result.result);
+ }
+ 
+ // Example XDR transaction envelope
+diff --git a/docs/learn/fundamentals/contract-development/storage/persisting-data.mdx b/docs/learn/fundamentals/contract-development/storage/persisting-data.mdx
+index ad0715f..12cd767 100644
+--- a/docs/learn/fundamentals/contract-development/storage/persisting-data.mdx
++++ b/docs/learn/fundamentals/contract-development/storage/persisting-data.mdx
+@@ -29,7 +29,7 @@ An unbounded collection is the usual way to get this wrong. A `Vec` or `Map` hel
+ 
+ ## Footprints and parallel contention
+ 
+-Contracts are only allowed to access ledger entries specified in the footprint of their transaction. Transactions with overlapping footprints are said to contend, and will only execute sequentially with respect to one another, on a single thread. Transactions with non-overlapping footprints may execute in parallel. This means that a finer granularity of `CONTRACT_DATA` ledger entries may reduce artificial contention among transactions using a contract, and thereby increase parallelism.
++Contracts are only allowed to access ledger entries specified in the footprint of their transaction. Transactions conflict when they share a ledger key and at least one transaction lists that key as read-write. A shared read-only key does not create this conflict. Conflicting transactions execute sequentially relative to one another. Nonconflicting transactions may execute in parallel, subject to transaction-set scheduling and network limits. This means that a finer granularity of `CONTRACT_DATA` ledger entries may reduce artificial contention among transactions using a contract, and thereby increase parallelism.
+ 
+ ## Contract Data Best Practices
+ 
+diff --git a/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx b/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx
+index 8a19af6..0a2b05d 100644
+--- a/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx
++++ b/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx
+@@ -44,10 +44,12 @@ Passkeys are a replacement for passwords that provide stronger security and a be
+ When a receiver creates an embedded wallet:
+ 
+ 1. The browser or device generates a **cryptographic key pair** (public key and private key)
+-2. The **private key** is stored securely on the receiver's device and never leaves it
++2. The receiver's authenticator or passkey provider manages the **private key**. The website does not receive it.
+ 3. The **public key** is sent to the SDP and used to create the smart contract wallet
+ 4. When signing in later, the receiver uses biometrics to unlock their private key
+ 
++Credentials can be device-bound or synchronized by the passkey provider with end-to-end encryption. Backup and availability depend on the provider and its supported environments. This does not guarantee recovery or access from another device.
++
+ ### Why Passkeys are More Secure
+ 
+ **Phishing-Resistant**: Unlike passwords, passkeys are cryptographically bound to your domain. Even if a receiver visits a fake website, their passkey won't work there.
+diff --git a/openrpc/src/stellar-rpc/schemas/Transactions.json b/openrpc/src/stellar-rpc/schemas/Transactions.json
+index f86df47..7a7afd8 100644
+--- a/openrpc/src/stellar-rpc/schemas/Transactions.json
++++ b/openrpc/src/stellar-rpc/schemas/Transactions.json
+@@ -28,7 +28,7 @@
+       },
+       "resultMetaXdr": {
+         "type": "string",
+-        "description": "The [TransactionResultMeta](L446https://github.com/stellar/stellar-xdr/blob/v22.0/Stellar-ledger.x#L461) structure for this transaction (base64-encoded string)."
++        "description": "The [TransactionMeta](https://github.com/stellar/stellar-xdr/blob/v22.0/Stellar-ledger.x#L446) structure for this transaction (base64-encoded string)."
+       },
+       "diagnosticEventsXdr": {
+         "type": "array",
+diff --git a/stellar-rpc.openrpc.json b/stellar-rpc.openrpc.json
+index 3dede95..d5c3c42 100644
+--- a/stellar-rpc.openrpc.json
++++ b/stellar-rpc.openrpc.json
+@@ -1475,7 +1475,7 @@
+                   },
+                   "resultMetaXdr": {
+                     "type": "string",
+-                    "description": "The [TransactionResultMeta](L446https://github.com/stellar/stellar-xdr/blob/v22.0/Stellar-ledger.x#L461) structure for this transaction (base64-encoded string)."
++                    "description": "The [TransactionMeta](https://github.com/stellar/stellar-xdr/blob/v22.0/Stellar-ledger.x#L446) structure for this transaction (base64-encoded string)."
+                   },
+                   "diagnosticEventsXdr": {
+                     "type": "array",

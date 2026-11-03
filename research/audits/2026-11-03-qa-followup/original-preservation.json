@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-03T15:28:58.348583+00:00",
+  "originalResultSha256": "c8ec22427dd373492493b49b1f96c3e46d5476b8a928aa452b3dfd1654e6ea8f",
+  "bytes": 142459980,
+  "worktrees": [
+    {
+      "worktree": "golden-2026-11-02-method",
+      "commit": "0aea991fd36ecd5653eef07c317568c7aa71f0e8",
+      "clean": true
+    },
+    {
+      "worktree": "golden-2026-11-02-baseline",
+      "commit": "ce21317ff46d7491d82caf058baca7328c4177a9",
+      "clean": true
+    }
+  ],
+  "oldGradesRewritten": false
+}

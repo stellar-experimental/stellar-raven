@@ -1,0 +1,77 @@
+[
+  {
+    "source": "registry",
+    "request": {
+      "method": "GET",
+      "url": "https://stellarlight.xyz/api/stablecoins?limit=100&sort=marketcap",
+      "headers": {
+        "Accept": "application/json,text/plain,text/html",
+        "User-Agent": "Raven-shard07-review/1"
+      }
+    },
+    "requestDescriptorSha256": "6cab621d651259b8d8e3bf2286aec70f4eb874cbd19b4d93ab5cc633dbec6bc8",
+    "startedAt": "2026-11-03T00:55:25.327330+00:00",
+    "observedAt": "2026-11-03T00:55:25.668671+00:00",
+    "status": 200,
+    "resolvedUrl": "https://stellarlight.xyz/api/stablecoins?limit=100&sort=marketcap",
+    "bodyBytes": 27315,
+    "bodySha256": "a168e775e832476b24c145c24ece4a9f57b996f1c513a5892f409ba3be34446d",
+    "responseHeaders": {
+      "Content-Type": "application/json",
+      "Date": "Tue, 03 Nov 2026 00:48:07 GMT",
+      "Last-Modified": null,
+      "ETag": null
+    },
+    "responseFile": "registry-response.json"
+  },
+  {
+    "source": "currency-one-toml",
+    "request": {
+      "method": "GET",
+      "url": "https://currency.one/.well-known/stellar.toml",
+      "headers": {
+        "Accept": "application/json,text/plain,text/html",
+        "User-Agent": "Raven-shard07-review/1"
+      }
+    },
+    "requestDescriptorSha256": "cfd1d0db48ef9e3c2e9b2629620f35a4d0d795b2855104c3c65847f279dfe7d0",
+    "startedAt": "2026-11-03T00:55:25.327552+00:00",
+    "observedAt": "2026-11-03T00:55:25.601862+00:00",
+    "status": 200,
+    "resolvedUrl": "https://currency.one/.well-known/stellar.toml",
+    "bodyBytes": 3504,
+    "bodySha256": "3576ef6f88809558e4c272bcc5e00f95623fa7fee0bce05810710feea10ca392",
+    "responseHeaders": {
+      "Content-Type": "text/plain",
+      "Date": "Mon, 02 Nov 2026 01:26:45 GMT",
+      "Last-Modified": "Tue, 28 Oct 2025 04:53:42 GMT",
+      "ETag": "\"ff4338627d4448108db8b4bc4623f68d\""
+    },
+    "responseFile": "currency-one-toml-response.toml"
+  },
+  {
+    "source": "audd-toml",
+    "request": {
+      "method": "GET",
+      "url": "https://audd.digital/.well-known/stellar.toml",
+      "headers": {
+        "Accept": "application/json,text/plain,text/html",
+        "User-Agent": "Raven-shard07-review/1"
+      }
+    },
+    "requestDescriptorSha256": "d2b35da825d9e583bb720337b2446b51e39de5d34b3030f580b1a00cc42ba9c4",
+    "startedAt": "2026-11-03T00:55:25.602215+00:00",
+    "observedAt": "2026-11-03T00:55:26.827300+00:00",
+    "status": 200,
+    "resolvedUrl": "https://audd.digital/.well-known/stellar.toml",
+    "bodyBytes": 1549,
+    "bodySha256": "76bc56ee896dbe79c6c62c3d40d1f9daf094b0ef4ca04c9c3d5da7496132c936",
+    "responseHeaders": {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Date": "Tue, 03 Nov 2026 00:55:26 GMT",
+      "Last-Modified": "Tue, 09 Jun 2026 01:25:00 GMT",
+      "ETag": "\"6a276b6c-60d\""
+    },
+    "responseFile": "audd-toml-response.toml"
+  }
+]

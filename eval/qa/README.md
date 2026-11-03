@@ -43,6 +43,19 @@ npm run eval:qa:lint -- --since <ref>
 Use `npm run eval:qa:register` to update member hashes after reviewed changes.
 An unclustered case cannot trigger a cluster's automatic reopening; register coverage needs separate review.
 
+After independent review, use `npm run eval:qa:register -- --review <file.json>` to close reopened entries.
+Stamp member changes before applying that review.
+The review file uses these collections and exact selectors:
+
+| Collection | Selector |
+| --- | --- |
+| `clusters` | `id` |
+| `numericInvariants` | `matchLabel` |
+| `dateContingentTraps` | `matchTriggerDateEvent` |
+
+Each closure needs `verdict: "consistent"`, `lastChecked`, matching `reSwept` evidence, and `clearReopened: true`.
+The helper preserves member hashes and authoritative values. It rejects unknown collections and ambiguous selectors.
+
 For paid collection, reuse an authorized `dev:eval` server with the expected revision.
 The launcher requires a clean worktree and includes that revision in MCP `serverInfo`.
 Follow the run-evals workflow if the required server is absent.

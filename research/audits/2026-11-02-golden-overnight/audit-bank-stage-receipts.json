@@ -1,0 +1,70 @@
+{
+  "schema": "audit-bank-stage-source-evidence-v1",
+  "sources": [
+    {
+      "class": "A",
+      "request": {
+        "method": "GET",
+        "url": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules"
+      },
+      "requestSha256": "0669503cd82b4bc22e16bdaa336b4ae8f829593686f633b1ac7393a793f97fbf",
+      "startedAt": "2026-11-03T07:30:28.248982+00:00",
+      "endedAt": "2026-11-03T07:30:28.412671+00:00",
+      "status": 200,
+      "resolvedUrl": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+      "resultSha256": "096dd158244a230c07c854e9cfdee5a073f76d43f05f01c7403afda57ea3d185",
+      "resultBytes": 730619
+    },
+    {
+      "class": "B",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md"
+      },
+      "requestSha256": "1b2f2c36ae520fa7c62b9ec5d146605be733cfe4bfe1ac16462c3f8f6837dd47",
+      "startedAt": "2026-11-03T07:30:28.249241+00:00",
+      "endedAt": "2026-11-03T07:30:28.382872+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md",
+      "resultSha256": "e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01",
+      "resultBytes": 24162
+    }
+  ],
+  "sourceDependency": "The rendered page and official repository share one policy authority and content lineage. They are source classes A and B, not independent policy authors.",
+  "stages": [
+    {
+      "stage": "Initial Audit",
+      "copay": "5%",
+      "refund": "Conditional on fixing all critical, high, and medium items within 20 business days."
+    },
+    {
+      "stage": "Growth Audit",
+      "threshold": "> $10,000,000 TVL or equivalent",
+      "copay": "0%"
+    },
+    {
+      "stage": "Scale Audit",
+      "threshold": "> $100,000,000 TVL or equivalent",
+      "copay": "0%"
+    },
+    {
+      "stage": "Pre-Traction Follow Up Audits",
+      "copay": [
+        "20%",
+        "50%"
+      ]
+    }
+  ],
+  "independentVerification": {
+    "verifier": "Grok 4.7 high, t5q",
+    "sourceReadAt": "2026-11-03T07:12:21.762219Z",
+    "blindMatrixSha256": "5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71",
+    "reviewSha256": "7f9123c7959abccdc4218b273ad8b158bd40d2935bdc1dac4bfff7695f96b8e2",
+    "durableRecord": ".agents/rounds/2026-11-02-golden-overnight.md#audit-bank-reference-quarantine",
+    "scope": "Source-stage attribution error confirmed before the proposer disposition was read. Exact correction and reactivation require a separate review."
+  },
+  "limits": [
+    "Published policy wording is verified; no actual program payments or individual eligibility decision is measured.",
+    "No model answer, grade, private account state, full source body, or credential is retained here."
+  ]
+}

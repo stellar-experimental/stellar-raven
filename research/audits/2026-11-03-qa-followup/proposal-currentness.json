@@ -1,0 +1,80 @@
+{
+  "schema": "qa-followup-proposal-currentness-v1",
+  "rows": [
+    {
+      "id": "sd-089",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md"
+      },
+      "startedAt": "2026-11-03T14:05:47.917Z",
+      "observedAt": "2026-11-03T14:05:48.097Z",
+      "status": 200,
+      "bytes": 19254,
+      "bodySha256": "2026dff38b62338b268df83e63ce596d838dec6a518b32cc2b4c7352d462942c",
+      "patternChecks": [
+        {
+          "pattern": "scValToNative(sim.result?.retval)",
+          "present": true
+        },
+        {
+          "pattern": "sim.error",
+          "present": true
+        }
+      ],
+      "fullBodyRetained": false
+    },
+    {
+      "id": "sd-090",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/build/guides/dapps/working-with-contract-specs.md"
+      },
+      "startedAt": "2026-11-03T14:05:47.941Z",
+      "observedAt": "2026-11-03T14:05:48.098Z",
+      "status": 200,
+      "bytes": 42720,
+      "bodySha256": "fba013f8c48e5b554245ca55219683bfb270ace9d654344de45115cc8c87934f",
+      "patternChecks": [
+        {
+          "pattern": "A = 1",
+          "present": true
+        },
+        {
+          "pattern": "B = 2",
+          "present": true
+        },
+        {
+          "pattern": "scval.to_vec",
+          "present": true
+        },
+        {
+          "pattern": "scval.to_map",
+          "present": true
+        }
+      ],
+      "fullBodyRetained": false
+    },
+    {
+      "id": "sk-037",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/dapp/SKILL.md"
+      },
+      "startedAt": "2026-11-03T14:05:47.941Z",
+      "observedAt": "2026-11-03T14:05:48.138Z",
+      "status": 200,
+      "bytes": 18967,
+      "bodySha256": "4abc828abbfebd5452e4abc159095b5703c392b21b1abe74a5f56e8220696f75",
+      "patternChecks": [
+        {
+          "pattern": "batching a contract call with classic operations",
+          "present": true
+        }
+      ],
+      "fullBodyRetained": false
+    }
+  ],
+  "allExpectedTextPresent": true,
+  "paidCalls": 0
+}

@@ -1,0 +1,109 @@
+{
+  "schema": "qa-passkey-source-supplement-v1",
+  "observedAt": "2026-11-03T15:02:48.691Z",
+  "documentation": {
+    "repo": "stellar/stellar-docs",
+    "revision": "85d2d1b8e7a4451b7a6af0931f587ce73109b816",
+    "path": "docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.mdx",
+    "bodySha256": "0b09a16ef1a1511ce5f666aee7b5a9e4e3e01e2b66d48bc72f6bf5fc899ba2ef"
+  },
+  "backend": {
+    "repo": "stellar/stellar-disbursement-platform-backend",
+    "branch": "develop",
+    "revision": "4aff0437810d12e020571c1dc075597d032a0bb7",
+    "treeBodySha256": "08784b66dc19c8345dc2476f1800df257bc5aefd38f621751c9b64a841abb7d5",
+    "reads": [
+      {
+        "path": "internal/dependencyinjection/webauthn_service.go",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/4aff0437810d12e020571c1dc075597d032a0bb7/internal/dependencyinjection/webauthn_service.go",
+        "status": 200,
+        "observedAt": "2026-11-03T14:58:45.108Z",
+        "bodySha256": "2f2cb79d893f9658a37ca503fff88bc5a942969a60eb72b1861137ebe3ba09e5",
+        "bodyBytes": 1943
+      },
+      {
+        "path": "internal/wallet/webauthn_service.go",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/4aff0437810d12e020571c1dc075597d032a0bb7/internal/wallet/webauthn_service.go",
+        "status": 200,
+        "observedAt": "2026-11-03T14:58:45.011Z",
+        "bodySha256": "8aa94f4dbb418f43eeac615a50b01b27748ae2929be253a56c970538ff4b85ba",
+        "bodyBytes": 15508
+      },
+      {
+        "path": "internal/serve/httphandler/passkey_handler.go",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/4aff0437810d12e020571c1dc075597d032a0bb7/internal/serve/httphandler/passkey_handler.go",
+        "status": 200,
+        "observedAt": "2026-11-03T14:58:45.009Z",
+        "bodySha256": "8ec324af416d9ff74e30519b66b6f4b8b49a825bba42027b7dd1c34fa1089bdc",
+        "bodyBytes": 9395
+      },
+      {
+        "path": "go.mod",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/4aff0437810d12e020571c1dc075597d032a0bb7/go.mod",
+        "status": 200,
+        "observedAt": "2026-11-03T14:58:45.010Z",
+        "bodySha256": "09f3c4aef20ac90f4350a6c92a449ef8c00ced3bc7549e518d25ce84022e50b6",
+        "bodyBytes": 4991
+      },
+      {
+        "path": "internal/wallet/webauthn_service.go",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/4aff0437810d12e020571c1dc075597d032a0bb7/internal/wallet/webauthn_service.go",
+        "status": 200,
+        "observedAt": "2026-11-03T15:13:28.349Z",
+        "bodySha256": "8aa94f4dbb418f43eeac615a50b01b27748ae2929be253a56c970538ff4b85ba",
+        "bodyBytes": 15508
+      }
+    ],
+    "commitTreeSha": "e39729a74c0755d1cd98fc99254a60b65db69e3a",
+    "commitMetadataReceipt": {
+      "url": "https://api.github.com/repos/stellar/stellar-disbursement-platform-backend/commits/develop",
+      "bodySha256": "48c2b579273a285111cf523bc0f963d2d587fb771f5d075d5e5fc6b8d63cc175",
+      "observedAt": "2026-11-03T15:13:28.348Z"
+    },
+    "treeEndpointSha": "4aff0437810d12e020571c1dc075597d032a0bb7"
+  },
+  "providerSource": {
+    "url": "https://developers.google.com/identity/passkeys/supported-environments",
+    "observedAt": "2026-11-03T14:18:38.845228+00:00",
+    "bodySha256": "2afc138272aa220fbdcef43ceb8c5a890633c26ad0b66ddd80ecdcfabc3e4754",
+    "status": 200
+  },
+  "observations": [
+    {
+      "source": "internal/wallet/webauthn_service.go",
+      "lines": [
+        190,
+        209
+      ],
+      "finding": "Registration prefers platform and resident credentials with required user verification. These options do not request device-bound-only credentials."
+    },
+    {
+      "source": "internal/wallet/webauthn_service.go",
+      "lines": [
+        264,
+        277
+      ],
+      "finding": "Registration returns the delegated CreateCredential result without a local backup-eligibility rejection."
+    },
+    {
+      "source": "internal/wallet/webauthn_service.go",
+      "lines": [
+        315,
+        324
+      ],
+      "finding": "The maintained source reconstructs both backup flags as true for authentication. This is not evidence that a particular credential has synchronized."
+    }
+  ],
+  "conclusion": "The generic never-leaves-device documentation needs a provider/device distinction and must preserve website non-disclosure.",
+  "limits": [
+    "The observed backend source is develop; no particular deployment revision is asserted.",
+    "No authenticator ceremony, credential creation, signing, chain query or network simulation ran.",
+    "No private-key exposure or application security vulnerability is claimed.",
+    "Backup flags alone do not prove actual synchronization."
+  ],
+  "independentSourceClasses": [
+    "A: provider documentation",
+    "B: maintained application source"
+  ],
+  "rootAdditionalSourceReads": 8
+}

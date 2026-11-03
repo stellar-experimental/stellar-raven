@@ -1,0 +1,97 @@
+{
+  "sources": [
+    {
+      "source": "control",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+        "headers": {
+          "Accept": "*/*",
+          "User-Agent": "raven-review"
+        }
+      },
+      "requestDescriptorSha256": "914ae25970c5e32c7cc2ece6704fbf67919b83e9a457f5b372d09979a485fe6e",
+      "observedAt": "Tue, 03 Nov 2026 00:56:39 GMT",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "etag": null,
+      "bodyBytes": 14901,
+      "bodySha256": "2f53ab8331b4ec0c9d3b2e9fdb00af6bab1d109bd9f432790037260a1df78ce8",
+      "responseFile": "control-asset-access.md",
+      "setCookieStored": false
+    },
+    {
+      "source": "sac",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+        "headers": {
+          "Accept": "*/*",
+          "User-Agent": "raven-review"
+        }
+      },
+      "requestDescriptorSha256": "a76f9daf505d4a4ae7d22cbebda86c2909b666b0d2448cda152c3470d6810cf7",
+      "observedAt": "Tue, 03 Nov 2026 00:56:40 GMT",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "etag": null,
+      "bodyBytes": 23289,
+      "bodySha256": "618f012fcde31061c4168d1e91f04b729f68526ce291301e06158d7cca8725ef",
+      "responseFile": "stellar-asset-contract.md",
+      "setCookieStored": false
+    },
+    {
+      "source": "txframe",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp",
+        "headers": {
+          "Accept": "*/*",
+          "User-Agent": "raven-review"
+        }
+      },
+      "requestDescriptorSha256": "1e5493b0004070258c1cf63c7de4c941b4281ddb6115b81aa3b34246a0f3e7a5",
+      "observedAt": "Tue, 03 Nov 2026 00:57:50 GMT",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "etag": "\"37b906259877042d15f7d759237fa5519b1ccf8932624c56c64ffe055501f0dc\"",
+      "bodyBytes": 87484,
+      "bodySha256": "fb6c9fcb85589265c3199205d247ae8ebb2aacc662b6182fe8ef098337ac9fd5",
+      "responseFile": "txframe.cpp",
+      "setCookieStored": false
+    },
+    {
+      "source": "sac-contract",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/rs-soroban-env/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
+        "headers": {
+          "Accept": "*/*",
+          "User-Agent": "raven-review"
+        }
+      },
+      "requestDescriptorSha256": "9ec9212a74908bdc194dc0c2f6289405092129e5e7bb513b247d5402f08816f7",
+      "observedAt": "Tue, 03 Nov 2026 00:58:09 GMT",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "etag": "\"65e77f3b753a8faab59ab82667dd14fe6d9ae0f9dfb88cb5334b86a607e6321a\"",
+      "bodyBytes": 14110,
+      "bodySha256": "5fe6f53f7da37861501ae6e6205907f3473679a8cabe1eca61759d50210e997a",
+      "responseFile": "sac-contract.rs",
+      "setCookieStored": false
+    }
+  ],
+  "focusedMcpRead": {
+    "startedAt": "2026-11-03T01:34:05.844Z",
+    "endedAt": "2026-11-03T01:34:06.226Z",
+    "sourceRevision": "ce21317ff46d7491d82caf058baca7328c4177a9",
+    "requestSha256": "5eb3e6adb315707e8f6bc0ee2e2e54a793c8675177fc3b46e5a6619632d82d09",
+    "resultSha256": "31420366c53e47a2dfc3bf108cfcb71036e490921e76367b8a7d530fc7440f01",
+    "isError": false,
+    "matchedText": {
+      "simultaneous": true,
+      "set_auth": true,
+      "set_authorized": true
+    }
+  }
+}

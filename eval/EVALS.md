@@ -52,3 +52,10 @@ Git history preserves their measurement evidence.
 Each round files or updates evidence-backed upstream findings in [improvements/](../improvements/README.md).
 Record problems in this repository in [.agents/TODO.md](../.agents/TODO.md).
 The [improvements workflow](../.agents/skills/improvements-pipeline/SKILL.md) defines evidence and status requirements.
+
+The [2026-11-02 non-Anthropic diagnostic](../research/audits/2026-11-02-golden-overnight/README.md) records a separate direct-Grok host loop and 100-case selection.
+It preserves incomplete quality coverage and has no canonical five-track or historical QA comparability claim.
+
+The [2026-11-03 follow-up](../research/audits/2026-11-03-qa-followup/README.md) records the resulting repairs and held questions.
+Its separate finalization candidate remains unmeasured.
+The original grades and withheld quality score remain unchanged.

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "5b2d4abb7935f76a98aaf48ed84967c55761c25eb2e2ca2d2b914482442ff5c7",
+  "corpusContentSha256": "7612df594dda6ebe6e3bce5fd7492403e080fba135b53e11852020536854b27b",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -43,7 +43,8 @@
       "active": 501
     },
     "byReviewState": {
-      "none": 501
+      "none": 498,
+      "resolved": 3
     }
   },
   "cases": [
@@ -3229,7 +3230,7 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "There is **no 'create asset' operation** — a classic asset is defined by its **`(asset_code, issuer account)`** pair and simply comes into existence the first time the issuer pays it out [1][2]. The flow:\n\n1. Create/fund the **issuing account** and a separate **distribution account** (two-account best practice) [1].\n2. Optionally set issuer **authorization flags** first (e.g. AUTH_REQUIRED/REVOCABLE, or clawback) — AUTH_REQUIRED and clawback affect trustlines created afterward; AUTH_REVOCABLE also lets the issuer revoke existing trustlines [1].\n3. The **distribution account opens a trustline** to the asset via **`ChangeTrust`** [2].\n4. The **issuer sends** (a `Payment`) the desired supply to the distribution account — this is the issuance/mint [2].\n5. Publish a **`stellar.toml` (SEP-1)** so wallets can discover and identify the asset [1].\n6. Optionally cap supply by locking the issuer (set master weight to 0 after the full issuance) [1]. AUTH_IMMUTABLE only freezes the auth flags and blocks account merge; it does not cap supply.",
+        "answer": "There is **no 'create asset' operation** — a classic asset is defined by its **`(asset_code, issuer account)`** pair and simply comes into existence the first time the issuer pays it out [1][2]. The flow:\n\n1. Create/fund the **issuing account** and a separate **distribution account** (two-account best practice) [1].\n2. Optionally set issuer **authorization flags** first (e.g. AUTH_REQUIRED/REVOCABLE, or clawback) — AUTH_REQUIRED and clawback affect trustlines created afterward; AUTH_REVOCABLE also lets the issuer revoke existing trustlines [1].\n3. The **distribution account opens a trustline** to the asset via **`ChangeTrust`** [2].\n4. The **issuer sends** (a `Payment`) the desired supply to the distribution account — this is the issuance/mint [2].\n5. Publish a **`stellar.toml` (SEP-1)** so wallets can discover and identify the asset [1].\n6. Optionally cap supply by locking the issuer after full issuance [1]. Setting master weight to 0 disables the master key. No remaining signing authority may authorize further issuance. AUTH_IMMUTABLE only freezes the auth flags and blocks account merge; it does not cap supply.",
         "keyFacts": [
           "A classic asset is defined by its asset code and issuing account.",
           "The asset exists after the issuer sends it to an account with a trustline.",
@@ -3240,7 +3241,7 @@
           "Do NOT describe issuing a Stellar asset as deploying a Solidity/ERC-20 contract.",
           "Do NOT claim there is a dedicated 'createAsset' operation on the protocol."
         ],
-        "notes": "End-to-end issuance how-to. Dossier §1.\nAlso good if the answer: Recommends the two-account (issuing + distribution) pattern and setting any needed auth flags first. | Recommends publishing a stellar.toml (SEP-1) so wallets can discover/identify the asset.\nGolden cites: An asset-issuance page on developers.stellar.org.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` can still mint. Do not penalize an answer that adds this caveat to step 6."
+        "notes": "End-to-end issuance how-to. Dossier §1.\nAlso good if the answer: Recommends the two-account (issuing + distribution) pattern and setting any needed auth flags first. | Recommends publishing a stellar.toml (SEP-1) so wallets can discover/identify the asset.\nGolden cites: An asset-issuance page on developers.stellar.org.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` can still mint. Do not penalize an answer that adds this caveat to step 6.\nFor step 6, master weight 0 disables only the master key. No remaining signing authority may authorize further issuance or restore issuance permission."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -3294,6 +3295,24 @@
             "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs",
             "note": "fn mint: 'let admin = read_administrator(e)?; admin.require_auth()?;' - SAC mint is gated by the current admin, not by the issuer account's signing weight.",
             "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig.md",
+            "observedAt": "2026-11-03",
+            "note": "Master weight 0 disables the master key; other signers can still authorize transactions under the relevant thresholds. Receipt: research/audits/2026-11-02-golden-overnight/issuer-lock-core-receipts.json#multisig; body SHA256 6e2a70e0c425a38a12abf42c6383ce2f54c070b92504240e3788fd4202a98b80"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp",
+            "observedAt": "2026-11-03",
+            "note": "Lines 430-444 include the master only when its weight is nonzero, then append existing signers independently. Body SHA256 fb6c9fcb85589265c3199205d247ae8ebb2aacc662b6182fe8ef098337ac9fd5"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/SetOptionsOpFrame.cpp",
+            "observedAt": "2026-11-03",
+            "note": "Lines 32-41 use the high threshold for signer/master/threshold changes; lines 185-209 treat master weight and signer changes separately. Body SHA256 985a681225ffeafd43d9310ac947d3c73c987a28f773ac9b316f884af2a6c7c3"
           }
         ],
         "corroboration": [
@@ -3340,7 +3359,7 @@
             ]
           },
           {
-            "claim": "Supply is capped by setting the issuer's master weight to 0 after full issuance; AUTH_IMMUTABLE only freezes the auth flags and blocks account merge.",
+            "claim": "For the new-account recipe without additional signers, master weight 0 disables the master key after issuance. A cap on issuer issuance requires that no remaining signing authority can authorize or restore further issuance. AUTH_IMMUTABLE only freezes the auth flags and blocks account merge.",
             "verdict": "confirmed",
             "evidence": [
               {
@@ -3360,6 +3379,24 @@
                 "ref": "stellar/stellar-core src/transactions/SetOptionsOpFrame.cpp and MergeOpFrame.cpp",
                 "observedAt": "2026-11-02",
                 "note": "Exact quote: \"isImmutableAuth(sourceAccount) [blocks set/clear of auth flags] ... if (isImmutableAuth(sourceAccountEntry)) { innerResult(res).code(ACCOUNT_MERGE_IMMUTABLE_SET);\""
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig.md",
+                "observedAt": "2026-11-03",
+                "note": "Master weight 0 disables the master key; other signers can still authorize transactions under the relevant thresholds. Receipt: research/audits/2026-11-02-golden-overnight/issuer-lock-core-receipts.json#multisig; body SHA256 6e2a70e0c425a38a12abf42c6383ce2f54c070b92504240e3788fd4202a98b80"
+              },
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionFrame.cpp",
+                "observedAt": "2026-11-03",
+                "note": "Lines 430-444 include the master only when its weight is nonzero, then append existing signers independently. Body SHA256 fb6c9fcb85589265c3199205d247ae8ebb2aacc662b6182fe8ef098337ac9fd5"
+              },
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-core/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/SetOptionsOpFrame.cpp",
+                "observedAt": "2026-11-03",
+                "note": "Lines 32-41 use the high threshold for signer/master/threshold changes; lines 185-209 treat master weight and signer changes separately. Body SHA256 985a681225ffeafd43d9310ac947d3c73c987a28f773ac9b316f884af2a6c7c3"
               }
             ]
           },
@@ -3389,35 +3426,17 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task payments-assets)",
+          "date": "2026-11-03",
+          "by": "Codex t55 proposer; Grok 4.7 high, independent verifier t5q; Codex root applier; research/audits/2026-11-02-golden-overnight/reference-correction-review.md",
           "evidence": [
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline’s authorization ... With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any *subsequent* trustlines established with this account will have clawbacks enabled.\" (claim: verifier accept golden.answer)",
-            "2026-11-02 [B] stellar/stellar-core src/transactions/ChangeTrustOpFrame.cpp — \"if (!isAuthRequired(issuer)) { tl.flags = AUTHORIZED_FLAG; } if (isClawbackEnabledOnAccount(issuer)) { tl.flags |= TRUSTLINE_CLAWBACK_ENABLED_FLAG; }\" (claim: verifier accept golden.answer)",
-            "2026-11-02 [B] stellar/stellar-core src/transactions/SetTrustLineFlagsOpFrame.cpp — \"if ((sourceAccountEntry.current().data.account().flags & AUTH_REVOCABLE_FLAG) != 0) { return true; } ... AUTH_REVOCABLE_FLAG is not set on the account, so the three transitions below are not allowed. ... AUTHORIZED_FLAG -> 0\" (claim: verifier accept golden.answer)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"Authorization Immutable (0x4) With this setting, none of the other authorization flags (AUTH_REQUIRED_FLAG, AUTH_REVOCABLE_FLAG) can be set, and the issuing account can’t be merged. ... first set the issuing account’s master weight to 0 using the Set Options operation. ... Be sure to do this only after you’ve issued all desired assets to the distribution account.\" (claim: verifier accept golden.answer)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — \"This `setOptions` operation locks the issuer account so there can never be any more of the asset minted ... masterWeight: 0\" (claim: verifier accept golden.answer)",
-            "2026-11-02 [B] stellar/stellar-core src/transactions/SetOptionsOpFrame.cpp and MergeOpFrame.cpp — \"isImmutableAuth(sourceAccount) [blocks set/clear of auth flags] ... if (isImmutableAuth(sourceAccountEntry)) { innerResult(res).code(ACCOUNT_MERGE_IMMUTABLE_SET);\" (claim: verifier accept golden.answer)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"The issuing account creates (or mints) the asset on the network by executing a payment operation ... Any account wanting to hold the asset must first establish a trustline\" (claim: golden.keyFacts[0..3] confirmed: Asset = code+issuer; exists after issuer pays a trustline holder; ChangeTrust; Payment issues)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — \"The `changeTrust` operation creates (or alters) a trustline ... Second, the issuing account actually sends a payment using the asset.\" (claim: golden.keyFacts[0..3] confirmed: Asset = code+issuer; exists after issuer pays a trustline holder; ChangeTrust; Payment issues)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"The issuing account will always be linked to the asset’s identity.\" (claim: golden.keyFacts[0..3] confirmed: Asset = code+issuer; exists after issuer pays a trustline holder; ChangeTrust; Payment issues)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"With this setting [Authorization Immutable], none of the other authorization flags ... can be set, and the issuing account can't be merged ... To do this, first set the issuing account's master weight to 0 using the Set Options operation.\" (claim: golden.answer (step 6) contradicted: Cap supply by locking the issuer: master weight 0 / AUTH_IMMUTABLE)",
-            "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — \"AUTH_IMMUTABLE_FLAG = 0x4 // Once set, causes all AUTH_* flags to be read-only\" (claim: golden.answer (step 6) contradicted: Cap supply by locking the issuer: master weight 0 / AUTH_IMMUTABLE)",
-            "2026-11-02 [E] stellarDocs.search_docs('AUTH_IMMUTABLE flag issuing account can't be merged') — \"control-asset-access#authorization-immutable-0x4\" (claim: golden.answer (step 6) contradicted: Cap supply by locking the issuer: master weight 0 / AUTH_IMMUTABLE)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline's authorization ... With the AUTH_CLAWBACK_ENABLED_FLAG flag set, any subsequent trustlines established with this account will have clawbacks enabled.\" (claim: golden.answer (step 2) contradicted: Issuer flags only apply to trustlines created afterward)",
-            "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — \"AUTH_REVOCABLE_FLAG = 0x2 ... otherwise, authorization cannot be revoked\" (claim: golden.answer (step 2) contradicted: Issuer flags only apply to trustlines created afterward)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"operation list has no create-asset operation; issuance is a payment from the issuer\" (claim: golden.avoid[1] confirmed: No dedicated createAsset operation)",
-            "2026-11-02 [A] https://developers.stellar.org/docs/tokens/control-asset-access — \"The issuing account creates (or mints) the asset on the network by executing a payment operation.\" (claim: golden.avoid[1] confirmed: No dedicated createAsset operation)",
-            "Sibling sweep 2026-11-02: grep AUTH_IMMUTABLE|created afterward over eval/qa/corpus/battery → q-comp-auth-flags-overview says AUTH_IMMUTABLE 'locks the authorization flags (and blocks account merge)', which matches the corrected text; q-comp-clawback-cap0035 and q-comp-sac-inherits-flags do not claim AUTH_IMMUTABLE caps supply; no contradiction.",
-            "Pass 2 gospel change 2026-11-02: golden.notes add the SAC-admin supply-cap caveat already in q-aas-issuer-fees-supply-cap-freeze (do-not-penalize, symmetric); answer, keyFacts, avoid, and tags unchanged.",
-            "Live A 2026-11-02 (curl): https://developers.stellar.org/docs/tokens/control-asset-access - 'If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.'; https://developers.stellar.org/docs/tokens/stellar-asset-contract - 'administrative authority is mutable and can be transferred afterwards with the SAC's set_admin function.'; https://developers.stellar.org/docs/tokens/how-to-issue-an-asset - '// This `setOptions` operation locks the issuer account // so there can never be any more of the asset minted'.",
-            "Live B 2026-11-02 (gh api): stellar/rs-soroban-env main soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs - 'pub(crate) fn mint(e: &Host, to: Address, amount: i128) ... let admin = read_administrator(e)?; admin.require_auth()?;' and 'pub(crate) fn set_admin(e: &Host, new_admin: Address) ... admin.require_auth()?;'.",
-            "Sibling sweep 2026-11-02 (pass 2): q-aas-issuer-fees-supply-cap-freeze carries the same caveat; q-pc-multisig-setup-lifecycle (master weight 0 lock risk) and q-comp-sac-inherits-flags do not claim a locked issuer caps SAC minting; no contradiction.",
-            "Pass 1 verification event (batch assets-anchors-seps-02, .agents/rounds/2026-11-02-golden-audit.md) produced the earlier 2026-11-02 evidence rows and edits in this branch diff; the pass-2 rows follow."
+            "Primary classes A/B checked 2026-11-03. Official multisig documentation and immutable Stellar Core revision b8c4f12d6f1159d67be8743c87a3c7df839ae7f4 support the signing-authority distinction.",
+            "Durable source receipts: research/audits/2026-11-02-golden-overnight/issuer-lock-core-receipts.json.",
+            "The shown recipe creates new default accounts and adds no other signer; the qualification does not declare that recipe false.",
+            "The owned sibling sweep covered 501 battery cases, four proposals, two live cases, and supporting corpus files. Only q-asset-issue-asset-howto requires this narrow answer qualification.",
+            "Exact independent review, including threshold and authority-restoration behavior, is recorded in research/audits/2026-11-02-golden-overnight/reference-correction-review.md. Original recorded grades remain unchanged."
           ],
           "rootCause": [
-            "eval-side authoring flaw: conflated AUTH_IMMUTABLE with the issuer lock and over-generalized flag timing to AUTH_REVOCABLE",
-            "eval-authoring: step 6 'Optionally cap supply by locking the issuer' lacked the documented SAC-admin caveat that the sibling q-aas-issuer-fees-supply-cap-freeze now carries (consistency-entities F13)."
+            "improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md"
           ]
         },
         "origin": "raven-next q-asset-issue-asset-howto"
@@ -20810,7 +20829,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "A grounded answer obtains the requested current value or state from the current official Stellar documentation, states the measurement basis, and makes the observation date visible. As of 2026-11-02, the verified sources supported this observed answer:\n\n**Freshness-honesty case — gate the behavior, not a frozen number.** As of **2026-11-02**, Mainnet runs **Protocol 29**, a security-focused release with no new CAPs; live Horizon shows the P28→P29 boundary at ledger **64717645** on **2026-10-01 17:00:07 UTC**. SDF has scheduled the Mainnet vote on **Bell, Protocol 30** for 2026-11-23 17:00 UTC; a scheduled vote is not activation. A correct answer should still perform a dated lookup against an authoritative live network source, state the observed version and as-of time, and warn that validator upgrade votes can make it stale. Software release tags are supporting context, not proof of network activation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A complete current-version answer uses a dated authoritative live-network observation and states its network and observation time. As of 2026-11-02, the verified sources supported this observed answer:\n\n**Freshness-honesty case — gate the behavior, not a frozen number.** As of **2026-11-02**, Mainnet runs **Protocol 29**, a security-focused release with no new CAPs; live Horizon shows the P28→P29 boundary at ledger **64717645** on **2026-10-01 17:00:07 UTC**. SDF has scheduled the Mainnet vote on **Bell, Protocol 30** for 2026-11-23 17:00 UTC; a scheduled vote is not activation. A correct answer should still perform a dated lookup against an authoritative live network source, state the observed version and as-of time, and warn that validator upgrade votes can make it stale. Software release tags are supporting context, not proof of network activation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents source-supported content as a current or dated observation, not a memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -20821,9 +20840,10 @@
           "Do NOT state a protocol version as definitively current without a dated source or staleness flag.",
           "Do NOT claim Protocol 28 or an earlier version is still current on Mainnet.",
           "Do NOT infer live network activation solely from a software release tag.",
-          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+          "Do NOT describe a documentation page's latest listed version as a current live-network measurement."
         ],
-        "notes": "FRESHNESS UPDATE 2026-11-02: Pubnet runs Protocol 29; Horizon/RPC establish activation at ledger 64717645 on 2026-10-01T17:00:07Z (Protocol 28, Adapter, at ledger 64458446 on 2026-09-16). The Bell, Protocol 30 Mainnet vote is scheduled for 2026-11-23 17:00 UTC; grade what a dated live lookup shows. A dated answer after activation may correctly report Protocol 30 (or a later version) as current. Grade a dated live-network lookup and release-versus-activation distinction, not a frozen latest-ledger number.\nAlso good if the answer: Points the user to an authoritative live source (e.g. dashboard / stellar-core release / docs) to confirm the current version.\nGolden cites: Cite a dated source for the version (docs / stellar-core release / network dashboard).\nPOST-VOTE GT-23 CORRECTION 2026-07-10: the stale P26/pending-vote paragraph is replaced rather than left as contradictory judge context."
+        "notes": "FRESHNESS UPDATE 2026-11-02: Pubnet runs Protocol 29; Horizon/RPC establish activation at ledger 64717645 on 2026-10-01T17:00:07Z (Protocol 28, Adapter, at ledger 64458446 on 2026-09-16). The Bell, Protocol 30 Mainnet vote is scheduled for 2026-11-23 17:00 UTC; grade what a dated live lookup shows. A dated answer after activation may correctly report Protocol 30 (or a later version) as current. Grade a dated live-network lookup and release-versus-activation distinction, not a frozen latest-ledger number.\nA complete answer establishes the requested live value through an identified network observation. Cite its source and observation time. A release tag, scheduled vote, or documentation snapshot alone does not establish that value. An official page can relay a live measurement if it identifies the network and observation time. If the available tools return only documentation, state that limitation and distinguish the latest documented version from live state. An honest limitation does not fabricate a version, but it does not establish the requested current value. Do not require a specific provider or an unexposed tool operation.\nPOST-VOTE GT-23 CORRECTION 2026-07-10: the stale P26/pending-vote paragraph is replaced rather than left as contradictory judge context."
       },
       "tags": {
         "category": "edge-behavior",
@@ -20833,7 +20853,34 @@
       "truth": {
         "lifecycle": {
           "state": "active",
-          "reviewState": "none"
+          "reviewState": "resolved",
+          "review": {
+            "queuedOn": "2026-11-03",
+            "trigger": "proposal-verification",
+            "evidence": [
+              "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
+              "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
+              "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+              "research/audits/2026-11-03-qa-followup/reference-approval.md"
+            ],
+            "startedOn": "2026-11-03",
+            "reviewer": "Grok 4.7 high, independent source verifier t9r",
+            "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
+            "resolvedOn": "2026-11-03",
+            "resolution": "Clarified the source-backed question scope after independent review. Original answers and grades remain unchanged."
+          },
+          "reactivation": {
+            "date": "2026-11-03",
+            "author": "Codex root",
+            "reviewer": "Grok 4.7 high, independent source verifier t9r",
+            "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
+            "evidence": [
+              "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
+              "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
+              "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+              "research/audits/2026-11-03-qa-followup/reference-approval.md"
+            ]
+          }
         },
         "domain": "real-world",
         "status": "confirmed",
@@ -20896,6 +20943,66 @@
             "ref": "https://stellar.expert/explorer/public/protocol-history",
             "note": "Ledger 64717645 2026-10-01 17:00:07 UTC Protocol version 29; Ledger 64458446 2026-09-16 17:00:06 UTC Protocol version 28",
             "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-03",
+            "note": "The page lists Protocol 29 on Mainnet from October 1, 2026. This is documentation, not a live measurement."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-core/releases/tags/v30.0.0",
+            "observedAt": "2026-11-03",
+            "note": "The v30.0.0 release was published on 2026-10-16. Release availability alone does not show network activation."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-03",
+            "note": "current_protocol_version=29; core_supported_protocol_version=30; history_latest_ledger=65285576."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-11-03",
+            "note": "sequence=65285576; protocol_version=29; closed_at=2026-11-03T13:51:59Z."
+          },
+          {
+            "class": "C",
+            "ref": "https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-11-03",
+            "note": "Public Global Stellar Network ; September 2015; protocolVersion=29."
+          },
+          {
+            "class": "C",
+            "ref": "https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-11-03",
+            "note": "sequence=65285576; protocolVersion=29; closeTime=1793713919. XDR fields are omitted from the saved projection."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLatestLedger.md",
+            "observedAt": "2026-11-03",
+            "note": "The response describes the latest ledger known to that node when it handled the request."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades.md",
+            "observedAt": "2026-11-03",
+            "note": "Validators must agree on a new network setting before the network adopts it."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/herder/Upgrades.cpp",
+            "observedAt": "2026-11-03",
+            "note": "createUpgradesFor compares the requested version with lclHeader.ledgerVersion before proposing LEDGER_UPGRADE_VERSION."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-03",
+            "note": "The same response reports current protocol 29 and supported protocol 30."
           }
         ],
         "corroboration": [
@@ -21030,34 +21137,102 @@
                 "note": "Protocol 28 (Mainnet, September 16, 2026) is followed by Protocol 29 (Mainnet, October 1, 2026)"
               }
             ]
+          },
+          {
+            "claim": "Mainnet reports Protocol 29 at ledger 65285576, closed 2026-11-03T13:51:59Z; Core supports Protocol 30.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+                "observedAt": "2026-11-03",
+                "note": "The page lists Protocol 29 on Mainnet from October 1, 2026. This is documentation, not a live measurement."
+              },
+              {
+                "class": "B",
+                "ref": "https://api.github.com/repos/stellar/stellar-core/releases/tags/v30.0.0",
+                "observedAt": "2026-11-03",
+                "note": "The v30.0.0 release was published on 2026-10-16. Release availability alone does not show network activation."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/",
+                "observedAt": "2026-11-03",
+                "note": "current_protocol_version=29; core_supported_protocol_version=30; history_latest_ledger=65285576."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+                "observedAt": "2026-11-03",
+                "note": "sequence=65285576; protocol_version=29; closed_at=2026-11-03T13:51:59Z."
+              },
+              {
+                "class": "C",
+                "ref": "https://mainnet.sorobanrpc.com",
+                "observedAt": "2026-11-03",
+                "note": "Public Global Stellar Network ; September 2015; protocolVersion=29."
+              },
+              {
+                "class": "C",
+                "ref": "https://mainnet.sorobanrpc.com",
+                "observedAt": "2026-11-03",
+                "note": "sequence=65285576; protocolVersion=29; closeTime=1793713919. XDR fields are omitted from the saved projection."
+              }
+            ]
+          },
+          {
+            "claim": "Software support, network activation, and a documentation snapshot are different evidence bases.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLatestLedger.md",
+                "observedAt": "2026-11-03",
+                "note": "The response describes the latest ledger known to that node when it handled the request."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades.md",
+                "observedAt": "2026-11-03",
+                "note": "Validators must agree on a new network setting before the network adopts it."
+              },
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/herder/Upgrades.cpp",
+                "observedAt": "2026-11-03",
+                "note": "createUpgradesFor compares the requested version with lclHeader.ledgerVersion before proposing LEDGER_UPGRADE_VERSION."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/",
+                "observedAt": "2026-11-03",
+                "note": "The same response reports current protocol 29 and supported protocol 30."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task critic-cleanup)",
+          "date": "2026-11-03",
+          "by": "Codex reference proposer t9q and Codex root; independent Grok source verifier t9r; research/audits/2026-11-03-qa-followup/reference-approval.md",
           "evidence": [
-            "Live 2026-11-02: https://horizon.stellar.org/ledgers/64717644 and /64717645 — '64717644 protocol_version 28 closed_at 2026-10-01T17:00:02Z; 64717645 protocol_version 29 closed_at 2026-10-01T17:00:07Z'.",
-            "Live 2026-11-02: https://horizon.stellar.org/ — 'current_protocol_version 29, core_supported_protocol_version 30'; /ledgers?order=desc&limit=1 — ledger 65270214 protocol_version 29 at 2026-11-02T16:27:34Z.",
-            "Live 2026-11-02: https://mainnet.sorobanrpc.com getLatestLedger — '\"protocolVersion\":29,\"sequence\":65270214'.",
-            "Live 2026-11-02: https://horizon.stellar.org/ledgers/64458445 and /64458446 — '64458445 protocol 27 2026-09-16T17:00:01Z; 64458446 protocol 28 2026-09-16T17:00:06Z'.",
-            "Live 2026-11-02 (class A): https://developers.stellar.org/docs/networks/software-versions — 'Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs.'",
-            "Live 2026-11-02 (class B): https://github.com/stellar/stellar-core/releases/tag/v29.0.0 — published 2026-10-05, after activation; v30.0.0 published 2026-10-16 while Mainnet reports 29 (release tag is not activation).",
-            "Live 2026-11-02 (class A): https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar — 'November 23, 2026, 1700 UTC—Mainnet upgrade vote.'; corroborated by https://status.stellar.org/ (class D via Perplexity) 'Stellar Public Network Protocol Upgrade Vote Nov 23, 2026 17:00 - 17:05 UTC'.",
-            "Independent verifier (did not read the proposer matrix) accepted golden.answer, golden.avoid[1], and golden.notes (.agents/rounds/2026-11-02-golden-audit.md, pass 1 batch edge-behavior-02 verify).",
-            "reverifyBy 2026-11-24 is event-tied and matches cluster-120 siblings q-protocol-version-history-list and q-pc-protocol-upgrade-timing: re-probe Mainnet protocol_version the day after the scheduled 2026-11-23 17:00 UTC Bell, Protocol 30 vote.",
-            "Sibling sweep 2026-11-02: grep 'Protocol 2[6-9]|P2[6-9]|64717645|63386819' over eval/qa/corpus/battery → q-edge-fresh-most-recent-news, q-hist-quantum-preparedness-plan (already says Mainnet runs Protocol 29, vote 2026-11-23: consistent), q-pc-memos-reference, q-pc-protocol-26-yardstick, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-cap-process, q-protocol-ledger-close-time, q-protocol-ledger-entry-types, q-protocol-ledger-header-fields, q-protocol-version-history-list, q-raph-xlm-staking, q-sor-contract-trustlines-c-address, q-sor-cross-warmancer-zk-stack, q-sor-persistent-unbounded-collection-cap, q-soroban-auth-delegation-p27, q-soroban-wasm-size-limit, q-zk-host-functions-status; no direct contradiction with the dated P29 example. Undated 'current Protocol 27' wording in q-pc-memos-reference and q-protocol-ledger-entry-types is flagged to the round ledger for their own batches.",
-            "Gospel change (pass 3): golden.notes drops the Software Versions older-copy partial-cap caution, whose trigger expired and which lies outside the three ADR-0008 cases; it also misdated the fix as 2026-08-18. golden.notes gains the explicit post-activation P30 sentence that cluster-120 siblings carry.",
-            "Class C 2026-11-02: improvements/resolved.json sd-008 - resolved 2026-08-28, upstreamRefs stellar/stellar-docs#2574 and PR #2743; GitHub API 2026-11-02: PR #2743 'Update software versions for p27 (Mainnet) and initial p28' merged 2026-08-13T14:36:09Z (64ca6f66); issue #2574 closed 2026-08-13T15:31:59Z.",
-            "Class A 2026-11-02T18:40Z: https://developers.stellar.org/docs/networks/software-versions - 'Protocol 29 (Mainnet, October 1, 2026)', 'Protocol 28 (Mainnet, September 16, 2026)', 'Protocol 27 (Mainnet, July 8, 2026)', 'Protocol 26 (Mainnet, May 6, 2026)'; the page no longer carries the stale P26-Mainnet-current wording.",
-            "Class F 2026-11-02T18:40Z: https://horizon.stellar.org/ - current_protocol_version 29, core_supported_protocol_version 30, history_latest_ledger 65271813; https://horizon-testnet.stellar.org/ current_protocol_version 29.",
-            "Class A 2026-11-02: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide - 'November 3, 2026, 1700 UTC —Testnet upgrade vote' and 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'; class D https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json - 'Stellar Public Network Protocol Upgrade Vote' scheduled 2026-11-23T17:00:00.000Z to 17:05:00.000Z, 'Validators will vote on whether to upgrade Mainnet to to Bell, Protocol 30.'",
-            "Sibling sweep 2026-11-02 (pass 3): q-pc-protocol-upgrade-timing already removed the same caution; q-protocol-27-cap-0071 removes it in this task; q-protocol-version-history-list carries the same P30 sentence; numericInvariant 'Mainnet protocol activation history' says a dated later answer that reports P30 as current is correct. No contradiction. Register cluster-024 note still says 'fixed 2026-08-18' (orchestrator register edit)."
+            "https://horizon.stellar.org/",
+            "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "https://mainnet.sorobanrpc.com (getNetwork and getLatestLedger)",
+            "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLatestLedger.md",
+            "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades.md",
+            "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/herder/Upgrades.cpp",
+            "research/audits/2026-11-03-qa-followup/reference-changes.md#protocol-measurement-basis",
+            "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+            "research/audits/2026-11-03-qa-followup/reference-sibling-sweep.json",
+            "Sibling sweep: 501 battery files, 4 proposal files, and 2 frozen live files; no conflicting target claim found.",
+            "Support sweep: consistency-register clusters 007, 017, 020, 025, 048, 083, 120 and the Bell vote trap; no source sentinel matches.",
+            "Dated illustrations, freshness tags and reverify dates are unchanged. Review closure and reactivation are explicit.",
+            "research/audits/2026-11-03-qa-followup/reference-approval.md",
+            "Reviewability refinement: required key facts track the question. Conditional background rules remain in golden.notes and avoid clauses."
           ],
           "rootCause": [
-            "freshness-drift",
-            "The dated illustrative example (Protocol 27, 2026-07-09) and its pending-vote avoid item went stale after Protocol 28 (2026-09-16) and Protocol 29 (2026-10-01) activated on Mainnet.",
-            "improvements/resolved.json (sd-008: upstream fix stellar/stellar-docs PR #2743 merged 2026-08-13 and issue #2574 closed 2026-08-13; finding resolved 2026-08-28 after live re-check) - expired older-copy partial-cap caution removed",
-            "Eval-side authoring flaw: pass 1 set reverifyBy 2026-12-15 while cluster-120 siblings use 2026-11-24 for the same Bell vote, and omitted their explicit post-activation P30 sentence."
+            "The question requires a current network observation, while the introduction and citation notes accept a documentation snapshot. .agents/TODO.md at Git commit bdcf915fb552d054657b04b23abc561a65d395f3, entry Resolve diagnostic noncompletions and judge ambiguities.",
+            "research/audits/2026-11-03-qa-followup/reference-changes.md"
           ]
         },
         "origin": "raven-next q-edge-fresh-latest-protocol-version"
@@ -22299,17 +22474,15 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "You cannot earn a native protocol XLM staking APY: Stellar uses **SCP/FBA**, not proof of stake, and official docs state validators receive **no monetary rewards**. There is no native stake/delegation position or validator-reward schedule to quote. The historical 1% inflation mechanism ended on 2019-10-28 and was not PoS staking. Products marketed as XLM staking or yield must disclose their actual source: issuer/anchor interest (such as yXLM), lending, AMM/LP emissions, vault rewards, token locks, RWA yield, or external-asset staking wrappers are not native validator staking. As of the 2026-07-10 audited source sweep and a 2026-11-02 re-sweep, no live native-XLM liquid-staking protocol was identified; keep that negative dated and source-bounded.",
+        "answer": "You cannot earn a native protocol XLM staking APY: Stellar uses **SCP/FBA**, not proof of stake, and official docs state validators receive **no monetary rewards**. There is no native stake/delegation position or validator-reward schedule to quote.\n\nOptional background; this question does not require a product survey:\nThe historical 1% inflation mechanism ended on 2019-10-28 and was not PoS staking. Products marketed as XLM staking or yield must disclose their actual source: issuer/anchor interest (such as yXLM), lending, AMM/LP emissions, vault rewards, token locks, RWA yield, or external-asset staking wrappers are not native validator staking.\n\nOptional dated source observation; it is not a required part of the native-rewards answer:\nAs of the 2026-07-10 audited source sweep and a 2026-11-02 re-sweep, no live native-XLM liquid-staking protocol was identified; keep that negative dated and source-bounded.",
         "keyFacts": [
-          "States SCP/FBA is not PoS and validators receive no native monetary/staking rewards.",
-          "Classifies third-party XLM yield by its reward source.",
-          "Keeps the no-native-XLM-LST finding dated and source-bounded."
+          "States SCP/FBA is not PoS and validators receive no native monetary/staking rewards."
         ],
         "avoid": [
           "Do NOT invent a protocol APY, delegation position, or validator reward schedule.",
           "Do NOT label issuer, lending, AMM, vault, RWA, or external-chain yield as native XLM liquid staking."
         ],
-        "notes": "GT-25 CORRECTION 2026-07-10: Stellar is SCP/FBA with no validator monetary rewards. Third-party yield must be classified by source; do not imply a verified native-XLM liquid-staking category. The no-live-native-LST result is dated/source-bounded.\nGT-25 independently confirmed by processes 3268/3273.\nFRESHNESS NOTE 2026-11-02: StelloFi (stellofi.com) markets sXLM as 'Native XLM Liquid Staking' and says its unaudited contracts are deployed on Stellar Mainnet, but its own docs call sXLM a vault share token, say no strategy allocation is implemented, show a flat APY, and state Stellar has no native staking yield. Naming such a product while classifying it as a vault share is not a wrong claim; calling it native validator staking remains wrong.\n2026-11-02 caution: SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for rewards on XLM locked for a fixed term; SDF says it has not decided to fund or support it, and locked XLM would not secure the network or confer validator rights. An accurate dated mention is not a wrong claim and does not contradict the no-native-reward fact; calling it adopted, a protocol APY, or proof-of-stake staking is wrong."
+        "notes": "GT-25 CORRECTION 2026-07-10: Stellar is SCP/FBA with no validator monetary rewards. Third-party yield must be classified by source; do not imply a verified native-XLM liquid-staking category. The no-live-native-LST result is dated/source-bounded.\nGT-25 independently confirmed by processes 3268/3273.\nFRESHNESS NOTE 2026-11-02: StelloFi (stellofi.com) markets sXLM as 'Native XLM Liquid Staking' and says its unaudited contracts are deployed on Stellar Mainnet, but its own docs call sXLM a vault share token, say no strategy allocation is implemented, show a flat APY, and state Stellar has no native staking yield. Naming such a product while classifying it as a vault share is not a wrong claim; calling it native validator staking remains wrong.\n2026-11-02 caution: SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for rewards on XLM locked for a fixed term; SDF says it has not decided to fund or support it, and locked XLM would not secure the network or confer validator rights. An accurate dated mention is not a wrong claim and does not contradict the no-native-reward fact; calling it adopted, a protocol APY, or proof-of-stake staking is wrong.\nQUESTION SCOPE 2026-11-03: This question asks about native protocol staking and validator rewards. A correct answer need not survey LST products or repeat the dated absence finding. Third-party examples are optional. If the answer discusses them, require accurate reward-source classification. If it makes an absence claim, require its source scope and observation date. Preserve the SCP/FBA correction and the lack of native validator rewards. The 2026-11-02 LST sweep remains a dated finding; this edit does not renew it."
       },
       "tags": {
         "category": "edge-behavior",
@@ -22320,7 +22493,34 @@
       "truth": {
         "lifecycle": {
           "state": "active",
-          "reviewState": "none"
+          "reviewState": "resolved",
+          "review": {
+            "queuedOn": "2026-11-03",
+            "trigger": "proposal-verification",
+            "evidence": [
+              "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
+              "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
+              "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+              "research/audits/2026-11-03-qa-followup/reference-approval.md"
+            ],
+            "startedOn": "2026-11-03",
+            "reviewer": "Grok 4.7 high, independent source verifier t9r",
+            "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
+            "resolvedOn": "2026-11-03",
+            "resolution": "Clarified the source-backed question scope after independent review. Original answers and grades remain unchanged."
+          },
+          "reactivation": {
+            "date": "2026-11-03",
+            "author": "Codex root",
+            "reviewer": "Grok 4.7 high, independent source verifier t9r",
+            "ledger": ".agents/rounds/2026-11-03-qa-followup.md",
+            "evidence": [
+              "research/audits/2026-11-03-qa-followup/reference-review-v1.md",
+              "research/audits/2026-11-03-qa-followup/blind-reference-matrix.json",
+              "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+              "research/audits/2026-11-03-qa-followup/reference-approval.md"
+            ]
+          }
         },
         "domain": "mixed",
         "status": "confirmed",
@@ -22384,6 +22584,54 @@
           {
             "class": "D",
             "ref": "https://api.llama.fi/protocols"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+            "observedAt": "2026-11-03",
+            "note": "The official overview identifies SCP as FBA and explicitly states that validators receive no monetary rewards."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
+            "observedAt": "2026-11-03",
+            "note": "isQuorumSliceInternal counts validators and inner quorum sets against qset.threshold. It does not use a stake balance."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+            "observedAt": "2026-11-03",
+            "note": "SDF explicitly excludes block rewards, staking yield, MEV awards, and transaction-fee shares for validators."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+native+proof+of+stake+validator+rewards+November+2026",
+            "observedAt": "2026-11-03",
+            "note": "The free contradiction search returned the official validator explanation and no applicable primary contradiction."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.stellofi.com/docs",
+            "observedAt": "2026-11-03",
+            "note": "The current page metadata describes an XLM vault and a composable share token."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
+            "observedAt": "2026-11-03",
+            "note": "The repository describes sXLM as a vault share. It lists lending and fee sources rather than validator rewards."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+            "observedAt": "2026-11-03",
+            "note": "The explorer reports the named Mainnet contract. Source validation remains unverified; this response does not establish the reward mechanism or current APY."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+XLM+liquid+staking+StelloFi+sXLM",
+            "observedAt": "2026-11-03",
+            "note": "The free search surfaced sXLM marketing and lending/liquidity claims. It does not establish a complete market inventory."
           }
         ],
         "corroboration": [
@@ -22495,26 +22743,90 @@
                 "note": "Page description: 'Mechanics are not defined yet.' (a discussion, not a CAP)."
               }
             ]
+          },
+          {
+            "claim": "Stellar uses SCP/FBA rather than proof of stake; validators receive no native monetary rewards.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+                "observedAt": "2026-11-03",
+                "note": "The official overview identifies SCP as FBA and explicitly states that validators receive no monetary rewards."
+              },
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
+                "observedAt": "2026-11-03",
+                "note": "isQuorumSliceInternal counts validators and inner quorum sets against qset.threshold. It does not use a stake balance."
+              },
+              {
+                "class": "A",
+                "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+                "observedAt": "2026-11-03",
+                "note": "SDF explicitly excludes block rewards, staking yield, MEV awards, and transaction-fee shares for validators."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.google.com/search?q=Stellar+native+proof+of+stake+validator+rewards+November+2026",
+                "observedAt": "2026-11-03",
+                "note": "The free contradiction search returned the official validator explanation and no applicable primary contradiction."
+              }
+            ]
+          },
+          {
+            "claim": "A deployed sXLM contract and a vault share do not establish native validator staking or its rewards.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://www.stellofi.com/docs",
+                "observedAt": "2026-11-03",
+                "note": "The current page metadata describes an XLM vault and a composable share token."
+              },
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
+                "observedAt": "2026-11-03",
+                "note": "The repository describes sXLM as a vault share. It lists lending and fee sources rather than validator rewards."
+              },
+              {
+                "class": "C",
+                "ref": "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+                "observedAt": "2026-11-03",
+                "note": "The explorer reports the named Mainnet contract. Source validation remains unverified. This response does not establish its reward mechanism, current APY, or validator rewards."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.google.com/search?q=Stellar+XLM+liquid+staking+StelloFi+sXLM",
+                "observedAt": "2026-11-03",
+                "note": "The free search surfaced sXLM marketing and lending/liquidity claims. It does not establish a complete market inventory."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task scf-population-staking)",
+          "date": "2026-11-03",
+          "by": "Codex reference proposer t9q and Codex root; independent Grok source verifier t9r; research/audits/2026-11-03-qa-followup/reference-approval.md",
           "evidence": [
-            "Live 2026-11-02 (class A): https://stellofi.com — 'sXLM is a vault share token representing a proportional claim on the XLM the vault holds. ... There is no strategy allocation yet, so it is currently flat. ... Native XLM Liquid Staking on Stellar'.",
-            "Live 2026-11-02 (class A): https://www.stellofi.com/docs — 'StelloFi does not assume native Stellar staking rewards — Stellar has no native staking yield or validator slashing mechanism ... All contracts deployed on Stellar Mainnet'; https://www.stellofi.com/stake — '0.00% APY ... 1 sXLM = 1.0000 XLM'. https://stellofi.com/app is a 404.",
-            "Live 2026-11-02 (class F): https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ — public-network contract, validation status 'unverified'.",
-            "Live 2026-11-02 (class E): Raven stellarDocs.search_docs → https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator on the Stellar' network; SCP is a construction of Federated Byzantine Agreement.",
-            "Live 2026-11-02 (class D): https://www.stakingrewards.com/asset/stellar — 'Stellar doesn't have a staking mechanism and you can't stake XLM directly'.",
-            "Independent verifier modified the proposed note: StelloFi does not label its app Stellar Mainnet (the /app page is a 404); its docs state unaudited contracts are deployed on Mainnet. The verifier also added the symmetric half: calling sXLM native validator staking remains wrong. Ledger: .agents/rounds/2026-11-02-golden-audit.md (pass 1, batch edge-behavior-02, verifier record).",
-            "Sibling sweep 2026-11-02: grep 'liquid.staking|sXLM|StelloFi' over eval/qa/corpus/battery → q-defi-liquid-staking-whitespace (dated 2026-07-10 negative and its avoid 'call any XLM yield token a native LST without a validator-staking reward source' stay consistent; StelloFi caution flagged to the round ledger for that batch), q-raph-xlm-staking, q-eco-defi-tvl-current, q-eco-defi-market-map, q-protocol-scp-consensus-algorithm, q-edge-fresh-latest-blend-tvl; no contradiction.",
-            "Pass 2 2026-11-02: golden.answer adds the 2026-11-02 re-sweep date to the dated no-native-LST negative; golden.notes adds the SDF fee-pool paper caution (aligned with q-raph-xlm-staking and q-hot-fee-pool-burn-deflation); tags.freshness stable -> scheduled with truth.reverifyBy 2027-01-28 (consistency findings F15, M6).",
-            "Re-sweep 2026-11-02 (pass 2): C Scout project search (liquid staking, sXLM, StelloFi, staked XLM) and Lumenloop search_directory 'liquid staking' -> no native LST; D https://api.llama.fi/protocols -> no Stellar Liquid Staking category; D Parallel web_search -> only stst-lake.vercel.app and stellofi.com vault tokens. A https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf -> 'SDF has not decided to fund or support any such mechanism'.",
-            "Sibling sweep 2026-11-02 (pass 2): q-defi-liquid-staking-whitespace (same re-sweep date and cautions after pass 2), q-raph-xlm-staking, q-hot-fee-pool-burn-deflation; no contradiction. Consistency-register clusters cluster-017 and cluster-020 need a re-stamp by the orchestrator's register run."
+            "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+            "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+            "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/scp/LocalNode.cpp",
+            "https://raw.githubusercontent.com/rajdeep-singha/sXLM/main/README.md",
+            "https://www.stellofi.com/docs",
+            "https://api.stellar.expert/explorer/public/contract/CCGFHMW3NZD5Z7ATHYHZSEG6ABCJADUHP5HIAWFPR37CP4VGNEDQO7FJ",
+            "research/audits/2026-11-03-qa-followup/reference-changes.md#native-rewards-question-scope",
+            "research/audits/2026-11-03-qa-followup/reference-corroboration.json",
+            "research/audits/2026-11-03-qa-followup/reference-sibling-sweep.json",
+            "Sibling sweep: 501 battery files, 4 proposal files, and 2 frozen live files; no conflicting target claim found.",
+            "Support sweep: consistency-register clusters 007, 017, 020, 025, 048, 083, 120 and the Bell vote trap; no source sentinel matches.",
+            "Dated illustrations, freshness tags and reverify dates are unchanged. Review closure and reactivation are explicit.",
+            "research/audits/2026-11-03-qa-followup/reference-approval.md",
+            "Reviewability refinement: required key facts track the question. Conditional background rules remain in golden.notes and avoid clauses."
           ],
           "rootCause": [
-            "freshness-drift",
-            "A self-described 'Native XLM Liquid Staking' vault (StelloFi sXLM) appeared on Mainnet after the 2026-07-10 dated negative; the notes had no caution to keep a true, correctly classified answer from being graded as contradicting the bounded negative."
+            "The native-rewards question has mandatory market-survey requirements that do not match its requested scope. .agents/TODO.md at Git commit bdcf915fb552d054657b04b23abc561a65d395f3, entry Resolve diagnostic noncompletions and judge ambiguities.",
+            "research/audits/2026-11-03-qa-followup/reference-changes.md"
           ]
         },
         "origin": "raven-next q-edge-noinfo-stellar-pos-staking-rewards",
@@ -44026,7 +44338,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\nThe **Soroban Security Audit Bank** is an SDF-funded SCF supporting program that pays eligible third-party audit costs for SCF-funded projects; it is not a cash Build grant or vulnerability bounty. Coverage can reach **100% of audit cost**, with no published fixed dollar cap. Current scope includes testnet/nearly-mainnet projects and qualifying projects already on mainnet or seeking follow-up audits. Priority categories are **Financial Protocols, Widely Used Applications, Infrastructure Contracts, and Yield-Bearing Token Protocols**. For an ordinary initial audit, the project pays **5% upfront**, refundable if all critical/high/medium findings are remediated within 20 business days; specified Growth/Scale cohorts may have 0% initial copay, while pre-traction follow-up audits use higher 20% then 50% copays. Terms are current as of 2026-07-10 and should be rechecked.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-11-03, the verified sources supported this observed answer:\n\nThe **Soroban Security Audit Bank** is an SDF-funded SCF supporting program that pays eligible third-party audit costs for SCF-funded projects; it is not a cash Build grant or vulnerability bounty. Coverage can reach **100% of audit cost**, with no published fixed dollar cap. Current scope includes testnet/nearly-mainnet projects and qualifying projects already on mainnet or seeking follow-up audits. Priority categories are **Financial Protocols, Widely Used Applications, Infrastructure Contracts, and Yield-Bearing Token Protocols**. For an ordinary initial audit, the project pays **5% upfront**, refundable if all critical/high/medium findings are remediated within 20 business days. Growth Audit and Scale Audit stages have 0% copay. These rates do not waive the Initial Audit copay. Pre-traction follow-up audits use higher 20% then 50% copays. Terms are current as of 2026-11-03 and should be rechecked.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -44037,7 +44349,7 @@
           "Do NOT invent a fixed dollar cap, claim it is pre-mainnet-only, or generalize the refundable 5% initial copay to every audit.",
           "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
         ],
-        "notes": "GT-36 CORRECTION 2026-07-10: grade up-to-100% cost coverage, four current priority categories, qualifying pre/post-mainnet and follow-up paths, and conditional copay semantics. The inherited avoid was truncated and is replaced in full.\nGT-36 independently confirmed by processes 3290/3291."
+        "notes": "GT-36 CORRECTION 2026-07-10: grade up-to-100% cost coverage, four current priority categories, qualifying pre/post-mainnet and follow-up paths, and conditional copay semantics. The inherited avoid was truncated and is replaced in full.\nGT-36 independently confirmed by processes 3290/3291.\nSource qualification, verified 2026-11-03: Official Rules Phase 5 states, “Subsequent audits also require co-payment by the project.” Read this general sentence with the audit-stage table. Growth Audit and Scale Audit have 0% copay. Initial Audit has 5% upfront, subject to the stated refund condition. Pre-traction follow-up audits have 20% then 50% copays. The 0% rows identify audit stages, not Initial Audit waivers."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -44047,11 +44359,42 @@
       "truth": {
         "lifecycle": {
           "state": "active",
-          "reviewState": "none"
+          "reviewState": "resolved",
+          "review": {
+            "queuedOn": "2026-11-03",
+            "trigger": "recurrent-eval-evidence",
+            "evidence": [
+              "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules — independently read 2026-11-03; Initial Audit 5% conditional refund, Growth/Scale Audit stages 0%.",
+              "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md — source SHA256 e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01; same policy lineage as the rendered page.",
+              "Grok blind source matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71. Exact correction and reactivation approval are recorded in research/audits/2026-11-02-golden-overnight/reference-correction-review.md.",
+              "Durable source receipts: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json.",
+              "Quarantine and authoring-cause queue record: .agents/TODO.md at Git commit a2b1c54721ec6ef08483f00f286fc6f89637738f, entry Correct the Audit Bank copay reference.",
+              "Sibling sweep covered 501 battery files, four proposals, two live contracts, and 23 supporting JSON files. Only q-scf-audit-bank contains the defective judge-facing clause."
+            ],
+            "startedOn": "2026-11-03",
+            "reviewer": "Grok 4.7 high, independent verifier t5q",
+            "ledger": ".agents/rounds/2026-11-02-golden-overnight.md",
+            "resolvedOn": "2026-11-03",
+            "resolution": "Corrected the audit-stage attribution and current source provenance after exact independent review. No recorded answer or grade changed."
+          },
+          "reactivation": {
+            "date": "2026-11-03",
+            "author": "Codex root",
+            "reviewer": "Grok 4.7 high, independent verifier t5q",
+            "ledger": ".agents/rounds/2026-11-02-golden-overnight.md",
+            "evidence": [
+              "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules — independently read 2026-11-03; Initial Audit 5% conditional refund, Growth/Scale Audit stages 0%.",
+              "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md — source SHA256 e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01; same policy lineage as the rendered page.",
+              "Grok blind source matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71. Exact correction and reactivation approval are recorded in research/audits/2026-11-02-golden-overnight/reference-correction-review.md.",
+              "Durable source receipts: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json.",
+              "Quarantine and authoring-cause queue record: .agents/TODO.md at Git commit a2b1c54721ec6ef08483f00f286fc6f89637738f, entry Correct the Audit Bank copay reference.",
+              "Sibling sweep covered 501 battery files, four proposals, two live contracts, and 23 supporting JSON files. Only q-scf-audit-bank contains the defective judge-facing clause."
+            ]
+          }
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-11-03",
         "sources": [
           {
             "class": "A",
@@ -44061,7 +44404,14 @@
           {
             "class": "A",
             "ref": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
-            "note": "class inferred at migration"
+            "note": "Published official policy page; source A renders the same official handbook policy as source B.",
+            "observedAt": "2026-11-03"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md",
+            "observedAt": "2026-11-03",
+            "note": "Immutable official handbook commit e07b4bfce158639f81908f74cfd74ec8d87f051a; not a second independent policy authority."
           }
         ],
         "corroboration": [
@@ -44082,20 +44432,43 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-11-03, Initial Audit has 5% upfront with the stated 20-business-day refund; Growth/Scale Audit stages have 0% copay; pre-traction follow-ups have 20% then 50%.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+                "observedAt": "2026-11-03",
+                "note": "Current published stage table and refund condition; general subsequent-audit sentence has stage exceptions."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md",
+                "observedAt": "2026-11-03",
+                "note": "Same official policy authority and content lineage as A; immutable source supports source-to-render verification, not independent policy authority."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-02)",
+          "date": "2026-11-03",
+          "by": "Codex t55 proposer; Grok 4.7 high, independent verifier t5q; Codex root applier; research/audits/2026-11-02-golden-overnight/reference-correction-review.md",
           "evidence": [
-            "https://github.com/stellar/scf-handbook/blob/11f0d4d8aa/supporting-programs/audit-bank/official-rules.md (last commit 2026-08-07T21:23:56Z; observedAt 2026-11-02): \"Managed by the Stellar Development Foundation (“SDF”), the Program schedules audits for projects and covers up to 100% of the audit cost\"; copay table \"Initial Audit | ... | 5% with potential refund* ... Growth Audit | >$10,000,000 TVL or equivalent | 0% ... Scale Audit | >$100,000,000 TVL | 0%\"; no per-audit dollar cap",
-            "https://stellar.org/grants-and-funding/soroban-audit-bank (observedAt 2026-10-22): \"a co-payment will be required (20% of total audit cost for 2nd audit, 50% of total audit cost for 3rd audit)\"",
-            "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules (observedAt 2026-11-01): Priority Categories: Financial Protocols, Widely Used Applications, Infrastructure Contracts, Yield-Bearing Token Protocols",
-            "Raven scout.searchResearch(q=\"Soroban Security Audit Bank co-payment\") (observedAt 2026-11-02T16:12:41Z): Official Rules row \"covers up to 1[00% of the audit cost]\"",
-            "Proposer verdict: all claims confirmed; no gospel change. Independent verifier: unchanged."
+            "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules — independently read 2026-11-03; Initial Audit 5% conditional refund, Growth/Scale Audit stages 0%.",
+            "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md — source SHA256 e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01; same policy lineage as the rendered page.",
+            "Grok blind source matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71. Exact correction and reactivation approval are recorded in research/audits/2026-11-02-golden-overnight/reference-correction-review.md.",
+            "Durable source receipts: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json.",
+            "Quarantine and authoring-cause queue record: .agents/TODO.md at Git commit a2b1c54721ec6ef08483f00f286fc6f89637738f, entry Correct the Audit Bank copay reference.",
+            "Sibling sweep covered 501 battery files, four proposals, two live contracts, and 23 supporting JSON files. Only q-scf-audit-bank contains the defective judge-facing clause."
+          ],
+          "rootCause": [
+            "Local reference authoring error: Growth/Scale audit-stage exemptions were assigned to Initial Audit cohorts. .agents/TODO.md at Git commit a2b1c54721ec6ef08483f00f286fc6f89637738f, entry Correct the Audit Bank copay reference."
           ]
         },
-        "origin": "raven-next q-scf-audit-bank"
+        "origin": "raven-next q-scf-audit-bank",
+        "reverifyBy": "2027-02-03"
       }
     },
     {

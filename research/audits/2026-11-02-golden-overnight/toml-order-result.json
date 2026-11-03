@@ -1,0 +1,22 @@
+{
+  "purpose": "TOML syntax only; no SEP-1 validity or real issuer claim",
+  "parser": "Python standard library tomllib",
+  "pythonVersion": "3.12.15 (main, Sep 30 2026, 22:04:19) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "fixtureSha256": "9305615eb7f557e92c7373c27a03297e16c7173b462e1507d72cab7a960aabe4",
+  "parsed": {
+    "ACCOUNTS": [
+      "GEXAMPLE"
+    ],
+    "CURRENCIES": [
+      {
+        "code": "EXAMPLE",
+        "issuer": "GEXAMPLE"
+      }
+    ],
+    "DOCUMENTATION": {
+      "ORG_NAME": "Example"
+    }
+  },
+  "parsedJsonSha256": "4a897a82b6e7d3889c58839ad853caae80735252afa8c4562dbd835a1eedd077",
+  "status": "passed"
+}

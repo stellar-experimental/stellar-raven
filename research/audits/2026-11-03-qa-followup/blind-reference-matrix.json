@@ -1,0 +1,334 @@
+{
+  "author": "grok-4.7",
+  "cases": [
+    {
+      "asOf": {
+        "coreSupportedProtocolVersion": 30,
+        "coreVersion": "stellar-core 30.0.0",
+        "currentProtocolVersion": 29,
+        "ledgerClosedAt": "2026-11-03T13:55:49Z",
+        "ledgerSequence": 65285622,
+        "networkPassphrase": "Public Global Stellar Network ; September 2015",
+        "protocolVersion": 29
+      },
+      "claims": [
+        {
+          "claim": "The newest closed Pubnet ledger at this read uses protocol 29.",
+          "classes": [
+            "C",
+            "A"
+          ],
+          "evidence": [
+            "r2",
+            "r1",
+            "r3"
+          ],
+          "note": "r1 and r2 are one live witness. r3 is a dated catalog. Both name 29. Do not pin 29.",
+          "verdict": "confirmed-as-of"
+        },
+        {
+          "claim": "core_supported_protocol_version 30 is the live Pubnet protocol.",
+          "classes": [
+            "C"
+          ],
+          "evidence": [
+            "r1",
+            "r2"
+          ],
+          "note": "Root reports support for 30. The closed ledger reports protocol_version 29.",
+          "verdict": "contradicted"
+        },
+        {
+          "claim": "The software-versions page alone can answer a right-now protocol question.",
+          "classes": [
+            "A",
+            "C"
+          ],
+          "evidence": [
+            "r3",
+            "r1"
+          ],
+          "note": "The page is a dated catalog. It lists Core 29.0.0. Live Horizon reports Core 30.0.0.",
+          "verdict": "contradicted"
+        }
+      ],
+      "determination": "A live Pubnet ledger read is required. Dated docs do not answer right now.",
+      "domain": "freshness-sensitive real-world protocol fact",
+      "id": "q-edge-fresh-latest-protocol-version",
+      "question": "What is the very latest Stellar protocol version live on Pubnet right now?",
+      "reasonableBehaviorContract": [
+        "Read the latest closed Pubnet ledger before you answer.",
+        "Report that ledger protocol_version, sequence, and closed time.",
+        "You may check current_protocol_version on public Horizon.",
+        "Do not call core_supported_protocol_version the live version.",
+        "Use the software-versions page as a dated catalog.",
+        "If the catalog and the ledger differ, report the ledger.",
+        "Date the answer. Do not store the number as permanent."
+      ]
+    },
+    {
+      "claims": [
+        {
+          "claim": "Stellar consensus is SCP/FBA. It is not proof of stake.",
+          "classes": [
+            "A"
+          ],
+          "evidence": [
+            "r4"
+          ],
+          "note": "One primary class states this. No read in this packet contradicts it.",
+          "verdict": "confirmed"
+        },
+        {
+          "claim": "The Stellar protocol pays no monetary reward to validators.",
+          "classes": [
+            "A"
+          ],
+          "evidence": [
+            "r4"
+          ],
+          "note": "The SCP page states it. The validators page is silent. Class B does not restate it.",
+          "verdict": "confirmed-single-class"
+        },
+        {
+          "claim": "The direct protocol earning asked here is zero. The validator reward is zero.",
+          "classes": [
+            "A"
+          ],
+          "evidence": [
+            "r4"
+          ],
+          "note": "This follows the no-reward sentence. It is not a measured market rate.",
+          "verdict": "confirmed-single-class"
+        },
+        {
+          "claim": "The inflation operation is supported on the live protocol.",
+          "classes": [
+            "B",
+            "C"
+          ],
+          "evidence": [
+            "r6",
+            "r2"
+          ],
+          "note": "Support is gated before protocol 12. The live ledger is protocol 29.",
+          "verdict": "contradicted"
+        },
+        {
+          "claim": "The old inflation percent is a current staking reward.",
+          "classes": [
+            "B",
+            "A"
+          ],
+          "evidence": [
+            "r6",
+            "r4"
+          ],
+          "note": "The payout code remains in the file. The live protocol does not support that operation.",
+          "verdict": "contradicted"
+        },
+        {
+          "claim": "No liquid staking token or third-party XLM yield product exists.",
+          "classes": [],
+          "evidence": [],
+          "note": "This lane made no product search. Do not claim a universal LST absence.",
+          "verdict": "not-tested"
+        }
+      ],
+      "determination": "Native protocol staking pay is none. An LST search is not required for this question.",
+      "domain": "real-world protocol fact with a separate negative-product boundary",
+      "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+      "question": "How much can I earn staking XLM directly in Stellar's proof-of-stake protocol, and what are the validator rewards?",
+      "reasonableBehaviorContract": [
+        "Say that Stellar does not use proof of stake.",
+        "Say that protocol validator rewards are none.",
+        "Do not quote a protocol staking rate.",
+        "Do not quote the old inflation rate as current pay.",
+        "Do not search for an LST to answer this question.",
+        "Search before you claim that no third-party yield product exists.",
+        "Search when the user asks for a non-protocol product or rate.",
+        "Call that product third-party. Do not call it a validator reward."
+      ],
+      "whenNonNativeSearchIsRequired": [
+        "It is not required to answer direct protocol staking or validator rewards.",
+        "It is required before any universal claim that no LST exists.",
+        "It is required when the user asks for a product, vault, or quoted rate.",
+        "A product found that way is not native validator pay."
+      ]
+    }
+  ],
+  "childTerminalsStarted": 0,
+  "classIndependence": {
+    "A": "Official Stellar docs. r3, r4, and r5 are one class.",
+    "B": "stellar-core source. r6 is a different class from the docs.",
+    "C": "Live public Horizon. r1 and r2 are one witness and one class.",
+    "notUsed": [
+      "D",
+      "E",
+      "F"
+    ]
+  },
+  "corpusEditProposed": false,
+  "generatedAt": "2026-11-03T13:59:00Z",
+  "gradesProposed": false,
+  "independence": {
+    "casePaths": [
+      "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-protocol-version.json",
+      "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-stellar-pos-staking-rewards.json"
+    ],
+    "didNotOpen": [
+      "golden.answer",
+      "golden.keyFacts",
+      "golden.avoid",
+      "golden.notes",
+      "truth",
+      "grades",
+      "Codex proposals",
+      "frozen method branch",
+      "reviews-v4",
+      "raw QA artifact"
+    ],
+    "limit": "A case-id search also hit registry and compiled case text. This lane did not use that text as evidence.",
+    "openedCaseFields": [
+      "question"
+    ],
+    "status": "blind-with-one-disclosed-index-exposure"
+  },
+  "lane": "blind-independent-source-derivation",
+  "primaryReadCap": 6,
+  "primaryReadsUsed": 6,
+  "reads": [
+    {
+      "bytes": 4332,
+      "class": "C",
+      "id": "r1",
+      "observed": {
+        "core_latest_ledger": 65285622,
+        "core_supported_protocol_version": 30,
+        "core_version": "stellar-core 30.0.0 (0e49751aa9ddf892302cca02cea7f3f5d97df9f1)",
+        "current_protocol_version": 29,
+        "history_latest_ledger": 65285621,
+        "history_latest_ledger_closed_at": "2026-11-03T13:55:44Z",
+        "horizon_version": "30.0.0-b3ff4119cc99ebcc8048334f5ec64e78c16d1666",
+        "network_passphrase": "Public Global Stellar Network ; September 2015",
+        "supported_protocol_version": 30
+      },
+      "observedAt": "2026-11-03T13:55:51Z",
+      "sameWitnessAs": [
+        "r2"
+      ],
+      "serverDate": "Tue, 03 Nov 2026 13:55:52 GMT",
+      "sha256": "686fc1bfbd701b29be32a2e982c6f4581e98b0a84242542fd61cdf07602f1b31",
+      "status": 200,
+      "url": "https://horizon.stellar.org/"
+    },
+    {
+      "bytes": 2607,
+      "class": "C",
+      "id": "r2",
+      "observed": {
+        "closed_at": "2026-11-03T13:55:49Z",
+        "hash": "ced38c355b636b11f5dbe903adfc6df1f0b72015b49c1f85f9142ec013524ac2",
+        "protocol_version": 29,
+        "sequence": 65285622
+      },
+      "observedAt": "2026-11-03T13:55:52Z",
+      "sameWitnessAs": [
+        "r1"
+      ],
+      "serverDate": "Tue, 03 Nov 2026 13:55:52 GMT",
+      "sha256": "4d15f01f74a7a8b30b09c9888a287d41edd424579bfea8c3aed498481a5221ed",
+      "status": 200,
+      "url": "https://horizon.stellar.org/ledgers?order=desc&limit=1"
+    },
+    {
+      "bytes": 96528,
+      "class": "A",
+      "id": "r3",
+      "observed": {
+        "mainnetPassphrase": "Public Global Stellar Network ; September 2015",
+        "newestMainnetHeading": "Protocol 29 (Mainnet, October 1, 2026)",
+        "protocol29CoreListed": "29.0.0",
+        "protocol30HeadingCount": 0,
+        "text30_0_0Count": 0
+      },
+      "observedAt": "2026-11-03T13:55:52Z",
+      "sameWitnessAs": [
+        "r4",
+        "r5"
+      ],
+      "serverDate": "Tue, 03 Nov 2026 13:55:52 GMT",
+      "sha256": "42810eef82d79f025223b09fe04046fcb5b2d541127099c2e06d33b886ca138a",
+      "status": 200,
+      "url": "https://developers.stellar.org/docs/networks/software-versions.md"
+    },
+    {
+      "bytes": 6651,
+      "class": "A",
+      "id": "r4",
+      "observedAt": "2026-11-03T13:55:52Z",
+      "sameWitnessAs": [
+        "r3",
+        "r5"
+      ],
+      "serverDate": "Tue, 03 Nov 2026 13:55:52 GMT",
+      "sha256": "29be65970f0fc28ef0c3048be2209d283f62b72cccf907f27b46e29789110700",
+      "status": 200,
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md"
+    },
+    {
+      "bytes": 8641,
+      "class": "A",
+      "id": "r5",
+      "observed": "The page explains validator setup, security, and governance. It states no reward, stake rule, or LST.",
+      "observedAt": "2026-11-03T13:55:52Z",
+      "sameWitnessAs": [
+        "r3",
+        "r4"
+      ],
+      "serverDate": "Tue, 03 Nov 2026 13:55:52 GMT",
+      "sha256": "ed75228000f344efcf63d9cf38a17c84dba7add53cea6aa5e7e1cc59e6c1d652",
+      "status": 200,
+      "url": "https://developers.stellar.org/docs/validators.md"
+    },
+    {
+      "bytes": 5004,
+      "class": "B",
+      "id": "r6",
+      "observed": "isOpSupported returns that helper. The file still contains the old payout math. This lane did not open ProtocolVersion.h.",
+      "observedAt": "2026-11-03T13:55:52Z",
+      "sameWitnessAs": [],
+      "serverDate": "Tue, 03 Nov 2026 13:55:52 GMT",
+      "sha256": "ab23e8a106a2d6070acb090d6fdb32b3fe5b69a9ba0f360c63b60c660dc23d9c",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/InflationOpFrame.cpp"
+    }
+  ],
+  "schema": "grok-blind-golden-matrix-v1",
+  "scope": {
+    "broadResearch": false,
+    "cases": [
+      "q-edge-fresh-latest-protocol-version",
+      "q-edge-noinfo-stellar-pos-staking-rewards"
+    ],
+    "excluded": [
+      "corpus edits",
+      "grades",
+      "paid measurements",
+      "agents",
+      "external messages",
+      "ledger, TODO, INDEX, intake, and final integration"
+    ],
+    "question": "Derive the required truthful behavior for these two questions.",
+    "sourceClassesUsed": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  "originalFileSha256": "47bfe35cd53f9766810db8af42a378578fb0e09939d8d0054aedd0787826ae4a",
+  "originalContentSha256": "71613d857fce1aeacde402866fbfb2eb549424e3af4695e1df76c0b9357ddde0",
+  "projection": "Quotes, local body paths, session details and the original self-digest are omitted. Claims and source identities remain.",
+  "additionalMeasurementCalls": 0,
+  "helperCliBillingReportedSeparately": true
+}
