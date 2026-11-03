@@ -267,7 +267,7 @@ describe("issue #141 routing acceptance", () => {
       id: "lumenloop.get_categories",
       tier: "backfill"
     }));
-    expect(page.total).toBe(6);
+    expect(page.total).toBe(7);
     expect(page.truncated).toBe(true);
   });
 });

@@ -109,9 +109,15 @@ describe("Scout exposure data matches the source contract", () => {
     }
   );
 
-  it("accepts path metadata without treating it as a newly listed operation", () => {
+  it("rejects an unreviewed method at any excluded path", () => {
     const changed = structuredClone(inventory.openapi);
-    changed.paths["/api/hackathons/review"] = { parameters: [], summary: "Review" };
+    changed.paths["/api/partners/onboard"].get = { operationId: "getPartnerOnboarding" };
+    expect(() => assertScoutExclusionsResolve(changed)).toThrow("Unreviewed Scout operation");
+  });
+
+  it("accepts path metadata without treating it as a newly listed operation", () => {
+    const changed = withReviewOperation();
+    Object.assign(changed.paths["/api/hackathons/review"], { parameters: [], summary: "Review" });
     expect(() => assertScoutExclusionsResolve(changed)).not.toThrow();
   });
 });
