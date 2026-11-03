@@ -473,17 +473,17 @@
           "q-pay-moneygram-ramps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "note": "MoneyGram Ramps settles in Stellar USDC across all four members. As of 2026-11-02, MoneyGram's developer portal labels the SEP-10/SEP-24 anchor path legacy for existing allowlisted partners and directs new Stellar wallets to its Ramps widget SDK with API keys and server-side sessions; members accept either path when it is dated and attributed. The minimum differs by host on 2026-11-02: the Version 1.2 operator guide and its named production anchor (mgxanchor.moneygram.com) /info state 15 USDC, and the older stellar.moneygram.com /info states 1 USDC. The minimum stays disputed. Every observed surface states a 950 USDC cash-in maximum and a 2,500 USDC cash-out maximum. Country counts remain source- and direction-specific.",
         "memberContentSha256": {
-          "q-anchor-moneygram-ramps": "d830e319e127341ec64d570d77a65088007437581805733564d349a924d349e1",
+          "q-anchor-moneygram-ramps": "23fcc18bb82051e1050112d4e34c75b81ef0694e247af1f4175bdcf674b0f46e",
           "q-crp-anchors-by-corridor": "f938892a2f1761b29ac792fa7238df687c4bf1c30eba483454b4c74bf8beab5b",
           "q-hist-remittance-corridors": "c72a0668b41afe59f05732b42e183e762f1eb26bbad6aaae81bfc1100308224c",
           "q-pay-moneygram-ramps": "38d940aed17e2aa236f842f0b81b752f931cfa6a83c087dde0b952c5d32da21c"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All four members state Stellar USDC settlement, the legacy SEP-10/SEP-24 path versus the new widget/API-key path, a disputed 15 vs 1 USDC minimum by host, and 950/2,500 USDC maximums. The note's 2026-11-02 text states exactly these facts, and the unchanged q-hist-remittance-corridors only calls MoneyGram a current dated example.",
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         }
       },
@@ -511,17 +511,17 @@
         "lastChecked": "2026-11-03",
         "reSwept": {
           "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-amm-fee-reserve": "b97034d24ed541057359418d10b89804a9cf8c88f2ee3be318bbbafdbfe87014",
-          "q-asset-path-payment-ops": "a57dfde823c42b6250cc8849b85eadd58ba46b96dd01992ee4b0b024f0268df1",
+          "q-asset-path-payment-ops": "c76a5d56f21a1a69c8b9f88e5d52274614ab0d8c2a2a44535a631474f414aa26",
           "q-asset-sdex-vs-amm": "d8227204dfaa1146a9a9cb7eaea525e1fbe511088dea5f81dbe4e5b9301e6606",
           "q-asset-trustline-basics": "9ad2ed91f2559b7dae886593d48f72a74e2878ee75d52de8676b77767e8d53fe",
           "q-edge-1xlm-activation-fee": "95be5544df23c2bdfc8a0b7c7feb708814e33899c17d992517c9b229a272ec50",
-          "q-edge-noinfo-stellar-pos-staking-rewards": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea",
+          "q-edge-noinfo-stellar-pos-staking-rewards": "238f0943bc4ee9c3f2c026ad69741fa13897f439a50fe7ed7c123ed5f41a3734",
           "q-hot-fee-pool-burn-deflation": "bcc80545addc719f07e45b95b90c7ac3380b2b6233bfe4815f9198b8ef043eb4",
           "q-pc-account-activation-not-found": "9f6221e40bcace23cf481e555e1c41652ed3d14796a0bcdecbbb5bddc92eefa3",
           "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615",
@@ -529,7 +529,7 @@
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
           "q-protocol-ledger-close-time": "b6d6438972116ef0e6c1935e2cd66370c87da8543911166ef1bee7187c5a9b7e",
           "q-sor-doc-timestamping-manage-data": "1303e33b3457de47dcecd5fa9b8991f3cc6f32d41bb78a5e06ae52d9f2a3c6b6",
-          "q-soroban-simulate-resource-fee": "5befbcbca0c84ea2800ec9789c2e75926c205545829bc96b6ecd52bf14b48064",
+          "q-soroban-simulate-resource-fee": "ef190edb519c0f46f3977048ea1cc7d0b223165768258aa40250f9c3407ca091",
           "q-token-initial-supply-distribution": "d21261aee65d659776e78342377e944fefad8121a445914a8ab7b7d2a4adce7c"
         }
       },
@@ -610,13 +610,13 @@
         "lastChecked": "2026-11-03",
         "reSwept": {
           "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         },
         "note": "SCP was authored by David Mazières and rolled out in 2015 using FBA. The causal interpretation of the 2014 fork is disputed: SDF attributed it to weaknesses in the inherited system, while Ripple rejected that conclusion. Mazières's founder/professor/paper facts remain stable, while the Founder and Chief Scientist team-page data is dated and distinguished from the rendered card. SDF structure and not-PoS/no-validator-reward facts remain separate.",
         "memberContentSha256": {
           "q-edge-deep-full-history-report": "abe6cc622a6b3d69f3ecc27a42fa869ee403f7038ab57ed80bcd7d8593439222",
-          "q-edge-noinfo-stellar-pos-staking-rewards": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea",
+          "q-edge-noinfo-stellar-pos-staking-rewards": "238f0943bc4ee9c3f2c026ad69741fa13897f439a50fe7ed7c123ed5f41a3734",
           "q-hist-scp-rewrite-2015": "5cd5e7420233297b719580af697a9bf13a267dcf5411dec726260d0ea7806379",
           "q-org-mazieres-chief-scientist": "73b0bc28f31d279e9f8c7e4cd376e73914fbd984fcacdf250928443069dc61d7",
           "q-org-sdf-structure-mandate": "ae1628b5785986fad875ee3aa2b507b1fc8a8f6d070d9bd02437039e726d61af",
@@ -980,10 +980,10 @@
           "q-scf-total-distributed"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-total-distributed now gives the dated, basis-labeled 2026-11-02 Scout reconstruction ($58.59M, 582 projects, 906 active). This matches q-scf-funding-by-category. q-edge-deep-full-history-report added Mazières to the dated 2014 launch wording, and q-protocol-network-passphrases-list dropped a sibling cross-reference only. No member adds paid-surface, hidden-operation, or $10/5-minute claims, so the scope/proportionality note stands.",
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         },
         "note": "Comprehensive wording neither authorizes spend nor bans useful free research. The paid/account-scoped commissioned surface is absent; future paid execution would require host approval, elicitation, budget enforcement, and deduplication. Goldens grade answer-visible scope, provenance, no fabrication, and proportionality—not hidden operation names, route diagnostics, external maintainer-tool non-use, or unsupported $10/5-minute caps.",
@@ -991,7 +991,7 @@
           "q-comp-sep8-number-lookup-no-deepresearch": "7277a457dc7f9c0687fd586b96bf2670cb8107036bd0f4c29f94e94341043c80",
           "q-edge-deep-full-history-report": "abe6cc622a6b3d69f3ecc27a42fa869ee403f7038ab57ed80bcd7d8593439222",
           "q-edge-exhaustive-defi-deep-report": "27f8b7c432a890740ecb7b83b8024b88c58b9524c9f74a4cc615f7fc92d12b90",
-          "q-protocol-network-passphrases-list": "b761f59a8fcff187fe18ce363d37afb9fef9e474e7f2358db5a79af4a109f2bb",
+          "q-protocol-network-passphrases-list": "aa619780e6c570c5e7e89ef3ebc9e93ce07d0afd0493a83d9dda3c12c91b5661",
           "q-scf-total-distributed": "67b69a6066f1e125ed92c1ba4bf8d035f164159f26c723ab4f7efbf8b35c95c5"
         }
       },
@@ -1292,12 +1292,12 @@
         "memberContentSha256": {
           "q-defi-build-staking-for-own-token": "4ab3f5cefb9083abf1a5c475259437168111285028866445d61f4167bb092066",
           "q-defi-liquid-staking-whitespace": "6719f2d0823e66448f07a82fd2fb6a6e87bd42ecaac5c476fb186ef3ea3fb59a",
-          "q-edge-noinfo-stellar-pos-staking-rewards": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea",
+          "q-edge-noinfo-stellar-pos-staking-rewards": "238f0943bc4ee9c3f2c026ad69741fa13897f439a50fe7ed7c123ed5f41a3734",
           "q-protocol-scp-consensus-algorithm": "ba760d5bb7ac504e53db81c2d209ecdec1994d2991aaf5cc5ec7d4bfee91c45d"
         },
         "reSwept": {
           "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         }
       },
@@ -1589,15 +1589,15 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-protocol-cap-vs-sep separates CAP acceptance, implementation, and validator activation; q-protocol-version-history-list now adds P28/P29 and the scheduled Bell/P30 votes as dated activations, which fits that separation and the SEP-as-ecosystem-standard note.",
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         },
         "note": "CAP specification/acceptance, software implementation, and network activation are distinct; SEPs are ecosystem interoperability standards.",
         "memberContentSha256": {
-          "q-protocol-cap-vs-sep": "33b0b56335881a3d2b9844e9016d13528ffa027ea24e6845af8fc3e24a184638",
+          "q-protocol-cap-vs-sep": "32272a7080b325e39be0b9da5765de212e94038fd5cac093f55dac098961563a",
           "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
         }
       },
@@ -1671,16 +1671,16 @@
           "q-protocol-network-passphrases-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The passphrase strings are unchanged. q-infra-testnet-vs-futurenet adds a dated 2026-11-02 recheck (protocol 29 on Testnet and Futurenet) and says Futurenet's preview role does not guarantee a higher live version. That fits the note: 'version alignment is stage-sensitive and live-verified'.",
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         },
         "note": "Exact passphrases are stable; Testnet/Futurenet/Mainnet version alignment is stage-sensitive and live-verified.",
         "memberContentSha256": {
           "q-infra-testnet-vs-futurenet": "67f4508dd5fe05740581adb7bfacf8aa89ef4b65d1e18c557ec0a6933d939891",
-          "q-protocol-network-passphrases-list": "b761f59a8fcff187fe18ce363d37afb9fef9e474e7f2358db5a79af4a109f2bb"
+          "q-protocol-network-passphrases-list": "aa619780e6c570c5e7e89ef3ebc9e93ce07d0afd0493a83d9dda3c12c91b5661"
         }
       },
       {
@@ -1825,15 +1825,15 @@
           "q-defi-wisdomtree-crdt"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-wisdomtree-crdt moved stable -> scheduled (the CRDT issuer and launch facts unchanged). No stated value changed, so the other members of \"Person content versus project/entity content\" still agree."
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
+          "verdict": "consistent"
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "c1c8871b8c00332d1200da4d8eaa32d0210594431059f32f65a4711afb113680",
+          "q-builder-content-by-person": "929de4446b8a2880d0e3572789f4fed58dbfea9097ffceafabc5e4b9c743b2dc",
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
           "q-defi-ondo-usdy": "a1ef2492a81597b50ebcc3c123708a72723bfdd5f79a9eb56eb063a3bc7055f9",
           "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7"
@@ -2050,12 +2050,12 @@
         "lastChecked": "2026-11-03",
         "reSwept": {
           "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash 3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea. Notes, values, and dates stayed unchanged.",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         },
         "note": "Legitimate community, education, content, event, operations, product, marketing, and job paths exist, but participation does not imply compensation, program eligibility, mining, staking rewards, airdrops, or free XLM.",
         "memberContentSha256": {
-          "q-edge-noinfo-stellar-pos-staking-rewards": "3d73f46239500e6fb029999c333ff3f8b8506ba21986f3f28301dfc47b2686ea",
+          "q-edge-noinfo-stellar-pos-staking-rewards": "238f0943bc4ee9c3f2c026ad69741fa13897f439a50fe7ed7c123ed5f41a3734",
           "q-scf-eligibility-criteria": "b42d75ea41de636513016271fa00148a5de8ec4c4637b3fd488754207e39840e"
         }
       },
@@ -2411,15 +2411,15 @@
           "q-sor-sac-introspection"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-asset-deploy-sac-cli, q-sor-sac-introspection agree on deterministic SAC identity and initial issuer administration."
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
+          "verdict": "consistent"
         },
         "note": "ID is deterministic from Asset plus network; in-contract derivation uses with_stellar_asset(...).deployed_address(); issuer G-address is not token C-address. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-asset-deploy-sac-cli": "71c516f562bac26dae1f33db95f29f9203344e4f531c714f1426295523be33ad",
+          "q-asset-deploy-sac-cli": "9b360db0853d6407a3981edff8e0204f3c82f18b7c6cfcbfed2819c7974d9ef1",
           "q-sor-sac-introspection": "7d9a79ce2fcdce6d908cb7204093acc9ef03ff70906b04b4cde9e72e32c58ace"
         }
       },
@@ -2734,16 +2734,16 @@
           "q-protocol-validator-upgrade-vote"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "note": "CAP-process target corrected; coherent CAP-vs-SEP and validator siblings retained.",
         "memberContentSha256": {
           "q-protocol-cap-process": "62f4ca94ab4260d76f03902ce54d39e1f37cd60218c34d66d873d048606f9f5c",
-          "q-protocol-cap-vs-sep": "33b0b56335881a3d2b9844e9016d13528ffa027ea24e6845af8fc3e24a184638",
+          "q-protocol-cap-vs-sep": "32272a7080b325e39be0b9da5765de212e94038fd5cac093f55dac098961563a",
           "q-protocol-validator-upgrade-vote": "ca6b3f24da329d1ab39a9b4ddd4cca07f4798bb95bc65a737b945d045c991541"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-protocol-cap-process (Draft -> Awaiting Decision -> FCP -> Accepted -> Implemented -> Final; labels separate from SCP/FBA activation; the new grader note on the README's 'Final' definition), q-protocol-cap-vs-sep ('Acceptance/finality of a CAP is not itself network activation'), and q-protocol-validator-upgrade-vote (arming upgrades?mode=set, in-band SCP vote) agree. The note stays true.",
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         }
       },
@@ -3042,15 +3042,15 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-closed-world-builder-directory-miss stops at a dated Scout-scoped miss. The open-world members (q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback, q-builder-content-by-person) require one bounded wider pass plus exact identity, source, and date checks. Justin Rice stays the dated positive control, and Strupey stays a scoped non-verification that only offers Stroopy/Stroopy.AI as candidates. The note still holds.",
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "c1c8871b8c00332d1200da4d8eaa32d0210594431059f32f65a4711afb113680",
+          "q-builder-content-by-person": "929de4446b8a2880d0e3572789f4fed58dbfea9097ffceafabc5e4b9c743b2dc",
           "q-builder-justin-rice-history": "aa800d231191c12fede8e0b529e859b99fe292773f20acfe54694291b2682166",
           "q-edge-closed-world-builder-directory-miss": "e1002fa47f5d234af53fe31ce560152e9e9c8fae8d8696ed1de981e44dd4a52e",
           "q-edge-lumenloop-person-entity-empty": "72866be7cee8d2ab0659bec967ec48fe51739bfa179a52d286e08c52042a246c",
@@ -3165,18 +3165,18 @@
           "q-zk-nullifier-storage"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-03",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-sor-persistent-unbounded-collection-cap, q-soroban-resource-limits, q-soroban-instance-storage-dos, q-zk-nullifier-storage separate resource limits, entry growth, Instance risks, and nullifier retention."
+          "date": "2026-11-03",
+          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
+          "verdict": "consistent"
         },
         "note": "The generic resource case covers simulation and network limits. The Instance-storage case covers contract-instance state and DoS risk. The nullifier case covers retention and privacy safety. The Persistent-collection case owns one growing Persistent value under one key. The cases are compatible because they use different storage scopes and threat models.",
         "memberContentSha256": {
           "q-sor-persistent-unbounded-collection-cap": "16776ba5bcb0c76d3702f6de28334fd4ad4c43e29fc1db45ffe6c56b673961f2",
           "q-soroban-instance-storage-dos": "188f24e0b7d6d3f6311f759aa65ad57bc7a521e7464c3d426a526e1678817e50",
           "q-soroban-resource-limits": "2e6b482fc814f94a3e88a35713cea24208e2c19c3403d29f929ce8d05b0ed49a",
-          "q-zk-nullifier-storage": "f248a6dab58efd086fa840aa3787f229d437358cbe119b3c12405875916f011f"
+          "q-zk-nullifier-storage": "f794c9fd32ca0e033ced9bb9947f21394c1e4b1dc262f8837c68bddc9f5e7905"
         }
       },
       {

@@ -36,9 +36,9 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
-        "note": "As of 2026-11-02 this page redirects to https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps.",
-        "observedAt": "2026-11-02"
+        "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+        "note": "The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "A",
@@ -168,21 +168,12 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "Gospel change 2026-11-02: golden.answer now names both MoneyGram integration paths (legacy SEP-10/SEP-24 anchor for allowlisted partners; widget SDK + API keys + server sessions for new Stellar wallets); keyFacts[1] drops the non-existent 'Stellar Ramps standard'; golden.notes re-dated with a do-not-penalize caution for either path and a dated Tier-1 validator status (verifier-modified wording). avoid items unchanged.",
-        "Live A 2026-11-02: https://xramps.moneygram.com/ops/developer — 'Widget partners on Solana or Stellar use the same API keys and sessions model. Legacy Stellar whitelist partners use SEP-10 + SEP-24.'",
-        "Live A 2026-11-02: https://xramps.moneygram.com/ops/developer/stellar — '| Legacy Stellar only | SEP-10 + SEP-24 anchor (whitelist) | ... Do not mix SEP anchor calls into a widget integration ... Supported asset today: USDC on Solana or Stellar.'",
-        "Live A 2026-11-02: https://xramps.moneygram.com/stellar — 'Existing whitelist partners on the legacy SEP-10 / SEP-24 path can stay there'",
-        "Live A 2026-11-02: https://xramps.moneygram.com/ops/developer/guides/stellar — 'MoneyGram Ramps — Stellar Integration Guide (USDC) Version 1.2 · Stellar + USDC · July 2026 ... New Stellar wallet integrations should use the widget + API keys path'",
-        "Live F 2026-11-02: https://stellar.moneygram.com/.well-known/stellar.toml — 'WEB_AUTH_ENDPOINT = \"https://stellar.moneygram.com/stellaradapterservice/auth\" TRANSFER_SERVER_SEP0024 = \"https://stellar.moneygram.com/stellaradapterservice/sep24\"'",
-        "Live F 2026-11-02: curl -L https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — '200 final=https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/redirects.json — '{\"source\": \"/docs/build/apps/moneygram-access-integration-guide\", \"destination\": \"https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps\"}'",
-        "Live A 2026-11-02: https://stellar.org/solutions/cross-border-payments — 'One MoneyGram Ramps integration offers USDC cash-in and cash-out in 170+ countries.'",
-        "Live C 2026-11-02: https://radar.withobsrvr.com/api/v1/nodes — 'SDF 1/2/3 quorumSet (dateUpdated 2026-10-14) contain all 3 MoneyGram Validator keys; MoneyGram org subQuorum30DaysAvailability 100'",
-        "Live D 2026-11-02: https://techafricanews.com/2026/07/16/moneygram-figure-markets-and-range-join-stellar-network-as-tier-1-validators/ — 'The new validators are expected to be fully integrated into Stellar's quorum configuration by mid-August.'",
-        "Sibling sweep 2026-11-02 (pass 2): q-pay-moneygram-ramps now names both paths (keyFact 'Identifies Stellar USDC, the widget/API-key path, and the legacy SEP-10/SEP-24 path'); q-crp-anchors-by-corridor notes gain the same widget/legacy split in pass 2; q-comp-cross-moneygram-partnership-sep24, q-scf-cross-decaf-sep24, q-hist-remittance-corridors, q-crp-custodial-vs-noncustodial-wallets, q-jutsu-cash-crypto-ramps, q-sep-interactive-deposit-withdraw describe dated or historical SEP-24 use and do not contradict the legacy-path label."
+        "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide (HTTP 308, 2026-11-03): The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details. Current source: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps (HTTP 200).",
+        "https://xramps.moneygram.com/ops/developer/guides/stellar (HTTP 200, 2026-11-03): legacy Stellar SEP integration, USDC settlement, custodial/non-custodial table, and new-partner widget guidance.",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
       ],
       "rootCause": [
         "freshness-drift"

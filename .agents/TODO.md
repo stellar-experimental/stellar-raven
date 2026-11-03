@@ -22,13 +22,12 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Stellar Docs migration to Mintlify
 
-### Repair or retire stale golden docs references
+### Repair or retire stale golden docs references — completed 2026-11-03
 
-The 2026-11-02 page-coverage check (`rounds/2026-11-02-mintlify-migration/page-coverage.json`)
-found 21 golden source URLs that no longer resolve: 11 site 308 redirects and 10 404s, all also
-absent from the retired Algolia index. `get_doc_page` follows the redirects, but the goldens should
-cite the canonical paths. Use the `golden-truth` skill. Done when the page-coverage check reports
-zero 404s and zero redirects for active cases.
+Rechecked all 21 stale URLs live. Repaired current sources in 19 active cases, including three
+retail siblings found by the full source sweep. The final check returned HTTP 200 for all 249
+current Stellar Docs source URLs, with zero 404s and zero redirects. Questions and goldens stayed
+unchanged. Required gates passed. See [the round ledger](rounds/2026-11-03-golden-urls.md).
 
 ### Point agents at the page when a docs hit has no body
 

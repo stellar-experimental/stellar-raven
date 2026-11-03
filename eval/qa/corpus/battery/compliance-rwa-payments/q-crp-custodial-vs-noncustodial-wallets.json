@@ -46,13 +46,20 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
-        "note": "class inferred at migration"
+        "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+        "note": "The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/project/decaf",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/ops/developer/guides/stellar",
+        "observedAt": "2026-11-03",
+        "note": "The current MoneyGram guide documents legacy SEP-10/SEP-24 and custodial versus non-custodial integration. New partners use the widget path."
       }
     ],
     "corroboration": [
@@ -112,15 +119,15 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-02) — verified unchanged, no gospel change",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "Re-verified unchanged 2026-11-02; no gospel change; the answer keeps its 2026-07-11 observation date.",
-        "Live A (acquired 2025-04-26): https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — \"Some applications, such as centralized exchanges, are custodial, meaning the application has access to the private keys\".",
-        "Live A (acquired 2026-10-21): https://xramps.moneygram.com/ops/dev/stellar — \"extraFields: { // Required for custodial wallets; optional for non-custodial\".",
-        "Live C 2026-11-02: Raven scout.searchProjects {q:'decaf'} — \"Decaf is a non-custodial wallet on the Solana and Stellar networks for cross-border money movement ... via MoneyGram and partner ramps\". Live A 2026-11-02: https://www.decaf.so/terms — \"Decaf does not: Hold or control your private keys (for non-custodial Wallet Services)\".",
-        "Live D (2026-10-14): https://www.globenewswire.com/news-release/2026/10/14/3380516/0/en/owlting-group-nasdaq-owls-and-decaf-open-u-s-dollar-accounts-beyond-the-united-states-on-owlpay-harbor.html — \"It combines non-custodial wallets and stablecoin settlement with bank, card and cash payment partners.\" Decaf Business control model is product-specific; the existing 'marketing category alone' guard covers it.",
-        "Sibling sweep 2026-11-02: q-hist-remittance-corridors, q-scf-cross-decaf-sep24, q-anchor-moneygram-ramps, q-comp-cross-moneygram-partnership-sep24; no contradiction."
+        "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide (HTTP 308, 2026-11-03): The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details. Current source: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps (HTTP 200).",
+        "https://xramps.moneygram.com/ops/developer/guides/stellar (HTTP 200, 2026-11-03): legacy Stellar SEP integration, USDC settlement, custodial/non-custodial table, and new-partner widget guidance.",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-crp-custodial-vs-noncustodial-wallets"

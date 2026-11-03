@@ -49,8 +49,9 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+        "note": "The page defines TTL expiry and archived persistent/instance entries, supporting the live versus archived contract distinction.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "A",
@@ -108,13 +109,14 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries — 'The maximum number of ledger keys accepted is 200.'; getEvents keeps a bounded 120960-ledger default.",
-        "Live B 2026-11-02: https://github.com/stellar/laboratory/blob/main/src/query/external/useSEContractsList.ts (main a9bd4ee49c, 2026-10-29) — 'StellarExpert API to get smart contracts list ... fetch(`${STELLAR_EXPERT_API}/${network}/contract?...'.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/contract-data — contract_id and deleted columns.",
-        "Sibling sweep 2026-11-02: q-ti-enumerate-holders-airdrop, q-infra-which-indexer; no contradiction. No gospel change."
+        "https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival (HTTP 308, 2026-11-03): The page defines TTL expiry and archived persistent/instance entries, supporting the live versus archived contract distinction. Current source: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-ti-enumerate-all-contracts"

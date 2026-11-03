@@ -34,8 +34,9 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+        "note": "The guide documents SDEX/pool routing and Strict Send/Strict Receive limits.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "A",
@@ -64,15 +65,14 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "2026-11-02 [A] https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — \"Path payments use the Path Payment Strict Send or Path Payment Strict Receive operations.\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"just use PathPaymentStrictReceive or PathPaymentStrictSend\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x — \"PATH_PAYMENT_STRICT_RECEIVE = 2 / PATH_PAYMENT_STRICT_SEND = 13 (operation types)\" (claim: golden.keyFacts[0] confirmed: Ops: PathPaymentStrictSend and PathPaymentStrictReceive)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — \"path payments cross through the SDEX and/or liquidity pools before arriving at the destination account\" (claim: golden.keyFacts[2] confirmed: Routes through DEX order book, AMM pools, or both)",
-        "2026-11-02 [F] https://horizon.stellar.org/ledgers?order=desc&limit=5 — \"ledger 65269774 closed 2026-11-02T15:50:54Z: base_reserve_in_stroops 5000000, protocol_version 29; consecutive closes 5s apart\" (claim: golden.answer confirmed-as-of: Settles in about one ledger close (~5 s))",
-        "Sibling sweep 2026-11-02: proposer checked q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no gospel change in this case, so no sibling contradiction can arise from this event."
+        "https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments (HTTP 308, 2026-11-03): The guide documents SDEX/pool routing and Strict Send/Strict Receive limits. Current source: https://developers.stellar.org/docs/build/guides/transactions/path-payments (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-asset-path-payment-ops"

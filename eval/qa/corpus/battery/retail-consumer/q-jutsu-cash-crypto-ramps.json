@@ -33,7 +33,9 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/platforms/anchor-platform"
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
+        "note": "The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "D",
@@ -59,13 +61,14 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "2026-10-22 [A] https://stellar.org/use-cases/payments — \"170+ Countries with USDC cash-out ... 475K+ MoneyGram locations ... Regulated anchors bridge fiat rails to onchain balances across 180+ countries.\" (claim: golden.keyFacts[0] confirmed-as-of: Any network-wide ramp count is a dated snapshot)",
-        "2026-11-02 [E] https://developers.stellar.org/docs/tools/ramps — \"Stellar has anchor services operating worldwide. View the Anchor Directory for information on Stellar anchors.\" (claim: golden.keyFacts[0] confirmed-as-of: Any network-wide ramp count is a dated snapshot)",
-        "2026-10-07 [A] https://stellar.org/use-cases/ramps — \"Supported fiat payment methods will differ depending on the on and off-ramp institution.\" (claim: golden.keyFacts[1] confirmed: Availability is corridor- and provider-specific)",
-        "Sibling sweep 2026-11-02: siblings checked q-crp-anchors-by-corridor, q-anchor-moneygram-ramps, q-raph-offramp-xlm-usdc, q-pay-anchor-msb-licensing; no gospel change in this case, no contradiction found."
+        "https://developers.stellar.org/platforms/anchor-platform (HTTP 308, 2026-11-03): The page documents on/off-ramp services, wallet/exchange integration, SEP-12 KYC/AML, deposit/withdrawal, and cross-border payment workflows. Current source: https://developers.stellar.org/docs/platforms/anchor-platform (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "authored 2026-07 (jutsu phrasing)"

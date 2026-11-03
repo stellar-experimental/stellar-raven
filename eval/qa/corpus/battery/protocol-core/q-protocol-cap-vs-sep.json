@@ -35,8 +35,9 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/learn/encyclopedia/contract-development/contract-interactions/stellar-ecosystem-proposals",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+        "note": "The redirect target also returns HTTP 404. The current SEPs page distinguishes ecosystem standards from core protocol CAPs, corroborated by stellar-protocol README.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "B",
@@ -72,14 +73,14 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/README.md — 'CAPs deal with changes to the core protocol of the Stellar network. ... SEPs deal with changes to the standards, protocols, and methods used in the ecosystem built on top of the Stellar network.'",
-        "Class B 2026-11-02: gh api repos/stellar/stellar-protocol/contents/ — core/ and ecosystem/ directories, cap-template.md and sep-template.md.",
-        "Class A 2026-11-02: https://stellar.org/blog/developers/protocol-22-upgrade-guide — validators arm 'upgrades?mode=set&upgradetime=2024-12-05T17:00:00Z&protocolversion=22'.",
-        "Class C 2026-11-02: https://horizon.stellar.org/ — current_protocol_version 29, core_supported_protocol_version 30 (P30 CAPs such as CAP-0087 are Implemented but not active).",
-        "No gospel change. Sibling sweep: q-protocol-cap-process — consistent."
+        "https://developers.stellar.org/docs/learn/encyclopedia/contract-development/contract-interactions/stellar-ecosystem-proposals (HTTP 308, 2026-11-03): The redirect target also returns HTTP 404. The current SEPs page distinguishes ecosystem standards from core protocol CAPs, corroborated by stellar-protocol README. Current source: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+      ],
+      "rootCause": [
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-protocol-cap-vs-sep"
