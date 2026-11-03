@@ -33,8 +33,9 @@ export function resolveReportedCost({ receipt, usage, status, model, stream, par
 }
 
 /** One call, with no SDK, provider fallback, or automatic inference retry. */
-export async function providerCall(ai, { gatewayId, maxBudgetUsd, messages, tools, maxOutputTokens, judge = false,
+export async function providerCall(ai, { gatewayId, maxBudgetUsd, messages, tools, maxOutputTokens, judge = false, toolChoice = "auto",
   beforeDispatch = () => {}, onCompletion = () => {} }) {
+  if (!["auto", "none"].includes(toolChoice)) throw new Error("invalid-answer-tool-choice");
   const accounting = createEvalCostBinding(ai, gatewayId, maxBudgetUsd);
   const startedAt = new Date().toISOString();
   const start = performance.now();
@@ -47,7 +48,7 @@ export async function providerCall(ai, { gatewayId, maxBudgetUsd, messages, tool
     beforeDispatch();
     const response = await accounting.binding.run(MODEL, {
       messages,
-      ...(judge ? {} : { tools, tool_choice: "auto" }),
+      ...(judge ? {} : { tools, tool_choice: toolChoice }),
       reasoning_effort: "high",
       max_tokens: maxOutputTokens,
       stream: false
@@ -71,6 +72,6 @@ export async function providerCall(ai, { gatewayId, maxBudgetUsd, messages, tool
   const observations = { receipt, usage: body?.usage ?? null, status, model: body?.model ?? null, stream: false, parsed };
   return {
     startedAt, endedAt: new Date().toISOString(), latencyMs: performance.now() - start,
-    logId, error, ...observations, ...resolveReportedCost(observations)
+    logId, error, rejectedCompletion: parsed ? null : body?.choices?.[0] ?? null, ...observations, ...resolveReportedCost(observations)
   };
 }

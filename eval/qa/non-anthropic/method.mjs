@@ -5,7 +5,7 @@ import { createSpendLedger, authorizeSpend, recordSpend, spendLedgerRecord,
   MissingReportedCostError, BudgetAuthorizationExceededError, BudgetExhaustedError } from "../spend-budget.mjs";
 import { caseInputPayload, caseInputSha256 } from "../paired-verdict.mjs";
 import { diagnosticCompleteness, judgeInput, parseVerdict, validateToolCall, validateTools } from "./core.mjs";
-import { RUN_SCHEMA, MODEL, assertDeadline, jsonSha } from "./runner-support.mjs";
+import { RUN_SCHEMA, MODEL, ANSWER_POLICY, FINAL_ANSWER_REMINDER, assertDeadline, jsonSha } from "./runner-support.mjs";
 import { resolveReportedCost } from "./provider.mjs";
 
 const reason = (error) => {
@@ -37,11 +37,14 @@ function retainCompletion(attempt, completion) {
 export async function runMethod({ plan, cases, tools, instructions, evidence = {},
   provider, guard, callTool, remote, finalize = async () => {}, write }) {
   assertRunPlan(cases.map((row) => row.id));
+  if (plan.answerPolicy !== ANSWER_POLICY) throw new Error("answer-policy-mismatch");
   const transportCanary = plan.method === "transport-canary";
   const functionTools = transportCanary ? [] : validateTools(tools);
   const ledger = createSpendLedger(plan.maxBudgetUsd);
   const artifact = {
     schema: RUN_SCHEMA, diagnostic: true, method: plan.method,
+    answerPolicy: { id: ANSWER_POLICY, reminder: FINAL_ANSWER_REMINDER, reminderSha256: jsonSha(FINAL_ANSWER_REMINDER),
+      maxAnswerRequests: plan.maxAnswerSteps, finalToolChoice: "none" },
     historicalQaComparable: false, canonicalFiveTrack: false,
     model: MODEL, effort: "high", fallback: [], retries: 0, panels: 0, resume: false,
     startedAt: new Date().toISOString(), finishedAt: null, status: "started",
@@ -73,7 +76,7 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
     write(artifact);
   };
 
-  async function infer(row, role, messages, perCallCap = null) {
+  async function infer(row, role, messages, perCallCap = null, toolChoice = "auto") {
     assertDeadline(plan.deadline);
     if (artifact.providerAttempts.length >= plan.maxProviderCalls || artifact.rawProviderCalls >= plan.maxProviderCalls) throw new Error("provider-call-limit");
     const authorization = authorizeSpend(ledger, { method: role, id: row.id, attempt: artifact.providerAttempts.length + 1 });
@@ -84,6 +87,7 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
       number: artifact.providerAttempts.length + 1, id: row.id, role,
       startedAt: new Date().toISOString(), endedAt: null, rawStarted: false,
       inputSha256: jsonSha(messages), requestMessages: structuredClone(messages),
+      requestToolChoice: role === "answer" ? toolChoice : null,
       costUsd: null, costSource: null, gatewayCostComplete: false, completionAccepted: false, unacceptedEvidence: null,
       result: null, response: null, responseBrand: null, reportedCosts: [], failure: null
     };
@@ -107,6 +111,7 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
         requestId: String(attempt.number),
         options: { gatewayId: plan.gatewayId, maxBudgetUsd: authorization.maxBudgetUsd,
           messages, tools: role === "answer" ? functionTools : undefined,
+          ...(role === "answer" ? { toolChoice } : {}),
           maxOutputTokens: plan.maxOutputTokens, judge: role !== "answer" },
         onEvidence(event) {
           if (event.type === "raw-started") {
@@ -230,7 +235,17 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
             const messages = [{ role: "system", content: instructions }, { role: "user", content: kase.question }];
             const toolIds = new Set();
             for (let step = 1; step <= plan.maxAnswerSteps; step++) {
-              const result = await infer(row, "answer", messages);
+              const finalRequest = step === plan.maxAnswerSteps;
+              if (finalRequest) messages.push({ role: "system", content: FINAL_ANSWER_REMINDER });
+              const result = await infer(row, "answer", messages, null, finalRequest ? "none" : "auto");
+              if (finalRequest && (result.message?.tool_calls?.length || result.finishReason === "tool_calls")) {
+                row.failure = "answer-final-tool-violation";
+                break;
+              }
+              if (finalRequest && (result.finishReason !== "stop" || result.message?.refusal || !result.answer?.trim())) {
+                row.failure = "answer-final-incomplete";
+                break;
+              }
               messages.push(result.message);
               if (result.finishReason === "stop") { finalAnswer = result.answer; break; }
               const calls = result.message.tool_calls.map((call) => validateToolCall(call));
@@ -255,7 +270,7 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
                 messages.push({ role: "tool", tool_call_id: call.id, content: entry.result });
               }
             }
-            turnSucceeded = true;
+            turnSucceeded = row.failure === null;
           } finally {
             await remote.afterCall(context, { completed: row.providerAttemptNumbers.length > 0 });
             assertDeadline(plan.deadline);
@@ -265,8 +280,8 @@ export async function runMethod({ plan, cases, tools, instructions, evidence = {
             }
           }
           if (finalAnswer === null) {
-            row.failure = "answer-step-limit";
-            row.verdict = { score: "error", coreAnswer: null, failureClass: "answer-step-limit" };
+            row.failure ??= "answer-step-limit";
+            row.verdict = { score: "error", coreAnswer: null, failureClass: row.failure };
           } else {
             row.answer = finalAnswer;
             save();

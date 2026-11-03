@@ -1,4 +1,4 @@
-# Direct Grok diagnostic
+# Unmeasured final-synthesis candidate
 
 This runner measures a custom host loop through the remote Workers AI binding.
 It does not measure the Grok CLI or the canonical QA answering agent.
@@ -8,7 +8,24 @@ No inference is authorized by these instructions.
 The fixed model is `xai/grok-4.7`, with reasoning effort `high`.
 The runner has no fallback, panel, inference retry, or resume path.
 The root owns plan files, review, allocations, and paid launch.
-The deadline is `2026-11-03T10:00:00Z`.
+The deadline is `2026-11-03T10:00:00Z` and has expired.
+This candidate does not extend it or authorize a new collection.
+
+The candidate uses result schema `direct-grok-final-synthesis-candidate-v1`.
+Plans require schema `direct-grok-final-synthesis-plan-v1` and `answerPolicy: "reserve-last-answer-request-v1"`.
+The runner rejects older reviewed plans.
+Its last existing answer request uses provider `tool_choice: "none"` and a short synthesis reminder.
+The 16-request ceiling remains unchanged; earlier completion remains valid.
+Returned tools on that final request never execute.
+Empty, refused, and violating responses remain failures.
+Artifacts retain the actual request messages, tool choice, policy identity, response choice, and reported costs.
+The judge model, effort, prompt, and evidence pack remain unchanged.
+
+Local contract checks support the `none` setting; no live provider capability check ran.
+Future collection needs an independently reviewed paired experiment, explicit spend authorization, and a separately approved deadline.
+It also needs fresh source, selection, corpus, remote, and provider identity pins.
+Measure completion, factual quality, refusal, tool-policy violations, latency, and reported cost under both policies.
+Keep original results frozen and report the new experiment separately.
 
 ## Entry points
 

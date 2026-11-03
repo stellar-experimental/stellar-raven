@@ -7,8 +7,10 @@ import { loadCases, lifecycleSnapshot, lifecycleSnapshotSha256, partitionLifecyc
 import { runJudgeSelfTestCandidate } from "../judge.mjs";
 import { parseMaxBudgetUsd } from "../spend-budget.mjs";
 
-export const RUN_SCHEMA = "direct-grok-host-loop-diagnostic-v3";
-export const PLAN_SCHEMA = "direct-grok-host-loop-plan-v1";
+export const RUN_SCHEMA = "direct-grok-final-synthesis-candidate-v1";
+export const PLAN_SCHEMA = "direct-grok-final-synthesis-plan-v1";
+export const ANSWER_POLICY = "reserve-last-answer-request-v1";
+export const FINAL_ANSWER_REMINDER = "This is the final request. Answer from the retrieved evidence. State what remains unknown. Do not invent facts or request tools.";
 export const MODEL = "xai/grok-4.7";
 export const DEADLINE = "2026-11-03T10:00:00Z";
 export const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
@@ -87,10 +89,11 @@ export function readPinnedJson(file, expected) {
 }
 
 export function validateRunnerPlan(plan, { mode, budgetUsd, preparing = false }) {
-  const keys = new Set(["schema", "method", "model", "effort", "gatewayId", "accountId", "deadline", "maxBudgetUsd", "maxProviderCalls", "maxAnswerSteps", "maxOutputTokens", "requestTimeoutMs", "hostBackstopMs", "settlementGraceMs", "server", "remote", "corpus", "selection", "sourcePins"]);
+  const keys = new Set(["schema", "method", "model", "effort", "gatewayId", "accountId", "deadline", "maxBudgetUsd", "maxProviderCalls", "maxAnswerSteps", "maxOutputTokens", "requestTimeoutMs", "hostBackstopMs", "settlementGraceMs", "server", "remote", "corpus", "selection", "sourcePins", "answerPolicy"]);
   if (Object.keys(plan).some((key) => !keys.has(key))) throw new Error("unknown-plan-field");
   if (plan.schema !== PLAN_SCHEMA || !["baseline", "selftest", "transport-canary"].includes(plan.method)) throw new Error("invalid-plan-contract");
   if (["baseline", "selftest", "transport-canary"].includes(mode) && mode !== plan.method) throw new Error("method-plan-mismatch");
+  if (plan.answerPolicy !== ANSWER_POLICY) throw new Error("answer-policy-mismatch");
   if (plan.model !== MODEL || plan.effort !== "high" || plan.gatewayId !== "stellar-raven-demo" || plan.accountId !== "ba55b7ae9acfb3ed152103e3497c0752") throw new Error("model-or-account-mismatch");
   if (plan.deadline !== DEADLINE) throw new Error("deadline-plan-mismatch");
   assertDeadline(plan.deadline);
