@@ -147,4 +147,4 @@ Total findings: 115
 | cs-007 | The trionlabs/stellar-8004 README expands MPP as "Managed Payment Protocol". The repository's own database migration, registration UI, and… | verified          | 2026-11-02 | 0           |
 | cs-008 | CAP-0046-06 (Stellar Asset Contract, Status Final) says a SAC deployment uses a ContractExecutable of type CONTRACT_EXECUTABLE_TOKEN. The…  | declined-upstream | 2026-11-02 | 0           |
 | cs-009 | The Stellar Security Portal lists 2 audit reports for the OpenZeppelin Stellar Contracts library: 0.1.0 and v0.3.0-rc.2. The…               | reported-upstream | 2026-11-02 | 0           |
-| cs-010 | createAI from agents/models/ai-sdk drops Anthropic provider options for string catalog models. A call to ai("anthropic/claude-fable-5")…    | verified          | 2026-11-03 | 0           |
+| cs-010 | createAI from agents/models/ai-sdk drops Anthropic provider options for string catalog models. A call to ai("anthropic/claude-fable-5")…    | reported-upstream | 2026-11-03 | 0           |
