@@ -2,7 +2,8 @@
 id: cs-008
 service: canonical-source
 repo: stellar/stellar-protocol
-status: reported-upstream
+status: declined-upstream
+disposition: Accept the CAP maintainer decision that the stale name is not significant to fix; keep the current XDR name in consumer truth and do not re-file without materially new evidence.
 discovered: 2026-11-02
 upstreamTitle: CAP-0046-06 names the SAC executable CONTRACT_EXECUTABLE_TOKEN; the XDR name is CONTRACT_EXECUTABLE_STELLAR_ASSET
 evidence:
@@ -16,6 +17,8 @@ evidence:
   - "Dedupe 2026-11-02: gh search issues stellar/stellar-protocol 'CONTRACT_EXECUTABLE_TOKEN' and gh search prs 'CONTRACT_EXECUTABLE_STELLAR_ASSET' returned no results. No improvements/ finding names CAP-0046-06."
   - "Golden consumer: eval/qa/corpus/battery/soroban/q-sor-sac-introspection.json golden.notes partial cap; truth.verified 2026-11-02 (golden cap backlog, caps-2)."
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-protocol/issues/2056
+  - "maintainer decline 2026-11-03: leighmcculloch (stellar org MEMBER) wrote https://github.com/stellar/stellar-protocol/issues/2056#issuecomment-6593819856 with the text \"This doesn't seem significant to fix.\" and closed #2056 as not_planned at 2026-11-03T02:24:44Z. No linked PR."
+  - "2026-11-03T15:06Z live re-check: core/cap-0046-06.md on stellar-protocol master ded60f56201478b82b341151a6c44f7d1a4aec6e line 351 still names CONTRACT_EXECUTABLE_TOKEN; stellar-xdr curr Stellar-contract.x line 175 defines CONTRACT_EXECUTABLE_STELLAR_ASSET = 1. The trigger still reproduces; the owner declined the correction."
 ---
 
 ## Finding
