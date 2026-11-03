@@ -79,7 +79,7 @@ Typecheck, dry-run build, eval self-test, register checks, and pin review pass.
 The routing gates pass.
 The separate protocol-history diagnostic still fails: top-5 is 7/8, and controls are 3/4.
 This follow-up changes no routing source.
-The [final independent review](independent-review.md) is in progress.
+The [final independent review](independent-review.md) is complete.
 It clears the reviewed follow-up and closes the digest-scope finding.
 The [completion record](completion.json) records the final review, native helper costs, and local candidate commit.
 
