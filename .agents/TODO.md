@@ -463,7 +463,20 @@ instance that `src/demo/chat.ts` keeps for `moonshotai/kimi-k3` (finding `wai-00
 before a binding call, so the migration needs the upgrade. The `agents` upgrade also moves the MCP server runtime, so it needs `npm run test:smoke`, the
 single-`workerd` check above, and a Playground run of every demo model.
 
-Done when: `src/demo` and `test/demo-model-config.test.ts` no longer import
+Blocked since 2026-11-03. A migration attempt with `agents@0.32.0` found that `createAI` string
+catalog models drop `providerOptions.anthropic` (adaptive `thinking` and `effort`) on the binding
+`/run` path. Finding `cs-010` records it with a self-contained repro under
+`rounds/2026-11-03-demo-createai/repro/`; `agents@0.33.0` behaves the same. A native Anthropic
+model keeps the options but moves to the provider-native route, so it is not a substitute. The
+binding path also has no stream-resume opt-out (cloudflare/agents#2790 requests one); that gap is
+lower priority because no Raven failure from automatic resume is known. Keep `workers-ai-provider`
+until `cs-010` is fixed upstream. Owner decision recorded the same day: keep current behavior and
+do not migrate through a different transport.
+
+Done when: an `agents` release forwards Anthropic provider options for `anthropic/*` catalog ids on
+`/run` (re-run the `cs-010` repro to prove it), a reviewed decision covers stream resume (the
+`#2790` opt-out, or accepting automatic resume), and then `src/demo` and
+`test/demo-model-config.test.ts` no longer import
 `workers-ai-provider`, the package is out of `package.json`, and `wai-001` is closed out under the
 `improvements-pipeline` skill. The migration removes Raven's dependency but does not fix the frozen
 package, so it is not `fixed-upstream` evidence. The resolver accepts only `fixed-upstream`
