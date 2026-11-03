@@ -76,12 +76,6 @@
         "note": "Direct source repository observed 2026-07-13; supports the Launchtube project attribution."
       },
       {
-        "class": "F",
-        "ref": "https://developers.stellar.org/meetings/authors/kalepail",
-        "note": "HTTP 404 'Page Not Found' with x-mintlify-client-version 0.0.4044; /meetings/authors/kalepail/ and /meetings/authors also return 404; no redirect rule exists.",
-        "observedAt": "2026-11-02"
-      },
-      {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-docs/pull/2941",
         "note": "'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)', merged 2026-10-22T18:00:57Z (commit 700ed32d); contributor-guide follow-up #2948 merged 2026-10-23.",
@@ -217,38 +211,26 @@
             "class": "A",
             "ref": "https://developers.stellar.org/meetings/2024/01/26",
             "observedAt": "2026-11-02",
-            "note": "'January 26, 2024 \u00b7 Tyler van der Hoeven , Developer Advocate Director'; the other six pages (02/08, 02/22, 03/07, 03/21, 04/18, 06/13) carry the same byline."
+            "note": "'January 26, 2024 · Tyler van der Hoeven , Developer Advocate Director'; the other six pages (02/08, 02/22, 03/07, 03/21, 04/18, 06/13) carry the same byline."
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-docs/blob/main/meetings/2024/01/26.mdx",
             "observedAt": "2026-11-02",
-            "note": "'_January 26, 2024_ \u00b7 [Tyler van der Hoeven](https://github.com/kalepail), Developer Advocate Director'; code search finds seven meetings/2024/MM/DD.mdx files."
+            "note": "'_January 26, 2024_ · [Tyler van der Hoeven](https://github.com/kalepail), Developer Advocate Director'; code search finds seven meetings/2024/MM/DD.mdx files."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task peer-handoff)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "Gospel change 2026-11-02 (pass 3, task peer-handoff): golden.answer roster is re-dated 2026-11-02 and names the seven bylined 2024 meeting pages in place of the dead author index; the index 404 is dated. golden.notes replace the ll-005/ll-017 partial cap with a plain rule (ADR-0008 limits partial caps to three cases) and cite improvements/stellar-docs/sd-064. truth.sources[0] now points to a live meeting page.",
-        "Live A 2026-11-02: https://developers.stellar.org/meetings/2024/01/26, /2024/02/08, /2024/02/22, /2024/03/07, /2024/03/21, /2024/04/18, /2024/06/13 \u2014 each HTTP 200 with 'Tyler van der Hoeven , Developer Advocate Director' (for example 'January 26, 2024 \u00b7 Tyler van der Hoeven , Developer Advocate Director').",
-        "Live B 2026-11-02: gh search code 'van der Hoeven' --repo stellar/stellar-docs \u2014 meetings/2024/01/26.mdx, 02/08.mdx, 02/22.mdx, 03/07.mdx, 03/21.mdx, 04/18.mdx, 06/13.mdx (plus .mintlify/skills/standards/SKILL.md, not a meeting); https://github.com/stellar/stellar-docs/blob/main/meetings/2024/01/26.mdx '_January 26, 2024_ \u00b7 [Tyler van der Hoeven](https://github.com/kalepail), Developer Advocate Director' at main 635ac81e9c10719bf47475dcf342a09d274a1c2c.",
-        "Live A 2026-11-02: https://stellar.org/events/community/practical-path-payments 'April 10, 2020 at 5.00 PM UTC ... Highlighted Speakers Tyler van der Hoeven'; https://stellar.org/events/community/turing-complete-contract-proposal-for-stellar 'July 10, 2020 at 5.00 PM UTC ... tune in on June 19th 2020, 1:00 PM ET!'; https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates 'May 4, 2023 at 2.00 PM UTC'.",
-        "Live C 2026-11-02 (pass 3): Raven lumenloop.find_content_by_entity {entity:'Tyler van der Hoeven', entity_type:'person'} ok, caveat no-rows, all five groups 0; lumenloop.search_content_semantic {query:'Tyler van der Hoeven', limit:5} caveat unverified-match, top row an unrelated Velo press release. ll-005 and ll-017 still stand.",
-        "F 2026-11-02T16:31:54Z: https://developers.stellar.org/meetings/authors/kalepail returns HTTP 404 'Page Not Found' (also with a trailing slash and at /meetings/authors); https://developers.stellar.org/meetings returns HTTP 200 with x-mintlify-client-version 0.0.4044.",
-        "B 2026-11-02: https://github.com/stellar/stellar-docs/pull/2941 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)', merged 2026-10-22T18:00:57Z (commit 700ed32d); https://github.com/stellar/stellar-docs/pull/2948 merged 2026-10-23T15:44:49Z.",
-        "F 2026-11-02: HTTP 200 for https://developers.stellar.org/meetings/2024/06/13 (text contains 'van der Hoeven'), https://stellar.org/events/community/practical-path-payments, https://stellar.org/community/events/turing-complete-contract-proposal-for-stellar (301 to /events/community/...), and https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates.",
-        "B 2026-11-02: gh api repos/kalepail/passkey-kit archived=true '[MOVED \u2192 github.com/stellar/passkey-kit]'; repos/stellar/launchtube archived=true, pushed_at 2026-01-14T03:09:51Z.",
-        "C 2026-11-02: Lumenloop find_content_by_entity {entity:'Tyler van der Hoeven', entity_type:'person'} returned all five groups empty; search_content_semantic returned _weak_match true with an exact-name AV candidate that needs validation.",
-        "Change (pass 1, batch scf-grants-builders-01): golden.notes 2026-09-30 line now states the seven-post count in past tense and records the 404; an answer need not cite the dead URL. Verifier decision: accept.",
-        "Sibling sweep 2026-11-02 (pass 1): grep 'meetings/authors' over eval/qa/corpus/battery \u2192 only this case; grep 'launchtube|passkey-kit' siblings (q-passkey-wallet-recovery, q-soroban-add-signer-smart-wallet-howto, q-passkey-platform-constraints, q-tool-passkeykit-smart-wallet, q-tool-smart-wallet-repos-discovery) and q-edge-lumenloop-person-entity-empty make no claim about the author index; no contradiction.",
-        "Sibling sweep 2026-11-02 (pass 3): cluster-073 and cluster-128 members q-edge-lumenloop-person-entity-empty, q-edge-closed-world-builder-directory-miss, q-builder-justin-rice-history checked; the plain empty-lane rule matches their closed-world framing; no contradiction."
+        "https://developers.stellar.org/meetings/authors/kalepail (HTTP 404, 2026-11-03): Remove the dead author index from current sources. Seven dated meeting pages and migration repository evidence remain. The historical 404 observation stays in the answer.",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
       ],
       "rootCause": [
-        "freshness-drift",
-        "improvements/stellar-docs/sd-064-meeting-author-pages-404-after-migration.md"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-builder-content-by-person"

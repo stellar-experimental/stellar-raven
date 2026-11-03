@@ -39,7 +39,9 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/anchoring-assets/anchor-platform"
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+        "note": "The page documents SEP-6, SEP-24, SEP-31, SEP-38 and anchor workflows; existing SEP specifications remain the detailed authority.",
+        "observedAt": "2026-11-03"
       },
       {
         "class": "B",
@@ -309,38 +311,14 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task payments-assets)",
+      "date": "2026-11-03",
+      "by": "lane urls (Codex gpt-6.1-sol high)",
       "evidence": [
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"Title: Hosted Deposit and Withdrawal / Status: Active / Updated: 2025-09-10 / Version 3.8.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md — \"Status: Active (Interactive components are deprecated in favor of SEP-24) ... Updated: 2025-09-10 ... Version 4.3.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-        "[A] https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — \"SEP-24 is the alternative to SEP-6 which supports hosted deposits and withdrawals. ... SEP-6 is the alternative to SEP-24 that supports an API-style solution for the same use case.\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed-as-of)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md — \"Must have a business relationship with the Receiving Anchor. ... The Sending and Receiving Anchors must create bi-lateral agreements\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration — \"To request funds from the Sending Anchor, the Receiving ...\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"SEP-0006 Active; SEP-0024 Active; SEP-0031 Active; SEP-0038 Anchor RFQ API Draft\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md — \"Title: Anchor RFQ API / Status: Draft / Updated: 2025-02-26 / Version 2.5.0\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed-as-of)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md — \"TRANSFER_SERVER ... SEP-6; TRANSFER_SERVER_SEP0024 ... SEP-24; DIRECT_PAYMENT_SERVER ... SEP-31\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed)",
-        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep1#overview — \"SEP endpoints for SEP-6, SEP-24, SEP-31, SEP-38, SEP-45\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0038](sep-0038.md) | Anchor RFQ API | Jake Urban and Leigh McCulloch | Draft |\" (observedAt 2026-11-02; supports golden.avoid[2]: contradicted)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — \"Handle anchor KYC needs, including handling KYC info within an interactive webapp hosted by the anchor\" (observedAt 2026-11-02; supports golden.avoid[1]: contradicted)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0038](sep-0038.md) | Anchor RFQ API | Jake Urban and Leigh McCulloch | Draft |\" (observedAt 2026-11-02; independent verifier)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md — \"Title: Anchor RFQ API / Status: Draft / Updated: 2025-02-26 / Version 2.5.0\" (observedAt 2026-11-02; independent verifier)",
-        "[D] https://github.com/Soneso/kmp-stellar-sdk/blob/main/compatibility/sep/SEP-0038_COMPATIBILITY_MATRIX.md (via Parallel web_search) — \"Generated: 2026-10-24 16:58:07 SEP Version: 2.5.0 SEP Status: Draft\" (observedAt 2026-11-02; independent verifier)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"SEP-0006 ... Active; SEP-0024 Hosted Deposit and Withdrawal ... Active; SEP-0031 Cross-Border Payments API ... Active\" (observedAt 2026-11-02; independent verifier)",
-        "[D] https://stellar-standards.lovable.app/ (unofficial explorer, via Parallel web_search) — \"SEP - 0038 Anchor RFQ API ... Draft 2025-02-26\" (observedAt 2026-11-02; independent verifier)",
-        "Applied fields: golden.keyFacts[3] (verifier decision: accept).",
-        "Sibling sweep 2026-11-02: checked q-sep-38-quotes, q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw; no contradiction with this case's facts. q-sep-38-quotes states SEP-38 Draft, matching the separated keyFact.",
-        "Pass 2 gospel change 2026-11-02: golden.answer date moves from 2026-07-11 to 2026-11-02 to match truth.asOf; keyFacts[3] keeps one predicate (dated Active status) and SEP-38 moves to an 'Also good' line, as golden.answer already states it; avoid and the sd-009 caution unchanged.",
-        "Live B 2026-11-02: curl raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md - 'Status: Active (Interactive components are deprecated in favor of SEP-24)'; sep-0024.md 'Status: Active'; sep-0031.md 'Status: Active' (Updated 2024-11-05); sep-0038.md 'Status: Draft'; README.md rows SEP-0006/0024/0031 Active, SEP-0038 Draft.",
-        "Live A 2026-11-02 (perplexity_search): https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals - 'Complete list of active proposals' includes 'SEP-6|Deposit and Withdrawal API', 'SEP-24|Hosted Deposit and Withdrawal', and 'SEP-31|Cross-Border Payments API'; SEP-38 is not in that list.",
-        "Sibling sweep 2026-11-02 (pass 2): q-sep-38-quotes (SEP-38 Draft), q-sep-6-24-deprecation (sd-009 caution), q-sep-interactive-deposit-withdraw, cluster-009 SEP statuses; no contradiction.",
-        "Pass 1 verification event (batch assets-anchors-seps-04, .agents/rounds/2026-11-02-golden-audit.md) produced the earlier 2026-11-02 evidence rows and edits in this branch diff; the pass-2 rows follow."
+        "https://developers.stellar.org/docs/anchoring-assets/anchor-platform (HTTP 308, 2026-11-03): The page documents SEP-6, SEP-24, SEP-31, SEP-38 and anchor workflows; existing SEP specifications remain the detailed authority. Current source: https://developers.stellar.org/docs/learn/fundamentals/anchors (HTTP 200).",
+        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
       ],
       "rootCause": [
-        "freshness-drift",
-        "eval-authoring: pass 1 moved truth.asOf to 2026-11-02 but left the answer's 'As of 2026-07-11' date, and keyFacts[3] joined two predicates (consistency-entities F16; consistency-rubric L4).",
-        "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md (declined-upstream; the retained golden.notes caution on the SEP-6 deprecation depends on it; recurrence 2026-11-02)."
+        "freshness-drift"
       ]
     },
     "origin": "kaan sep24-vs-sep31-vs-sep6"
