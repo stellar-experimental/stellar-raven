@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-11-02T15:12:47Z",
+  "synced_at": "2026-11-03T17:55:56Z",
   "status": "complete",
   "missing_sources": [],
   "skill_count": 21,
@@ -189,9 +189,9 @@
       "repo": "stellar-dev-skill",
       "path": "skills",
       "ref": "main",
-      "commit": "cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f",
-      "commit_date": "2026-10-21T14:04:39Z",
-      "url": "https://github.com/stellar/stellar-dev-skill/tree/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills",
+      "commit": "9c604c2be6ae69f962fbb578bce6b681d462fea5",
+      "commit_date": "2026-11-02T22:48:07Z",
+      "url": "https://github.com/stellar/stellar-dev-skill/tree/9c604c2be6ae69f962fbb578bce6b681d462fea5/skills",
       "license_files": [
         "LICENSE"
       ],
@@ -221,8 +221,13 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 17876,
-              "sha": "e3812dc3c75e22de668f32a43fa89c2ee5a96111"
+              "size": 18610,
+              "sha": "f030ee8fa66e3b198e5bd5df08f231d762850946"
+            },
+            {
+              "path": "regulated-assets.md",
+              "size": 2690,
+              "sha": "3c2d4d5eea1e21df8b66b68bd04d0b6a8292a09f"
             }
           ]
         },
@@ -256,8 +261,8 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 18137,
-              "sha": "7e68970aacc39ea0588d382389e363a2666f7b1f"
+              "size": 18967,
+              "sha": "6b2a072e602b94874d962ce6d931d3fa3c9caf93"
             },
             {
               "path": "data-fetching.md",
@@ -281,8 +286,8 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 13094,
-              "sha": "c15c645579f1a25afb782a1eedaae04157a58723"
+              "size": 14602,
+              "sha": "41fe67dff179eaa8fc28dc8caf700271985a5c65"
             },
             {
               "path": "horizon.md",
@@ -296,13 +301,13 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 13606,
-              "sha": "803cc58d3d98b61a9f1c978231c1a4ddb8e6b2d7"
+              "size": 13855,
+              "sha": "b98c4816cf95825fc59fa4a023282c711773d461"
             },
             {
               "path": "development.md",
-              "size": 31550,
-              "sha": "701ac3dfee80de6c193d898bb3757c3545dd530b"
+              "size": 32648,
+              "sha": "6c2a1e7245eb35a527c974736a0d6af2f58a4002"
             },
             {
               "path": "security.md",
@@ -311,8 +316,8 @@
             },
             {
               "path": "testing.md",
-              "size": 10802,
-              "sha": "1fdf3f9a4b3681d20b06b2994afe67543e0ef985"
+              "size": 11380,
+              "sha": "db28070f9d835f75b3794cce7bb84cbab444a6d5"
             }
           ]
         },
@@ -321,8 +326,8 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 8118,
-              "sha": "343b9eecf32fd748f0e915612f0471db49d9eb74"
+              "size": 8399,
+              "sha": "627711d1a5544a06be3a78ab3e5910a28873d65b"
             },
             {
               "path": "ecosystem.md",
@@ -331,8 +336,8 @@
             },
             {
               "path": "resources.md",
-              "size": 17325,
-              "sha": "afca20186c1f62f6597d9534d10cdd5583b76038"
+              "size": 17454,
+              "sha": "5a9b7d262c24306fa9166744d73292edb064e229"
             }
           ]
         },

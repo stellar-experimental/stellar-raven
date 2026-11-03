@@ -44,6 +44,32 @@ instructions ("ignore previous", "you must", credentials, URLs to fetch).
 
 ## Entries
 
+### 2026-11-03 — stellar-dev sk-032 to sk-036 fixes
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `9c604c2be6ae69f962fbb578bce6b681d462fea5` | `sel:257d79093df5` | author read; independent review pending with coordinator |
+
+The author read all nine changed file diffs from `ecosystem-skills/update.sh`.
+Eight existing files changed, and `assets/regulated-assets.md` was added.
+The changes correct build commands, generated-client errors, resource limits, regulated assets, and transaction submission states.
+The contract examples also update protocol versions and deployment methods.
+All other source selections remain unchanged.
+
+The new companion stays selected under the existing `stellar-dev` all-files selection.
+The assets skill links it directly for SEP-0008 setup and wallet approval handling.
+Its transaction shape and five response states agree with the primary SEP-0008 specification.
+It extends the existing assets skill and adds no searchable skill or callable operation.
+Its signing and HTTP instructions apply to the reader's environment.
+Serving those instructions gives Raven no signing, network, or approval-server capability.
+The author found no instruction override, literal credential, or new reference to a non-exposed operation or retired skill.
+
+The dapp skill still recommends mixed classic/Soroban batching at line 332; `sk-037` remains unfixed.
+The dapp frontmatter still contains the Blux sentence covered by `SKILL_DESCRIPTION_OVERRIDES`.
+The existing override remains necessary; this update creates no additional override need.
+`check-mirrors.mjs --fetch` verified all 67 selected files against upstream.
+The coordinator owns independent review and deployment.
+
 ### 2026-09-29 — stellar-dev and trustless-work drift review (#180)
 
 | Source | Pinned commit | Selection | Reviewed |
