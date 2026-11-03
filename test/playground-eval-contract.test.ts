@@ -3,13 +3,14 @@ import { describe, expect, it } from "vitest";
 // @ts-expect-error no declaration file is emitted for the local .mjs contract.
 import * as artifactContract from "../eval/playground/artifact-contract.mjs";
 // @ts-expect-error local executable module intentionally exposes a test seam.
-import { orchestratePlaygroundRun } from "../scripts/run-playground-semantic-eval.mjs";
+import { answeringWithObserved, orchestratePlaygroundRun } from "../scripts/run-playground-semantic-eval.mjs";
 
 const {
   PLAYGROUND_ARTIFACT_CONTRACT,
   PLAYGROUND_QUARANTINE_CONTRACT,
   PLAYGROUND_INPUT_SNAPSHOT_CONTRACT,
   PLAYGROUND_ROUND_CAP_CONTRACT,
+  assertCurrentPlaygroundContract,
   assertModelBackedRunInputs,
   assertNotPlaygroundQuarantine,
   assertPlaygroundArtifactMeta,
@@ -44,7 +45,7 @@ function reviewedRound(overrides: Record<string, unknown> = {}) {
   };
 }
 
-function fixtureMeta(roundAuthorization: any = reviewedRound()) {
+function fixtureMeta(roundAuthorization: any = reviewedRound(), shapeAnswering: (answering: any) => any = (answering) => answering) {
   const treeBase = {
     headRevision: "8e891fa6f9b913b723af897d1bf55bb2b5251c34",
     dirty: false,
@@ -64,7 +65,7 @@ function fixtureMeta(roundAuthorization: any = reviewedRound()) {
       startedAt: "2026-07-14T00:00:00.000Z",
       finishedAt: "2026-07-14T00:01:00.000Z"
     },
-    answering: {
+    answering: shapeAnswering({
       primaryModel: "openai/gpt-5.4",
       fallbackModels: ["openai/gpt-5.4-mini"],
       models: [
@@ -78,10 +79,10 @@ function fixtureMeta(roundAuthorization: any = reviewedRound()) {
       modelSource: "default",
       defaultModels: [],
       configurationBasis: "fixture config",
-      runtimeIntrospection: "not-available",
+      runtimeIntrospection: "gateway-log",
       observedAttemptedModels: null,
       proofLimit: "fixture cannot introspect attempts"
-    },
+    }),
     judge: {
       enabled: true,
       model: "claude-sonnet-5",
@@ -201,9 +202,35 @@ describe("playground semantic artifact contract", () => {
     delete missingFallback.answering.fallbackModels;
     expect(() => assertPlaygroundArtifactMeta(missingFallback)).toThrow(/fallbackModels/);
 
+    const unconfiguredObserved = structuredClone(fixtureMeta());
+    unconfiguredObserved.answering.observedAttemptedModels = ["openai/gpt-6-luna"];
+    expect(() => assertPlaygroundArtifactMeta(unconfiguredObserved)).toThrow(/observedAttemptedModels/);
+
+    const noIntrospection = structuredClone(fixtureMeta());
+    noIntrospection.answering.runtimeIntrospection = "not-available";
+    expect(() => assertPlaygroundArtifactMeta(noIntrospection)).toThrow(/runtimeIntrospection/);
+
     const changedTemperature = structuredClone(fixtureMeta());
     changedTemperature.answering.temperature = 0.2;
     expect(() => assertPlaygroundArtifactMeta(changedTemperature)).toThrow(/answeringConfigSha256/);
+  });
+
+  it("builds a valid artifact after a model mismatch and keeps the config hash free of observations", () => {
+    const rows = [
+      { answerCost: { models: ["openai/gpt-5.4"] } },
+      { answerCost: { models: ["openai/gpt-5.6-terra"] }, provenanceError: "observed-model-mismatch: openai/gpt-5.6-terra" }
+    ];
+    const meta = fixtureMeta(reviewedRound(), (answering) => answeringWithObserved(answering, rows));
+    expect(() => assertPlaygroundArtifactMeta(meta)).not.toThrow();
+    expect(meta.answering.observedAttemptedModels).toEqual(["openai/gpt-5.4"]);
+    expect(meta.inputSnapshot.answeringConfigSha256).toBe(fixtureMeta().inputSnapshot.answeringConfigSha256);
+  });
+
+  it("refuses an older playground contract instead of reading it as a legacy QA artifact", () => {
+    expect(() => assertCurrentPlaygroundContract({ meta: { artifactContract: "playground-semantic-result/v2" } }))
+      .toThrow(/stale playground-semantic-result\/v2/);
+    expect(() => assertCurrentPlaygroundContract({ meta: { artifactContract: PLAYGROUND_ARTIFACT_CONTRACT } })).not.toThrow();
+    expect(() => assertCurrentPlaygroundContract({ meta: { judgeModel: "claude-sonnet-5" } })).not.toThrow();
   });
 
   it("fails when the operator server assertion, local tree, or snapshot generation disagree", () => {

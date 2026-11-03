@@ -205,11 +205,43 @@ function answeringConfiguration(devVars) {
     modelSource: modelOverride.source,
     defaultModels: DEMO_MODELS.map(({ model, role }) => ({ model, role })),
     configurationBasis: "local model-config plus evaluator-visible process/.dev.vars overrides",
-    runtimeIntrospection: "not-available",
+    runtimeIntrospection: "gateway-log",
     observedAttemptedModels: null,
     proofLimit:
-      "Pins evaluator-visible process/.dev.vars configuration and the configured primary/fallback tuple; it does not prove the already-running Worker booted with those values or expose which model attempts actually ran."
+      "Each answer's eval-cost frame carries the AI Gateway-logged model of every provider call. The run stops on a model outside the configured tuple, and observedAttemptedModels lists the models that answered. It does not prove which fallback attempt ran within one turn."
   };
+}
+
+/**
+ * The artifact's observed list: logged models that are configured attempts. A turn that logged
+ * an unconfigured model already stopped the run as invalid, and its row keeps provenanceError.
+ */
+export function answeringWithObserved(answering, rows) {
+  const configured = answering.models.map(({ model }) => model);
+  return { ...answering, observedAttemptedModels: observedModelsFromRows(rows).filter((model) => configured.includes(model)) };
+}
+
+/** Distinct Gateway-logged models across rows, in first-seen order. */
+export function observedModelsFromRows(rows) {
+  const seen = [];
+  for (const row of rows) {
+    for (const model of row?.answerCost?.models ?? []) if (!seen.includes(model)) seen.push(model);
+  }
+  return seen;
+}
+
+/**
+ * Fail-closed provenance check for one answer turn: every Gateway-logged
+ * model must be a configured attempt, and a turn that reached the provider
+ * must report at least one model. Returns a reason string or null.
+ */
+export function observedModelProblem(run, configuredModels) {
+  const cost = run?.answerCost;
+  if (!cost || !(cost.calls > 0)) return null;
+  const models = Array.isArray(cost.models) ? cost.models : [];
+  if (models.length === 0) return "observed-model-missing";
+  const unexpected = models.filter((model) => !configuredModels.includes(model));
+  return unexpected.length ? `observed-model-mismatch: ${unexpected.join(", ")}` : null;
 }
 
 async function inputFileHashes(casesPath) {
@@ -502,6 +534,7 @@ export async function orchestratePlaygroundRun({
   judgeEnabled,
   snapshotTree,
   runAnswer,
+  verifyRun = () => null,
   judgeAnswer,
   makeRow,
   buildNormalArtifact,
@@ -574,6 +607,13 @@ export async function orchestratePlaygroundRun({
     rows.push(row);
     try { recordSpend(ledger, authorization, run.costUsd); }
     catch (error) { budgetError = error; break; }
+    // A mislabeled model invalidates every comparison, so stop before any judge spend.
+    const provenanceProblem = verifyRun(run);
+    if (provenanceProblem) {
+      row.provenanceError = provenanceProblem;
+      budgetError = { code: "observed-model-mismatch", id: item.id };
+      break;
+    }
 
     const beforeJudge = await checkpoint("before-judge", item, index);
     if (beforeJudge) return beforeJudge;
@@ -845,6 +885,7 @@ async function main() {
     judgeEnabled: !args.noJudge,
     snapshotTree: workingTreeSnapshot,
     runAnswer: (item, maxBudgetUsd) => runCase(item, { endpoint, timeoutMs: args.timeoutMs, cookie, maxBudgetUsd }),
+    verifyRun: (run) => observedModelProblem(run, answering.models.map(({ model }) => model)),
     judgeAnswer: async (item, run, maxBudgetUsd) => {
       if (!run.answer) {
         return {
@@ -859,7 +900,9 @@ async function main() {
     makeRow,
     buildNormalArtifact: (rows) => {
       const meta = buildPlaygroundArtifactMeta({
-        run: runMeta(new Date().toISOString()), answering, judge, capContext, inputFiles: sourceFiles,
+        run: runMeta(new Date().toISOString()),
+        answering: answeringWithObserved(answering, rows),
+        judge, capContext, inputFiles: sourceFiles,
         selectedCases: cases, tree: treeAtStart, server
       });
       return { meta, summary: args.noJudge ? null : summarize(rows), rows };

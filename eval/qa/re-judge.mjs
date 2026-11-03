@@ -37,6 +37,7 @@ import { PACK_VERSION } from "./evidence-pack.mjs";
 import { panelConfidence } from "./panel-confidence.mjs";
 import {
   PLAYGROUND_ARTIFACT_CONTRACT,
+  assertCurrentPlaygroundContract,
   assertNotPlaygroundQuarantine,
   assertPlaygroundArtifactMeta
 } from "../playground/artifact-contract.mjs";
@@ -894,6 +895,7 @@ async function main() {
   const sourceResultsPath = path.resolve(process.cwd(), options.resultsPath);
   const { parsed: results, sha256: sourceResultsSha256 } = readJson(sourceResultsPath, "source results");
   assertNotPlaygroundQuarantine(results, "source results");
+  assertCurrentPlaygroundContract(results, "source results");
   requireRows(results, "source results");
   if (results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT) {
     assertPlaygroundArtifactMeta(results.meta);

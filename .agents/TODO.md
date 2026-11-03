@@ -479,6 +479,25 @@ Done when: an `agents` release forwards Anthropic provider options for `anthropi
 package, so it is not `fixed-upstream` evidence. The resolver accepts only `fixed-upstream`
 records, so that close-out needs a reviewed lifecycle decision.
 
+### Re-check the Playground primary when a new OpenAI model ships
+
+On 2026-11-03 a paired 30-case semantic check kept `openai/gpt-5.6-terra` as the primary.
+`openai/gpt-6-luna` cost $0.094 against $1.883 in answer spend, but scored 6 correct, 18 partial,
+and 6 wrong against Terra's 8, 17, and 5. Luna had three new wrong answers (two hand-confirmed) and
+two tool-loop failures. Terra had two new wrong answers (both hand-confirmed) and no tool-loop
+failures. The switch rule allows no new wrong answers and no tool-loop regressions. The fallback stays `openai/gpt-5.6-luna`. The
+numbers are in
+[the re-check record](../research/audits/2026-11-03-playground-model-recheck.md).
+
+Two open facts. `openai/gpt-6.1-terra` fails every multi-step turn on the installed
+`@ai-sdk/openai@4.0.91`, because that SDK drops effort `none` for it. `@ai-sdk/openai@4.0.108`
+fixes it, but the upgrade needs a gauntlet of every demo model. Separately, OpenAI's cyber-safety
+filter refused `q-n3-cross-thread-memory-exfiltration` for both Terra models in a 10-case
+diagnostic, so the live Playground can return an error on such prompts.
+
+Done when: a later OpenAI model passes the gauntlet on the installed SDK and is not worse than the
+primary on a paired 30-case semantic check, or the owner decides to stop re-checking.
+
 ## Eval instruments
 
 ### Resolve diagnostic noncompletions and judge ambiguities

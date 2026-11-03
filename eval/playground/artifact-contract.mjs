@@ -1,6 +1,23 @@
 import { createHash } from "node:crypto";
 
-export const PLAYGROUND_ARTIFACT_CONTRACT = "playground-semantic-result/v2";
+export const PLAYGROUND_ARTIFACT_CONTRACT = "playground-semantic-result/v3";
+
+/** The configuration hash excludes what the run observed, so equal configs hash equally. */
+function answeringConfiguration(answering) {
+  return answering && typeof answering === "object" ? { ...answering, observedAttemptedModels: null } : answering;
+}
+
+/**
+ * Re-judge and other readers accept only the current playground contract. An older playground
+ * contract must not fall through to the legacy QA artifact path.
+ */
+export function assertCurrentPlaygroundContract(results, label = "results") {
+  const contract = results?.meta?.artifactContract;
+  if (typeof contract === "string" && contract.startsWith("playground-semantic-result/") &&
+    contract !== PLAYGROUND_ARTIFACT_CONTRACT) {
+    throw new Error(`${label} uses stale ${contract}; only ${PLAYGROUND_ARTIFACT_CONTRACT} is readable`);
+  }
+}
 export const PLAYGROUND_QUARANTINE_CONTRACT = "playground-semantic-quarantine/v1";
 export const PLAYGROUND_INPUT_SNAPSHOT_CONTRACT = "playground-semantic-input/v1";
 export const PLAYGROUND_ROUND_CAP_CONTRACT = "playground-semantic-round-cap/v1";
@@ -56,7 +73,7 @@ export function buildPlaygroundArtifactMeta({
     evidencePackFileSha256: inputFiles.evidencePackFileSha256,
     tree,
     serverGenerationSha256: server.generationSha256,
-    answeringConfigSha256: sha256Json(answering),
+    answeringConfigSha256: sha256Json(answeringConfiguration(answering)),
     judgeTupleSha256: sha256Json(judge),
     capContextSha256: sha256Json(capContext)
   };
@@ -120,8 +137,15 @@ export function assertPlaygroundArtifactMeta(meta) {
     fail("answering.temperature must be a finite number");
   }
   requiredString(answering.configurationBasis, "answering.configurationBasis");
-  if (answering.runtimeIntrospection !== "not-available" || answering.observedAttemptedModels !== null) {
-    fail("answering must explicitly record unavailable runtime attempt introspection");
+  if (answering.runtimeIntrospection !== "gateway-log") {
+    fail("answering.runtimeIntrospection must be gateway-log");
+  }
+  if (answering.observedAttemptedModels !== null) {
+    const configured = answering.models.map((entry) => entry?.model);
+    if (!Array.isArray(answering.observedAttemptedModels) ||
+      answering.observedAttemptedModels.some((model) => typeof model !== "string" || !configured.includes(model))) {
+      fail("answering.observedAttemptedModels must be null before answers or list only configured models");
+    }
   }
   requiredString(answering.proofLimit, "answering.proofLimit");
 
@@ -227,7 +251,7 @@ export function assertPlaygroundArtifactMeta(meta) {
   if (snapshot.serverGenerationSha256 !== server.generationSha256) {
     fail("inputSnapshot.serverGenerationSha256 does not match server.generationSha256");
   }
-  if (snapshot.answeringConfigSha256 !== sha256Json(answering)) {
+  if (snapshot.answeringConfigSha256 !== sha256Json(answeringConfiguration(answering))) {
     fail("inputSnapshot.answeringConfigSha256 does not match answering");
   }
   if (snapshot.judgeTupleSha256 !== sha256Json(judge)) {

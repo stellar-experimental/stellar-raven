@@ -10,7 +10,7 @@ function upstream() {
   const entries: AIGatewayUniversalRequest[] = [];
   const getLog = vi.fn(async (id: string) => {
     expect(id).toBe("private-request-log");
-    return { cost: 0.15 };
+    return { cost: 0.15, model: "openai/gpt-5.6-terra" };
   });
   const gatewayRun = vi.fn(async (requests: AIGatewayUniversalRequest[]) => {
     entries.push(...requests);
@@ -85,7 +85,7 @@ describe("evaluation accounting through real provider paths", () => {
     expect(response.status).toBe(200);
     expect(frames).toContainEqual({ type: "token", text: "answer" });
     expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
-    expect(frames.at(-1)).toMatchObject({ type: "eval-cost", costUsd: 0.15, calls: 1, reportedCalls: 1, error: null });
+    expect(frames.at(-1)).toMatchObject({ type: "eval-cost", costUsd: 0.15, calls: 1, reportedCalls: 1, models: ["openai/gpt-5.6-terra"], error: null });
     expect(body).not.toContain("private-request-log");
     expect(f.run).not.toHaveBeenCalled();
     expect(f.gatewayRun).toHaveBeenCalledTimes(1);
@@ -117,7 +117,7 @@ describe("evaluation accounting through real provider paths", () => {
         expect(frames).toContainEqual({ type: "token", text: "answer" });
         expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
         expect(frames.at(-1)).toEqual({
-          type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, error: null
+          type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: ["openai/gpt-5.6-terra"], error: null
         });
         expect(body).not.toContain("private-request-log");
         expect(f.run).toHaveBeenCalledExactlyOnceWith(model, expect.objectContaining({ stream: true, messages: expect.any(Array) }),
@@ -142,7 +142,7 @@ describe("evaluation accounting through real provider paths", () => {
     }));
     f.getLog.mockImplementation(async (id) => {
       expect(["primary-log", "native-log"]).toContain(id);
-      return { cost: id === "primary-log" ? 0.05 : 0.15 };
+      return id === "primary-log" ? { cost: 0.05, model: "openai/gpt-5.6-terra" } : { cost: 0.15, model };
     });
     f.run.mockImplementationOnce(async () => {
       expect(f.getLog).toHaveBeenCalledExactlyOnceWith("primary-log");
@@ -152,7 +152,7 @@ describe("evaluation accounting through real provider paths", () => {
     expect(frames).toContainEqual({ type: "token", text: "answer" });
     expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
     expect(frames.at(-1)).toEqual({
-      type: "eval-cost", costUsd: 0.2, reportedCostUsd: 0.2, calls: 2, reportedCalls: 2, error: null
+      type: "eval-cost", costUsd: 0.2, reportedCostUsd: 0.2, calls: 2, reportedCalls: 2, models: ["openai/gpt-5.6-terra", model], error: null
     });
     expect(f.gatewayRun).toHaveBeenCalledTimes(1);
     expect(f.run).toHaveBeenCalledTimes(1);
@@ -171,7 +171,7 @@ describe("evaluation accounting through real provider paths", () => {
     expect(frames).toContainEqual({ type: "error", message: "missing-or-duplicate-answer-log-id" });
     expect(frames.some((frame) => frame.type === "token")).toBe(false);
     expect(frames.at(-1)).toEqual({
-      type: "eval-cost", costUsd: null, reportedCostUsd: 0, calls: 1, reportedCalls: 0,
+      type: "eval-cost", costUsd: null, reportedCostUsd: 0, calls: 1, reportedCalls: 0, models: [],
       error: "missing-or-duplicate-answer-log-id"
     });
     expect(f.run).toHaveBeenCalledTimes(1);
@@ -187,6 +187,7 @@ describe("evaluation accounting through real provider paths", () => {
     vi.spyOn(console, "log").mockImplementation(() => undefined);
     const f = upstream();
     f.testEnv.DEMO_MODEL_OVERRIDE = "moonshotai/kimi-k3";
+    f.getLog.mockImplementation(async () => ({ cost: 0.15, model: "moonshotai/kimi-k3" }));
     f.run.mockResolvedValueOnce(new Response(body, {
       status, headers: { "content-type": contentType, "cf-aig-log-id": "private-request-log" }
     }));
@@ -194,7 +195,7 @@ describe("evaluation accounting through real provider paths", () => {
     expect(frames).toContainEqual({ type: "error", message });
     expect(frames.some((frame) => frame.type === "token")).toBe(false);
     expect(frames.at(-1)).toEqual({
-      type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, error: null
+      type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: ["moonshotai/kimi-k3"], error: null
     });
     expect(f.run).toHaveBeenCalledTimes(1);
     expect(f.getLog).toHaveBeenCalledExactlyOnceWith("private-request-log");
