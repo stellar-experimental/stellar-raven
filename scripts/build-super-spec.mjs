@@ -363,13 +363,14 @@ function buildScout(inv, exposed, manifest) {
       // in description-notes.mjs) so codemode.spec() readers see it too.
       const note = SCOUT_DESCRIPTION_NOTES[opName];
       if (note !== undefined) consumedNotes.add(opName);
-      const summary = upstream.summary
-        ? plainText(rewriteScoutRefs(upstream.summary, refPairs))
+      const cleanFields = scrubScoutDescription(opName, upstream);
+      const summary = cleanFields.summary
+        ? plainText(rewriteScoutRefs(cleanFields.summary, refPairs))
         : undefined;
       // Scrub excluded-endpoint clauses before the rewrite — MUST match
       // build-catalog.mjs so both model-facing surfaces stay identical.
-      const cleanDescription = upstream.description
-        ? plainText(rewriteScoutRefs(scrubScoutDescription(opName, upstream.description), refPairs))
+      const cleanDescription = cleanFields.description
+        ? plainText(rewriteScoutRefs(cleanFields.description, refPairs))
         : undefined;
       const description = [cleanDescription, note ? plainText(note) : undefined]
         .filter(Boolean)
@@ -420,7 +421,7 @@ function buildScout(inv, exposed, manifest) {
     }
   }
 
-  return { paths, components, tags: openapi.tags ?? [] };
+  return { paths, components, tags: scrubNonExposedScoutSchemaRefs(openapi.tags ?? []) };
 }
 
 // ---------------------------------------------------------------------------

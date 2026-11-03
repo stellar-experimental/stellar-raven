@@ -747,7 +747,8 @@ export function buildScout(inv) {
       const httpMethod = method.toUpperCase();
       if (EXCLUDED_SCOUT_OPS.has(`${httpMethod} ${path}`)) continue;
       const opId = op.operationId ?? `${method}_${slugify(path)}`;
-      const rawDescription = [op.summary, op.description]
+      const cleanFields = scrubScoutDescription(opId, op);
+      const rawDescription = [cleanFields.summary, cleanFields.description]
         .filter(Boolean)
         .join(". ")
         .replace(/\.\.\s/g, ". ");
@@ -755,7 +756,7 @@ export function buildScout(inv) {
       // mints names for excluded ops, so an unscrubbed clause would keep its
       // raw REST spelling — still a leak).
       const description = plainText(
-        rewriteScoutRefs(scrubScoutDescription(opId, rawDescription), refPairs)
+        rewriteScoutRefs(rawDescription, refPairs)
       );
       const note = SCOUT_DESCRIPTION_NOTES[opId];
       if (note !== undefined) consumedNotes.add(opId);
