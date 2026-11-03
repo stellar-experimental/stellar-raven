@@ -5,7 +5,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\nThe **Soroban Security Audit Bank** is an SDF-funded SCF supporting program that pays eligible third-party audit costs for SCF-funded projects; it is not a cash Build grant or vulnerability bounty. Coverage can reach **100% of audit cost**, with no published fixed dollar cap. Current scope includes testnet/nearly-mainnet projects and qualifying projects already on mainnet or seeking follow-up audits. Priority categories are **Financial Protocols, Widely Used Applications, Infrastructure Contracts, and Yield-Bearing Token Protocols**. For an ordinary initial audit, the project pays **5% upfront**, refundable if all critical/high/medium findings are remediated within 20 business days; specified Growth/Scale cohorts may have 0% initial copay, while pre-traction follow-up audits use higher 20% then 50% copays. Terms are current as of 2026-07-10 and should be rechecked.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-11-03, the verified sources supported this observed answer:\n\nThe **Soroban Security Audit Bank** is an SDF-funded SCF supporting program that pays eligible third-party audit costs for SCF-funded projects; it is not a cash Build grant or vulnerability bounty. Coverage can reach **100% of audit cost**, with no published fixed dollar cap. Current scope includes testnet/nearly-mainnet projects and qualifying projects already on mainnet or seeking follow-up audits. Priority categories are **Financial Protocols, Widely Used Applications, Infrastructure Contracts, and Yield-Bearing Token Protocols**. For an ordinary initial audit, the project pays **5% upfront**, refundable if all critical/high/medium findings are remediated within 20 business days. Growth Audit and Scale Audit stages have 0% copay. These rates do not waive the Initial Audit copay. Pre-traction follow-up audits use higher 20% then 50% copays. Terms are current as of 2026-11-03 and should be rechecked.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -16,7 +16,7 @@
       "Do NOT invent a fixed dollar cap, claim it is pre-mainnet-only, or generalize the refundable 5% initial copay to every audit.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "GT-36 CORRECTION 2026-07-10: grade up-to-100% cost coverage, four current priority categories, qualifying pre/post-mainnet and follow-up paths, and conditional copay semantics. The inherited avoid was truncated and is replaced in full.\nGT-36 independently confirmed by processes 3290/3291."
+    "notes": "GT-36 CORRECTION 2026-07-10: grade up-to-100% cost coverage, four current priority categories, qualifying pre/post-mainnet and follow-up paths, and conditional copay semantics. The inherited avoid was truncated and is replaced in full.\nGT-36 independently confirmed by processes 3290/3291.\nSource qualification, verified 2026-11-03: Official Rules Phase 5 states, “Subsequent audits also require co-payment by the project.” Read this general sentence with the audit-stage table. Growth Audit and Scale Audit have 0% copay. Initial Audit has 5% upfront, subject to the stated refund condition. Pre-traction follow-up audits have 20% then 50% copays. The 0% rows identify audit stages, not Initial Audit waivers."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -25,39 +25,43 @@
   },
   "truth": {
     "lifecycle": {
-      "state": "quarantined",
-      "reviewState": "in-review",
+      "state": "active",
+      "reviewState": "resolved",
       "review": {
         "queuedOn": "2026-11-03",
         "trigger": "recurrent-eval-evidence",
         "evidence": [
           "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules — independently read 2026-11-03; Initial Audit 5% conditional refund, Growth/Scale Audit stages 0%.",
           "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md — source SHA256 e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01; same policy lineage as the rendered page.",
-          "Grok independent blind fact matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71; exact correction review remains pending.",
-          "Durable source evidence: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json; independent confirmation: .agents/rounds/2026-11-02-golden-overnight.md#audit-bank-reference-quarantine."
+          "Grok blind source matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71. Exact correction and reactivation approval are recorded in research/audits/2026-11-02-golden-overnight/reference-correction-review.md.",
+          "Durable source receipts: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json.",
+          "Quarantine and authoring-cause queue record: .agents/TODO.md at Git commit a2b1c54721ec6ef08483f00f286fc6f89637738f, entry Correct the Audit Bank copay reference.",
+          "Sibling sweep covered 501 battery files, four proposals, two live contracts, and 23 supporting JSON files. Only q-scf-audit-bank contains the defective judge-facing clause."
         ],
         "startedOn": "2026-11-03",
-        "reviewer": "Grok 4.7 high, independent source verifier t5q",
-        "ledger": ".agents/rounds/2026-11-02-golden-overnight.md"
+        "reviewer": "Grok 4.7 high, independent verifier t5q",
+        "ledger": ".agents/rounds/2026-11-02-golden-overnight.md",
+        "resolvedOn": "2026-11-03",
+        "resolution": "Corrected the audit-stage attribution and current source provenance after exact independent review. No recorded answer or grade changed."
       },
-      "quarantine": {
-        "startedOn": "2026-11-03",
-        "reviewBy": "2026-11-10",
+      "reactivation": {
+        "date": "2026-11-03",
         "author": "Codex root",
-        "reviewer": "Grok 4.7 high, independent source verifier t5q",
-        "cause": "Reference text assigns Growth/Scale audit-stage copay exemptions to Initial Audit cohorts.",
+        "reviewer": "Grok 4.7 high, independent verifier t5q",
         "ledger": ".agents/rounds/2026-11-02-golden-overnight.md",
         "evidence": [
           "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules — independently read 2026-11-03; Initial Audit 5% conditional refund, Growth/Scale Audit stages 0%.",
           "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md — source SHA256 e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01; same policy lineage as the rendered page.",
-          "Grok independent blind fact matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71; exact correction review remains pending.",
-          "Durable source evidence: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json; independent confirmation: .agents/rounds/2026-11-02-golden-overnight.md#audit-bank-reference-quarantine."
+          "Grok blind source matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71. Exact correction and reactivation approval are recorded in research/audits/2026-11-02-golden-overnight/reference-correction-review.md.",
+          "Durable source receipts: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json.",
+          "Quarantine and authoring-cause queue record: .agents/TODO.md at Git commit a2b1c54721ec6ef08483f00f286fc6f89637738f, entry Correct the Audit Bank copay reference.",
+          "Sibling sweep covered 501 battery files, four proposals, two live contracts, and 23 supporting JSON files. Only q-scf-audit-bank contains the defective judge-facing clause."
         ]
       }
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-03",
     "sources": [
       {
         "class": "A",
@@ -67,7 +71,14 @@
       {
         "class": "A",
         "ref": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
-        "note": "class inferred at migration"
+        "note": "Published official policy page; source A renders the same official handbook policy as source B.",
+        "observedAt": "2026-11-03"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md",
+        "observedAt": "2026-11-03",
+        "note": "Immutable official handbook commit e07b4bfce158639f81908f74cfd74ec8d87f051a; not a second independent policy authority."
       }
     ],
     "corroboration": [
@@ -88,19 +99,42 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-03, Initial Audit has 5% upfront with the stated 20-business-day refund; Growth/Scale Audit stages have 0% copay; pre-traction follow-ups have 20% then 50%.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+            "observedAt": "2026-11-03",
+            "note": "Current published stage table and refund condition; general subsequent-audit sentence has stage exceptions."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md",
+            "observedAt": "2026-11-03",
+            "note": "Same official policy authority and content lineage as A; immutable source supports source-to-render verification, not independent policy authority."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-02)",
+      "date": "2026-11-03",
+      "by": "Codex t55 proposer; Grok 4.7 high, independent verifier t5q; Codex root applier; research/audits/2026-11-02-golden-overnight/reference-correction-review.md",
       "evidence": [
-        "https://github.com/stellar/scf-handbook/blob/11f0d4d8aa/supporting-programs/audit-bank/official-rules.md (last commit 2026-08-07T21:23:56Z; observedAt 2026-11-02): \"Managed by the Stellar Development Foundation (“SDF”), the Program schedules audits for projects and covers up to 100% of the audit cost\"; copay table \"Initial Audit | ... | 5% with potential refund* ... Growth Audit | >$10,000,000 TVL or equivalent | 0% ... Scale Audit | >$100,000,000 TVL | 0%\"; no per-audit dollar cap",
-        "https://stellar.org/grants-and-funding/soroban-audit-bank (observedAt 2026-10-22): \"a co-payment will be required (20% of total audit cost for 2nd audit, 50% of total audit cost for 3rd audit)\"",
-        "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules (observedAt 2026-11-01): Priority Categories: Financial Protocols, Widely Used Applications, Infrastructure Contracts, Yield-Bearing Token Protocols",
-        "Raven scout.searchResearch(q=\"Soroban Security Audit Bank co-payment\") (observedAt 2026-11-02T16:12:41Z): Official Rules row \"covers up to 1[00% of the audit cost]\"",
-        "Proposer verdict: all claims confirmed; no gospel change. Independent verifier: unchanged."
+        "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules — independently read 2026-11-03; Initial Audit 5% conditional refund, Growth/Scale Audit stages 0%.",
+        "https://github.com/stellar/scf-handbook/blob/e07b4bfce158639f81908f74cfd74ec8d87f051a/supporting-programs/audit-bank/official-rules.md — source SHA256 e03a41d00b4639e2022f41ca0ebb04bc364915fe36b80dd7290f031b3a4bce01; same policy lineage as the rendered page.",
+        "Grok blind source matrix SHA256 5620d4e38c7c884a713db0e5665407ce091797494c778860dca62aae15eb8f71. Exact correction and reactivation approval are recorded in research/audits/2026-11-02-golden-overnight/reference-correction-review.md.",
+        "Durable source receipts: research/audits/2026-11-02-golden-overnight/audit-bank-stage-receipts.json.",
+        "Quarantine and authoring-cause queue record: .agents/TODO.md at Git commit a2b1c54721ec6ef08483f00f286fc6f89637738f, entry Correct the Audit Bank copay reference.",
+        "Sibling sweep covered 501 battery files, four proposals, two live contracts, and 23 supporting JSON files. Only q-scf-audit-bank contains the defective judge-facing clause."
+      ],
+      "rootCause": [
+        "Local reference authoring error: Growth/Scale audit-stage exemptions were assigned to Initial Audit cohorts. .agents/TODO.md at Git commit a2b1c54721ec6ef08483f00f286fc6f89637738f, entry Correct the Audit Bank copay reference."
       ]
     },
-    "origin": "raven-next q-scf-audit-bank"
+    "origin": "raven-next q-scf-audit-bank",
+    "reverifyBy": "2027-02-03"
   }
 }

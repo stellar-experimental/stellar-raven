@@ -4,8 +4,8 @@
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
     "proposed": 4,
-    "active": 500,
-    "quarantined": 1,
+    "active": 501,
+    "quarantined": 0,
     "retired": 0
   },
   "reservedIds": [
@@ -668,7 +668,7 @@
       "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-issue-asset-howto.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "c2f92a63f3d5eda99e1da0b845293215a96c88d37b75582e277b920661f0cab9"
+      "caseContentSha256": "8675337c0b4b2eeb2ea90c060ee00f817cb7eb31911a75c8585186b81b7c1169"
     },
     {
       "id": "q-asset-path-payment-ops",
@@ -2647,9 +2647,9 @@
     {
       "id": "q-scf-audit-bank",
       "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-audit-bank.json",
-      "state": "quarantined",
-      "reviewState": "in-review",
-      "caseContentSha256": "f28bc826fb94a7956ea58f1ea99114c7a720db1b2a58fd5c3bb02f80e580fb60"
+      "state": "active",
+      "reviewState": "resolved",
+      "caseContentSha256": "2263c8a7e79cc93dbd544b79d2d0064e23e8e1c563158bc1e4f67ed4ee9cdb3c"
     },
     {
       "id": "q-scf-blend-winners-live",

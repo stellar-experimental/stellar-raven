@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Verified 2026-11-02 (sd-059 filed as stellar/stellar-docs#2995). developers.stellar.org runs on Mintlify, and the docs team owns both its content and its search; content and search findings file in stellar/stellar-docs."
@@ -294,6 +294,46 @@
     "cs-009": {
       "repo": "Inferara/soroban-security-portal",
       "reason": "Inferara/soroban-security-portal is the public, issue-enabled repository for stellarsecurityportal.com (its GitHub homepage). The portal owns the audit-report dataset that Stellar Light/Scout mirrors."
+    },
+    "sd-080": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The issuer-lock instructions are source content owned by stellar/stellar-docs."
+    },
+    "sd-081": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The stellar.toml publishing instructions are source content owned by stellar/stellar-docs."
+    },
+    "sd-082": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The authorization example is source content owned by stellar/stellar-docs."
+    },
+    "sd-083": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Stellar Asset Contract description and interface are source content owned by stellar/stellar-docs."
+    },
+    "sd-084": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Horizon OpenAPI parameter descriptions are source content owned by stellar/stellar-docs."
+    },
+    "sd-085": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The simulation authMode descriptions are OpenRPC source content owned by stellar/stellar-docs."
+    },
+    "sd-086": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The LedgerHeader explanatory hierarchy is source content owned by stellar/stellar-docs."
+    },
+    "sd-087": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Simulation deep-dive example source is owned by stellar/stellar-docs."
+    },
+    "sd-088": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Contract-spec enum guide source is owned by stellar/stellar-docs."
+    },
+    "sk-037": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The dapp skill owns its low-level invocation and mixed-operation batching guidance."
     }
   }
 }

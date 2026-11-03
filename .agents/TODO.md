@@ -439,38 +439,21 @@ control-model lane, or a reviewed change omits the field for that transport.
 
 ## Eval instruments
 
-### Correct the Audit Bank copay reference
+### Resolve diagnostic noncompletions and judge ambiguities
 
-The reference assigns the Growth/Scale Audit stage exemptions to Initial Audit cohorts.
-Grok independently rederived the official stage table before reading the proposer disposition.
-The Initial Audit stage has 5% copay with a conditional refund; Growth/Scale Audit stages have 0%.
-The verified authoring error is independent of the recorded answer grade.
+The 2026-11-02 direct-Grok diagnostic ends all 100 selected cases, with 97 judgments and three answer-step limits.
+The incomplete answers concern quantum preparedness, forced archival on localnet, and custodial account generation.
+All original grades remain frozen; quality aggregates stay withheld.
+Two source-backed reference corrections are reviewed and applied after collection.
 
-Quarantine the existing case, preserve the frozen run, and review the exact correction before reactivation.
-Done when: corrected provenance, explicit reactivation, source sentinels, consistency review, and corpus gates pass.
-Evidence: [overnight round](rounds/2026-11-02-golden-overnight.md#audit-bank-reference-quarantine).
+Review evidence stopping behavior and source retrieval before changing the 16-request limit.
+Resolve the protocol-version live-lookup and liquid-staking behavior ambiguities through golden-truth.
+Judge calls consume 119.28 minutes of provider time, compared with 90.27 minutes for answers.
+Any effort or evidence-context change needs its own calibrated contract and separately authorized paid collection.
+Keep the experimental method separate from canonical QA and historical baselines.
 
-### Establish the non-Anthropic golden QA diagnostic
-
-The owner requested an overnight Codex/Grok run on 2026-11-02, with no Anthropic agents.
-The canonical QA runner still launches Claude for both answers and judgments.
-The new direct-Grok diagnostic lives on `codex/golden-2026-11-02-method` while its gates remain open.
-
-The first transport probe exposed a Node/Miniflare response-class mismatch.
-The accounting wrapper lost its log identity, so one call has unknown cost.
-Its full `$1` allocation stays reserved; the failed method cannot resume.
-The corrected Node boundary preserves recognized Miniflare responses without changing the production Worker.
-
-The first baseline stopped after three judged rows because stale cost evidence crossed a worker request boundary.
-A free reproduction confirmed the producer defect; its repair preserves strict request identity checks.
-The incomplete method keeps its 100-case denominator and suppresses aggregates.
-Fresh source pins, self-tests, and independent review precede the next bounded collection.
-The adapter also aligns verdict extraction with the existing canonical judge parser.
-
-Done when: the corrected transport, original judge self-tests, fixed sample, result review, and independent closeout pass.
-Keep the direct-provider result separate from canonical Claude baselines.
-Record limitations and unresolved findings before closing the item.
-Evidence: [overnight round](rounds/2026-11-02-golden-overnight.md).
+Done when: bounded proposals address the three noncompletions and ambiguities, with independent review and applicable free checks.
+Evidence: [overnight report](../research/audits/2026-11-02-golden-overnight/README.md) and [round ledger](rounds/2026-11-02-golden-overnight.md).
 
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 

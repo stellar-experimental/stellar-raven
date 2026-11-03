@@ -1,0 +1,69 @@
+{
+  "reviewReads": [
+    {
+      "source": "publishing",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/tokens/publishing-asset-info.md",
+        "headers": {
+          "Accept": "text/markdown,text/html;q=0.9",
+          "User-Agent": "Raven-shard01-v2-review/1"
+        }
+      },
+      "requestDescriptorSha256": "557017b8021c9778336728b507d6c4222c4c8b615fbc836961112c182722d7f6",
+      "startedAt": "2026-11-03T00:38:45.722345+00:00",
+      "observedAt": "2026-11-03T00:38:45.802075+00:00",
+      "status": 200,
+      "resolvedUrl": "https://developers.stellar.org/docs/tokens/publishing-asset-info.md",
+      "bodyBytes": 19439,
+      "bodySha256": "718ace624e81508859c0c2df2ba5720e3c510974ad85378781942be26898e0c9",
+      "responseHeaders": {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 00:38:45 GMT",
+        "ETag": null,
+        "Last-Modified": "Mon, 02 Nov 2026 23:51:59 GMT"
+      },
+      "responseFile": "publishing-response.md"
+    },
+    {
+      "source": "toml-spec",
+      "request": {
+        "method": "GET",
+        "url": "https://toml.io/en/v1.0.0",
+        "headers": {
+          "Accept": "text/markdown,text/html;q=0.9",
+          "User-Agent": "Raven-shard01-v2-review/1"
+        }
+      },
+      "requestDescriptorSha256": "1525eb16e7975a607a7a33fab7315d5d865e213a9c2a95f15d73605283dc852f",
+      "startedAt": "2026-11-03T00:38:45.802553+00:00",
+      "observedAt": "2026-11-03T00:38:46.118149+00:00",
+      "status": 200,
+      "resolvedUrl": "https://toml.io/en/v1.0.0",
+      "bodyBytes": 44035,
+      "bodySha256": "728a5c13aef1c14d9e3f2ef7ec7f6bcc9f06f51d770101e50ab365307eb219fe",
+      "responseHeaders": {
+        "Content-Type": "text/html; charset=UTF-8",
+        "Date": "Tue, 03 Nov 2026 00:38:46 GMT",
+        "ETag": "\"1b85ec3c124938878565e256f42bdcf4-ssl\"",
+        "Last-Modified": null
+      },
+      "responseFile": "toml-spec-response.html"
+    }
+  ],
+  "rootRecheck": {
+    "at": "2026-11-03T00:47:17.296408+00:00",
+    "request": {
+      "method": "GET",
+      "url": "https://developers.stellar.org/docs/tokens/publishing-asset-info.md",
+      "headers": {
+        "Accept": "text/markdown",
+        "User-Agent": "Raven-TOML-order-review/1"
+      }
+    },
+    "requestSha256": "c3cfc7ad870c5eccb4812127f8ff8600e8ffb0ebc006beddc56d823b4c23f3eb",
+    "status": 200,
+    "bodySha256": "718ace624e81508859c0c2df2ba5720e3c510974ad85378781942be26898e0c9",
+    "bodyBytes": 19439
+  }
+}

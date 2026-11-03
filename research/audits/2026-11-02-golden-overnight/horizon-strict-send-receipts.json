@@ -1,0 +1,345 @@
+{
+  "schema": "horizon-strict-send-public-evidence-v1",
+  "capturedAt": "2026-11-03T01:52:39.790294+00:00",
+  "sourceOwner": {
+    "repo": "stellar/stellar-docs",
+    "observedMainCommit": "85d2d1b8e7a4451b7a6af0931f587ce73109b816",
+    "canonicalEditPath": "openapi/horizon/components/parameters.yml",
+    "affectedDescriptions": [
+      "DestinationAccountParam.description",
+      "DestinationAssetsParam.description"
+    ],
+    "generatedBundle": "openapi/horizon/bundled.yml",
+    "renderingPage": "docs/data/apis/horizon/api-reference/list-strict-send-payment-paths.mdx"
+  },
+  "incorrectSentence": "Using either `source_account` or `source_assets` as an argument is required for strict send path payments.",
+  "scope": "Public documentation and pathfinding GET only. No account-balance query, wallet data, credential, transaction, or full response body is retained.",
+  "receipts": [
+    {
+      "id": "page-wrapper",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths.mdx",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "52402272aa0ee64bbf3ec0e2dfa36a08de45fe275e4db21e77632a8741cfb287",
+      "startedAt": "2026-11-03T01:52:38.244440+00:00",
+      "observedAt": "2026-11-03T01:52:38.448890+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths.mdx",
+      "bodyBytes": 297,
+      "bodySha256": "906b70246b16d24ef7cce9f35e347f55d343c08f08bbf495387623c347e37e25",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:38 GMT",
+        "ETag": "\"aa5bd3dbc664f12363a029c4d19a09d5e85d6dc19d56eed1e31ce6acfba91842\"",
+        "Last-Modified": null
+      },
+      "openapiSource": "openapi/horizon/bundled.yml GET /paths/strict-send"
+    },
+    {
+      "id": "source-parameters",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openapi/horizon/components/parameters.yml",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "1e458ef5d9d84ae6d7c8891b6964e3c6640a3de3ad40c23d190714c2d468edc5",
+      "startedAt": "2026-11-03T01:52:38.449015+00:00",
+      "observedAt": "2026-11-03T01:52:38.549774+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openapi/horizon/components/parameters.yml",
+      "bodyBytes": 18201,
+      "bodySha256": "9b1f9b63f2d4ab85654852823bef35158166710a0b152b093013d0a55e0ce4c9",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:38 GMT",
+        "ETag": "\"fc325568c8e261a0fdc59525ad4ae85b3e381a7f90d05679aa6343e60e6ada83\"",
+        "Last-Modified": null
+      },
+      "incorrectSentenceOccurrencesAfterWhitespaceNormalization": 2,
+      "locations": [
+        {
+          "component": "DestinationAccountParam",
+          "componentLine": 177,
+          "parameterName": "destination_account",
+          "descriptionLine": 181
+        },
+        {
+          "component": "DestinationAssetsParam",
+          "componentLine": 209,
+          "parameterName": "destination_assets",
+          "descriptionLine": 213
+        }
+      ]
+    },
+    {
+      "id": "source-endpoint",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openapi/horizon/components/endpoints/paths.yml",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "bfbaf75443d52527c6c468fe68be4f2208791e554e7a4d38a8e5f28ca7c04735",
+      "startedAt": "2026-11-03T01:52:38.552468+00:00",
+      "observedAt": "2026-11-03T01:52:38.641784+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openapi/horizon/components/endpoints/paths.yml",
+      "bodyBytes": 7449,
+      "bodySha256": "10ecdb71e9d648736a77c4d882c0f107dbf8843ede264e8ac48e48f5305c4098",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:38 GMT",
+        "ETag": "\"6e83bea76706bc257338c553ba26df7c5ecc9416b8822e0b0267a3f22ad7fedb\"",
+        "Last-Modified": null
+      },
+      "strictSendParameterReferences": [
+        "SourceAssetTypeParam",
+        "SourceAssetIssuerParam",
+        "SourceAssetCodeParam",
+        "SourceAmountParam",
+        "DestinationAccountParam",
+        "DestinationAssetsParam"
+      ],
+      "introUsesDestinationAlternatives": true
+    },
+    {
+      "id": "bundled-spec",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openapi/horizon/bundled.yml",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "c8808b130cd7113b343a5999fea98404c6395d2875cbac8cfbd0b6ba9199e835",
+      "startedAt": "2026-11-03T01:52:38.641990+00:00",
+      "observedAt": "2026-11-03T01:52:38.792458+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openapi/horizon/bundled.yml",
+      "bodyBytes": 402477,
+      "bodySha256": "9bf505ae9397b8ac8c4aa50e863da9ff1a9e545fc5ab4f89788ceb381477112d",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:38 GMT",
+        "ETag": "\"ec3415a71d8fb89d306e0dfe26f6815dc8da06360094f5c4d797c557e1d4f3c0\"",
+        "Last-Modified": null
+      },
+      "incorrectSentenceOccurrencesAfterWhitespaceNormalization": 2
+    },
+    {
+      "id": "generation-readme",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openapi/horizon/README.md",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "4b2ddc4bdd2430f82a6ea6f67755e49094eb10ace8a6f8c786782bdcfde2f404",
+      "startedAt": "2026-11-03T01:52:38.809083+00:00",
+      "observedAt": "2026-11-03T01:52:38.911850+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openapi/horizon/README.md",
+      "bodyBytes": 3677,
+      "bodySha256": "8c722dc9ccc7e68e8318ab43159d1ace63ef74d066060e9c1777d22134349a2c",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:38 GMT",
+        "ETag": "\"4275fc66940e244a4c3137d4fc0c9bec2a42f17ad0df226e6c1f5ddaee4017a2\"",
+        "Last-Modified": null
+      },
+      "observations": [
+        "Edit component files, then bundle the specification.",
+        "The bundle is generated and should not be edited by hand."
+      ]
+    },
+    {
+      "id": "redocly-config",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/redocly.yaml",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "5ffde58fd9f940b7beeb6b776a06874e712aa2eb9f37b6208138b428630d0f08",
+      "startedAt": "2026-11-03T01:52:38.912056+00:00",
+      "observedAt": "2026-11-03T01:52:39.005258+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/redocly.yaml",
+      "bodyBytes": 703,
+      "bodySha256": "4f2a140cccfd25c246849e7dcf383c7b87bca775fdd2406b95e0505c8de7f4cc",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:39 GMT",
+        "ETag": "\"ecea8d0a984aea487a823b3deb0fe51f3642d5a851ecc9468614e42e658e17ac\"",
+        "Last-Modified": null
+      },
+      "horizonRoot": "./openapi/horizon/main.yml"
+    },
+    {
+      "id": "upstream-package",
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/package.json",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "3b461161bf021c3c3b7d6f819e7be92de028c21f033d02fc5cd806ae89022ab0",
+      "startedAt": "2026-11-03T01:52:39.005413+00:00",
+      "observedAt": "2026-11-03T01:52:39.109257+00:00",
+      "status": 200,
+      "resolvedUrl": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/package.json",
+      "bodyBytes": 2690,
+      "bodySha256": "ae9699ab4b836dd555aa7073cf56515f34ac18ff2726f0a3aa0f2d9f19351774",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:39 GMT",
+        "ETag": "\"8cc461ba8a286de74827b6ed5938ac89191a7b4fe6453e4c289c29bc71867fbc\"",
+        "Last-Modified": null
+      },
+      "bundleCommand": "redocly bundle horizon --output openapi/horizon/bundled.yml"
+    },
+    {
+      "id": "live-page",
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths.md",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "5205fe425effebae3f3165d20976ab457c19656d2362f7bfffffbb4168dd8ac1",
+      "startedAt": "2026-11-03T01:52:39.109511+00:00",
+      "observedAt": "2026-11-03T01:52:39.253346+00:00",
+      "status": 200,
+      "resolvedUrl": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths.md",
+      "bodyBytes": 30893,
+      "bodySha256": "2da3693f8dda68ccb5f5641c6af3e2b436af0fcd8daca679b7a7a9471fc25f88",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:39 GMT",
+        "ETag": null,
+        "Last-Modified": "Tue, 03 Nov 2026 01:22:52 GMT"
+      },
+      "incorrectSentenceOccurrencesAfterWhitespaceNormalization": 2
+    },
+    {
+      "id": "valid-destination-assets",
+      "request": {
+        "method": "GET",
+        "url": "https://horizon.stellar.org/paths/strict-send?source_asset_type=native&source_amount=1&destination_assets=USDC%3AGA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "b1a40cc829664f29058cc510cb42556c56b8da812e719c178dc59cc6466fddda",
+      "startedAt": "2026-11-03T01:52:39.255738+00:00",
+      "observedAt": "2026-11-03T01:52:39.560458+00:00",
+      "status": 200,
+      "resolvedUrl": "https://horizon.stellar.org/paths/strict-send?source_asset_type=native&source_amount=1&destination_assets=USDC%3AGA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+      "bodyBytes": 1488,
+      "bodySha256": "3771f3fff0a558a2ba730c0e2d040e234d2998d5af6f9070c8e05d343ca860d9",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "application/hal+json; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:39 GMT",
+        "ETag": null,
+        "Last-Modified": null
+      },
+      "publicQueryParameters": {
+        "source_asset_type": "native",
+        "source_amount": "1",
+        "destination_assets": "USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
+      },
+      "resultShape": {
+        "recordCount": 3,
+        "firstRecordFieldNames": [
+          "destination_amount",
+          "destination_asset_code",
+          "destination_asset_issuer",
+          "destination_asset_type",
+          "path",
+          "source_amount",
+          "source_asset_type"
+        ],
+        "fixedSourceAmountMatches": true
+      }
+    },
+    {
+      "id": "invalid-source-alternative",
+      "request": {
+        "method": "GET",
+        "url": "https://horizon.stellar.org/paths/strict-send?source_asset_type=native&source_amount=1&source_assets=native",
+        "headers": {
+          "Accept": "text/plain,text/markdown,application/json",
+          "User-Agent": "Raven-strict-send-owner-audit/1"
+        }
+      },
+      "requestDescriptorSha256": "a5139a3cfe0f49693cfe4436613ab4cfe91bd0369ca82c2802d4d4e56dc268fd",
+      "startedAt": "2026-11-03T01:52:39.560816+00:00",
+      "observedAt": "2026-11-03T01:52:39.692602+00:00",
+      "status": 400,
+      "resolvedUrl": "https://horizon.stellar.org/paths/strict-send?source_asset_type=native&source_amount=1&source_assets=native",
+      "bodyBytes": 234,
+      "bodySha256": "8e856959ebdf4d4eb62384af5df146ecb2ec5e6a81ed18a447d54434aadc6fb1",
+      "bodyRetained": false,
+      "publicResponseHeaders": {
+        "Content-Type": "application/problem+json; charset=utf-8",
+        "Date": "Tue, 03 Nov 2026 01:52:39 GMT",
+        "ETag": null,
+        "Last-Modified": null
+      },
+      "publicQueryParameters": {
+        "source_asset_type": "native",
+        "source_amount": "1",
+        "source_assets": "native"
+      },
+      "validationError": {
+        "type": "https://stellar.org/horizon-errors/bad_request",
+        "title": "Bad Request",
+        "status": 400,
+        "detail": "The request requires either a list of destination assets or a destination account. Both fields cannot be present."
+      }
+    }
+  ],
+  "dedupe": [
+    {
+      "checkout": "/Users/kalepail/Desktop/stellar-raven-codemode",
+      "pattern": "strict.send|destination_account|destination_assets|source_account.{0,40}source_assets",
+      "matches": [],
+      "resolvedLedgerSha256": "1774428f2fe498c4efd8dd37c50e81ef1acfc77b39b4aad838229a15f70614ab"
+    },
+    {
+      "checkout": "/Users/kalepail/Desktop/stellar-raven-codemode-worktrees/golden-2026-11-02-method",
+      "pattern": "strict.send|destination_account|destination_assets|source_account.{0,40}source_assets",
+      "matches": [],
+      "resolvedLedgerSha256": "1774428f2fe498c4efd8dd37c50e81ef1acfc77b39b4aad838229a15f70614ab"
+    }
+  ]
+}

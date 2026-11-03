@@ -1558,3 +1558,143 @@ The review starts `2026-11-03` and is due `2026-11-10`.
 The case stays in the owned battery and selection pool, with its quality trust withheld.
 An exact independent correction and reactivation review remains required before the next aggregate.
 The issuer-lock proposal also remains pending exact review.
+
+### Final artifact and review integrity
+
+The final raw artifact remains byte-exact at SHA-256 `c8ec22427dd373492493b49b1f96c3e46d5476b8a928aa452b3dfd1654e6ea8f`.
+Final integrity checks validate all 100 case payloads, raw-row projections, packets, original verdicts, and digest-bound review notes.
+The first final check correctly rejects 37 notes that lack an explicit full case ID.
+Codex adds only the already-verified identity labels, preserving every prior note byte and its bound raw-row hash.
+The repair receipt is `tmp/2026-11-02-golden-overnight/review-identity-label-repair.json`.
+The repeated strict check passes in `t98`; no guard or measurement changes.
+
+The exact Gateway reconciliation joins all 775 attempts with complete costs.
+It finds no missing receipt, unknown amount, duplicate, conflict, or unmatched window row.
+Native and Gateway observations count each call once.
+The public export `research/audits/2026-11-02-golden-overnight/reviewed-run.json` retains metadata only.
+Its quality aggregate stays null.
+
+The free offline-plan comparison has 100 identical rows before and after the reference edits.
+Both output hashes are `65e37f91533cc74edf11d4d6f50b1af16f39b9dc3d080f377602b2f72b0aac98`.
+The comparison receipt is `tmp/2026-11-02-golden-overnight/offline-plan-comparison.json`.
+This comparison does not rejudge an answer or establish a quality win.
+
+### Golden reference corrections
+
+Grok rederives the issuer authorization rule before reading the proposer disposition.
+Its independent matrix SHA-256 is `25e7604b54d272baccf7a1aad0454d2bc2baf761eb49c1fd7b21d702d0e0ad1d`.
+Current Core still requires a matched signer when needed weight is zero.
+Master weight zero disables the master key; another sufficient signer can authorize issuance or restore permission.
+The default fresh-account recipe remains valid.
+The correction changes its general step-six condition, not steps one through five, key facts, or avoid clauses.
+
+Exact factual corrections and Audit Bank reactivation receive independent Grok approval.
+The byte-identical durable approval is `research/audits/2026-11-02-golden-overnight/reference-correction-review.md`.
+Its SHA-256 is `7e4de0d62497b7311a6952aefb3a4850d3b4b3c4122bf4061ef68aac2177032b`.
+A second provenance check approves replacing six absent ledger anchors with that tracked approval path.
+It approves Audit Bank bytes `47ec5d96abf52f9e55d6762b56cd94bab88a31ef1e5b6e34745c87d0321b598d` and issuer bytes `df354c6cf46446b62a4801250f159f3d01c69b037292509c8c8444e06c843e6b`.
+The durable confirmation is `research/audits/2026-11-02-golden-overnight/reference-provenance-confirmation.md`.
+Root applies those files only after both before-hash and approved-hash checks pass.
+
+Compilation produces 501 cases and corpus SHA-256 `3d703990201a2ae4c59ff308ec5c73a3add152e5c3ebc7f22a15e507faed58f0`.
+Register stamping reopens only cluster-011 for topical independent review.
+An initial lint invocation uses a mistyped baseline SHA and fails without evaluating the corpus.
+The corrected invocation finds one genuine coverage failure: scheduled count 176 exceeds the 35% ceiling.
+The correction had changed Audit Bank from its original live behavioral contract to scheduled.
+The reference explicitly preserves a dated illustration and accepts later grounded observations.
+Root prepares a one-field restoration of the original live tag for independent contract review.
+No coverage threshold or unrelated case changes.
+All 25 sentinel schema checks pass with no stale entry.
+The three new stage sentinels each match the live rules once.
+The eval self-test passes.
+
+### Tail source triage
+
+Codex completes all reviews through case 100, then checks six bounded source candidates.
+Exactly six additional primary GETs run; none calls a model, simulation, or transaction.
+All improvements namespaces and resolved records are searched in both working trees.
+The case-81 Low/informational concern remains held under its inferred chunk-label contract.
+The case-85 fee-bump wording and case-93 SEP-10 shorthand remain narrow clarification candidates.
+The case-99 metadata concern remains held; its unsupported score-drift attribution is withdrawn.
+Only verified batching, preview-decoding, and enum examples proceed to scoped finding preparation and independent review.
+The ignored triage evidence lives at `tmp/2026-11-02-golden-overnight/tail-source-triage/`.
+
+At the completed provenance review, Grok helper receipts report `$21.32399956` and `$17.24205584`.
+Their combined amount is `$38.56605540`; later register and final review costs remain within the existing `$45` allocation.
+Codex dollars remain unreported; the `$100` reserve is neither a charge nor a proven upper bound.
+No further paid measurement is authorized.
+
+### Preserved source and focused checks
+
+Codex commits the exact 14 frozen experimental files as `0aea991fd36ecd5653eef07c317568c7aa71f0e8`.
+The method branch stays separate from production source and the results branch.
+Working, snapshot, staged, and committed blobs match freeze-v5; five shared-source hashes also match.
+Both the tree secret scan and normal staged commit scan pass.
+The method working tree is clean.
+Its stale owned sd-080 copy and 123-record index delta are removed after ownership and preservation checks.
+MAIN retains the complete newer finding and index.
+
+Root runs four focused corpus, lifecycle, register, and sentinel test files in `t9j`.
+All 109 tests pass in four files.
+The pin-review check in `t9g` passes with no skill-pin or file-selection change.
+Three additional local proposals add `sd-087`, `sd-088`, and `sk-037`.
+Public receipt `research/audits/2026-11-02-golden-overnight/tail-source-receipts.json` preserves currentness and verification limits.
+Exactly four further primary GETs confirm the published examples and the latest dapp skill branch.
+No simulation, conversion fixture, or transaction runs; all three records retain proposed status.
+The generated findings index and local lint pass with 132 records in `t9h`.
+Root adds explicit per-finding intake targets.
+Independent final proposal review remains required before closeout.
+
+### Final reference metadata and register application
+
+Grok approves the one-field restoration of Audit Bank's original live behavioral tag.
+Approved case SHA-256: `9806d54952eaf80c0b93a8fcdbb4da2f89b9978cf54a86966d496d7a3e104625`.
+The golden retains its dated illustration and accepts later grounded observations.
+The source rates, asOf, reverify date, and reviewed reactivation stay unchanged.
+Root verifies the one-field diff and exact before/after hashes before applying it.
+Coverage floors and unrelated cases stay unchanged.
+
+Durable metadata review: `research/audits/2026-11-02-golden-overnight/reference-metadata-review.md`.
+Durable helper review: `research/audits/2026-11-02-golden-overnight/reference-register-review.json`.
+The independent topical review covers all 17 cluster-011 members.
+It checks separate award bases, caps, dated totals, dates, stage rates, and priority categories.
+Root identifies the earlier count of 18; Grok writes the corrected 17-member review before application.
+The issuer case belongs to no reopened entry and agrees with adjacent authorization cases.
+The valid default-account recipe needs no partial cap; the extra symmetric-caution warning remains documented.
+
+Compilation and explicit register review run sequentially in `t9k`.
+The corrected corpus SHA-256 is `103226f7025594b029fa78b75fb2f379509580733a72e77ce567a6fc043ca701`.
+The corpus has 501 active cases, four proposals, and no quarantine.
+The final lint, register check, sentinel schema check, and 132-record local findings lint pass.
+Lint records zero errors and 93 warnings.
+No original measured row, grade, cost, case payload, or artifact changes.
+The completed quarantine and setup queue items become one bounded noncompletion/calibration follow-up.
+
+### Independent closeout clearance
+
+Grok completes the final independent review with CLEARED and no actionable hold.
+The exact public copy is `research/audits/2026-11-02-golden-overnight/final-closeout-review.md`.
+Review SHA-256: `e2ad75e439015000637ab5a762d212eceaa1893e7178a72bf7fa12fbaa828c79`.
+It binds the current corpus, both case hashes, the 775-call accounting, all 100 reviewed rows, and three new proposed findings.
+The three proposals retain their runtime-verification limits; uncertain source concerns stay held.
+Original grades, artifacts, and denominators stay unchanged.
+The reviewer explicitly permits receipt-only cost, scan, commit, and cleanup updates after clearance.
+
+Completed Grok helper CLI records total `$40.55712260`: `$21.32399956` and `$19.23312304`.
+The total remains inside the existing `$45` helper allocation.
+Public receipt: `research/audits/2026-11-02-golden-overnight/cost-observations.json`.
+Known instrument ledger amounts total `$38.762622`; the older separate native observation stays distinct.
+Codex dollar charges remain unreported; an exact whole-session bill and total-limit verification remain unavailable.
+Allocations remain `$190.762622`, with `$9.237378` unassigned from the owner's `$200`.
+Reserves are neither charges, estimates, nor proven upper bounds.
+
+The final staged tree secret scan in `t9m` passes with no exposed credential.
+The private-usage boundary and gitleaks checks pass.
+Root stops and removes the owned baseline server `t58` after all measurement and source checks finish.
+Helpers remove their own descendants; root removes completed command terminals and the accepted idle helpers.
+The source worktree remains clean at its experimental commit.
+No upstream issue, human message, push, deployment, or production source change occurs.
+
+After completed-turn cost capture, root stops and removes reviewer `t5q` and awake terminal `t7j`.
+The ownership inventory leaves unrelated terminals unchanged.
+Only the final local-commit command remains before its own bounded-tail cleanup.

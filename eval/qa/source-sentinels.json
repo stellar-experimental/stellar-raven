@@ -228,6 +228,39 @@
         "flags": "i",
         "guard": "\\| \\[SEP-0001\\]\\(sep-0001\\.md\\) \\| Stellar Info File \\|"
       }
+    },
+    {
+      "id": "scf-audit-bank-initial-stage-copay",
+      "caseId": "q-scf-audit-bank",
+      "caseAsOf": "2026-11-03",
+      "url": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+      "check": {
+        "kind": "present",
+        "pattern": "Initial Audit\\s+None for priority categories\\s+5% with potential refund",
+        "flags": "i"
+      }
+    },
+    {
+      "id": "scf-audit-bank-growth-stage-copay",
+      "caseId": "q-scf-audit-bank",
+      "caseAsOf": "2026-11-03",
+      "url": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+      "check": {
+        "kind": "present",
+        "pattern": "Growth Audit\\s+>\\$10,000,000 TVL or equivalent\\s+0%",
+        "flags": "i"
+      }
+    },
+    {
+      "id": "scf-audit-bank-scale-stage-copay",
+      "caseId": "q-scf-audit-bank",
+      "caseAsOf": "2026-11-03",
+      "url": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+      "check": {
+        "kind": "present",
+        "pattern": "Scale Audit\\s+>\\$100,000,000 TVL or equivalent\\s+0%",
+        "flags": "i"
+      }
     }
   ]
 }

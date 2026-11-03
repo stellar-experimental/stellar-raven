@@ -1,0 +1,478 @@
+{
+  "schema": "golden-overnight-late-docs-receipts-v1",
+  "observedAt": "2026-11-03T06:56:47.941003+00:00",
+  "sourceIndexSha256": "6ac982e498b5397b0569f4adf5dcefdcb73b7038d8c5ec2dcb708039f5c3fca3",
+  "requests": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-core/commits/v30.0.0",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "dc37441d17c435c879506578bbbe1f5a251bb6e0c16fc48b6c6bd7165fd399cc",
+      "resultSha256": "81b549d6f16852cae13d7b92e385fc32de254e0339016141d0852368e7c675b7",
+      "status": 200,
+      "startedAt": "2026-11-03T07:01:57.560546+00:00",
+      "endedAt": "2026-11-03T07:01:58.022247+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/ledger/LedgerManagerImpl.cpp",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "687a0f1c37389153495f94a363fd810844fc367c6d60d4c651a13b7064cf17a0",
+      "resultSha256": "300c70248eb5ba63bf4152f6097dc03b605cb20a2245df41fd68cdd4fcee9fcc",
+      "status": 200,
+      "startedAt": "2026-11-03T07:01:57.561037+00:00",
+      "endedAt": "2026-11-03T07:01:57.788734+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-core/0e49751aa9ddf892302cca02cea7f3f5d97df9f1/src/ledger/LedgerManagerImpl.cpp"
+      },
+      "requestSha256": "b4c66d2d72334285eaa3b3010b6dd913c7c12c9ea7fc806613664cb9869d54c3",
+      "resultSha256": "300c70248eb5ba63bf4152f6097dc03b605cb20a2245df41fd68cdd4fcee9fcc",
+      "status": 200,
+      "startedAt": "2026-11-03T07:02:20.045626+00:00",
+      "endedAt": null
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openrpc/src/stellar-rpc/contentDescriptors/AuthMode.json",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "8ce057cbbf07ab01a04b2e63e108c30cc43d9fac6a78abfac2ec3d298f256d88",
+      "resultSha256": "3a8cde0577b55a64297c925de6e4ca5b9efe1c09e6a45af3288660ee7f0e2274",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.495964+00:00",
+      "endedAt": "2026-11-03T06:53:14.711401+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openrpc/src/stellar-rpc/schemas/AuthMode.json",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "8a4085837e6a1c420208dd30b3c7877dd242d7a64340e4fff0bb6cbee52b3b97",
+      "resultSha256": "7adde361c1e392383e107ca671da548d7abb789ff58681fc723676a98f6bb760",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.496059+00:00",
+      "endedAt": "2026-11-03T06:53:14.690510+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-docs/commits/main",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "9ae02ac3aa35316138b1df9728637f7b48b14096985565f75295baa86d4a73e6",
+      "resultSha256": "5dd0bce953c37496aaee5d70f33ba3df76147781cfeea7c5fea02a22d2143409",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.495307+00:00",
+      "endedAt": "2026-11-03T06:53:14.784006+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-docs/git/trees/85d2d1b8e7a4451b7a6af0931f587ce73109b816?recursive=1"
+      },
+      "requestSha256": "fc8ce8dd4102c04ed414dfa0dbc0752f6979752668254c5f79c1b2d5f5ba132a",
+      "resultSha256": "bfef7b40c9b34356a1b1fbf04b2fe9d68331f4de41843ed8d0a45cabd50e3229",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:46.648077+00:00",
+      "endedAt": null
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/learn/fundamentals/stellar-data-structures/ledgers.mdx",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "0144df2b83e8bb3a3da9d1853e6325ece4cc4640bcb861ec7ad72952d12a6616",
+      "resultSha256": "bc741e2f6a0e20b0fdb50050598b71bef854bf4271d29e187051f3102c04883f",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.690678+00:00",
+      "endedAt": "2026-11-03T06:53:14.865758+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openrpc/scripts/build.mjs",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "5c7d693747423858d7413cfba07f0d1cef5c06a1755427605f42bbc787a227b4",
+      "resultSha256": "83a1c4189d902426228178bbd2895fa80c0f98a2351cf7dc76370a539fc473de",
+      "status": 200,
+      "startedAt": "2026-11-03T06:54:17.575835+00:00",
+      "endedAt": "2026-11-03T06:54:17.824530+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/openrpc/README.md",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "5f7c0b59c42a8438f142aed6b5ed610c7923360194039008d2d67a179024611e",
+      "resultSha256": "c344604cb3e006f0de61c2d3f1a67f2c8fdebc07f11facf2d2a2ff87cb7564e5",
+      "status": 200,
+      "startedAt": "2026-11-03T06:54:17.575425+00:00",
+      "endedAt": "2026-11-03T06:54:17.800597+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/data/apis/rpc/api-reference/methods/simulateTransaction.mdx",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "e2de27700d0e607d0388ef4210257983f63e97813a705d473f4102938a524473",
+      "resultSha256": "190fa9e163708791972f786e4d05929a4c6051749f42aea0f9cbcaaeef31b2f7",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.711563+00:00",
+      "endedAt": "2026-11-03T06:53:14.886390+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-docs/git/trees/main?recursive=1"
+      },
+      "requestSha256": "033fa7b993cdea11487d3efc624f02e276dc2cbfda1305762a316756bf912631",
+      "resultSha256": "bfef7b40c9b34356a1b1fbf04b2fe9d68331f4de41843ed8d0a45cabd50e3229",
+      "status": 200,
+      "startedAt": "2026-11-03T06:52:30.454852+00:00",
+      "endedAt": null
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-rpc/13e53516633c3ce1281c7edbacb607107d3a4e55/cmd/stellar-rpc/internal/methods/simulate_transaction.go",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "282fa81d218a9fcd1008beb4a6ace749d0ef5f892e732b8d3dfbc90e9f9c59bc",
+      "resultSha256": "857a62ad6a2137e8c2aaf2711b15157da32fd83fcc3792d678d51283b6aa0c38",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:45.749048+00:00",
+      "endedAt": "2026-11-03T06:53:45.928657+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-rpc/commits/v30.0.0",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "4358521dd6d3343d2a40a3f0e091ecc3f900deda0b72f57664d458a015a8199e",
+      "resultSha256": "7cc9c9fb0046d9ee4ac62c3adfd78bff494b99e732c8d3f8cc645d4540347834",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.495746+00:00",
+      "endedAt": "2026-11-03T06:53:14.866905+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-rpc/releases/latest"
+      },
+      "requestSha256": "2ba1648ccbc0a9125ab1e6d3c5ed148fc73282ca864515691ae2567d44cf1790",
+      "resultSha256": "5c93aec79cced89eced4e064fc30c523edca79f4b1afd119eaf85ba57e7197aa",
+      "status": 200,
+      "startedAt": "2026-11-03T06:52:30.454997+00:00",
+      "endedAt": null
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/methods/simulate_transaction_test.go",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "7fb1dda3f4f3d67d642ed1cd7fe7c8a91f6c4f71b67342fc2b0d9606bb2ea31d",
+      "resultSha256": "716f39534e01b5d24b07474971ad16861da8b4bf1aacda73c2f7e08d5943188f",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:45.749484+00:00",
+      "endedAt": "2026-11-03T06:53:46.005438+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/methods/simulate_transaction.go",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "46d437134bf99b654a8c5afec05a918f77e01d22bb159c6ddf575662916bac39",
+      "resultSha256": "857a62ad6a2137e8c2aaf2711b15157da32fd83fcc3792d678d51283b6aa0c38",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.495865+00:00",
+      "endedAt": "2026-11-03T06:53:14.793469+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers.md",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "1f4aefa96c90e6c42bfcc3b0d6fd469ff65cffb803b09dd1629cfec7e6ca4bf0",
+      "resultSha256": "542beafe9c23c70ebd321606b29342054732172d2d93fb07c4643e7a15adc37d",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.793633+00:00",
+      "endedAt": "2026-11-03T06:53:14.862722+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "ffbca0eb280bddad5d46d21b8a21dc881e84e5dcb3268885320435cbdda8a105",
+      "resultSha256": "0a4378f9684b69448dc72b9abd894370a1ab8aec779bff41a80fe14b4783940b",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:14.784170+00:00",
+      "endedAt": "2026-11-03T06:53:14.870850+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-xdr/commits/v27.0",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "97119e153430f19e7da91eda6b8e13c7265077566c70ced91f8460fcd169524f",
+      "resultSha256": "4ad7f488eff3b77899b1f6aff09ea0754302c00407365d8504a7452363c71619",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:45.749606+00:00",
+      "endedAt": "2026-11-03T06:53:46.098554+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-xdr/v27.0/Stellar-ledger.x",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "2323b300ad981956744799f484ad863cd4552cdc0891d7d06f9154d18e96304d",
+      "resultSha256": "f379b87d2cda4bb3e89daa8c60a1721d3b0269aa56a0001be155d4a3ef86e8ea",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:45.928859+00:00",
+      "endedAt": "2026-11-03T06:53:46.064038+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-xdr/commits/v28.0",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "4f7a61d398387d7bb0aac74a458890c7dfbd0d0f88f9374d2bc46a35b0bd7a91",
+      "resultSha256": "ebc9e09b22128db0a0ea79cd29d2008ef7c751f20eae883e5d651d8ffe15fdd7",
+      "status": 200,
+      "startedAt": "2026-11-03T06:54:17.575962+00:00",
+      "endedAt": "2026-11-03T06:54:17.957891+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-ledger.x",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "c0d1efbd5fa112dc2b59d5f3ca30774c855aebdfae5242edb10f8f7ba6e42402",
+      "resultSha256": "6bce772b73dba183dae8f87da2a5d97fb0d36ad3695aec5edd21b1d4e5c0dc55",
+      "status": 200,
+      "startedAt": "2026-11-03T06:54:17.576074+00:00",
+      "endedAt": "2026-11-03T06:54:17.834228+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-xdr/9c9c145953e80990d6ff1ae3a6a973a0ce6d0694/Stellar-ledger.x",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "197dc37f2c256b856f127538083a49562988e470d00ef6bf2185c04d785f0cad",
+      "resultSha256": "6bce772b73dba183dae8f87da2a5d97fb0d36ad3695aec5edd21b1d4e5c0dc55",
+      "status": 200,
+      "startedAt": "2026-11-03T06:55:18.383022+00:00",
+      "endedAt": "2026-11-03T06:55:18.583070+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/stellar/stellar-xdr/commits/v30.0",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "2239ce24dcadb18d514666f073a036949f34ede4a6b4b06743cfcc76af08167b",
+      "resultSha256": "1013f706336310315b2584a46fe93258e27123cd03d7089b185ba7fb41e79f1b",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:45.749798+00:00",
+      "endedAt": "2026-11-03T06:53:46.085787+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-xdr/v30.0/Stellar-ledger.x",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "e7a425650ac6da80a425bad932d57cc1d868b8e852ca883869a7a8f766e71941",
+      "resultSha256": "b98cc304cb7c7966d6d17842bbe9d7eb7e2af3039d6dafe306e52fa99900d6dc",
+      "status": 200,
+      "startedAt": "2026-11-03T06:53:46.005608+00:00",
+      "endedAt": "2026-11-03T06:53:46.132578+00:00"
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/stellar/stellar-xdr/4f524bbac80c781c06e4fb5fc93a2d0d331d6705/Stellar-ledger.x",
+        "headers": {
+          "User-Agent": "Raven-read-only-evidence"
+        }
+      },
+      "requestSha256": "ea08cdd2f29dad17d66f3c6f31e96811fefe9fd86a835800665a652efc53540c",
+      "resultSha256": "b98cc304cb7c7966d6d17842bbe9d7eb7e2af3039d6dafe306e52fa99900d6dc",
+      "status": 200,
+      "startedAt": "2026-11-03T06:55:18.383474+00:00",
+      "endedAt": "2026-11-03T06:55:18.584876+00:00"
+    }
+  ],
+  "mcp": {
+    "simulate": {
+      "server": {
+        "port": 8790,
+        "revision": "ce21317ff46d7491d82caf058baca7328c4177a9",
+        "surfaceSha256": "bb19653bd0d153964df25042a92d42dde49d8c5b48f7face2fc1d17614786762"
+      },
+      "startedAt": "2026-11-03T06:54:46.763Z",
+      "resultSha256": "d2051197a61acb69133e5fa2532cc6aa16488950a7d184aefa8376f7cea4e0e3",
+      "pageContentSha256": "0d08c97822b14ff1cdc02461cbf84d47da4dcf38ab29192561f7f11ecba1bbff",
+      "pageContentBytes": 17911,
+      "ok": true,
+      "url": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction"
+    },
+    "ledgers": {
+      "server": {
+        "port": 8790,
+        "revision": "ce21317ff46d7491d82caf058baca7328c4177a9",
+        "surfaceSha256": "bb19653bd0d153964df25042a92d42dde49d8c5b48f7face2fc1d17614786762"
+      },
+      "startedAt": "2026-11-03T06:54:46.989Z",
+      "resultSha256": "2b2c1e3883a367e6a7e177d0e0e5dea320839b69010ec75f39fabe57cdfae744",
+      "pageContentSha256": "8a53f3bb15356ed6e485184ff2bff6b60e6adcd6bc3ff5b99063328bffbd6597",
+      "pageContentBytes": 6730,
+      "ok": true,
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers"
+    }
+  },
+  "docsCommit": "85d2d1b8e7a4451b7a6af0931f587ce73109b816",
+  "rpc": {
+    "release": "v30.0.0",
+    "commit": "13e53516633c3ce1281c7edbacb607107d3a4e55",
+    "functionSourceSha256": "a5ebb29af9104678e4f377f9f32e1d3ff52eeb7f7be119e2e04bafbba7e634dd",
+    "firstLine": 403,
+    "releaseAndCommitBodiesMatch": true,
+    "operation": "InvokeHostFunction",
+    "omittedModeWithoutAuthEntries": "record",
+    "omittedModeWithAuthEntries": "enforce",
+    "conditionUsesTransactionSignatures": false
+  },
+  "xdr": {
+    "releases": [
+      "v28.0",
+      "v30.0"
+    ],
+    "directHeaderMatches": true,
+    "directHeaderSourceSha256": "f42033fd3417e595a40521eb3efc41f464cac22a9cb3b50a8666335abecc2833",
+    "directHeaderMembers": [
+      "ledgerVersion",
+      "previousLedgerHash",
+      "scpValue",
+      "txSetResultHash",
+      "bucketListHash",
+      "ledgerSeq",
+      "totalCoins",
+      "feePool",
+      "inflationSeq",
+      "idPool",
+      "baseFee",
+      "baseReserve",
+      "maxTxSetSize",
+      "skipList",
+      "ext"
+    ],
+    "stellarValueMembers": [
+      "txSetHash",
+      "closeTime",
+      "upgrades",
+      "ext"
+    ]
+  },
+  "cli": {
+    "observedAt": "2026-11-03T06:52:30.997952+00:00",
+    "executableSha256": "d0d33ef17cc43171684932dad6451bd738186103a18fbb4ae301baab5d3c1cdb",
+    "version": "stellar 28.1.0 (c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd)\nstellar-xdr 28.0.0 (d0f1330e43c3a2c0c616da30698b24140d4eea72)\nxdr (9c9c145953e80990d6ff1ae3a6a973a0ce6d0694)",
+    "commands": [
+      {
+        "argv": [
+          "stellar",
+          "--version"
+        ],
+        "exitCode": 0,
+        "stdoutSha256": "516d913cf077af46ec65547eb6147a74a570b16b5da948ee9671e12d54b6954b",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "argv": [
+          "stellar",
+          "tx",
+          "simulate",
+          "--help"
+        ],
+        "exitCode": 0,
+        "stdoutSha256": "602e05a20b958eb1ac06a85dd41bfa7677ceaba07669bdc2f4274ec77cf963b0",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "limits": [
+    "Only public source descriptors, hashes, software identities, and narrow factual projections are retained.",
+    "No full source bodies, model answers, private billing state, personal account state, or credentials are copied.",
+    "No simulation, ledger decoding, transaction, deployment, or provider-version measurement occurred.",
+    "The authMode discrepancy concerns the identified shipped release and CLI help, not every deployed provider.",
+    "The LedgerHeader finding concerns presentation ambiguity, not an explicit false wire declaration."
+  ]
+}

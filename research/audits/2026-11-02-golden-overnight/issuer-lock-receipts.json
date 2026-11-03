@@ -1,0 +1,74 @@
+[
+  {
+    "source": "asset-control",
+    "request": {
+      "method": "GET",
+      "url": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+      "headers": {
+        "Accept": "text/markdown",
+        "User-Agent": "Raven-issuer-lock-review/1"
+      }
+    },
+    "requestDescriptorSha256": "cfed2871daf537df4a81e27ae3209f9ab909e4c44616aa621c18d5c34764db0a",
+    "startedAt": "2026-11-03T00:07:12.199053+00:00",
+    "observedAt": "2026-11-03T00:07:12.298017+00:00",
+    "status": 200,
+    "resolvedUrl": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+    "responseHeaders": {
+      "Content-Type": "text/markdown; charset=utf-8",
+      "ETag": null,
+      "Last-Modified": "Mon, 02 Nov 2026 23:51:59 GMT",
+      "Date": "Tue, 03 Nov 2026 00:07:12 GMT"
+    },
+    "bodyBytes": 14901,
+    "bodySha256": "2f53ab8331b4ec0c9d3b2e9fdb00af6bab1d109bd9f432790037260a1df78ce8"
+  },
+  {
+    "source": "multisig",
+    "request": {
+      "method": "GET",
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig.md",
+      "headers": {
+        "Accept": "text/markdown",
+        "User-Agent": "Raven-issuer-lock-review/1"
+      }
+    },
+    "requestDescriptorSha256": "64f7da831e78f4d0d44afdfa1289154b544493677f9882c7ab94cebb2936792f",
+    "startedAt": "2026-11-03T00:07:12.298436+00:00",
+    "observedAt": "2026-11-03T00:07:12.428820+00:00",
+    "status": 200,
+    "resolvedUrl": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig.md",
+    "responseHeaders": {
+      "Content-Type": "text/markdown; charset=utf-8",
+      "ETag": null,
+      "Last-Modified": "Mon, 02 Nov 2026 23:51:59 GMT",
+      "Date": "Tue, 03 Nov 2026 00:07:12 GMT"
+    },
+    "bodyBytes": 10182,
+    "bodySha256": "6e2a70e0c425a38a12abf42c6383ce2f54c070b92504240e3788fd4202a98b80"
+  },
+  {
+    "source": "issue-tutorial",
+    "request": {
+      "method": "GET",
+      "url": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset.md",
+      "headers": {
+        "Accept": "text/markdown",
+        "User-Agent": "Raven-issuer-lock-review/1"
+      }
+    },
+    "requestDescriptorSha256": "47864ed608e9925227ffda43ef244d97107c2e8a969175564aa416f5a15bbfbd",
+    "startedAt": "2026-11-03T00:07:12.430098+00:00",
+    "observedAt": "2026-11-03T00:07:13.035470+00:00",
+    "status": 200,
+    "resolvedUrl": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset.md",
+    "responseHeaders": {
+      "Content-Type": "text/markdown; charset=utf-8",
+      "ETag": null,
+      "Last-Modified": "Tue, 03 Nov 2026 00:07:12 GMT",
+      "Date": "Tue, 03 Nov 2026 00:07:13 GMT"
+    },
+    "bodyBytes": 30628,
+    "bodySha256": "da98324edb693f04aef1c20fbf17274cc26d28a4ff24bbfddc02cde7faeda314"
+  }
+]
