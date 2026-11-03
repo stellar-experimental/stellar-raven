@@ -824,6 +824,17 @@ Independent activation review and the later activation commit remain outstanding
 
 Done when: the cases pass `npm run eval:qa:lint -- --stale --enforce-floors` and are merged.
 
+## Hosting
+
+### Redirect the remaining alias paths after the docs move to raven.stellar.org
+
+`raven.stellar.buzz` and `agents.stellar.buzz` redirect browser pages to `raven.stellar.org`
+(`src/hosts.ts`). `/mcp`, `/authorize`, `/callback`, `/token`, `/register`, and `/.well-known/*`
+still serve on each alias. The reason: the MCP SDK rejects a protected resource whose origin
+differs from the configured URL, and Stellar Docs still names `https://raven.stellar.buzz/mcp`.
+The fix is stellar/stellar-docs#3023. Done when that PR merges and live docs name no alias. Then
+redirect every alias path, and tell alias users to reconnect at `https://raven.stellar.org/mcp`.
+
 ## Deferred programs
 
 ### Re-evaluate Scout exposure after a routing-contract change
