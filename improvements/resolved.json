@@ -974,6 +974,26 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-docs/sd-057-anchor-admin-usdc-network-label.md"
     },
     {
+      "id": "sd-072",
+      "title": "The Lab API Explorer index page says \"Horizon is considered deprecated.\" in its Horizon Endpoints card. Every other current page uses the…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-03",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/353",
+        "https://github.com/stellar/stellar-docs/issues/3007",
+        "https://github.com/stellar/stellar-docs/pull/3020"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3020"
+      ],
+      "liveRecheck": "2026-11-03T18:45:26Z: GET https://developers.stellar.org/docs/tools/lab/api-explorer.md HTTP 200; the Horizon Endpoints card says 'Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs.'; no 'considered deprecated' on the page or in docs/ at stellar/stellar-docs 51c89c4ff5cc057ffb391f66915929dc2377ccc6. Resolution comment: https://github.com/stellar/stellar-docs/issues/3007#issuecomment-6612685835",
+      "reviewEvidence": "Distinct reviewer Grok 4.7 high (coordinator and author Claude Opus 5.5) re-ran the trigger live on 2026-11-03 without the handoff text: .agents/rounds/2026-11-03-sd072-resolution-review.md (HTML and .md reads at 18:46:25Z, PR #3020 merge and deploy check, docs/ grep, rg reference audit). Golden caution in q-infra-horizon-vs-rpc removed and clusters 018/061/063 re-swept in the same change.",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-072-lab-api-explorer-horizon-deprecated-label.md"
+    },
+    {
       "id": "sd-075",
       "title": "The Hello World tutorial says that stellar contract build is \"a small wrapper around cargo build\". It says the CLI is \"a shortcut for\"…",
       "service": "stellar-docs",
