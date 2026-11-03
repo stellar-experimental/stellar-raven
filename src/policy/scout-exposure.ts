@@ -20,22 +20,24 @@ export const EXCLUDED_SCOUT_OPERATIONS = new Map([
   ["GET /api/verify", "verifyClaim"],
   // RWA routing can capture unrelated implementation queries. Require a
   // general routing repair and independent operation review before exposure.
-  ["GET /api/rwa", "getRwaAssets"]
-]);
-
-// Reviewed exclusions not yet in the accepted inventory. Current Scout lists
-// these operations, while the accepted 1.9.61 snapshot does not. Their
-// presence must not block refresh or expose them; the catalog build validates
-// each exact method and name when listed. When an inventory containing them is
-// accepted, decide exposure per the recommendation in .agents/TODO.md ("Preserve
-// structured routing intent across extraction caps and gate tiers"), and move
-// to EXCLUDED_SCOUT_OPERATIONS only the operations that stay excluded.
-export const OPTIONAL_EXCLUDED_SCOUT_OPERATIONS = new Map([
+  ["GET /api/rwa", "getRwaAssets"],
+  // Review reads a caller-supplied submission link. Keep it excluded until a
+  // hackathon routing repair passes the gates and independent exposure review.
   ["GET /api/hackathons/review", "reviewSubmission"],
+  // The submission reads entered non-hackathon pages on the fresh source.
+  // Keep them excluded until the same hackathon routing repair passes.
   ["GET /api/hackathons/analyze", "analyzeHackathonSubmissions"],
   ["GET /api/hackathons/builds/{id}", "getHackathonSubmission"],
+  // Keep source location excluded until its routing contract passes review.
   ["GET /api/sources/locate", "locateSource"]
 ]);
+
+// Reviewed exclusions not yet in the accepted inventory. List an operation
+// here when current Scout lists it and the accepted snapshot does not. Its
+// presence must not block refresh or expose it; the catalog build validates
+// each exact method and name when listed. When an inventory containing it is
+// accepted, move it to EXCLUDED_SCOUT_OPERATIONS if it stays excluded.
+export const OPTIONAL_EXCLUDED_SCOUT_OPERATIONS = new Map<string, string>();
 
 export const EXCLUDED_SCOUT_OPS = new Set([
   ...EXCLUDED_SCOUT_OPERATIONS.keys(),

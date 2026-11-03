@@ -151,7 +151,6 @@ describe("serialized production listener identities", () => {
     const identify = (target) => dualBoundServerIdentity(target, { spawnSyncImpl });
     const records = Object.fromEntries(Object.entries(TARGETS)
       .map(([arm, target]) => [arm, { identity: identify(target), attestation: { mode: "fixture" } }]));
-    // The same serialization as paired-launch.mjs.
     const bytes = Buffer.from(`${JSON.stringify(records, null, 2)}\n`);
     const plan = {
       arms: Object.fromEntries(Object.entries(TARGETS).map(([arm, target]) => [arm, { collectionCommand: [

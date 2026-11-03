@@ -1,52 +1,50 @@
 ---
 id: sk-030
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
-upstreamTitle: Four lumenloop-skills playbooks name the Freighter wallet, which SDF renamed Varial on 2026-10-29
+upstreamTitle: Six Lumenloop skill files still name Freighter after the wallet became Varial
 evidence:
-  - "2026-11-02 B: lumenloop/lumenloop-skills main a87ca95730d2a4015c884defebd66b44ea01d3b2 (2026-10-12; the only change since the Raven pin d92c56bda17ab702d3202335cfe814d64e70e191 is .github/workflows/pg-atlas-sbom.yml, and the four SKILL.md files hash the same at both commits). grep -n -i freighter: skills/stellar-project-dossier/SKILL.md line 36 'JS stellar-sdk + Freighter + Stellar'; skills/stellar-ecosystem-digest/SKILL.md line 34 'Freighter / Stellar Wallets Kit'; skills/stellar-builder-quickstart/SKILL.md line 39 'Freighter, Stellar Wallets Kit, passkeys' and line 134 '(or Freighter directly)'; skills/stellar-integration-finder/SKILL.md line 34 '**Freighter** + **Stellar Wallets Kit**' and line 149 'JS **stellar-sdk**, **Freighter**, **Stellar Wallets Kit**'. No file names Varial."
-  - "2026-11-02 B: https://raw.githubusercontent.com/stellar/freighter/master/README.md opens '# Varial' and 'Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions via your browser.' It names the client SDK '@stellar/varial-sdk'. stellar/freighter release 5.51.0 was published 2026-10-28T22:11:58Z (Varial Home screen UI). Release 5.50.0, published later at 2026-10-29T20:32:42Z, says 'Freighter is now **Varial**. This is the first release under the new name.' The golden cases cite 5.50.0 as the first Varial release, as that release states."
-  - "2026-11-02 A: https://stellar.org/blog/foundation-news/freighter-is-now-varial (SDF, 2026-10-29): 'Today, Freighter becomes Varial, with a new name and a new focus'. Its developer section says 'Already integrated with Freighter? Update your branding with assets at varialwallet.com/brand' and 'New to Varial? Get started at docs.varialwallet.com'."
-  - "2026-11-02 F: curl -sI https://www.freighter.app/ returned HTTP/2 301 with location https://varialwallet.com/. npm registry: @stellar/varial-sdk latest 7.0.0 (modified 2026-10-28); @stellar/freighter-api latest 6.0.1, not deprecated."
-  - "2026-11-02 B: Creit-Tech/Stellar-Wallets-Kit release v2.8.0 (2026-10-28T21:55:28Z) notes 'Migrate FreighterModule to VarialModule'."
-  - "2026-11-02 C: Raven codemode.skill.read of skills.lumenloop.stellar-project-dossier, skills.lumenloop.stellar-ecosystem-digest, skills.lumenloop.stellar-builder-quickstart, and skills.lumenloop.stellar-integration-finder served the same Freighter lines from the pinned commit d92c56b."
-  - "Golden impact: golden audit 2026-11-02 batch tooling-infra-04 (cases q-ti-skill-builder-quickstart and q-ti-skill-integration-finder) found the stale name. Neither golden grades a wallet name, so no golden change depends on this finding. Related case q-tool-freighter-wallet already encodes 'Freighter (renamed Varial on 2026-10-29; same product)'."
-  - "Dedupe 2026-11-02: no active or resolved skills finding names Freighter or Varial. lumenloop/lumenloop-skills issues 1-5 cover other defects (sk-004, sk-005, sk-007, and two CI items)."
-  - "Adjacent sweep 2026-11-02, not part of this finding: stellar/stellar-dev-skill main 313832e98b7606feba2cb0b03c4f9542b2d0c4c3 skills/dapp/SKILL.md has 13 Freighter mentions and 0 Varial mentions (react.md 4, smart-accounts.md 1). That owner needs its own finding if the rename is to be tracked there."
+  - 2026-11-02 public recheck: curl -sS -L https://codeload.github.com/lumenloop/lumenloop-skills/tar.gz/refs/heads/main returned HTTP 200. gh api repos/lumenloop/lumenloop-skills/commits/main identified a87ca95730d2a4015c884defebd66b44ea01d3b2 (2026-10-12). rg -n -i "freighter|varial" found eight Freighter lines across six SKILL.md files and no Varial line.
+  - 2026-11-02 adjacent calibration adds two missed files: skills/lumenloop-mcp-connect/SKILL.md:39 and skills/stellar-ecosystem-scout/SKILL.md:33. The earlier four-file finding omitted both repeated build-stack summaries.
+  - 2026-11-02 public recheck: GET https://raw.githubusercontent.com/stellar/freighter/master/README.md and https://stellar.org/blog/foundation-news/freighter-is-now-varial each returned HTTP 200. The README names Varial; the SDF announcement confirms the rename. gh api repos/stellar/freighter/releases/tags/5.50.0 reports published_at=2026-10-29T20:32:42Z. This dates the public announcement, not the earliest rebrand commit.
+  - 2026-11-02 calibration: the eight affected lines contain prose wallet names, not executable wallet SDK snippets. The recommendation changes display names only. SDK migration is outside this finding.
+  - 2026-11-02 dedupe: gh search issues and gh search prs covered open and closed owner records. gh api --paginate issues?state=all supplied complete bodies. rg over improvements/ and improvements/resolved.json checked local records. No duplicate appeared among three issues and two PRs in lumenloop/lumenloop-skills. ll-032 concerns the separate directory record. No other active or resolved skill record owns this rename.
+  - Golden provenance: q-ti-skill-builder-quickstart and q-ti-skill-integration-finder exposed the stale wording on 2026-11-02. Neither case grades the wallet name.
+  - The earlier four-file source verification matched the Raven pin d92c56bda17ab702d3202335cfe814d64e70e191. This correction targets current upstream files.
+  - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-skills/issues/6
 ---
 
 ## Finding
 
-Four `lumenloop/lumenloop-skills` playbooks name the Freighter wallet in their stack summaries.
-SDF renamed Freighter to Varial on 2026-10-29.
-The product source README now opens "Varial (formerly Freighter)".
-The old site `www.freighter.app` redirects to `varialwallet.com`.
-No playbook names Varial.
-
-An agent that follows these playbooks recommends a wallet under a retired name.
-The user then cannot match the advice to the current product page, the store listing, or the
-`VarialModule` in Stellar Wallets Kit 2.8.0.
+Six Lumenloop skill files still name the wallet Freighter and omit its current name, Varial.
+SDF announced the rename on 2026-10-29.
+The eight affected lines describe current build stacks.
+Users can have difficulty matching the recommended wallet to its current product name.
 
 ## Evidence
 
-At `lumenloop/lumenloop-skills` commit `a87ca95730d2a4015c884defebd66b44ea01d3b2` (main on 2026-11-02):
+A fresh download of the source archive returned HTTP 200 on 2026-11-02.
+The main commit was `a87ca95730d2a4015c884defebd66b44ea01d3b2`, dated 2026-10-12.
+A repository-wide search found these eight lines and no `Varial` line:
 
-- `skills/stellar-project-dossier/SKILL.md` line 36: "JS stellar-sdk + Freighter + Stellar".
-- `skills/stellar-ecosystem-digest/SKILL.md` line 34: "Freighter / Stellar Wallets Kit".
-- `skills/stellar-builder-quickstart/SKILL.md` line 39: "Freighter, Stellar Wallets Kit, passkeys".
-- `skills/stellar-builder-quickstart/SKILL.md` line 134: "(or Freighter directly)".
-- `skills/stellar-integration-finder/SKILL.md` line 34: "**Freighter** + **Stellar Wallets Kit**".
-- `skills/stellar-integration-finder/SKILL.md` line 149: "JS **stellar-sdk**, **Freighter**, **Stellar Wallets Kit**".
+| File under `skills/` | Lines |
+|---|---|
+| `stellar-project-dossier/SKILL.md` | 36 |
+| `stellar-ecosystem-digest/SKILL.md` | 34 |
+| `stellar-builder-quickstart/SKILL.md` | 39, 134 |
+| `stellar-integration-finder/SKILL.md` | 34, 149 |
+| `lumenloop-mcp-connect/SKILL.md` | 39 |
+| `stellar-ecosystem-scout/SKILL.md` | 33 |
 
-The rename has two independent sources.
-The SDF announcement at `https://stellar.org/blog/foundation-news/freighter-is-now-varial` says
-"Today, Freighter becomes Varial".
-The `stellar/freighter` README says "Varial (formerly Freighter)" and names the SDK `@stellar/varial-sdk`.
+The [SDF announcement](https://stellar.org/blog/foundation-news/freighter-is-now-varial) confirms the new name.
+The [wallet README](https://raw.githubusercontent.com/stellar/freighter/master/README.md) identifies Varial as the wallet previously named Freighter.
+The source files predate the public rename.
+The earlier four-file count missed two repeated build-stack summaries.
 
 ## Recommendation
 
-In the six lines above, replace "Freighter" with "Varial (formerly Freighter)".
-Use the plain name "Varial" after the first mention in each file.
-Where a playbook names a wallet SDK, name `@stellar/varial-sdk`.
-Point readers to `https://docs.varialwallet.com` for wallet integration details.
+Update all eight prose references across the six files.
+Use `Varial (formerly Freighter)` at the first mention in each file.
+Use `Varial` for later mentions.
+These prose changes do not require an SDK migration.

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "fe63fd59bfd1cb613e3f8c8e5a613c0f309601ec41a1bf14ab7f6ed762815a9c",
+  "corpusContentSha256": "7612df594dda6ebe6e3bce5fd7492403e080fba135b53e11852020536854b27b",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -16133,12 +16133,13 @@
             "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar classic DEX, quoted only when listed)\" (pass-2 verifier accept on truth.verified.rootCause)",
             "2026-11-02 [B] improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md — \"status: fixed-upstream\" (pass-2 verifier accept on truth.verified.rootCause)",
             "Pass 2 change: golden.notes marks the 2026-06-22 Scout venue quote '(Soroswap, Phoenix, Aquarius)' as unchanged on 2026-11-02 and stale against the operator venue list (sls-099), and replaces the internal 'cs-002 stale pages' reference with the plain labels that no longer render. tags.freshness stable → scheduled because the answer pins dated aggregator contract ids and a venue set; truth.reverifyBy 2027-06-24 → 2027-01-20 because the venue set changed within one quarter (v3 cutover 2026-09-24). corroboration[1].evidence[2].note records the github.com/soroswap/docs HTTP 404 and the live replacement pages. No keyFact or avoid change; no partial cap (ADR-0008).",
-            "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-vs-stellarx and q-eco-dex-saturation (dead soroswap/docs ref annotated the same way), q-defi-phoenix-what-is (Phoenix venue ambiguity already encoded), q-defi-provide-liquidity-impermanent-loss (2026-06-29 Phoenix aggregation line now dated and not required), q-edge-factcheck-soroswap-first-amm (already repointed to soroswap/sdk); clusters 012, 014, 038, 046 claims unchanged; no contradiction."
+            "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-vs-stellarx and q-eco-dex-saturation (dead soroswap/docs ref annotated the same way), q-defi-phoenix-what-is (Phoenix venue ambiguity already encoded), q-defi-provide-liquidity-impermanent-loss (2026-06-29 Phoenix aggregation line now dated and not required), q-edge-factcheck-soroswap-first-amm (already repointed to soroswap/sdk); clusters 012, 014, 038, 046 claims unchanged; no contradiction.",
+            "2026-11-02 [B] improvements/resolved.json entry cs-002 — resolved 2026-11-02 with upstreamRefsGone soroswap/docs#47; independent review .agents/rounds/2026-11-02-upstream-followup/rv-fl-review.md section C. rootCause path repointed to the resolved receipt; question, answer, keyFacts, avoid, and notes unchanged."
           ],
           "rootCause": [
             "freshness-drift",
             "improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md",
-            "improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md"
+            "improvements/resolved.json entry cs-002 (resolved 2026-11-02; the stale labels no longer render, and soroswap/docs#47 returns HTTP 404)"
           ]
         },
         "origin": "raven-next q-defi-soroswap-what-is",

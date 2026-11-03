@@ -209,3 +209,19 @@ Codex dollars remain unreported, so the whole-session spending limit remains unv
 Root removes the three owned helpers and their completed command terminals.
 The completion receipt records legitimate source, publication and measurement holds.
 No Anthropic agent, upstream write, push or deployment occurs.
+
+### Publication (coordinator hc t16, Claude Opus 5.5)
+
+The owner asked the coordinator to publish the finished follow-up.
+Main had already used `sd-080` and `sd-081` for filed findings.
+The coordinator shifted every follow-up Docs finding id by two: `sd-080`–`sd-093` became `sd-082`–`sd-095`.
+Finding text, evidence, and patch bytes did not change; only ids, file names, and references changed.
+The rename changes one case digest (`q-asset-issue-asset-howto`, rootCause path only).
+Frozen records in this round now use the new ids.
+
+The repository allows only squash merges.
+Archive tags keep the cited local commits reachable after the squash:
+`archive/qa-followup-2026-11-03` (`04c03ec7`, includes `a2b1c547`, `bdcf915f`, and `4dfb2008`),
+`archive/golden-2026-11-02-method` (`0aea991f`), and
+`archive/golden-finalization-2026-11-03` (`dc97a036`).
+The experimental runner stays off main, as the round decided.

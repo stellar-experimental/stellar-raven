@@ -26,6 +26,7 @@ import { extractRoutingExclusions, extractRoutingPhrases } from "../src/catalog/
 import { extractKeywords } from "../src/catalog/extract-keywords.ts";
 import { RUNNERS } from "../src/skills/runners/index.ts";
 import { rewriteScoutRefs, scoutRefRewrites } from "../scripts/description-notes.mjs";
+import { NON_EXPOSED_SCOUT_OP_NAMES } from "../scripts/exposure.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIGEST = "skills.lumenloop.stellar-ecosystem-digest";
@@ -108,9 +109,15 @@ describe("Scout exposure data matches the source contract", () => {
     }
   );
 
-  it("accepts path metadata without treating it as a newly listed operation", () => {
+  it("rejects an unreviewed method at any excluded path", () => {
     const changed = structuredClone(inventory.openapi);
-    changed.paths["/api/hackathons/review"] = { parameters: [], summary: "Review" };
+    changed.paths["/api/partners/onboard"].get = { operationId: "getPartnerOnboarding" };
+    expect(() => assertScoutExclusionsResolve(changed)).toThrow("Unreviewed Scout operation");
+  });
+
+  it("accepts path metadata without treating it as a newly listed operation", () => {
+    const changed = withReviewOperation();
+    Object.assign(changed.paths["/api/hackathons/review"], { parameters: [], summary: "Review" });
     expect(() => assertScoutExclusionsResolve(changed)).not.toThrow();
   });
 });
@@ -287,15 +294,37 @@ describe("assertBuildAuthorityIdsResolve — role ids are pinned to skills that 
 });
 
 
-describe("Scout raw routing sources follow ADR-0003 before extraction", () => {
+describe("Scout upstream prose follows ADR-0003 before extraction", () => {
   const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
+
+  it("drops excluded-name vocabulary from the live 1.9.116 compareHackathons description", () => {
+    const changed = structuredClone(inventory);
+    const operation = changed.openapi.paths["/api/hackathons/compare"].get;
+    operation.description =
+      "Side-by-side comparison of 2-5 hackathons by slug: prize pool, submissions, winners, prize per winner and, " +
+      "for every event with stored submissions, a `profile` (top categories, Stellar packages, repo activity after " +
+      "the event) counted like analyzeHackathonSubmissions. `deltas.facetShifts` names the category and package " +
+      "shares that moved most between the events. Curated events add cohort durability. Unresolved slugs return " +
+      "source:'not-found'; resolve slugs via getHackathons. Ecosystem-wide totals → use analyzeEcosystem.";
+    const entry = buildScout(changed).entries.find((entry) => entry.id === "scout.compareHackathons");
+    expect(entry.description).toContain("resolve slugs via getHackathons.");
+    const cleanSource = [operation.summary, operation.description.replace("analyzeHackathonSubmissions", "")].join(". ");
+    const nameOnlyTokens = extractKeywords("analyzeHackathonSubmissions", { exclude: [cleanSource] });
+    expect(nameOnlyTokens).toEqual(["hackathon"]);
+    const extracted = guardedExtractKeywords(entry.description);
+    expect(extracted).not.toContain("upstream");
+    expect(extracted.filter((token) => nameOnlyTokens.includes(token))).toEqual([]);
+    expect(() => guardedExtractKeywords("event profile", { exclude: [entry.description] })).not.toThrow();
+    expect(() => assertNoNonExposedRefs([entry])).not.toThrow();
+  });
+
   const tokenFields = {
     routingKeywords: { sourceField: "keywords", extract: (text) => extractKeywords(text) },
     routingPhrases: { sourceField: "purpose", extract: (text) => extractRoutingPhrases({ purpose: [text] }) },
     routingExclusions: { sourceField: "notFor", extract: (text) => extractRoutingExclusions([text]) }
   };
   for (const [field, { sourceField, extract }] of Object.entries(tokenFields)) {
-    it.each(["reviewSubmission", "getRwaAssets", "/api/hackathons/review"])(
+    it.each([...NON_EXPOSED_SCOUT_OP_NAMES, "/api/hackathons/review"])(
       `rejects real extracted tokens for %s in ${field} at the raw source`, (reference) => {
         const text = `Use ${reference} here.`;
         expect(extract(text).length).toBeGreaterThan(0);
@@ -309,8 +338,8 @@ describe("Scout raw routing sources follow ADR-0003 before extraction", () => {
   }
 
   for (const field of ["purpose", "useWhen", "exampleQuestions", "keywords", "notFor"]) {
-    it.each(["reviewSubmission", "get_rwa_assets", "/api/hackathons%2Freview"])(
-      `rejects %s in raw x-routing.${field}`, (reference) => {
+    it.each(["reviewSubmission", "get_rwa_assets", "/api/hackathons%2Freview", "lumenloop.request_research"])(
+      `rejects an unhandled reference %s in x-routing.${field}`, (reference) => {
         const changed = structuredClone(inventory);
         const text = `Use ${reference} here.`;
         changed.openapi.paths["/api/hackathons"].get["x-routing"] = {

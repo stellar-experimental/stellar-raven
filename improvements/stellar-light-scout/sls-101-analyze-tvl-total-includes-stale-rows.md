@@ -1,9 +1,9 @@
 ---
 id: sls-101
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-02
-upstreamTitle: "analyze TVL total includes rows that stopped refreshing, with no staleness signal"
+upstreamTitle: "GET /api/analyze includes stale TVL rows without a stale-total warning"
 evidence:
   - "2026-11-02T17:18Z live GET https://stellarlight.xyz/api/analyze?dimension=tvl returned tvl.totalTvlUSD 1980381301, trackedProjects 17, asOf 2026-11-02T13:19:15.688Z, provider DefiLlama. top10[0] is spiko tvlUSD 1653789314 with tvlAsOf 2026-09-14T10:30:21.591Z. top10[8] is sentora tvlUSD 10393904 with tvlAsOf 2026-08-10T06:16:01.283Z. Every other top-10 row has tvlAsOf 2026-11-02T13:19:15.688Z. Response sha256 4a9efbdbee06c0ae2a15f92fb9f383d68d88cc61ce12cbbdb6f21176dadf1142."
   - "The tvl.basis text says 'asOf = most recent per-project tvlAsOf'. Each row's tvlMethod says the value is 'refreshed weekly (tvlAsOf)'. Spiko is 83.5 percent of the total and was 49 days old; Sentora was 84 days old."
@@ -12,34 +12,47 @@ evidence:
   - "Adjacent row: etherfuse carries tvlUSD 2 with tvlAsOf 2026-09-14T10:30:21.591Z, the same stale timestamp as Spiko; DefiLlama /protocols lists etherfuse with tvl None and chains []."
   - "Dedupe 2026-11-02: resolved sls-038 (rollup missing) and sls-031 (methodology provenance) were fixed on 2026-07-14. Declined sls-039 concerns in-API history. None covers stale rows inside the current total. GitHub search repo:Stellar-Light/stellarlight 'spiko tvl' returned 0 results."
   - "Golden consumer: eval/qa/corpus/battery case q-edge-noinfo-exact-tvl-figure records the stale rows and keeps its golden unchanged."
+  - "2026-11-02T22:38Z recheck: curl -sS --max-time 50 'https://stellarlight.xyz/api/analyze?dimension=tvl' returned HTTP 200. totalTvlUSD=1980381301; trackedProjects=17; asOf=2026-11-02T13:19:15.688Z. Spiko=1653789314 dated 2026-09-14T10:30:21.591Z; Sentora=10393904 dated 2026-08-10T06:16:01.283Z. No staleRows or oldestTvlAsOf field appears."
+  - "2026-11-02T22:38Z provider checks: curl -sS --max-time 50 https://api.llama.fi/protocols returned HTTP 200. Spiko and Etherfuse each have tvl=null, chains=[], and chainTvls={}. curl -sS --max-time 50 https://api.llama.fi/protocol/spiko returned HTTP 200 with currentChainTvls={}. curl -sS --max-time 50 https://api.llama.fi/protocol/sentora returned HTTP 200 with currentChainTvls.Stellar=71200916."
+  - "2026-11-02 calibration: curl -sS --retry 2 --max-time 30 'https://stellarlight.xyz/api/projects/search?q=etherfuse&limit=3' returned HTTP 200. Etherfuse still has tvlUSD=2 and tvlAsOf=2026-09-14T10:30:21.591Z. Equivalent spiko and sentora queries returned HTTP 200. All three rows still say refreshed weekly. Grep of analyze/route.ts and scripts/enrich-tvl.ts confirms the sum lacks an age filter. These dates show last observations, not the first defective release."
+  - "2026-11-02 dedupe: gh search issues and gh search prs searched Stellar-Light/stellarlight for spiko and 'tvl stale', across all states. No matching stale-total report appeared. Issue 494 covers provenance; issues 1710 and 1531 cover other defects; tracker 586 covers routine triage. PR results concern other data or TVL features. rg over improvements/ and improvements/resolved.json found related sls-031, sls-038, and declined sls-039, with different defects. Intake resolves to Stellar-Light/stellarlight without an override."
+  - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1912
 ---
 
 ## Finding
 
-`GET /api/analyze?dimension=tvl` reports `totalTvlUSD: 1980381301` with `asOf: 2026-11-02T13:19:15.688Z`.
-The total includes a Spiko row of 1653789314 dated 2026-09-14 and a Sentora row dated 2026-08-10.
-Spiko is 83.5 percent of the total.
-DefiLlama no longer publishes a Stellar value for Spiko.
-DefiLlama now reports 71442700 for Sentora on Stellar, but Scout still serves 10393904.
-The response gives no signal that these rows stopped refreshing, although each row says "refreshed weekly".
+`GET /api/analyze?dimension=tvl` includes old project values without a warning that the total contains stale data.
+On 2026-11-02, it reports `totalTvlUSD: 1980381301` and `asOf: 2026-11-02T13:19:15.688Z`.
+Spiko contributes 1653789314, or 83.5 percent, from 2026-09-14.
+Sentora contributes 10393904 from 2026-08-10.
+The project rows say "refreshed weekly".
+A reader must inspect row dates to detect the stale contribution.
+
+DefiLlama now returns no TVL value for Spiko and reports 71200916 for Sentora on Stellar.
+The response documents that `asOf` means the newest project date.
+That date does not describe the freshness of most of the total.
 
 ## Evidence
 
 Read-only reproduction:
 
 ```sh
-curl -sS 'https://stellarlight.xyz/api/analyze?dimension=tvl'
-curl -sS https://api.llama.fi/protocol/spiko
-curl -sS https://api.llama.fi/protocol/sentora
+curl -sS --max-time 50 'https://stellarlight.xyz/api/analyze?dimension=tvl'
+curl -sS --max-time 50 https://api.llama.fi/protocols
+curl -sS --max-time 50 https://api.llama.fi/protocol/spiko
+curl -sS --max-time 50 https://api.llama.fi/protocol/sentora
+curl -sS --retry 2 --max-time 30 'https://stellarlight.xyz/api/projects/search?q=etherfuse&limit=3'
 ```
 
-The top-level `asOf` is the newest row date, as the `basis` text says.
-So a 49-day-old value contributes most of a total that is dated today.
-The `etherfuse` row has the same stale 2026-09-14 timestamp with `tvlUSD: 2`.
+All commands returned HTTP 200 on 2026-11-02.
+Spiko and Etherfuse have `tvl: null` in the provider list.
+The adjacent Etherfuse row still reports `tvlUSD: 2`, dated 2026-09-14.
+Sentora's current provider value differs from Scout's stored value.
 
 ## Recommendation
 
-Exclude a row from `totalTvlUSD` when its `tvlAsOf` is older than the stated refresh cadence.
-Alternatively, keep the row and add `staleRows` and `oldestTvlAsOf` to the TVL object.
-When the provider drops the Stellar slice, set `tvlUSD` to null with a dated reason.
-Fix the refresh job for Sentora, which the provider still publishes.
+Add a stale-total warning when a contributing row exceeds the stated refresh cadence.
+Expose the stale contribution and the oldest contributing date beside `totalTvlUSD`.
+Alternatively, exclude stale rows and state that exclusion in `basis`.
+Investigate the old Sentora value and mark unavailable provider values with a dated reason.
+Apply the same rule to project rows and the aggregate response.

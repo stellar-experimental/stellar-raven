@@ -403,23 +403,22 @@ export function assertScoutExclusionsResolve(openapi) {
       if (pathItem[method]) present.set(`${method.toUpperCase()} ${path}`, pathItem[method].operationId);
     }
   }
+  // A newly listed operation at any excluded path must match a reviewed
+  // method. Optional exclusions may be absent from the accepted inventory.
+  const excludedPaths = new Set([...EXCLUDED_SCOUT_OPS].map((signature) => signature.split(" ")[1]));
+  const unreviewed = [...present.keys()].filter((signature) =>
+    excludedPaths.has(signature.split(" ")[1]) && !EXCLUDED_SCOUT_OPS.has(signature));
+  if (unreviewed.length > 0) {
+    throw new Error(
+      `Unreviewed Scout operation appeared at an excluded path: ${unreviewed.join(", ")}. ` +
+        "Review its exposure before accepting the new method."
+    );
+  }
   const stale = [...EXCLUDED_SCOUT_OPERATIONS.keys()].filter((k) => !present.has(k));
   if (stale.length > 0) {
     throw new Error(
       `EXCLUDED_SCOUT_OPS no longer present in the scout OpenAPI: ${stale.join(", ")}. ` +
         `Upstream renamed or removed them — reconcile the exclusion list in build-catalog.mjs.`
-    );
-  }
-  // Optional exclusions may be absent from the accepted inventory, but a
-  // newly listed operation at their path must match the reviewed method.
-  const optionalPaths = new Set([...OPTIONAL_EXCLUDED_SCOUT_OPERATIONS.keys()]
-    .map((signature) => signature.split(" ")[1]));
-  const unreviewed = [...present.keys()].filter((signature) =>
-    optionalPaths.has(signature.split(" ")[1]) && !EXCLUDED_SCOUT_OPS.has(signature));
-  if (unreviewed.length > 0) {
-    throw new Error(
-      `Unreviewed Scout operation appeared at an excluded path: ${unreviewed.join(", ")}. ` +
-        "Review its exposure before accepting the new method."
     );
   }
   const renamed = [...EXCLUDED_SCOUT_OPERATIONS, ...OPTIONAL_EXCLUDED_SCOUT_OPERATIONS]
@@ -747,7 +746,8 @@ export function buildScout(inv) {
       const httpMethod = method.toUpperCase();
       if (EXCLUDED_SCOUT_OPS.has(`${httpMethod} ${path}`)) continue;
       const opId = op.operationId ?? `${method}_${slugify(path)}`;
-      const rawDescription = [op.summary, op.description]
+      const cleanFields = scrubScoutDescription(opId, op);
+      const rawDescription = [cleanFields.summary, cleanFields.description]
         .filter(Boolean)
         .join(". ")
         .replace(/\.\.\s/g, ". ");
@@ -755,7 +755,7 @@ export function buildScout(inv) {
       // mints names for excluded ops, so an unscrubbed clause would keep its
       // raw REST spelling — still a leak).
       const description = plainText(
-        rewriteScoutRefs(scrubScoutDescription(opId, rawDescription), refPairs)
+        rewriteScoutRefs(rawDescription, refPairs)
       );
       const note = SCOUT_DESCRIPTION_NOTES[opId];
       if (note !== undefined) consumedNotes.add(opId);

@@ -7,7 +7,7 @@ The earlier monitor-only disposition becomes verified after exact source compari
 Scout says governance votes direct market rewards. Aquarius assigns market voting to upvoteICE and governance proposals to governICE.
 Aquarius also uses “ICE votes” for market votes. The finding concerns “governance”, not that general wording.
 
-The [finding](../../../improvements/stellar-light-scout/sls-086-aquarius-governance-vote-description.md) contains exact URLs and a read-only reproduction.
+The [finding](https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-light-scout/sls-086-aquarius-governance-vote-description.md) (resolved 2026-11-02; receipt in `improvements/resolved.json`) contains exact URLs and a read-only reproduction.
 The table pins the retrieved bytes. Each canonical page remains publicly readable at its cited URL.
 
 | Retrieved evidence | SHA-256 |

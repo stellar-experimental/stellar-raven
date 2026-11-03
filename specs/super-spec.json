@@ -2,7 +2,7 @@
   "components": {
     "parameters": {
       "scout.fields": {
-        "description": "Comma-separated top-level field names to return per row (e.g. fields=name,slug,tvlUSD), shrinking the payload. Case-insensitive. Each row's identity keys (id/slug/fullName/githubUsername/url/source, where present) are always included; unknown names are ignored, not rejected. Applies only to the rows array — meta is unaffected. Nested objects are selected whole (no dot-paths).",
+        "description": "Comma-separated top-level field names to return per row (e.g. fields=name,slug,tvlUSD), shrinking the payload. Case-insensitive. Each row's identity keys (id/slug/fullName/githubUsername/url/source, where present) are always included; unknown names are ignored, not rejected. Applies only to the rows array: meta is unaffected. Nested objects are selected whole (no dot-paths).",
         "in": "query",
         "name": "fields",
         "schema": {
@@ -33,6 +33,19 @@
         "in": "query",
         "name": "q",
         "schema": {
+          "type": "string"
+        }
+      },
+      "scout.view": {
+        "description": "Row shape. `full` (the default) returns every row field, unchanged. `compact` is for callers whose tool output is capped: each row is rebuilt from a fixed key list (identity, rank and score, and the fields that answer the usual question), and list fields left out come back as counts. A default projects/search page for q=lending measured 87,157 characters full and 23,091 compact (2026-10-23). Every compact row carries the same keys, null where there is no value; a field missing from a compact row was left out, not found empty. `meta.view` (first in meta) says the page is compact and where the left-out detail is read: repeat the request without view, or without view and with fields=<names>. The key lists are in the CompactView schema. Cannot be combined with fields (400). Any other value answers 400 with validValues.",
+        "in": "query",
+        "name": "view",
+        "schema": {
+          "default": "full",
+          "enum": [
+            "full",
+            "compact"
+          ],
           "type": "string"
         }
       }
@@ -80,8 +93,12 @@
             "description": "What failed, in one line.",
             "type": "string"
           },
+          "hint": {
+            "description": "On a 429: the wait and the next step in words, the same number as retryAfterSeconds ('Wait 37 seconds, then resend the same request.'), for a consumer that keeps only error and hint.",
+            "type": "string"
+          },
           "retryAfterSeconds": {
-            "description": "Seconds to wait before resending; the same value as the Retry-After header. 2 on database reads, 60 or 300 on the skills registry.",
+            "description": "Seconds to wait before resending; the same value as the Retry-After header. On a 429, the seconds until the rate window resets, or the language model's own wait (at most 3600, 60 when it sent no usable number); on a 503, 2 on database reads and 60 or 300 on the skills registry.",
             "type": "integer"
           }
         },
@@ -94,7 +111,7 @@
       "scout.StatusResponse": {
         "properties": {
           "apiVersion": {
-            "description": "API contract (OpenAPI) version — equals /api/openapi.json info.version. Reason about the live contract from this rather than the service version.",
+            "description": "API contract (OpenAPI) version: equals /api/openapi.json info.version. Reason about the live contract from this rather than the service version.",
             "type": "string"
           },
           "docs": {
@@ -140,7 +157,7 @@
                   "type": "string"
                 },
                 "populationId": {
-                  "description": "Scope digest of what `count` counts — same format as meta.population.id on /api/analyze and /api/clusters. DB-backed sources here are `<collection>|status:all` (the FULL collection incl. Inactive), which is why projects.count is larger than analyze/clusters' active-only populations. Different ids = different populations: never merge or compare the numbers without labeling the scopes.",
+                  "description": "Scope digest of what `count` counts: same format as meta.population.id on /api/analyze and /api/clusters. DB-backed sources here are `<collection>|status:all` (the FULL collection incl. Inactive), which is why projects.count is larger than analyze/clusters' active-only populations. Different ids = different populations: never merge or compare the numbers without labeling the scopes.",
                   "type": "string"
                 }
               },
@@ -196,7 +213,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-02T15:12:47Z"
+    "x-generatedAt": "2026-11-03T15:18:13.074Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1666,7 +1683,7 @@
     },
     "/scout/analyzeEcosystem": {
       "get": {
-        "description": "The cross-ecosystem macro rollup — totals no single-event tool answers. Slice via dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), gaps (per-vertical whitespace — what should I build), developers (Electric Capital monthly-active devs + trend), and toolchain (Soroban-SDK version-status distribution + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated — never demand or a headcount.",
+        "description": "The cross-ecosystem macro rollup: totals no single-event tool answers. Slice via dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), gaps (per-vertical whitespace: what should I build), developers (Electric Capital monthly-active devs + trend), and toolchain (Soroban-SDK version-status distribution + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated; never demand or a headcount.",
         "operationId": "scout.analyzeEcosystem",
         "parameters": [
           {
@@ -1728,11 +1745,11 @@
     },
     "/scout/compareHackathons": {
       "get": {
-        "description": "Side-by-side comparison of 2–5 hackathons by slug — per-event snapshot (prize pool, submissions, winners, prize-per-winner, and cohort DURABILITY — stillActiveCount/liveCount/activeRatePct, how many of the event's projects are still alive today; curated events only) plus a deltas block flagging the spreads incl. the most durable cohort. Unresolved slugs return source:'not-found' without inflating counts. Requires ≥2 known slugs — resolve via getHackathons. Not for ecosystem-wide totals across ALL events → use analyzeEcosystem.",
+        "description": "deltas.facetShifts names the category and package shares that moved most between the events. Curated events add cohort durability. Unresolved slugs return source:'not-found'; resolve slugs via getHackathons. Ecosystem-wide totals → use analyzeEcosystem.",
         "operationId": "scout.compareHackathons",
         "parameters": [
           {
-            "description": "2–5 hackathon slugs, comma-separated (?slugs=a,b)",
+            "description": "2-5 hackathon slugs, comma-separated (?slugs=a,b)",
             "explode": false,
             "in": "query",
             "name": "slugs",
@@ -1753,93 +1770,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "Side-by-side hackathon comparison (previously opaque).",
+                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.compareHackathons\") for the full output schema.",
                   "properties": {
-                    "deltas": {
-                      "description": "What differs across the compared events.",
-                      "properties": {
-                        "notes": {
-                          "items": {
-                            "type": "string"
-                          },
-                          "type": "array"
-                        }
-                      },
-                      "type": "object"
-                    },
-                    "hackathons": {
-                      "items": {
-                        "properties": {
-                          "endDate": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "externalUrl": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "prizePoolUSD": {
-                            "description": "null when the source publishes none: unknown, never zero.",
-                            "nullable": true,
-                            "type": "number"
-                          },
-                          "slug": {
-                            "type": "string"
-                          },
-                          "source": {
-                            "type": "string"
-                          },
-                          "startDate": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "status": {
-                            "type": "string"
-                          }
-                        },
-                        "type": "object"
-                      },
-                      "type": "array"
-                    },
-                    "meta": {
-                      "properties": {
-                        "counts": {
-                          "description": "How many of the requested slugs resolved.",
-                          "properties": {
-                            "notFound": {
-                              "type": "integer"
-                            },
-                            "requested": {
-                              "type": "integer"
-                            },
-                            "returned": {
-                              "type": "integer"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "generatedAt": {
-                          "format": "date-time",
-                          "type": "string"
-                        },
-                        "source": {
-                          "type": "string"
-                        }
-                      },
-                      "type": "object"
-                    }
+                    "deltas": {},
+                    "hackathons": {},
+                    "meta": {}
                   },
-                  "type": "object"
+                  "type": "object",
+                  "x-codemode-describe": "codemode.describe(\"scout.compareHackathons\")"
                 }
               }
             },
             "description": "Comparison rollup"
           }
         },
-        "summary": "Compare 2–5 hackathons side-by-side",
+        "summary": "Compare 2-5 hackathons side-by-side",
         "tags": [
           "scout",
           "Hackathons"
@@ -1854,7 +1799,7 @@
     },
     "/scout/explainRepo": {
       "get": {
-        "description": "Source-grounded ANSWER to a deep code question about a Stellar internal or any indexed ecosystem repo — 'how does X implement/calculate Y in its code'. Routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls) or the graded repo index, then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
+        "description": "Source-grounded ANSWER to a deep code question about a Stellar internal or any indexed ecosystem repo: 'how does X implement/calculate Y in its code'. Routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls) or the graded repo index, then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
         "operationId": "scout.explainRepo",
         "parameters": [
           {
@@ -1898,6 +1843,7 @@
                     "repo": {},
                     "repoMeta": {},
                     "routedVia": {},
+                    "security": {},
                     "sources": {}
                   },
                   "type": "object",
@@ -1926,7 +1872,7 @@
     },
     "/scout/getBuilders": {
       "get": {
-        "description": "The Stellar PEOPLE directory — builder profiles synced from Stellar Passport (bio, role, location, shipped projects[]), searchable by q/skill and location. Use to find a person to recruit, hire, or collaborate with. Not for the company/product behind a project ('who built X') → use searchProjects. Profiles carry NO populated SCF-tier/award data.\n\nCatalog note: this is a bounded directory-membership surface, not an exhaustive biography or ecosystem-history index. An empty row set means no matching Scout builder record; for an open-world identity or history question, make one broad content or research pass before a wider negative conclusion.",
+        "description": "The Stellar PEOPLE directory: builder profiles synced from Stellar Passport (bio, role, location, shipped projects[]), searchable by q/skill and location. Use to find a person to recruit, hire, or collaborate with. Not for the company/product behind a project ('who built X') → use searchProjects. Profiles carry NO populated SCF-tier/award data.\n\nCatalog note: this is a bounded directory-membership surface, not an exhaustive biography or ecosystem-history index. An empty row set means no matching Scout builder record; for an open-world identity or history question, make one broad content or research pass before a wider negative conclusion.",
         "operationId": "scout.getBuilders",
         "parameters": [
           {
@@ -1979,6 +1925,24 @@
               }
             },
             "description": "Builder list"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "A read failed and the page would have been empty: an outage, NOT an empty result. Retry after Retry-After. A read that fails while rows can still be served answers 200 with meta.partial true instead.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
         "summary": "Search Stellar builders",
@@ -1996,7 +1960,7 @@
     },
     "/scout/getChangelog": {
       "get": {
-        "description": "A curated, latest-first feed of contract-affecting changes — new/removed endpoints & tools, param/enum changes, description rewrites. Point an agent here to see what changed lately without reading git history. Use when: you cached the API surface earlier and want to know what moved before relying on it, or you're debugging a field/param that changed. Not for: the actual ecosystem data → use the relevant search endpoint; current health / source freshness / version → use scout.getStatus.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
+        "description": "A curated, latest-first feed of contract-affecting changes: new/removed endpoints & tools, param/enum changes, description rewrites. Point an agent here to see what changed lately without reading git history. Use when: you cached the API surface earlier and want to know what moved before relying on it, or you're debugging a field/param that changed. Not for: the actual ecosystem data → use the relevant search endpoint; current health / source freshness / version → use scout.getStatus.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
         "operationId": "scout.getChangelog",
         "parameters": [
           {
@@ -2010,7 +1974,7 @@
             }
           },
           {
-            "description": "Max entries to return, latest-first (1–100).",
+            "description": "Max entries to return, latest-first (1-100).",
             "in": "query",
             "name": "limit",
             "required": false,
@@ -2111,12 +2075,12 @@
                         },
                         "returned": {
                           "deprecated": true,
-                          "description": "Deprecated flat copy — read meta.counts.returned.",
+                          "description": "Deprecated flat copy: read meta.counts.returned.",
                           "type": "integer"
                         },
                         "total": {
                           "deprecated": true,
-                          "description": "Deprecated flat copy — read meta.counts.total.",
+                          "description": "Deprecated flat copy: read meta.counts.total.",
                           "type": "integer"
                         },
                         "warnings": {
@@ -2183,7 +2147,7 @@
             }
           },
           {
-            "description": "Max rows PER SURFACE, newest-first (1–500, default 100). meta.truncated.<surface> signals more.",
+            "description": "Max rows PER SURFACE, newest-first (1-500, default 100). meta.truncated.<surface> signals more.",
             "in": "query",
             "name": "limit",
             "required": false,
@@ -2217,6 +2181,39 @@
           },
           "400": {
             "description": "Missing or invalid since, an unknown parameter (named with the supported set in hint), or an invalid surface; never silently ignored."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This endpoint's rate window is spent. hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Change feed: which rows moved since a given time",
@@ -2234,7 +2231,7 @@
     },
     "/scout/getClusters": {
       "get": {
-        "description": "Groups the active Stellar project directory into topic clusters scored on crowdedness (1–10, log-scaled) — the market-map view of saturated vs underbuilt lanes, i.e. WHERE TO BUILD. Per cluster: size, SCF funding, hackathon winners, sample projects; dimension=category|types. Answers 'what's crowded / where is whitespace'. Not for looking up a named project → use searchProjects.",
+        "description": "Groups the active Stellar project directory into topic clusters scored on crowdedness (1-10, log-scaled): the market-map view of saturated vs underbuilt lanes, i.e. WHERE TO BUILD. Per cluster: size, SCF funding, hackathon winners, sample projects; dimension=category|types. Answers 'what's crowded / where is whitespace'. Not for looking up a named project → use searchProjects.",
         "operationId": "scout.getClusters",
         "parameters": [
           {
@@ -2293,7 +2290,7 @@
     },
     "/scout/getHackathon": {
       "get": {
-        "description": "Full detail for ONE hackathon by slug — every submission with placement, prize, track, and post-hack status; derives winners, per-track aggregates, and a stats outcome funnel. DoraHacks-only events read live, degrading to a winner roster + meta.note. Needs an exact slug — resolve via getHackathons first. Not for listing/browsing events → use getHackathons.\n\nCatalog note: winner order is only meaningful when hackathonPlacement is ordinal (1st Place, 2nd Place, ...) and placementRank is a number; many events label every winner just Winners with placementRank null — there the winners array order is NOT a ranking, so never assert finishing order from list position (live-verified 2026-07-03).",
+        "description": "Full detail for ONE hackathon by slug: every submission with placement, prize and track; winners, per-track aggregates and a stats funnel. DoraHacks events serve the stored copy: the event page, rules (submission requirements, and judging criteria where the organizer published them) and a profile of the submissions (categories, libraries, activity after the event, what they became). Needs an exact slug; resolve via getHackathons first. Not for listing events → use getHackathons.\n\nCatalog note: winner order is only meaningful when hackathonPlacement is ordinal (1st Place, 2nd Place, ...) and placementRank is a number; many events label every winner just Winners with placementRank null — there the winners array order is NOT a ranking, so never assert finishing order from list position (live-verified 2026-07-03).",
         "operationId": "scout.getHackathon",
         "parameters": [
           {
@@ -2331,11 +2328,30 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/scout.ErrorResponse"
+                  "properties": {
+                    "closestSlugs": {
+                      "description": "Up to three listed slugs sharing the most distinguishing words with the one asked for. A word more than half the listed slugs carry (stellar) does not count, so [] means no listed slug shares a distinguishing word; the error text then names none.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                    "hint": {
+                      "description": "How to find the slug: GET /api/hackathons?q=<one word of the event's name>.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "type": "object"
                 }
               }
             },
-            "description": "Hackathon not found"
+            "description": "Hackathon not found. `error` itself carries the way forward (getHackathons with q, and the closest known slugs), since some clients keep only `error`."
           }
         },
         "summary": "Get one hackathon's full detail",
@@ -2353,7 +2369,7 @@
     },
     "/scout/getHackathons": {
       "get": {
-        "description": "Browse/LIST Stellar hackathon events — a merged, de-duplicated curated + live DoraHacks feed (dates, status, organizer, prize pools), sorted upcoming→active→completed then newest-first. The entry point for event slugs; zero-result forward-looking queries return meta.fallbackChannels (surface them, don't dead-end). Not for one event's winners/submissions/tracks → use getHackathon.",
+        "description": "Browse/LIST Stellar hackathon events: a merged, de-duplicated curated + live DoraHacks feed (dates, status, organizer, prize pools), sorted upcoming→active→completed then newest-first. The entry point for event slugs; zero-result forward-looking queries return meta.fallbackChannels (surface them, don't dead-end). Not for one event's winners/submissions/tracks → use getHackathon.",
         "operationId": "scout.getHackathons",
         "parameters": [
           {
@@ -2378,7 +2394,7 @@
             }
           },
           {
-            "description": "Free-text name lookup — matches event name/title and organizer (case-insensitive substring). Resolves a NAMED event without paging the catalog (e.g. q=blend, q=agents).",
+            "description": "Free-text name lookup: matches event name/title and organizer (case-insensitive substring). Resolves a NAMED event without paging the catalog (e.g. q=blend, q=agents).",
             "in": "query",
             "name": "q",
             "schema": {
@@ -2434,7 +2450,7 @@
     },
     "/scout/getLeaderboard": {
       "get": {
-        "description": "Ranked list of the top / most active Stellar projects by GitHub activity (sort=activity|stars|issues|tvl over a range; category filter; format=csv) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. meta.metricDefinitions defines each served metric — activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = untracked, never zero). Ranks PROJECTS, not people → use getBuilders.",
+        "description": "Ranked list of the top / most active Stellar projects by GitHub activity (sort=activity|stars|issues|tvl over a range; category filter; format=csv) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. meta.metricDefinitions defines each served metric; activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = untracked, never zero). Ranks PROJECTS, not people → use getBuilders.",
         "operationId": "scout.getLeaderboard",
         "parameters": [
           {
@@ -2478,7 +2494,7 @@
             }
           },
           {
-            "description": "Filter to one or more granular project types — the same `types[]` taxonomy on project-search rows and echoed on each leaderboard row. Repeatable (`?type=DEX&type=Lending`) and comma-separable (`?type=DEX,Lending`); membership is EITHER (a project typed DEX OR Lending is kept), so you can build an explicit DEX/Lending-style grouping. Exact whole-element match, NOT substring. Unknown values return 400 with validTypes. Applied at the DB layer before ranking and limiting; `meta.filters.type` echoes the applied scope.",
+            "description": "Filter to one or more granular project types; the same `types[]` taxonomy on project-search rows and echoed on each leaderboard row. Repeatable (`?type=DEX&type=Lending`) and comma-separable (`?type=DEX,Lending`); membership is EITHER (a project typed DEX OR Lending is kept), so you can build an explicit DEX/Lending-style grouping. Exact whole-element match, NOT substring. Unknown values return 400 with validTypes. Applied at the DB layer before ranking and limiting; `meta.filters.type` echoes the applied scope.",
             "explode": true,
             "in": "query",
             "name": "type",
@@ -2568,7 +2584,7 @@
     },
     "/scout/getPartner": {
       "get": {
-        "description": "Full published profile for one partner by slug, including verified signals + freshness. 404 for unknown or unpublished slugs. Use when: you already know a partner's slug (from scout.getPartners) and need their full public profile — services, sectors, regions, docs, contact, freshness. Not for: discovering partners for a need → use scout.getPartners with type/sector/region/q; a project/product rather than a service provider → use scout.searchProjects.",
+        "description": "Full published profile for one partner by slug, including verified signals + freshness. 404 for unknown or unpublished slugs. Use when: you already know a partner's slug (from scout.getPartners) and need their full public profile: services, sectors, regions, docs, contact, freshness. Not for: discovering partners for a need → use scout.getPartners with type/sector/region/q; a project/product rather than a service provider → use scout.searchProjects.",
         "operationId": "scout.getPartner",
         "parameters": [
           {
@@ -2624,11 +2640,11 @@
     },
     "/scout/getPartners": {
       "get": {
-        "description": "Published Stellar ecosystem partner directory — service providers a builder hires or integrates: anchors, on and off ramps (fiat on-ramp/off-ramp providers), KYC, infrastructure, tooling, protocols, wallets, audit firms. Partner-claimed facts ride WITH system-verified signals + freshness (down-rank/skip excludeFromMatching). Filter by type/sector/region/ramps/accepting/q. Not for built products/projects → use searchProjects.\n\nCatalog note: this is the partner and service-provider DIRECTORY for anchors, asset issuers, on/off ramps, stablecoin and RWA providers, audit firms, infrastructure, tooling, protocols, wallets, and integration providers; filter by region, type, sector, accepting, or q. Use for regional partner listings including common region names and aliases such as Latin America/LatAm, MENA, Africa, Europe, and Asia-Pacific. Use searchProjects for built products, apps, protocols, and projects rather than service-provider listings.",
+        "description": "Published Stellar ecosystem partner directory; service providers a builder hires or integrates: anchors, on and off ramps (fiat on-ramp/off-ramp providers), KYC, infrastructure, tooling, protocols, wallets, audit firms. Partner-claimed facts ride WITH system-verified signals + freshness (down-rank/skip excludeFromMatching). Filter by type/sector/region/ramps/accepting/q. Not for built products/projects → use searchProjects.\n\nCatalog note: this is the partner and service-provider DIRECTORY for anchors, asset issuers, on/off ramps, stablecoin and RWA providers, audit firms, infrastructure, tooling, protocols, wallets, and integration providers; filter by region, type, sector, accepting, or q. Use for regional partner listings including common region names and aliases such as Latin America/LatAm, MENA, Africa, Europe, and Asia-Pacific. Use searchProjects for built products, apps, protocols, and projects rather than service-provider listings.",
         "operationId": "scout.getPartners",
         "parameters": [
           {
-            "description": "Filter by partner type",
+            "description": "Filter by partner type. on-off-ramp also takes anchors whose rampTypes record a ramp (most ramp providers are typed anchor); an anchor with no ramp recorded is left out and a meta.warnings line says so, so type=anchor is the full anchor list.",
             "in": "query",
             "name": "type",
             "schema": {
@@ -2657,7 +2673,7 @@
             }
           },
           {
-            "description": "Filter by region served — a closed vocabulary of continents/blocs. Labels and case normalise (\"North America\" → north-america); values outside the vocabulary return 400 with `validRegions`. A country or currency is NOT a region: put it in q (e.g. ?q=nigeria) — coverage.countries is matched from query text.",
+            "description": "Filter by region served: a closed vocabulary of continents/blocs. Labels and case normalise (\"North America\" → north-america); values outside the vocabulary return 400 with `validRegions`. A country or currency is NOT a region: put it in q (e.g. ?q=nigeria); coverage.countries is matched from query text.",
             "in": "query",
             "name": "region",
             "schema": {
@@ -2749,7 +2765,7 @@
     },
     "/scout/getPeople": {
       "get": {
-        "description": "The Stellar Development Foundation org/people index — leadership, board of directors, and advisors (name → role → org), quoted from stellar.org/foundation/team with provenance. Use for 'who is <person>', 'what is <person>'s role at SDF', 'who leads <area>', 'who's on the SDF board'. Distinct from getBuilders (GitHub-contributor profiles) — an SDF VP or board member is NOT a 'builder'. Not for doc/spec authorship → use searchResearch.",
+        "description": "The Stellar Development Foundation org/people index: leadership, board of directors, and advisors (name → role → org), quoted from stellar.org/foundation/team with provenance. Use for 'who is <person>', 'what is <person>'s role at SDF', 'who leads <area>', 'who's on the SDF board'. Distinct from getBuilders (GitHub-contributor profiles); an SDF VP or board member is NOT a 'builder'. Not for doc/spec authorship → use searchResearch.",
         "operationId": "scout.getPeople",
         "parameters": [
           {
@@ -2811,7 +2827,7 @@
     },
     "/scout/getRepoTrust": {
       "get": {
-        "description": "One evidence-grounded answer to 'should I depend on this repo?': scanned code truth (proof, depth, domains, the FULL extracted contract interface), live on-chain usage, audit reports with drift since the latest one, succession both directions, and activity — joined server-side. signals is a closed deterministic vocabulary of facts that hold; no synthetic scores. Verify generated calls against codeTruth.contractInterface before invoking a contract. 404 for unindexed repos — absence is not nonexistence. Unknown params 400.",
+        "description": "One evidence-grounded answer to 'should I depend on this repo?': scanned code truth (proof, depth, domains, the FULL extracted contract interface), live on-chain usage, audit reports with drift since the latest one, succession both directions, and activity; joined server-side. signals is a closed deterministic vocabulary of facts that hold; no synthetic scores. Verify generated calls against codeTruth.contractInterface before invoking a contract. 404 for unindexed repos; absence is not nonexistence. Unknown params 400.",
         "operationId": "scout.getRepoTrust",
         "parameters": [
           {
@@ -2846,9 +2862,42 @@
           },
           "404": {
             "description": "Repo not in the index (absence of evidence, not a verdict)."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This endpoint's rate window is spent. hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           }
         },
-        "summary": "Trust report — the code-truth composite for one repo",
+        "summary": "Trust report for one Stellar GitHub repo: maintained, audited, used on mainnet",
         "tags": [
           "scout",
           "Code"
@@ -2863,7 +2912,7 @@
     },
     "/scout/getRfps": {
       "get": {
-        "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — open means the sponsor brief is still soliciting; it does NOT prove the SCF proposal window accepts submissions today (check meta.scfRound.submissionWindow + currentPhase for that). Closed briefs are past rounds. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built' and where the paid work is: jobs, bounties, freelance briefs for Stellar contributors. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
+        "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas); open means the sponsor brief is still soliciting; it does NOT prove the SCF proposal window accepts submissions today (check meta.scfRound.submissionWindow + currentPhase for that). Closed briefs are past rounds. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built' and where the paid work is: jobs, bounties, freelance briefs for Stellar contributors. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
         "operationId": "scout.getRfps",
         "parameters": [
           {
@@ -2938,7 +2987,7 @@
     },
     "/scout/getSkill": {
       "get": {
-        "description": "Full detail for ONE skill by slug or display name — metadata plus, for entries listed on skills.stellar.org (SDF authored and community-built), the complete raw SKILL.md text (.skill.content, fetched live from where the registry links it). 404s with a hint to list scout.listSkills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.\n\nCatalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills. catalog entries via codemode.skill.read (sectioned, curated, pinned).",
+        "description": "Full detail for ONE skill by slug or display name: metadata plus, for entries listed on skills.stellar.org (SDF authored and community-built), the complete raw SKILL.md text (.skill.content, fetched live from where the registry links it). 404s with a hint to list scout.listSkills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.\n\nCatalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills. catalog entries via codemode.skill.read (sectioned, curated, pinned).",
         "operationId": "scout.getSkill",
         "parameters": [
           {
@@ -2984,7 +3033,7 @@
                           "type": "array"
                         },
                         "content": {
-                          "description": "Full SKILL.md text; null when the source ships no file — absence of content is not absence of the skill.",
+                          "description": "Full SKILL.md text; null when the source ships no file; absence of content is not absence of the skill.",
                           "nullable": true,
                           "type": "string"
                         },
@@ -3083,11 +3132,11 @@
     },
     "/scout/getStablecoins": {
       "get": {
-        "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs — GYEN supply is yen, ARST is pesos), holders, price, full issuer account, and basis (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
+        "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; GYEN supply is yen, ARST is pesos), holders, price, full issuer account, and basis (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
         "operationId": "scout.getStablecoins",
         "parameters": [
           {
-            "description": "Ranking order. marketcap (default, USD-comparable) | supply (raw peg units — comparable only within one peg) | holders | volume. Unrecognized values return 400.",
+            "description": "Ranking order. marketcap (default, USD-comparable) | supply (raw peg units; comparable only within one peg) | holders | volume. Unrecognized values return 400.",
             "in": "query",
             "name": "sort",
             "schema": {
@@ -3163,7 +3212,7 @@
     },
     "/scout/getStatus": {
       "get": {
-        "description": "Self-describe / health endpoint — service ok + versions, per-source freshness and counts (sources[]), recent usage, and an enumeration of every /api/ endpoint. Cheap, no params. Use to check how fresh/large the data is. Not for the data itself → call the matching search operation.\n\nCatalog note: the upstream payload carries its own ok health/status flag at data.ok — distinct from the envelope call-status ok. Its endpoint enumeration is upstream's raw HTTP surface, not this gateway's callable surface: some of those paths are deliberately not exposed here, so discover callable operations with search or codemode.catalog() rather than planning around /api/... paths.",
+        "description": "Self-describe / health endpoint: service ok + versions, per-source freshness and counts (sources[]), recent usage, and an enumeration of every /api/ endpoint. Cheap, no params. Use to check how fresh/large the data is. Not for the data itself → call the matching search operation.\n\nCatalog note: the upstream payload carries its own ok health/status flag at data.ok — distinct from the envelope call-status ok. Its endpoint enumeration is upstream's raw HTTP surface, not this gateway's callable surface: some of those paths are deliberately not exposed here, so discover callable operations with search or codemode.catalog() rather than planning around /api/... paths.",
         "operationId": "scout.getStatus",
         "responses": {
           "200": {
@@ -3192,7 +3241,7 @@
     },
     "/scout/hackathonBrief": {
       "get": {
-        "description": "One call for a hackathon team's first hour: vet (same as vet-idea — competitors, maturity, gap, judged prior art), builds (prototype-layer prior art from DoraHacks submissions), startFrom (top non-archived competitor repos with a trust SUMMARY; full contractInterface at fullReport), liveContracts (verified mainnet contracts for the idea's closest code domain; empty = no verified contract on record, never nothing on mainnet), funding (live SCF round + funded peers), whatNotToClaim (cautions derived from this brief's own facts). No verdicts; rails and RFPs not bundled. Unknown params 400.",
+        "description": "One call for a hackathon team's first hour: vet (same as vet-idea: competitors, maturity, gap, judged prior art), builds (prototype-layer prior art, hybrid search), startFrom (top non-archived competitor repos with a trust SUMMARY; full contractInterface at fullReport), liveContracts (verified mainnet contracts for the idea's closest code domain; empty = no verified contract on record, never nothing on mainnet), funding (live SCF round + funded peers), whatNotToClaim (cautions derived from this brief's own facts). No verdicts; rails and RFPs not bundled. Unknown params 400.",
         "operationId": "scout.hackathonBrief",
         "parameters": [
           {
@@ -3228,13 +3277,43 @@
             "description": "Bad or unknown query param."
           },
           "429": {
-            "description": "Rate limited (30/min/IP)."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This endpoint's rate window is spent. hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           },
           "503": {
             "description": "Index unavailable."
           }
         },
-        "summary": "Hackathon brief — vet + starter repos with trust + live contracts + funding + what not to claim, in one call",
+        "summary": "Hackathon brief: vet + starter repos with trust + live contracts + funding + what not to claim, in one call",
         "tags": [
           "scout",
           "Composite"
@@ -3249,7 +3328,7 @@
     },
     "/scout/listAudits": {
       "get": {
-        "description": "One row per security-audit report from stellarsecurityportal.com — the structured, enumerable half of the audit corpus (full report text is chunk-served by searchResearch with source=audit). Rows carry a normalized auditor, publication date, and a hand-verified link to the directory project (projectSlug). Semantics: a project ABSENT here has no audit on record at our source — NOT a claim it is unaudited; findingsTotal/severityCounts null = not extracted, NOT zero. Unknown query params are rejected with 400, never silently ignored.",
+        "description": "One row per security-audit report from stellarsecurityportal.com; the structured, enumerable half of the audit corpus (full report text is chunk-served by searchResearch with source=audit). Rows carry a normalized auditor, publication date, and a hand-verified link to the directory project (projectSlug). Semantics: a project ABSENT here has no audit on record at our source. NOT a claim it is unaudited; findingsTotal/severityCounts null = not extracted, NOT zero. Unknown query params are rejected with 400, never silently ignored.",
         "operationId": "scout.listAudits",
         "parameters": [
           {
@@ -3328,7 +3407,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "The structured audit registry — one row per published report, so an agent can enumerate and filter audits instead of hoping vector retrieval surfaces the right chunk.",
+                  "description": "The structured audit registry: one row per published report, so an agent can enumerate and filter audits instead of hoping vector retrieval surfaces the right chunk.",
                   "properties": {
                     "audits": {
                       "items": {
@@ -3351,7 +3430,7 @@
                             "type": "integer"
                           },
                           "linkBasis": {
-                            "description": "How the project link was established — provenance, not a guess.",
+                            "description": "How the project link was established: provenance, not a guess.",
                             "nullable": true,
                             "type": "string"
                           },
@@ -3414,7 +3493,7 @@
                           "type": "object"
                         },
                         "filters": {
-                          "description": "The filters actually applied — echoed so a caller can tell a narrow query from an empty corpus.",
+                          "description": "The filters actually applied: echoed so a caller can tell a narrow query from an empty corpus.",
                           "properties": {
                             "auditor": {
                               "nullable": true,
@@ -3460,6 +3539,39 @@
               }
             },
             "description": "Unknown parameter (named with the supported set in hint) or invalid value; parameters are never silently ignored."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This endpoint's rate window is spent. hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Enumerable registry of Stellar security-audit reports",
@@ -3477,7 +3589,7 @@
     },
     "/scout/listContracts": {
       "get": {
-        "description": "Contracts as first-class entities: one row per mainnet contract with VERIFIED evidence — the scanner echo-checked a README-claimed contract id live on-chain, or weekly on-chain enrichment attributed real activity to the repo. Each row joins code truth (stellarProof, codeDepth, interface preview, codeDomains), live usage stats (codeInUse), per-project audit records, and succession. Absence here is NOT a claim a contract doesn't exist — coverage grows as scans reach repos. Most-evidenced first: live usage > verified id > depth. Unknown params 400.",
+        "description": "Contracts as first-class entities: one row per mainnet contract with VERIFIED evidence; the scanner echo-checked a README-claimed contract id live on-chain, or weekly on-chain enrichment attributed real activity to the repo. Each row joins code truth (stellarProof, codeDepth, interface preview, codeDomains), live usage stats (codeInUse), per-project audit records, and succession. Absence here is NOT a claim a contract doesn't exist; coverage grows as scans reach repos. Most-evidenced first: live usage > verified id > depth. Unknown params 400.",
         "operationId": "scout.listContracts",
         "parameters": [
           {
@@ -3540,6 +3652,39 @@
               }
             },
             "description": "Verified contract rows, most-evidenced first."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This endpoint's rate window is spent. hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Evidence-gated registry of verified mainnet Soroban contracts",
@@ -3561,7 +3706,7 @@
         "operationId": "scout.listSkills",
         "parameters": [
           {
-            "description": "Free-text filter over skill name, tagline, description and tags (all terms must match). Omit to list everything. Previously accepted and ignored — a query returned the full catalog.",
+            "description": "Free-text filter over skill name, tagline, description and tags (all terms must match). Omit to list everything. Previously accepted and ignored: a query returned the full catalog.",
             "in": "query",
             "name": "q",
             "schema": {
@@ -3633,7 +3778,7 @@
     },
     "/scout/matchPartners": {
       "post": {
-        "description": "Describe a builder need in plain language (e.g. 'I need a USDC off-ramp in Mexico with SEP-24') and get the published partners RANKED by fit, each with a one-line reason. Grounded: only real published partners are ranked — nothing is invented. Requires the service to have AI configured; returns 503 unavailable:true otherwise (fall back to scout.getPartners filters). Use when: an agent needs a scored shortlist for a concrete integration need. Not for: browsing the full directory → scout.getPartners.",
+        "description": "Describe a builder need in plain language (e.g. 'I need a USDC off-ramp in Mexico with SEP-24') and get the published partners RANKED by fit, each with a one-line reason. Grounded: only real published partners are ranked; nothing is invented. Requires the service to have AI configured; returns 503 unavailable:true otherwise (fall back to scout.getPartners filters). Use when: an agent needs a scored shortlist for a concrete integration need. Not for: browsing the full directory → scout.getPartners.",
         "operationId": "scout.matchPartners",
         "requestBody": {
           "content": {
@@ -3716,7 +3861,7 @@
                             "type": "object"
                           },
                           "reason": {
-                            "description": "Why it matched — safe to surface.",
+                            "description": "Why it matched: safe to surface.",
                             "type": "string"
                           },
                           "score": {
@@ -3765,7 +3910,37 @@
             "description": "Ranked matches with reasons"
           },
           "429": {
-            "description": "Rate limited"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This endpoint's rate window is spent, or the language model it calls is at its own rate limit (the wait is then the model's own, at most 3600 seconds, or 60 seconds when it sent no usable number). hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           },
           "503": {
             "content": {
@@ -3778,7 +3953,7 @@
                       "type": "string"
                     },
                     "unavailable": {
-                      "description": "Always true here — the feature is off, not the request wrong.",
+                      "description": "Always true here: the feature is off, not the request wrong.",
                       "type": "boolean"
                     }
                   },
@@ -3786,7 +3961,7 @@
                 }
               }
             },
-            "description": "AI backend unavailable — fall back to GET /api/partners"
+            "description": "AI backend unavailable: fall back to GET /api/partners"
           }
         },
         "summary": "AI-rank partners against a plain-language need",
@@ -3804,7 +3979,7 @@
     },
     "/scout/resolveProject": {
       "get": {
-        "description": "Reconciles a name found in an old post, changelog, README or repo against the current directory: returns the record it names, where to look NOW if that record was superseded, and the evidence behind any inactive status. Use when: you hit a project name that matches nothing current and need to know whether it was renamed, replaced, or is simply untracked. Not for: searching for projects by topic (→ searchProjects). A miss means NOT TRACKED HERE — never that the name never existed, never that it is defunct.",
+        "description": "Reconciles a name found in an old post, changelog, README or repo against the current directory: returns the record it names, where to look NOW if that record was superseded, and the evidence behind any inactive status. Use when: you hit a project name that matches nothing current and need to know whether it was renamed, replaced, or is simply untracked. Not for: searching for projects by topic (→ searchProjects). A miss means NOT TRACKED HERE: never that the name never existed, never that it is defunct.",
         "operationId": "scout.resolveProject",
         "parameters": [
           {
@@ -3906,9 +4081,42 @@
           },
           "400": {
             "description": "Missing/too-short q or unknown params."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This endpoint's rate window is spent. hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           }
         },
-        "summary": "SCF pitch prep — live round, funded peers, gap, prior art, angles in one call",
+        "summary": "SCF pitch prep: live round, funded peers, gap, prior art, angles in one call",
         "tags": [
           "scout",
           "Composite"
@@ -3923,11 +4131,11 @@
     },
     "/scout/searchHackathonBuilds": {
       "get": {
-        "description": "Topic search across every submission ('buidl') from all Stellar hackathons (DoraHacks) — the PROTOTYPE layer of prior art, most of which never becomes a directory project. Answers 'has anyone already built X at a hackathon?' with each build's name, description, event, placement/award, votes, and repo/demo links. winnersOnly=1 = prize winners; track filters by track. Absence is a real whitespace signal, not proof it was never tried. For SHIPPED products in the directory → use searchProjects.",
+        "description": "Topic search across every stored Stellar hackathon submission ('buidl') on DoraHacks: the PROTOTYPE layer of prior art. Answers 'has anyone built X at a hackathon?' with each build's event, placement, repo/demo links, project (the directory project listing its exact repo) and stack. meta.stack counts the Stellar SDKs the matched repos declare: winnersOnly=1 = which SDKs winners use. Winners first among equals; in hybrid mode a reranker orders the top 50. Unit: submissions (counts.entries = event entries). Absence is a whitespace signal, not proof. For SHIPPED products → use searchProjects.",
         "operationId": "scout.searchHackathonBuilds",
         "parameters": [
           {
-            "description": "Topic to search build names + descriptions (prior-art lookup).",
+            "description": "Topic to search build names, descriptions and the packages their repos declare (prior-art lookup). A build is listed when it covers half of q's words, or when its name holds one of them unless most of q's words occur as a whole word in no submission (text or declared packages). A word of four letters or more also matches inside a longer word. In a question (q ends with ? or opens with which, who, whom, whose, what, where, when, why, how, has, have, had, did, does, do, is, are, was, were, can, could, will, would or should, followed by a space), the question marks and the words that ask about an outcome or the past rather than a topic (won, win, wins, winner, winners, winning, prize, prizes, award, awards, awarded, placed, hackathon, hackathons, built, builds, past, ever, previous, previously, anyone, someone, already, before) are not searched, unless they are all q holds. When any of q's words occurs as a whole word in no submission, meta.warnings names those words and says what the listed builds are, and says when a build whose name matched was held back (meta.counts.withheldByName). With no hackathon parameter, an event named in full in q (its title, in any case, accents and punctuation aside, or its slug, hyphens included, in any case) becomes the hackathon filter and leaves q (meta.inferredFilter). The rest of q is searched inside that event; a rest made only of words the search skips (stopwords and generic words such as app, token, crypto, money, stellar, github) and words that ask for the event's entries (winners, builds, projects, places, awards, rankings) lists the event as the filter alone does. When the rest matches none of the event's rows and none of them holds a description, meta.warnings says so. A name start several events share infers nothing; meta.warnings names those events. Any hackathon parameter turns this off: send hackathon= with no value to search the words as text in every event.",
             "in": "query",
             "name": "q",
             "required": false,
@@ -3936,7 +4144,22 @@
             }
           },
           {
-            "description": "Set to 1 to return only prize-winning builds. Accepts 1/true/yes/on (and 0/false/no/off for explicit off); any other value returns 400 with the accepted forms — never silently ignored.",
+            "description": "How q matches (default: hybrid). keyword: the query's words, stems and synonyms. meaning: vector similarity over each submission's name, summary and write-up, for ideas phrased differently from how teams described them. hybrid: both, blended. If search by meaning cannot run, keyword results are served and meta.warnings says so (meta.mode.served).",
+            "in": "query",
+            "name": "mode",
+            "required": false,
+            "schema": {
+              "default": "hybrid",
+              "enum": [
+                "keyword",
+                "meaning",
+                "hybrid"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Set to 1 for prize winners only: the winners DoraHacks assigned and those a page off DoraHacks names (getHackathon shows these with winnerSource), by words and by meaning alike. Accepts 1/true/yes/on (and 0/false/no/off for explicit off); any other value returns 400 with the accepted forms, never silently ignored.",
             "in": "query",
             "name": "winnersOnly",
             "required": false,
@@ -3955,9 +4178,63 @@
             }
           },
           {
+            "description": "Only these events: up to 10, comma-separated, each an event's slug or its exact title, any case. An event getHackathons lists whose submissions are not stored matches nothing, and meta.warnings says so; a value that names no event getHackathons lists answers 400 with validHackathons, the slugs of every event with stored submissions. A submission can enter several events; under this filter each row is that event's own entry, with its own placement.",
+            "in": "query",
+            "name": "hackathon",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "Filter by hackathon track (substring match).",
             "in": "query",
             "name": "track",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only submissions sorted into this directory project type. Submissions not categorized yet are left out, so the set is a floor.",
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "enum": [
+                "Wallet",
+                "DEX",
+                "Lending",
+                "Bridge",
+                "Infrastructure",
+                "Payments",
+                "Anchor",
+                "SDK",
+                "Indexer",
+                "Explorer",
+                "Analytics",
+                "AI",
+                "Gaming",
+                "Education",
+                "Security",
+                "NFT",
+                "RWA",
+                "Stablecoin",
+                "Social Impact",
+                "RPC",
+                "Faucet",
+                "Card Issuing",
+                "Exchange",
+                "Oracle",
+                "Yield"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only builds whose repo declares this Stellar package, exact name (passkey-kit, soroban-sdk, @x402/stellar). Builds whose repo was not read are left out, so the set is a floor, not everyone who used it.",
+            "in": "query",
+            "name": "package",
             "required": false,
             "schema": {
               "type": "string"
@@ -3971,6 +4248,17 @@
             "schema": {
               "default": 20,
               "maximum": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Skip this many matched builds (default 0). To read every match, page with limit and offset until offset + meta.counts.returned reaches meta.counts.matched; pages share one ranking.",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
               "type": "integer"
             }
           }
@@ -3991,6 +4279,74 @@
               }
             },
             "description": "Matching hackathon builds"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "description": "What was wrong, naming the value.",
+                      "type": "string"
+                    },
+                    "hint": {
+                      "description": "How to correct the call.",
+                      "type": "string"
+                    },
+                    "supportedParams": {
+                      "description": "Every parameter the operation reads; sent with an unknown parameter.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "validHackathons": {
+                      "description": "The slug of every event with stored submissions, alphabetical (the order means nothing); sent when a hackathon value names no event getHackathons lists. Pass one of these, or the event's exact title. getHackathons lists every event; one whose submissions are not stored is accepted and matches nothing, with a meta.warnings line.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "validValues": {
+                      "description": "The values the named parameter accepts.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A parameter or value the operation cannot honour; fix the call, do not retry it as is. The body names it and lists what would work: supportedParams for an unknown parameter, validValues for a value outside an enumerated parameter's set, validHackathons for a hackathon value that names no event getHackathons lists."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "The submissions index could not be built: the stored submissions could not be read, or the read came back empty. An outage, not a claim that nothing similar was built: retry after Retry-After.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending (2).",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Search what was BUILT at Stellar hackathons (prior-art over prototypes)",
@@ -4008,7 +4364,7 @@
     },
     "/scout/searchProjects": {
       "get": {
-        "description": "Search the curated directory of Stellar projects/products — what has been BUILT, by whom, with SCF funding, lifecycle status, builtBy, links, indexed repos, and verified on-chain metrics (onchain) inline. THE way to LOOK UP a specific project by its name (a named protocol/app/wallet/tool) AND to discover 'who/what already exists for X'; the type filter gives exact product-type rosters (Wallet, DEX, Oracle, Lending, Payments, Stablecoin, RWA…). Not for docs, standards, or how-to/reference knowledge → use searchResearch.\n\nCatalog note: results are structured directory facts, not editorial pieces — for articles, AV, interviews, or research summaries about a project, use the lumenloop semantic and directory ops.",
+        "description": "Search the curated directory of Stellar projects/products: what has been BUILT, by whom, with SCF funding, lifecycle status, builtBy, links, indexed repos, and verified on-chain metrics (onchain) inline. THE way to LOOK UP a specific project by its name (a named protocol/app/wallet/tool) AND to discover 'who/what already exists for X'; the type filter gives exact product-type rosters (Wallet, DEX, Oracle, Lending, Payments, Stablecoin, RWA…). Not for docs, standards, or how-to/reference knowledge → use searchResearch.\n\nCatalog note: results are structured directory facts, not editorial pieces — for articles, AV, interviews, or research summaries about a project, use the lumenloop semantic and directory ops.",
         "operationId": "scout.searchProjects",
         "parameters": [
           {
@@ -4032,7 +4388,7 @@
             }
           },
           {
-            "description": "Filter to projects whose `types[]` includes this product type — server-side exact membership, e.g. `type=Wallet` enumerates Wallet-typed records (combine with `q` and/or `status` to scope further, or use alone to list a type). Distinct from `category` (a project has ONE category but can carry several types). Unknown values return 400 with validTypes.",
+            "description": "Filter to projects whose `types[]` includes this product type; server-side exact membership, e.g. `type=Wallet` enumerates Wallet-typed records (combine with `q` and/or `status` to scope further, or use alone to list a type). Distinct from `category` (a project has ONE category but can carry several types). Unknown values return 400 with validTypes.",
             "in": "query",
             "name": "type",
             "schema": {
@@ -4075,7 +4431,7 @@
             }
           },
           {
-            "description": "Filter by lifecycle status (e.g. status=Inactive lists retired/defunct projects; status=Live restricts to operating ones). Compose with scfAwarded for accountability/diligence — `?scfAwarded=1&status=Inactive` is the roster of SCF-funded projects that have since gone inactive, and `meta.counts.total` is how many. Unknown values return 400 with validStatuses.",
+            "description": "Filter by lifecycle status (e.g. status=Inactive lists retired/defunct projects; status=Live restricts to operating ones). Compose with scfAwarded for accountability/diligence: `?scfAwarded=1&status=Inactive` is the roster of SCF-funded projects that have since gone inactive, and `meta.counts.total` is how many. Unknown values return 400 with validStatuses.",
             "in": "query",
             "name": "status",
             "schema": {
@@ -4096,6 +4452,9 @@
           },
           {
             "$ref": "#/components/parameters/scout.fields"
+          },
+          {
+            "$ref": "#/components/parameters/scout.view"
           }
         ],
         "responses": {
@@ -4119,9 +4478,88 @@
               }
             },
             "description": "Project search results"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/scout.RequestError"
+                    },
+                    {
+                      "properties": {
+                        "acceptedValues": {
+                          "description": "The boolean forms scfAwarded takes.",
+                          "properties": {
+                            "false": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "true": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "validCategories": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "validStatuses": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "validTypes": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "validValues": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "The call is wrong; fix it, do not retry it as is. Answered before any read when: view is not full or compact (validValues), view=compact is sent with fields (validValues), status is not a resolvable status (validStatuses), type is not a product type (validTypes), category is not a category (validCategories), or scfAwarded is not a boolean form (acceptedValues). An unknown parameter is not a 400: it is named in meta.warnings."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "A read failed and the page would have been empty: an outage, NOT an empty result. Retry after Retry-After. A read that fails while rows can still be served answers 200 with meta.partial true instead.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
-        "summary": "Search Stellar projects — look up a project by name, or find prior art / competitors",
+        "summary": "Search Stellar projects: look up a project by name, or find prior art / competitors",
         "tags": [
           "scout",
           "Projects"
@@ -4136,7 +4574,7 @@
     },
     "/scout/searchRepos": {
       "get": {
-        "description": "Search the indexed Stellar ecosystem GitHub code repos — actual source graded by repoScore (0-100: freshness + traction + ecosystem authority), filterable by language/minScore. Use for 'show me the code/repos for X' or 'find a Rust/Soroban implementation of X' — prior-art source to read, fork, or cite. Not for products/companies and their funding/status → use searchProjects.\n\nCatalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence. Verify those claims at the repository and primary sources before reusing code.",
+        "description": "Search the indexed Stellar ecosystem GitHub code repos: actual source graded by repoScore (0-100: freshness + traction + ecosystem authority), filterable by language/minScore. Use for 'show me the code/repos for X' or 'find a Rust/Soroban implementation of X'; prior-art source to read, fork, or cite. Not for products/companies and their funding/status → use searchProjects.\n\nCatalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence. Verify those claims at the repository and primary sources before reusing code.",
         "operationId": "scout.searchRepos",
         "parameters": [
           {
@@ -4151,7 +4589,7 @@
             }
           },
           {
-            "description": "Only return repos with repoScore ≥ this (0–100). Use 40+ for high-signal references.",
+            "description": "Only return repos with repoScore ≥ this (0-100). Use 40+ for high-signal references.",
             "in": "query",
             "name": "minScore",
             "schema": {
@@ -4162,7 +4600,7 @@
             }
           },
           {
-            "description": "Filter by observable activity state (each row also carries it as activityState). 'archived' is the owner's own verdict; 'dormant' means a KNOWN commit older than 180 days — an observation, not a death verdict; 'unknown' means no commit date held. Unknown values return 400 with the valid list.",
+            "description": "Filter by observable activity state (each row also carries it as activityState). 'archived' is the owner's own verdict; 'dormant' means a KNOWN commit older than 180 days: an observation, not a death verdict; 'unknown' means no commit date held. Unknown values return 400 with the valid list.",
             "in": "query",
             "name": "activity",
             "schema": {
@@ -4184,6 +4622,9 @@
           },
           {
             "$ref": "#/components/parameters/scout.fields"
+          },
+          {
+            "$ref": "#/components/parameters/scout.view"
           }
         ],
         "responses": {
@@ -4206,6 +4647,52 @@
               }
             },
             "description": "Repo search results graded by repoScore"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/scout.RequestError"
+                    },
+                    {
+                      "properties": {
+                        "validValues": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "validValues"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "The call is wrong; fix it, do not retry it as is. Answered before any read, with error and validValues, when: view is not full or compact, view=compact is sent with fields, or activity, capability or domain is not one of its values. An unknown parameter is not a 400: it is named in meta.warnings."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "A read failed and the page would have been empty: an outage, NOT an empty result. Retry after Retry-After. A read that fails while rows can still be served answers 200 with meta.partial true instead.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
         "summary": "Search the Stellar GitHub repo / code-reference index",
@@ -4223,11 +4710,11 @@
     },
     "/scout/searchResearch": {
       "get": {
-        "description": "Semantic search over the Stellar knowledge corpus — SDF blog, SCF Handbook, SEPs/standards, dev docs, papers, audits, incident reports. Returns cited text chunks with source, section, URL, confidence, and provenance dates (publishedAt = the source's own stated date; observedAt = when ingest last crawled the page; audits add auditor/severity — filterable; report-level enumeration → listAudits). THE surface for 'how does X work', 'what does the SEP/spec/audit say', and how-to/feasibility questions. Not for products and their funding/status → use searchProjects.\n\nCatalog note: this is the broad Scout cited-research recovery lane for history, standards, incidents, audits, and unknown technical topics. Treat chunks as leads: preserve their source and date, and require an exact entity match before attribution.",
+        "description": "Semantic search over the Stellar knowledge corpus. SDF blog, SCF Handbook, SEPs/standards, dev docs, papers, audits, incident reports. Returns cited text chunks with source, section, URL, confidence, and provenance dates (publishedAt = the source's own stated date; observedAt = when ingest last crawled the page; audits add auditor/severity, filterable; report-level enumeration → listAudits). THE surface for 'how does X work', 'what does the SEP/spec/audit say', and how-to/feasibility questions. Not for products and their funding/status → use searchProjects.\n\nCatalog note: this is the broad Scout cited-research recovery lane for history, standards, incidents, audits, and unknown technical topics. Treat chunks as leads: preserve their source and date, and require an exact entity match before attribution.",
         "operationId": "scout.searchResearch",
         "parameters": [
           {
-            "description": "Natural-language search query. Required unless the `query` alias is supplied — requests with neither return 400.",
+            "description": "Natural-language search query. Required unless the `query` alias is supplied; requests with neither return 400.",
             "in": "query",
             "name": "q",
             "schema": {
@@ -4287,7 +4774,7 @@
             }
           },
           {
-            "description": "Audit-metadata filter, case-insensitive. CAVEAT: severity labels the MATCHED CHUNK's section (inferred from PDF-derived headings), not the report or a specific finding — an architecture chunk can carry 'high' while the findings table reads 'unknown' — do not treat a filtered result set as a complete list of findings at that severity. Unknown values are rejected with a 400.",
+            "description": "Audit-metadata filter, case-insensitive. CAVEAT: severity labels the MATCHED CHUNK's section (inferred from PDF-derived headings), not the report or a specific finding: an architecture chunk can carry 'high' while the findings table reads 'unknown'; do not treat a filtered result set as a complete list of findings at that severity. Unknown values are rejected with a 400.",
             "in": "query",
             "name": "severity",
             "schema": {
@@ -4314,7 +4801,7 @@
             }
           },
           {
-            "description": "Several declared sources in one call, comma-separated (e.g. cap,sep,dev-docs); a comma in `source` is read the same way. Each source is searched exactly as `source=<one>&limit=<perSource>` would search it and its rows come back together, in the order given. meta.bySource carries each source's status, returned count, matchMode, sourceDocCount and resultsHash. The rows are the single-source call's rows; scores can differ in the fourth decimal between any two calls that embed the query separately (two single-source calls on different instances do too), which can swap near-tied rows, so compare row ids across separate calls. A source that cannot be read is named in meta.warnings and bySource while the others answer; no source readable is a 503. Counts as one request against the rate limit. No sourceAdvisory on this form.",
+            "description": "Several declared sources in one call, comma-separated (e.g. cap,sep,dev-docs); a comma in `source` is read the same way. Each source is searched exactly as `source=<one>&limit=<perSource>` would search it, and all rows come back in ONE ranking across sources: identifier-named documents first, then confidence, the rule each source already uses for its own rows. A reader that keeps only the first rows gets the best of every source, not the first sources named. Each row names its source. meta.bySource carries each source's status, returned count, matchMode, sourceDocCount and resultsHash. The rows are the single-source call's rows; scores can differ in the fourth decimal between any two calls that embed the query separately (two single-source calls on different instances do too), which can swap near-tied rows, so compare row ids across separate calls. A source that cannot be read is named in meta.warnings and bySource while the others answer; no source readable is a 503. Counts as one request against the rate limit. No sourceAdvisory on this form.",
             "explode": false,
             "in": "query",
             "name": "sources",
@@ -4412,10 +4899,10 @@
                 }
               }
             },
-            "description": "This instance's per-minute window is spent. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from these headers is approximate; wait Retry-After and resend.",
+            "description": "This endpoint's rate window is spent. hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
             "headers": {
               "Retry-After": {
-                "description": "Seconds until this instance's window resets.",
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
                 "schema": {
                   "type": "integer"
                 }
@@ -4511,9 +4998,42 @@
           },
           "400": {
             "description": "Missing/too-short q or unknown params."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This endpoint's rate window is spent. hint states the wait in seconds and the next step; retryAfterSeconds and Retry-After carry the same number. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from the headers is approximate. It says nothing about the data: wait, then resend the same request.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait; the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           }
         },
-        "summary": "Vet a build idea — competitors, maturity, prior art, gap, funding in one call",
+        "summary": "Vet a build idea: competitors, maturity, prior art, gap, funding in one call",
         "tags": [
           "scout",
           "Composite"
@@ -6743,7 +7263,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 283,
-    "generatedAt": "2026-11-02T15:12:47Z"
+    "generatedAt": "2026-11-03T15:18:13.074Z"
   },
   "x-services": {
     "lumenloop": {
@@ -6755,7 +7275,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-10-02T14:20:35.127Z",
+      "fetchedAt": "2026-11-03T15:18:13.074Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },

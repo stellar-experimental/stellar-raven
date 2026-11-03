@@ -1037,7 +1037,7 @@ describe("searchCatalog — tiered gate-rescue backfill", () => {
       expect.objectContaining({ id: "lumenloop.get_categories" })
     ]);
     expect(perService.get("lumenloop")).toBeLessThanOrEqual(2);
-    expect(page.total).toBe(6);
+    expect(page.total).toBe(7);
     expect(page.truncated).toBe(true);
   });
 
@@ -1451,9 +1451,11 @@ describe("search-hit signature compaction", () => {
     expect(hit.signature).toContain("type SearchProjectsOutput");
     expect(hit.signature).toContain("codeReferences, meta, projects");
     expect(hit.signature).toContain('codemode.describe("scout.searchProjects")');
-    // …and the ~12.7KB rendered property tree is gone.
     expect(hit.signature).not.toContain("codeReferences?:");
-    expect(hit.signature!.length).toBeLessThan(3000);
+    const entry = catalog.entries.find((entry) => entry.id === hit.id)!;
+    const input = jsonSchemaToType(entry.inputSchema as JsonSchema, "SearchProjectsInput");
+    expect(hit.signature!.split("\ntype SearchProjectsOutput")[0]).toBe(input);
+    expect(hit.signature!.length - input.length).toBeLessThan(COMPACT_OUTPUT_THRESHOLD);
   });
 
   it("only output blocks over the threshold are compacted; every other op's search signature is byte-identical", () => {
@@ -1473,21 +1475,9 @@ describe("search-hit signature compaction", () => {
         expect(compact, entry.id).toBe(full); // byte-identical below the line
       }
     }
-    // The threshold trims ONLY the measured monsters. Scout 1.8.28 expanded
-    // several shared response schemas past the line, and 1.8.30 added +622 chars of shared
-    // `meta` prose (nullable `total` + `totalBasis`) that carried scout.getHackathon
-    // (1631 -> 2253) and scout.searchResearch (1769 -> 2391) over it too; pin the complete
-    // set so a later schema refresh cannot silently widen compaction coverage.
-    // 1.8.32 (the contract-honesty release: 69 already-served meta fields finally declared)
-    // carried exactly ONE more op over the line — scout.getPeople, 1099 -> 3196 — so its
-    // output type is now stubbed in search hits and reaching the full shape costs a
-    // codemode.describe("scout.getPeople") round-trip. Scout 1.8.87 expands getChanges over
-    // the same threshold. Scout 1.8.109 expands getPartner, hackathonBrief, and
-    // resolveProject over the threshold. Scout 1.9.52 expands five more reviewed
-    // outputs: getRepoTrust, listContracts, scfPitch, searchHackathonBuilds, and
-    // vetIdea. Every other member was already over.
     expect(compacted.sort()).toEqual([
       "scout.analyzeEcosystem",
+      "scout.compareHackathons",
       "scout.explainRepo",
       "scout.getBuilders",
       "scout.getChanges",

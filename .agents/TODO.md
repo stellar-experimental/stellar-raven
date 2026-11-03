@@ -15,9 +15,6 @@ Open owner decisions are at the end of this file. Each one is listed once.
 1. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Run owner decision A (the supervised paired subset) when the owner picks a window, under its
-   own spend authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
-   #281, and #270 are merged and deployed; the section guard does not ship.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -44,6 +41,17 @@ changes the output contract, so it needs the routing gate and a free retrieval r
 result-code queries in `rounds/2026-11-02-mintlify-migration/identifier-probe.json`. Done when the
 `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search call or one hinted
 page read, and the change is measured on the retrieval A/B. Remove when `sd-059` is fixed upstream.
+
+New evidence (2026-11-02, `rounds/2026-11-02-upstream-followup.md`): the site's own MCP search
+(`POST https://developers.stellar.org/mcp`, tool `search_stellar_developer_docs`, public, no key)
+returns a relevant result-code page first for all seven probe queries (for `op_low_reserve`, several
+operations share the code, and Set Options ranks third). In the author's production measurement,
+Raven's Discovery API path (`POST /discovery/v1/search/<domain>`, then the adapter's path scope and
+query-term guard) returned none of them in its top 5. First compare the raw Discovery candidates with
+the adapter output, to rule out Raven's own filtering. A third option is to serve `search_docs` from
+the site MCP backend. It needs the same gates: a general mechanism, a free
+retrieval A/B on the golden docs pages and the identifier probe, the routing gate, and a check of
+the backend's rate limits and terms.
 
 ## Improvements follow-up
 
@@ -78,17 +86,21 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
 
-### Repair the `cs-002` owner after `soroswap/docs` disappeared
+### Bump the `stellar-dev` skill pin to serve the sk-032 to sk-036 fixes
 
-On 2026-10-27, `gh api repos/soroswap/docs` and the recorded issue `soroswap/docs#47` return HTTP
-404, so `npm run improvements:lint -- --live` fails on `cs-002` and its `intake.json` override. The
-round ledger `rounds/2026-10-27-issue-batch.md` records the failure.
+On 2026-11-02 stellar/stellar-dev-skill merged PRs #167 to #171, which fix `sk-032` to `sk-036` in
+the upstream skill text (main `9c604c2b`). Raven still serves the pin `cac64041`
+(`ecosystem-skills/MANIFEST.json`), so `codemode.skill.read` returns the old text until the pin
+moves. Follow the full update sequence in `ecosystem-skills/README.md`: run `./update.sh`, read the
+skill diffs, and review the selection of the new `assets/regulated-assets.md` companion. Then run
+`node scripts/check-pin-review.mjs`, the routing gate, and the exposure guards. A hand-edited commit
+SHA is not enough, because `update.sh` discovers the selected files. Deploy only after the overnight
+golden QA run of 2026-11-02 ends. That run belongs to another session, pins the remote server
+identity, and does not authorize a deploy. Its owner releases the pin.
 
-Next check: find whether the repository was renamed, made private, or deleted, and whether
-`docs.soroswap.finance` still shows the stale adapter status. Then update the `cs-002` owner and
-evidence, or resolve or retarget the finding.
+Done when: production `codemode.skill.read` serves the fixed sections, for example
+`skills/smart-contracts/SKILL.md` with `soroban-sdk = "29"`.
 
-Done when: `npm run improvements:lint -- --live` passes.
 
 ## Routing
 
@@ -144,7 +156,7 @@ The 2026-09-03 Scout routing attribution found eight real regressions from phras
 first-token truncation, generic schema-word coverage, substring coverage, and five weak gated rows.
 It also found valid leaderboard and RFP gains. Rejected search and Scout candidates are retired
 ([disposition](rounds/2026-09-09-outstanding-closeout.md#rejected-candidate-retirement--2026-09-10));
-the current accepted source is Scout 1.9.61 (absorbed 2026-10-02). Use current main and a fresh source snapshot for any
+the current accepted source is Scout 1.9.116 (accepted 2026-11-03). Use current main and a fresh source snapshot for any
 later authorized repair.
 
 Trigger only after the owner authorizes a general Raven scoring repair. This item does not
@@ -165,24 +177,18 @@ Do not create a separate routing TODO or upstream successor for either. Three mi
 controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove those markers after the
 general routing repair passes.
 
-Source held by this item: Scout spec 1.9.71 (2026-10-06, drift issue #223). It adds
-`GET /api/hackathons/analyze`, `GET /api/hackathons/builds/{id}`, and `GET /api/hackathons/review`,
-and rewrites `x-routing` examples on twelve existing operations. Against the 1.9.61 manifest, with
-`reviewSubmission` excluded, legacy routing lost top3 298 to 295, top5 326 to 325, and cardHit5 112
-to 111. Four losses are real operation-selection regressions: `q-defi-agentic-payment-standards-compare`,
-`q-defi-blend-alternatives`, `q-defi-rwa-overview`, and `q-scf-funded-similar-payroll`. The fifth,
-`q-defi-streaming-payments-prior-art`, is a narrow card label. Exposed, `scout.reviewSubmission`
-ranked first on `q-pc-sequence-numbers-ordering-replace`. Ungraded captures also appeared
-(`getHackathonSubmission` first on `q-scf-ecosystem-listing-partner-jobs`; `getHackathon` first on
-`q-hist-remittance-corridors`). Four tested general policies failed; the narrower admission-only
-example policy is untested. Evidence: `rounds/2026-10-06-truth-maintenance.md` and its
-`routing-repair-astra.md`. Four golden proposals for the two read operations wait in
-`eval/qa/corpus/proposed/scf-grants-builders/` (see "Activate the Scout hackathon golden
-proposals"). Keep `inventory/stellar-light.json`
-at 1.9.61 until check 12 passes. A separate absorb on the unchanged scorer was measured and
-declined on 2026-10-29 (ledger `rounds/2026-10-28-routing-repair.md`, "Owner decision D"). The daily
-drift report keeps #223 open meanwhile. (PR #303 closed it in error on 2026-10-28; it was reopened.)
-The same hold keeps `inventory/stellar-docs-titles.json` at its Algolia-era bytes, so its
+Source decision for this item: Scout spec 1.9.116 replaces 1.9.61 with all twelve exclusions retained.
+The coordinator accepted option (a) on 2026-11-03.
+None of the five historical loss grades recurs on the unchanged scorer.
+The new source loses `q-scf-how-to-apply` at top3 and gains two strict grades.
+The coordinator accepted this tradeoff; it does not satisfy the general repair checks.
+The four new operations remain excluded: `reviewSubmission`, `analyzeHackathonSubmissions`,
+`getHackathonSubmission`, and `locateSource`.
+The four golden proposals remain inactive because their required operations remain excluded.
+Decision and evidence: `rounds/2026-11-03-scout-1.9.116.md`.
+Issue #223 stays open for the routing repair and the separate Docs title hold.
+The Scout source hold ends; the stellar-light skill pin remains unchanged.
+The separate hold keeps `inventory/stellar-docs-titles.json` at its Algolia-era bytes, so its
 `source.authEnv` still names the deleted `ALGOLIA_*_DOCS` secrets. Nothing reads them; the next
 refresh after the hold ends rewrites the file keyless.
 
@@ -336,8 +342,25 @@ protocol-history diagnostic stays source-expired until a separate accepted Scout
 `rounds/2026-11-02-routing-repair.md`). Nine designs ran on both sources; none passes, and the
 scorer stays. `morph` token boundaries plus the schema rule fix the short-token and schema-only
 classes, but broad retrieval and skills recall then collapses. Next direction: restore that
-recall with legitimate evidence first, then remove the spurious kind. Owner decision B covers the
-dense option.
+recall with legitimate evidence first, then remove the spurious kind. Owner decision B (a model
+call on search) was answered on 2026-11-03: search stays lexical-only. Eight pre-registered
+Workers AI variants and the recorded Jev rankings (#294) all fail the signed contract
+(`rounds/2026-11-03-model-ranking/results.md`). The closest, dense MULT and clef-flash RRF,
+fail mostly by promoting hackathon operations and unlabeled skills, so a lexical repair must
+not depend on model evidence.
+
+### Bind the `scout_hackathon_detail` card to its operation
+
+Found by the 2026-11-03 null-result attack (`rounds/2026-11-03-model-ranking/results.md`,
+"Independent checks"). `cardMatches` in `eval/lib/grade.mjs` matches the expected operation text
+`hackathon_detail` against `gethackathon`, so the card binds to no catalog operation. The
+routing eval cannot credit `scout.getHackathon` on `q-scf-hackathon-detail-results`, and
+interference checks cannot classify the row as a hackathon row. Fix the card-to-operation
+binding generally, then re-run `npm run eval:routing -- --gate` and record any cardHit5 change
+through the accepted-evidence process.
+
+Done when: every card in the routing corpus binds to at least one catalog operation or service,
+with a test that fails on an unbound card.
 
 ### Stop schema enum values and example tokens from admitting new Scout operations
 
@@ -352,8 +375,14 @@ not an upstream finding.
 
 Next: treat it with the scoring repair above. A narrow builder rule needs the same twelve checks.
 
-Done when: the two operations no longer enter non-hackathon pages in the 544-row corpus and the
-verify lane's 22 hackathon negative probes, with no graded loss.
+Scout 1.9.116 also admits `searchHackathonBuilds` on `q-defi-lumenloop-categories-vocab` through new schema keywords.
+It replaces `getRfps` at rank 5; `lumenloop.get_categories` stays at rank 4.
+The gated pool grows from 6 to 7, with no strict grade change.
+The source acceptance records this capture; it does not resolve this item.
+
+Done when: the two operations, and `searchHackathonBuilds` through schema keywords, no longer
+enter non-hackathon pages in the 544-row corpus and the verify lane's 22 hackathon negative
+probes, with no graded loss.
 
 ### Stop identity substitution on spelling-corrected matches
 
@@ -436,6 +465,36 @@ acceptance is unverified. The measured release verdict is in
 
 Done when: the model gauntlet shows that `xai/grok-4.6` accepts the request before the next
 control-model lane, or a reviewed change omits the field for that transport.
+
+### Move the demo off the deprecated `workers-ai-provider`
+
+On 2026-10-20 Cloudflare closed cloudflare/ai#639 unmerged and froze `workers-ai-provider`. npm
+marks 4.0.1 deprecated and names `createAI` from `agents/models/ai-sdk` as the replacement. That
+replacement accepts any `<author>/<model>` catalog id, so it can remove the second providers-less
+instance that `src/demo/chat.ts` keeps for `moonshotai/kimi-k3` (finding `wai-001`, now
+`declined-upstream`). Raven pins `agents` 0.28.1. Both 0.28.1 and 0.32.0 export `createAI` from
+`agents/models/ai-sdk`, but in a 2026-11-02 review check only 0.32.0 accepted `moonshotai/kimi-k3`
+before a binding call, so the migration needs the upgrade. The `agents` upgrade also moves the MCP server runtime, so it needs `npm run test:smoke`, the
+single-`workerd` check above, and a Playground run of every demo model.
+
+Blocked since 2026-11-03. A migration attempt with `agents@0.32.0` found that `createAI` string
+catalog models drop `providerOptions.anthropic` (adaptive `thinking` and `effort`) on the binding
+`/run` path. Finding `cs-010` records it with a self-contained repro under
+`rounds/2026-11-03-demo-createai/repro/`; `agents@0.33.0` behaves the same. A native Anthropic
+model keeps the options but moves to the provider-native route, so it is not a substitute. The
+binding path also has no stream-resume opt-out (cloudflare/agents#2790 requests one); that gap is
+lower priority because no Raven failure from automatic resume is known. Keep `workers-ai-provider`
+until `cs-010` is fixed upstream. Owner decision recorded the same day: keep current behavior and
+do not migrate through a different transport.
+
+Done when: an `agents` release forwards Anthropic provider options for `anthropic/*` catalog ids on
+`/run` (re-run the `cs-010` repro to prove it), a reviewed decision covers stream resume (the
+`#2790` opt-out, or accepting automatic resume), and then `src/demo` and
+`test/demo-model-config.test.ts` no longer import
+`workers-ai-provider`, the package is out of `package.json`, and `wai-001` is closed out under the
+`improvements-pipeline` skill. The migration removes Raven's dependency but does not fix the frozen
+package, so it is not `fixed-upstream` evidence. The resolver accepts only `fixed-upstream`
+records, so that close-out needs a reviewed lifecycle decision.
 
 ## Eval instruments
 
@@ -601,8 +660,10 @@ checks.
 
 ### Reconcile hackathon winner goldens with the submission-detail operation
 
-Trigger: the Scout 1.9.71 absorb lands. `scout.getHackathonSubmission` then returns explicit
-`placement` for one stored submission. Two
+Trigger: a reviewed exposure change makes `scout.getHackathonSubmission` callable.
+The Scout 1.9.116 acceptance keeps this operation excluded.
+The upstream operation returns explicit `placement` for one stored submission.
+Two
 existing cases still require the event-detail path as the only route: `q-scf-kale-winner-live`
 (key facts 1 and 2 require `getHackathons` then `getHackathon`) and `q-gap-hackathon-winner-order`
 (key fact 1 requires `getHackathon` detail). The independent review of the 2026-10-06 golden lane
@@ -613,10 +674,12 @@ review") and `reconciliation.md` row 15.
 Done when: both cases accept explicit placement from event or submission detail, through the
 `golden-truth` workflow, or a recorded decision keeps the event-detail path as the only route.
 
-### Activate the Scout hackathon golden proposals when the Scout 1.9.71 absorb lands
+### Activate the Scout hackathon golden proposals when their required operations are exposed
 
-Four proposals sit in `eval/qa/corpus/proposed/scf-grants-builders/`. The 2026-10-06 round held the Scout `1.9.71` absorb, so none is active
-and the two operation floors stay unmet. The independent review cleared three for activation after
+Four proposals sit in `eval/qa/corpus/proposed/scf-grants-builders/`.
+The Scout 1.9.116 acceptance keeps their required operations excluded.
+None is active, and the two operation floors stay unmet.
+The independent review cleared three for activation after
 its requested edits, which are applied: `q-scout-hackathon-winner-libraries-vs-field`,
 `q-scout-hackathon-submission-link-comet-hoops`, and `q-scout-hackathon-submission-xbid-outcome`.
 It blocked `q-scout-hackathon-placed-share-kale-vs-zk`: the complete winner totals have no witness
@@ -643,8 +706,8 @@ record](rounds/2026-10-01-backlog-closeout/owner-adjudications.md) records the c
 change needs a separate reviewed decision and measurement.
 
 Done when: a reviewed decision either changes the prompt with a measured before/after on the
-out-of-scope cases, or records why the prompt stays. Land this change before the first paired arm or
-after the second. A change to run-qa.mjs or judge.mjs changes the implementation hash.
+out-of-scope cases, or records why the prompt stays.
+A change to run-qa.mjs or judge.mjs changes the implementation hash.
 
 ### Monitor Raven capability-boundary offers
 
@@ -686,27 +749,6 @@ The plan includes the trap, the control, the environment pin, and a pre-register
 Do not add another QA-prompt wording layer or copy case facts into a prompt.
 
 Done when: the owner retires the monitor, or a fired trigger leads to a reviewed resolution.
-
-### Resolve paired-QA design before promotion
-
-`qa-paired-ordinal-ni-v1` is implemented, experimental, and not a ship gate. No same-tuple pinned
-pair exists. The method requires 100 eligible IDs after five-track T4 and T5 exclusions; the one
-real run returned `INDETERMINATE` at 99. The collection supervisor, identity guards, per-arm caps,
-and the `qa-paired-collection-plan-v2` launch contract are in place; the contract is in
-`eval/qa/README.md` and `eval/EVALS.md`. The revision 3 plan has an independent `LAUNCH-OK`
-(`.agents/rounds/2026-09-03-truth-maintenance/final-launch-contract-review-opus.md`), which grants
-no paid authority.
-
-Permitted now: free validator work on a pre-registered selected denominator above 100, and a fresh
-free capacity artifact for a chosen launch window (an artifact older than 24 hours at launch is
-invalid). Never change the denominator or candidate-only rule after reading a paid look. Paid
-collection waits for owner decision A.
-
-Done when: two complete arms share the answering model, judge model, rubric, pack, pinned register,
-environment hash, agent binary, implementation hash, probe hash, and remote identity vector; at
-least 100 IDs remain eligible; `npm run eval:qa:paired:validate -- --recalibrate <baseline>
-<candidate>` passes; and a round ledger records the promotion decision. Owner decision A recording
-`NOT AUTHORIZED` also closes the paid part.
 
 ### Monitor Friendbot network-context synthesis
 
@@ -819,69 +861,4 @@ retires the program.
 Each decision names the question, the evidence it needs, and the safe default. Record each answer
 in a round ledger, `eval/qa/README.md`, or a decision record, then delete the decision here.
 
-### A. Authorize the supervised paired subset measurement
-
-The owner approved spend on 2026-10-01 and delegated the signature on 2026-10-10. Use
-[the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md) and its "2026-10-11
-amendment". Three launches on 2026-10-11 produced no result. They spent $146.2439 in total, and
-their rows support no claim. Each record is archived, moved unchanged, under
-`eval/qa/results/2026-10-11-paired-attempt-*` in the main checkout (ignored).
-
-- Attempt 1 (`0dc353b9`, $72.7624): the guard stopped both arms at row 146, because the public
-  DocSearch key reached its limit of 1000 calls per hour. PRs #265 and #266 repaired this.
-- Attempt 2 (`826be10f`, $0): the stable pre-arm probe got HTTP 429 before any paid call.
-- Attempt 3 (`8bca4167`, $73.4815): the probe repair held (zero failed probes; 141 of 142
-  before-checks reused in each arm). Then the baseline server (`90d0ba75`, Wrangler 4.120.1)
-  stopped at 07:02:39Z, after 1 h 56 min, with an empty `[ERROR]`. The supervisor stopped both
-  arms at about row 143. The Wrangler debug log is in the attempt 3 archive.
-
-The 2026-10-12 soak reproduced the stop path ([record](rounds/2026-10-12-baseline-soak/README.md)).
-A request about 5 s after the previous response can fail with `Network connection lost.` Wrangler
-4.120.1 then exits with an empty `[ERROR]`. The leading explanation is a race with the local
-proxy-to-runtime keep-alive idle limit. The server survived the token expiry and the scheduled
-refresh times, which weakens a fixed-time expiry explanation; the lane did not isolate the remote
-binding or the token. Wrangler 4.149.0 logs that failure and continues. Near the same timing, a
-runtime crash of unknown cause can also occur, and both versions then refused later requests on
-the public port.
-
-Launch change (2026-10-12, chosen by the orchestrator under the owner's delegation): the record's
-option 1. The baseline server runs the candidate server's installed Wrangler toolchain (4.149.0 at
-the current lockfile). The reason: 4.120.1 exits on one `ProxyWorker` error, and 4.149.0 fails only
-that request. Before any server starts, the launcher requires one identical toolchain in both
-servers, with the same `workerd` binary SHA-256. The signed plan records it. The local dev runtime
-is no longer part of the measured difference. A local listener check also runs before every paid
-call: before P6 and collection, before each P6 call, before each answering attempt and retry, and
-before each row release. The signed plan binds the listener record by its digest. A lost or
-replaced listener stops the method. Nothing restarts a server.
-The check reads sockets and does not connect, and a short interval remains between a check and its
-call. See the run sheet's "2026-10-12 amendment" for these limits.
-
-Codex `gpt-6-astra` at high reviewed the change (RA to RA4, final APPROVE). A free live check ran
-the baseline source under the candidate's Wrangler and matched the surface pin.
-
-Next step (paid; needs its own spend authorization): a fresh assembled and signed plan. A full
-collection needs about 2.5 hours of baseline uptime. Run on a quiet machine. On 2026-11-02 the owner
-set no date: the run may happen overnight on a work day, not only on a weekend. The DocSearch key
-that limited attempt 1 is retired (#320); the Stellar Docs adapter now calls Mintlify, so re-check
-the Mintlify request limit against the run sheet capacity check before collection.
-
-The launch tooling stays in the round folder until the next attempt ends or the owner retires the
-method. Then either promote it into `eval/qa/` with its test, or delete the round's launch scripts,
-`paired-stability-register.json`, `test/qa-paired-launch.test.mjs`, and
-`test/qa-paired-claude-pin.test.mjs` together. Both tests import the scripts from the round folder.
-
-Assemble the plan again before you sign its hash. The dated hashes in the run sheet are history.
-
-### B. Decide whether search may call a query-embedding model
-
-The 2026-11-02 routing round ([ledger](rounds/2026-11-02-routing-repair.md)) found that dense
-evidence is the strongest measured recall signal: W − L +20 on main and +21 on the fresh source,
-with `@cf/baai/bge-base-en-v1.5` (listed at USD 0.0666 per million tokens; about USD 0.0013 per
-1,000 queries of 20 tokens). Every pure lexical repair
-fails because it removes spurious evidence that recall depends on. A query embedding is a paid
-model call on the MCP search path. `AGENTS.md` requires host-side approval, elicitation, and
-budget enforcement for that, and search has none, so the contract (G13) ruled it out.
-
-Options: (1) keep search lexical-only (current state); (2) allow a bounded, metered query
-embedding on search with a lexical fallback, which needs an `AGENTS.md` rule change and a design
-for budget enforcement and CI measurement.
+No owner decision is open.

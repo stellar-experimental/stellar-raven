@@ -11,7 +11,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { execFileSync } from "node:child_process";
-import { readFileSync, cpSync, mkdtempSync, rmSync, symlinkSync } from "node:fs";
+import { readFileSync, writeFileSync, cpSync, mkdtempSync, rmSync, symlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -100,35 +100,75 @@ function outputBlock(entry: (typeof manifest.entries)[number]): string | undefin
   return jsonSchemaToType(entry.outputSchema as JsonSchema, `${typeBase}Output`);
 }
 
+function withBuilderFixture(run: (root: string, build: () => void) => void): void {
+  const isolatedRoot = mkdtempSync(join(tmpdir(), "super-spec-test-"));
+  try {
+    // Copy only builder inputs and dependencies. Credentials never enter the fixture.
+    for (const directory of ["scripts", "src", "inventory", "ecosystem-skills", "catalog", "specs"]) {
+      cpSync(join(ROOT, directory), join(isolatedRoot, directory), { recursive: true });
+    }
+    cpSync(join(ROOT, "package.json"), join(isolatedRoot, "package.json"));
+    symlinkSync(join(ROOT, "node_modules"), join(isolatedRoot, "node_modules"), "dir");
+    const build = () => { execFileSync(process.execPath, [join(isolatedRoot, "scripts", "build-super-spec.mjs")], {
+      cwd: isolatedRoot,
+      stdio: "pipe"
+    }); };
+    run(isolatedRoot, build);
+  } finally {
+    rmSync(isolatedRoot, { recursive: true, force: true });
+  }
+}
+
 describe("build determinism", () => {
   it("the checked-in artifact is current, and two rebuilds are byte-identical", () => {
     const before = readFileSync(SPEC_PATH);
-    const isolatedRoot = mkdtempSync(join(tmpdir(), "super-spec-test-"));
-    let first: Buffer;
-    let second: Buffer;
-    try {
-      // Copy only builder inputs and dependencies. Credentials never enter the fixture.
-      for (const directory of ["scripts", "src", "inventory", "ecosystem-skills", "catalog", "specs"]) {
-        cpSync(join(ROOT, directory), join(isolatedRoot, directory), { recursive: true });
-      }
-      cpSync(join(ROOT, "package.json"), join(isolatedRoot, "package.json"));
-      symlinkSync(join(ROOT, "node_modules"), join(isolatedRoot, "node_modules"), "dir");
-      const build = () => execFileSync(process.execPath, [join(isolatedRoot, "scripts", "build-super-spec.mjs")], {
-        cwd: isolatedRoot,
-        stdio: "pipe"
+    withBuilderFixture((root, build) => {
+      build();
+      const first = readFileSync(join(root, "specs", "super-spec.json"));
+      build();
+      const second = readFileSync(join(root, "specs", "super-spec.json"));
+      expect(Buffer.compare(first, second)).toBe(0);
+      expect(
+        Buffer.compare(before, first),
+        "specs/super-spec.json is stale — run npm run spec:build"
+      ).toBe(0);
+    });
+  });
+
+  it("scrubs excluded references from summaries, descriptions, and tag descriptions", () => {
+    withBuilderFixture((root, build) => {
+      const inventoryPath = join(root, "inventory", "stellar-light.json");
+      const inventory = JSON.parse(readFileSync(inventoryPath, "utf8"));
+      const operation = inventory.openapi.paths["/api/hackathons/compare"].get;
+      operation.summary = "Use reviewSubmission. Compare hackathon events.";
+      operation.description = "Count like analyzeHackathonSubmissions. Resolve slugs via getHackathons.";
+      inventory.openapi.tags.push({
+        name: "fixture",
+        description: "See GET /api/hackathons/builds/{id}."
       });
+      writeFileSync(inventoryPath, JSON.stringify(inventory));
       build();
-      first = readFileSync(join(isolatedRoot, "specs", "super-spec.json"));
+      const rebuilt = JSON.parse(readFileSync(join(root, "specs", "super-spec.json"), "utf8"));
+      const result = operationById(rebuilt, "scout.compareHackathons");
+      expect(result.summary).toBe("Compare hackathon events.");
+      expect(result.description).toBe("Resolve slugs via getHackathons.");
+      expect(rebuilt.tags.find((tag: { name: string }) => tag.name === "fixture"))
+        .toEqual({ name: "fixture", description: "See upstream builds." });
+    });
+  });
+
+  it("applies authored description scrubs when the clause moves into the summary", () => {
+    withBuilderFixture((root, build) => {
+      const inventoryPath = join(root, "inventory", "stellar-light.json");
+      const inventory = JSON.parse(readFileSync(inventoryPath, "utf8"));
+      const operation = inventory.openapi.paths["/api/status"].get;
+      operation.summary = "Use to check freshness or to discover endpoints.";
+      operation.description = operation.description.replace(" or to discover endpoints", "");
+      writeFileSync(inventoryPath, JSON.stringify(inventory));
       build();
-      second = readFileSync(join(isolatedRoot, "specs", "super-spec.json"));
-    } finally {
-      rmSync(isolatedRoot, { recursive: true, force: true });
-    }
-    expect(Buffer.compare(first, second)).toBe(0);
-    expect(
-      Buffer.compare(before, first),
-      "specs/super-spec.json is stale — run npm run spec:build"
-    ).toBe(0);
+      const rebuilt = JSON.parse(readFileSync(join(root, "specs", "super-spec.json"), "utf8"));
+      expect(operationById(rebuilt, "scout.getStatus").summary).toBe("Use to check freshness.");
+    });
   });
 });
 
@@ -537,7 +577,12 @@ describe("service specifics", () => {
     expect(av.description).not.toContain("recording's date");
     expect(av.description).not.toContain("quote what was said");
     expect((hackathon as { parameters?: Array<{ name: string }> }).parameters?.map((p) => p.name).sort()).toEqual([
+      "category",
+      "hackathon",
       "limit",
+      "mode",
+      "offset",
+      "package",
       "q",
       "track",
       "winnersOnly"

@@ -354,8 +354,8 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-reflector-oracle moved stable -> scheduled (the Reflector feed roster and 4-of-7 admin signer set unchanged). No stated value changed, so the other members of \"per-project SCF award totals (Scout directory reconstructions)\" still agree."
+          "reason": "Member q-defi-soroswap-what-is changed only judge-blind truth.verified: rootCause now points at the improvements/resolved.json entry cs-002 (resolved 2026-11-02) instead of the deleted finding file, plus one evidence line. Question, golden answer, keyFacts, avoid, notes, and tags are unchanged, so the cluster facts are unchanged.",
+          "verdict": "consistent"
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster. Updated 2026-11-02: OrbitCDP's SCF total is source-conflicted (Scout scfTotalAwardedUSD 280000; Lumenloop awarded_total 330000), so no member pins it; Scout labels OrbitCDP Inactive, and members keep its lifecycle label source-relative.",
         "memberContentSha256": {
@@ -365,7 +365,7 @@
           "q-defi-phoenix-what-is": "bfa879565a31c1685278a69dace666e34acfd92d72842d079f80c7d3117f66d4",
           "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-defi-rwa-scf-similar": "dd8afe398d360f67a490d6ce135d0e9d7deb31b6e8d4b6ca368021ff5a0cc0a8",
-          "q-defi-soroswap-what-is": "e67fcf0c855159dccaf0c34029d6e396618eaa8cf78b0fd163a9a5312f8f4c5d",
+          "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
           "q-defi-x402-on-stellar-what": "75bb51ff5ed93a0549bd61144f28683fce0987e655e0d39223583460592ab46a",
           "q-eco-hana-wallet-scf": "08ff8b716cdec33c9a58cc83c20bc662abb6a4bec3e07557d7b343e7db8d5e8c",
           "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb",
@@ -414,13 +414,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-defi-soroswap-what-is (Aggregator v3, CAYP3 deprecated) and q-defi-soroswap-vs-stellarx (adapters->venues wording) still attribute 'first' to Soroswap and keep the on-chain-aggregator versus API/SDEX layers apart. The factcheck and CAP-0038 members are unchanged, so the note's P18-counterexample and metric boundaries still hold.",
+          "reason": "Member q-defi-soroswap-what-is changed only judge-blind truth.verified: rootCause now points at the improvements/resolved.json entry cs-002 (resolved 2026-11-02) instead of the deleted finding file, plus one evidence line. Question, golden answer, keyFacts, avoid, notes, and tags are unchanged, so the cluster facts are unchanged.",
           "verdict": "consistent"
         },
         "note": "Soroswap firstness remains attributed operator/Soroban scope, never independent broad-Stellar chronology. The classic SDEX is an older order-book venue; Protocol-18/CAP-0038 constant-product pools are the direct pre-Soroswap AMM counterexample. TVL, routed volume, and cumulative trading volume remain distinct; dated Soroswap current/max examples are non-gating. Re-swept 2026-07-28: re-read Soroswap chronology after the dated-TVL refresh; firstness attribution, the native P18 counterexample, and metric boundaries remain consistent.",
         "memberContentSha256": {
           "q-defi-soroswap-vs-stellarx": "d33080e232c2dd63e051474130b2ebb208b463e40d6a5d247d79c9ff05fe65f4",
-          "q-defi-soroswap-what-is": "e67fcf0c855159dccaf0c34029d6e396618eaa8cf78b0fd163a9a5312f8f4c5d",
+          "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
           "q-edge-factcheck-soroswap-first-amm": "8659cc275cc54d3edb55d1d1310b05127c0831bbc9b76ba18ac9b57b6b89e76a",
           "q-protocol-amm-cap-0038": "86e626e8ca19a27f40a8f1fa9987e064d7175aaf3dec9ca6f774d8f85472607f"
         }
@@ -1055,13 +1055,13 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-fresh-most-recent-news still requires window/asOf, date-field validation, chronological post-sort, and exclusion of undated rows; q-defi-soroswap-what-is dates its 2026-11-02 Aggregator v3 venue list and 2026-07-10 adapter snapshot, and q-defi-blend-what-is adds no chronology claim. The note's recency and date-field rules remain true.",
+          "reason": "Member q-defi-soroswap-what-is changed only judge-blind truth.verified: rootCause now points at the improvements/resolved.json entry cs-002 (resolved 2026-11-02) instead of the deleted finding file, plus one evidence line. Question, golden answer, keyFacts, avoid, notes, and tags are unchanged, so the cluster facts are unchanged.",
           "verdict": "consistent"
         },
         "note": "Semantic relevance rank is not chronology. Recent-window answers declare window/asOf, validate and label publication versus event date, exclude undated rows, post-sort chronologically, explain editorial significance, and remain non-exhaustive. Ingestion/scrape timestamps do not silently become publication dates.",
         "memberContentSha256": {
           "q-defi-blend-what-is": "46b5e0dda07645c25aa18712c6f8c81bc17230de4d2d246e128fd9a26f19b7d2",
-          "q-defi-soroswap-what-is": "e67fcf0c855159dccaf0c34029d6e396618eaa8cf78b0fd163a9a5312f8f4c5d",
+          "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
           "q-edge-fresh-most-recent-news": "c0c81424654f2813f706d13f4e883121b40b67b679ee0724efcc46db915040e3"
         }
       },
@@ -1244,12 +1244,12 @@
         "lastChecked": "2026-11-02",
         "reSwept": {
           "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-infra-rpc-provider-archive-tier still names 'Lightsail Network/Quasar' only as an RPC archive provider, q-defi-soroswap-what-is keeps Soroswap as the PaltaLabs DEX/aggregator, and q-infra-which-indexer and q-edge-noinfo-sep-9999 make no Quasar or QuasarSwap claim. The note's entity separation still holds.",
+          "reason": "Member q-defi-soroswap-what-is changed only judge-blind truth.verified: rootCause now points at the improvements/resolved.json entry cs-002 (resolved 2026-11-02) instead of the deleted finding file, plus one evidence line. Question, golden answer, keyFacts, avoid, notes, and tags are unchanged, so the cluster facts are unchanged.",
           "verdict": "consistent"
         },
         "note": "QuasarSwap exists as a Nova Network DEX but was not verified as a Stellar project in the dated broad sweep. equilibriumco/quasar and lightsail-network/Quasar are unrelated Stellar data infrastructure, and Soroswap is a distinct DEX. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-defi-soroswap-what-is": "e67fcf0c855159dccaf0c34029d6e396618eaa8cf78b0fd163a9a5312f8f4c5d",
+          "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
           "q-edge-noinfo-sep-9999": "315680dbff263901cfa7c1a6ab577489b99f3e55ec05b387b01d54174ff42800",
           "q-infra-rpc-provider-archive-tier": "00c3153da6a0a582c325424f65d8cd6b86237250daf2ada6f60224ff2403bc51",
           "q-infra-which-indexer": "a4411c008cf29d0a1a12c5508f109821e14ae22e95cf7e00f02dec6b209390b7"
