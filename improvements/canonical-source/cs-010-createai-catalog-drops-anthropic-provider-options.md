@@ -1,7 +1,7 @@
 ---
 id: cs-010
 service: canonical-source
-status: verified
+status: reported-upstream
 discovered: 2026-11-03
 repo: cloudflare/agents
 upstreamTitle: "createAI: string catalog models drop Anthropic adaptive thinking and effort providerOptions"
@@ -15,6 +15,7 @@ evidence:
   - "Tagged source: https://github.com/cloudflare/agents/blob/agents%400.32.0/packages/agents/src/models/core/transport.ts#L393-L397"
   - "2026-11-03 dedupe: searched cloudflare/agents issues for createAI, resume, adaptive thinking, anthropic effort, providerOptions anthropic, and output_config. No open issue covers the Anthropic options. An open issue from another user already requests the resume opt-out (see Finding)."
   - "Consumer impact: Raven's demo chat sends providerOptions.anthropic { thinking: { type: \"adaptive\" }, effort } for Claude 5 catalog IDs (src/demo/model-config.ts demoAnthropicProviderOptions). It reaches catalog /run today through workers-ai-provider's anthropic run wire (runWireFormat: \"anthropic\")."
+  - upstream issue filed 2026-11-03: https://github.com/cloudflare/agents/issues/2809
 ---
 
 ## Finding
