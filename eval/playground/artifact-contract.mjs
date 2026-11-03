@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 
-export const PLAYGROUND_ARTIFACT_CONTRACT = "playground-semantic-result/v2";
+export const PLAYGROUND_ARTIFACT_CONTRACT = "playground-semantic-result/v3";
 export const PLAYGROUND_QUARANTINE_CONTRACT = "playground-semantic-quarantine/v1";
 export const PLAYGROUND_INPUT_SNAPSHOT_CONTRACT = "playground-semantic-input/v1";
 export const PLAYGROUND_ROUND_CAP_CONTRACT = "playground-semantic-round-cap/v1";
@@ -120,8 +120,15 @@ export function assertPlaygroundArtifactMeta(meta) {
     fail("answering.temperature must be a finite number");
   }
   requiredString(answering.configurationBasis, "answering.configurationBasis");
-  if (answering.runtimeIntrospection !== "not-available" || answering.observedAttemptedModels !== null) {
-    fail("answering must explicitly record unavailable runtime attempt introspection");
+  if (answering.runtimeIntrospection !== "gateway-log") {
+    fail("answering.runtimeIntrospection must be gateway-log");
+  }
+  if (answering.observedAttemptedModels !== null) {
+    const configured = answering.models.map((entry) => entry?.model);
+    if (!Array.isArray(answering.observedAttemptedModels) ||
+      answering.observedAttemptedModels.some((model) => typeof model !== "string" || !configured.includes(model))) {
+      fail("answering.observedAttemptedModels must be null before answers or list only configured models");
+    }
   }
   requiredString(answering.proofLimit, "answering.proofLimit");
 

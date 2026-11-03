@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 // @ts-expect-error executable test seam
-import { orchestratePlaygroundRun, parseArgs, exitCodeForRunDisposition } from "../scripts/run-playground-semantic-eval.mjs";
+import { orchestratePlaygroundRun, parseArgs, exitCodeForRunDisposition, observedModelProblem, observedModelsFromRows } from "../scripts/run-playground-semantic-eval.mjs";
 // @ts-expect-error evaluator contract
 import { assertNotPlaygroundQuarantine } from "../eval/playground/artifact-contract.mjs";
 
@@ -64,6 +64,45 @@ describe("Playground method budget", () => {
       expect(result.artifact.summary).toBeNull();
       expect(result.calls.length).toBeLessThanOrEqual(2);
     }
+  });
+
+  it("stops before any judge when an answer reports a model outside the configured tuple", async () => {
+    const calls: unknown[] = [];
+    const configured = ["openai/gpt-6-luna", "openai/gpt-5.6-luna"];
+    const result = await orchestratePlaygroundRun({
+      cases: [{ id: "a" }, { id: "b" }], maxBudgetUsd: 1,
+      treeAtStart: { generationSha256: "same" }, startMeta: {}, judgeEnabled: true,
+      snapshotTree: async () => ({ generationSha256: "same" }),
+      runAnswer: async (item: any) => {
+        calls.push(["answer", item.id]);
+        return { answer: "text", costUsd: 0.1, answerCost: { calls: 1, models: ["openai/gpt-5.6-terra"] } };
+      },
+      verifyRun: (answer: any) => observedModelProblem(answer, configured),
+      judgeAnswer: async (item: any) => { calls.push(["judge", item.id]); return { score: "correct", costUsd: 0.1 }; },
+      makeRow: (item: any, answer: any) => ({ ...item, ...answer }),
+      buildNormalArtifact: (rows: any[]) => ({ meta: {}, rows, summary: {} }),
+      writeNormalArtifact: async () => {}, writeQuarantineArtifact: async () => {}
+    });
+    expect(calls).toEqual([["answer", "a"]]);
+    expect(result.artifact.budget).toMatchObject({
+      status: "invalid", error: "observed-model-mismatch", incompleteCaseIds: ["a", "b"], unattemptedCaseIds: ["b"]
+    });
+    expect(result.artifact.rows[0].provenanceError).toBe("observed-model-mismatch: openai/gpt-5.6-terra");
+    expect(result.artifact.summary).toBeNull();
+    expect(exitCodeForRunDisposition(result)).toBe(1);
+  });
+
+  it("classifies observed Gateway models per turn and across rows", () => {
+    const configured = ["openai/gpt-6-luna", "openai/gpt-5.6-luna"];
+    expect(observedModelProblem({ answerCost: { calls: 2, models: ["openai/gpt-6-luna"] } }, configured)).toBeNull();
+    expect(observedModelProblem({ answerCost: { calls: 2, models: configured } }, configured)).toBeNull();
+    expect(observedModelProblem({ answerCost: { calls: 1, models: [] } }, configured)).toBe("observed-model-missing");
+    expect(observedModelProblem({ answerCost: { calls: 0, models: [] } }, configured)).toBeNull();
+    expect(observedModelProblem({ answer: "", costUsd: null }, configured)).toBeNull();
+    expect(observedModelsFromRows([
+      { answerCost: { models: ["openai/gpt-6-luna"] } }, { answerCost: null },
+      { answerCost: { models: ["openai/gpt-5.6-luna", "openai/gpt-6-luna"] } }
+    ])).toEqual(["openai/gpt-6-luna", "openai/gpt-5.6-luna"]);
   });
 
   it("preserves overspend evidence and permits no later calls", async () => {

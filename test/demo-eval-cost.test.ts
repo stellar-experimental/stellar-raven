@@ -85,6 +85,17 @@ describe("loopback answer cost accounting", () => {
     expect(await f.accounting.finish()).toMatchObject({ costUsd: 0.15, calls: 1, reportedCalls: 1 });
     expect(f.getLog).toHaveBeenCalledWith("real-transport");
   });
+  it("records distinct Gateway-logged models in first-call order, including a fallback", async () => {
+    const f = fixture([0.1, 0.2, 0.3], ["one", "two", "three"]);
+    const logged = ["openai/gpt-6-luna", "openai/gpt-6-luna", "openai/gpt-5.6-luna"];
+    f.getLog.mockImplementation(async () => ({ cost: [0.1, 0.2, 0.3][3 - logged.length], model: logged.shift() }));
+    await f.call();
+    await f.call();
+    await f.call();
+    expect(await f.accounting.finish()).toMatchObject({
+      calls: 3, reportedCalls: 3, models: ["openai/gpt-6-luna", "openai/gpt-5.6-luna"], error: null
+    });
+  });
   it.each(["binding", "gateway", "native"])("settles %s streams before another provider call, including fallback calls", async (transport) => {
     const f = fixture([0.4, 0.6], undefined, transport);
     await f.call();
@@ -176,7 +187,7 @@ describe("loopback answer cost accounting", () => {
     expect(response.bodyUsed).toBe(true);
     expect(response.body?.locked).toBe(false);
     expect(await f.accounting.finish()).toEqual({
-      costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, error: null
+      costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: [], error: null
     });
     expect(f.getLog).toHaveBeenCalledExactlyOnceWith("error-log");
   });
@@ -220,7 +231,7 @@ describe("loopback answer cost accounting", () => {
       await expect(f.call()).rejects.toThrow("unsupported-answer-content-type");
       expect(cancel).toHaveBeenCalledTimes(1);
       expect(await f.accounting.finish()).toEqual({
-        costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, error: null
+        costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: [], error: null
       });
       expect(f.getLog).toHaveBeenCalledExactlyOnceWith("unsupported-type");
     }

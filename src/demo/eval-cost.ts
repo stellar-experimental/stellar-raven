@@ -4,6 +4,8 @@ export type AnswerCost = {
   reportedCostUsd: number;
   calls: number;
   reportedCalls: number;
+  /** Distinct Gateway-logged model ids, in first-call order: the model that actually answered. */
+  models: string[];
   error: string | null;
 };
 
@@ -47,6 +49,7 @@ export function createEvalCostBinding(ai: Ai, gatewayId: string, maxBudgetUsd: n
   let reportedCostUsd = 0;
   let error: string | null = null;
   let pendingLogId: string | null = null;
+  const models: string[] = [];
   const seen = new Set<string>();
 
   async function settle() {
@@ -63,6 +66,7 @@ export function createEvalCostBinding(ai: Ai, gatewayId: string, maxBudgetUsd: n
             timer = setTimeout(() => reject(new Error("cost-read-timeout")), 1_000);
           })
         ]);
+        if (typeof log.model === "string" && log.model && !models.includes(log.model)) models.push(log.model);
         if (typeof log.cost === "number" && Number.isFinite(log.cost) && log.cost >= 0) {
           reportedCalls += 1;
           reportedCostUsd = Number((reportedCostUsd + log.cost).toFixed(12));
@@ -172,7 +176,7 @@ export function createEvalCostBinding(ai: Ai, gatewayId: string, maxBudgetUsd: n
       await settle();
       return {
         costUsd: calls === 0 || reportedCalls !== calls ? null : reportedCostUsd,
-        reportedCostUsd, calls, reportedCalls, error
+        reportedCostUsd, calls, reportedCalls, models: [...models], error
       };
     }
   };

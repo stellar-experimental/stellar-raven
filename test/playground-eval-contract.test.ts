@@ -78,7 +78,7 @@ function fixtureMeta(roundAuthorization: any = reviewedRound()) {
       modelSource: "default",
       defaultModels: [],
       configurationBasis: "fixture config",
-      runtimeIntrospection: "not-available",
+      runtimeIntrospection: "gateway-log",
       observedAttemptedModels: null,
       proofLimit: "fixture cannot introspect attempts"
     },
@@ -200,6 +200,14 @@ describe("playground semantic artifact contract", () => {
     const missingFallback = structuredClone(fixtureMeta());
     delete missingFallback.answering.fallbackModels;
     expect(() => assertPlaygroundArtifactMeta(missingFallback)).toThrow(/fallbackModels/);
+
+    const unconfiguredObserved = structuredClone(fixtureMeta());
+    unconfiguredObserved.answering.observedAttemptedModels = ["openai/gpt-6-luna"];
+    expect(() => assertPlaygroundArtifactMeta(unconfiguredObserved)).toThrow(/observedAttemptedModels/);
+
+    const noIntrospection = structuredClone(fixtureMeta());
+    noIntrospection.answering.runtimeIntrospection = "not-available";
+    expect(() => assertPlaygroundArtifactMeta(noIntrospection)).toThrow(/runtimeIntrospection/);
 
     const changedTemperature = structuredClone(fixtureMeta());
     changedTemperature.answering.temperature = 0.2;
