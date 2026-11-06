@@ -97,7 +97,7 @@ All 130 original findings reviewed; 31 independently verified retirements, 3 new
 
 All requested independent reviews have completed and findings are reconciled: drift, all retirements, seven Docs goldens, twelve Scout cases plus the wallet note, historical provenance, register semantics and prompt fixtures. Deterministic eval selftests, routing, pin review, corpus lint, register check, static judge fixtures and the guarded Albedo sentinel pass. Generated artifacts were rebuilt with their scripts. No paid answering/judge run or rescoring occurred.
 
-Typecheck, dry-run build and 127 smoke tests pass. The latest pre-commit unit run passes 3,133 tests plus three expected failures; the sole failure requires a committed source permalink for the deliberately modified cs-001 finding. Final unit and generated-sync validation will run on the committed tree before push. Publication/deployment and final cleanup follow.
+Typecheck, dry-run build and 127 smoke tests pass. On committed a210d39c, all 145 unit files pass: 3,134 tests plus three expected failures. The pre-commit cs-001 permalink failure disappears on the committed snapshot without a test or implementation change. Full generated-artifact rebuild produces zero diff, and register --check passes. Tree and staged secret scans pass, including all new evidence and reproduction scripts. All three Astra workers and their owned children/checkouts are cleaned up. Publication/deployment follows.
 
 ### Production before publication
 
