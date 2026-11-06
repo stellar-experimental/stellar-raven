@@ -1,0 +1,31 @@
+/** Reconstruct historical judge input bytes; does not admit artifacts for promotion or call models. */
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { buildJudgePrompt, buildTranscriptEvidence } from '../../../eval/qa/judge.mjs';
+const source = 'eval/local-lanes/playground-semantic/2026-11-03T19-08-40-658Z-6c8c4ee6-77c1-44ac-b8d8-6ba841bd8692-playground-semantic.json';
+const output = 'eval/local-lanes/playground-final-resolution/judge-pilot-inputs.json';
+const seed = '2026-11-06-independent-judge-pilot';
+const hash = value => createHash('sha256').update(value).digest('hex');
+const bytes = readFileSync(source), result = JSON.parse(bytes);
+const revision = result.meta.inputSnapshot.tree.headRevision;
+if (!/^[a-f0-9]{40}$/.test(revision)) throw new Error('Invalid historical revision');
+const corpus = JSON.parse(execFileSync('git', ['show', `${revision}:eval/qa/cases.json`], { maxBuffer: 16 * 1024 * 1024 }));
+const cases = new Map(corpus.cases.map(item => [item.id, item]));
+const finals = JSON.parse(readFileSync(new URL('./selection.json', import.meta.url)));
+const selected = [...result.rows].sort((a, b) => hash(`${seed}:${a.id}`).localeCompare(hash(`${seed}:${b.id}`))).slice(0, 20);
+const inputs = selected.map(row => {
+  if (finals.qualityCaseIds.includes(row.id)) throw new Error('Pilot overlaps finals quality selection');
+  const item = cases.get(row.id);
+  if (!item || row.finishReason !== 'stop' || row.clientError || row.httpError || row.sseErrors.length) throw new Error('Pilot source is not a completed answer');
+  const input = { ...item, candidateAnswer: row.answer, transcript: row.transcript };
+  input.transcriptEvidence = buildTranscriptEvidence(input);
+  const promptSha256 = hash(buildJudgePrompt(input));
+  if (promptSha256 !== row.verdict.promptSha256) throw new Error(`Historical prompt replay failed for ${row.id}`);
+  return { id: row.id, input, promptSha256, historicalJudgeA: row.verdict };
+});
+const bundle = { contract: 'historical-judge-pilot-inputs/v1', purpose: 'Non-promotable judge calibration only; not current answer-quality evidence', source, sourceSha256: hash(bytes), sourceRevision: revision, seed, inputs };
+writeFileSync(output, JSON.stringify(bundle, null, 2) + '\n', { mode: 0o600 });
+const manifest = { ...bundle, inputs: inputs.map(({ id, promptSha256 }) => ({ id, promptSha256 })), output, outputSha256: hash(readFileSync(output)) };
+writeFileSync(new URL('./judge-pilot-manifest.json', import.meta.url), JSON.stringify(manifest, null, 2) + '\n');
+console.log(`${inputs.length} historical input fixtures reconstructed with exact prompt hashes; no model calls.`);
