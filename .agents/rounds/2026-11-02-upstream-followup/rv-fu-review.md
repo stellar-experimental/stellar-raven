@@ -516,14 +516,14 @@ I found no duplicate issue for this instruction.
 I ran the exact requested dry run:
 
 ```sh
-npm run improvements:file -- --file improvements/stellar-docs/sd-080-fuzzing-note-soroban-contract-build.md --dry-run
+npm run improvements:file -- --file https://github.com/stellar-experimental/stellar-raven/blob/610a7c3c25b2d582709f17a0beb8628a0f8f9cf5/improvements/stellar-docs/sd-080-fuzzing-note-soroban-contract-build.md --dry-run
 ```
 
 It exited `2` because the service intake is mixed and `sd-080` has no override.
 I then ran a read-only rendering check:
 
 ```sh
-npm run improvements:file -- --file improvements/stellar-docs/sd-080-fuzzing-note-soroban-contract-build.md --repo stellar/stellar-docs --dry-run
+npm run improvements:file -- --file https://github.com/stellar-experimental/stellar-raven/blob/610a7c3c25b2d582709f17a0beb8628a0f8f9cf5/improvements/stellar-docs/sd-080-fuzzing-note-soroban-contract-build.md --repo stellar/stellar-docs --dry-run
 ```
 
 That command passed.

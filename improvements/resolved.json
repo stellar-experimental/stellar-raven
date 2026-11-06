@@ -40,6 +40,24 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e9a845464c0e7ae01efde4c4701561abd81cfed0/improvements/canonical-source/cs-003-sep-registry-status-disagrees-with-preambles.md"
     },
     {
+      "id": "cs-011",
+      "title": "ecosystem/README.md lists SEP-0013 as Abandoned. The preamble of ecosystem/sep-0013.md says Status: Rejected (In favor of SEP-6). Rejected…",
+      "service": "canonical-source",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-protocol",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-protocol/issues/2055"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-protocol/pull/2062"
+      ],
+      "liveRecheck": "2026-11-06: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0013.md; https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — SEP0013 preamble now Abandoned (In favor of SEP-6), matching README defined term. All 60 table rows freshly compared: zero mismatches.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dx. Repository reference scan found no golden claim requiring change. Posted and read back: https://github.com/stellar/stellar-protocol/issues/2055#issuecomment-6674418044",
+      "sourceCommit": "ce09c3e2592834017120716becbf044ee7c16d48",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ce09c3e2592834017120716becbf044ee7c16d48/improvements/canonical-source/cs-011-sep-0013-status-term-outside-readme-terms.md"
+    },
+    {
       "id": "ll-021",
       "title": "Lumenloop's SCF recap discovery lags the official round result. The accessible recap index stops at round 40, so current retrieval cannot…",
       "service": "lumenloop",
@@ -173,8 +191,8 @@
       ],
       "liveRecheck": "2026-07-15T15:24Z: cache-busted rendered Indexers page and Raven stellarDocs search both returned corrected live Alchemy Data API wording; exact former future-launch phrases returned soft-empty with zero hits.",
       "reviewEvidence": "Independent Solo reviewer process 3770 re-ran rendered-page and agent-visible search triggers, inspected merged approved PR 2573 and adjacent records, and scanned repo references on 2026-07-15.",
-      "sourceCommit": "bb8731b3e09ac56fe0a2429e56beb583b84158b3",
-      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/bb8731b3e09ac56fe0a2429e56beb583b84158b3/improvements/stellar-docs/sd-010-alchemy-data-api-launch-stale.md"
+      "sourceCommit": "b9098a92cab915bdbb3e1e119837f6d11f4ff59e",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b9098a92cab915bdbb3e1e119837f6d11f4ff59e/improvements/stellar-docs/sd-010-alchemy-data-api-launch-stale.md"
     },
     {
       "id": "sd-011",
@@ -324,8 +342,8 @@
       ],
       "liveRecheck": "2026-08-05T23:47:51Z token-interface: sep0011_asset x7, clawback x4, set_authorized x4, CAP-0067 x2; seven-row SEP-41/SAC table, classic-unification and operation-metadata note, and cross-links present. 23:48:30Z SAC page: sep0011_asset x4 and corrected set_admin data=new_admin:Address.",
       "reviewEvidence": "Distinct adversarial reviewer Solo process 4358, Todo 1394 comment 3749, 2026-08-05; root independently repeated live and upstream-ref checks; resolution handoff read back at https://github.com/stellar/stellar-docs/issues/2715#issuecomment-5198753120.",
-      "sourceCommit": "61bd321d7d1318053446908bf17b33d4e8e11b71",
-      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/61bd321d7d1318053446908bf17b33d4e8e11b71/improvements/stellar-docs/sd-018-sac-cap67-event-schema-gap.md"
+      "sourceCommit": "c3ec26956b6e49fbe7006cabdaac17b8f65c7123",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/c3ec26956b6e49fbe7006cabdaac17b8f65c7123/improvements/stellar-docs/sd-018-sac-cap67-event-schema-gap.md"
     },
     {
       "id": "sd-019",
@@ -604,8 +622,8 @@
       ],
       "liveRecheck": "2026-07-15T15:25Z: cache-busted Client SDKs page and Raven search both state Python SDK supports Horizon and Stellar RPC, expose RPC networking, use PyPy 3.11, and omit stale PyPy 3.10+ wording.",
       "reviewEvidence": "Independent Solo reviewer process 3770 re-ran rendered-page and agent-visible search triggers, inspected issue 2600, merged approved PR 2616, Raven handoff 25, adjacent content, and repo references on 2026-07-15.",
-      "sourceCommit": "bb8731b3e09ac56fe0a2429e56beb583b84158b3",
-      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/bb8731b3e09ac56fe0a2429e56beb583b84158b3/improvements/stellar-docs/sd-033-python-sdk-rpc-capability-omitted.md"
+      "sourceCommit": "b9098a92cab915bdbb3e1e119837f6d11f4ff59e",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b9098a92cab915bdbb3e1e119837f6d11f4ff59e/improvements/stellar-docs/sd-033-python-sdk-rpc-capability-omitted.md"
     },
     {
       "id": "sd-034",
@@ -782,8 +800,8 @@
       ],
       "liveRecheck": "2026-09-08T15:50:00Z rendered Sponsored Reserves and Lumens pages matched the corrected minimum-balance formula and separate available-balance identity; stellar-core 7e64393b independently confirmed the same split.",
       "reviewEvidence": "Independent Codex GPT-5.6 Sol high review: .agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-043-sol.md; it repeated the live trigger, checked current source and Core, scanned adjacent Docs, and reconciled every repository reference. Resolution comment read back at https://github.com/stellar/stellar-docs/issues/2771#issuecomment-5588559296.",
-      "sourceCommit": "767c981a9304bd74b167357ffdf9a39dd017cce4",
-      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/767c981a9304bd74b167357ffdf9a39dd017cce4/improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
+      "sourceCommit": "81ba59a695f45f413e0a7b8dd1c444bfb56ed051",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/81ba59a695f45f413e0a7b8dd1c444bfb56ed051/improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
     },
     {
       "id": "sd-044",
@@ -974,6 +992,150 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-docs/sd-057-anchor-admin-usdc-network-label.md"
     },
     {
+      "id": "sd-060",
+      "title": "The x402 overview page lists Albedo as a wallet that supports auth-entry signing. Albedo has no auth-entry signing intent, and the Stellar…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2997"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3009"
+      ],
+      "liveRecheck": "2026-11-06: Live x402 wallet roster excludes Albedo; auth-entry support requirement retained. No remaining Albedo in page. Sources: https://developers.stellar.org/docs/build/agentic-payments/x402.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/2997#issuecomment-6674833404",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-060-x402-wallet-list-albedo-auth-entry.md"
+    },
+    {
+      "id": "sd-063",
+      "title": "The RestoreFootprintOp section gives a fixed restored-entry TTL of current_ledger_number + 4095 for persistent entries. The live Mainnet…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3000"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3011"
+      ],
+      "liveRecheck": "2026-11-06: The live state-archival guide now uses current_ledger_number + minPersistentTTL - 1 and links the current minimum TTL documentation. The hard-coded 4095 and initial NetworkConfig.h reference are gone. Sources: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3000#issuecomment-6674834156",
+      "sourceCommit": "b73c8c2f99a724138447339b8e753647e33e1724",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b73c8c2f99a724138447339b8e753647e33e1724/improvements/stellar-docs/sd-063-restore-ttl-4095-stale.md"
+    },
+    {
+      "id": "sd-065",
+      "title": "The Debugging Errors page names the resource-limit errors HostError(Budget, LimitExceeded) and HostError(Storage, LimitExceeded). No error…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3001"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3012"
+      ],
+      "liveRecheck": "2026-11-06: Both live debugging table rows use ExceededLimit (Budget and Storage); sibling contract-interactions uses same code; no LimitExceeded. Sources: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md; https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/overview.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3001#issuecomment-6674834826",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-065-debugging-errors-limitexceeded-name.md"
+    },
+    {
+      "id": "sd-066",
+      "title": "The Test Events guide says that env.events().all() returns every event published since the Env was created. Its example makes three…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3002"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3013"
+      ],
+      "liveRecheck": "2026-11-06: The live test asserts after each of the three increment calls and explains last-invocation semantics. The exact served test passes with the local increment fixture on soroban-sdk 29.0.1; the adjacent events example agrees. Sources: https://developers.stellar.org/docs/build/guides/testing/test-contract-events.md; https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3002#issuecomment-6674835513",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-066-test-events-guide-all-semantics.md"
+    },
+    {
+      "id": "sd-067",
+      "title": "The \"Events: SEP-41 Tokens vs. Stellar Asset Contracts\" table says that the mint and clawback events are \"not part of this interface\" for…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3003"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3014"
+      ],
+      "liveRecheck": "2026-11-06: The live table distinguishes SEP-41 mint [mint,to] and clawback [clawback,from] topics from the additional SAC asset topic. It explains that these events are required despite the interface omitting corresponding functions, and permits extra map keys/topics. Sources: https://developers.stellar.org/docs/tokens/token-interface.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3003#issuecomment-6674836123",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-067-token-interface-sep41-mint-clawback-events.md"
+    },
+    {
+      "id": "sd-068",
+      "title": "The events ingest guide says that the getEvents retention window is \"7 days at most\". The window is the configurable RPC setting…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3004"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3015"
+      ],
+      "liveRecheck": "2026-11-06: The live ingest guide states a configurable 120,960-ledger default. Its Python example uses oldest_ledger + 10 instead of assuming six-second ledgers. The Lab dashboard, frontend guide and API overview also describe configurable retention. Sources: https://developers.stellar.org/docs/build/guides/events/ingest.md; https://developers.stellar.org/docs/tools/lab/transaction-dashboard.md; https://developers.stellar.org/docs/data/apis.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3004#issuecomment-6674836819",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-068-events-ingest-retention-7-days-at-most.md"
+    },
+    {
+      "id": "sd-069",
+      "title": "The EVM migration page \"Solidity and Rust Advanced Concepts\" teaches events with e.events().publish(topics, amount). soroban-sdk…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3005"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3017"
+      ],
+      "liveRecheck": "2026-11-06: Both original live pages use typed contract events. Their exact served mint and fee examples compile on soroban-sdk 29.0.1, with correct mint topics and the token implementation link. Five raw publishing calls on two different pages are preserved in successor sd-098. Sources: https://developers.stellar.org/docs/learn/migrate/evm/solidity-and-rust-advanced-concepts.md; https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx independently re-fetched original sources, inspected fixing PRs and ran original-scope controls; PASS in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Adjacent residuals have separate accepted findings. Coordinator reviewed persistent references. Posted and read back: https://github.com/stellar/stellar-docs/issues/3005#issuecomment-6674857563",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-069-evm-advanced-concepts-deprecated-events-publish.md"
+    },
+    {
+      "id": "sd-071",
+      "title": "The ZK page section \"BN254 host functions\" lists three functions from Protocol 25. It omits the seven BN254 host functions that Protocol…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3006"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3018"
+      ],
+      "liveRecheck": "2026-11-06: The live ZK page lists all seven Protocol 26 BN254 additions: g1_msm, g1_is_on_curve, fr_add, fr_sub, fr_mul, fr_pow and fr_inv. CAP-80 and the host environment specification corroborate their protocol version. Sources: https://developers.stellar.org/docs/build/apps/zk.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3006#issuecomment-6674837455",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-071-zk-page-omits-protocol-26-bn254-functions.md"
+    },
+    {
       "id": "sd-072",
       "title": "The Lab API Explorer index page says \"Horizon is considered deprecated.\" in its Horizon Endpoints card. Every other current page uses the…",
       "service": "stellar-docs",
@@ -994,6 +1156,24 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-072-lab-api-explorer-horizon-deprecated-label.md"
     },
     {
+      "id": "sd-073",
+      "title": "The Indexers page says \"Goldsky Mirrors already support Stellar\". Goldsky's own documentation says that Stellar datasets are no longer…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3008"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3021"
+      ],
+      "liveRecheck": "2026-11-06: Live Goldsky item names Turbo Mainnet/Testnet, says Mirror no longer offers Stellar, replaces two-products claim with several. Fresh Goldsky supported-networks/stellar docs agree. Sources: https://developers.stellar.org/docs/data/indexers.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3008#issuecomment-6674838181",
+      "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-073-indexers-goldsky-mirror-stellar.md"
+    },
+    {
       "id": "sd-075",
       "title": "The Hello World tutorial says that stellar contract build is \"a small wrapper around cargo build\". It says the CLI is \"a shortcut for\"…",
       "service": "stellar-docs",
@@ -1012,6 +1192,204 @@
       "reviewEvidence": "Grok 4.7 high distinct review 2026-11-02 (.agents/rounds/2026-11-02-upstream-filing/sd-075-retire-review.md); author Claude Opus 5.5; trigger repeated live, rs-soroban-sdk build.rs checked, TEMPLATE.mdx is a draft and now uses stellar contract build, no successor; resolution comment https://github.com/stellar/stellar-docs/issues/2974#issuecomment-6589044826",
       "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-075-hello-world-build-wrapper-claim.md"
+    },
+    {
+      "id": "sd-078",
+      "title": "The simulateTransaction deep-dive guide tells readers that an archived ledger entry must be restored before the transaction can be…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3016"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3022"
+      ],
+      "liveRecheck": "2026-11-06: The live deep dive, restore-data JS guide, method reference and OpenRPC schema now distinguish ordinary Protocol 23 automatic restoration from the exceptional restorePreamble fallback. The ordinary restore list includes contract code; adjacent archival guides agree, and the broken helper was removed. Sources: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md; https://developers.stellar.org/docs/build/guides/archival/restore-data-js.md; https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md; https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md; https://developers.stellar.org/docs/build/guides/dapps/state-archival.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3016#issuecomment-6674838754",
+      "sourceCommit": "06d7bc0e48ac13303d0f7203a557125b79f0e7c1",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/06d7bc0e48ac13303d0f7203a557125b79f0e7c1/improvements/stellar-docs/sd-078-simulate-deep-dive-restore-before-submit.md"
+    },
+    {
+      "id": "sd-079",
+      "title": "The \"Building with AI\" page tells readers to connect Raven at https://raven.stellar.buzz/mcp. The \"For agents\" card on every docs page…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3019"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3023"
+      ],
+      "liveRecheck": "2026-11-06: The live Building with AI page, architecture guide and actually served versioned for-agents asset use raven.stellar.org. The llms-full export contains no alias host. The separate outdated backend name is preserved in successor sd-097. Sources: https://developers.stellar.org/docs/build/building-with-ai.md; https://developers.stellar.org/docs/tools/cli/agent-cli/reference/architecture.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx independently re-fetched original sources, inspected fixing PRs and ran original-scope controls; PASS in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Adjacent residuals have separate accepted findings. Coordinator reviewed persistent references. Posted and read back: https://github.com/stellar/stellar-docs/issues/3019#issuecomment-6674858180",
+      "sourceCommit": "b73c8c2f99a724138447339b8e753647e33e1724",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b73c8c2f99a724138447339b8e753647e33e1724/improvements/stellar-docs/sd-079-building-with-ai-names-raven-alias-host.md"
+    },
+    {
+      "id": "sd-080",
+      "title": "The fuzzing example tells readers to build the contract with soroban contract build to avoid a cargo LTO problem. The CLI is now named…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3024"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3025"
+      ],
+      "liveRecheck": "2026-11-06: Live fuzzing note uses stellar contract build; stale soroban command gone. Remaining soroban invocation match is dated software-version changelog, not current guidance. Sources: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3024#issuecomment-6674839381",
+      "sourceCommit": "610a7c3c25b2d582709f17a0beb8628a0f8f9cf5",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/610a7c3c25b2d582709f17a0beb8628a0f8f9cf5/improvements/stellar-docs/sd-080-fuzzing-note-soroban-contract-build.md"
+    },
+    {
+      "id": "sd-082",
+      "title": "The asset-control page equates setting issuer master weight 0 with disabling issuer transactions and further issuance. That step disables…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3029"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3043"
+      ],
+      "liveRecheck": "2026-11-06: Both original asset pages now explain that disabling the master key does not disable other signers, distinguish the relevant thresholds, and preserve the SAC-admin boundary. The separate custom-admin skill shorthand is preserved in successor sk-038. Sources: https://developers.stellar.org/docs/tokens/control-asset-access.md; https://developers.stellar.org/docs/tokens/how-to-issue-an-asset.md; https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx independently re-fetched original sources, inspected fixing PRs and ran original-scope controls; PASS in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Adjacent residuals have separate accepted findings. Coordinator reviewed persistent references. Posted and read back: https://github.com/stellar/stellar-docs/issues/3029#issuecomment-6674858860",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md"
+    },
+    {
+      "id": "sd-083",
+      "title": "The asset publishing guide presents a false universal TOML syntax rule. Its section-order note says that TOML requires arrays at the end.…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3030"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3044"
+      ],
+      "liveRecheck": "2026-11-06: Live note states root General Information keys before first header and explicitly allows DOCUMENTATION after CURRENCIES array; practical SEP1 order retained. Python tomllib counterexample passes. Sources: https://developers.stellar.org/docs/tokens/publishing-asset-info.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3030#issuecomment-6674840075",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md"
+    },
+    {
+      "id": "sd-084",
+      "title": "The asset-control page describes authorization sandwich operations as simultaneous. The operations execute in order, with atomic…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3031"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3045"
+      ],
+      "liveRecheck": "2026-11-06: The live authorization-sandwich explanation now states that operations execute in order and fail atomically. Payment operation 3 observes authorization from operations 1 and 2; operations 4 and 5 remove it afterward. Sources: https://developers.stellar.org/docs/tokens/control-asset-access.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3031#issuecomment-6674840734",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-084-authorization-sandwich-operations-are-ordered.md"
+    },
+    {
+      "id": "sd-085",
+      "title": "The SAC page gives two names for its balance authorization function. The Balance Authorization Required paragraph uses set_auth. The…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3032"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3046"
+      ],
+      "liveRecheck": "2026-11-06: The live SAC authorization prose and interface now use set_authorized. The overview FAQ agrees, and the exact obsolete set_auth name is absent from the current source scan. Sources: https://developers.stellar.org/docs/tokens/stellar-asset-contract.md; https://developers.stellar.org/docs/build/smart-contracts/overview.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3032#issuecomment-6674841399",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-085-sac-authorization-prose-names-set-auth.md"
+    },
+    {
+      "id": "sd-086",
+      "title": "The Horizon strict-send destination parameter descriptions name the wrong alternative parameters. DestinationAccountParam correctly…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3033"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3047"
+      ],
+      "liveRecheck": "2026-11-06: The live strict-send descriptions and canonical component/bundled schemas now require exactly one destination selector. A public request with destination_assets succeeds; the invalid source_assets alternative returns HTTP 400 for the missing destination. Sources: https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths.md; https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-receive-payment-paths.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3033#issuecomment-6674841999",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-086-strict-send-destination-parameter-descriptions.md"
+    },
+    {
+      "id": "sd-087",
+      "title": "The simulateTransaction documentation describes enforce as the unconditional authorization-mode default. The released implementation…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3034"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3049"
+      ],
+      "liveRecheck": "2026-11-06: Both canonical AuthMode definitions, the built specification and the live method reference now describe record mode when auth entries are absent and enforce mode when present. Explicit mode applies to InvokeHostFunction and is rejected for extend/restore operations. Sources: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/3034#issuecomment-6674842530",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-087-simulation-authmode-default-is-conditional.md"
+    },
+    {
+      "id": "sd-089",
+      "title": "The simulation deep-dive example decodes a possible return value before it checks simulation success. It calls…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3036"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3051"
+      ],
+      "liveRecheck": "2026-11-06: The live preview checks SDK simulation success and a present retval before decoding. Six local SDK 17.4.0 parseRawSimulation fixtures cover error, missing result, value, void and restoration with/without invocation result. All pass. Valid restoration responses contain a successful preview; the guide explains restoration separately. No network simulation or transaction was submitted. Source: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx independently re-fetched original sources, inspected fixing PRs and ran original-scope controls; PASS in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Adjacent residuals have separate accepted findings. Coordinator reviewed persistent references. Posted and read back: https://github.com/stellar/stellar-docs/issues/3036#issuecomment-6674860234",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md"
+    },
+    {
+      "id": "sd-094",
+      "title": "The getTransactions page names TransactionResultMeta for resultMetaXdr. The payload type is TransactionMeta. TransactionResultMeta is a…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3041"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3056"
+      ],
+      "liveRecheck": "2026-11-06: The served getTransactions reference, source schema and bundled OpenRPC now identify TransactionMeta. Local SDK 17.4.0 parsing accepts an unsigned fixture using that union; the same bytes are rejected as TransactionResultMeta. No transaction was signed or submitted. Sources: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md",
+      "reviewEvidence": "Distinct Astra high reviewer t2dx independently re-fetched original sources, inspected fixing PRs and ran original-scope controls; PASS in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Adjacent residuals have separate accepted findings. Coordinator reviewed persistent references. Posted and read back: https://github.com/stellar/stellar-docs/issues/3041#issuecomment-6674859500",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-094-gettransactions-result-meta-xdr-type.md"
     },
     {
       "id": "sk-001",
@@ -1458,6 +1836,24 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/f020ad52616aa37794249a31a7cef768368bc732/improvements/skills/sk-036-data-skill-send-transaction-statuses.md"
     },
     {
+      "id": "sk-037",
+      "title": "The dapp skill recommends low-level invocation for batching a contract call with classic operations. That recommendation conflicts with…",
+      "service": "skills",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/173"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/pull/174"
+      ],
+      "liveRecheck": "2026-11-06: https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/dapp/SKILL.md; https://raw.githubusercontent.com/stellar/stellar-dev-skill/77bf4e8fc2533ac6ad680d061e89371e8474a1a8/skills/dapp/SKILL.md; https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/rpc/transaction.ts — Current main and published immutable 77bf4e8 pin explicitly forbid mixed classic/Soroban operations, require one supported operation, explain resource/auth control and contract composition. SDK17.4 unsigned mixed invoke/manageData and fee-bump wrappers reject; single invocation assembles.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dx. Repository reference scan found no golden claim requiring change. Posted and read back: https://github.com/stellar/stellar-dev-skill/issues/173#issuecomment-6674417133",
+      "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/skills/sk-037-dapp-mixed-classic-soroban-batching.md"
+    },
+    {
       "id": "sls-001",
       "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but in an order agents universally read as ranking. An eval…",
       "service": "stellar-light-scout",
@@ -1822,8 +2218,8 @@
       ],
       "liveRecheck": "2026-07-15T15:22Z: exact production transition query returned the 2026-05-07 security-program supersession record at rank 1 and controlling HackerOne policy at rank 2, including consolidated HackerOne, deprecated general Immunefi, and separate active OpenZeppelin carve-out.",
       "reviewEvidence": "Independent Solo reviewer process 3770 re-ran exact production query, inspected issue 10 and merged PR 529, checked adjacent source-filtered results, and scanned repo references on 2026-07-15.",
-      "sourceCommit": "bb8731b3e09ac56fe0a2429e56beb583b84158b3",
-      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/bb8731b3e09ac56fe0a2429e56beb583b84158b3/improvements/stellar-light-scout/sls-020-security-program-migration-retrieval.md"
+      "sourceCommit": "0306425752a0fb4c1b1965d64236c5a975aafa5b",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/0306425752a0fb4c1b1965d64236c5a975aafa5b/improvements/stellar-light-scout/sls-020-security-program-migration-retrieval.md"
     },
     {
       "id": "sls-021",
@@ -1882,8 +2278,8 @@
       ],
       "liveRecheck": "2026-09-08 Scout API 1.9.48: GET /api/projects/search?q=real%20world%20asset&limit=100 returned DTCC as Development with one announced H1 2027 product; every broad-search row joined to GET /api/rwa?limit=100 had products and a known network; the registry returned 97 verified assets from 52 issuers. Response SHA-256 values: fe2a0ffa3ab2e219a04e2c0460016ca4f445d02eef03acc4ab4ebb0657eda2ae and 3b36e92e1d8382c740466ae487c22bf46a5ab9fcd83ccaf6e115ab605d6a5f3f. The smaller Etherfuse completeness residual is sls-083.",
       "reviewEvidence": "Claude Fable 5.1 high independently re-ran the original trigger and adjacent checks: .agents/rounds/2026-09-08-improvements-followups/sls023-review-fable.md",
-      "sourceCommit": "426afd3fc4df75cfb95f5be262d7ad360c0844c6",
-      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/426afd3fc4df75cfb95f5be262d7ad360c0844c6/improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md"
+      "sourceCommit": "76e0bf4d00829e63146be206c1c834db5c22166d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/76e0bf4d00829e63146be206c1c834db5c22166d/improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md"
     },
     {
       "id": "sls-025",
@@ -3123,6 +3519,168 @@
       "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-27 (round ledger .agents/rounds/2026-10-27-issue-batch.md, PR #301 review https://github.com/stellar-experimental/stellar-raven/pull/301#issuecomment-6431210571); author Claude Opus 5.5; trigger repeated live; resolution comment https://github.com/Stellar-Light/stellarlight/issues/1829#issuecomment-6431221707",
       "sourceCommit": "6d796128a6918be6371204ede0d2828bba6ae9d1",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6d796128a6918be6371204ede0d2828bba6ae9d1/improvements/stellar-light-scout/sls-094-project-search-typo-redirect-strict-label.md"
+    },
+    {
+      "id": "sls-095",
+      "title": "Scout cannot resolve Varial because the freighter project record still uses the former name, Freighter. GET /api/projects/resolve?q=varial…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1889"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1889"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/projects/resolve?q=varial; https://stellarlight.xyz/api/projects/resolve?q=freighter; https://stellarlight.xyz/api/projects/search?q=varial&limit=100; https://stellarlight.xyz/api/projects/search?q=freighter&limit=100; https://freighter.app/ — Both names resolve to the same Varial wallet (slug freighter), with the former-name alias, October 29 rename date, SDF source and varialwallet.com website. Searching Varial returns the wallet; freighter.app redirects to the new site.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/pull/1889#issuecomment-6674719703",
+      "sourceCommit": "079c82b9e6c079bf6514c344fd5aac51ba39c2a7",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md"
+    },
+    {
+      "id": "sls-096",
+      "title": "GET /api/rfps?status=open returns two Q3 2026 briefs that the official SCF page removed. The rows are layerzero-dvn and…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1907"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1921"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/rfps?status=open; https://stellarlight.xyz/api/rfps?quarter=q3-2026; https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/rfp-track.md; https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md; https://stellarlight.xyz/ideas; https://stellarlight.xyz/ideas/layerzero-dvn; https://stellarlight.xyz/ideas/x402-facilitator-bazaar — The feed reports zero open briefs and 16 closed briefs for the active Q4 quarter. Both withdrawn Q3 briefs are closed. The separate round-46 row is a submission window, not a brief. The official handbook and all three Ideas pages agree.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1907#issuecomment-6674720288",
+      "sourceCommit": "079c82b9e6c079bf6514c344fd5aac51ba39c2a7",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md"
+    },
+    {
+      "id": "sls-098",
+      "title": "The Bitso and Honey Coin partner pages label curated capabilities as verified from stellar.toml without a recorded fetch. Both pages…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1909"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1929"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/partners?all=true; https://stellarlight.xyz/api/partners/anchor-bitso; https://stellarlight.xyz/api/partners/anchor-honey-coin; https://stellarlight.xyz/api/partners/anchor-coins-ph; https://stellarlight.xyz/api/partners/anchor-yellow-card; https://stellarlight.xyz/api/partners/anchor-anclap; https://stellarlight.xyz/partners/anchor-bitso; https://stellarlight.xyz/partners/anchor-honey-coin; https://stellarlight.xyz/partners/anchor-coins-ph; https://stellarlight.xyz/partners/anchor-yellow-card; https://stellarlight.xyz/partners/anchor-anclap; https://anclap.com/.well-known/stellar.toml — All four unfetched partner controls (Bitso, HoneyCoin, Coins.ph and Yellow Card) now have null TOML fields in both list and detail, and their pages show curated provenance instead of a verified badge. Anclap retains its actual source/date, SEP-6/SEP-24 and PEN/ARS evidence. All 47 list rows have either both source/date stamps or neither.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1909#issuecomment-6674720961",
+      "sourceCommit": "079c82b9e6c079bf6514c344fd5aac51ba39c2a7",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-098-partner-page-toml-verified-badge-without-toml.md"
+    },
+    {
+      "id": "sls-103",
+      "title": "GET /api/analyze?dimension=funding treats an empty stored snapshot as a valid baseline for its funding delta. previousSnapshot has…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1914"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1928"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/analyze?dimension=funding; https://raw.githubusercontent.com/Stellar-Light/stellarlight/main/src/app/api/analyze/route.ts — The current 582-project set compares with a valid 581-project baseline; only scopuly is added, with a $217,100 reconstruction delta. The empty baseline is no longer used. Reviewed source guards require nonempty sets with matching counts/hashes and reject incomplete reads; no production fault injection or historical-row deletion was performed.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1914#issuecomment-6674721548",
+      "sourceCommit": "079c82b9e6c079bf6514c344fd5aac51ba39c2a7",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-103-funding-delta-against-empty-snapshot.md"
+    },
+    {
+      "id": "sls-104",
+      "title": "GET /api/builders stops its unfiltered listing at 300 rows while calling the result a full set. Its matchModeLabel says \"no text query:…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1915"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1931"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/builders?limit=200&offset=0; https://stellarlight.xyz/api/builders?limit=200&offset=200; https://stellarlight.xyz/api/builders?limit=200&offset=400; https://stellarlight.xyz/api/builders?location=Latin%20America&limit=200 — Unfiltered pages return 200, 200 and 1 rows with total 401. Their union has 401 distinct usernames and includes all 59 Latin America rows. No public-eligibility claim is inferred from the raw collection count.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1915#issuecomment-6674722202",
+      "sourceCommit": "079c82b9e6c079bf6514c344fd5aac51ba39c2a7",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-104-builders-unfiltered-full-set-capped.md"
+    },
+    {
+      "id": "sls-105",
+      "title": "GET /api/rfps presents idea requirements for contract-source-verification without the published brief's SEP-58 scope or source link. The…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1916"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1921"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/rfps?q=source%20verification; https://stellarlight.xyz/api/rfps?q=SEP-58; https://raw.githubusercontent.com/stellar/scf-handbook/1e04b79973358e3dea58d821ed6419b50c93370c/scf-awards/build-award/rfp-track.md; https://raw.githubusercontent.com/stellar/scf-handbook/e37c0d541ddbee5f06f152b9cd1f03bbe0321f23/scf-awards/build-award/rfp-track.md — The closed Q2 row now separates original idea text from the published brief and links an immutable official source. The six SEP-58 keys, trusted images, source modes, verifier disagreement handling, Mainnet/Testnet scope and deterministic-Rust research exclusion agree. The SEP-58 query retrieves this row.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1916#issuecomment-6674722810",
+      "sourceCommit": "079c82b9e6c079bf6514c344fd5aac51ba39c2a7",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-105-rfp-brief-requirements-from-idea-not-published-brief.md"
+    },
+    {
+      "id": "sls-106",
+      "title": "GET /api/hackathons omits the completed Rise In Stellar Pro Hackathon in Istanbul. The event ran from 2026-09-18 to 2026-09-20 with a…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1917"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1921"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/hackathons?status=active; https://stellarlight.xyz/api/hackathons?q=istanbul; https://stellarlight.xyz/api/hackathons?q=waterloo; https://stellarlight.xyz/api/hackathons?q=innovation; https://stellarlight.xyz/api/hackathons?limit=100; https://www.risein.com/programs/stellar-pro-hackathon; https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar — Both missing events now appear. Waterloo is active November 2–18 with a $15,000 prize pool and Velocity as organizer. Istanbul is completed with a $15,000 prize pool and September 19–20 local dates; its row explains the source card/prose date difference. Organizer pages agree. Winner ingestion is outside this original feed-coverage finding.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1917#issuecomment-6674723431",
+      "sourceCommit": "079c82b9e6c079bf6514c344fd5aac51ba39c2a7",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-106-hackathon-feed-omits-stellar-events.md"
+    },
+    {
+      "id": "sls-109",
+      "title": "GET /api/repos/search ranks name-matching hackathon forks above the canonical repository for common product names",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1901"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1925"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/repos/search?q=scaffold+stellar&limit=50; https://stellarlight.xyz/api/repos/search?q=stellar+lab&limit=5; https://stellarlight.xyz/api/repos/search?q=smart+contract+examples&limit=5; https://stellarlight.xyz/api/repos/trust?repo=theahaco%2Fscaffold-stellar; https://stellarlight.xyz/api/repos/trust?repo=stellar-scaffold%2Fcli — All three original queries rank the intended canonical repositories first; eight infrastructure controls still pass. Old Scaffold search and trust URLs resolve to stellar-scaffold/cli with renamedFrom. Fixture-interface rescan work remains separately tracked in sls-114.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1901#issuecomment-6674724017",
+      "sourceCommit": "b73c8c2f99a724138447339b8e753647e33e1724",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b73c8c2f99a724138447339b8e753647e33e1724/improvements/stellar-light-scout/sls-109-repo-search-ranks-forks-over-canonical.md"
+    },
+    {
+      "id": "sls-110",
+      "title": "The HackMeridian 2026 record gives the qualitative judging criteria only. The organizer's Build page publishes one weighted rubric: seven…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1902"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1921"
+      ],
+      "liveRecheck": "2026-11-06: https://stellarlight.xyz/api/hackathons/hackmeridian-2026; https://www.hackmeridian.com/build; https://stellarlight.xyz/api/hackathons/hackmeridian-2025 — The structured rubric matches the organizer page: seven criteria, weights 20/20/15/15/10/10/10 summing to 100, a 1–5 scale, and the Genesis/Scale distinction. The 2025 winners retain their ranks and tracks; no 2026 winners are invented.",
+      "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1902#issuecomment-6674724617",
+      "sourceCommit": "b73c8c2f99a724138447339b8e753647e33e1724",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b73c8c2f99a724138447339b8e753647e33e1724/improvements/stellar-light-scout/sls-110-hackmeridian-rubric-weights.md"
     }
   ]
 }

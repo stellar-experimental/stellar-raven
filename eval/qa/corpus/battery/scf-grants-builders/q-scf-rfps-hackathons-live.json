@@ -17,7 +17,7 @@
     "avoid": [
       "Concludes no opportunity exists worldwide from a zero-row served response."
     ],
-    "notes": "Freshness item: grade lane independence and scoped-empty behavior. As of 2026-11-02, Scout's open-RFP response still marked two Q3 briefs open, while the official SCF RFP Track page listed none and said \"October 2026: New Q4 RFPs are coming soon.\" Both hackathon status filters returned ok-empty with fallback channels. Wrong: the two Q3 briefs stated as open now without Scout attribution; an attributed, dated report of the Scout rows that flags the official state is correct. The hackathon zero is feed-relative (improvements/stellar-light-scout/sls-106-hackathon-feed-omits-stellar-events.md): a sourced real-world Stellar event outside the feed, such as Velocity's University of Waterloo 'Blockchain Innovation Challenge powered by Stellar' (Nov 2-18, 2026), is not a wrong claim."
+    "notes": "Freshness item: grade lane independence and scoped-empty behavior. As of 2026-11-05, the official RFP Track page lists no open brief and says \"October 2026: New Q4 RFPs are coming soon.\" Scout now agrees: open=0, activeQuarter=q4-2026, both former Q3 briefs closed. Its separate synthetic scf-round-46 row describes the Submission window through 2026-11-09; it is not an RFP brief. Scout now includes Velocity’s University of Waterloo Blockchain Innovation Challenge powered by Stellar as active (November 2–18, 2026; University of Waterloo students). The upcoming filter returns ok-empty with fallback channels. The earlier active-feed zero is obsolete. Independently sourced events outside the feed remain valid; no scoped feed result proves global absence."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,7 +31,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-05",
     "sources": [
       {
         "class": "C",
@@ -78,6 +78,72 @@
         "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar",
         "observedAt": "2026-11-02",
         "note": "Host program page: 'When: Nov 2-18, 2026', '$15,000 in prizes to be awarded'."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+        "observedAt": "2026-11-05",
+        "note": "Current Open RFPs: \"October 2026: New Q4 RFPs are coming soon.\" No named brief."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+        "observedAt": "2026-11-05",
+        "note": "Latest path commit still the 2026-10-16 Q3 withdrawal; same editorial lineage as official page."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open",
+        "observedAt": "2026-11-05",
+        "note": "Now open=0, closed=16, activeQuarter=q4-2026; one synthetic scf-round-46 row, not a brief. Both Q3 rows are closed in quarter=q3-2026. Scout is the aggregator under check, not independent corroboration."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.grants.watch/programs/stellar-community-fund-build-award",
+        "observedAt": "2026-11-05",
+        "note": "Free general-web sweep for Stellar SCF Q4 2026 RFP open November 2026 found no newly published official brief. Cached Q3 snippets were contradicted by direct official reads. Source-relative absence only; exact queries and stale-source checks in scout.md."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards",
+        "observedAt": "2026-11-05",
+        "note": "\"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+        "observedAt": "2026-11-05",
+        "note": "\"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open",
+        "observedAt": "2026-11-05",
+        "note": "meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation."
+      },
+      {
+        "class": "A",
+        "ref": "https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar",
+        "observedAt": "2026-11-05",
+        "note": "\"Monday, November 2, 2026 - Wednesday, November 18, 2026\"; \"Host: Velocity\"; Blockchain Innovation Challenge powered by Stellar."
+      },
+      {
+        "class": "A",
+        "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar",
+        "observedAt": "2026-11-05",
+        "note": "\"Who: All University of Waterloo students\"; \"When: Nov 2-18, 2026\"; \"$15,000 in prizes to be awarded\"."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons?status=active",
+        "observedAt": "2026-11-05",
+        "note": "One active row: blockchain-innovation-challenge-waterloo-2026, November2–18, Velocity. limit=100 returns29 events. q=istanbul finds completed Stellar Pro Hackathon."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons?status=upcoming",
+        "observedAt": "2026-11-05",
+        "note": "ok, partial=false, zero upcoming rows; fallback explicitly says no upcoming hackathons in this feed, not none worldwide."
       }
     ],
     "corroboration": [
@@ -195,29 +261,99 @@
             "note": "generatedAt 2026-11-02T17:36:51.699Z: counts {curated 0, dorahacks 0, returned 0, total 0}; fallbackChannels.summary 'No upcoming or active hackathons in stellarlight's feed right now: between events.' The aggregator under check."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-05, the official RFP roster and Scout agree on no open brief; Scout separately reports SCF #46 Submission through November9. This is source-relative, not a permanent absence claim.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+            "observedAt": "2026-11-05",
+            "note": "Current Open RFPs: \"October 2026: New Q4 RFPs are coming soon.\" No named brief."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+            "observedAt": "2026-11-05",
+            "note": "Latest path commit still the 2026-10-16 Q3 withdrawal; same editorial lineage as official page."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-11-05",
+            "note": "Now open=0, closed=16, activeQuarter=q4-2026; one synthetic scf-round-46 row, not a brief. Both Q3 rows are closed in quarter=q3-2026. Scout is the aggregator under check, not independent corroboration."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.grants.watch/programs/stellar-community-fund-build-award",
+            "observedAt": "2026-11-05",
+            "note": "Free general-web sweep for Stellar SCF Q4 2026 RFP open November 2026 found no newly published official brief. Cached Q3 snippets were contradicted by direct official reads. Source-relative absence only; exact queries and stale-source checks in scout.md."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-11-05",
+            "note": "\"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+            "observedAt": "2026-11-05",
+            "note": "\"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-11-05",
+            "note": "meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation."
+          },
+          {
+            "class": "A",
+            "ref": "https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar",
+            "observedAt": "2026-11-05",
+            "note": "\"Monday, November 2, 2026 - Wednesday, November 18, 2026\"; \"Host: Velocity\"; Blockchain Innovation Challenge powered by Stellar."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar",
+            "observedAt": "2026-11-05",
+            "note": "\"Who: All University of Waterloo students\"; \"When: Nov 2-18, 2026\"; \"$15,000 in prizes to be awarded\"."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons?status=active",
+            "observedAt": "2026-11-05",
+            "note": "One active row: blockchain-innovation-challenge-waterloo-2026, November2–18, Velocity. limit=100 returns29 events. q=istanbul finds completed Stellar Pro Hackathon."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons?status=upcoming",
+            "observedAt": "2026-11-05",
+            "note": "ok, partial=false, zero upcoming rows; fallback explicitly says no upcoming hackathons in this feed, not none worldwide."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task scf-rfp)",
+      "date": "2026-11-05",
+      "by": "Scout Astra high author lane; independent final review assigned to t2dv; .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md",
       "evidence": [
-        "Verifier C 2026-11-02T16:34:39.283Z: https://stellarlight.xyz/api/rfps?status=open — '\"activeQuarter\":\"q3-2026\" ... counts {\"open\":2,\"syntheticRounds\":1}; rows scf-round-46 (rowType scf-round, synthetic true), layerzero-dvn (status open), x402-facilitator-bazaar (status open); scfRound {currentRound 46, currentPhase Submission, submissionWindow.closes 2026-11-09}'",
-        "Verifier A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track (and .md) — 'Current Open RFPs / October 2026: New Q4 RFPs are coming soon. ... Coming Soon / Coming Soon ... Last updated 16 days ago'",
-        "Verifier B 2026-11-02: https://github.com/stellar/scf-handbook/commit/e07b4bfce1 (GITBOOK-246, 2026-10-16T18:20:46Z, scf-awards/build-award/rfp-track.md) — '-_**July 23, 2026: New Q3 RFPs are open for submissions for SCF #**_**45! More coming soon.** +_**October 2026: New Q4 RFPs are coming soon.**_ ; -<summary>Stellar-compatible LayerZero DVN</summary> ; -<summary>X402 Facilitator with Bazaar (discovery) support</summary>'",
-        "Verifier C 2026-11-02T16:34:39.758Z: https://stellarlight.xyz/api/hackathons?status=active and ?status=upcoming — '\"counts\":{\"curated\":0,\"dorahacks\":0,\"returned\":0,\"total\":0},\"fallbackChannels\":{\"summary\":\"No upcoming or active hackathons in stellarlight's feed right now: between events. ...\"'",
-        "Verifier C 2026-11-02T16:39:02.025Z: Raven MCP execute scout.getRfps({status:\"open\"}) + getHackathons active/upcoming + resolveProject({q:\"passport\"}) — 'rows [[\"scf-round-46\",\"open\",\"scf-round\"],[\"layerzero-dvn\",\"open\",\"rfp\"],[\"x402-facilitator-bazaar\",\"open\",\"rfp\"]]; getHackathons active/upcoming ok caveat no-rows, fallbackChannels present'",
-        "Sibling sweep 2026-11-02: q-scf-open-rfps and q-scf-rfp-tooling (edited in batch scf-round-rfps) already report the official no-open-brief state, the Scout lag, and the #46 deadline 2026-11-09; q-scf-open-rfps-live, q-scf-passkey-rfps-live, and q-scf-rfps-hackathons-live now carry the same dated conflict caution; q-scf-current-round and q-edge-fresh-latest-scf-round carry no RFP roster. Other LayerZero/x402 mentions (q-defi-allbridge-what-is, q-defi-x402-on-stellar-what, q-x402-payment-verification, q-soroban-x402-auth-entry-signing) are protocol topics with no RFP-status claim. No contradiction.",
-        "Sibling sweep (hackathons) 2026-11-02: the note's ok-empty observation is dated and scoped to stellarlight's feed; it pins no hackathon roster, so hackathon-lane siblings are unaffected.",
-        "Pass 2 2026-11-02T17:34Z (scf-rfp proposer): rfp-track.md still reads '***October 2026: New Q4 RFPs are coming soon.***' with two empty 'Coming Soon' sections; gh api shows e07b4bfce1 (2026-10-16) is still the latest commit on the path and in the repo. Scout /api/rfps?status=open generatedAt 2026-11-02T17:29:38.076Z: activeQuarter q3-2026, open 2, syntheticRounds 1 (layerzero-dvn, x402-facilitator-bazaar). https://communityfund.stellar.org/awards: 'Deadline to submit:November 9, 2026', awardSubmission close 2026-11-09; Wayback 20261018175817 of the same page shows close 2026-11-08. Parallel web_search and Perplexity (recency month) found no published Q4 2026 brief. Scout lag filed as improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md.",
-        "Pass 2 grading: removed the Scout-attribution partial cap (ADR-0008 keeps partial caps to the three canonical-page cases). Plain rule: an unattributed claim that the withdrawn Q3 briefs are open now is wrong; an attributed, dated report of the Scout rows that flags the official state is correct. Hackathon caution mirrors q-scf-hackathons-active (2026-11-02 Velocity/Waterloo note); feed coverage gap filed as improvements/stellar-light-scout/sls-106-hackathon-feed-omits-stellar-events.md.",
-        "Pass 2 independent verifier (task scf-rfp) re-derived every quoted value above from its own reads and accepted every proposed change.",
-        "Pass 2 sibling sweep 2026-11-02 (.agents/rounds/2026-11-02-golden-audit.md, task scf-rfp): checked q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-how-to-apply, q-scf-submission-lifecycle-deadlines, q-scf-hackathons-active, q-defi-market-making-kelp, q-scf-vs-sdf-enterprise-fund, and the other seven scf-rfp cases. No contradiction: all give the #46 deadline 2026-11-09, and the RFP cases now share the Scout-lag plain rules and the November 8 caution."
+        "A https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md — Current Open RFPs: \"October 2026: New Q4 RFPs are coming soon.\" No named brief.",
+        "B https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a — Latest path commit still the 2026-10-16 Q3 withdrawal; same editorial lineage as official page.",
+        "C https://stellarlight.xyz/api/rfps?status=open — Now open=0, closed=16, activeQuarter=q4-2026; one synthetic scf-round-46 row, not a brief. Both Q3 rows are closed in quarter=q3-2026. Scout is the aggregator under check, not independent corroboration.",
+        "D https://www.grants.watch/programs/stellar-community-fund-build-award — Free general-web sweep for Stellar SCF Q4 2026 RFP open November 2026 found no newly published official brief. Cached Q3 snippets were contradicted by direct official reads. Source-relative absence only; exact queries and stale-source checks in scout.md.",
+        "A https://communityfund.stellar.org/awards — \"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended.",
+        "A https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg — \"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated.",
+        "C https://stellarlight.xyz/api/rfps?status=open — meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation.",
+        "A https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar — \"Monday, November 2, 2026 - Wednesday, November 18, 2026\"; \"Host: Velocity\"; Blockchain Innovation Challenge powered by Stellar.",
+        "A https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar — \"Who: All University of Waterloo students\"; \"When: Nov 2-18, 2026\"; \"$15,000 in prizes to be awarded\".",
+        "C https://stellarlight.xyz/api/hackathons?status=active — One active row: blockchain-innovation-challenge-waterloo-2026, November2–18, Velocity. limit=100 returns29 events. q=istanbul finds completed Stellar Pro Hackathon.",
+        "C https://stellarlight.xyz/api/hackathons?status=upcoming — ok, partial=false, zero upcoming rows; fallback explicitly says no upcoming hackathons in this feed, not none worldwide.",
+        "Scoped sibling sweep and exact replay commands: .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md; primary matrix scout.md. November5 America/New_York observations have November6 UTC receipt timestamps. Existing reverifyBy dates retained; unrelated historical claims were not re-dated."
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Resolve the SCF RFP roster conflict in two goldens before 2026-11-12 (eval-side authoring flaw: live golden trusted the Scout open-RFP view as the brief-status authority with no official cross-check)",
-        "improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md",
-        "improvements/stellar-light-scout/sls-106-hackathon-feed-omits-stellar-events.md"
+        "freshness-drift"
       ]
     },
     "origin": "core-35 rfps-and-hackathons"

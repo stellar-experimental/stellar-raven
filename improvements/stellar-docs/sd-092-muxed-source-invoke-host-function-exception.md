@@ -10,6 +10,9 @@ evidence:
   - "Published page: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md; SHA256 58947c5707163492a6e52d435166ad8029feed7015dc141c1f8c8a7e9294a1e1."
   - "Case q-pc-muxed-accounts; review SHA256 c00e62867a4934936a47c1996858999aaf8d818cfe16be782511e1c2ea49c62e; packet SHA256 1c8b6c7941e2ab6fd10a19e43363c47c483140ae89ce7c9d7c6d45b56ec37a19; full source-row SHA256 003eda477402f2e86554d0ba00d5cb01040b824e2ebda939448371ce6ca6fb0a."
   - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3039
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live matrix still permits source of ANY operation/transaction with no InvokeHostFunction exception. PR3054 green/BLOCKED/review-required; Nov5 followup scopes destination muxing to MuxedAddress contract argument. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-092"
 ---
 
 ## Finding

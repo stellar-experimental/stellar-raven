@@ -11,6 +11,8 @@ evidence:
   - upstream issue filed 2026-07-09: https://github.com/stellar/stellar-docs/issues/2575
   - maintainer response 2026-07-13: https://github.com/stellar/stellar-docs/issues/2575#issuecomment-4962781289 — adding a six-year-old deprecation notice would be noise because the retired SEP-6 interactive components are not otherwise documented on the site
 recurrences:
+  - date: 2026-11-06
+    evidence: "Anchors and SEP6 tutorial/search omit deprecated wording; current canonical SEP still states interactive components deprecated. Repo-wide matching phrase scan empty. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-009"
   - date: 2026-11-02
     evidence: live re-check on the Mintlify docs search after the 2026-10-22 migration: `stellarDocs.search_docs` `SEP-6 interactive components deprecated SEP-24` with includeContent returns the SEP-6 tutorial, anchors fundamentals, SDP get-sep-24-info, Anchor Platform SEP guide, and SEP-10 tutorial; no returned section contains `deprecat`. The gap is content, not the search backend. Ledger: .agents/rounds/2026-11-02-mintlify-migration.md
   - date: 2026-11-02

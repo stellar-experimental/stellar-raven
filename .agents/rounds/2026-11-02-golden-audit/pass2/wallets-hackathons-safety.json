@@ -362,7 +362,7 @@
    "rootCause": [
     "freshness-drift",
     ".agents/TODO.md — Add the Varial rename to the goldens that name Freighter",
-    "improvements/stellar-docs/sd-060-x402-wallet-list-albedo-auth-entry.md"
+    "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-060-x402-wallet-list-albedo-auth-entry.md"
    ],
    "siblings": "q-x402-payment-verification; q-smart-wallet-fee-sponsorship; q-eco-freighter-wallet; q-tool-freighter-wallet: no sibling names a different x402 roster; Out of scope: eval register cluster-125 still says the roster 'excludes Freighter Mobile' (consistency F6); needs a register update outside this lane (eval:qa:register is barred here)."
   },
@@ -1072,7 +1072,7 @@
     "sources": [
      {
       "class": "B",
-      "ref": "improvements/stellar-docs/sd-060-x402-wallet-list-albedo-auth-entry.md",
+      "ref": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-060-x402-wallet-list-albedo-auth-entry.md",
       "observedAt": "2026-11-02",
       "quote": "id sd-060, status verified, upstreamTitle 'Remove Albedo from the x402 auth-entry signing wallet list' (file is untracked in the worktree; not yet in improvemen…"
      },

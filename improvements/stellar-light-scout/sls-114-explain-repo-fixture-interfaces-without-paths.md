@@ -10,6 +10,9 @@ evidence:
   - "2026-11-02 gh api repos/stellar/stellar-horizon/git/trees/597544b60c20f8536d532d32abca8462394874f3?recursive=1 (the response's scannedRef): every Rust contract is under internal/integration/contracts/, for example internal/integration/contracts/increment/src/lib.rs, add_u64/src/lib.rs, bulk/src/lib.rs, constructor/src/lib.rs, and store/src/lib.rs (the source of Contract.set and Contract.remove)."
   - "Dedupe 2026-11-02: Stellar-Light/stellarlight issue 1739 (closed) and PR 1806 (merged) fixed the product classification. The sls-088 recommendation also asked for interface source paths, and that part remains. No other active or resolved Raven record covers interface source paths."
   - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1906
+recurrences:
+  - date: 2026-11-06
+    evidence: "`/api/repos/explain?repo=stellar/stellar-horizon&q=Which%20Horizon%20ingestion%20constant%20pins%20the%20highest%20supported%20protocol%20version%2C%20and%20what%20is%20its%20value%3F` — Partial code progress, original live residual still reproduces. kind platform/isDeployableContract false, six fixture signatures unchanged; contractInterfacePaths:null; scannedRef597544b60c20f8536d532d32abca8462394874f3/scannedAt11-02. Fresh `gh api .../git/trees/REF?recursive=1` locates five source files under internal/integration/contracts/{increment,add_u64,bulk,constructor,store}/src/lib.rs. Next: Keep. Next after owner scan-repo-code execution for Horizon: fixture interfaces removed or explicitly path-qualified/marked fixtures. Also check rs-soroban-env adjacent scan before generalizing fix. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
 ---
 
 ## Finding

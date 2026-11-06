@@ -38,7 +38,7 @@
       "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
       "check": {
         "kind": "count",
-        "pattern": "\\| \\[[^\\]]+\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} ✅ \\|",
+        "pattern": "\\| \\[[^\\]]+\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} \u2705 \\|",
         "count": 9,
         "guard": "\\| Provider \\| Futurenet \\| Testnet \\| Mainnet \\| Dedicated Nodes \\| RPC Archive \\|"
       }
@@ -50,7 +50,7 @@
       "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
       "check": {
         "kind": "count",
-        "pattern": "\\| \\[(?:Validation Cloud|Gateway|Ankr|Obsrvr|OnFinality|Lightsail Network - Quasar|Exaion|GetBlock|node101)(?:\\\\\\*)?\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} ✅ \\|",
+        "pattern": "\\| \\[(?:Validation Cloud|Gateway|Ankr|Obsrvr|OnFinality|Lightsail Network - Quasar|Exaion|GetBlock|node101)(?:\\\\\\*)?\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} \u2705 \\|",
         "count": 9,
         "guard": "\\| Provider \\| Futurenet \\| Testnet \\| Mainnet \\| Dedicated Nodes \\| RPC Archive \\|"
       }
@@ -92,7 +92,7 @@
       "url": "https://stellar.org/foundation/team",
       "check": {
         "kind": "present",
-        "pattern": "\"description\":\"Founder and Chief Scientist\"(?:(?!\"_type\":\"card\").){0,4000}?\"title\":\"David Mazières\""
+        "pattern": "\"description\":\"Founder and Chief Scientist\"(?:(?!\"_type\":\"card\").){0,4000}?\"title\":\"David Mazi\u00e8res\""
       }
     },
     {
@@ -260,6 +260,17 @@
         "kind": "present",
         "pattern": "Scale Audit\\s+>\\$100,000,000 TVL or equivalent\\s+0%",
         "flags": "i"
+      }
+    },
+    {
+      "id": "x402-albedo-absent",
+      "caseId": "q-soroban-x402-auth-entry-signing",
+      "caseAsOf": "2026-11-06",
+      "url": "https://developers.stellar.org/docs/build/agentic-payments/x402.md",
+      "check": {
+        "kind": "absent",
+        "pattern": "Albedo",
+        "guard": "Varial Browser Extension"
       }
     }
   ]

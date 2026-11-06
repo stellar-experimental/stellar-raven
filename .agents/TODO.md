@@ -54,6 +54,44 @@ the backend's rate limits and terms.
 
 ## Improvements follow-up
 
+### Recheck November 5 partial fixes after deployment or owner data jobs
+
+The [round ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding tables cover all
+130 starting findings. Recheck only when the named change or new evidence arrives; untouched
+issues do not need reminders.
+
+- Scout: after [PR1924](https://github.com/Stellar-Light/stellarlight/pull/1924) deploys and its
+  curation/enrichment jobs run, repeat sls-099/100/102/112/113 originals. For sls-107, require the
+  enabled issuer refresh to populate issuer/source/date fields, including the nine affected
+  AUDD/Currency One records and the MGUSD control. For sls-114, require a new Horizon code scan
+  and verify fixture paths/classification. For sls-101, repeat aggregate and Spiko/Sentora/Etherfuse
+  provider checks after remap/enrichment; warnings are fixed but values remain stale.
+- SCF coverage: after draft [PR1922](https://github.com/Stellar-Light/stellarlight/pull/1922)
+  is rebased, merged and applied, repeat the full round-45 directory comparison for sls-111.
+  Liqvid must have awarded rounds 37 and 45, never submitted-but-not-awarded rounds 30 and 44.
+  The proposed 11 edits do not replace missing-project intake.
+- Docs: the [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) identifies each unmerged
+  PR, review/check blocker and exact live trigger. Recheck those pages after deployment;
+  green checks alone do not close findings. The author-owned protocol PR2059 is behind but
+  green and awaiting review; respond to substantive review without a keepalive rebase.
+- sls-097: the schema portion improved, but the paid-backed original partner-match trigger
+  was not run. Its next full verification needs explicit authorization for that method;
+  schema inspection alone does not prove the original runtime behavior.
+- Lumenloop ll-022/023/024: the original records did not retain a reproducible wrong milestone,
+  preview-boundary omission or stale venue row. The current checks do not prove those content
+  errors. Before any future closure or renewed claim, obtain the exact original/corrected record
+  or an owner explanation of the change; otherwise reassess the evidentiary basis. See the
+  [other-collections table](rounds/2026-11-05-truth-maintenance/other.md) for exact IDs and queries.
+- cs-006: the Paxos metadata wording still reproduces, but no public repository owns the served
+  TOML. Keep intake unclear until a metadata repository is identified or the owner authorizes
+  contact through the published support channel. Do not file against an unrelated contract repo.
+- sk-031: the orphan legacy skill remains live. After the owner applies the supplied workflow
+  cleanup patch, verify both legacy/current skill URLs and preserve preview deployments.
+
+
+Done when each triggered verification has a fresh live result and independent retirement review,
+or a precise remaining defect in its active finding. Source tables carry the exact URLs/commands.
+
 ### Monitor the Horizon protocol-ceiling note behind the rejected recovery experiment
 
 The rejected `repository-tooling-recovery-v2` implementation does not ship
@@ -546,7 +584,8 @@ date into 2027. Eight cases keep earlier dates, because each one depends on a kn
 - SCF #46 Submission closes 2026-11-09 and Panel Review starts 2026-11-11: `q-scf-open-rfps`
   (2026-11-10), `q-scf-rfp-tooling` (11-11), `q-scf-current-round` and
   `q-edge-fresh-latest-scf-round` (11-12). Also check whether the official RFP Track page has
-  published Q4 briefs, and whether Scout still lists the withdrawn Q3 briefs (`sls-096`).
+  published Q4 briefs and whether Scout agrees. The November 5/6 round verified the withdrawn
+  Q3 briefs are now closed in Scout and retired `sls-096`; do not carry forward the old lag claim.
 - The Bell/P30 Mainnet vote is on 2026-11-23 17:00 UTC: `q-pc-protocol-upgrade-timing`,
   `q-protocol-version-history-list`, and `q-edge-fresh-latest-protocol-version` (11-24), and
   `q-hist-quantum-preparedness-plan` (12-01). The `mainnet-protocol-29` source sentinel fires when
@@ -842,17 +881,6 @@ behavioral wording through `golden-truth`. Raising the cap needs an owner decisi
 Independent activation review and the later activation commit remain outstanding.
 
 Done when: the cases pass `npm run eval:qa:lint -- --stale --enforce-floors` and are merged.
-
-## Hosting
-
-### Redirect the remaining alias paths after the docs move to raven.stellar.org
-
-`raven.stellar.buzz` and `agents.stellar.buzz` redirect browser pages to `raven.stellar.org`
-(`src/hosts.ts`). `/mcp`, `/authorize`, `/callback`, `/token`, `/register`, and `/.well-known/*`
-still serve on each alias. The reason: the MCP SDK rejects a protected resource whose origin
-differs from the configured URL, and Stellar Docs still names `https://raven.stellar.buzz/mcp`.
-The fix is stellar/stellar-docs#3023. Done when that PR merges and live docs name no alias. Then
-redirect every alias path, and tell alias users to reconnect at `https://raven.stellar.org/mcp`.
 
 ## Deferred programs
 

@@ -13,6 +13,9 @@ evidence:
   - Affected golden case: eval/qa/corpus/battery/defi-ecosystem/q-defi-blend-alternatives.json
   - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/slender.yaml. Audit: https://www.certora.com/reports/slender (2024-05-22).
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/stellar-ecosystem-db/issues/14
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_project slender; current YAML; Certora Slender audit — Directory still borrow without collateral; primary audit says over-collateralized ordinary loan and discusses flash loans separately. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-033."
 ---
 
 ## Finding

@@ -16,6 +16,9 @@ evidence:
   - "2026-11-03 dedupe: searched cloudflare/agents issues for createAI, resume, adaptive thinking, anthropic effort, providerOptions anthropic, and output_config. No open issue covers the Anthropic options. An open issue from another user already requests the resume opt-out (see Finding)."
   - "Consumer impact: Raven's demo chat sends providerOptions.anthropic { thinking: { type: \"adaptive\" }, effort } for Claude 5 catalog IDs (src/demo/model-config.ts demoAnthropicProviderOptions). It reaches catalog /run today through workers-ai-provider's anthropic run wire (runWireFormat: \"anthropic\")."
   - upstream issue filed 2026-11-03: https://github.com/cloudflare/agents/issues/2809
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh npm agents0.33.0 captured-request repro with mocked binding; inspect current source and issues2809/2790/2631 — Catalog still drops thinking/effort; native route keeps options but changes transport; resume:false unknown field still resumes once with zero networkCalls. Bot confirmed2809; bot closed2790 not_planned.2631 remains open. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-010."
 ---
 
 ## Finding
@@ -106,3 +109,7 @@ Source lines at tag `agents@0.32.0`, unchanged on `main` at `1f3bd921`:
    Document which provider options each wire format forwards.
 3. Lower priority: add the stream-resume opt-out that #2790 requests.
    A stream with that option must surface its connection failure without a resume request.
+
+## Current upstream disposition — 2026-11-06
+
+The request-body defect remains reproducible in agents 0.33.0. Automated triage confirmed issue 2809; this is not human maintainer acceptance. The separate resume-option request in issue 2790 was declined and closed `not_planned`. Do not treat that request as pending or re-file it; the main provider-options defect and issue 2631 remain open.

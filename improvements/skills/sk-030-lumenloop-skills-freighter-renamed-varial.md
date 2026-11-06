@@ -13,6 +13,9 @@ evidence:
   - Golden provenance: q-ti-skill-builder-quickstart and q-ti-skill-integration-finder exposed the stale wording on 2026-11-02. Neither case grades the wallet name.
   - The earlier four-file source verification matched the Raven pin d92c56bda17ab702d3202335cfe814d64e70e191. This correction targets current upstream files.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-skills/issues/6
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh six Lumenloop skills; Freighter README/redirect — Eight Freighter prose lines across six original files, no Varial; canonical wallet now Varial. All adjacent originally identified locations checked. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-030."
 ---
 
 ## Finding

@@ -15,6 +15,8 @@ evidence:
   - partial-fix verification posted and read back 2026-07-15: https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-4982290048
   - 2026-08-10 Scout OpenAPI 1.8.40 adds Repo activityState and activitySignals as a partial upstream response, but does not populate project statusBasis or statusSourceUrl; its activity semantics say dormant is a known commit older than 180 days (an observation, not a death verdict) and unknown is no commit date held
 recurrences:
+  - date: 2026-11-06
+    evidence: "`/api/projects/search?q=streaming%20recurring%20payments&limit=100`; original Slender/Laina/K2 Lend/OrbitCDP/Fluxity searches; full seven-category pagination — Partial. 1,006 distinct searchable rows: all have lifecycle date/basis; every non-unverified lifecycle has a source. 104 positive deployment qualifiers; 55 lack deployment.sourceUrl, 35 lack supportedNetworks. Original five fixtures now have lifecycle provenance. RenderGate and CleverCon are now testnet, correcting the prior mainnet mismatch, but their deployment source remains null. Allbridge still claims mainnet/onchain-activity with null deployment source. Unknown deployment fields remain honest unknowns, not defects. Next: Keep residual. Add this population evidence and corrected RenderGate/CleverCon progress. Next: after a deployment-provenance curation/change, rerun category pages and require source/date for positive claims; preserve unknown semantics. No routine reminder on closed threads. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
   - date: 2026-07-15
     evidence: Scout 1.7.26 gives Fluxity and Freighter dated source-inherited statusBasis values, but statusSourceUrl remains null and supportedNetworks remains empty
   - date: 2026-08-10

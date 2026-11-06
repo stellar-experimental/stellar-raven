@@ -1,0 +1,860 @@
+[
+  {
+    "id": "cs-001",
+    "file": "improvements/canonical-source/cs-001-codemode-search-short-token-prefix.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Run original10 searchConnectors cases against freshly downloaded cloudflare/agents main search.ts",
+    "liveRecheck": "False matches unchanged27/55/45/27; four no-short-token controls empty; intended matches153/481. Exact short-prefix rule remains line68.",
+    "evidence": "search-result.txt; cs001-search.body; agents-head.json",
+    "upstreamRefs": [
+      "https://github.com/cloudflare/agents/issues/2296"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "cs-004",
+    "file": "improvements/canonical-source/cs-004-circle-stellar-contracts-handler-names.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET Circle stellar-contracts.md; current interface source; stellar contract info interface on mainnet contract CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL",
+    "liveRecheck": "Docs still both handle_receive_*; fresh deployed interface and source both handle_recv_*. Both functions checked.",
+    "evidence": "circle-stellar-contracts.body:84-85; circle-handlers.body; circle-interface.txt",
+    "upstreamRefs": [
+      "https://github.com/circlefin/stellar-cctp/issues/36"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "cs-005",
+    "file": "improvements/canonical-source/cs-005-circle-stellar-arc-quickstart-fast-threshold.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET Circle Stellar\u2192Arc quickstart,supported chains,finality; Iris fees27/0 and original attestation hash",
+    "liveRecheck": "Both Stellar burn examples still1000/Fast; Stellar Fast=N/A, Standard~5sec. Original mainnet source27 message request1000 executed2000; fee API still lists both.",
+    "evidence": "circle-transfer-usdc-stellar-arc.body:363,615; circle-supported-chains-and-domains.body; circle-finality-and-block-confirmations.body; circle-attestation.body; circle-fees.body",
+    "upstreamRefs": [
+      "https://github.com/circlefin/stellar-cctp/issues/37"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "cs-006",
+    "file": "improvements/canonical-source/cs-006-paxos-stellar-toml-stale-llc-entity-name.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET Paxos stellar.toml and current newsroom; enumerate public Paxos org repos and candidate trees",
+    "liveRecheck": "ORG_DESCRIPTION still Paxos Trust Company LLC. Newsroom confirms Dec12,2025 national-trust conversion.136 public repos enumerated; three plausible token/Stellar repos lack published stellar.toml.",
+    "evidence": "paxos-toml.body:12,16; paxos-news.body; paxos-owner-check.json",
+    "upstreamRefs": [],
+    "resolvingPRs": [],
+    "proposedChange": "Keep verified/intake unclear. Do not file to unrelated contract repo. Public TOML names support@paxos.com, but this lane sends no message.",
+    "nextConcreteTrigger": "Owner supplies metadata repository/intake or authorizes contact to published Paxos support; repeat exact TOML field."
+  },
+  {
+    "id": "cs-007",
+    "file": "improvements/canonical-source/cs-007-stellar-8004-readme-mpp-expansion.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh trionlabs/stellar-8004 README,registration UI,mpp-client; repo metadata and all issues/PRs",
+    "liveRecheck": "README17 still Managed Payment Protocol; current UI85 says Machine Payments Protocol; mppx client remains. Historical migration path removed (404), so use current UI/client evidence. Repo public,issues enabled,not archived; no matching MPP-name issue/PR found.",
+    "evidence": "8004-README.md.body; 8004-StepAdvanced.svelte.body; 8004-mpp-client.ts.body; 8004-owner.json; 8004-issues.json; 8004-tree.json",
+    "upstreamRefs": [],
+    "resolvingPRs": [],
+    "proposedChange": "Appropriate to file one narrow README correction via existing trionlabs/stellar-8004 intake; update obsolete migration evidence first. No write performed.",
+    "nextConcreteTrigger": "Root dry-runs standardized filer after fresh dedupe; expected one prose-name correction."
+  },
+  {
+    "id": "cs-008",
+    "file": "improvements/canonical-source/cs-008-cap-0046-06-contract-executable-token-name.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh CAP0046-06 versus current Stellar-contract.x",
+    "liveRecheck": "CAP still CONTRACT_EXECUTABLE_TOKEN; XDR current STELLAR_ASSET. leighmcculloch explicitly declined and closed not_planned; no change since decline.",
+    "evidence": "protocol-cap-0046-06.md.body:351; xdr.body; issue2056",
+    "upstreamRefs": [
+      "https://github.com/stellar/stellar-protocol/issues/2056"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep declined-upstream; no refiling or reminder.",
+    "nextConcreteTrigger": "Only materially new maintainer acceptance or corrected source justifies revisiting."
+  },
+  {
+    "id": "cs-009",
+    "file": "improvements/canonical-source/cs-009-security-portal-misses-openzeppelin-stellar-audits.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET portal/api/v1/reports; GH OZ audits folder/release; Scout audit mirror",
+    "liveRecheck": "Portal still only OZ reports35(v0.3.0-rc.2) and2(0.1.0), versus8 published PDFs includingv0.8.0. Scout repeats2. Two contributor assignment comments are not owner acceptance or delivered PR.",
+    "evidence": "portal.body; oz-audits.json; oz-release.json; scout-live-audits-auditor=OpenZeppelin.body; issue256",
+    "upstreamRefs": [
+      "https://github.com/Inferara/soroban-security-portal/issues/256"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record contributor activity accurately, no response needed to speculative claims.",
+    "nextConcreteTrigger": "Owner ingests missing six reports; rerun portal and mirror, inspect each version."
+  },
+  {
+    "id": "cs-010",
+    "file": "improvements/canonical-source/cs-010-createai-catalog-drops-anthropic-provider-options.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh npm agents0.33.0 captured-request repro with mocked binding; inspect current source and issues2809/2790/2631",
+    "liveRecheck": "Catalog still drops thinking/effort; native route keeps options but changes transport; resume:false unknown field still resumes once with zero networkCalls. Bot confirmed2809; bot closed2790 not_planned.2631 remains open.",
+    "evidence": "createai-result.jsonl; cs010-language.body:428; cs010-wire.body; cs010-transport.body; upstream-summary.json",
+    "upstreamRefs": [
+      "https://github.com/cloudflare/agents/issues/2631",
+      "https://github.com/cloudflare/agents/issues/2790",
+      "https://github.com/cloudflare/agents/issues/2809"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep primary bug active. Update lower-priority resume recommendation to record explicit decline; do not present2790 as open. Bot triage is not human maintainer acceptance.",
+    "nextConcreteTrigger": "Owner Messages-wire change/release: rerun low/xhigh/native/resume controls; preserve2631 system-array concern."
+  },
+  {
+    "id": "cs-011",
+    "file": "improvements/canonical-source/cs-011-sep-0013-status-term-outside-readme-terms.md",
+    "verdict": "fixed",
+    "originalTrigger": "Fresh master ecosystem/README.md and sep0013; compare all60 linked SEP preambles",
+    "liveRecheck": "SEP0013 now Abandoned (In favor of SEP-6), matching README. All60 status rows match. Resolving PR2062 merged Nov4 at ae994187e5e3d68308de1f8cf0d546aeafe79e03.",
+    "evidence": "protocol-sep-0013.md.body:7; protocol-README.md.body:119; cs011-sweep.json; cs011-pr2062.json",
+    "upstreamRefs": [
+      "https://github.com/stellar/stellar-protocol/issues/2055"
+    ],
+    "resolvingPRs": [
+      "https://github.com/stellar/stellar-protocol/pull/2062"
+    ],
+    "proposedChange": "Fixed candidate. Cross-review then resolver; source resolution comment on original2055 and resolving2062 as appropriate. No inbound handoff found.",
+    "nextConcreteTrigger": "Independent reviewer repeats full60-row comparison and reference scan."
+  },
+  {
+    "id": "ll-001",
+    "file": "improvements/lumenloop/ll-001-weekly-roundup-slug-dates.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET https://lumenloop.com/api/md/research/stellar-weekly-roundup-week-29-2026",
+    "liveRecheck": "HTTP200: title week of May 29, 2026; Published 2026-06-05; URL still week-29.",
+    "evidence": "public.json; ll-page-stellar-weekly-roundup-week-29-2026.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/21"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-002",
+    "file": "improvements/lumenloop/ll-002-messari-q1-2026-under-extraction.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_document {collection:av,id:2207}",
+    "liveRecheck": "HTTP200: summary 344 characters, long_summary 694; thin Messari interview extraction unchanged.",
+    "evidence": "live.json:doc-av-2207",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/22"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-003",
+    "file": "improvements/lumenloop/ll-003-region-vocabulary-free-text.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_regions {}",
+    "liveRecheck": "100 values; six case-only duplicate pairs africa/Africa, asia/Asia, europe/Europe, global/Global, latam/LATAM, mena/MENA.",
+    "evidence": "live.json:regions",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/23"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-004",
+    "file": "improvements/lumenloop/ll-004-partner-items-hidden-from-tools.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Same-key GET /v1/tools and /v1/me; anonymous /v1/tools control; repeated twice",
+    "liveRecheck": "Both passes: authenticated18=anonymous18; account available21/visible21. Public listing now explicitly calls itself Guest lane only. No account-scoped operation called.",
+    "evidence": "discovery-0.json; discovery-1.json; public-tools.json",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/42"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; distinguish observed count mismatch from an inferred credential entitlement. New public scope wording may describe intentional policy.",
+    "nextConcreteTrigger": "Owner clarification or deployment: repeat same-key names/counts and account metadata; do not infer resolution from one pass."
+  },
+  {
+    "id": "ll-005",
+    "file": "improvements/lumenloop/ll-005-person-entity-empty-lane.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL find_content_by_entity person Denelle Dixon, Tyler van der Hoeven, Justin Rice; organization Stellar Development Foundation control",
+    "liveRecheck": "All three person groups empty; organization groups populated. Schema/description still advertises person; no explicit restriction in returned data.",
+    "evidence": "live.json:entity-*; schema-find_content_by_entity.json",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/19"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-006",
+    "file": "improvements/lumenloop/ll-006-article-ranking-freshness.md",
+    "verdict": "partial",
+    "originalTrigger": "LL search_content_semantic query=\"tokenized RWA stablecoin on-chain activity Stellar SDF report size volume\",types=[research,articles],limit10; Q1 2026 quarterly report control",
+    "liveRecheck": "Old Q2 2021/Q4 2020 top-ten failure no longer appears: current top-ten articles are RWA-focused recent editions. 5945 absent broad, first in focused control. Similarity ordering still non-monotonic (.580,.556,.677). Bounded July query remains semantic rather than chronological.",
+    "evidence": "live.json:ranking,ranking-control; followup.json:jul-window",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/18"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Record partial progress; do not assert no freshness weighting from output alone. Retain ordering/recency-contract uncertainty.",
+    "nextConcreteTrigger": "Inspect owner ranking contract/change; compare current recurring-series editions and returned final-score/order semantics."
+  },
+  {
+    "id": "ll-007",
+    "file": "improvements/lumenloop/ll-007-event-summary-date-prose-mismatch.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_document events1597,1598,1444; original Bhopal/Jabalpur semantic query",
+    "liveRecheck": "1597/1598 structured June27 versus July27 prose; 1444 title Jaipur but slug and summary Goa.",
+    "evidence": "live.json:doc-events-1597,doc-events-1598,doc-events-1444,bhopal",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/20"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-008",
+    "file": "improvements/lumenloop/ll-008-directory-record-coverage-field-quality.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_project lobstr,moneygram,soroswap; current YAML controls",
+    "liveRecheck": "LOBSTR Indonesia/Estonia unchanged; MoneyGram 200-country corporate description still unscoped; Soroswap category Financial Protocols remains source-specific.",
+    "evidence": "live.json:project-lobstr,project-moneygram,project-soroswap; yaml-*.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/stellar-ecosystem-db/issues/3"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-009",
+    "file": "improvements/lumenloop/ll-009-messari-report-misattribution.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET Lumenloop markdown roundup week-29-2026 and media/state-stellar-q1-2026-beyond",
+    "liveRecheck": "Roundup still labels YouTube t0agtgLajhg as Messari report beside $2.8B/1,700; media still says In Q1 2026 Stellar reached $2.8B.",
+    "evidence": "ll-page-stellar-weekly-roundup-week-29-2026.body; ll-page-state-stellar-q1-2026-beyond.body; live.json:doc-av-2207,doc-articles-5945",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/25"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-010",
+    "file": "improvements/lumenloop/ll-010-roundup-rwa-milestones-unscoped.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL semantic weekly roundups Jun19/May29 plus get_document research133",
+    "liveRecheck": "Jun19 $3B and May29 $2.8B milestones still lack metric methodology/measurement scope; adjacent article5945 has separate $2B snapshot.",
+    "evidence": "live.json:roundup; followup.json:research133; ll-page-stellar-weekly-roundup-week-29-2026.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/27"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-011",
+    "file": "improvements/lumenloop/ll-011-yieldblox-incident-unit-status-errors.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_document research66 and articles6520",
+    "liveRecheck": "6520 short summary still says $61M XLM; long summary says 61M XLM and 1M USDC from YieldBlox community pool. Research66 still broadens to Blend and says preventing full fund exfiltration.",
+    "evidence": "live.json:doc-research-66,doc-articles-6520",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/24"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-012",
+    "file": "improvements/lumenloop/ll-012-rwa-live-planned-recall.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL search_directory real-world assets,limit10; exact Benji/WisdomTree/Figure/Spiko/Etherfuse; CRDT/CRDYX article searches",
+    "liveRecheck": "Original broad query includes DTCC and misses headline exact-name records; no typed product deployment state. Exact queries recover named issuers. CRDT/CRDYX article searches empty and directory searches semantic neighbors.",
+    "evidence": "last-live.json:rwa-original; live.json:directory-*,search-CRDT,search-CRDYX; wisdomtree-toml.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/29"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-013",
+    "file": "improvements/lumenloop/ll-013-scf-submission-award-fields.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_scf_submissions blend,aquarius,soroswap,lobstr; get_project lobstr; public SCF LOBSTR page",
+    "liveRecheck": "Blend bare budget50000 lacks currency/status/paid basis. Aquarius4/Soroswap4 rows share gap. LOBSTR awarded_total267463 still equals rounded primary totalPaid267462.64 rather than totalAwarded232000.",
+    "evidence": "live.json:scf-*,project-lobstr; GET https://communityfund.stellar.org/project/lobstr-gcn (lobstr-scf.body)",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/26"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-014",
+    "file": "improvements/lumenloop/ll-014-project-content-false-positive-provenance.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL find_content_about_project {slug:soroswap,limit:10}; semantic and similarity controls",
+    "liveRecheck": "Mixed exact Soroswap and adjacent content, including unrelated proposal payload rows; no per-row match class/evidence span. __truncated warning exists but does not establish relevance.",
+    "evidence": "followup.json:soroswap-content; live.json:soroswap,find_similar_projects_semantic",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/30"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-015",
+    "file": "improvements/lumenloop/ll-015-generated-content-primary-date-conflict.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_document research141; GET https://horizon.stellar.org/ledgers/63386819",
+    "liveRecheck": "Roundup still says activated July9; ledger63386819 remains protocol27 at 2026-07-08T17:00:10Z.",
+    "evidence": "live.json:doc-research-141; horizon-boundary.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/28"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-016",
+    "file": "improvements/lumenloop/ll-016-historical-dispute-provenance.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL search_content_semantic Stellar 2014 fork Ripple consensus 2015 SCP,types articles/research",
+    "liveRecheck": "Historical article candidates returned (4640,1912,78,4644,3899,3908,5374); no typed claimant/target-event/dispute/corroboration relation. This proves metadata gap, not a newly proven false causal sentence.",
+    "evidence": "live.json:historical",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/31"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep scoped to provenance deficiency; do not claim every returned summary suppresses a dispute.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-017",
+    "file": "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
+    "verdict": "partial",
+    "originalTrigger": "LL find_av_passages Tyler van der Hoeven; semantic Tyler and negative control Strupey",
+    "liveRecheck": "AV remains topic neighbors without exact-person provenance. Semantic Tyler mixes exact1487/625 with neighbors. Both Tyler and Strupey now carry _weak_match=true, _top_similarity and explicit generic-filler warning; no per-row exact relation/span.",
+    "evidence": "live.json:av-Tyler van der Hoeven,tyler,negative",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/36"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Record partial safety progress; retain per-result identity provenance request.",
+    "nextConcreteTrigger": "After entity-provenance change, rerun exact Tyler and negative Strupey across AV/content; verify row-level match flags."
+  },
+  {
+    "id": "ll-018",
+    "file": "improvements/lumenloop/ll-018-exact-slug-fuzzy-bleed.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_scf_submissions slug band,tucambio,usdc-swap,fastbuka; name controls",
+    "liveRecheck": "band still mixes band and bando. Three exact secondary slugs empty. USDC Swap name control recovers recqE4Pq1SlYXqzuC with linked_project_slugs=[usdc-swap]. TuCambio/Fastbuka name controls also empty; their record existence not re-proven this round.",
+    "evidence": "live.json:scf-band,scf-tucambio,scf-usdc-swap,scf-fastbuka; last-live.json:usdc-name,tucambio-name,fastbuka-name",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/34"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-019",
+    "file": "improvements/lumenloop/ll-019-av-output-contract-shape-and-date.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL find_av_passages passkeys smart wallets on Soroban,limit10; GET /v1/tools/find_av_passages",
+    "liveRecheck": "Actual data array, declared object.results; rows only summaries/opaque offsets, no transcript. DEVCON2024 av445 created_at2026-04-02 persists; returns still calls created_at recording date.",
+    "evidence": "live.json:av-passkeys smart wallets on Soroban; schema-find_av_passages.json",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/35"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-020",
+    "file": "improvements/lumenloop/ll-020-protocol-27-post-vote-state.md",
+    "verdict": "partial",
+    "originalTrigger": "LL search_documents articles query Zipper; get_document articles8084; broad activation semantic control",
+    "liveRecheck": "Exact Zipper title search only8084, still pre-vote guidance with no typed activation/supersession. Broad search now finds post-vote research including141 (wrong July9 activation, ll-015). Available corpus no longer contains only schedule information.",
+    "evidence": "live.json:search-Zipper,doc-articles-8084,zipper",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/32"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Record partial coverage progress; retain missing explicit supersession and incorrect activation evidence under ll-015.",
+    "nextConcreteTrigger": "After owner change inspect exact guide relation to correct July8 activation source; do not demand deletion of historical guide."
+  },
+  {
+    "id": "ll-022",
+    "file": "improvements/lumenloop/ll-022-cctp-milestone-provenance.md",
+    "verdict": "inconclusive",
+    "originalTrigger": "LL get_document articles6461",
+    "liveRecheck": "CCTP live prose and publication timestamp, no typed technical/deployment/announcement milestones. No specific wrong May8 date reproduced; original file itself says proposed pending such a response.",
+    "evidence": "live.json:doc-articles-6461",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/38"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep uncertainty; metadata request reproduces but alleged wrong-date claim is unproven. Do not retire or assert corrected.",
+    "nextConcreteTrigger": "Capture an actual wrong/unqualified milestone answer in source content or owner event schema decision."
+  },
+  {
+    "id": "ll-023",
+    "file": "improvements/lumenloop/ll-023-confidential-tokens-preview-status.md",
+    "verdict": "inconclusive",
+    "originalTrigger": "LL get_document articles8877",
+    "liveRecheck": "Short summary explicitly Testnet live now; long summary says developer preview and audits underway before mainnet. Missing structured maturity fields remain, but original alleged boundary-dropping is not reproduced.",
+    "evidence": "live.json:doc-articles-8877",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/39"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep uncertainty; correct existing prose is not proof a previously captured defect was fixed. Avoid treating optional typed fields as demonstrated false content.",
+    "nextConcreteTrigger": "Inspect owner change or a concrete summary that drops preview/network boundary."
+  },
+  {
+    "id": "ll-024",
+    "file": "improvements/lumenloop/ll-024-meridian-event-supersession.md",
+    "verdict": "inconclusive",
+    "originalTrigger": "LL get_document events1457; search_documents events Yas Marina/Abu Dhabi/Meridian; broad Meridian query; read current1819",
+    "liveRecheck": "1457 now unavailable. Yas Marina empty; Abu Dhabi unrelated1212. Current1819 correctly Lisbon Convento do Beato Oct28-29. No stale Meridian venue row reproduced, and original file never retained one.",
+    "evidence": "live.json:doc-events-1457,search-Yas Marina,search-Abu Dhabi,meridian; followup.json:meridian-exact; last-live.json:meridian1819",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/33"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep explicit inconclusive original scope; do not equate missing old id with deployed supersession fix.",
+    "nextConcreteTrigger": "Owner identifies removed stale record or concrete retained supersession mechanism; otherwise review evidentiary basis."
+  },
+  {
+    "id": "ll-025",
+    "file": "improvements/lumenloop/ll-025-quantum-roadmap-maturity-typing.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_document articles8228 plus linked primary quantum-plan page and CAP0087",
+    "liveRecheck": "Lumenloop still says enterprise wallets can shift immediately; primary retains missing-today/expected qualifiers; roadmap lacks structured deployment state. No new protocol-deployment claim made.",
+    "evidence": "live.json:doc-articles-8228; primary-quantum.body; protocol-cap-0087.md.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/37"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-026",
+    "file": "improvements/lumenloop/ll-026-event-announcement-effective-date-separation.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_document articles5416,4809",
+    "liveRecheck": "Announcement5416 keeps Feb9 planned launch in prose;4809 retrospective remains separate; no typed announcement/effective/trade relation.",
+    "evidence": "live.json:doc-articles-5416,doc-articles-4809",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/40"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-027",
+    "file": "improvements/lumenloop/ll-027-redstone-asset-feed-scope.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_document articles8068; linked primary RedStone page; Scout project page",
+    "liveRecheck": "Lumenloop still nine assets in prose with no enumerated/as-of basis. Cross-source units remain unsuitable for asserting a contradictory live numeric total; primary and Scout checked.",
+    "evidence": "live.json:doc-articles-8068; primary-redstone.body; GET https://stellarlight.xyz/project/redstone-finance (scout-redstone-page.body)",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/41"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep scope/basis request; do not infer nine assets equals ten feeds. The guessed /api/projects/redstone-finance route404 was replaced by original public page200.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-028",
+    "file": "improvements/lumenloop/ll-028-list-documents-unknown-sort-silent.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL list_documents articles,limit3 with omitted sort, two bogus sorts,last_seen_at,publishing_date DESC",
+    "liveRecheck": "Bogus/foreign fields return HTTP200 same ids13288,13284,13278 as default; publishing_date differs. No effective sort echo or warning.",
+    "evidence": "live.json:sort-*",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/43"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-029",
+    "file": "improvements/lumenloop/ll-029-output-schema-top-level-shape-drift.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET six public tool schemas; live entity,project similarity,SCF similarity,related projects,tags",
+    "liveRecheck": "All five original public schemas still object.results. Actual entity grouped, similarity/tags arrays, related content object or [] for missing. Valid SCF submission slug control returns array; blend is not an SCF submission id and returned guidance.",
+    "evidence": "schema-*.json; live.json:entity-*,find_similar_projects_semantic,tags,related-*; followup.json:scf-similar",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/35"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-030",
+    "file": "improvements/lumenloop/ll-030-project-record-subproducts-unnamed.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_project wisdomtree; search_directory CRDT; original CRDT/CRDYX semantic query; issuer TOML",
+    "liveRecheck": "Record still says13 digital funds and Gold token, mainnet.tokens empty. Neither returned project nor semantic rows names CRDT/CRDYX. Issuer TOML remains positive product control.",
+    "evidence": "live.json:project-wisdomtree,directory-CRDT,crdt; yaml-wisdomtree.body; wisdomtree-toml.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/44"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-031",
+    "file": "improvements/lumenloop/ll-031-document-id-output-input-types.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL search_documents exact title2+ Years of Neural Quorum Governance; document/related numeric and string10190",
+    "liveRecheck": "Search/document emit string10190; numeric reads succeed; string get_document and get_related_projects both400 invalid_arguments Expected number, received string.",
+    "evidence": "live.json:search-id,doc-articles-10190,doc-string-id,related-number-10190,related-string-10190",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/46"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-032",
+    "file": "improvements/lumenloop/ll-032-freighter-varial-rename-stale-record.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_project freighter; search_directory varial; current YAML and freighter.app redirect",
+    "liveRecheck": "Freighter title,empty aliases,freighter.app unchanged; varial semantic neighbors exclude wallet; old website redirects Varial. Adjacent lumenswap/latch/aha-labs source references checked.",
+    "evidence": "live.json:project-freighter,directory-varial; yaml-freighter.body; freighter-redirect/public.json; yaml-lumenswap/latch/aha-labs.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/stellar-ecosystem-db/issues/13"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-033",
+    "file": "improvements/lumenloop/ll-033-slender-record-collateral-misstatement.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_project slender; current YAML; Certora Slender audit",
+    "liveRecheck": "Directory still borrow without collateral; primary audit says over-collateralized ordinary loan and discusses flash loans separately.",
+    "evidence": "live.json:project-slender; yaml-slender.body; slender-audit.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/stellar-ecosystem-db/issues/14"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-034",
+    "file": "improvements/lumenloop/ll-034-search-directory-alphabetical-no-exact-priority.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL search_directory Blend default and limit1; soroswap,xbull controls",
+    "liveRecheck": "Blend fourth behind account-demolisher/backyard/bexo; limit1 only account-demolisher. Soroswap eighth and xBull second persist.",
+    "evidence": "live.json:directory-Blend,blend-limit1,directory-soroswap,directory-xbull",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/48"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-035",
+    "file": "improvements/lumenloop/ll-035-unknown-arguments-silently-accepted.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL list_documents events time_period upcoming vs period upcoming vs bogus_arg vs no filter; directory/project bogus_arg controls",
+    "liveRecheck": "All HTTP200. Misspelled/unknown/no filter total1201; proper period total17. Published additionalProperties=false; unknown keys silently accepted on directory/project too.",
+    "evidence": "live.json:unknown-*,bogus-directory,bogus-project; schema-list_documents.json; schema-search_directory.json",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/49"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-036",
+    "file": "improvements/lumenloop/ll-036-aquarius-proposal-injection-titles.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL list_documents proposals search onerror limit20; GET Aquarius proposals693..699 and677 control",
+    "liveRecheck": "Seven rows192..198 retain HTML payload title/processed status. All seven source URLs404, control677200. Semantic/project searches still surface contaminated rows; no rendering executed.",
+    "evidence": "live.json:proposals,tyler,negative; public.json:aqua-*",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/50"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-037",
+    "file": "improvements/lumenloop/ll-037-related-projects-nonexistent-content-id-success.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_related_projects article99999999; get_document same id; related690/10190 controls",
+    "liveRecheck": "Unavailable article returns success:true,data:[],error:null; document says not found; valid controls return4/1 mentions.",
+    "evidence": "live.json:related-number-99999999,doc-articles-99999999,related-number-690,related-number-10190",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-backend/issues/51"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "ll-038",
+    "file": "improvements/lumenloop/ll-038-xbull-record-stale-mobile-platforms.md",
+    "verdict": "still-repro",
+    "originalTrigger": "LL get_project xbull; YAML; Apple named listing/lookup, both Play package pages,operator site",
+    "liveRecheck": "Still advertises browsers Android iOS; Apple US listing404/lookup0, Play both404; operator web+extension. No claim installed clients stopped working.",
+    "evidence": "live.json:project-xbull; yaml-xbull.body; public.json:apple,apple-lookup,android-wallet,android-mobile,xbull",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/stellar-ecosystem-db/issues/15"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-004",
+    "file": "improvements/skills/sk-004-av-passages-verbatim-claim.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh Lumenloop dossier,digest,integration-finder main source; LL find_av_passages passkeys query",
+    "liveRecheck": "Dossier Direct quotes, digest verbatim and integration-finder direct quote persist; response has only AI summaries and offsets. Adjacent third skill remains part of action.",
+    "evidence": "stellar-project-dossier.body:51; stellar-ecosystem-digest.body:241; stellar-integration-finder.body:99; live.json:av-passkeys smart wallets on Soroban",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-skills/issues/1"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-005",
+    "file": "improvements/skills/sk-005-onboarding-skills-audience-metadata.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh main dossier frontmatter and neighboring playbooks",
+    "liveRecheck": "name/description/user-invocable only; no audience/transport. Onboarding/playbook separation still not machine-readable.",
+    "evidence": "stellar-project-dossier.body; public.json",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-skills/issues/2"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-007",
+    "file": "improvements/skills/sk-007-ecosystem-digest-hardcoded-date.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh main stellar-ecosystem-digest full worked example",
+    "liveRecheck": "Today is2026-06-08 and frozen query bounds still repeated; no current-date substitution convention.",
+    "evidence": "stellar-ecosystem-digest.body:105,133,186,193,197,199,201",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-skills/issues/3"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-014",
+    "file": "improvements/skills/sk-014-develop-secure-contracts-stellar-vocabulary.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh main develop-secure-contracts description and body",
+    "liveRecheck": "Description component trigger list remains Solidity-centric despite Stellar body/package terms; no explicit audit exclusion. Generic library-first wording does not add missing Stellar triggers.",
+    "evidence": "develop-secure-contracts.body:3; oz-skills-head.json",
+    "upstreamRefs": [
+      "https://github.com/OpenZeppelin/openzeppelin-skills/issues/13"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-015",
+    "file": "improvements/skills/sk-015-oz-stellar-skills-vendor-neutral-triggers.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh main setup-stellar-contracts and upgrade-stellar-contracts descriptions",
+    "liveRecheck": "Generic CLI/project creation and native WASM replacement triggers remain unqualified by OpenZeppelin dependencies.",
+    "evidence": "setup-stellar-contracts.body:3; upgrade-stellar-contracts.body:3",
+    "upstreamRefs": [
+      "https://github.com/OpenZeppelin/openzeppelin-skills/issues/14"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-019",
+    "file": "improvements/skills/sk-019-scout-skill-feedback-workflow-exposure.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh Scout SKILL.md and references/api-reference.md",
+    "liveRecheck": "Default skill still lists POST/api/feedback; reference documents encouraged submission and GET schema helper. No feedback submitted.",
+    "evidence": "scout-SKILL.md.body:253; scout-references-api-reference.md.body:267-292,379",
+    "upstreamRefs": [
+      "https://github.com/Stellar-Light/stellar-scout/issues/13"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-022",
+    "file": "improvements/skills/sk-022-oz-upgrade-skill-retired-derive-api.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh OZ upgrade skill versus current upgradeable docs/macros/trait source",
+    "liveRecheck": "Derive Upgradeable/Migratable and Internal traits still recommended; current docs directly implement trait and explain no Migratable trait; current macros lack those derives.",
+    "evidence": "upgrade-stellar-contracts.body:44,48,56,104; oz-doc.body; oz-macros.body; oz-upgradeable.body",
+    "upstreamRefs": [
+      "https://github.com/OpenZeppelin/openzeppelin-skills/issues/14",
+      "https://github.com/OpenZeppelin/openzeppelin-skills/issues/16"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-025",
+    "file": "improvements/skills/sk-025-trustless-work-beta-auth-scope.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh TW beta core-concepts +constitution; Core API intro; SDK transport",
+    "liveRecheck": "Same beta host: skill forbids Bearer and requires x-api-key every request; intro permits wallet-session token; SDK constructs Authorization. Shared constitution remains broad. Deleted PR18 still404, no deployed auth acceptance tested.",
+    "evidence": "tw-core-concepts.md.body:30; tw-constitution.md.body:88,114; tw-intro.body; tw-sdk.body; old-tw-pr18.json",
+    "upstreamRefs": [
+      "https://github.com/Trustless-Work/trustlesswork-skill/issues/6"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-027",
+    "file": "improvements/skills/sk-027-scout-skill-stale-skills-catalog.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh Scout main four files; live skills catalog and original dead slugs/pages",
+    "liveRecheck": "All stale7-SDF/soroban/fixed-install phrases persist on new pin. Live82 entries:8SDF/15Scout/8Lumenloop/12external/39community; soroban API404, smart-contracts200; old soroban/anchors pages404.",
+    "evidence": "scout-*.body; public.json; scout-live-skills.body",
+    "upstreamRefs": [
+      "https://github.com/Stellar-Light/stellar-scout/issues/14"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-028",
+    "file": "improvements/skills/sk-028-scout-skill-stale-builder-count.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh Scout SKILL/API reference; /api/status and builders?q=zzzzqqq",
+    "liveRecheck": "Source still dozens/not hundreds and ~110; status and no-match advisory both401 builders.",
+    "evidence": "scout-SKILL.md.body:91; scout-references-api-reference.md.body:118; scout-live-status.body; scout-live-builders-q=zzzzqqq.body",
+    "upstreamRefs": [
+      "https://github.com/Stellar-Light/stellar-scout/issues/15"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-029",
+    "file": "improvements/skills/sk-029-core-api-ungrouped-error-links-404.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET four ungrouped error URLs plus their grouped pages and stellar-tx-failed control",
+    "liveRecheck": "All four original ungrouped paths404; grouped counterparts200; control200. Skill template unchanged. No API errors intentionally triggered.",
+    "evidence": "public.json:tw-error-*; tw-core-concepts.md.body",
+    "upstreamRefs": [
+      "https://github.com/Trustless-Work/trustlesswork-skill/issues/20"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-030",
+    "file": "improvements/skills/sk-030-lumenloop-skills-freighter-renamed-varial.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh six Lumenloop skills; Freighter README/redirect",
+    "liveRecheck": "Eight Freighter prose lines across six original files, no Varial; canonical wallet now Varial. All adjacent originally identified locations checked.",
+    "evidence": "stellar-project-dossier/ecosystem-digest/integration-finder/builder-quickstart and lumenloop-mcp-connect and stellar-ecosystem-scout.body; freighter-readme.body",
+    "upstreamRefs": [
+      "https://github.com/lumenloop/lumenloop-skills/issues/6"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record local recurrence only.",
+    "nextConcreteTrigger": "Repeat this trigger after an owner change or deployed-fix claim."
+  },
+  {
+    "id": "sk-031",
+    "file": "improvements/skills/sk-031-skills-site-orphaned-soroban-skill.md",
+    "verdict": "still-repro",
+    "originalTrigger": "GET https://skills.stellar.org/skills/soroban/SKILL.md versus smart-contracts; deploy workflow",
+    "liveRecheck": "Legacy orphan still200/71331bytes with12 wasm32-unknown-unknown lines; current skill wasm32v1-none. keep_files:true persists. Bot confirmed cause and supplied unapplied workflow patch requiring human workflow permission.",
+    "evidence": "live-skill-soroban.body; live-skill-smart-contracts.body; deployment.body:92; upstream issue172 comments",
+    "upstreamRefs": [
+      "https://github.com/stellar/stellar-dev-skill/issues/172"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep active; record new bot confirmation and human workflow patch blocker.",
+    "nextConcreteTrigger": "Owner applies workflow patch; deployment must remove orphan while preserving previews; rerun both URLs."
+  },
+  {
+    "id": "sk-037",
+    "file": "improvements/skills/sk-037-dapp-mixed-classic-soroban-batching.md",
+    "verdict": "fixed",
+    "originalTrigger": "Fresh main and served dapp SKILL.md full low-level section; independent local SDK17.4.0 fixture",
+    "liveRecheck": "Both current bodies say exactly one operation and explicitly forbid mixed classic batching; contract-call composition distinguished. Eight fixtures pass including mixed/fee-bump rejection and single-op control.",
+    "evidence": "source-dapp.body:334; live-skill-dapp.body:334; sdk-fixtures-result.json; PR174 and handoff358",
+    "upstreamRefs": [
+      "https://github.com/stellar/stellar-dev-skill/issues/173"
+    ],
+    "resolvingPRs": [
+      "https://github.com/stellar/stellar-dev-skill/pull/174"
+    ],
+    "proposedChange": "Fixed candidate. Root cross-review then resolver; respond to upstream173/174 and close inbound358 only after evidence contract.",
+    "nextConcreteTrigger": "Independent reviewer repeats live paragraph + SDK fixture and reference scan; root reconciles pin."
+  },
+  {
+    "id": "wai-001",
+    "file": "improvements/workers-ai-provider/wai-001-moonshotai-catalog-slug-registry.md",
+    "verdict": "still-repro",
+    "originalTrigger": "Fresh npm workers-ai-provider4.0.1; original mock-binding construction moonshotai/kimi-k3 with openai provider",
+    "liveRecheck": "GatewayDelegateError Unknown gateway provider moonshotai; binding calls0. npm still deprecated. Issue634 closed not_planned by Raven after maintainer mattzcarey closed639 unmerged; no checks/reviews on639.",
+    "evidence": "wai-version.json; wai-result.json; cloudflare_ai_634.json; cloudflare_ai_639.json",
+    "upstreamRefs": [
+      "https://github.com/cloudflare/ai/issues/634",
+      "https://github.com/cloudflare/ai/pull/639"
+    ],
+    "resolvingPRs": [],
+    "proposedChange": "Keep declined-upstream; migration removes consumer dependence but does not fix frozen package.",
+    "nextConcreteTrigger": "Only reviewed lifecycle decision or package fix; no reminder/re-file."
+  }
+]

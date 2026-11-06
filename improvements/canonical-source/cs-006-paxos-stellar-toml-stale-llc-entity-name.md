@@ -17,6 +17,9 @@ evidence:
   - "Independent primary source: the OCC decision letter of 2025-12-12, https://www.occ.gov/news-issuances/news-releases/2025/nr-occ-2025-125e.pdf, says 'The converted bank will operate under the title of Paxos Trust Company, National Association (Bank) under OCC Charter Number 25379.' (Parallel web_search excerpt, 2026-11-02.)"
   - "Owner: Paxos serves this stellar.toml from token-metadata.paxos.com. No public repository holds it: the paxosglobal GitHub repositories found on 2026-11-02 (paxos-token-contracts, stellar-paxos-token-contracts, stellar-render) do not contain the file. The file lists ORG_OFFICIAL_EMAIL=\"support@paxos.com\"."
   - "Golden consumers: eval/qa/corpus/battery/defi-ecosystem/q-eco-pyusd-stellar-freshness.json and q-eco-stablecoins-on-stellar.json cite this stellar.toml as 'stale wording' next to the N.A. entity name."
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: GET Paxos stellar.toml and current newsroom; enumerate public Paxos org repos and candidate trees — ORG_DESCRIPTION still Paxos Trust Company LLC. Newsroom confirms Dec12,2025 national-trust conversion.136 public repos enumerated; three plausible token/Stellar repos lack published stellar.toml. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-006."
 ---
 
 ## Finding

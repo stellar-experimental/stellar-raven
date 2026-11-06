@@ -16,7 +16,7 @@
       "Do NOT treat keyword/semantic matches, directory Live, or app code as proof of exact Wallet typing or current availability.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "GROUNDED 2026-06-25: Lumen Loop / Scout directory wallet records confirm Freighter, Lobstr, Hana, xBull, with StellarTerm + Hot Wallet as adjacent options. Enumerating wallets the directory tracks → scout_projects (free-text directory); lumenloop_search_directory acceptable. Trap = fabricating wallet names or routing to general-web. List is curated, not exhaustive and should be treated as freshness-sensitive.\nAlso good if the answer: Distinguishes wallet types (browser-extension vs mobile vs multi-wallet kits) where the directory supports it.\nGolden cites: The Stellar project directory (scout_projects / lumenloop directory) entries for wallets.\nGT-20 CORRECTION 2026-07-10: grade pagination, exact-type filtering, generatedAt/count/source provenance, duplicate handling, and status-versus-availability separation. Never require a frozen roster/count.\nAccurately quoting the canonical Scout source on wallet `Live` labels as proof of app availability is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. As of 2026-11-02 the Scout and Lumenloop records are still slug `freighter`, name Freighter; an answer that names this wallet Freighter, Varial, or both is not wrong."
+    "notes": "GROUNDED 2026-06-25: Lumen Loop / Scout directory wallet records confirm Freighter, Lobstr, Hana, xBull, with StellarTerm + Hot Wallet as adjacent options. Enumerating wallets the directory tracks → scout_projects (free-text directory); lumenloop_search_directory acceptable. Trap = fabricating wallet names or routing to general-web. List is curated, not exhaustive and should be treated as freshness-sensitive.\nAlso good if the answer: Distinguishes wallet types (browser-extension vs mobile vs multi-wallet kits) where the directory supports it.\nGolden cites: The Stellar project directory (scout_projects / lumenloop directory) entries for wallets.\nGT-20 CORRECTION 2026-07-10: grade pagination, exact-type filtering, generatedAt/count/source provenance, duplicate handling, and status-versus-availability separation. Never require a frozen roster/count.\nAccurately quoting the canonical Scout source on wallet `Live` labels as proof of app availability is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. As of 2026-11-02 the Scout and Lumenloop records are still slug `freighter`, name Freighter; an answer that names this wallet Freighter, Varial, or both is not wrong.\n2026-11-05 scoped rename recheck: Scout now resolves both Freighter and Varial to the same wallet, slug freighter, current name Varial, with Freighter as a former-name alias, the October 29 rename date and varialwallet.com website. Lumenloop still describes the freighter record as Freighter and does not return the wallet for the new name (ll-032). This repairs the Scout identity lag only; the November 2 wallet roster and counts above remain historical observations, not newly verified totals."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -96,6 +96,24 @@
         "ref": "curl -L https://lobstr.co https://xbull.app https://varialwallet.com https://albedo.link https://www.decaf.so https://rabet.io https://beansapp.com",
         "note": "Real-world sample check of seven first-page Wallet records: every site returned HTTP 200.",
         "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/resolve?q=freighter",
+        "observedAt": "2026-11-05",
+        "note": "Together with q=varial, resolves the same freighter slug/current Varial identity; former-name alias Freighter, renamedAt2026-10-29, SDF source and varialwallet.com. search?q=varial&limit=100 returns the wallet as sole strict match."
+      },
+      {
+        "class": "C",
+        "ref": "https://api.lumenloop.com/v1/tools/get_project",
+        "observedAt": "2026-11-05",
+        "note": "Independent other lane: slug freighter still has Freighter title, empty aliases and freighter.app; search_directory query varial returns semantic neighbors without the wallet. Exact evidence other.md row ll-032; this remains an active separate service defect."
+      },
+      {
+        "class": "A",
+        "ref": "https://freighter.app/",
+        "observedAt": "2026-11-05",
+        "note": "Redirects to https://varialwallet.com/; current stellar/freighter README says Varial (formerly Freighter), agreeing with Scout identity repair."
       }
     ],
     "corroboration": [
@@ -242,32 +260,44 @@
             "note": "The official Kit list names Albedo, Varial, Hana, Ledger, Trezor, Lobstr, Rabet, Scopuly, WalletConnect, xBull, HOT Wallet."
           }
         ]
+      },
+      {
+        "claim": "As of2026-11-05 Scout represents the Freighter-to-Varial identity correctly; Lumenloop retains its old freighter record. Neither observation refreshes the historical wallet roster count.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=freighter",
+            "observedAt": "2026-11-05",
+            "note": "Together with q=varial, resolves the same freighter slug/current Varial identity; former-name alias Freighter, renamedAt2026-10-29, SDF source and varialwallet.com. search?q=varial&limit=100 returns the wallet as sole strict match."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.lumenloop.com/v1/tools/get_project",
+            "observedAt": "2026-11-05",
+            "note": "Independent other lane: slug freighter still has Freighter title, empty aliases and freighter.app; search_directory query varial returns semantic neighbors without the wallet. Exact evidence other.md row ll-032; this remains an active separate service defect."
+          },
+          {
+            "class": "A",
+            "ref": "https://freighter.app/",
+            "observedAt": "2026-11-05",
+            "note": "Redirects to https://varialwallet.com/; current stellar/freighter README says Varial (formerly Freighter), agreeing with Scout identity repair."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task full-reverify)",
+      "date": "2026-11-05",
+      "by": "Scout Astra high bounded rename correction; independent review assigned to Docs t2dv",
       "evidence": [
-        "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml pubDate Thu, 29 Oct 2026) — \"Freighter is now Varial, with a new name and a new focus\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/freighter/releases/tag/5.50.0 (published_at 2026-10-29T20:32:42Z) — \"Freighter is now **Varial**. This is the first release under the new name.\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/freighter README and rebrand commit db6d022b (2026-10-28, \"Freighter is now Varial (#3048)\") — \"Varial (formerly Freighter) is a non-custodial wallet extension\"; manifest name \"Varial Wallet\" (observedAt 2026-11-02).",
-        "curl -I: https://www.freighter.app -> 301 https://varialwallet.com/ ; https://docs.freighter.app -> 307 https://docs.varialwallet.com/ (observedAt 2026-11-02).",
-        "General web (Parallel search + Perplexity, one class): https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory ; https://www.tokenpost.com/news/technology/43511 — \"according to a Stellar Foundation blog post published on 2026-10-29\" (observedAt 2026-11-02).",
-        "Store and maintainer: Chrome Web Store listing \"Varial Wallet\" 5.51.0; Firefox AMO API still names \"Freighter\" 5.49.0; repo stays stellar/freighter and npm packages stay under the SDF @stellar scope (observedAt 2026-11-02).",
-        "GET https://stellarlight.xyz/api/projects/resolve?q=freighter — \"subject\": {\"slug\": \"freighter\", \"name\": \"Freighter\", \"status\": \"Live\"} (observedAt 2026-11-02); the q=wallet search row is still name Freighter, slug freighter, status Live (2026-11-02T17:39Z); Lumenloop get_project slug freighter still says \"Freighter is a non-custodial browser extension wallet\" and search_directory 'varial' returns no Varial record (2026-11-02T17:43Z). Corpus lag behind the real-world rename, filed as improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md and improvements/lumenloop/ll-032-freighter-varial-rename-stale-record.md.",
-        "Sibling sweep 2026-11-02: grep -rli 'freighter|varial' eval/qa/corpus/battery -> 20 Freighter cases; 11 are in batch varial-dev; the other Varial-lane siblings (q-eco-freighter-wallet, q-tool-freighter-wallet, q-ti-find-export-secret-key) already state the same 2026-10-29 rename and same-product identity; no sibling names a different date, a different wallet, or a removed @stellar/freighter-api.",
-        "Gospel refresh 2026-11-02 (pass 2): the illustrative dated count moved from the 2026-08-30 observation (keyword total 183; 64 unique Wallet-typed, 31 sole-type) to the 2026-11-02 observation (keyword total 191; 100 + 92 rows, one overlap; 72 unique Wallet-typed, 32 sole-type); first rows still Lobstr, xBull, Freighter; the durable rules are unchanged.",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0 and offset=100 — meta.generatedAt 2026-11-02T17:39:11.718Z / 17:39:12.213Z, counts.total 191, returned 100 and 92, overlap Coca; Raven scout.searchProjects returned the same snapshot.",
-        "2026-11-02 [F] real-world sample: lobstr.co, xbull.app, varialwallet.com, albedo.link, decaf.so, rabet.io, beansapp.com all HTTP 200; [A] developers.stellar.org/docs/tools/developer-tools/wallets lists Varial, Lobstr, xBull, Hana, Albedo, Rabet.",
-        "Freshness: kept tags.freshness live (behavioral contract; the dated count is illustrative) and added truth.reverifyBy 2027-02-15 so the dated example re-enters the stale queue.",
-        "ADR-0008 observation (no change proposed): golden.notes keeps the pre-existing sls-024 Scout partial cap (improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md, still reported-upstream; Scout still labels wallets Live on 2026-11-02). Owner decision on aggregator caps governs it.",
-        "Sibling sweep 2026-11-02 (pass 2): grep 'Wallet-typed|wallet search|183|191|keyword total' -> q-tool-wallets-comparison (role taxonomy, no count), q-eco-lobstr-wallet (no roster count), q-eco-freighter-wallet / q-tool-freighter-wallet (same Freighter=Varial identity); no contradiction. Register clusters naming this case will reopen on its new hash and need the register step."
+        "C https://stellarlight.xyz/api/projects/resolve?q=freighter — Together with q=varial, resolves the same freighter slug/current Varial identity; former-name alias Freighter, renamedAt2026-10-29, SDF source and varialwallet.com. search?q=varial&limit=100 returns the wallet as sole strict match.",
+        "C https://api.lumenloop.com/v1/tools/get_project — Independent other lane: slug freighter still has Freighter title, empty aliases and freighter.app; search_directory query varial returns semantic neighbors without the wallet. Exact evidence other.md row ll-032; this remains an active separate service defect.",
+        "A https://freighter.app/ — Redirects to https://varialwallet.com/; current stellar/freighter README says Varial (formerly Freighter), agreeing with Scout identity repair.",
+        "Exact Scout original-trigger and primary controls: .agents/rounds/2026-11-05-truth-maintenance/scout.md sls-095; independently repeated by Docs in upstream-independent.md. Separate Lumenloop recheck: other.md ll-032. UTC receipts November6 correspond to local November5 round.",
+        "Scoped sibling check: q-eco-hana-wallet-scf notes explicitly date the domain change to2026-11-02 and do not claim current Scout rename lag; no semantic edit needed. Historical roster/counts, truth.asOf11-02, reverifyBy2027-02-15, question/keyFacts/avoid remain unchanged."
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Add the Varial rename to the goldens that name Freighter",
-        "improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md",
-        "improvements/lumenloop/ll-032-freighter-varial-rename-stale-record.md"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-eco-stellar-wallets-list"

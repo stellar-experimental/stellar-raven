@@ -104,7 +104,7 @@
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?limit=200",
             "observedAt": "2026-11-02",
-            "note": "activeQuarter q3-2026; open 2 (LayerZero DVN, x402 Facilitator); all q2-2026 briefs closed. The aggregator under check; it cannot corroborate its own open status (lag filed as improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md)."
+            "note": "activeQuarter q3-2026; open 2 (LayerZero DVN, x402 Facilitator); all q2-2026 briefs closed. The aggregator under check; it cannot corroborate its own open status (lag filed as https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md)."
           },
           {
             "class": "A",
@@ -130,13 +130,13 @@
         "B 2026-11-02: gh api repos/stellar-deprecated/kelp — archived true.",
         "The 'Q2 2026 open RFPs' grading hint was stale; the replacement names no quarter. Pass 2: the open-set row is confirmed-as-of, not disputed: A and B agree no Q3 brief is open, and Scout cannot corroborate itself (q-scf-open-rfps convention). The dated 2026-06-25 history line is kept unchanged.",
         "Sibling sweep 2026-11-02: grep Hummingbot|Kelp|q2-2026|Q2 2026 → q-scf-open-rfps-live (avoid already forbids pinning Q2 2026 names; consistent), q-defi-market-making-kelp, q-scf-open-rfps, q-scf-rfp-tooling; no contradiction.",
-        "Pass 2 2026-11-02: GET https://stellarlight.xyz/api/rfps?q=hummingbot returns hummingbot-integration 'Hummingbot Integration (Trading Engine)', closed, q1-2026, defi. Pass 2 2026-11-02T17:34Z (scf-rfp proposer): rfp-track.md still reads '***October 2026: New Q4 RFPs are coming soon.***' with two empty 'Coming Soon' sections; gh api shows e07b4bfce1 (2026-10-16) is still the latest commit on the path and in the repo. Scout /api/rfps?status=open generatedAt 2026-11-02T17:29:38.076Z: activeQuarter q3-2026, open 2, syntheticRounds 1 (layerzero-dvn, x402-facilitator-bazaar). https://communityfund.stellar.org/awards: 'Deadline to submit:November 9, 2026', awardSubmission close 2026-11-09; Wayback 20261018175817 of the same page shows close 2026-11-08. Parallel web_search and Perplexity (recency month) found no published Q4 2026 brief. Scout lag filed as improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md.",
+        "Pass 2 2026-11-02: GET https://stellarlight.xyz/api/rfps?q=hummingbot returns hummingbot-integration 'Hummingbot Integration (Trading Engine)', closed, q1-2026, defi. Pass 2 2026-11-02T17:34Z (scf-rfp proposer): rfp-track.md still reads '***October 2026: New Q4 RFPs are coming soon.***' with two empty 'Coming Soon' sections; gh api shows e07b4bfce1 (2026-10-16) is still the latest commit on the path and in the repo. Scout /api/rfps?status=open generatedAt 2026-11-02T17:29:38.076Z: activeQuarter q3-2026, open 2, syntheticRounds 1 (layerzero-dvn, x402-facilitator-bazaar). https://communityfund.stellar.org/awards: 'Deadline to submit:November 9, 2026', awardSubmission close 2026-11-09; Wayback 20261018175817 of the same page shows close 2026-11-08. Parallel web_search and Perplexity (recency month) found no published Q4 2026 brief. Scout lag filed as https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md.",
         "Pass 2 independent verifier (task scf-rfp) re-derived every quoted value above from its own reads and accepted every proposed change.",
         "Pass 2 sibling sweep 2026-11-02 (.agents/rounds/2026-11-02-golden-audit.md, task scf-rfp): checked q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-how-to-apply, q-scf-submission-lifecycle-deadlines, q-scf-hackathons-active, q-defi-market-making-kelp, q-scf-vs-sdf-enterprise-fund, and the other seven scf-rfp cases. No contradiction: all give the #46 deadline 2026-11-09, and the RFP cases now share the Scout-lag plain rules and the November 8 caution."
       ],
       "rootCause": [
         "freshness-drift",
-        "improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md"
+        "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md"
       ]
     },
     "origin": "raven-next q-scf-hummingbot-kelp-closed-rfp"

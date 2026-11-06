@@ -23,6 +23,9 @@ evidence:
   - "2026-11-02 dedupe: gh search issues Hana and gh search prs Hana, each with --repo Stellar-Light/stellarlight and --state open/closed, found no correction for the current Wend redirect. Merged #1117 and #1317 retain older Hana source facts; #619 documents the former allowed dual-domain redirect. rg -n -i 'hana.money|hanawallet|Hana.*website' improvements/ found no other active Scout record for this defect. Resolved sls-028 covers different project rows; this is a new affected row."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
   - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1911
+recurrences:
+  - date: 2026-11-06
+    evidence: "Hana project search; `/api/partners/hana-wallet`; hana.money/www.hana.money/hanawallet.io/www.hanawallet.io — Still-repro. Project website hana.money, statusSource www.hana.money, old redirect note; partner website hana.money. Both old domains end at Wend; www.hanawallet.io returns200 Hana wallet. Bare hanawallet.io receipt is308, not mistaken for wallet content. Next: Keep. Next after project and partner jobs: verify all website/status/note values and destination title; no single-record partial retirement. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
 ---
 
 ## Finding

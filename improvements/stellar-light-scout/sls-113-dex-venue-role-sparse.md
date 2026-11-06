@@ -13,6 +13,9 @@ evidence:
   - "Dedupe 2026-11-02: no Stellar-Light/stellarlight issue names venueRole coverage."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' item Q6."
   - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1905
+recurrences:
+  - date: 2026-11-06
+    evidence: "`/api/projects/search?type=DEX&limit=100`; `type=DEX&venueRole=amm&limit=100` — Still-repro.47 DEX rows,38 Live,31 Live venueRole null. venueRole param ignored with explicit warning; returned47 unfiltered. PR proposes five classifications, which alone will not close whole original coverage scope. Next: Keep. Next after deploy + curation: supported filter membership/counts plus remaining live classification review; do not treat filter-only fix as complete. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
 ---
 
 ## Finding

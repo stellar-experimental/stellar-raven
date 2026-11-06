@@ -12,6 +12,8 @@ evidence:
   - live recheck 2026-07-13: authenticated POST returned success:true with data as a top-level array; the public detail/OpenAPI still declare data.results
   - reported upstream 2026-07-13: https://github.com/lumenloop/lumenloop-backend/issues/35
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL find_av_passages passkeys smart wallets on Soroban,limit10; GET /v1/tools/find_av_passages — Actual data array, declared object.results; rows only summaries/opaque offsets, no transcript. DEVCON2024 av445 created_at2026-04-02 persists; returns still calls created_at recording date. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-019."
   - date: 2026-08-11
     evidence: "Live A/V output remains a top-level array despite the declared results object; issue #35 remains open."
   - date: 2026-09-02

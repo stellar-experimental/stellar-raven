@@ -12,6 +12,9 @@ evidence:
   - upstream issue closed completed 2026-07-14 after exposing llamaSlugs, tvlMethodUrl, and methodology while explicitly leaving history at the provider
   - body corrected 2026-07-27: the provider/method-URL half of the original finding shipped in spec 1.7.20 (PR https://github.com/Stellar-Light/stellarlight/pull/530); only the history and metric-decomposition ask remains declined
   - 2026-08-11 production API 1.8.41 returns Blend's current TVL, `llamaSlugs`, and `tvlMethodUrl`; it still provides no in-API history, peak, record, or metric decomposition, which confirms the accepted provider-hosted-history boundary in closed #522
+recurrences:
+  - date: 2026-11-06
+    evidence: "`/api/projects/search?q=blend&limit=100`, Soroswap control, `https://api.llama.fi/protocol/blend` — Still-repro, accepted declined boundary. Scout supplies current TVL/date/slugs/method, no history/peak decomposition. Provider API still supplies the historical series. Browser-page request to `https://defillama.com/protocol/blend-pools` returned403 (access limitation, not evidence history was removed). The wrong V1 child citation remains separately sls-102. Next: Keep declined, no refile. Next only if provider history is substantively unavailable or owner changes scope; check method URL plus provider series. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
 ---
 
 ## Finding

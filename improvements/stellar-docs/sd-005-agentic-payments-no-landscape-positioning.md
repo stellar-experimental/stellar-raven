@@ -13,6 +13,8 @@ evidence:
   - 2026-07-10 GT-12 primary plus blind review corrected the comparison taxonomy: x402 and MPP are general/external protocols with Stellar implementations; MPP includes charge as well as session/channel; AP2 x402 composition is optional; ACP is a beta commerce layer
   - independent Docs-team audit 2026-07-14 confirmed the AP2/ACP gap and found the adjacent x402 attribution stale after formation of the x402 Foundation under the Linux Foundation: https://gist.githubusercontent.com/ElliotFriend/3b3641b929b4408a834b85bcb4e75449/raw/a90e6b453ee3505ef2525b4428eaa75752e3ae08/raven-audit-rebuttal.md
 recurrences:
+  - date: 2026-11-06
+    evidence: "Overview and x402 page still attribute protocol to Coinbase Developer Platform. AP2/ACP comparison search remains ungrounded; comparative positioning was accepted as optional. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-005"
   - date: 2026-11-02
     evidence: live re-check on the Mintlify docs search after the 2026-10-22 migration: `stellarDocs.search_docs` `AP2 Agent Payments Protocol ACP Agentic Commerce Protocol` with includeContent returns /docs/build/agentic-payments and its MPP pages; no returned section names AP2, ACP, or Agentic Commerce. The gap is content, not the search backend. Ledger: .agents/rounds/2026-11-02-mintlify-migration.md
   - date: 2026-08-11

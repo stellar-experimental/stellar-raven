@@ -11,6 +11,8 @@ evidence:
   - GT-18 recurrence 2026-07-10: Soroswap resolves as Financial Protocols in Lumenloop while sibling Scout records use Protocol/Contract and DEX type fields
   - https://github.com/lumenloop/stellar-ecosystem-db/issues/3
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_project lobstr,moneygram,soroswap; current YAML controls — LOBSTR Indonesia/Estonia unchanged; MoneyGram 200-country corporate description still unscoped; Soroswap category Financial Protocols remains source-specific. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-008."
   - date: 2026-08-11
     evidence: `lobstr` still reports operating_region ["Indonesia"] and based_in "Estonia"; `moneygram` still says "operating in over 200 countries and territories" without rail scope or an as-of date. Upstream stellar-ecosystem-db#3 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity.
 ---

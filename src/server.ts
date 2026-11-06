@@ -204,7 +204,7 @@ export default {
   async fetch(request, env, ctx): Promise<Response> {
     const url = new URL(request.url);
 
-    // Alias pages go to the canonical host; alias MCP and OAuth stay (hosts.ts).
+    // Every alias path redirects to the canonical host before auth (hosts.ts).
     const aliasRedirect = canonicalHostRedirect(url);
     if (aliasRedirect) return aliasRedirect;
 

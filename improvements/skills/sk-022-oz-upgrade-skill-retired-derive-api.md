@@ -22,6 +22,8 @@ probe:
     contains:
       - "#[derive(UpgradeableMigratable)]"
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh OZ upgrade skill versus current upgradeable docs/macros/trait source — Derive Upgradeable/Migratable and Internal traits still recommended; current docs directly implement trait and explain no Migratable trait; current macros lack those derives. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-022."
   - date: 2026-10-09
     evidence: "Current OpenZeppelin skill main remains 6f215af60eb60017ab1a933ce9d22a479cd42b26. Its SHA-256 remains 80f565dbf623c2c0ca400c0591023f91ede9f314d487dabd255a449a83579b71. The skill still recommends retired derive and Internal APIs. Current documentation and contract-utils source teach direct Upgradeable implementation. The v0.7.2 macros source has no upgrade derives. The prior removal timeline remains unchanged."
 ---

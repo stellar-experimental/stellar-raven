@@ -13,6 +13,9 @@ evidence:
   - Affected golden case: eval/qa/corpus/battery/retail-consumer/q-eco-xbull-wallet.json (truth.verified 2026-11-02). Its notes say that the Lumenloop Android and iOS platform claim is stale
   - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/xbull.yaml. The 2026-06-29 file timestamp does not date mobile store withdrawal.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/stellar-ecosystem-db/issues/15
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_project xbull; YAML; Apple named listing/lookup, both Play package pages,operator site — Still advertises browsers Android iOS; Apple US listing404/lookup0, Play both404; operator web+extension. No claim installed clients stopped working. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-038."
 ---
 
 ## Finding

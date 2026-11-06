@@ -11,6 +11,9 @@ evidence:
   - stellar-scaffold-cli v0.0.31 release (2026-10-21) "config-driven builds with per-checkout deployment state"; v0.0.32 (2026-10-23) "scaffold.yml v2 fast-follows for the 1.0 preview"; latest v0.0.34 (2026-10-25)
   - 2026-11-02 pre-existing upstream PR https://github.com/stellar/stellar-docs/pull/2708 (OPEN, opened 2026-07-28 by zachfedor) covers this defect; Raven did not file a separate issue
   - golden case q-ti-scaffold-stellar (golden audit pass 2, 2026-11-02)
+recurrences:
+  - date: 2026-11-06
+    evidence: "Both live Scaffold and Hello World frontend still name environments.toml. PR2708 updatedNov3: unsupported Public Good claim removed; checks green, fork preview NEUTRAL, review-required/BLOCKED. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-074"
 ---
 
 ## Finding

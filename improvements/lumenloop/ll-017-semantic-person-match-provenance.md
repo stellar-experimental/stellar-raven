@@ -16,6 +16,8 @@ evidence:
   - Solo scratchpad 611 evidence-poor retrieval review
   - https://github.com/lumenloop/lumenloop-backend/issues/36
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 partial: LL find_av_passages Tyler van der Hoeven; semantic Tyler and negative control Strupey — AV remains topic neighbors without exact-person provenance. Semantic Tyler mixes exact1487/625 with neighbors. Both Tyler and Strupey now carry _weak_match=true, _top_similarity and explicit generic-filler warning; no per-row exact relation/span. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-017."
   - date: 2026-07-13
     evidence: production rays a1a519aa3907e144 through a1a51b394acdc572 recovered exact-name Justin Rice history only after broad semantic search, while narrow operations were empty or adjacent
   - date: 2026-07-13
@@ -89,3 +91,10 @@ tool contract. That host-owned shape does not and should not label identity matc
 In the scored follow-up, GPT-5.4 invented a Q2-2021 quarterly-review attribution and
 Sonnet inferred a 2025 Roadmap byline from adjacent cross-links. Structured matched
 spans and entity links remain necessary even after the transport shape is consumable.
+
+## Current verification — 2026-11-06
+
+AV remains topic neighbors without exact-person provenance. Semantic Tyler mixes exact1487/625 with neighbors. Both Tyler and Strupey now carry _weak_match=true, _top_similarity and explicit generic-filler warning; no per-row exact relation/span.
+
+Record partial safety progress; retain per-result identity provenance request.
+Next check: After entity-provenance change, rerun exact Tyler and negative Strupey across AV/content; verify row-level match flags.

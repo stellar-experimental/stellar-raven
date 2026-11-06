@@ -12,6 +12,9 @@ evidence:
   - "Public requests, timestamps, schema identities, result hashes, and scoped source evidence: research/audits/2026-11-02-golden-overnight/late-docs-receipts.json. Independent Grok review cleared a narrow presentation clarification, not a false wire declaration."
   - "Dedupe covered both worktrees. Resolved sd-056 corrected units and the header extension; those fixes remain. Active sd-014 concerns inclusion proofs, a different boundary."
   - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3035
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live Ledger page keeps same-level SCP/hash/time/upgrades and following-three-fields wording. PR3050 updatedNov5 to protocol-scoped CAP88 wording, green/BLOCKED/review-required. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-088"
 ---
 
 ## Finding

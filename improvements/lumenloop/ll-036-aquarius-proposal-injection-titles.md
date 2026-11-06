@@ -12,6 +12,9 @@ evidence:
   - Affected golden case: eval/qa/corpus/battery/defi-ecosystem/q-gap-semantic-similar-projects.json (the answering lane met these rows in search_content_semantic proposal results)
   - 2026-11-02T17:19:01Z earlier verification: search_content_semantic returned the same seven rows with different asset-registry summaries. Example summary subjects: id 195 USDY, id 196 Bitcoin, id 193 XRP.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/50
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL list_documents proposals search onerror limit20; GET Aquarius proposals693..699 and677 control — Seven rows192..198 retain HTML payload title/processed status. All seven source URLs404, control677200. Semantic/project searches still surface contaminated rows; no rendering executed. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-036."
 ---
 
 ## Finding

@@ -12,6 +12,8 @@ evidence:
   - https://github.com/lumenloop/lumenloop-backend/issues/40
   - 2026-08-11 review: issue #40 is open. It has no linked PR, checks, or reviews. Its only comment and latest timeline activity are kalepail's Raven tracking comment at 2026-07-13T22:54:35Z. `get_document({collection: "articles", id: 5416})` still gives the January 15 publication date and February 9 target only in prose. Article 4809 remains a separate retrospective record with no typed lifecycle relation.
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_document articles5416,4809 — Announcement5416 keeps Feb9 planned launch in prose;4809 retrospective remains separate; no typed announcement/effective/trade relation. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-026."
   - date: 2026-08-11
     evidence: CME articles 5416 and 4809 remain separate, publication-dated summaries without typed announcement, effective, trade, or first-trade fields.
 ---

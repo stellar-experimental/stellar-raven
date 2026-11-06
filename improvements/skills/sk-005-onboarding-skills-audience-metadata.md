@@ -11,6 +11,8 @@ evidence:
   - upstream source rechecked 2026-07-09 at lumenloop/lumenloop-skills main (skills tree d92c56b): stellar-project-dossier frontmatter still has name/description/user-invocable only, with no audience or transport marker
   - upstream issue filed 2026-07-09: https://github.com/lumenloop/lumenloop-skills/issues/2
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh main dossier frontmatter and neighboring playbooks — name/description/user-invocable only; no audience/transport. Onboarding/playbook separation still not machine-readable. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-005."
   - date: 2026-07-09
     evidence: current upstream stellar-project-dossier frontmatter still omits audience/transport metadata while remaining user-invocable
   - date: 2026-07-13

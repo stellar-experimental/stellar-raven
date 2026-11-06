@@ -14,7 +14,7 @@
     "avoid": [
       "Do NOT freeze settings, use one-argument pseudo-code as current API, claim activity auto-extends state, or conflate restoration with extension."
     ],
-    "notes": "Also good if the answer: Says default/max TTLs are network settings and tests should set or read them rather than freezing a stale number.\nGolden cites: Official state archival docs. | Official TTL extension testing/client-side docs.\nGT-43 live settings are dated examples; behavior and explicit re-query are required.\nAccurately quoting the official Stellar docs page for the simulateTransaction deep-dive guide (https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive), which still says an archived entry must be restored in a separate step before the transaction is submitted, is not a wrong claim while sd-078 is active; grade caps at partial for that claim unless the answer independently contradicts the golden fact. A cached or older copy of the state-archival page earns no cap, because that page has described same-transaction P23 restoration since 2026-07-27."
+    "notes": "Also good if the answer: Says default/max TTLs are network settings and tests should set or read them rather than freezing a stale number.\nGolden cites: Official state archival docs. | Official TTL extension testing/client-side docs.\nGT-43 live settings are dated examples; behavior and explicit re-query are required."
   },
   "tags": {
     "category": "soroban",
@@ -77,25 +77,36 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "The current simulation deep-dive guide agrees with the Protocol 23 same-transaction restoration path; its former manual-only wording no longer supports an attribution cap.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md",
+            "observedAt": "2026-11-06",
+            "note": "Since Protocol 23, you usually do not need a separate restore step. The same InvokeHostFunction transaction restores listed entries first."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go",
+            "observedAt": "2026-11-06",
+            "note": "TestSimulateTransactionAutoRestore requires nil RestorePreamble and nonempty ArchivedSorobanEntries; the manual test skips protocols above 22."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "golden cap backlog 2026-11-02 (caps-2)",
+      "date": "2026-11-06",
+      "by": "2026-11-05 truth-maintenance coordinator; independent Astra high reviewer t2dx, docs-independent.md",
       "evidence": [
-        "A 2026-11-02T21:26:10Z: GET https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md HTTP 200 — \"When a ledger entry is archived, it needs to be restored before the transaction can be submitted. This is indicated in the `restorePreamble` field of the result.\" No Protocol 23 qualifier, no automatic-restoration or archivedSorobanEntries mention on the page.",
-        "B 2026-11-02: stellar/stellar-docs main 85d2d1b8 docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx line 171 carries the same sentence; last commits 70b9fa42 (#2979, 2026-11-02) and 700ed32d (#2941, 2026-10-22) did not change it.",
-        "E 2026-11-02T21:26:00Z: Raven stellarDocs.search_docs 'restorePreamble restore then retry archived entry Protocol 23' — hit 3 is the deep-dive page with the snippet 'When a ledger entry is archived, it needs to be restored before the transaction can be submitted.'",
-        "A 2026-11-02T21:24:12Z: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md — \"`RestoreFootprintOp` is, for the most part, no longer needed starting in Protocol 23, as archived entries included in a transaction's restore list (usually populated during transaction simulation) are automatically restored when the `InvokeHostFunctionOp` executes.\" The page fixed under sd-007 (improvements/resolved.json, resolved 2026-07-27) is correct, so a cached or older copy of it no longer backs a cap.",
-        "B 2026-11-02: stellar/stellar-rpc main c436cd7ddf simulate_transaction_test.go — manual restore test skips with \"Protocols > 22 support autorestore and generally don't require manual restoring\"; TestSimulateTransactionAutoRestore asserts require.Nil(t, response.RestorePreamble) and NotEmpty ArchivedSorobanEntries.",
-        "Outcome: the cap's old basis (a cached pre-2026-07-27 state-archival copy) ended with sd-007; a live official page (the deep-dive guide) still carries the stale flow and no active finding covers it, so the cap now names that page and finding sd-078 (shared by q-sor-p23-auto-restore-extendto, q-sor-force-fast-archival-localnet, q-sor-ttl-defaults-extend, q-soroban-storage-types).",
-        "Sibling sweep 2026-11-02: grep of eval/qa/corpus/battery for restorePreamble, Deep-Dive, and sd-007 — q-soroban-simulate-resource-fee and q-infra-simulate-transaction-howto say to handle any restorePreamble, which agrees with a fallback reading; the four cap cases above now share one wording; no contradiction.",
-        "Prior verification event: Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03) (2026-11-02); see git history."
+        "Fresh A/B checks: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md — Since Protocol 23, you usually do not need a separate restore step. The same InvokeHostFunction transaction restores listed entries first.",
+        "Fresh A/B checks: https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go — TestSimulateTransactionAutoRestore requires nil RestorePreamble and nonempty ArchivedSorobanEntries; the manual test skips protocols above 22.",
+        "Sibling sweep: q-sor-ttl-defaults-extend, q-sor-p23-auto-restore-extendto, q-sor-force-fast-archival-localnet, q-soroban-storage-types; all retain the same restoration behavior and lose only the expired sd-078 attribution cap. q-soroban-simulate-resource-fee and q-infra-simulate-transaction-howto retain conditional restorePreamble handling. No numeric TTL value or avoid clause changed."
       ],
       "rootCause": [
-        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: partial caps follow open upstream findings)",
-        "improvements/stellar-docs/sd-078-simulate-deep-dive-restore-before-submit.md: the simulateTransaction deep-dive guide still says archived entries must be restored before submission through restorePreamble, with no Protocol 23 qualifier",
-        "improvements/resolved.json entry sd-007 (resolved 2026-07-27; the cached-copy basis of the old cap ended)"
+        "improvements/resolved.json entry sd-078: live Docs correction removes the source conflict that justified the cap."
       ]
     },
     "origin": "raven-next q-sor-ttl-defaults-extend"

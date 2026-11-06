@@ -19,6 +19,9 @@ evidence:
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-protocol/issues/2056
   - "maintainer decline 2026-11-03: leighmcculloch (stellar org MEMBER) wrote https://github.com/stellar/stellar-protocol/issues/2056#issuecomment-6593819856 with the text \"This doesn't seem significant to fix.\" and closed #2056 as not_planned at 2026-11-03T02:24:44Z. No linked PR."
   - "2026-11-03T15:06Z live re-check: core/cap-0046-06.md on stellar-protocol master ded60f56201478b82b341151a6c44f7d1a4aec6e line 351 still names CONTRACT_EXECUTABLE_TOKEN; stellar-xdr curr Stellar-contract.x line 175 defines CONTRACT_EXECUTABLE_STELLAR_ASSET = 1. The trigger still reproduces; the owner declined the correction."
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh CAP0046-06 versus current Stellar-contract.x — CAP still CONTRACT_EXECUTABLE_TOKEN; XDR current STELLAR_ASSET. leighmcculloch explicitly declined and closed not_planned; no change since decline. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-008."
 ---
 
 ## Finding

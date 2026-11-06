@@ -9,6 +9,8 @@ evidence:
   - Solo scratchpad 575 GT-18 primary process 3249 and independent blind process 3252
   - https://github.com/lumenloop/lumenloop-backend/issues/30 (filed 2026-07-13)
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL find_content_about_project {slug:soroswap,limit:10}; semantic and similarity controls — Mixed exact Soroswap and adjacent content, including unrelated proposal payload rows; no per-row match class/evidence span. __truncated warning exists but does not establish relevance. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-014."
   - date: 2026-08-11
     evidence: "Live Soroswap content retrieval still includes adjacent rows without match class or evidence span; issue #30 remains open."
 ---

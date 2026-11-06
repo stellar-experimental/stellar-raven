@@ -21,6 +21,9 @@ evidence:
   - "Dedupe 2026-11-02: circlefin/stellar-cctp issues and PRs (state all) contain no report about Stellar-source Fast Transfer. Circle publishes no public repository for developers.circle.com content."
   - "Golden consumer: eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json answer discloses the conflict, and its keyFacts say to use Standard 2000 until the Stellar-source 1000/Fast versus N/A dispute resolves."
   - upstream issue filed 2026-11-02: https://github.com/circlefin/stellar-cctp/issues/37
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: GET Circle Stellar→Arc quickstart,supported chains,finality; Iris fees27/0 and original attestation hash — Both Stellar burn examples still1000/Fast; Stellar Fast=N/A, Standard~5sec. Original mainnet source27 message request1000 executed2000; fee API still lists both. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-005."
 ---
 
 ## Finding

@@ -15,6 +15,8 @@ evidence:
   - Solo todo 1438 items 2 and 3, solo://proj/49/scratchpad/independent-holdout--798
   - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/14
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh main setup-stellar-contracts and upgrade-stellar-contracts descriptions — Generic CLI/project creation and native WASM replacement triggers remain unqualified by OpenZeppelin dependencies. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-015."
   - date: 2026-08-11
     evidence: the current main setup description still claims generic Stellar CLI installation and Soroban project creation. The current main upgrade description still claims generic native WASM replacement.
 probe:

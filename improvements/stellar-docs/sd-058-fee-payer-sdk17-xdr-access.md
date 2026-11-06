@@ -10,6 +10,9 @@ evidence:
   - 2026-10-09 SDK 17.0.0 release and XDR migration guide; https://github.com/stellar/js-stellar-sdk/releases/tag/v17.0.0; https://github.com/stellar/js-stellar-sdk/blob/v17.0.0/docs/migration/xdr-migration.md
   - 2026-10-09 adjacent x402 source and local SDK section check; https://github.com/stellar/stellar-docs/blob/2efd1d55840eb780f4b311c313e35d34fedf2f63/docs/build/agentic-payments/x402/quickstart-guide.mdx#L154
   - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2909
+recurrences:
+  - date: 2026-11-06
+    evidence: "Both deployed examples still call v1() getter chain. SDK17.4.0 local fixture independently throws txEnvelope.v1 is not a function and tx.toEnvelope(...).v1 is not a function. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-058"
 ---
 
 ## Finding

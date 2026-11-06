@@ -16,6 +16,9 @@ evidence:
   - "2026-11-02 dedupe: gh search issues partners/match and gh search prs partners/match, each with --repo Stellar-Light/stellarlight and --state open/closed, found no dedicated report for this 502 schema omission. Merged #1755 and #1764 concern other failed reads and error contracts. rg -n -i 'partners/match|partner.match.*502|matchmaking' improvements/ found only this active Scout finding for the defect. Resolved sls-004 concerns method errors on other routes."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
   - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1908
+recurrences:
+  - date: 2026-11-06
+    evidence: "Original POST `/api/partners/match` plus GET `/api/openapi.json` — Inconclusive for full original execution; schema defect demonstrably fixed. Live1.9.122 declares 400/422/429/500/502/503 and 200. 502 uses ErrorResponse with error field and GET partners fallback; 503 distinguishes unavailable AI from retryable directory outage. Public main handler implements this. Original POST was not rerun: it calls a metered Anthropic backend, excluded by task's no-paid-calls constraint. No claim about current model availability. Next: Hold full-trigger retirement pending coordinator scope decision. Next: authorized original POST `{need:\"USDC to Mexican peso off-ramp anchor for remittances\"}` with status/body-to-live-schema check, or explicitly accept schema-only closure for this documentation-only defect. No speculative test claim. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
 ---
 
 ## Finding

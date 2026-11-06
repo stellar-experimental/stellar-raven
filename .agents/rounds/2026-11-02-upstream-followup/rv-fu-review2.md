@@ -56,7 +56,7 @@ These corrections match the published manifests and installer sources inspected 
 I reran the exact command:
 
 ```sh
-npm run improvements:file -- --file improvements/stellar-docs/sd-080-fuzzing-note-soroban-contract-build.md --dry-run
+npm run improvements:file -- --file https://github.com/stellar-experimental/stellar-raven/blob/610a7c3c25b2d582709f17a0beb8628a0f8f9cf5/improvements/stellar-docs/sd-080-fuzzing-note-soroban-contract-build.md --dry-run
 ```
 
 It exits `0` and renders the corrected body.

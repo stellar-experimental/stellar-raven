@@ -13,6 +13,9 @@ evidence:
   - Affected golden cases: eval/qa/corpus/battery/retail-consumer/q-eco-freighter-wallet.json, eval/qa/corpus/battery/retail-consumer/q-tool-freighter-wallet.json, eval/qa/corpus/battery/defi-ecosystem/q-eco-stellar-wallets-list.json
   - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/freighter.yaml. The latest file change dates to 2026-06-09, before the public rename.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/stellar-ecosystem-db/issues/13
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_project freighter; search_directory varial; current YAML and freighter.app redirect — Freighter title,empty aliases,freighter.app unchanged; varial semantic neighbors exclude wallet; old website redirects Varial. Adjacent lumenswap/latch/aha-labs source references checked. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-032."
 ---
 
 ## Finding

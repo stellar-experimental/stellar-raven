@@ -23,6 +23,9 @@ evidence:
   - "2026-11-02 calibration: rg -n 'tvlMethodUrl|tvlMethodUrlFor' over the current upstream projects/search/route.ts found one helper and three callers. The helper selects slugs[0]. Correcting the shared helper covers the repeated response paths. No dependency-based code snippet or first-bad version claim applies."
   - "2026-11-02 dedupe: gh search issues and gh search prs searched Stellar-Light/stellarlight for tvlMethodUrl and 'blend pools', across all states. Issues 494 and 522 and merged PRs 530 and 531 describe the original provenance feature. PR 1234 concerns stablecoin display. Issue 522 explicitly keeps history at the provider; this finding requests a citation matching the existing aggregate. rg over improvements/ and improvements/resolved.json found related sls-031 and declined sls-039, without this aggregate-link correction. Intake resolves to Stellar-Light/stellarlight without an override."
   - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1913
+recurrences:
+  - date: 2026-11-06
+    evidence: "Blend project search; DefiLlama `/protocols` and `/protocol/blend` — Still-repro. Four mapped Blend pool/backstop V1/V2 slugs; tvlMethodUrl still `https://defillama.com/protocol/blend-pools`. Provider children share parent#blend; parent series is available. No equality claim between independently timed amounts. Next: Keep. Next after deploy+enrich: URL should be common parent Blend, not null or V1 child; verify mapped inputs still reconcile to parent accounting. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
 ---
 
 ## Finding

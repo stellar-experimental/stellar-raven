@@ -13,6 +13,8 @@ evidence:
   - live re-verified 2026-07-10 during GT-35: count remained 95 with the same four capitalization-only duplicate pairs and mixed country/macro-region aliases
   - upstream issue filed 2026-07-13: https://github.com/lumenloop/lumenloop-backend/issues/23
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_regions {} — 100 values; six case-only duplicate pairs africa/Africa, asia/Asia, europe/Europe, global/Global, latam/LATAM, mena/MENA. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-003."
   - date: 2026-07-09
     evidence: authenticated POST /v1/tools/get_regions returned count 95 with four case-insensitive duplicate pairs (africa/Africa, asia/Asia, global/Global, mena/MENA)
   - date: 2026-07-10

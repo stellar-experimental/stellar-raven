@@ -57,6 +57,12 @@
         "ref": "https://stellarlight.xyz/api/projects/search?q=microvault",
         "note": "Microvault (Protocol/Contract) and Noir (Tooling) are project records.",
         "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/builders?limit=2",
+        "observedAt": "2026-11-05",
+        "note": "Returned2,total401; builder identity remains githubUsername. Earlier300 was the historical capped view. Independent pagination0/200/400 yields401 unique profiles; Latin America59 subset has zero missing."
       }
     ],
     "corroboration": [
@@ -98,15 +104,11 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-05)",
+      "date": "2026-11-05",
+      "by": "Scout Astra high author lane; independent final review assigned to t2dv; .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md",
       "evidence": [
-        "Stellar Light 2026-11-02: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=5 — top-level keys [meta, ecosystem, projects]; rows are projects; ecosystem block asOf 2026-10-24.",
-        "Raven scout.getLeaderboard({}) 2026-11-02 (dataAsOf 2026-11-02T11:23:43.582Z): counts.returned 50, total 905; metricDefinitions.activity \"orders by github.commits90d ... summed across the project's indexed repos\".",
-        "Stellar Light 2026-11-02: https://stellarlight.xyz/api/builders?limit=2 — people rows keyed by githubUsername; catalog/manifest.json#scout.getBuilders \"The Stellar PEOPLE directory\".",
-        "Stellar Light 2026-11-02: https://stellarlight.xyz/api/projects/search?q=microvault — Microvault and Noir are project records; today they rank 28 and 146 on activity/30d, so the golden now dates the 2026-07-11 observation.",
-        "Independent verifier accepted the one change (date the Microvault/Noir observation): .agents/rounds/2026-11-02-golden-audit/pass1/defi-ecosystem-05.json.",
-        "Sibling sweep 2026-11-02: grep getLeaderboard|Microvault → q-tool-developer-leaderboard-live, q-tool-leaderboard-open-issues, q-eco-most-active-defi-projects; none names Microvault or Noir; no contradiction."
+        "C https://stellarlight.xyz/api/builders?limit=2 — Returned2,total401; builder identity remains githubUsername. Earlier300 was the historical capped view. Independent pagination0/200/400 yields401 unique profiles; Latin America59 subset has zero missing.",
+        "Scoped sibling sweep and exact replay commands: .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md; primary matrix scout.md. November5 America/New_York observations have November6 UTC receipt timestamps. Existing reverifyBy dates retained; unrelated historical claims were not re-dated."
       ],
       "rootCause": [
         "freshness-drift"

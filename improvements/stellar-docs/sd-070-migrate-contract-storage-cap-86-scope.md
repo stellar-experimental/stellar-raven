@@ -12,6 +12,9 @@ evidence:
   - 2026-11-02 crates.io soroban-sdk max stable version 29.0.1
   - 2026-11-02 pre-existing upstream PR https://github.com/stellar/stellar-docs/pull/2763 (open draft, opened 2026-08-18 by leighmcculloch) proposes this fix; Raven did not file a separate issue
   - golden cases q-soroban-storage-migration and q-soroban-upgradeable-storage-compat (golden audit pass 2, 2026-11-02)
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live migration guide still says added Option c traps UnexpectedSize without SDK28/CAP86 qualifier. Draft2763 open unchanged sinceAug18; historical checks green, review-required. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-070"
 ---
 
 ## Finding

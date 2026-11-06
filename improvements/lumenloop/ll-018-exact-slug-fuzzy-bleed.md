@@ -10,6 +10,8 @@ evidence:
   - Solo scratchpad 575 GT-37 primary 3296 and blind 3298
   - https://github.com/lumenloop/lumenloop-backend/issues/34
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_scf_submissions slug band,tucambio,usdc-swap,fastbuka; name controls — band still mixes band and bando. Three exact secondary slugs empty. USDC Swap name control recovers recqE4Pq1SlYXqzuC with linked_project_slugs=[usdc-swap]. TuCambio/Fastbuka name controls also empty; their record existence not re-proven this round. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-018."
   - date: 2026-08-11
     evidence: "Live slug band lookup still returns canonical slugs bando and band. Exact slug lookups for tucambio, usdc-swap, and fastbuka return soft-empty although recovered SCF records carry those exact linked_project_slugs. Issue #34 remains open."
 ---

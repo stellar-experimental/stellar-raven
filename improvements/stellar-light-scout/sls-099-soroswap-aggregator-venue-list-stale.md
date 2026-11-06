@@ -24,6 +24,9 @@ evidence:
   - "2026-11-02 dedupe: gh search issues Soroswap and gh search prs Soroswap, each with --repo Stellar-Light/stellarlight and --state open/closed, found no duplicate venue-description report. Additional issue/PR searches for 'supported-amms' and the exact 'aggregated by Soroswap' phrase found none. rg -n -i 'Soroswap.*venue|supported-amms|aggregated by Soroswap|SushiSwap|Phoenix' improvements/ found sls-085 for a contract-role label (fixed upstream and resolved 2026-11-02; see improvements/resolved.json) and active sls-113 for taxonomy coverage. Neither covers the venue list; no merge is needed."
   - "2026-11-02 owner check: improvements/intake.json resolves this API finding to Stellar-Light/stellarlight. gh api repos/Stellar-Light/stellarlight confirms archived false and has_issues true. No override is needed."
   - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1910
+recurrences:
+  - date: 2026-11-06
+    evidence: "Soroswap and Phoenix project searches + operator supported-amms.md and aggregator-v3.md — Still-repro. Soroswap retains `(Soroswap, Phoenix, Aquarius)`; Phoenix retains unqualified aggregation claim. Operator API list is soroswap/aqua/sushi/comet/sdex, while contract enum includes Phoenix(PhoenixHop). Next: Keep. Next after #1924 deployed + curation: both descriptions must include current API venues and distinguish Phoenix contract support; re-read operator pages. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
 ---
 
 ## Finding

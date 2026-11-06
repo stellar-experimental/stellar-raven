@@ -43,8 +43,11 @@ export function extractPageAnchors(html) {
     window.document.body.innerHTML = [...rendered.matchAll(/<h([2-6])\b[^>]*>[\s\S]*?<\/h\1>/gi)].map(([tag]) => tag).join("");
     const anchors = Object.create(null);
     for (const heading of window.document.querySelectorAll("h2[id],h3[id],h4[id],h5[id],h6[id]")) {
-      const link = heading.querySelector('a[aria-label="Navigate to header"]');
-      if (!link || link.getAttribute("href") !== `#${heading.id}`) continue;
+      const link = [...heading.querySelectorAll('a[aria-label]')].find((anchor) =>
+        /^Navigate to header(?::|$)/.test(anchor.getAttribute("aria-label")) &&
+        anchor.getAttribute("href") === `#${heading.id}`
+      );
+      if (!link) continue;
       link.remove();
       const text = heading.textContent.replace(/\u200b/g, "").trim();
       if (text) (anchors[text] ??= []).push(heading.id);
@@ -145,6 +148,7 @@ export async function buildAnchorIndex({ fetchImpl = fetch, outputPath = OUTPUT,
     const previous = readPreviousIndex(outputPath);
     const index = { source: sitemapUrl, capturedAt: new Date().toISOString(), pages: sortedPages };
     const summary = summarizeAnchorChanges(previous, index);
+    if (summary.headings === 0) throw new Error("Anchor capture found no headings; refusing to replace the index");
     // Preserve capture time when the site headings did not change.
     if (!previous || summary.changedPages || summary.removedPages) {
       writeFileAtomic(outputPath, JSON.stringify(index, null, 2) + "\n");

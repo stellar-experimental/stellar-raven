@@ -10,6 +10,9 @@ evidence:
   - "The independent Google source describes encrypted provider synchronization. Exact public source URLs, observation times and hashes are retained in the supplement."
   - "Dedupe covers active and resolved records. sd-027,sd-034 and sk-017 have different mechanisms; the original concern had no finding ID while application scope was unverified."
   - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3042
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live SDP guide still says private key never leaves device. PR3057 green/BLOCKED/review-required, Nov5 removes hardware-key example, adds one-passkey/no-recovery note; explicitly awaiting Platform-team signoff. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-095"
 ---
 
 ## Finding

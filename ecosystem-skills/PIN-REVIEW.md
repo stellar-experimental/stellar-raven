@@ -48,7 +48,7 @@ instructions ("ignore previous", "you must", credentials, URLs to fetch).
 
 | Source | Pinned commit | Selection | Reviewed |
 | --- | --- | --- | --- |
-| `stellar-dev` | `9c604c2be6ae69f962fbb578bce6b681d462fea5` | `sel:257d79093df5` | author read; independent review pending with coordinator |
+| `stellar-dev` | `9c604c2be6ae69f962fbb578bce6b681d462fea5` | `sel:257d79093df5` | author + independent Astra/high t2dw accepted with coordinator |
 
 The author read all nine changed file diffs from `ecosystem-skills/update.sh`.
 Eight existing files changed, and `assets/regulated-assets.md` was added.
@@ -528,3 +528,33 @@ only their timestamps.
 The independent review found no leak in the served bytes. Its fixes harden the scrub for future
 upstream text and do not change any served byte. See
 [the round ledger](../.agents/rounds/2026-11-02-stellar-light-pin.md).
+
+## 2026-11-05 — Varial, transaction shape, and Scout source qualifiers
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `77bf4e8fc2533ac6ad680d061e89371e8474a1a8` | `sel:91f4bea066fc` | author + independent Astra/high t2dw accepted |
+| `stellar-light` | `f63e83a021021764f8b54eff7f5a38c10852d161` | `sel:ede47e739c45` | author read; independent review pending |
+
+Eleven selected files change. Stellar development guidance uses Varial names and
+`@stellar/varial-sdk`, checks Friendbot funding through `rpc.Server.fundAddress`, qualifies
+fixed-supply issuer lockout by other signers, and replaces invalid mixed classic/contract batching advice
+with the single-operation rule. The standards reference adds the official Stellar Docs MCP.
+Those tools belong to the external Docs server; they grant Raven no additional capability.
+
+Scout guidance distinguishes checked issuer names from brands, recorded TOML evidence from
+curated partner data, missing rosters from empty rosters, RFP briefs from SCF submission windows,
+and stale TVL from current measurements. It documents upstream error semantics and response
+fields now represented by Scout 1.9.122. Existing excluded-operation sections remain subject to
+the runtime exposure scrub; no callable operation or whole skill is added.
+
+The changed text contains no credential or instruction override. Existing external SDK,
+wallet, funding, and server setup instructions remain reference content for the reader's
+environment, not actions authorized to the sandbox. The skill description hold remains.
+The generated catalog adds one section (Stellar Docs MCP) and renames Varial section anchors.
+The all-lane routing comparison with the held Docs title inventory has no grade changes;
+one extended-case fifth-place result changes. Evidence and final review are recorded in
+`.agents/rounds/2026-11-05-truth-maintenance.md`.
+
+Independent review: `.agents/rounds/2026-11-05-truth-maintenance/drift-review.md` (ACCEPT).
+The custom-SAC-admin signer qualification remains incomplete upstream and is tracked as sk-038.

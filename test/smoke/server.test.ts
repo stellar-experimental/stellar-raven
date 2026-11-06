@@ -243,9 +243,7 @@ describe("/mcp auth dispatch", () => {
 
   it("allows configured public Origins, rejects foreign Origins, and permits no Origin", async () => {
     const authorization = `Bearer admin:${TOKENS.admin}`;
-    // Every production origin, not just the canonical one: the stellar.buzz hosts
-    // are documented as working aliases, so dropping one from the allowlist must
-    // fail here rather than pass silently.
+    // All owned production origins remain trusted, including redirect-only hosts.
     for (const origin of [PUBLIC, "https://raven.stellar.buzz", "https://agents.stellar.buzz"]) {
       expect(
         (await postInitialize(`${PUBLIC}/mcp`, { Authorization: authorization, Origin: origin }))
@@ -417,7 +415,7 @@ describe("alias hosts", () => {
   const ALIAS = "https://raven.stellar.buzz";
 
   it("browser pages on an alias 308 to the same path on the canonical host", async () => {
-    for (const path of ["/", "/docs", "/terms?x=1", "/playground", "/playground/chat", "/health"]) {
+    for (const path of ["/", "/docs", "/terms?x=1", "/playground", "/playground/chat", "/health", "//evil.example/mcp?x=1"]) {
       const res = await SELF.fetch(`${ALIAS}${path}`, { redirect: "manual" });
       expect(res.status, path).toBe(308);
       expect(res.headers.get("location"), path).toBe(`${PUBLIC}${path}`);
@@ -430,27 +428,27 @@ describe("alias hosts", () => {
     expect(post.headers.get("location")).toBe(`${PUBLIC}/playground/chat`);
   });
 
-  it("MCP and OAuth stay on the alias with the alias as issuer and resource", async () => {
+  it("MCP and OAuth redirect to the canonical host before authentication", async () => {
     const mcp = await SELF.fetch(`${ALIAS}/mcp`, {
       method: "POST",
       redirect: "manual",
       headers: { "content-type": "application/json", accept: "application/json, text/event-stream" },
       body: initializeBody()
     });
-    expect(mcp.status).toBe(401);
-    expect(mcp.headers.get("www-authenticate")).toContain(ALIAS);
+    expect(mcp.status).toBe(308);
+    expect(mcp.headers.get("location")).toBe(`${PUBLIC}/mcp`);
+    expect(mcp.headers.get("www-authenticate")).toBeNull();
 
-    const metadata = await SELF.fetch(`${ALIAS}/.well-known/oauth-authorization-server`);
-    expect(metadata.status).toBe(200);
-    expect(((await metadata.json()) as { issuer?: string }).issuer).toBe(ALIAS);
-
-    const resource = await SELF.fetch(`${ALIAS}/.well-known/oauth-protected-resource/mcp`);
-    expect(resource.status).toBe(200);
-    expect(((await resource.json()) as { resource?: string }).resource).toBe(`${ALIAS}/mcp`);
-
-    for (const path of ["/authorize", "/callback", "/token", "/register"]) {
-      const res = await SELF.fetch(`${ALIAS}${path}`, { redirect: "manual" });
-      expect(res.status, path).not.toBe(308);
+    for (const alias of [ALIAS, "https://agents.stellar.buzz"]) {
+      for (const path of [
+        "/.well-known/oauth-authorization-server",
+        "/.well-known/oauth-protected-resource/mcp",
+        "/authorize", "/callback?code=x&state=y", "/token", "/register"
+      ]) {
+        const res = await SELF.fetch(`${alias}${path}`, { redirect: "manual" });
+        expect(res.status, path).toBe(308);
+        expect(res.headers.get("location"), path).toBe(`${PUBLIC}${path}`);
+      }
     }
   });
 });

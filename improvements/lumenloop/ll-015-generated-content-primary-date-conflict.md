@@ -9,6 +9,8 @@ evidence:
   - Solo scratchpad 575 GT-23 primary 3264 and blind 3267
   - reported upstream: https://github.com/lumenloop/lumenloop-backend/issues/28
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_document research141; GET https://horizon.stellar.org/ledgers/63386819 — Roundup still says activated July9; ledger63386819 remains protocol27 at 2026-07-08T17:00:10Z. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-015."
   - date: 2026-08-11
     evidence: "Research 141 still says July 9 while Horizon ledger 63386819 reports protocol 27 on July 8; issue #28 remains open."
 ---

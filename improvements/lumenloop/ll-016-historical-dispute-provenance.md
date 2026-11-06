@@ -9,6 +9,8 @@ evidence:
   - Solo scratchpad 575 GT-27 primary 3270 and blind 3272
   - https://github.com/lumenloop/lumenloop-backend/issues/31
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL search_content_semantic Stellar 2014 fork Ripple consensus 2015 SCP,types articles/research — Historical article candidates returned (4640,1912,78,4644,3899,3908,5374); no typed claimant/target-event/dispute/corroboration relation. This proves metadata gap, not a newly proven false causal sentence. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-016."
   - date: 2026-08-11
     evidence: "Live semantic rows still lack claimant, target event, dispute, and corroboration fields; issue #31 remains open."
 ---

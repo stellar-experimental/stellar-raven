@@ -684,7 +684,7 @@ This explicit separation resolves the source-attribution concern without changin
 The accepted parser alignment still throws on invalid scores, while the canonical adapter returns a parse-error verdict.
 Both paths represent infrastructure errors, and neither assigns an answer failure from malformed judge output.
 
-The verified local source finding is method-worktree `improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md`.
+The verified local source finding is method-worktree `https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md`.
 Its generated index and improvements lint passed.
 Grok independently reviews its primary evidence and claim scope before closeout.
 No external filing is authorized.

@@ -11,6 +11,9 @@ evidence:
   - "2026-11-02 Parallel web_fetch of https://stellar.org/grants-and-funding/marketing-grants (class D render, acquired 2026-10-22) lists the What we look for cards Traction, Mission, Impact, Feasibility, and Capability"
   - "Classification: site-content. Both pages are SDF stellar.org program pages, not developers.stellar.org content. The stellar.org page copy has no public issue tracker (checked 2026-11-02), so intake.json marks this finding unclear"
   - "Affected golden case: eval/qa/corpus/battery/scf-grants-builders/q-scf-sdf-marketing-grant.json (truth.verified 2026-11-02). The golden states both attributed wordings and does not penalize either; an already-launched project qualifies under both"
+recurrences:
+  - date: 2026-11-06
+    evidence: "Fresh funding index requires live product; Marketing Grants page data says live with traction OR preparing to launch soon. Both200; distinction persists. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-077"
 ---
 
 ## Finding

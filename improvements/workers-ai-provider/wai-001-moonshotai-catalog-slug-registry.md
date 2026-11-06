@@ -16,6 +16,8 @@ evidence:
   - "maintainer decline 2026-10-20: https://github.com/cloudflare/ai/pull/639#issuecomment-6295163611 (mattzcarey closed PR 639 unmerged): workers-ai-provider is deprecated and feature frozen in favor of createAI from agents/models/ai-sdk, which accepts any <author>/<model> catalog id. npm marks workers-ai-provider deprecated ('Use createAI from agents/models/ai-sdk, or ai-search-provider for AI Search'); latest is 4.0.1."
   - "2026-11-02 Raven acknowledged the decline and closed its issue as not planned: https://github.com/cloudflare/ai/issues/634#issuecomment-6590945505."
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh npm workers-ai-provider4.0.1; original mock-binding construction moonshotai/kimi-k3 with openai provider — GatewayDelegateError Unknown gateway provider moonshotai; binding calls0. npm still deprecated. Issue634 closed not_planned by Raven after maintainer mattzcarey closed639 unmerged; no checks/reviews on639. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row wai-001."
   - date: 2026-11-02
     evidence: "workers-ai-provider 4.0.1 (npm latest, deprecated) with @ai-sdk/openai 4.0.91: the minimal reproduction still throws GatewayDelegateError Unknown gateway provider \"moonshotai\" (from slug \"moonshotai/kimi-k3\") with 0 mocked binding calls. Issue https://github.com/cloudflare/ai/issues/634 is still open."
   - date: 2026-08-11

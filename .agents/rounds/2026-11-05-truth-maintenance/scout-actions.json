@@ -1,0 +1,390 @@
+[
+  {
+    "id": "sls-024",
+    "file": "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
+    "verdict": "partial",
+    "liveRecheck": {
+      "trigger": "`/api/projects/search?q=streaming%20recurring%20payments&limit=100`; original Slender/Laina/K2 Lend/OrbitCDP/Fluxity searches; full seven-category pagination",
+      "result": "Partial. 1,006 distinct searchable rows: all have lifecycle date/basis; every non-unverified lifecycle has a source. 104 positive deployment qualifiers; 55 lack deployment.sourceUrl, 35 lack supportedNetworks. Original five fixtures now have lifecycle provenance. RenderGate and CleverCon are now testnet, correcting the prior mainnet mismatch, but their deployment source remains null. Allbridge still claims mainnet/onchain-activity with null deployment source. Unknown deployment fields remain honest unknowns, not defects."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/494",
+      "https://github.com/Stellar-Light/stellar-scout/issues/9"
+    ],
+    "resolvingPRs": [],
+    "next": "Keep residual. Add this population evidence and corrected RenderGate/CleverCon progress. Next: after a deployment-provenance curation/change, rerun category pages and require source/date for positive claims; preserve unknown semantics. No routine reminder on closed threads."
+  },
+  {
+    "id": "sls-029",
+    "file": "improvements/stellar-light-scout/sls-029-oracle-product-network-evidence.md",
+    "verdict": "partial",
+    "liveRecheck": {
+      "trigger": "`/api/projects/search?q=oracle&limit=100`, and exact Band/DIA/RedStone/Lightecho searches",
+      "result": "Partial. Band/DIA/RedStone have `products:null`; Lightecho has one `oracle-feed` product with mainnet, contractId null, and a stale-price caution dated 2026-08-13. No per-feed oracle deployment/freshness structure. Project deployment distinguishes DIA testnet from Band/RedStone mainnet, but does not prove current feed updates. No new claim that old July on-chain samples describe today's feeds."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/514",
+      "https://github.com/Stellar-Light/stellarlight/issues/742",
+      "https://github.com/Stellar-Light/stellarlight/pull/842"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/842"
+    ],
+    "next": "Keep model residual; correct stale \u201copen #742\u201d wording. Next: require provider/product/network/address/feed/as-of evidence after an oracle-model change; reconcile any successor with closed #742."
+  },
+  {
+    "id": "sls-033",
+    "file": "improvements/stellar-light-scout/sls-033-wallet-type-enumeration-availability.md",
+    "verdict": "partial",
+    "liveRecheck": {
+      "trigger": "`/api/projects/search?type=Wallet&limit=100`; exact count/dedupe and product-kind/availability projection",
+      "result": "Partial. 72 rows, total72, 72 distinct normalized names. 10 null productKind, 39 empty availability. Null kinds include Live smart-treasury, chainless, amulets, piggy-wallet, ibis, rehive, privy; Development haven and openzeppelin-stellar-privacy-wallet; Inactive mxlet. Exact enumeration fixed; coverage remains incomplete. No inference that empty availability means unavailable."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/519",
+      "https://github.com/Stellar-Light/stellarlight/issues/742"
+    ],
+    "resolvingPRs": [],
+    "next": "Keep residual and update counts. Next: curation signal for the named live wallets; rerun exact type set and compare coverage. Preserve MXlet as unknown absent evidence."
+  },
+  {
+    "id": "sls-039",
+    "file": "improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md",
+    "verdict": "still-repro",
+    "liveRecheck": {
+      "trigger": "`/api/projects/search?q=blend&limit=100`, Soroswap control, `https://api.llama.fi/protocol/blend`",
+      "result": "Still-repro, accepted declined boundary. Scout supplies current TVL/date/slugs/method, no history/peak decomposition. Provider API still supplies the historical series. Browser-page request to `https://defillama.com/protocol/blend-pools` returned403 (access limitation, not evidence history was removed). The wrong V1 child citation remains separately sls-102."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/522",
+      "https://github.com/Stellar-Light/stellarlight/pull/530"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/530"
+    ],
+    "next": "Keep declined, no refile. Next only if provider history is substantively unavailable or owner changes scope; check method URL plus provider series."
+  },
+  {
+    "id": "sls-095",
+    "file": "improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/projects/resolve?q=varial`, `?q=freighter`; `/api/projects/search?q=freighter&limit=100` and `?q=varial&limit=100`",
+      "result": "Fixed. Both resolves found=true, current slug freighter/name Varial; new-name search returns the wallet as its sole strict match. Identity currentName Varial, aliases `[Freighter]`, renamedAt2026-10-29, SDF source; website `https://varialwallet.com/`. freighter.app redirects there; current stellar/freighter README says Varial formerly Freighter. Five adjacent product descriptions still use Freighter, but those are integration references, not identity failures."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1889"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1889"
+    ],
+    "next": "Candidate retirement after separate repeat of both names, identity, website and search. Remove/update stale Scout-lag golden notes in same resolution change. No duplicate issue."
+  },
+  {
+    "id": "sls-096",
+    "file": "improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/rfps?status=open`; `/api/rfps?quarter=q3-2026`; official live RFP handbook and its repository",
+      "result": "Fixed. counts.open0, closed16, activeQuarter q4-2026. Only returned open row is synthetic scf-round-46; both Q3 briefs now closed and carry publishedBrief. Official page still says Q4 coming soon; latest path commit remains e07b4bfce158639f81908f74cfd74ec8d87f051a. `/ideas` and both `/ideas/{layerzero-dvn,x402-facilitator-bazaar}` pages still exist; closure is not disappearance."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1907",
+      "https://github.com/Stellar-Light/stellarlight/pull/1921"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1921"
+    ],
+    "next": "Candidate retirement; refresh four scoped goldens and sibling lag cautions. Next independent trigger: same open + Q3 queries and official page; verify no open brief was reintroduced while preserving round46 context."
+  },
+  {
+    "id": "sls-097",
+    "file": "improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md",
+    "verdict": "inconclusive",
+    "liveRecheck": {
+      "trigger": "Original POST `/api/partners/match` plus GET `/api/openapi.json`",
+      "result": "Inconclusive for full original execution; schema defect demonstrably fixed. Live1.9.122 declares 400/422/429/500/502/503 and 200. 502 uses ErrorResponse with error field and GET partners fallback; 503 distinguishes unavailable AI from retryable directory outage. Public main handler implements this. Original POST was not rerun: it calls a metered Anthropic backend, excluded by task's no-paid-calls constraint. No claim about current model availability."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1908",
+      "https://github.com/Stellar-Light/stellarlight/pull/1929"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1929"
+    ],
+    "next": "Hold full-trigger retirement pending coordinator scope decision. Next: authorized original POST `{need:\"USDC to Mexican peso off-ramp anchor for remittances\"}` with status/body-to-live-schema check, or explicitly accept schema-only closure for this documentation-only defect. No speculative test claim."
+  },
+  {
+    "id": "sls-098",
+    "file": "improvements/stellar-light-scout/sls-098-partner-page-toml-verified-badge-without-toml.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/partners?all=true`; details/pages for anchor-bitso, anchor-honey-coin, anchor-coins-ph, anchor-yellow-card; anchor-anclap positive control",
+      "result": "Fixed. All four never-fetched details now have seps/assets null, matching list. Bitso/Honey Coin pages no longer say `stellar.toml verified` or `Verified from`; curated labels appear. Coins PH/Yellow Card negative controls behave the same. Anclap keeps source URL + fetchedAt2026-09-29, SEPs sep-6/sep-24, assets PEN/ARS and verified badge."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1909",
+      "https://github.com/Stellar-Light/stellarlight/pull/1929"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1929"
+    ],
+    "next": "Candidate retirement after independent positive/negative provenance checks, including assets. Existing unrelated changes-feed single-stamp logic noted by author is not a demonstrated residual on these rows."
+  },
+  {
+    "id": "sls-099",
+    "file": "improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md",
+    "verdict": "still-repro",
+    "liveRecheck": {
+      "trigger": "Soroswap and Phoenix project searches + operator supported-amms.md and aggregator-v3.md",
+      "result": "Still-repro. Soroswap retains `(Soroswap, Phoenix, Aquarius)`; Phoenix retains unqualified aggregation claim. Operator API list is soroswap/aqua/sushi/comet/sdex, while contract enum includes Phoenix(PhoenixHop)."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1910",
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "next": "Keep. Next after #1924 deployed + curation: both descriptions must include current API venues and distinguish Phoenix contract support; re-read operator pages."
+  },
+  {
+    "id": "sls-100",
+    "file": "improvements/stellar-light-scout/sls-100-hana-website-repurposed-domain.md",
+    "verdict": "still-repro",
+    "liveRecheck": {
+      "trigger": "Hana project search; `/api/partners/hana-wallet`; hana.money/www.hana.money/hanawallet.io/www.hanawallet.io",
+      "result": "Still-repro. Project website hana.money, statusSource www.hana.money, old redirect note; partner website hana.money. Both old domains end at Wend; www.hanawallet.io returns200 Hana wallet. Bare hanawallet.io receipt is308, not mistaken for wallet content."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1911",
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "next": "Keep. Next after project and partner jobs: verify all website/status/note values and destination title; no single-record partial retirement."
+  },
+  {
+    "id": "sls-101",
+    "file": "improvements/stellar-light-scout/sls-101-analyze-tvl-total-includes-stale-rows.md",
+    "verdict": "partial",
+    "liveRecheck": {
+      "trigger": "`/api/analyze?dimension=tvl`, Spiko/Sentora/Etherfuse project reads, DefiLlama protocols and protocol reads",
+      "result": "Partial for full record; warning fix is live. total1,980,381,301; staleTvlUSD1,664,183,220; oldestAsOf2026-08-10; explicit warning says3/17,84%; staleProjects names Spiko/Sentora/Etherfuse; their project rows carry tvlStale=true. Underlying old values remain: Spiko1,653,789,314 (09-14), Sentora10,393,904 (08-10), Etherfuse2 (09-14). Provider absence/remap must not become fresh zero."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1912",
+      "https://github.com/Stellar-Light/stellarlight/pull/1928"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1928"
+    ],
+    "next": "Either keep narrowed residual or resolve warning-only original with a self-contained stale-refresh successor; do not claim refreshed values. Next: owner Sentora `stellar-defi-hub` remap/enrich and explicit unavailable-provider handling; repeat aggregate and three rows."
+  },
+  {
+    "id": "sls-102",
+    "file": "improvements/stellar-light-scout/sls-102-blend-tvl-method-url-points-at-v1-child.md",
+    "verdict": "still-repro",
+    "liveRecheck": {
+      "trigger": "Blend project search; DefiLlama `/protocols` and `/protocol/blend`",
+      "result": "Still-repro. Four mapped Blend pool/backstop V1/V2 slugs; tvlMethodUrl still `https://defillama.com/protocol/blend-pools`. Provider children share parent#blend; parent series is available. No equality claim between independently timed amounts."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1913",
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "next": "Keep. Next after deploy+enrich: URL should be common parent Blend, not null or V1 child; verify mapped inputs still reconcile to parent accounting."
+  },
+  {
+    "id": "sls-103",
+    "file": "improvements/stellar-light-scout/sls-103-funding-delta-against-empty-snapshot.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/analyze?dimension=funding` and live response basis",
+      "result": "Fixed. Current582, hash b44bd87c48cd5ef9. Previous581, hash67022e31bd3e0ec7, computedAt2026-10-03T07:36:46.465Z; current snapshotAsOf2026-10-03T08:00:19.683Z. Delta adds only scopuly, +217100; no empty-hash baseline. Published basis now requires nonempty slug list reproducing hash and rejects failed/truncated read persistence. Historic empty rows may remain inert."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1914",
+      "https://github.com/Stellar-Light/stellarlight/pull/1928"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1928"
+    ],
+    "next": "Candidate retirement after original GET independently repeats. No destructive cleanup needed to prove fix. Runtime fault injection is neither performed nor claimed; deployed valid comparison plus reviewed guard change supports original trigger."
+  },
+  {
+    "id": "sls-104",
+    "file": "improvements/stellar-light-scout/sls-104-builders-unfiltered-full-set-capped.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/builders?limit=200&offset=0`,200,400; `?location=Latin%20America&limit=200`",
+      "result": "Fixed. Pages200/200/1, each total401; union401 distinct case-folded githubUsername values. Latin America59, zero missing from unfiltered union. Status collection count is not used as eligible denominator."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1915",
+      "https://github.com/Stellar-Light/stellarlight/pull/1931"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1931"
+    ],
+    "next": "Candidate retirement after same union/subset proof. Adjacent private-profile/codeEvidence changes are not asserted verified beyond checked public rows."
+  },
+  {
+    "id": "sls-105",
+    "file": "improvements/stellar-light-scout/sls-105-rfp-brief-requirements-from-idea-not-published-brief.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/rfps?q=source%20verification`, `?q=SEP-58`, historical official brief",
+      "result": "Fixed. Closed Q2 row now has separate publishedBrief with commit-pinned official URL at `1e04b79973358e3dea58d821ed6419b50c93370c`, functionalRequirements naming all six SEP-58 keys, public-repo/tarball/content-addressed modes, SDF-allowlisted trusted image, verifier disagreements and Mainnet/Testnet; outOfScope distinguishes deterministic-Rust research. Original idea technicalRequirements remains separate. SEP-58 query retrieves exactly this row. Historical source fetched200 and agrees."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1916",
+      "https://github.com/Stellar-Light/stellarlight/pull/1921"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1921"
+    ],
+    "next": "Candidate retirement after pinned-source comparison and query. Preserve idea/published-brief distinction; no claim that reproducible builds themselves were incompatible."
+  },
+  {
+    "id": "sls-106",
+    "file": "improvements/stellar-light-scout/sls-106-hackathon-feed-omits-stellar-events.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/hackathons?status=active`, q=istanbul/waterloo/innovation, limit100; Rise In and Waterloo sources",
+      "result": "Fixed. Istanbul completed event now appears with15,000USD, source Rise In and local dates09-19\u201320. Source card says Sep18\u201320 while source prose says September19\u201320; Scout explicitly explains timezone discrepancy, so this is not a regression. Waterloo active11-02\u201318,15,000USD, organizer Velocity; active/keyword queries return it. Both official pages fetched200."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1917",
+      "https://github.com/Stellar-Light/stellarlight/pull/1921"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1921"
+    ],
+    "next": "Candidate retirement after both event queries and official source reads. Winner-row ingestion owner's pending job is outside the original feed-coverage scope; do not imply that job executed."
+  },
+  {
+    "id": "sls-107",
+    "file": "improvements/stellar-light-scout/sls-107-stablecoin-issuer-of-record-and-asset-class.md",
+    "verdict": "partial",
+    "liveRecheck": {
+      "trigger": "`/api/stablecoins?limit=100`; assetType=Yield%20Stablecoin / none / invalid; AUDD/Currency One/MGUSD TOMLs",
+      "result": "Partial. Yield filter200 returns USDY/YLDS only; none returns38 unclassified; invalid400 enumerates valid types. Brand/unknown-class semantics are documented. But all41 issuerOfRecord values and checks remain null, including AUDD and eight C1 rows; live TOMLs still name AUDC PTY LTD and Kinesis Money Panama S.A. MGUSD control names MoneyGram Payment Systems, Inc. with Bridge note."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1900",
+      "https://github.com/Stellar-Light/stellarlight/pull/1923"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1923"
+    ],
+    "next": "Keep issuer population residual, acknowledge filter fixed. Next after owner explicitly enables and executes refresh: verify nine affected records plus MGUSD note and source/date. No owner writes performed here."
+  },
+  {
+    "id": "sls-109",
+    "file": "improvements/stellar-light-scout/sls-109-repo-search-ranks-forks-over-canonical.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/repos/search?q=scaffold%20stellar&limit=50`, q=stellar%20lab and smart%20contract%20examples; old-path trust +8 controls",
+      "result": "Fixed. Original three queries rank stellar-scaffold/cli, stellar/laboratory, stellar/soroban-examples first with canonical=true. Eight infrastructure controls still rank intended repos first. `scaffold_stellar`, `scaffold stellar repo`, `stellar lab repo` also pass. Old `theahaco/scaffold-stellar` search and `/api/repos/trust?repo=theahaco/scaffold-stellar` return stellar-scaffold/cli with renamedFrom. Candidate-window truncation is now explicit."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1901",
+      "https://github.com/Stellar-Light/stellarlight/pull/1925"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1925"
+    ],
+    "next": "Candidate retirement after original three + rename + controls. Test-file source paths are distinct sls-114, not a ranking residual."
+  },
+  {
+    "id": "sls-110",
+    "file": "improvements/stellar-light-scout/sls-110-hackmeridian-rubric-weights.md",
+    "verdict": "fixed",
+    "liveRecheck": {
+      "trigger": "`/api/hackathons/hackmeridian-2026`; organizer `https://www.hackmeridian.com/build`;2025 placement control",
+      "result": "Fixed. rules.rubric scoreMin1/max5; weights20,20,15,15,10,10,10 sum100; source Build page, checkedOn11-04; Genesis/Scale category-specific alignment. Qualitative criteria remain alongside weights. Official page agrees. 2025 six winners retain tracks/ranks; 2026 unknown winners are not invented."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1902",
+      "https://github.com/Stellar-Light/stellarlight/pull/1921"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1921"
+    ],
+    "next": "Candidate retirement after exact seven criterion/weight/source check. No requirement to invent unpublished descriptions or winners."
+  },
+  {
+    "id": "sls-111",
+    "file": "improvements/stellar-light-scout/sls-111-scf-45-award-coverage.md",
+    "verdict": "still-repro",
+    "liveRecheck": {
+      "trigger": "Full paginated `/api/projects/search?scfAwarded=true&limit=100&offset=N`; official projects and Liqvid page; Pollar/Pods/Principal resolve",
+      "result": "Still-repro, record correction required. 613 unique awarded-directory rows;24 with round45 vs40 official listing cards. Liqvid remains `[37]`; Enable/Rumble Fish unawarded; Pollar/Pods/Principal misses. Official Liqvid submission verdicts say30/44 Not Awarded,37/45 Awarded, despite buildAwardRounds listing all four. Existing title/recommendation wrongly treats all four as awards."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1903",
+      "https://github.com/Stellar-Light/stellarlight/pull/1922"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1922"
+    ],
+    "next": "Correct original false premise; retain actual missing45/coverage defect. Next after #1922 rebase/merge+execute: verify Liqvid `[37,45]`, never30/44; verify real awarded submissions and missing-project intake.28 expected by PR would still not satisfy40 coverage."
+  },
+  {
+    "id": "sls-112",
+    "file": "improvements/stellar-light-scout/sls-112-chainlink-and-metamask-native-stellar-rows.md",
+    "verdict": "still-repro",
+    "liveRecheck": {
+      "trigger": "Resolve/search Chainlink and MetaMask; primary Chainlink Stellar feed docs and MetaMask support page",
+      "result": "Still-repro. Both exact resolves false. Chainlink search gives third-party VRF relayer; MetaMask gives Snap/integration rows. Primary docs still identify native MetaMask Stellar and Chainlink testnet/mainnet proxy IDs `CBUF6IADAWPWIDWRTHJNINKXHG2UTIQ6TU2F2HRAXWAI7OT3KJPKK6O4` / `CDQBHEUGLDHMSUHG4IH33RJBUTMNCZOT4JIAQR4WZFRDZW6DR6S32ZLZ`."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1904",
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "next": "Keep. Next after seed application: provider/product/network addresses and native-wallet-vs-Snap distinction, not brand-only name recall."
+  },
+  {
+    "id": "sls-113",
+    "file": "improvements/stellar-light-scout/sls-113-dex-venue-role-sparse.md",
+    "verdict": "still-repro",
+    "liveRecheck": {
+      "trigger": "`/api/projects/search?type=DEX&limit=100`; `type=DEX&venueRole=amm&limit=100`",
+      "result": "Still-repro.47 DEX rows,38 Live,31 Live venueRole null. venueRole param ignored with explicit warning; returned47 unfiltered. PR proposes five classifications, which alone will not close whole original coverage scope."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1905",
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1924"
+    ],
+    "next": "Keep. Next after deploy + curation: supported filter membership/counts plus remaining live classification review; do not treat filter-only fix as complete."
+  },
+  {
+    "id": "sls-114",
+    "file": "improvements/stellar-light-scout/sls-114-explain-repo-fixture-interfaces-without-paths.md",
+    "verdict": "partial",
+    "liveRecheck": {
+      "trigger": "`/api/repos/explain?repo=stellar/stellar-horizon&q=Which%20Horizon%20ingestion%20constant%20pins%20the%20highest%20supported%20protocol%20version%2C%20and%20what%20is%20its%20value%3F`",
+      "result": "Partial code progress, original live residual still reproduces. kind platform/isDeployableContract false, six fixture signatures unchanged; contractInterfacePaths:null; scannedRef597544b60c20f8536d532d32abca8462394874f3/scannedAt11-02. Fresh `gh api .../git/trees/REF?recursive=1` locates five source files under internal/integration/contracts/{increment,add_u64,bulk,constructor,store}/src/lib.rs."
+    },
+    "refs": [
+      "https://github.com/Stellar-Light/stellarlight/issues/1906",
+      "https://github.com/Stellar-Light/stellarlight/pull/1925",
+      "https://github.com/Stellar-Light/stellarlight/issues/1739"
+    ],
+    "resolvingPRs": [
+      "https://github.com/Stellar-Light/stellarlight/pull/1925"
+    ],
+    "next": "Keep. Next after owner scan-repo-code execution for Horizon: fixture interfaces removed or explicitly path-qualified/marked fixtures. Also check rs-soroban-env adjacent scan before generalizing fix."
+  }
+]
