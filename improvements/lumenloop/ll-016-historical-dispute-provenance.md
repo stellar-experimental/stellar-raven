@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-016; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - SDF attributes the 2014 Stellar fork to weaknesses in the inherited consensus design
   - Ripple's contemporaneous response disputes that causal interpretation
   - Solo scratchpad 575 GT-27 primary 3270 and blind 3272
@@ -17,14 +18,18 @@ recurrences:
 
 ## Finding
 
-Historical retrieval can collapse disputed causal narratives into one factual
-summary. For Stellar's 2014 fork and 2015 SCP rewrite, SDF and Ripple published
-materially different interpretations. A single unattributed explanation makes
-the dispute disappear even though both primary records are available.
+Historical retrieval lacks structured claimant and dispute links for the
+2014 fork and 2015 SCP rewrite. SDF and Ripple published different causal
+interpretations, so unattributed synthesis could erase a material disagreement.
+The 2026-11-06 retrieval still lacks those structured links, but it does not
+establish a newly reproduced false causal sentence. This is a provenance
+request; missing optional metadata alone does not prove that current prose
+misrepresents either primary account.
 
 ## Recommendation
 
-Represent historical claims with claimant, publication date, target event, and
-dispute/corroboration links. When primary organizations conflict, retrieval and
-generated summaries should surface both accounts and avoid synthesizing one
-unqualified causal conclusion.
+Where a record makes a contested historical claim, attach its claimant,
+publication date, target event, and primary source, with dispute/corroboration
+links when supported. Generated summaries should attribute conflicting accounts
+rather than synthesize one unqualified causal conclusion. Preserve unknown
+metadata as unknown; do not invent a dispute or claim to fill a schema.

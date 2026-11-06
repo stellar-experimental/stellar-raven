@@ -1,0 +1,133 @@
+{
+  "observedAt": "2026-11-06T14:18:06.155Z",
+  "specVersion": "1.9.122",
+  "openapi": "3.1.0",
+  "sha256": "4dd846f44ef80603d5ec7ba0ea810762f2a5b6df9235b64f19a1ede2fd00db2c",
+  "response": {
+    "description": "One language model call failed: the provider erred (5xx), was overloaded, or could not be reached in time, or its output could not be read. Not a claim about the request or the data: resend later, or rank with GET /api/partners filters now. The provider refusing our request or account is the 503 with unavailable true instead, where a resend does not help.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/ErrorResponse"
+        }
+      }
+    }
+  },
+  "referencedSchema": {
+    "type": "object",
+    "required": [
+      "error"
+    ],
+    "properties": {
+      "error": {
+        "type": "string"
+      },
+      "details": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "currentBodies": [
+    {
+      "body": {
+        "error": "Matchmaker produced malformed output. Try again."
+      },
+      "line": 350
+    },
+    {
+      "body": {
+        "error": "Matchmaking hit a snag. Try the /partners directory filters."
+      },
+      "line": 402
+    }
+  ],
+  "checks": [
+    {
+      "name": "original captured 2026-11-02 JSON",
+      "body": {
+        "error": "Matchmaking hit a snag. Try the /partners directory filters."
+      },
+      "valid": true,
+      "expected": true,
+      "errors": null
+    },
+    {
+      "name": "current handler line350",
+      "body": {
+        "error": "Matchmaker produced malformed output. Try again."
+      },
+      "valid": true,
+      "expected": true,
+      "errors": null
+    },
+    {
+      "name": "current handler line402",
+      "body": {
+        "error": "Matchmaking hit a snag. Try the /partners directory filters."
+      },
+      "valid": true,
+      "expected": true,
+      "errors": null
+    },
+    {
+      "name": "missing error",
+      "body": {},
+      "valid": false,
+      "expected": false,
+      "errors": [
+        {
+          "instancePath": "",
+          "schemaPath": "#/components/schemas/ErrorResponse/required",
+          "keyword": "required",
+          "params": {
+            "missingProperty": "error"
+          },
+          "message": "must have required property 'error'"
+        }
+      ]
+    },
+    {
+      "name": "non-string error",
+      "body": {
+        "error": 502
+      },
+      "valid": false,
+      "expected": false,
+      "errors": [
+        {
+          "instancePath": "/error",
+          "schemaPath": "#/components/schemas/ErrorResponse/properties/error/type",
+          "keyword": "type",
+          "params": {
+            "type": "string"
+          },
+          "message": "must be string"
+        }
+      ]
+    },
+    {
+      "name": "earlier plain-text gateway body",
+      "body": "error code: 502",
+      "valid": false,
+      "expected": false,
+      "errors": [
+        {
+          "instancePath": "",
+          "schemaPath": "#/components/schemas/ErrorResponse/type",
+          "keyword": "type",
+          "params": {
+            "type": "object"
+          },
+          "message": "must be object"
+        }
+      ]
+    }
+  ],
+  "modelInvocations": 0,
+  "networkPOSTs": 0,
+  "limits": [
+    "Validates original captured JSON and source-extracted current handler bodies against freshly served schema. Does not establish which live failure branch or success branch currently executes.",
+    "Earlier plain-text edge response is rejected by JSON schema; original filed scope explicitly said it did not recur and investigates ranking failure separately."
+  ]
+}

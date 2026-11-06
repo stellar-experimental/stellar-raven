@@ -1,0 +1,25 @@
+{
+  "url": "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+  "observedAt": "2026-11-06T14:03:53.534812+00:00",
+  "status": 200,
+  "sha256": "6ead1a2fc95b043b3b79a3fc672e56abd538f4bffda562a39c078f240eb0d139",
+  "timeElements": [
+    "<time dateTime=\"2026-05-19T14:00:00.000Z\" class=\"Paragraph__TextBody-sc-7b02c7f-0 Paragraph__TextBodyS-sc-7b02c7f-4 hbqzIT KGEan\"></time>"
+  ],
+  "dateContexts": [
+    "ody-sc-7b02c7f-0 Paragraph__TextBodyS-sc-7b02c7f-4 fqPGMR KGEan\">Publishing date</p><time dateTime=\"2026-05-19T14:00:00.000Z\" class=\"Paragraph__TextBody-sc-7b02c7f-0 Paragraph__TextBodyS-sc-7b02c7f-4 hbqzIT KGEan\"></time></div></div></div></div></section></div><div class=\"SizedBox-sc-b1933",
+    "0e20-16de-4312-8d0d-45892fcbf7f9\",\"rev\":\"UewJrBTMumi6j4Qt8FANOm\"}},\"_type\":\"blogPage\",\"_updatedAt\":\"2026-05-19T17:57:38Z\",\"author\":\"Stellar Development Foundation\",\"blogType\":\"Foundation News\",\"content\":[{\"_key\":\"fa65ed5f55af\",\"_type\":\"twoColumnHtmlSection\",\"backgroundImage\":null,\"body\":[{",
+    "ctas\":null,\"hasBackgroundImage\":null,\"multiColumn\":false,\"slug\":null,\"theme\":\"lightTheme\"}],\"date\":\"2026-05-19\",\"description\":\"Circle CCTP (Cross-Chain Transfer Protocol) is live on the Stellar network. This upgrade will enhance USDC transfers to and from the Stellar ecosystem, which alrea",
+    "l},\"layout\":\"default\",\"mediaType\":\"image\",\"meta\":{\"author\":\"Stellar Development Foundation\",\"date\":\"2026-05-19\",\"endDate\":null,\"endTime\":null,\"highlightedSpeakers\":null,\"industry\":null,\"isLive\":null,\"location\":null,\"productsAndTools\":null,\"speakers\":null,\"startDate\":null,\"startTime\":null,\""
+  ],
+  "upstreamRef": "https://github.com/lumenloop/lumenloop-backend/issues/38",
+  "issueCurrentClaim": "SDF public post currently dated 2026-05-08; unsupported May18/May19 should not be backfilled",
+  "issueComments": [
+    {
+      "author": "kalepail",
+      "at": "2026-07-13T22:54:35Z",
+      "body": "Raven tracking: [ll-022 improvement record](https://github.com/kalepail/stellar-raven/blob/bd27ebdcc8b6f5f1cfafd8908fe3a7419467f9bf/improvements/lumenloop/ll-022-cctp-milestone-provenance.md). When resolving or closing this issue, please link the fixing PR or issue, or note the closure rationale here; Raven follow-up uses this thread to reconcile the upstream finding."
+    }
+  ],
+  "observationBasis": "curl output file completion timestamp"
+}

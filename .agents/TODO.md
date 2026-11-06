@@ -87,9 +87,14 @@ issues do not need reminders.
   PR, review/check blocker and exact live trigger. Recheck those pages after deployment;
   green checks alone do not close findings. The author-owned protocol PR2059 is behind but
   green and awaiting review; respond to substantive review without a keepalive rebase.
-- sls-097: the schema portion improved, but the paid-backed original partner-match trigger
-  was not run. Its next full verification needs explicit authorization for that method;
-  schema inspection alone does not prove the original runtime behavior.
+- Docs continuation (2026-11-06): sd-097 now has [PR3066](https://github.com/stellar/stellar-docs/pull/3066),
+  and sd-098 has [PR3067](https://github.com/stellar/stellar-docs/pull/3067). Both await review/deployment.
+  After they ship, check the ordinary Building with AI page and all five raw-event locations;
+  compile the complete event examples and compare topics/data before retiring sd-098.
+  PR3053 now proposes the result.error correction for sd-091 but still has requested changes.
+  Re-run success, JSON-RPC error and simulation-error fixtures after approval and deployment.
+  The [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) records all current
+  review/conflict blockers, including draft2752 and the separate pending generated-skill PR3069.
 - Lumenloop ll-022/023/024: the original records did not retain a reproducible wrong milestone,
   preview-boundary omission or stale venue row. The current checks do not prove those content
   errors. Before any future closure or renewed claim, obtain the exact original/corrected record
@@ -119,6 +124,15 @@ The source at the response's `scannedRef` (`ee5241ec`) also defines `29`. Eviden
 check, Raven posted the resolution comment on issue 1738, and `sls-087` drained. The note is a curated
 dated fact, so a later protocol bump can make it stale again. If this monitor fails again, file a new
 id and cite both receipts.
+
+2026-11-06: the monitor fails again. The answer selects `MaxSupportedProtocolVersion = 29`
+from an October 8 note, while its own `scannedRef` (`597544b6…`) defines `30` at
+`internal/ingest/main.go:38`. This is a current-source selection defect, not a claim that the
+historical note or Mainnet protocol 29 is false. New finding `sls-115` preserves the regression;
+see [the continuation](rounds/2026-11-06-remaining-sweep/other.md) and its distinct cross-review.
+The November 5 passing monitor verdict missed the scan-ref comparison. After an upstream note
+refresh/invalidation fix, repeat both original and explicitly current queries against each
+returned scan commit. Keep the recovery program blocked; no paid collection is authorized.
 
 During each improvements or drift round, run one free `scout.explainRepo` reading against the
 existing local Raven server for `stellar/stellar-horizon`: "Which Horizon ingestion constant pins

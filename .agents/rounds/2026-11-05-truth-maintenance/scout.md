@@ -1,5 +1,7 @@
 # Scout review — 2026-11-05 truth maintenance
 
+> Correction recorded 2026-11-06: The Horizon monitor verdict below is superseded: the same scan ref defines ceiling 30, while the selected dated note answers 29. The prior pass did not compare the constant at the response’s own scan ref. See [the continuation](../2026-11-06-remaining-sweep/other.md) and new finding sls-115.
+
 Author/reviewer lane: Astra high, `t2dw` (Scout primary investigation, not the independent retirement gate). All 23 active `improvements/stellar-light-scout/*.md` records were read individually. Observations were made on **2026-11-05 America/New_York**, with HTTP receipts at **2026-11-06 01:07–01:14 UTC**; response-generated timestamps sometimes precede receipt because of edge caching. Live OpenAPI was **1.9.122**. GitHub was read through `gh api`, including issue bodies, complete comment lists, timelines, linked PR bodies, review lists, and head check runs. No GitHub writes, finding edits, status edits, deletion, commits, paid calls, evals, or Wrangler processes.
 
 **Verdict: 9 fixed candidates, 6 partial, 7 still-repro (including the declined design boundary), 1 inconclusive under the no-paid-call constraint.** The nine candidates are **sls-095, sls-096, sls-098, sls-103, sls-104, sls-105, sls-106, sls-109, sls-110**. A distinct reviewer must repeat the triggers before retirement. sls-101's warning defect is fixed, but its underlying stale-data residual needs an explicit successor/scope decision. Do not silently retire sls-107 or sls-114 on their merged code alone.

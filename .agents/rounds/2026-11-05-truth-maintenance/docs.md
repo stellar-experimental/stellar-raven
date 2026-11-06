@@ -1,5 +1,7 @@
 # Docs lane — 2026-11-05 truth maintenance
 
+> Correction recorded 2026-11-06: The sd-081 row below incorrectly retains missing time bounds. Both deployed contract-restoration examples now call setTimeout(30); the other defects remain. See [the continuation](../2026-11-06-remaining-sweep/docs.md) and the corrected active finding.
+
 Reviewed all **46 active findings** individually: **{'fixed': 19, 'still-repro': 26, 'partial': 1, 'inconclusive': 0}**. These are lane proposals, not status edits or deletion authorization. No GitHub writes, paid calls, evals, Wrangler, commits, or active-record edits. UTC fetches ran on 2026-11-06 during the Nov5 America/New_York round.
 
 Full original findings were read, `gh api` issue bodies/comments/timelines and linked PR reviews/checks inspected, original minimal read-only triggers rerun, adjacent prose/source copies scanned. Current Docs source snapshot: `310030b6078a37ed5a1959da4955e516266ac897`. Clone was moved outside repository before test discovery and is disposable. Initial default urllib User-Agent caused Cloudflare1010; retry with explicit User-Agent succeeded. Two guessed page paths404 were corrected to `/docs/build/apps/wallet/intro.md` and `/docs/build/guides/dapps/frontend-guide.md`; those404s are not findings.

@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-017; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - exact Tyler van der Hoeven A/V passage query returned ten semantically related but person-unrelated results
   - semantic content search mixed relevant official Tyler material with unrelated low-similarity results
   - official Docs author and event pages provide exact-name controls
@@ -34,22 +35,25 @@ recurrences:
 
 ## Finding
 
-Person-oriented semantic and A/V searches do not expose enough match provenance
-to distinguish an exact named-person hit from topic similarity. An exact Tyler
-van der Hoeven query returned ten unrelated passages, while broader semantic
-search mixed true Tyler appearances with false positives. This is distinct from
-ll-005's silent exact-entity person lane: the semantic lane returns data, but its
-relationship to the named person is not answer-safe.
+Person-oriented semantic and A/V searches still lack per-result provenance
+that distinguishes exact named-person matches from topic similarity. Historical
+Tyler van der Hoeven queries returned unrelated passages and mixed exact-person
+hits with neighbors; this differs from ll-005's silent exact-entity lane.
+
+On 2026-11-06, semantic Tyler and negative-control Strupey responses both include
+`_weak_match=true`, `_top_similarity`, and an explicit generic-filler warning.
+That is deployed safety progress. Tyler includes exact-name records 1487/625
+alongside neighbors, while A/V remains topic-oriented. Neither aggregate warning
+nor similarity establishes an individual row's identity relation or matched span.
 
 ## Recommendation
 
-Expose similarity score, matched text span, entity link, source publication/event
-date, and an exact-lexical or exact-entity constraint. Also expose a compact
-cross-collection candidate projection (collection name/count plus exact-token
-rows) so callers do not have to guess among type-keyed `articles`, `research`,
-`av`, and `events` collections before applying top-k limits. For a named-person query,
-mark topic-only matches explicitly and do not rank them as attributed content
-without an exact name/entity match.
+Preserve the deployed weak-match warning and returned similarity/date signals.
+Add per-row matched text spans, entity links, and exact-lexical/exact-entity
+constraints or flags. Mark topic-only matches explicitly so a caller cannot
+mistake them for attributed content. A compact cross-collection count and
+exact-token projection can help callers inspect the candidate set before top-k
+limits; it must not manufacture identity relations from semantic similarity.
 
 ## Recurrence — 2026-07-13
 

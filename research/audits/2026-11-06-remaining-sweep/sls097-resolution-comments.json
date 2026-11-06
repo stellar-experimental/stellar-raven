@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://github.com/Stellar-Light/stellarlight/issues/1908#issuecomment-6687147857",
+    "author": "kalepail",
+    "createdAt": "2026-11-06T14:26:47Z",
+    "body": "Raven independently rechecked sls-097 on 2026-11-06 and confirmed the original trigger is resolved live.\n\nLive recheck: 2026-11-06: independent GETs at 14:16:52Z and 14:19:31Z of https://stellarlight.xyz/api/openapi.json returned 200, version 1.9.122. POST /api/partners/match now documents 502 application/json ErrorResponse with required string error and GET /api/partners filters fallback, matching merged PR 1929 (56f10c0e03ca93634c26faf3432b607fecbc5cd8). The original JSON and both current handler 502 bodies validate against the live schema; negative controls fail. Independent offline pinned-handler fixtures confirm five 502 fixtures plus adjacent 503/500 behavior. This resolves the original documentation omission. No model-backed POST ran, current ranking availability is unknown, and no gateway-format repair is claimed.\n\nThe active finding is being retired under the ephemeral improvements lifecycle. Immutable source snapshot: https://github.com/stellar-experimental/stellar-raven/blob/a73e0b25c4062ca4e3c4382e501630a631ff4656/improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md\n"
+  },
+  {
+    "url": "https://github.com/Stellar-Light/stellarlight/pull/1929#issuecomment-6687148441",
+    "author": "kalepail",
+    "createdAt": "2026-11-06T14:26:49Z",
+    "body": "Raven independently rechecked sls-097 on 2026-11-06 and confirmed the original trigger is resolved live.\n\nLive recheck: 2026-11-06: independent GETs at 14:16:52Z and 14:19:31Z of https://stellarlight.xyz/api/openapi.json returned 200, version 1.9.122. POST /api/partners/match now documents 502 application/json ErrorResponse with required string error and GET /api/partners filters fallback, matching merged PR 1929 (56f10c0e03ca93634c26faf3432b607fecbc5cd8). The original JSON and both current handler 502 bodies validate against the live schema; negative controls fail. Independent offline pinned-handler fixtures confirm five 502 fixtures plus adjacent 503/500 behavior. This resolves the original documentation omission. No model-backed POST ran, current ranking availability is unknown, and no gateway-format repair is claimed.\n\nThe active finding is being retired under the ephemeral improvements lifecycle. Immutable source snapshot: https://github.com/stellar-experimental/stellar-raven/blob/a73e0b25c4062ca4e3c4382e501630a631ff4656/improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md\n"
+  }
+]

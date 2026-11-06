@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-11
 evidence:
+  - "Raven source-date correction posted and read back 2026-11-06 (author kalepail): https://github.com/lumenloop/lumenloop-backend/issues/38#issuecomment-6686881728. Current SDF page and article 6461 support May 19; Circle notes separately support May 18 technical availability. No historical wrong Lumenloop content or deployed content fix established. Independent primary-date review: .agents/rounds/2026-11-06-remaining-sweep/cross-review.md."
   - P4 N2 reconciliation: Circle release notes record Stellar mainnet support on 2026-05-18 and SDF publicly announced "Circle CCTP is Live on Stellar" on 2026-05-19; solo://proj/49/scratchpad/super-corpus-rebuild--585
   - the same reconciliation contradicts 2026-05-08 as the SDF/Circle public live-announcement date and preserves earlier technical/domain milestones as distinct facts
   - reported upstream: https://github.com/lumenloop/lumenloop-backend/issues/38

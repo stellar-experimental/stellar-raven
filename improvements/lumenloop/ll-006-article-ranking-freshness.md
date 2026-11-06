@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-03
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-006; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - eval/qa/results/2026-07-03T16-06-45-variantA.json (q-eco-stellar-rwa-stablecoin-volume)
   - live replay of the agent's exact search_content_semantic query (2026-07-03 evening, production)
   - Solo project 49, todo 807, scratchpad 521
@@ -20,24 +21,20 @@ recurrences:
 
 ## Finding
 
-`search_content_semantic` over articles has no freshness weighting, so
-"recent report"-shaped queries surface years-stale editions of recurring
-SDF publications above the current one. For the query "tokenized RWA
-stablecoin on-chain activity Stellar SDF report size volume"
-(types research+articles), the top 10 include SDF quarterly reviews from
-**Q2 2021, Q4 2020, and Q2 2024** (ranks 7/9/10) while the May 2026
-"Q1 2026: Execution at network scale" report (article id 5945, whose summary
-carries the current headline figures — $5.5B payment volume, 86% YoY
-developer growth) never appears. A targeted "Q1 2026 quarterly report"
-query retrieves it at rank 1, so the content is indexed and reachable —
-only the ranking fails the recency-implying query.
+The 2026-07-03 replay of `search_content_semantic` ranked old recurring SDF
+publications above the relevant Q1 2026 report. For the query "tokenized RWA
+stablecoin on-chain activity Stellar SDF report size volume" (research+articles),
+Q2 2021, Q4 2020, and Q2 2024 appeared at ranks 7/9/10; article 5945 was absent
+but ranked first for the focused "Q1 2026 quarterly report" control.
 
-Secondary anomaly in the same replay: result order does not follow the
-returned similarity scores (rank 6 sim 0.597 listed below rank 1 sim
-0.544), suggesting two retrieval blocks concatenated without a re-sort.
-
-This cost a QA verdict this round: the agent answered from older sources
-and missed both flagship figures the question asked for.
+That old-edition top-ten failure does not reproduce on 2026-11-06: the broad
+query returns recent RWA-focused articles, while 5945 remains first in the
+focused control. A broad query need not select that particular edition.
+Returned raw similarities remain non-monotonic (.580, .556, .677), but the
+response does not establish whether similarity is the final ranking score.
+Neither this order nor the historical result proves an absence of freshness
+weighting or concatenation without a final sort. The residual is an unclear
+recency/ordering contract, especially for bounded chronological requests.
 
 ## Evidence
 
@@ -48,16 +45,11 @@ phrasing). Round record: Solo scratchpad 521 (batch-1 review report).
 
 ## Recommendation
 
-Blend a recency component into article ranking (e.g. exponential decay on
-`published_at`, or a boost when the query contains recency markers —
-"latest", "recent", a year, a quarter). Recurring-series articles
-(quarterly reviews, monthly updates) are the sharpest case: the newest
-edition should dominate its older siblings for any series-shaped query.
-Separately, re-sort the merged candidate set by final score before
-returning — the observed sim-order inversion suggests block concatenation.
-Consumer-side workaround here would be query rewriting (appending the
-current year/quarter), which we have deliberately not shipped — it would
-be per-question tuning; the fix belongs in the ranker.
+Document how publication dates, relevance, and any freshness weighting determine
+result order, including whether returned similarity differs from the final score.
+Test recurring-series queries against current and older editions; investigate
+ranking changes only where the intended relevance/recency contract fails.
+Do not infer an implementation fix such as re-sorting from raw similarity alone.
 
 The GT-23 recurrence adds a stricter contract need: bounded results should
 expose or guarantee the selected publication/event date field, support explicit

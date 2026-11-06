@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "GET /api/analyze includes stale TVL rows without a stale-total warning"
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row sls-101; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - "2026-11-02T17:18Z live GET https://stellarlight.xyz/api/analyze?dimension=tvl returned tvl.totalTvlUSD 1980381301, trackedProjects 17, asOf 2026-11-02T13:19:15.688Z, provider DefiLlama. top10[0] is spiko tvlUSD 1653789314 with tvlAsOf 2026-09-14T10:30:21.591Z. top10[8] is sentora tvlUSD 10393904 with tvlAsOf 2026-08-10T06:16:01.283Z. Every other top-10 row has tvlAsOf 2026-11-02T13:19:15.688Z. Response sha256 4a9efbdbee06c0ae2a15f92fb9f383d68d88cc61ce12cbbdb6f21176dadf1142."
   - "The tvl.basis text says 'asOf = most recent per-project tvlAsOf'. Each row's tvlMethod says the value is 'refreshed weekly (tvlAsOf)'. Spiko is 83.5 percent of the total and was 49 days old; Sentora was 84 days old."
   - "2026-11-02T17:19Z GET https://api.llama.fi/protocols lists slug spiko with tvl None and chains []. GET https://api.llama.fi/protocol/spiko lists chains ['Polygon','Ethereum'] and no Stellar entry in currentChainTvls. The provider no longer publishes a Stellar value for Spiko."
@@ -24,16 +25,21 @@ recurrences:
 
 ## Finding
 
-`GET /api/analyze?dimension=tvl` includes old project values without a warning that the total contains stale data.
-On 2026-11-02, it reports `totalTvlUSD: 1980381301` and `asOf: 2026-11-02T13:19:15.688Z`.
-Spiko contributes 1653789314, or 83.5 percent, from 2026-09-14.
-Sentora contributes 10393904 from 2026-08-10.
-The project rows say "refreshed weekly".
-A reader must inspect row dates to detect the stale contribution.
+The stale-total warning is now deployed. On 2026-11-06,
+`GET /api/analyze?dimension=tvl` reports `totalTvlUSD: 1980381301`,
+`staleTvlUSD: 1664183220`, oldest observation 2026-08-10, and an explicit
+warning that 3 of 17 projects supply 84% of the total. `staleProjects` names
+Spiko, Sentora, and Etherfuse, and their project rows expose `tvlStale: true`.
 
-DefiLlama now returns no TVL value for Spiko and reports 71200916 for Sentora on Stellar.
-The response documents that `asOf` means the newest project date.
-That date does not describe the freshness of most of the total.
+The underlying stale values remain: Spiko 1653789314 dated 2026-09-14,
+Sentora 10393904 dated 2026-08-10, and Etherfuse 2 dated 2026-09-14.
+Thus the original warning gap has a live fix, while the original record's
+refresh/unavailable-provider recommendation remains unresolved. Keep that
+scope distinction explicit; this record is not a full-scope fixed candidate.
+
+At discovery on 2026-11-02 there was no warning and the aggregate `asOf` was
+the newest row date, obscuring most of the total's age. The provider values in
+the dated evidence below are observations from that date, not today's values.
 
 ## Evidence
 
@@ -54,8 +60,13 @@ Sentora's current provider value differs from Scout's stored value.
 
 ## Recommendation
 
-Add a stale-total warning when a contributing row exceeds the stated refresh cadence.
-Expose the stale contribution and the oldest contributing date beside `totalTvlUSD`.
-Alternatively, exclude stale rows and state that exclusion in `basis`.
-Investigate the old Sentora value and mark unavailable provider values with a dated reason.
-Apply the same rule to project rows and the aggregate response.
+Preserve the deployed stale-total warning, stale contribution, oldest date,
+and per-project stale flags. Refresh or remap Sentora using the current provider
+identity and record unavailable provider values with a dated reason. Do not
+convert missing provider data into a fresh zero. Apply the same availability
+and freshness rules to project rows and the aggregate.
+
+After a refresh change, repeat the aggregate and all three project reads.
+If resolving only the original warning scope, first retain the stale-refresh
+residual in a self-contained successor and independently verify the scope split;
+warning deployment alone does not establish refreshed underlying values.

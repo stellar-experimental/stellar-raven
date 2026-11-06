@@ -5,6 +5,8 @@ status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: "Contract-restoration example fails parsing and reads the WASM hash and footprint with obsolete XDR access"
 evidence:
+  - "Raven partial-fix verification posted and read back 2026-11-06 (author kalepail): https://github.com/stellar/stellar-docs/issues/2562#issuecomment-6686867459"
+  - "Partial fix: https://github.com/stellar/stellar-docs/pull/2977 merged 2026-11-03T16:14:21Z at d7845d6c594bfac2c1a9cbc856ccd68d92d66eb0; both deployed restoration copies now setTimeout(30). The November 2 initial evidence predates this change. Independent current residual tests: .agents/rounds/2026-11-06-remaining-sweep/cross-review.md."
   - "Successor of sd-055, which stellar/stellar-docs#2933 fixed. The sd-055 retirement review (Codex gpt-6.1-sol high, 2026-11-02, .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section A1) found this adjacent example still broken on both deployed pages."
   - "2026-11-02 GET https://developers.stellar.org/docs/build/guides/archival/restore-contract-js.md (HTTP 200) line 69: 'function getWasmLedgerKey(entry: xdr.ContractDataEntry):  {' has an empty return type, and the imports on lines 27-36 do not import xdr. The same function is on https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md line 365."
   - "Same snippet: getWasmLedgerKey(instance) receives c.getFootprint(), a LedgerKey, but reads entry.val().instance().wasmHash() as if it were a ContractDataEntry. The instance ledger key holds no WASM hash. server.getLedgerEntries(...) returns a response object, and the snippet puts that response into setReadWrite([instance, wasmEntry]), where the footprint needs a LedgerKey. The restoreTx builder sets no time bounds."
@@ -13,7 +15,7 @@ evidence:
   - "Pre-existing upstream report: https://github.com/stellar/stellar-docs/issues/2562 (open, filed 2026-07-07 by oceans404, a JS SDK snippet audit) lists restore-contract-js.mdx line 69 for the empty return type and the missing xdr import. It does not list the state-archival copy or the obsolete XDR access, the response-as-key footprint, or the missing time bounds."
 recurrences:
   - date: 2026-11-06
-    evidence: "BOTH live restore examples retain empty return type and fail TypeScript parse1131/1128; instance LedgerKey read as entry, response used as key, missing timebounds remain. restore-data still redeclares Api imported by polling helper. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-081"
+    evidence: "Correction after the continuation recheck: BOTH live restore examples retain the empty return type and fail TypeScript parsing; instance LedgerKey is read as an entry and the response is used as a footprint key. Both now call setTimeout(30), so the preceding sweep incorrectly retained missing time bounds. restore-data still redeclares Api imported by the polling helper. Fresh evidence: .agents/rounds/2026-11-06-remaining-sweep/docs.md and cross-review.md."
 ---
 
 ## Finding
@@ -27,7 +29,6 @@ The example also has runtime defects that #2562 does not list:
 - It passes the instance `LedgerKey` from `c.getFootprint()` to a function that reads it as a `ContractDataEntry`.
 - It reads the WASM hash from the instance key. The key holds no WASM hash; the hash is in the instance ledger entry.
 - It puts the `getLedgerEntries` response into the read-write footprint, which needs a `LedgerKey`.
-- The restoration transaction sets no time bounds.
 
 The data-restoration guide has a separate defect.
 It tells readers to reuse `submitTx` from the polling guide, which imports `Api` from `@stellar/stellar-sdk/rpc`.
@@ -77,6 +78,15 @@ Fix both copies of the example:
 1. Give `getWasmLedgerKey` a `xdr.LedgerKey` return type and import `xdr`.
 2. Read the instance ledger entry with `getLedgerEntries(instance)`, and take the WASM hash from that entry's contract instance executable. With `@stellar/stellar-sdk` 17.4.0 the path is `response.entries[0].val.value.val.value.executable.value`. Check that the entry exists and that the executable is `contractExecutableWasm`.
 3. Build the contract-code `LedgerKey` from that hash, and put the two `LedgerKey` values in the read-write footprint.
-4. Set time bounds on the restoration transaction.
 
 In `restore-data-js`, remove the local `Api` declaration and use the `Api` that the polling guide imports.
+
+## Partial fix verified — 2026-11-06
+
+Both deployed contract-restoration copies now call `.setTimeout(30)` before `.build()`.
+The time-bounds recommendation is complete. The initial November 2 evidence above is historical;
+the November 5 sweep incorrectly repeated it as a current defect. The parse, missing import,
+instance-entry, footprint and duplicate `Api` defects remain. Keep this finding active.
+
+Live reproduction and independent review: `.agents/rounds/2026-11-06-remaining-sweep/docs.md`
+and `.agents/rounds/2026-11-06-remaining-sweep/cross-review.md`.

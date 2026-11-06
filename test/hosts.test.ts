@@ -17,22 +17,25 @@ describe("canonicalHostRedirect", () => {
     }
   });
 
-  it("redirects MCP, OAuth, and well-known paths to the canonical host", () => {
+  it("serves MCP, OAuth, and discovery on the configured alias origin", () => {
     for (const path of [
       "/mcp",
       "/mcp/",
+      "/mcp/nested",
       "/authorize",
       "/callback?code=x&state=y",
       "/token",
       "/register",
       "/.well-known/oauth-authorization-server",
+      "/.well-known/oauth-authorization-server/mcp",
+      "/.well-known/oauth-protected-resource",
       "/.well-known/oauth-protected-resource/mcp",
-      "/.well-known/openid-configuration"
+      "/.well-known/openid-configuration",
+      "/.well-known/openid-configuration/mcp"
     ]) {
       for (const alias of ALIAS_HOSTNAMES) {
         const response = canonicalHostRedirect(new URL(`https://${alias}${path}`));
-        expect(response?.status, path).toBe(308);
-        expect(response?.headers.get("location"), path).toBe(`https://${HOST}${path}`);
+        expect(response, path).toBeNull();
       }
     }
   });
@@ -45,8 +48,8 @@ describe("canonicalHostRedirect", () => {
     }
   });
 
-  it("redirects other paths beside the former served routes", () => {
-    for (const path of ["/mcpx", "/authorized", "/tokens", "/callbacks"]) {
+  it("redirects lookalikes outside the served namespaces", () => {
+    for (const path of ["/mcpx", "/authorized", "/tokens", "/callbacks", "/registers", "/.well-knownx/oauth-authorization-server"]) {
       expect(canonicalHostRedirect(new URL(`https://agents.stellar.buzz${path}`))?.status, path).toBe(308);
     }
   });

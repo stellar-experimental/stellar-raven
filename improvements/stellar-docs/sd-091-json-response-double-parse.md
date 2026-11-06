@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-11-03
 upstreamTitle: "Remove the second JSON parse from the simulation HTTP example"
 evidence:
+  - "2026-11-06 follow-up: https://github.com/stellar/stellar-docs/pull/3053 now handles result.error in its proposed patch, but remains CHANGES_REQUESTED/BLOCKED. The ordinary deployed function still double-parses result and throws for success, JSON-RPC error and simulation-error objects. Exact fixture and PR receipts: .agents/rounds/2026-11-06-remaining-sweep/docs.md."
   - "research/audits/2026-11-03-qa-followup/additional-source-findings.json (OC-JSON-PARSE; fresh source receipts, case/review/packet hashes, owner proof, and fixture results)."
   - "Current source: https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx; SHA256 3d10b443ce150457aec5da83e274e1180bfa1e0c305db5f28f7c6983355a739d; Git blob cf3edbb514875b0ea72fd9dffaf13abed1546fec."
   - "Published page: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md; SHA256 2026dff38b62338b268df83e63ce596d838dec6a518b32cc2b4c7352d462942c."
@@ -12,7 +13,7 @@ evidence:
   - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3038
 recurrences:
   - date: 2026-11-06
-    evidence: "Live response.json followed by JSON.parse(result), local success/error object fixtures both SyntaxError. PR3053 CHANGES_REQUESTED: Elliot Nov5 requires result.error handling as well as top-level JSONRPC error; no subsequent fix captured. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-091"
+    evidence: "Live response.json followed by JSON.parse(result), local success/error object fixtures both SyntaxError. PR3053 CHANGES_REQUESTED: Elliot Nov5 requires result.error handling as well as top-level JSONRPC error; subsequent branch correction is now captured in the continuation evidence above; it remains unmerged and unapproved. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-091"
 ---
 
 ## Finding

@@ -27,20 +27,20 @@ Total findings: 102
 
 | id      | title                                                                                                                                       | status            | discovered | recurrences |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
-| sls-024 | At discovery, Scout lifecycle labels lacked populated provenance and deployment qualifiers. The schema exposes statusAsOf, statusBasis,…    | reported-upstream | 2026-07-10 | 10          |
-| sls-029 | Oracle discovery collapses provider identity, product family, network, and evidence tier into a project-level status. This makes…           | reported-upstream | 2026-07-10 | 7           |
-| sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 9           |
+| sls-024 | The original lifecycle-provenance gap is filled in the 2026-11-06 population scan: all 1,006 projects have lifecycle date/basis, and…       | reported-upstream | 2026-07-10 | 10          |
+| sls-029 | The 2026-11-06 oracle search distinguishes project deployments, including DIA testnet versus Band/RedStone mainnet, but lacks per-feed…     | reported-upstream | 2026-07-10 | 7           |
+| sls-033 | Exact wallet enumeration and name deduplication now work: on 2026-11-06, type=Wallet&limit=100 returns 72 rows, total: 72, and 72 distinct… | reported-upstream | 2026-07-10 | 9           |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 1           |
-| sls-097 | POST /api/partners/match returns HTTP 502, but OpenAPI does not describe that response. OpenAPI 1.9.116 lists only 200, 429, and 503. The…  | reported-upstream | 2026-11-02 | 1           |
 | sls-099 | The Scout Soroswap description omits current API venues and does not distinguish API support from contract support. It names "Soroswap,…    | reported-upstream | 2026-11-02 | 1           |
 | sls-100 | The Hana project website and status source point to a domain that redirects to the Wend remittance product. https://hana.money/ and…        | reported-upstream | 2026-11-02 | 1           |
-| sls-101 | GET /api/analyze?dimension=tvl includes old project values without a warning that the total contains stale data. On 2026-11-02, it reports… | reported-upstream | 2026-11-02 | 1           |
+| sls-101 | The stale-total warning is now deployed. On 2026-11-06, GET /api/analyze?dimension=tvl reports totalTvlUSD: 1980381301, staleTvlUSD:…       | reported-upstream | 2026-11-02 | 1           |
 | sls-102 | The Blend row in GET /api/projects/search links tvlMethodUrl to one child protocol instead of its four-row aggregate. It reports tvlUSD:…   | reported-upstream | 2026-11-02 | 1           |
 | sls-107 | GET /api/stablecoins has one company field, and it holds a brand name. For two issuers the brand differs from the ORG_NAME in the issuer's… | reported-upstream | 2026-11-02 | 2           |
 | sls-111 | The directory marks 24 projects with an SCF #45 award. The SCF funded-projects page lists at least 40 SCF #45 awards. Thirteen awarded…     | reported-upstream | 2026-11-02 | 1           |
 | sls-112 | The directory has no record for two first-party Stellar launches from September and October 2026                                            | reported-upstream | 2026-11-02 | 1           |
 | sls-113 | The venueRole field gives the DEX sub-type: AMM, native order book, aggregator, trading UI, or wallet-integrated. On 2026-11-02 it is null… | reported-upstream | 2026-11-02 | 1           |
 | sls-114 | For stellar/stellar-horizon, GET /api/repos/explain returns repoMeta.kind: platform, which is correct. Its codeVerified.contractInterface…  | reported-upstream | 2026-11-02 | 1           |
+| sls-115 | scout.explainRepo selects an outdated Horizon protocol ceiling for a current-source question. The selected answer says…                     | reported-upstream | 2026-11-06 | 0           |
 
 ## stellar-docs
 
@@ -82,9 +82,9 @@ Total findings: 102
 | ll-001 | Weekly-roundup canonical slugs mismatch their content dates. The research doc for "week of May 29, 2026" lives at slug…                     | reported-upstream | 2026-07-03 | 2           |
 | ll-002 | The Messari "State of Stellar Q1 2026" AV/research item carries only ~702 chars of extracted content. A load-bearing source is…             | reported-upstream | 2026-07-03 | 2           |
 | ll-003 | Region vocabulary is free-text rather than a controlled list. The live-lane eval case q-live-ll-regions-vocab currently passes on…          | reported-upstream | 2026-07-03 | 5           |
-| ll-004 | The authenticated tool listing intermittently omitted partner-visible names while /v1/me still reported those tools as available. The…      | reported-upstream | 2026-07-03 | 3           |
+| ll-004 | Authenticated discovery and account metadata disagree on the tool count in the 2026-11-06 check: the same key returns 18 tool names while…  | reported-upstream | 2026-07-03 | 3           |
 | ll-005 | find_content_by_entity advertises entity_type: "person" in its input schema enum, but the external lane returns success: true with…         | reported-upstream | 2026-07-03 | 6           |
-| ll-006 | search_content_semantic over articles has no freshness weighting, so "recent report"-shaped queries surface years-stale editions of…        | reported-upstream | 2026-07-03 | 2           |
+| ll-006 | The 2026-07-03 replay of search_content_semantic ranked old recurring SDF publications above the relevant Q1 2026 report. For the query…    | reported-upstream | 2026-07-03 | 2           |
 | ll-007 | Event summary prose can contradict the structured start_at field. The Bhopal and Jabalpur "Build On Stellar" workshop rows say "July 27"…   | reported-upstream | 2026-07-03 | 5           |
 | ll-008 | Directory records carry misleading region/coverage values, two live instances:                                                              | reported-upstream | 2026-07-03 | 2           |
 | ll-009 | Lumenloop's editorial content misattributes two headline statistics to "Messari's State of Stellar Q1 2026 report":                         | reported-upstream | 2026-07-03 | 2           |
@@ -94,16 +94,16 @@ Total findings: 102
 | ll-013 | lumenloop.get_scf_submissions({slug:"blend"}) links the correct Blend Capital submission and returns round, award_type, and budget:…        | reported-upstream | 2026-07-10 | 7           |
 | ll-014 | Project-content and similarity retrieval do not expose enough match provenance or confidence for a consumer to distinguish exact Soroswap…  | reported-upstream | 2026-07-10 | 2           |
 | ll-015 | Lumenloop's stellar-weekly-roundup-week-jul-3-2026 repeatedly dates Protocol 27 Mainnet activation as July 9. The roundup's own linked…     | reported-upstream | 2026-07-10 | 2           |
-| ll-016 | Historical retrieval can collapse disputed causal narratives into one factual summary. For Stellar's 2014 fork and 2015 SCP rewrite, SDF…   | reported-upstream | 2026-07-10 | 2           |
-| ll-017 | Person-oriented semantic and A/V searches do not expose enough match provenance to distinguish an exact named-person hit from topic…        | reported-upstream | 2026-07-10 | 7           |
+| ll-016 | Historical retrieval lacks structured claimant and dispute links for the 2014 fork and 2015 SCP rewrite. SDF and Ripple published…          | reported-upstream | 2026-07-10 | 2           |
+| ll-017 | Person-oriented semantic and A/V searches still lack per-result provenance that distinguishes exact named-person matches from topic…        | reported-upstream | 2026-07-10 | 7           |
 | ll-018 | The SCF submissions operation applies fuzzy matching even when the caller supplies the supposedly exact slug identity. The band slug…       | reported-upstream | 2026-07-10 | 2           |
 | ll-019 | The A/V response contract is internally inconsistent. Documentation describes an object containing results. The live adapter returns a…     | reported-upstream | 2026-07-11 | 4           |
-| ll-020 | Lumenloop's Protocol 27 editorial retrieval leaves a pre-vote scheduling item as the available event record without a superseding…          | reported-upstream | 2026-07-11 | 2           |
+| ll-020 | The exact Zipper guide retrieval still returns pre-vote article 8084 without an explicit link to the correct post-vote activation state.…   | reported-upstream | 2026-07-11 | 2           |
 | ll-022 | Lumenloop's CCTP event material lacks explicit milestone provenance. Deployment, technical support, and public-announcement dates can be…   | reported-upstream | 2026-07-11 | 2           |
-| ll-023 | Lumenloop product-news summaries can drop the network and maturity boundary for Confidential Tokens. Omitting that the June 29 item is a…   | reported-upstream | 2026-07-11 | 2           |
-| ll-024 | Lumenloop event retrieval can retain stale Meridian venue/date records without a visible supersession relation. Older Abu Dhabi/Yas Marina… | reported-upstream | 2026-07-11 | 1           |
+| ll-023 | This is a request for optional structured network, maturity, and audit-state metadata on product-news records, not a reproduced false…      | reported-upstream | 2026-07-11 | 2           |
+| ll-024 | This is an event-revision/supersession metadata request. The candidate history contrasts Abu Dhabi/Yas Marina October 21–22 with the later… | reported-upstream | 2026-07-11 | 1           |
 | ll-025 | Lumenloop roadmap summaries do not reliably distinguish planned capabilities from shipped ones. The June 9 post describes ML-DSA host…      | reported-upstream | 2026-07-11 | 3           |
-| ll-026 | Lumenloop event summaries risk collapsing a product announcement, effective date, and first-trade date into one event timestamp. For the…   | reported-upstream | 2026-07-11 | 2           |
+| ll-026 | The CME topic cluster lacks separate structured announcement, effective, launch, and first-trade timestamps. On 2026-11-06, article 5416…   | reported-upstream | 2026-07-11 | 2           |
 | ll-027 | Lumenloop's RedStone summary gives an unqualified nine-asset count that cannot be reconciled with Scout's ten-feed wording. Without labels… | reported-upstream | 2026-07-11 | 2           |
 | ll-028 | list_documents accepts an unknown sort value. The call returns ok with a full result page. It returns no error and no warning               | reported-upstream | 2026-08-14 | 2           |
 | ll-029 | Five public Lumenloop tools declare an output object with optional results and text fields. The live payload for each tool uses a…          | reported-upstream | 2026-08-18 | 2           |

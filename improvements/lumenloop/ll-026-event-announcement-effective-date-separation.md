@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-11
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-026; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - P4 N2 candidate records the CME Stellar-product announcement on 2026-01-15 and start of trading on 2026-02-09 as distinct facts; solo://proj/49/scratchpad/super-corpus-rebuild--585
   - "live verification 2026-07-13: authorized POST /v1/tools/search_documents {collection: articles, query: CME, limit: 100}, followed by get_document {collection: articles, id: 5416}, returned a publication-dated announcement summary with the February 9 planned launch only in prose; the response exposes no typed scheduled/effective or first-trade fields"
   - https://www.cmegroup.com/media-room/press-releases/2026/1/15/cme_group_to_expandcryptoderivativessuitewithlaunchofcardanochai.html
@@ -20,10 +21,15 @@ recurrences:
 
 ## Finding
 
-Lumenloop event summaries risk collapsing a product announcement, effective
-date, and first-trade date into one event timestamp. For the CME item, January
-15 is the announcement while February 9 is the reported start of trading; one
-untyped date can produce a wrong answer to either question.
+The CME topic cluster lacks separate structured announcement, effective,
+launch, and first-trade timestamps. On 2026-11-06, article 5416 retains the
+January 15 announcement and a planned February 9 launch pending regulatory
+review; article 4809 says trading launched in February without specifying a day.
+The check does not reproduce a wrong date in that prose. These two records do
+not independently confirm the exact first-trade day.
+This is a metadata request to disambiguate distinct milestones, not evidence
+that a single publication timestamp is itself incorrect or that current
+summaries systematically conflate the events.
 
 ## Evidence
 
@@ -39,6 +45,8 @@ prevalence.
 
 ## Recommendation
 
-Model announcement, effective, launch, and first-trade timestamps separately,
-with a short event-type label in every generated summary. Preserve the source
-publication date as another distinct field.
+Consider separate source-backed announcement, effective, launch, and first-trade
+fields for records that cover multiple milestones. Keep publication date distinct
+and preserve the correct milestone labels already present in prose. Do not infer
+an effective date or confirmed first trade from an announcement alone, or require
+unsupported values merely to populate the proposed fields.
