@@ -13,6 +13,19 @@ IDs, full case hashes and exact shard mapping. Historical final transcripts did 
 old final cells receive credit. Six case objects changed since the previous sweep, so every arm
 uses the same current case snapshot.
 
+The initial collection stopped twice on immediate local fetch failures. All 85 attempted
+observations are retained as a separate diagnostic cohort, including the successful answers.
+A free regression reproduced stale socket reuse after synchronous judging; the repaired runner
+opens a fresh connection for each answer and records bounded transport diagnostics. The historical
+errors did not capture their causes, so that attribution remains an inference. The fresh comparison
+starts all 1,616 cells under one repaired harness revision, with no prior cells imported.
+
+`prior-cohort.mjs` imports the earlier evidence and its costs into the unchanged $200 ceiling.
+The opening debit is $8.82879459, including both full uncertain method allocations; known API
+cash is $0.8915166 and the two failed-call costs remain unknown. The prior 85 observations receive
+their own full blinded review. A new unknown-cost or transport failure halts collection without
+automatic retry, partial recovery or selective replacement.
+
 `decision.mjs` implements the predeclared case-clustered exact test, Holm correction across fourteen
 comparisons, replicated improvements, fixed denominators, reliability and safety gates. A failed
 answer counts as a bad outcome. Full blinded transcript adjudication is required for every cell;
@@ -62,3 +75,35 @@ Raw historical grade agreement was 16/20. Agreement is descriptive, not a calibr
 criterion. See [calibration-summary.json](calibration-summary.json) for case grade pairs, source
 hash and cost distribution. The full-study forecast and disagreement reconciliation follow this
 instrument check; calibration does not establish the best Playground model.
+
+## Subscription reset checkpoint
+
+On November 6, the repaired harness completed both Luna repeats: 202 first-attempt
+answers and $1.00290804 reconciled answer API cash. Two answers hit the output
+limit. Judge A produced 195 valid grades, one consistency error and six explicit
+zero-token weekly-quota errors. All original receipts remain intact. No new-era
+Judge B calls or later model arms have launched.
+
+The owner chose to keep the $200 ceiling and resume after the reported November 8,
+19:00 Eastern subscription reset. No server or paid process remains active at the
+checkpoint. Total ceiling consumption is $9.83170263, including the immutable
+prior-cohort debit; known API cash is $1.89442464. The remaining estimate still
+requires per-model reforecasts and may stop at the budget gate.
+
+See [the resume checkpoint](../../../.agents/rounds/2026-11-06-playground-resume.md)
+for exact retained artifacts, identities, pending reviews and continuation gates.
+Neither experiment is complete, no winner is declared, and the shipped model pair
+remains unchanged. The separately prepared route-preservation patch remains
+conditional and unmerged until independent review and model selection.
+
+Two verified upstream defects were filed with immutable source records:
+[assets interface types](https://github.com/stellar/stellar-dev-skill/issues/180)
+and [the cross-contract guide example](https://github.com/stellar/stellar-docs/issues/3070).
+Their live checks and compile evidence distinguish source defects from answer errors.
+
+The final sweep independently verified the deployed fixes for sd-095 (SDP passkey
+storage) and sd-097 (Raven's Docs backend). Both active records were retired with
+immutable sources and resolution receipts. See [the retirement review](handoff-retirement-review.md),
+[root live evidence](handoff-root-live.json), [independent live evidence](handoff-independent-live.json),
+and [posted resolution comments](handoff-resolution-comments.json). Dated earlier
+blocked/undeployed observations remain historical; they are superseded by this check.

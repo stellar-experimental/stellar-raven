@@ -1,7 +1,7 @@
 ---
 id: sd-099
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-06
 upstreamTitle: Fix the manual invocation example in the cross-contract guide
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - "Dedupe 2026-11-06: active and resolved findings plus stellar/stellar-docs issue and PR searches for invoke_contract, symbol_short, to_val, and cross-contract. sd-098 owns event publishing on other pages. The completed broad guide update and related CLI/error-handling changes do not cover this compile failure."
   - "Local reproduction artifacts: tmp/playground-final/aborted-review/upstream-evidence/compile-receipt.json, cross-compile/, and cross-compile-28/. Verification report: tmp/playground-final/aborted-review/upstream-verification.md."
   - "2026-11-06T18:14:06.265915Z independent verification freshly fetched the ordinary page and repeated all four native compile checks. Both exact snippets fail with E0308/E0599; both corrected snippets pass. Page and snippet hashes match this finding. Evidence: tmp/playground-final/aborted-review/root-cross-check/result.json."
+  - upstream issue filed 2026-11-06: https://github.com/stellar/stellar-docs/issues/3070
 ---
 
 ## Finding

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "sd-097",
+    "url": "https://developers.stellar.org/docs/build/building-with-ai.md",
+    "at": "2026-11-06T18:41:02.769856+00:00",
+    "sha256": "6d5b6d53c7f0abe75c28c40b4d07bec3df92a87e31c722d0dfaf6094d4ab5d35",
+    "relevantLines": [
+      "Under the hood it wraps Stellar Docs (via Mintlify), Lumenloop, Stellar Light, and ecosystem skills, so your agent gets one cross-referenced answer instead of several disconnected sources."
+    ]
+  },
+  {
+    "id": "sd-095",
+    "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.md",
+    "at": "2026-11-06T18:41:02.995406+00:00",
+    "sha256": "e57186a4f72e0024d276a2626068e52354bd50fbd0c4ef3a4b8ba2aee48653bf",
+    "relevantLines": [
+      "* **One passkey per wallet**: Only the passkey the receiver registers when creating the wallet can sign for it. A receiver who loses that passkey loses access to the wallet.",
+      "**Passkeys**: A modern authentication method that replaces passwords with cryptographic keys that the user's authenticator or passkey provider stores securely, unlocked with biometrics (fingerprint, Face ID, etc.) or device PIN.",
+      "1. The browser or device generates a **cryptographic key pair** (public key and private key)",
+      "2. The receiver's authenticator or passkey provider manages the **private key** and never exposes it to the website or the SDP",
+      "> Each embedded wallet is controlled by the one passkey the receiver registered when creating it. A receiver who loses that passkey loses access to the wallet. A device-bound passkey stays on the device that created it. A synced passkey is backed up and synced across the receiver's devices by their passkey provider."
+    ]
+  }
+]

@@ -1,7 +1,7 @@
 ---
 id: sk-039
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-11-06
 upstreamTitle: Update the assets skill's SEP-41 transfer and symbol type summaries
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "https://docs.rs/soroban-sdk/27.0.6/src/soroban_sdk/token.rs.html declares the same interface types. The generated TokenClient accepts an Into<MuxedAddress> destination."
   - "The skill's existing token.transfer(&from, &to, &amount) example passed cargo check --offline against soroban-sdk =27.0.6. The client example is valid and is not part of this defect."
   - "Dedupe checked all 46 repository issues and 130 PRs on 2026-11-06. The earlier MuxedAddress guidance change affected smart-contracts/development.md, not this assets interface list. No duplicate active or resolved Raven skill finding was found."
+  - upstream issue filed 2026-11-06: https://github.com/stellar/stellar-dev-skill/issues/180
 ---
 
 ## Finding

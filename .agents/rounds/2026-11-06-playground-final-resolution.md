@@ -533,3 +533,137 @@ expected failures); the final initializer/helper delta passed 106 focused tests.
 The nine Judge B implementation files remain unchanged. No new-era paid call has
 occurred. The separate 85-observation diagnostic review uses opaque packets that
 retain every full transcript while withholding model and raw-judge metadata.
+
+### Restart opened and collection resumed
+
+The repaired answer checkout is frozen at
+`092ce4231869356ef1e081a5ef07a7051c19336c`, generation
+`e78f9441488d86728958325752e67541ca37e684ac07841e1935f12c33426166`.
+The separate `playground-final-transport-fixed` journal opened with 80 planned
+methods / 1,616 cells and the exact $8.82879459 prior-cohort debit. Fable's final
+read-only launch gate (local review Part L) verified all 31 implementation pins,
+unchanged selection, prior evidence, accounting, live server ownership and the
+first model configuration before its first reservation.
+
+Collection uses the actual hc environment. An attempted offline preparation in
+the tool shell rejected a different PATH-derived environment hash before writing
+anything; repeating it through hc reproduced the original Judge A identity.
+Neither executable nor environment pins were changed. Root's nonterminal
+`hc exec` supervisor calls identify the actual invoking terminal explicitly;
+created child ownership is independently checked against hc's parent records.
+The new server passed free MCP initialization and signed invalid-body preflight.
+The first safety method settled with one answer, one subscription Judge A call,
+and $0.00162985 reconciled API cash. The first quality repeat then launched its
+four fixed shards. No winner or completed comparative result is claimed here.
+
+### First repeat and diagnostic review checkpoint
+
+The first fresh Luna repeat completed all 101 first attempts and reconciled every
+answer-provider log ID. API cash was $0.53061165; Judge A reported $7.5447076
+subscription-notional usage. The deep-report answer ended at the output limit
+(`length`), not a transport error. It remains a failed answer in the fixed
+comparison denominator. Repeat two is collecting under the same source and pins.
+
+Two independent Astra/high lanes completed the separate blinded review of all
+85 aborted-era observations. A subsequent Fable review found a score-contract
+mistake: a trap answer missing required clarification had been marked partial.
+The original grades and join remain immutable. A separate blind audit now applies
+the exact frozen v2.11 ordinary and trap rubric to all 85 rows and records any
+amendments. The reproduced rubric guide was independently compared with the
+frozen builder; every future final reviewer receives it before grading. Full
+transcripts were predeclared as the adjudication basis; no rubric or golden changed.
+
+Upstream follow-up confirmed two new narrow candidates: assets token-interface
+parameter/return types (`sk-039`) and the cross-contract guide's manual invocation
+(`sd-099`). The suggested client-call defect was refuted by compilation: the
+`&Address` client argument is valid. The cross-contract example fails with SDK
+28.0.0 and 29.0.1; the complete correction passes both, including an independent
+fresh-source check. Existing SEP-6, scaffold, OpenZeppelin and published-skill-cache
+recurrences stay local. The Decaf alias and selected-section SEP-58 omissions did
+not establish new upstream defects. Filing follows the reviewed source commits.
+
+The proposed production transport check exposed a configuration concern before
+selection: a mixed-vendor tuple currently moves its OpenAI member to Chat, while
+OpenAI finalists use Responses. Promotion must preserve each selected member's
+measured route and effort. A reviewed narrow rule change can permit Responses
+beside Anthropic's own plugin; mixed OpenAI effort levels require per-model
+settings. These are conditional post-collection changes, not edits to the frozen
+surface. No model switch is justified or made at this checkpoint.
+
+### Subscription capacity stop
+
+Judge A returned first-party HTTP 429 `usage_limit_reached` on six late repeat-two
+calls. The CLI explicitly reports zero API duration, zero tokens and zero cost for
+those attempts; their original error verdicts are retained. Its stated reset is
+2026-11-08 at 19:00 America/New_York. The independent Fable reviewer hit the same
+weekly limit before finishing the old-cohort score-contract audit or reviewing the
+future Astra repeat-two rollover. Neither unfinished review is accepted as passed.
+
+Root placed an operator hold on new paid launches, drains and reconciles every
+already launched method, then stops its owned server. No model, billing identity,
+judge transport, case denominator or frozen file changes as a quota workaround.
+The owner was asked whether subscription capacity can be restored now, whether to
+resume after reset under the existing $200 cap, or to estimate a revised API plan.
+Offline implementation, verified finding preparation and cleanup can continue.
+The local quota-hold record lists the six exact source cells and prompt hashes.
+
+### Owner reset decision and completed work release
+
+The owner selected “Keep the $200 cap; resume after reset.” All ten native Luna
+methods are settled: 202 answers, $1.00290804 answer cash, and $14.3179634 Judge A
+subscription-notional usage. There are two `length` answer failures, one Judge A
+consistency error and six zero-token quota errors. The complete journal has no
+server lease or reserved methods. API cash across both cohorts and calibration is
+$1.89442464; ceiling consumption including the unchanged conservative prior debit
+is $9.83170263. No later model or new-era B call launched.
+
+The reviewed gauntlet receipt fix is committed as `f418eda7`: it retains Gateway
+log IDs for exact cost reconciliation. Typecheck, 154 unit-test files (3,392 passed,
+three expected failures), build and staged/tree secret scans passed. The separate
+route-preservation implementation passed its own unit/build/smoke checks, but
+independent review is unfinished; its patch is parked outside the deployed source.
+
+The standard improvements filer posted `sk-039` to
+https://github.com/stellar/stellar-dev-skill/issues/180 and `sd-099` to
+https://github.com/stellar/stellar-docs/issues/3070. Both were read back successfully
+with their correct owner, defect, source snapshot at `2bcecb740d88` and handoff.
+No recurrence-only reminder comments were posted. The resume checkpoint records
+the deferred experiments separately from these completed fixes and findings.
+
+### Final handoffs and restart preservation
+
+Two new maintainer handoffs arrived during collection. Root fetched each ordinary
+live page at 18:41 UTC; independent Astra/high lane `t35p` repeated Markdown, HTML,
+and full-export checks at 18:42 UTC. Fable was unavailable under the same weekly
+quota. Both triggers are fixed. The independent
+[retirement review](../../research/audits/2026-11-06-playground-final-resolution/handoff-retirement-review.md)
+records direct maintainer approvals, deployment checks, hashes, residual scope,
+and complete reference reconciliation.
+
+| Finding | Resolving change | Live result | Action / next event |
+| --- | --- | --- | --- |
+| sd-095 | Docs PR3057, merged `22103ac670068f38fa0b77724bfe04ec1e447524`; issues3042/Raven386 | Provider-managed private key, device-bound/synced distinction, one-passkey access warning; no device-only claim | Retired through resolver after four-eye verification; no further wake-up absent regression |
+| sd-097 | Docs PR3066, merged `8cd151394ad33e8212d3fa421dda053b42c5a2af`; issues3064/Raven385 | Current Building with AI page names Mintlify, preserves source list and canonical host | Retired through resolver; dated historical Algolia mention remains valid history |
+
+Resolution comments were posted and read back on both original issues and both
+resolving PRs. Exact URLs and authors are in
+[the comment receipt](../../research/audits/2026-11-06-playground-final-resolution/handoff-resolution-comments.json).
+The fixed source snapshot is `5ababf34190a23badac7979f58e0823e9125efe6`;
+its public bytes match the records. Resolver dry runs preceded removal, intake
+cleanup and two new `resolved.json` receipts. No golden/register references needed
+edits. Improvements lint passes with 102 active findings. The SDP wording does not
+explicitly state end-to-end encryption; that optional detail is not claimed as deployed.
+
+The [resume checkpoint](2026-11-06-playground-resume.md) now records verified local
+archives, frozen Git bundle and executable backup, conditional route patch,
+worktree cleanup, and the registered one-shot same-thread resume at November 8,
+19:05 Eastern. All four owned worktrees were removed after preserving their exact
+revisions and patch. The archive was read back and each member verified. The local
+scheduler was independently reviewed and tested; it only queues the task and
+requires the Mac and Codex daemon. It does not authorize collection past any gate.
+
+The completed harness/findings release is PR387. Its final merge/deploy/alias and
+main-only cleanup receipt belongs at
+`tmp/playground-final/resume-checkpoint/interim-release.json`; inspect the actual
+receipt before treating publication as complete. No experimental winner or model
+switch is part of this interim release.
