@@ -12,6 +12,9 @@ evidence:
   - stellar/stellar-docs main 5142b219 docs/data/apis/migrate-from-horizon-to-rpc.mdx lines 46-47 say GET /claimable_balances has "No direct RPC equivalent" and that getLedgerEntries retrieves "a specific claimable balance by ID"
   - the sentence came from stellar/stellar-docs#1784 (merged 2025-09-17), which replaced the earlier "can be done in several ways" text
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/2998
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live line359 still says getLedgerEntries obtains Balance ID, while following BALANCE_ID input and earlier getClaimableBalanceId prove known-ID requirement. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-061"
 ---
 
 ## Finding

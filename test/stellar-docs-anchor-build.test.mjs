@@ -20,6 +20,23 @@ afterEach(() => {
 });
 
 describe("rendered docs anchor capture", () => {
+  it("captures heading-specific navigation labels without admitting unrelated links", () => {
+    expect(extractPageAnchors([
+      '<h2 id="friendbot"><a href="#friendbot" aria-label="Navigate to header: Friendbot">link</a><span>Friendbot</span></h2>',
+      '<h2 id="other"><a href="#friendbot" aria-label="Navigate to header: Friendbot">Other</a></h2>',
+      '<h2 id="sidebar"><a href="#sidebar" aria-label="Navigate to header settings">Sidebar</a></h2>'
+    ].join(''))).toEqual({ Friendbot: ['friendbot'] });
+  });
+
+  it("preserves the previous index when site markup no longer yields headings", async () => {
+    const path = outputPath();
+    await buildAnchorIndex({ fetchImpl: captureFetch, outputPath: path });
+    const before = readFileSync(path, 'utf8');
+    const fetchImpl = async (url) => new Response(url.endsWith('/sitemap.xml') ? sitemap() : '<h2 id="example">Example</h2>');
+    await expect(buildAnchorIndex({ fetchImpl, outputPath: path })).rejects.toThrow('found no headings');
+    expect(readFileSync(path, 'utf8')).toBe(before);
+  });
+
   it("captures custom IDs, duplicates, code text, entities, and Unicode", () => {
     expect(extractPageAnchors([
       '<h1 id="page-title">Page</h1>',

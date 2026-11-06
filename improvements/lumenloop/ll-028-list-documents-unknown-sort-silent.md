@@ -12,6 +12,8 @@ evidence:
   - eval round 2026-08-14, live-run stamp 2026-08-14T04-13-13, Solo scratchpad 809 todo 1538 shard
   - upstream issue filed 2026-08-19: https://github.com/lumenloop/lumenloop-backend/issues/43
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL list_documents articles,limit3 with omitted sort, two bogus sorts,last_seen_at,publishing_date DESC — Bogus/foreign fields return HTTP200 same ids13288,13284,13278 as default; publishing_date differs. No effective sort echo or warning. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-028."
   - date: 2026-11-02
     evidence: "POST list_documents {collection: articles, sort: definitely_not_a_real_sort_key, limit: 3} at 2026-11-02T17:18:14Z returned success true and the same first page as the call with no sort (ids 13080, 13072, 13069; total 2263). sort publishing_date DESC returned a different page (13072, 13069, 13066). No response echoes the effective sort. Unknown argument names are a separate defect, tracked in ll-035."
 ---

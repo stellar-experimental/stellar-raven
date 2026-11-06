@@ -213,7 +213,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-03T17:55:56Z"
+    "x-generatedAt": "2026-11-06T01:05:54Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1728,6 +1728,24 @@
               }
             },
             "description": "Analytics rollup"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "The projects read behind categories, funding, tvl or gaps, the repos scan read behind toolchain (dimension=all included for both), or the DoraHacks read behind dimension=hackathons failed: an outage, NOT a zero count, total or TVL, and nothing was stored. Retry after Retry-After.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending (2).",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
         "summary": "Cross-event Stellar ecosystem analytics rollup",
@@ -1840,6 +1858,7 @@
                     "note2": {},
                     "ok": {},
                     "q": {},
+                    "renamedFrom": {},
                     "repo": {},
                     "repoMeta": {},
                     "routedVia": {},
@@ -2273,6 +2292,24 @@
               }
             },
             "description": "Cluster list"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "The projects read behind the clusters failed: an outage, NOT an empty directory or a zero count. Retry after Retry-After. A value filter that matches nothing after a read that ran is a 200 with clusters [] and meta.advisory.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending (2).",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
         "summary": "Topic clusters with crowdedness scores",
@@ -2352,6 +2389,24 @@
               }
             },
             "description": "Hackathon not found. `error` itself carries the way forward (getHackathons with q, and the closest known slugs), since some clients keep only `error`."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "Could not check: the store did not answer, or a DoraHacks listing read failed so the slug was not looked for in every listing. An outage, NOT a not-found. Retry after Retry-After.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
         "summary": "Get one hackathon's full detail",
@@ -2567,6 +2622,24 @@
               }
             },
             "description": "Leaderboard + ecosystem stats"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "The project or repo read behind the ranking failed (format=csv included): an outage, NOT an empty ranking or a zero count. Retry after Retry-After. A filter that matches nothing after a read that ran is a 200 with projects [].",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending (2).",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
         "summary": "Stellar ecosystem developer activity",
@@ -3155,6 +3228,19 @@
             "in": "query",
             "name": "peg",
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter on the row's assetType, case-insensitive: Yield Stablecoin (e.g. USDY), Treasury-Backed (e.g. USDM1), or none for the rows with no assetType recorded. A qualifier is recorded only where the unit is not 1:1 with its peg and a row without one was not classified, so assetType=none leaves out the known yield and Treasury products but does not certify every row left as par. Unrecognized values return 400 with the valid set.",
+            "in": "query",
+            "name": "assetType",
+            "schema": {
+              "enum": [
+                "Yield Stablecoin",
+                "Treasury-Backed",
+                "none"
+              ],
               "type": "string"
             }
           },
@@ -3785,8 +3871,41 @@
             "application/json": {
               "schema": {
                 "properties": {
+                  "limit": {
+                    "default": 5,
+                    "description": "Most matches to return, 1 to 10 (default 5); out-of-range values are clamped.",
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
                   "need": {
-                    "description": "The builder's need, in plain language",
+                    "description": "The builder's need, in plain language, up to 2,000 characters.",
+                    "maxLength": 2000,
+                    "type": "string"
+                  },
+                  "region": {
+                    "description": "Rank only partners whose recorded regions contain this text.",
+                    "type": "string"
+                  },
+                  "sector": {
+                    "description": "Rank only partners whose recorded sectors contain this text.",
+                    "type": "string"
+                  },
+                  "type": {
+                    "description": "Rank only partners of this type; any other value answers 400 with validTypes.",
+                    "enum": [
+                      "anchor",
+                      "on-off-ramp",
+                      "infrastructure",
+                      "tooling",
+                      "protocol",
+                      "wallet",
+                      "audit-firm",
+                      "legal",
+                      "agency",
+                      "asset-issuer",
+                      "other"
+                    ],
                     "type": "string"
                   }
                 },
@@ -3831,15 +3950,19 @@
                                 "type": "string"
                               },
                               "regions": {
+                                "description": "Curated coverage regions; NULL = none recorded (UNKNOWN).",
                                 "items": {
                                   "type": "string"
                                 },
+                                "nullable": true,
                                 "type": "array"
                               },
                               "sectors": {
+                                "description": "Curated sectors; NULL = none recorded (UNKNOWN).",
                                 "items": {
                                   "type": "string"
                                 },
+                                "nullable": true,
                                 "type": "array"
                               },
                               "slug": {
@@ -3909,6 +4032,42 @@
             },
             "description": "Ranked matches with reasons"
           },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/scout.ErrorResponse"
+                    },
+                    {
+                      "properties": {
+                        "validTypes": {
+                          "description": "Present only when type was unknown: every partner type the field accepts.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "The body is not JSON, `need` is missing, blank or longer than 2,000 characters, or `type` names no partner type; then validTypes lists every type it accepts."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.ErrorResponse"
+                }
+              }
+            },
+            "description": "The model declined to rank this need: rephrase it, or use GET /api/partners filters."
+          },
           "429": {
             "content": {
               "application/json": {
@@ -3942,26 +4101,65 @@
               }
             }
           },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.ErrorResponse"
+                }
+              }
+            },
+            "description": "An unexpected error inside this service, not a claim about the request or the data: resend later."
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.ErrorResponse"
+                }
+              }
+            },
+            "description": "One language model call failed: the provider erred (5xx), was overloaded, or could not be reached in time, or its output could not be read. Not a claim about the request or the data: resend later, or rank with GET /api/partners filters now. The provider refusing our request or account is the 503 with unavailable true instead, where a resend does not help."
+          },
           "503": {
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "The AI path is not configured or is unavailable; the caller falls back to the manual form rather than erroring.",
-                  "properties": {
-                    "error": {
-                      "description": "Human-readable reason, safe to show.",
-                      "type": "string"
+                  "oneOf": [
+                    {
+                      "description": "The AI path is off: no model is configured, or the provider refuses our request or account (any 4xx but 429). The caller falls back rather than erroring.",
+                      "properties": {
+                        "error": {
+                          "description": "Human-readable reason, safe to show.",
+                          "type": "string"
+                        },
+                        "unavailable": {
+                          "description": "Always true here: the feature is off, not the request wrong. Fall back; do not retry.",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "unavailable"
+                      ],
+                      "type": "object"
                     },
-                    "unavailable": {
-                      "description": "Always true here: the feature is off, not the request wrong.",
-                      "type": "boolean"
+                    {
+                      "$ref": "#/components/schemas/scout.RetryableError"
                     }
-                  },
-                  "type": "object"
+                  ]
                 }
               }
             },
-            "description": "AI backend unavailable: fall back to GET /api/partners"
+            "description": "Two cases, told apart by the body. unavailable true: the AI path is off (no model is configured, or the provider refuses our request or account); a resend does not help, so no Retry-After is sent: use GET /api/partners filters. retryAfterSeconds: the partner directory could not be read, an outage and NOT a claim that no partner matches; resend after Retry-After.",
+            "headers": {
+              "Retry-After": {
+                "description": "Only when the directory read failed: seconds to wait, the same number as retryAfterSeconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
         "summary": "AI-rank partners against a plain-language need",
@@ -7264,7 +7462,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 284,
-    "generatedAt": "2026-11-03T17:55:56Z"
+    "generatedAt": "2026-11-06T01:05:54Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7276,7 +7474,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-11-03T15:18:13.074Z",
+      "fetchedAt": "2026-11-06T01:05:52.974Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -7307,7 +7505,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-11-03T17:55:56Z"
+      "syncedAt": "2026-11-06T01:05:54Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-11-02T00:00:00Z",

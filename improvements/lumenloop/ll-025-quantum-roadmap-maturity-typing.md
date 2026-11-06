@@ -9,6 +9,8 @@ evidence:
   - https://github.com/lumenloop/lumenloop-backend/issues/37
   - 2026-08-11 review: issue #37 is open. It has no linked PR, checks, or reviews. Its only comment and latest timeline activity are kalepail's Raven tracking comment at 2026-07-13T22:54:35Z. `get_document({collection: "articles", id: 8228})` still says Stage 1 (2026) adds host functions and enterprise wallets can shift immediately, without a structured maturity, deployment state, or target-horizon field.
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_document articles8228 plus linked primary quantum-plan page and CAP0087 — Lumenloop still says enterprise wallets can shift immediately; primary retains missing-today/expected qualifiers; roadmap lacks structured deployment state. No new protocol-deployment claim made. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-025."
   - date: 2026-08-11
     evidence: Article 8228 still combines a staged roadmap with present-tense capability language in an untyped projection.
   - date: 2026-10-09

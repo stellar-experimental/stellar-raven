@@ -13,6 +13,9 @@ evidence:
   - Affected golden case: eval/qa/corpus/battery/tooling-infra/q-gap-lumen-documents-browse.json
   - 2026-11-02T17:18:13Z earlier verification: search_directory and get_project accepted bogus_arg="x" with HTTP 200 and no warning. The no-filter list_documents control returned total=1192. Published list_documents and search_directory schemas set additionalProperties=false.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/49
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL list_documents events time_period upcoming vs period upcoming vs bogus_arg vs no filter; directory/project bogus_arg controls — All HTTP200. Misspelled/unknown/no filter total1201; proper period total17. Published additionalProperties=false; unknown keys silently accepted on directory/project too. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-035."
 ---
 
 ## Finding

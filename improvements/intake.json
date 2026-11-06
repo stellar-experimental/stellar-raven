@@ -199,10 +199,6 @@
       "repo": "cloudflare/agents",
       "reason": "The @cloudflare/codemode package metadata names cloudflare/agents as its issue owner; searchConnectors lives in packages/codemode."
     },
-    "cs-011": {
-      "repo": "stellar/stellar-protocol",
-      "reason": "stellar/stellar-protocol owns ecosystem/README.md and ecosystem/sep-0013.md."
-    },
     "cs-004": {
       "repo": "circlefin/stellar-cctp",
       "reason": "developers.circle.com has no public content repository. circlefin/stellar-cctp is Circle's public, issue-enabled repository for the Stellar CCTP contracts that the page documents."
@@ -263,14 +259,6 @@
       "repo": "stellar/stellar-dev-skill",
       "reason": "stellar/stellar-dev-skill owns the skill set that skills.stellar.org serves."
     },
-    "sd-079": {
-      "repo": "stellar/stellar-docs",
-      "reason": "docs/build/building-with-ai.mdx, for-agents.js, and the agent-cli architecture page are source content owned by stellar/stellar-docs."
-    },
-    "sd-080": {
-      "repo": "stellar/stellar-docs",
-      "reason": "docs/build/smart-contracts/example-contracts/fuzzing.mdx is source content owned by stellar/stellar-docs."
-    },
     "sd-081": {
       "repo": "stellar/stellar-docs",
       "reason": "restore-contract-js.mdx and state-archival.mdx are source content owned by stellar/stellar-docs."
@@ -279,45 +267,13 @@
       "repo": "Inferara/soroban-security-portal",
       "reason": "Inferara/soroban-security-portal is the public, issue-enabled repository for stellarsecurityportal.com (its GitHub homepage). The portal owns the audit-report dataset that Stellar Light/Scout mirrors."
     },
-    "sd-082": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The issuer-lock instructions are source content owned by stellar/stellar-docs."
-    },
-    "sd-083": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The stellar.toml publishing instructions are source content owned by stellar/stellar-docs."
-    },
-    "sd-084": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The authorization example is source content owned by stellar/stellar-docs."
-    },
-    "sd-085": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The Stellar Asset Contract description and interface are source content owned by stellar/stellar-docs."
-    },
-    "sd-086": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The Horizon OpenAPI parameter descriptions are source content owned by stellar/stellar-docs."
-    },
-    "sd-087": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The simulation authMode descriptions are OpenRPC source content owned by stellar/stellar-docs."
-    },
     "sd-088": {
       "repo": "stellar/stellar-docs",
       "reason": "The LedgerHeader explanatory hierarchy is source content owned by stellar/stellar-docs."
     },
-    "sd-089": {
-      "repo": "stellar/stellar-docs",
-      "reason": "Simulation deep-dive example source is owned by stellar/stellar-docs."
-    },
     "sd-090": {
       "repo": "stellar/stellar-docs",
       "reason": "Contract-spec enum guide source is owned by stellar/stellar-docs."
-    },
-    "sk-037": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The dapp skill owns its low-level invocation and mixed-operation batching guidance."
     },
     "sd-091": {
       "repo": "stellar/stellar-docs",
@@ -331,10 +287,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "docs/learn/fundamentals/contract-development/storage/persisting-data.mdx is verified source content in stellar/stellar-docs."
     },
-    "sd-094": {
-      "repo": "stellar/stellar-docs",
-      "reason": "docs/data/apis/rpc/api-reference/methods/getTransactions.mdx is verified source content in stellar/stellar-docs."
-    },
     "sd-095": {
       "repo": "stellar/stellar-docs",
       "reason": "The Embedded Wallets passkey-storage explanation is verified source content in stellar/stellar-docs."
@@ -346,6 +298,18 @@
     "sd-096": {
       "repo": "stellar/stellar-docs",
       "reason": "redirects.json at the stellar/stellar-docs repository root owns the wildcard redirect rules."
+    },
+    "sk-038": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The canonical assets skill owns custom SAC admin and issuer lockout guidance; Docs generates a copy."
+    },
+    "sd-097": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Building with AI page owns the stale Raven backend description."
+    },
+    "sd-098": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Deprecated SDK API examples belong to the canonical Docs owner."
     }
   }
 }

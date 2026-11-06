@@ -12,6 +12,8 @@ evidence:
   - Solo scratchpad 575 GT-23 primary 3264 and blind 3267
   - https://github.com/lumenloop/lumenloop-backend/issues/18 (filed 2026-07-13; production/configuration regression report against the public `lumenloop-mcp` owner)
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 partial: LL search_content_semantic query=\"tokenized RWA stablecoin on-chain activity Stellar SDF report size volume\",types=[research,articles],limit10; Q1 2026 quarterly report control — Old Q2 2021/Q4 2020 top-ten failure no longer appears: current top-ten articles are RWA-focused recent editions. 5945 absent broad, first in focused control. Similarity ordering still non-monotonic (.580,.556,.677). Bounded July query remains semantic rather than chronological. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-006."
   - date: 2026-08-11
     evidence: the original query still omitted article 5945 while returning Q2 2021 and Q4 2020 reviews at ranks 4 and 6; `get_document({collection:"articles",id:5945})` still succeeds, while the focused `Q1 2026 quarterly report` query ranks it fourth. Upstream #18 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity.
 ---
@@ -61,3 +63,10 @@ The GT-23 recurrence adds a stricter contract need: bounded results should
 expose or guarantee the selected publication/event date field, support explicit
 date-desc ordering, and exclude or separately bucket undated rows. Semantic
 rank must never be represented as publication chronology.
+
+## Current verification — 2026-11-06
+
+Old Q2 2021/Q4 2020 top-ten failure no longer appears: current top-ten articles are RWA-focused recent editions. 5945 absent broad, first in focused control. Similarity ordering still non-monotonic (.580,.556,.677). Bounded July query remains semantic rather than chronological.
+
+Record partial progress; do not assert no freshness weighting from output alone. Retain ordering/recency-contract uncertainty.
+Next check: Inspect owner ranking contract/change; compare current recurring-series editions and returned final-score/order semantics.

@@ -16,6 +16,8 @@ evidence:
   - anonymous control 2026-07-27: unauthenticated GET /v1/tools returned 18 public tools and omitted the three account-scoped tools
   - 2026-07-27 follow-up: https://github.com/lumenloop/lumenloop-backend/issues/42#issuecomment-5092399001
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Same-key GET /v1/tools and /v1/me; anonymous /v1/tools control; repeated twice — Both passes: authenticated18=anonymous18; account available21/visible21. Public listing now explicitly calls itself Guest lane only. No account-scoped operation called. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-004."
   - date: 2026-07-14
     evidence: same-key authenticated /v1/tools=18 versus /v1/me available=21 and visible=21; regression reported at https://github.com/lumenloop/lumenloop-backend/issues/42
   - date: 2026-08-11

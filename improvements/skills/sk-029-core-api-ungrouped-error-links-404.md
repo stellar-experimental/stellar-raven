@@ -11,6 +11,9 @@ evidence:
   - The Core API skill at Trustless-Work/trustlesswork-skill main 80e2467f34041b9f70e66d6c2f567fc76ba9b1bb, trustless-work-dev/skills/api/v2/core-concepts.md line 214, documents the errors/<code-in-kebab-case> template for every error type.
   - Predecessor sk-026 (retired 2026-10-27; receipt in improvements/resolved.json) covered the escrow-receiver-trustline-missing and token-trustline-missing links. This finding is the residual from the sweep of every documented error page. Dedupe 2026-10-27 found no other finding and none of the 19 trustlesswork-skill issues covers these 4 codes.
   - upstream issue filed 2026-10-27: https://github.com/Trustless-Work/trustlesswork-skill/issues/20
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: GET four ungrouped error URLs plus their grouped pages and stellar-tx-failed control — All four original ungrouped paths404; grouped counterparts200; control200. Skill template unchanged. No API errors intentionally triggered. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-029."
 ---
 
 ## Finding

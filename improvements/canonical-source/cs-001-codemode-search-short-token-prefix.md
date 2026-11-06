@@ -12,6 +12,9 @@ evidence:
   - research/audits/2026-09-17-routing-audit/upstream-prefix-review.md records the commits, reproduction, ownership, and dedupe search.
   - research/audits/2026-09-17-routing-audit/scorer-followup-plan.md and porter-stem-experiment.md record the Raven-side ablations. Removing only the reverse prefix direction also removed query-side word forms such as forecasts→forecast.
   - "upstream issue filed 2026-09-17: https://github.com/cloudflare/agents/issues/2296"
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Run original10 searchConnectors cases against freshly downloaded cloudflare/agents main search.ts — False matches unchanged27/55/45/27; four no-short-token controls empty; intended matches153/481. Exact short-prefix rule remains line68. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-001."
 ---
 
 ## Finding

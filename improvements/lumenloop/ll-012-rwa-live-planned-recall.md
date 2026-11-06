@@ -10,6 +10,8 @@ evidence:
   - Solo scratchpad 575 GT-11 primary process 3231
   - https://github.com/lumenloop/lumenloop-backend/issues/29
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL search_directory real-world assets,limit10; exact Benji/WisdomTree/Figure/Spiko/Etherfuse; CRDT/CRDYX article searches — Original broad query includes DTCC and misses headline exact-name records; no typed product deployment state. Exact queries recover named issuers. CRDT/CRDYX article searches empty and directory searches semantic neighbors. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-012."
   - date: 2026-08-11
     evidence: "Broad RWA search still omits five exact-name records and lacks product state; issue #29 remains open."
   - date: 2026-08-14

@@ -13,6 +13,9 @@ evidence:
   - "Dedupe 2026-11-02T22:03:17Z: gh issue list -R Inferara/soroban-security-portal --state all for 'OpenZeppelin' and 'stellar contracts' found per-report vulnerability-entry tasks for other vendors (#103 to #111) and no request for the OpenZeppelin Stellar Contracts reports. Stellar-Light/stellarlight open #562 is a generic coverage watch. Resolved sls-003, sls-064, sls-070, and sls-074 cover Scout audit corpus quality, engagement metadata, and exact IDs, not portal coverage."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' items R17 and R23. Golden follow-up: TODO item 'Add golden cases for the confirmed HackMeridian gaps' (R23)."
   - upstream issue filed 2026-11-02: https://github.com/Inferara/soroban-security-portal/issues/256
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: GET portal/api/v1/reports; GH OZ audits folder/release; Scout audit mirror — Portal still only OZ reports35(v0.3.0-rc.2) and2(0.1.0), versus8 published PDFs includingv0.8.0. Scout repeats2. Two contributor assignment comments are not owner acceptance or delivered PR. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-009."
 ---
 
 ## Finding

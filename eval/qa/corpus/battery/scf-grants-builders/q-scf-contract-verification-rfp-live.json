@@ -5,7 +5,7 @@
     "scout.getRfps"
   ],
   "golden": {
-    "answer": "Query the live RFP set for contract source verification. Report status and requirements only from the returned brief, cite its URL and official round `verifyAt`, and include an as-of date. If absent, say it is absent from the current served set rather than closed forever. Do not treat `verifyAt` or another open brief as proof that the SCF full-proposal window is open.",
+    "answer": "Query the live RFP set for contract source verification. Report the returned status with an as-of date. For published requirements, use publishedBrief and its pinned official source when present; distinguish the original idea text. Cite the brief and official round verifyAt. If absent, scope that absence to the current served set. Do not treat verifyAt or another open brief as proof the SCF full-proposal window is open.",
     "keyFacts": [
       "Uses the current RFP result for status and requirements.",
       "Cites the brief plus official-round verification URL.",
@@ -16,7 +16,7 @@
       "Do NOT call the archived Q2 2026 source-verification brief open now.",
       "Treats verifyAt or an open brief as evidence that the current SCF round accepts a new full proposal."
     ],
-    "notes": "Live case. As of 2026-11-02, Scout /api/rfps returns the Q2 2026 \"Contract Source Verification Service\" brief with status closed. The official SCF RFP Track page dropped it on 2026-07-23/24, when the Q3 RFPs replaced it, and now lists no open brief (\"October 2026: New Q4 RFPs are coming soon.\"). Scout still marks two unrelated Q3 briefs (LayerZero DVN, x402 Facilitator) open; an attributed report of either source's status is not wrong. A correct answer for that date says no open RFP covers contract source verification. It may describe the closed brief's asks from either the Scout row or the archived handbook brief (SEP-58 hosted verification service), with attribution; the Scout row carries the original idea text, not the published brief (improvements/stellar-light-scout/sls-105-rfp-brief-requirements-from-idea-not-published-brief.md). SCF #46 is in its Submission phase (the official awards page and Scout both list a 2026-11-09 deadline; the awards page showed November 8 in a 2026-10-18 snapshot), which says nothing about the brief."
+    "notes": "As of 2026-11-05, Scout returns the Q2 2026 Contract Source Verification Service row as closed. Its publishedBrief now separately represents the archived official SEP-58 hosted verification brief, with a commit-pinned source URL, functionalRequirements and outOfScope. The original idea technicalRequirements remains alongside it and must be labeled as idea text, not substituted for published requirements. The published brief names all six SEP-58 metadata keys, trusted build images, source modes and verifier disagreement handling; deterministic-Rust compilation research is out of scope, not reproducible builds generally. As of 2026-11-05, the official RFP Track page lists no open brief and says \"October 2026: New Q4 RFPs are coming soon.\" Scout now agrees: open=0, activeQuarter=q4-2026, both former Q3 briefs closed. Its separate synthetic scf-round-46 row describes the Submission window through 2026-11-09; it is not an RFP brief. Round status does not reopen this closed brief."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -30,7 +30,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-05",
     "sources": [
       {
         "class": "C",
@@ -73,6 +73,60 @@
         "ref": "https://communityfund.stellar.org/awards",
         "note": "\"SCF #46 Submission Deadline to submit: November 9, 2026\" (raw curl 2026-11-02T17:34Z; a 2026-10-18 snapshot showed November 8)",
         "observedAt": "2026-11-02"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+        "observedAt": "2026-11-05",
+        "note": "Closed q2-2026 row includes publishedBrief separate from technicalRequirements. q=SEP-58 retrieves the same single row."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/scf-handbook/blob/1e04b79973358e3dea58d821ed6419b50c93370c/scf-awards/build-award/rfp-track.md",
+        "observedAt": "2026-11-05",
+        "note": "Archived official brief names bldimg/bldopt/source_repo/source_rev/tarball_url/tarball_sha256; SDF-allowlisted image; public repo/tarball/content-addressed modes; per-verifier disagreement; Mainnet/Testnet; excludes fully deterministic Rust research."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+        "observedAt": "2026-11-05",
+        "note": "Current Open RFPs: \"October 2026: New Q4 RFPs are coming soon.\" No named brief."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+        "observedAt": "2026-11-05",
+        "note": "Latest path commit still the 2026-10-16 Q3 withdrawal; same editorial lineage as official page."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open",
+        "observedAt": "2026-11-05",
+        "note": "Now open=0, closed=16, activeQuarter=q4-2026; one synthetic scf-round-46 row, not a brief. Both Q3 rows are closed in quarter=q3-2026. Scout is the aggregator under check, not independent corroboration."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.grants.watch/programs/stellar-community-fund-build-award",
+        "observedAt": "2026-11-05",
+        "note": "Free general-web sweep for Stellar SCF Q4 2026 RFP open November 2026 found no newly published official brief. Cached Q3 snippets were contradicted by direct official reads. Source-relative absence only; exact queries and stale-source checks in scout.md."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards",
+        "observedAt": "2026-11-05",
+        "note": "\"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+        "observedAt": "2026-11-05",
+        "note": "\"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open",
+        "observedAt": "2026-11-05",
+        "note": "meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation."
       }
     ],
     "corroboration": [
@@ -158,32 +212,85 @@
             "note": "Snapshot 2026-10-18T17:58:17Z: awardSubmission close 2026-11-08 (the earlier official date)."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-05, the closed source-verification row separately returns the official published brief and the original idea text.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?q=source%20verification",
+            "observedAt": "2026-11-05",
+            "note": "Closed q2-2026 row includes publishedBrief separate from technicalRequirements. q=SEP-58 retrieves the same single row."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/blob/1e04b79973358e3dea58d821ed6419b50c93370c/scf-awards/build-award/rfp-track.md",
+            "observedAt": "2026-11-05",
+            "note": "Archived official brief names bldimg/bldopt/source_repo/source_rev/tarball_url/tarball_sha256; SDF-allowlisted image; public repo/tarball/content-addressed modes; per-verifier disagreement; Mainnet/Testnet; excludes fully deterministic Rust research."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+            "observedAt": "2026-11-05",
+            "note": "Current Open RFPs: \"October 2026: New Q4 RFPs are coming soon.\" No named brief."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a",
+            "observedAt": "2026-11-05",
+            "note": "Latest path commit still the 2026-10-16 Q3 withdrawal; same editorial lineage as official page."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-11-05",
+            "note": "Now open=0, closed=16, activeQuarter=q4-2026; one synthetic scf-round-46 row, not a brief. Both Q3 rows are closed in quarter=q3-2026. Scout is the aggregator under check, not independent corroboration."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.grants.watch/programs/stellar-community-fund-build-award",
+            "observedAt": "2026-11-05",
+            "note": "Free general-web sweep for Stellar SCF Q4 2026 RFP open November 2026 found no newly published official brief. Cached Q3 snippets were contradicted by direct official reads. Source-relative absence only; exact queries and stale-source checks in scout.md."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-11-05",
+            "note": "\"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+            "observedAt": "2026-11-05",
+            "note": "\"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-11-05",
+            "note": "meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task critic-cleanup)",
+      "date": "2026-11-05",
+      "by": "Scout Astra high author lane; independent final review assigned to t2dv; .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md",
       "evidence": [
-        "https://stellarlight.xyz/api/rfps (observedAt 2026-11-02, generatedAt 2026-11-02T16:07:57.175Z): contract-source-verification 'Contract Source Verification Service' quarter q2-2026 status closed; open rows layerzero-dvn, x402-facilitator-bazaar (q3-2026); scfRound currentRound 46 Submission, submissionWindow.closes 2026-11-09",
-        "https://stellarcommunityfund.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track (observedAt 2026-11-02): \"Current Open RFPs  October 2026: New Q4 RFPs are coming soon. ... Coming Soon\"",
-        "https://github.com/stellar/scf-handbook commits on scf-awards/build-award/rfp-track.md (observedAt 2026-11-02): 1e04b79973 (2026-07-23T15:38Z) lists 'Contract Source Verification Service' (\"The service consumes the SEP-58 metadata vocabulary ... compares the resulting Wasm to the deployed Wasm\"); 4d3b1d0f03 (2026-07-24T00:31Z) replaces it with \"July 23, 2026: New Q3 RFPs are open for submissions for SCF #45!\"",
-        "https://communityfund.stellar.org/awards (observedAt 2026-11-02, raw curl 17:34Z): 'SCF #46 Submission Deadline to submit: November 9, 2026', awardSubmission close 2026-11-09. Wayback 20261018175817 of the same page shows close 2026-11-08; the earlier November 8 reading came from a cached fetch.",
-        "https://medium.com/stellar-community/scf-45-round-recap-1ecf281821ab via Parallel search (observedAt 2026-11-02): \"4 projects were awarded this round across two RFPs. x402 Facilitator with Bazaar ... Stellar-compatible LayerZero DVN\"",
-        "Independent verifier: modified notes (exact removal date; Scout vs official status difference for the Q3 briefs; #46 deadline recorded from both sources, pinned from neither); accepted asOf.",
-        "Upstream defect filed as improvements/stellar-light-scout/sls-105-rfp-brief-requirements-from-idea-not-published-brief.md: the Scout contract-source-verification row carries Ideas-page requirements, not the published handbook brief (SEP-58 hosted service). Re-observed 2026-11-02: GET https://stellarlight.xyz/api/rfps?q=source%20verification returns contract-source-verification, closed, q2-2026, url https://stellarlight.xyz/ideas/contract-source-verification.",
-        "Sibling sweep 2026-11-02: grep 'source verification|Contract Source Verification' -> q-gap-explainrepo-payload-ok, q-soroban-unit-testing (unrelated uses); topical siblings q-scf-open-rfps, q-scf-rfp-tooling, q-scf-current-round, q-edge-fresh-latest-scf-round are owned by the SCF round/RFP lane; no contradiction with this note.",
-        "Pass 2 2026-11-02T17:34Z (scf-rfp proposer): rfp-track.md still reads '***October 2026: New Q4 RFPs are coming soon.***' with two empty 'Coming Soon' sections; gh api shows e07b4bfce1 (2026-10-16) is still the latest commit on the path and in the repo. Scout /api/rfps?status=open generatedAt 2026-11-02T17:29:38.076Z: activeQuarter q3-2026, open 2, syntheticRounds 1 (layerzero-dvn, x402-facilitator-bazaar). https://communityfund.stellar.org/awards: 'Deadline to submit:November 9, 2026', awardSubmission close 2026-11-09; Wayback 20261018175817 of the same page shows close 2026-11-08. Parallel web_search and Perplexity (recency month) found no published Q4 2026 brief. Scout lag filed as improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md.",
-        "Pass 2 independent verifier (task scf-rfp) re-derived every quoted value above from its own reads and accepted every proposed change.",
-        "Pass 2 sibling sweep 2026-11-02 (.agents/rounds/2026-11-02-golden-audit.md, task scf-rfp): checked q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-how-to-apply, q-scf-submission-lifecycle-deadlines, q-scf-hackathons-active, q-defi-market-making-kelp, q-scf-vs-sdf-enterprise-fund, and the other seven scf-rfp cases. No contradiction: all give the #46 deadline 2026-11-09, and the RFP cases now share the Scout-lag plain rules and the November 8 caution.",
-        "Gospel change (pass 3): golden.avoid[0] is rephrased as answer-visible false content (calling the archived Q2 2026 source-verification brief open now) instead of evidence the judge cannot see. Intent unchanged; dated history of the Q2 brief is not punished.",
-        "Class C 2026-11-02 (generatedAt 2026-11-02T17:29:38.076Z): https://stellarlight.xyz/api/rfps?status=open returns only scf-round-46, layerzero-dvn, and x402-facilitator-bazaar; contract-source-verification is not open.",
-        "Class A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md - 'October 2026: New Q4 RFPs are coming soon.'; no source-verification brief listed."
+        "C https://stellarlight.xyz/api/rfps?q=source%20verification — Closed q2-2026 row includes publishedBrief separate from technicalRequirements. q=SEP-58 retrieves the same single row.",
+        "B https://github.com/stellar/scf-handbook/blob/1e04b79973358e3dea58d821ed6419b50c93370c/scf-awards/build-award/rfp-track.md — Archived official brief names bldimg/bldopt/source_repo/source_rev/tarball_url/tarball_sha256; SDF-allowlisted image; public repo/tarball/content-addressed modes; per-verifier disagreement; Mainnet/Testnet; excludes fully deterministic Rust research.",
+        "A https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md — Current Open RFPs: \"October 2026: New Q4 RFPs are coming soon.\" No named brief.",
+        "B https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a — Latest path commit still the 2026-10-16 Q3 withdrawal; same editorial lineage as official page.",
+        "C https://stellarlight.xyz/api/rfps?status=open — Now open=0, closed=16, activeQuarter=q4-2026; one synthetic scf-round-46 row, not a brief. Both Q3 rows are closed in quarter=q3-2026. Scout is the aggregator under check, not independent corroboration.",
+        "D https://www.grants.watch/programs/stellar-community-fund-build-award — Free general-web sweep for Stellar SCF Q4 2026 RFP open November 2026 found no newly published official brief. Cached Q3 snippets were contradicted by direct official reads. Source-relative absence only; exact queries and stale-source checks in scout.md.",
+        "A https://communityfund.stellar.org/awards — \"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended.",
+        "A https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg — \"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated.",
+        "C https://stellarlight.xyz/api/rfps?status=open — meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation.",
+        "Scoped sibling sweep and exact replay commands: .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md; primary matrix scout.md. November5 America/New_York observations have November6 UTC receipt timestamps. Existing reverifyBy dates retained; unrelated historical claims were not re-dated."
       ],
       "rootCause": [
-        "freshness-drift",
-        "improvements/stellar-light-scout/sls-105-rfp-brief-requirements-from-idea-not-published-brief.md",
-        "eval-side authoring flaw (q-scf-contract-verification-rfp-live): pass-1 notes recorded a cached November 8 awards-page reading as the 2026-11-02 official deadline",
-        "Eval-side authoring flaw: avoid[0] depended on status evidence the judge cannot see (lint sourcing-guard warning)."
+        "freshness-drift"
       ]
     },
     "origin": "core-35 open-rfp-contract-source-verification"

@@ -1363,6 +1363,9 @@ you never handle API keys for the underlying services.</p>
 <h2>Connect your agent</h2>
 <p>Add <code>https://raven.stellar.org/mcp</code> to any MCP client that supports streamable HTTP
 and OAuth — Claude Desktop, Claude Code, Cursor, Codex, VS Code, and others.</p>
+<p>If your connection uses <code>raven.stellar.buzz</code> or <code>agents.stellar.buzz</code>,
+remove it and reconnect at <code>https://raven.stellar.org/mcp</code>. The old hosts redirect
+here; their previous authorizations do not transfer.</p>
 <ul>
   <li>The client starts an <b>OAuth sign-in in your browser</b>. Sign in once and approve the connection.</li>
   <li>Access tokens last <b>1 hour</b>; compatible clients refresh them automatically within a fixed

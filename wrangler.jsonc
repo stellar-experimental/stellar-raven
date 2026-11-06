@@ -65,9 +65,9 @@
     }
   ],
   // Production hostnames: raven.stellar.org is the canonical route; the two
-  // stellar.buzz hosts are aliases. Their pages 308 to the canonical host,
-  // and their MCP and OAuth paths keep serving existing clients
-  // (src/hosts.ts). Ignored by local wrangler dev. workers.dev stays off:
+  // stellar.buzz hosts are aliases. Every path redirects with HTTP 308 to
+  // the canonical host (src/hosts.ts); existing MCP clients must reconnect.
+  // Ignored by local wrangler dev. workers.dev stays off:
   // the custom domains are the only front door. A wider route on this zone,
   // such as *stellar.buzz/*, takes these custom domains from this Worker.
   "routes": [

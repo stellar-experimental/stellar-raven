@@ -13,6 +13,9 @@ evidence:
   - "Dedupe checked every improvements namespace, recurrences, resolved.json, and intake in MAIN and the method tree. No equivalent enum-encoding finding appeared. sd-055 concerns transaction assembly examples."
   - "research/audits/2026-11-02-golden-overnight/tail-source-receipts.json contains exact URLs, source dates, public body hashes, and bounded implementation excerpts. No contract invocation, simulation, or transaction ran."
   - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3037
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live tagged samples still combine A with mapB; integer prose says ScVec and JSON struct. PR3052 green/BLOCKED/review-required; Nov5 followup fixes Python to_uint32 and three adjacent symbol-led enum descriptions. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-090"
 ---
 
 ## Finding

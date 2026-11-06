@@ -11,6 +11,9 @@ evidence:
   - stellar/stellar-disbursement-platform-backend CHANGELOG.md 6.0.0 (released 2025-12-04) "Decommission Anchor Platform and add support for SEP-10 and SEP-24 endpoints in the SDP" with "Add SEP10 /auth endpoints", "Add SEP24 /info endpoints", and "Remove Anchor Platform integration from the SDP"; latest release 7.1.0 (2026-10-26)
   - golden case q-pay-sdp-disbursement (golden audit pass 2, 2026-11-02) records the stale reference as an observation
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/2999
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live Registration and main/bundled YAML retain AP separate-host paragraph/typos. PR3010 remains CHANGES_REQUESTED though bot Nov6 00:44Z reports head02341a3 fixes TOML host and troubleshooting; checks green. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-062"
 ---
 
 ## Finding

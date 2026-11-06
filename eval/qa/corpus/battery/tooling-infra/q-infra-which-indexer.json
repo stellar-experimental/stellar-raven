@@ -18,7 +18,7 @@
       "Do NOT claim The Graph offers full Subgraph/Token API support for Stellar, or recommend RPC alone for arbitrary historical cross-account filtering.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "CORRECTION 2026-08-04: the official Indexers Overview now says Alchemy is live, resolving the former roadmap disagreement. Preserve The Graph's Substreams-only boundary and require dated provider/network/retention checks.\nRECHECK 2026-11-02: Goldsky's own docs say Stellar datasets are no longer available through Mirror and are served by Turbo pipelines, while the Stellar Indexers Overview still says Goldsky Mirrors support Stellar. Naming Goldsky Mirror for Stellar is a minor dated error, not a wrong core answer; naming Goldsky Turbo is correct."
+    "notes": "CORRECTION 2026-08-04: the official Indexers Overview now says Alchemy is live, resolving the former roadmap disagreement. Preserve The Graph's Substreams-only boundary and require dated provider/network/retention checks.\nRECHECK 2026-11-06: the Stellar Indexers Overview now names Goldsky Turbo, agreeing with Goldsky's Stellar documentation. The former Mirror naming conflict is resolved; it no longer warrants a source-conflict allowance. This scoped copy check does not reverify the entire provider roster."
   },
   "tags": {
     "category": "tooling-infra",
@@ -105,7 +105,7 @@
         ]
       },
       {
-        "claim": "The live official Stellar Indexers Overview accurately describes Alchemy's current status",
+        "claim": "Historical July 9–11, 2026 assessment: the live Stellar Indexers Overview accurately describes Alchemy’s then-current status.",
         "verdict": "disputed",
         "evidence": [
           {
@@ -160,7 +160,7 @@
         ]
       },
       {
-        "claim": "Goldsky serves Stellar through Turbo pipelines and no longer through Mirror; the Stellar Indexers Overview still says Goldsky Mirrors support Stellar",
+        "claim": "Historical November 2, 2026 observation: Goldsky served Stellar through Turbo pipelines rather than Mirror, while the Stellar Indexers Overview still said Goldsky Mirrors supported Stellar.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
@@ -190,24 +190,42 @@
           }
         ],
         "note": "Provider docs outweigh the stale Stellar Docs sentence for current product naming; one stale Goldsky overview card (docs.goldsky.com/turbo-pipelines/sources/overview.md) still mentions Mirror for Stellar. Golden.notes treats naming Mirror as a minor dated error."
+      },
+      {
+        "claim": "As of 2026-11-06 the Stellar Indexers Overview names Goldsky Turbo, agreeing with Goldsky's Stellar documentation.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/indexers.md",
+            "observedAt": "2026-11-06",
+            "note": "Goldsky Turbo pipelines support Stellar."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.goldsky.com/chains/stellar.md",
+            "observedAt": "2026-11-06",
+            "note": "Stellar supported through Turbo."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/pull/3021",
+            "observedAt": "2026-11-06",
+            "note": "Merged documentation correction; same publication lineage as Stellar Docs, not independent provider proof."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
+      "date": "2026-11-06",
+      "by": "2026-11-05 truth-maintenance coordinator; independent Astra high reviewer t2dx, docs-independent.md",
       "evidence": [
-        "Live A 2026-10-28: https://docs.goldsky.com/chains/supported-networks — 'Stellar datasets are no longer available through Mirror. Use Turbo pipelines for Stellar data.'",
-        "Live A 2026-10-20: https://docs.goldsky.com/turbo-pipelines/migrate-from-mirror — 'Solana, Bitcoin, Stellar, and NEAR sources were removed from Mirror; they're Turbo-only now.'",
-        "Live A 2026-11-01: https://docs.goldsky.com/chains/stellar — 'Turbo MAINNET SUPPORTED TESTNET SUPPORTED'.",
-        "Live D 2026-11-02: perplexity_search https://goldsky.com/chains/stellar — 'Turbo Pipelines is the successor to Mirror.' A stale Goldsky card (turbo-pipelines/sources/overview.md) still mentions Mirror; newer pages outweigh it.",
-        "Live A 2026-10-22 and E 2026-11-02: https://developers.stellar.org/docs/data/indexers still says 'Goldsky Mirrors already support Stellar', 'The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph or Token API support', and Alchemy is 'now live on Stellar'; SubQuery, OBSRVR, OnFinality, and Mercury remain listed.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — 'stock default of 120960 ledgers (about 7 days ...)' keeps the bounded-RPC rationale.",
-        "Sibling sweep 2026-11-02: q-ti-compute-token-lp-market-data and q-ti-enumerate-all-contracts name indexers without a Goldsky Mirror claim; no contradiction.",
-        "Upstream finding filed: improvements/stellar-docs/sd-073-indexers-goldsky-mirror-stellar.md (status verified). The Stellar Indexers Overview says Goldsky Mirrors support Stellar, but Goldsky says Stellar is Turbo-only."
+        "https://developers.stellar.org/docs/data/indexers.md now names Goldsky Turbo.",
+        "https://docs.goldsky.com/chains/stellar.md confirms Turbo for Stellar; PR3021 corrects Stellar Docs copy.",
+        "Sibling sweep: q-ti-compute-token-lp-market-data and q-ti-enumerate-all-contracts do not name Mirror. Answer/keyFacts/avoid and the dated full-provider roster remain unchanged; only the resolved source-conflict allowance is removed."
       ],
       "rootCause": [
-        "freshness-drift: Goldsky moved Stellar from Mirror to Turbo-only pipelines after the 2026-08-04 golden; the official Stellar Indexers Overview still carries the old Mirror wording, so the golden copied a now-stale provider name.",
-        "improvements/stellar-docs/sd-073-indexers-goldsky-mirror-stellar.md"
+        "improvements/resolved.json entry sd-073: deployed Goldsky naming correction."
       ]
     },
     "origin": "raven-next q-infra-which-indexer"

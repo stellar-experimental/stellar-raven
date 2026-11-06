@@ -10,6 +10,9 @@ evidence:
   - "Published page: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md; SHA256 2026dff38b62338b268df83e63ce596d838dec6a518b32cc2b4c7352d462942c."
   - "Case q-infra-simulate-transaction-howto; review SHA256 bd938e28e69fd4dc8941e2e65ee1c10b89aac4d94a48db511eb340c663a60df0; packet SHA256 a4cf3f90a8ee33c79629c0f4f79854d2cce08391ab400d3a86e0a5908d55a99b; full source-row SHA256 237f89f8b156259898676a5e9146db5c5cd08e05d81626f4b3ef002719db3550."
   - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3038
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live response.json followed by JSON.parse(result), local success/error object fixtures both SyntaxError. PR3053 CHANGES_REQUESTED: Elliot Nov5 requires result.error handling as well as top-level JSONRPC error; no subsequent fix captured. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-091"
 ---
 
 ## Finding

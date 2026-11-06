@@ -8,6 +8,8 @@ evidence:
   - https://github.com/lumenloop/lumenloop-backend/issues/39
   - 2026-08-11 review: issue #39 is open. It has no linked PR, checks, or reviews. Its only comment and latest timeline activity are kalepail's Raven tracking comment at 2026-07-13T22:54:35Z. `get_document({collection: "articles", id: 8877})` still puts Testnet, developer-preview, and audit-underway facts only in summary prose.
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 inconclusive: LL get_document articles8877 — Short summary explicitly Testnet live now; long summary says developer preview and audits underway before mainnet. Missing structured maturity fields remain, but original alleged boundary-dropping is not reproduced. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-023."
   - date: 2026-08-11
     evidence: Article 8877 has no structured network, maturity, audit-status, or source-observation fields.
 ---
@@ -30,3 +32,10 @@ is retained alongside the primary announcement.
 Require product-news records to carry `network`, `maturity`, `auditStatus`, and
 `asOf` fields. Generated text should lead with Testnet/preview status whenever
 that is the source's current boundary.
+
+## Current verification — 2026-11-06
+
+Short summary explicitly Testnet live now; long summary says developer preview and audits underway before mainnet. Missing structured maturity fields remain, but original alleged boundary-dropping is not reproduced.
+
+Keep uncertainty; correct existing prose is not proof a previously captured defect was fixed. Avoid treating optional typed fields as demonstrated false content.
+Next check: Inspect owner change or a concrete summary that drops preview/network boundary.

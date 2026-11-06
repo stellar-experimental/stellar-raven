@@ -13,6 +13,8 @@ evidence:
   - Solo scratchpad 575 GT-17 primary process 3247 and blind process 3248
   - upstream issue filed 2026-07-13: https://github.com/Stellar-Light/stellarlight/issues/514
 recurrences:
+  - date: 2026-11-06
+    evidence: "`/api/projects/search?q=oracle&limit=100`, and exact Band/DIA/RedStone/Lightecho searches — Partial. Band/DIA/RedStone have `products:null`; Lightecho has one `oracle-feed` product with mainnet, contractId null, and a stale-price caution dated 2026-08-13. No per-feed oracle deployment/freshness structure. Project deployment distinguishes DIA testnet from Band/RedStone mainnet, but does not prove current feed updates. No new claim that old July on-chain samples describe today's feeds. Next: Keep model residual; correct stale “open #742” wording. Next: require provider/product/network/address/feed/as-of evidence after an oracle-model change; reconcile any successor with closed #742. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
   - date: 2026-07-14
     evidence: Band and Lightecho now carry onchain-activity provenance, but DIA and RedStone Finance still serve Live with null statusBasis and no per-product/per-network oracle deployment model; fold the residual into sls-024/#494 or a self-contained successor before resolution
   - date: 2026-07-15

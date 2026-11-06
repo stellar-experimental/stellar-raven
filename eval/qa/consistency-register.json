@@ -111,16 +111,16 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-eco-lobstr-wallet moved stable -> scheduled (LOBSTR operator, networks, and scale claims unchanged). No stated value changed, so the other members of \"q-eco-lobstr-wallet + q-eco-stellar-wallets-list\" still agree."
+          "date": "2026-11-06",
+          "reason": "The wallet rename addition preserves LOBSTR facts and the original dated roster; only Scout now resolves the SDF wallet as Varial, while Lumenloop remains stale.",
+          "verdict": "consistent"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
-          "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb"
+          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf"
         }
       },
       {
@@ -306,11 +306,11 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-03",
-          "verdict": "consistent",
-          "reason": "Topical read of all 17 cluster-011 members on 2026-11-03. The live provenance file changes only tags.freshness from scheduled to live. Its SHA256 is 9806d54952eaf80c0b93a8fcdbb4da2f89b9978cf54a86966d496d7a3e104625. The answer keeps the four priority categories separate from Initial Audit 5% with the stated refund, Growth Audit and Scale Audit 0% stage rates, and pre-traction follow-ups at 20% then 50%. Those 0% rows are stages, not an Initial Audit waiver. asOf stays 2026-11-03 and reverifyBy stays 2027-02-03. The golden keeps a dated illustration and accepts a later grounded observation. keyFacts require current or dated behavior. Sibling Build $150K, Marketing Grant $500K, Enterprise Fund portfolio wording, Instaward $15K, the 10/20/30/40 payment schedule, SCF #46 through 2026-11-09, and the dated funding-v2 total use different bases and do not contradict the stage rates. The issuer-lock correction is outside this cluster. It agrees that master weight 0 disables only the master key and that restoration needs remaining high-threshold authority. The default new-account recipe adds no extra signer, so the symmetric-caution warning needs no partial cap."
+          "date": "2026-11-06",
+          "reason": "Only the funding finding pointer changed to an immutable snapshot after the approved funding-delta reconciliation; amounts and denominators are unchanged.",
+          "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
         "memberContentSha256": {
@@ -319,16 +319,16 @@
           "q-scf-ambassador-program": "ec263946d7849d4032f7cf158e5729097c3c7afff1cf9687857736645472daac",
           "q-scf-audit-bank": "9806d54952eaf80c0b93a8fcdbb4da2f89b9978cf54a86966d496d7a3e104625",
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
-          "q-scf-current-round": "0610fcb5ca7fc423cda8ccfdb9c63a84ceb0cede41bc8de7647b7f347c6a9cdf",
-          "q-scf-hackathons-active": "9a0b6606673db77ea82de0881a496d967c72fad063cd840f7981f213f618d304",
+          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
+          "q-scf-hackathons-active": "24787b0351b84c216517ac3f5eb964e4178c09338a717f3f1e613168ceec2308",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
           "q-scf-instawards": "8303a8051c776609538eaf34ae6806d41b0362e8dcf8b2ac3214e925469dc03b",
           "q-scf-nqg-voting": "92b0aa8a0fa7c9127463da7ced369345edf0b55c8207c8481a39fe2867a2bc54",
-          "q-scf-open-rfps": "b984d262cc6823406dd1daa23adac1388a2d895e638f50c272deefe4a199e8ae",
+          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e",
           "q-scf-regional-india": "86e9012d0f02dabcd7bf69ed54d1039b751d9c21439a127a2604cb9f511db349",
-          "q-scf-rfp-tooling": "51c14350bea8b5a0c8be90cc58e599e4388abdf0cf4f20ce8252292b39dd0765",
+          "q-scf-rfp-tooling": "4d5e3891ba78550312e7a4305897a46ed5b281f7a848c3d204dbfcfbe437f189",
           "q-scf-sdf-marketing-grant": "cb01d1c9e8f92466066902af59c0bb008e42f7de21504f2f9ce8bab61885e6f5",
-          "q-scf-total-distributed": "67b69a6066f1e125ed92c1ba4bf8d035f164159f26c723ab4f7efbf8b35c95c5",
+          "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071",
           "q-scf-v7-changes": "e3c6dfa0b7152e11197d092a480a85b1a35a2c3baa75ab874b00302eb8a82036",
           "q-scf-vs-sdf-enterprise-fund": "f9f1db26d05d329a8f340ac8d93b86d600100cac06d8abe95cb42c5cccabddc6"
         }
@@ -351,10 +351,10 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Member q-defi-soroswap-what-is changed only judge-blind truth.verified: rootCause now points at the improvements/resolved.json entry cs-002 (resolved 2026-11-02) instead of the deleted finding file, plus one evidence line. Question, golden answer, keyFacts, avoid, notes, and tags are unchanged, so the cluster facts are unchanged.",
+          "date": "2026-11-06",
+          "reason": "Wallet identity verification and immutable Hana evidence pointers change no project award totals, paid-versus-awarded basis, or OrbitCDP uncertainty.",
           "verdict": "consistent"
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster. Updated 2026-11-02: OrbitCDP's SCF total is source-conflicted (Scout scfTotalAwardedUSD 280000; Lumenloop awarded_total 330000), so no member pins it; Scout labels OrbitCDP Inactive, and members keep its lifecycle label source-relative.",
@@ -367,8 +367,8 @@
           "q-defi-rwa-scf-similar": "dd8afe398d360f67a490d6ce135d0e9d7deb31b6e8d4b6ca368021ff5a0cc0a8",
           "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
           "q-defi-x402-on-stellar-what": "75bb51ff5ed93a0549bd61144f28683fce0987e655e0d39223583460592ab46a",
-          "q-eco-hana-wallet-scf": "08ff8b716cdec33c9a58cc83c20bc662abb6a4bec3e07557d7b343e7db8d5e8c",
-          "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb",
+          "q-eco-hana-wallet-scf": "08b12a025cfac198017088fe9ca491b505bb5d9ed38328412ca9f83d04d28afd",
+          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf",
           "q-scf-history-soroswap": "914a96ff3dfe0a2dfaa27bfb7dbe90567f9ceab7f50fbdcb6a3eea2c908ce513",
           "q-scf-verified-members": "d8d38abd545459080f53ccbc15d30e4fea65819e7481bc900effe854348f1ba8"
         }
@@ -551,21 +551,21 @@
           "q-ti-self-host-retention-backfill"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-03",
-          "verdict": "consistent",
-          "reason": "Coordinator re-sweep 2026-11-03 after the sd-072 resolution: only q-infra-horizon-vs-rpc changed (notes caution removed, truth.verified updated); question, answer, keyFacts, and avoid unchanged. Other members keep the dated nearing-end-of-life label and the endpoint-specific Horizon/RPC boundary; no member now asserts the old Lab card wording. Independent reviewer: Grok 4.7 high (.agents/rounds/2026-11-03-sd072-resolution-review.md)."
+          "date": "2026-11-06",
+          "reason": "Only the events finding pointer changed after the approved configurable-retention correction; source and history boundaries are unchanged. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
+          "verdict": "consistent"
         },
-        "note": "Current review 2026-11-03: official Horizon lifecycle wording agrees again. stellar/stellar-docs PR #3020 (2026-11-03) changed the Lab API Explorer card to the nearing-end-of-life label that the APIs overview and the Lab Horizon Endpoints page use (improvements/resolved.json entry sd-072). q-infra-horizon-vs-rpc dates the nearing-end-of-life label; its sd-072 caution is removed. getEvents: the method page and stellar-rpc v30.0.0 use one configurable history-retention-window with a stock default of 120960 ledgers (about 7 days); the 24-hour-default/seven-day-maximum method prose is fixed (sd-023, improvements/resolved.json), and the remaining '7 days at most' wording is on the events ingest guide (sd-068), which q-soroban-publish-events names. Review 2026-09-09: the rendered Horizon pages and their positive indexed records agreed on nearing-end-of-life wording, and the sd-042 source/index conflict was fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose then conflicted with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. The official RPC Archive tier extends getLedgers only; SDF's archive-node beta and provider betas that serve wider full history are dated nuances, not the official tier. Older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
+        "note": "Current review 2026-11-03: official Horizon lifecycle wording agrees again. stellar/stellar-docs PR #3020 (2026-11-03) changed the Lab API Explorer card to the nearing-end-of-life label that the APIs overview and the Lab Horizon Endpoints page use (improvements/resolved.json entry sd-072). q-infra-horizon-vs-rpc dates the nearing-end-of-life label; its sd-072 caution is removed. getEvents: the method page and stellar-rpc v30.0.0 use one configurable history-retention-window with a stock default of 120960 ledgers (about 7 days); the 24-hour-default/seven-day-maximum method prose is fixed (sd-023, improvements/resolved.json), and the events ingest guide now also states the configurable default (sd-068 resolved November 6). Review 2026-09-09: the rendered Horizon pages and their positive indexed records agreed on nearing-end-of-life wording, and the sd-042 source/index conflict was fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose then conflicted with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. The official RPC Archive tier extends getLedgers only; SDF's archive-node beta and provider betas that serve wider full history are dated nuances, not the official tier. Older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "0e1257613885d92cb4c10ebbf55472f3fe419485fc397adee201eb48f20fadb4",
           "q-infra-hubble-bigquery": "f26308e69f6d9f61a3bd372021f7bbda115cc7ed2e08dd19b4714a622dae989f",
           "q-infra-rpc-methods-list": "390496b268e519710c36cc65537a17e9cf0b524aafdf796e86a9e8b4a1b192b5",
           "q-infra-rpc-provider-archive-tier": "00c3153da6a0a582c325424f65d8cd6b86237250daf2ada6f60224ff2403bc51",
-          "q-infra-which-indexer": "a4411c008cf29d0a1a12c5508f109821e14ae22e95cf7e00f02dec6b209390b7",
+          "q-infra-which-indexer": "7c72c6b135a49df7acd4d528ddcd5bd7dc58fc7e2c29c979581e83ecde1e5d4a",
           "q-soroban-event-indexing-design": "1e04817c51096859f673d34a73b76a1981756bf20df6cc66457bda8ba3c6d606",
-          "q-soroban-publish-events": "ea9528e755b167fbce8aec46def598d54c52fcac231193cd5d40a5fa2bb35854",
+          "q-soroban-publish-events": "75a742a58d1ae24000778bba59d849982b5470bbada735e453132c357dea280b",
           "q-ti-compute-token-lp-market-data": "d6abb1027dd3e046effcc91b7b29ad7ac21845fcb2f7381ce6ba523ac2aa61b1",
           "q-ti-enumerate-holders-airdrop": "0a1c801a5573023e605f581f0c116c8f74cd50e8bb3bffcc8709b472955a98c8",
           "q-ti-historical-pointintime-balances": "c991d229c472f9bf1ab95554584b3fdc09b0b2b561a01f24d4ea17448a530ec5",
@@ -661,18 +661,18 @@
           "q-tool-smart-wallet-repos-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-eco-dex-saturation moved stable -> scheduled (the DEX venue list unchanged); q-eco-lobstr-wallet moved stable -> scheduled (LOBSTR operator, networks, and scale claims unchanged). No stated value changed, so the other members of \"wallets and Ultra Stellar product family\" still agree."
+          "date": "2026-11-06",
+          "reason": "Freighter and Varial still identify the same SDF wallet. The new source-specific rename repair changes no operator, network, audit or wallet authorization claim.",
+          "verdict": "consistent"
         },
         "note": "Freighter = SDF-maintained (SDF renamed it Varial on 2026-10-29; as of 2026-11-02 members accept either name); LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed; SCF amounts are optional, and cited totals must name their source, date, and awarded-versus-paid basis. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift; as of 2026-11-02 the Passkey Kit README and SECURITY.md label it unaudited software, so a no-third-party-audit statement is accurate. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
         "memberContentSha256": {
           "q-defi-soroswap-vs-stellarx": "d33080e232c2dd63e051474130b2ebb208b463e40d6a5d247d79c9ff05fe65f4",
           "q-eco-dex-saturation": "355d94a51cca4d34d16e92cad769d0975622c6d40352bd98e3342698c4a25929",
           "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
-          "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb",
+          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf",
           "q-tool-passkeykit-smart-wallet": "f3537b5974fc42b122b99f55549f750db5443a4734588844b586ce2cc80e3fba",
           "q-tool-smart-wallet-repos-discovery": "cc0eae47c65bc9b4fbb0480e614c20e833e810c8e395be538bd6fc291a7a1805"
         }
@@ -789,15 +789,15 @@
           "q-scf-current-round"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "note": "Current-round facts stay in q-scf-current-round; the v7 centralization case now contains only payment-term and network-authority claims.",
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "706a148bbad751ef83b87c21c135df26b8f1e99717fdc41c8582ea438ba55efe",
-          "q-scf-current-round": "0610fcb5ca7fc423cda8ccfdb9c63a84ceb0cede41bc8de7647b7f347c6a9cdf"
+          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-scf-v7-centralization-myths added the dated Integration Track final-40% term and the discretionary rescind/repay remedy. Both are payment-term claims, and the case still has no current-round facts. q-scf-current-round only reworded its November 8 note. The note's split (current-round facts only in q-scf-current-round) still holds.",
+          "date": "2026-11-06",
+          "reason": "Fresh round verification preserves round 46 Submission/November 9; v7 network-authority claims do not change. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         }
       },
@@ -832,17 +832,17 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-eco-stellar-wallets-list refreshed its dated count and added the dated Freighter-to-Varial rename. q-defi-agent-identity-stellar-experimental added a note that its repoScore figures are dated history. q-asset-rwa-tokenized-freshness has no judge-facing change. No member conflicts with another, and no member puts back an unverifiable clause, so the note stands.",
+          "date": "2026-11-06",
+          "reason": "The wallet addition is dated and independently verified; it introduces no unsupported roster, RWA or agent-identity comparison.",
           "verdict": "consistent"
         },
         "note": "resolved by removing the unverifiable clauses and retaining the supported core",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "972021107a0b0919afedf3d825e15224c746586f51cc87a077fab8f90da03fbe",
           "q-defi-agent-identity-stellar-experimental": "66b2668ff8b1c712e54eee06f19c866ae9062ab1551ede76a0632f11818ded11",
-          "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb"
+          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf"
         }
       },
       {
@@ -855,18 +855,18 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-reflector-oracle moved stable -> scheduled (the Reflector feed roster and 4-of-7 admin signer set unchanged). No stated value changed, so the other members of \"q-defi-phoenix-what-is + q-defi-reflector-oracle + q-scf-funding-by-category + q-scf-open-rfps\" still agree."
+          "date": "2026-11-06",
+          "reason": "RFP roster now agrees across sources. Source, date, basis and external-verification requirements remain intact. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
+          "verdict": "consistent"
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
         "memberContentSha256": {
           "q-defi-phoenix-what-is": "bfa879565a31c1685278a69dace666e34acfd92d72842d079f80c7d3117f66d4",
           "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
-          "q-scf-open-rfps": "b984d262cc6823406dd1daa23adac1388a2d895e638f50c272deefe4a199e8ae"
+          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e"
         }
       },
       {
@@ -926,16 +926,16 @@
           "q-scf-history-soroswap"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-build-award-cap and q-scf-history-soroswap changed provenance metadata only. q-scf-current-round only reworded its November 8 grading note (deadline 2026-11-09 unchanged). The general Build cap ($150K in XLM), the individual Soroswap awards, and the current-round deadline stay distinct and do not conflict.",
+          "date": "2026-11-06",
+          "reason": "Current-round verification changes no Liquidity Award or Build cap amounts. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         },
         "note": "Program maximum ($100K in XLM via $50K Base plus optional $50K Supplemental), individual Soroswap award, general Build cap, and current-round deadline are explicitly distinguished.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
-          "q-scf-current-round": "0610fcb5ca7fc423cda8ccfdb9c63a84ceb0cede41bc8de7647b7f347c6a9cdf",
+          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
           "q-scf-history-soroswap": "914a96ff3dfe0a2dfaa27bfb7dbe90567f9ceab7f50fbdcb6a3eea2c908ce513"
         }
       },
@@ -952,11 +952,11 @@
           "q-soroban-deploy-cli"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-asset-rwa-tokenized-freshness, q-asset-usdc-eurc-issuer, q-builder-by-region-latam, q-eco-pyusd-stellar-freshness, q-eco-stellar-wallets-list, q-scf-funding-by-category, q-soroban-deploy-cli preserve dated observations and separate product, person, and command claims."
+          "date": "2026-11-06",
+          "reason": "The wallet note distinguishes historical counts from current source-specific identity evidence. Other RWA, issuer-role, builder, funding and CLI claims are unchanged.",
+          "verdict": "consistent"
         },
         "note": "Dated/provenance-bearing overrides now distinguish source snapshots, legal entities, directory reconstructions, and current CLI/API semantics without unsupported comparisons. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
@@ -964,7 +964,7 @@
           "q-asset-usdc-eurc-issuer": "14ef248c86b9d3fbc3ec39ba7d659a0bb644387599e2a1f3f5027260d7de2d62",
           "q-builder-by-region-latam": "788eb3922f28f3f8b15109307aa080ff5fa3fcbf7107ca638371df54cbfdc652",
           "q-eco-pyusd-stellar-freshness": "55d8c1e95c428ead511a88910da029af3fa21da01f9ddaf44306d0a322942fac",
-          "q-eco-stellar-wallets-list": "b50c63954c6f23b75966c118407c418e27e6d6710019abf248425984172c12cb",
+          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
           "q-soroban-deploy-cli": "f5742dc6e4f69ce03310856a3ec3d62332f6194067bc1a2d16aad3fdf555eb6f"
         }
@@ -980,10 +980,10 @@
           "q-scf-total-distributed"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
+          "date": "2026-11-06",
+          "reason": "Only the funding finding pointer changed after the approved reconstruction-delta correction; free research and paid approval boundaries remain unchanged.",
           "verdict": "consistent"
         },
         "note": "Comprehensive wording neither authorizes spend nor bans useful free research. The paid/account-scoped commissioned surface is absent; future paid execution would require host approval, elicitation, budget enforcement, and deduplication. Goldens grade answer-visible scope, provenance, no fabrication, and proportionality—not hidden operation names, route diagnostics, external maintainer-tool non-use, or unsupported $10/5-minute caps.",
@@ -992,7 +992,7 @@
           "q-edge-deep-full-history-report": "abe6cc622a6b3d69f3ecc27a42fa869ee403f7038ab57ed80bcd7d8593439222",
           "q-edge-exhaustive-defi-deep-report": "27f8b7c432a890740ecb7b83b8024b88c58b9524c9f74a4cc615f7fc92d12b90",
           "q-protocol-network-passphrases-list": "aa619780e6c570c5e7e89ef3ebc9e93ce07d0afd0493a83d9dda3c12c91b5661",
-          "q-scf-total-distributed": "67b69a6066f1e125ed92c1ba4bf8d035f164159f26c723ab4f7efbf8b35c95c5"
+          "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071"
         }
       },
       {
@@ -1096,17 +1096,17 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-scf-v7-centralization-myths keeps the dated 10/20/30/40 schedule and 90-day completion-form/forfeiture term (its new Integration Track final-40% metric condition is dated and track-scoped), and q-scf-v7-changes frames the mainnet+UX final tranche as an 'At launch' term, so they do not conflict. q-scf-current-round and q-edge-fresh-latest-scf-round agree on SCF #46 in Submission until 2026-11-09 and keep round facts out of the award-terms cases, as the note says.",
+          "date": "2026-11-06",
+          "reason": "The current-round check changes no 10/20/30/40 payment terms or protocol authority. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         },
         "note": "The dated Build schedule is 10/20/30/40 with current 90-day completion-form/unpaid-tranche terms. Grant administration and normative fairness are distinct from protocol authority. Current round/phase/deadline facts stay in the dedicated round cases rather than standing in for award terms.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "1daac1b6d77aeb3a9cacb5038fb2e08c00d0bed328678bdd3cc1d92717f3a721",
+          "q-edge-fresh-latest-scf-round": "7406e45cf19d9818b998f43d80bf1b733c5dc085aef422a2dd27549a7d374769",
           "q-edge-scf-v7-centralization-myths": "706a148bbad751ef83b87c21c135df26b8f1e99717fdc41c8582ea438ba55efe",
-          "q-scf-current-round": "0610fcb5ca7fc423cda8ccfdb9c63a84ceb0cede41bc8de7647b7f347c6a9cdf",
+          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
           "q-scf-v7-changes": "e3c6dfa0b7152e11197d092a480a85b1a35a2c3baa75ab874b00302eb8a82036"
         }
@@ -1241,10 +1241,10 @@
           "q-infra-which-indexer"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Member q-defi-soroswap-what-is changed only judge-blind truth.verified: rootCause now points at the improvements/resolved.json entry cs-002 (resolved 2026-11-02) instead of the deleted finding file, plus one evidence line. Question, golden answer, keyFacts, avoid, notes, and tags are unchanged, so the cluster facts are unchanged.",
+          "date": "2026-11-06",
+          "reason": "Indexer note correction changes no Quasar, QuasarSwap or Soroswap identity claim. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
           "verdict": "consistent"
         },
         "note": "QuasarSwap exists as a Nova Network DEX but was not verified as a Stellar project in the dated broad sweep. equilibriumco/quasar and lightsail-network/Quasar are unrelated Stellar data infrastructure, and Soroswap is a distinct DEX. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -1252,7 +1252,7 @@
           "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
           "q-edge-noinfo-sep-9999": "315680dbff263901cfa7c1a6ab577489b99f3e55ec05b387b01d54174ff42800",
           "q-infra-rpc-provider-archive-tier": "00c3153da6a0a582c325424f65d8cd6b86237250daf2ada6f60224ff2403bc51",
-          "q-infra-which-indexer": "a4411c008cf29d0a1a12c5508f109821e14ae22e95cf7e00f02dec6b209390b7"
+          "q-infra-which-indexer": "7c72c6b135a49df7acd4d528ddcd5bd7dc58fc7e2c29c979581e83ecde1e5d4a"
         }
       },
       {
@@ -1714,17 +1714,17 @@
           "q-soroban-storage-types"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-protocol-state-archival-ttl, q-sor-p23-auto-restore-extendto, q-soroban-storage-types agree on restoration before use; only detailed cases grade the invocation path."
+          "date": "2026-11-06",
+          "reason": "Removing obsolete Docs-conflict notes leaves Temporary expiry and Persistent/Instance restoration semantics unchanged. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
+          "verdict": "consistent"
         },
         "note": "Temporary entries expire irreversibly; Persistent and Instance entries archive and are restorable. CAP-0062 separates live/archive state; CAP-0066 added automatic restoration behavior. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-protocol-state-archival-ttl": "8fc5ea8cde2aa0affe832aad70e405f1147e281a6ae21aad42cdf82c90e46395",
-          "q-sor-p23-auto-restore-extendto": "154abd5983c6d57471668358679b8aad3d734e89caacc6d14b805ffc730fec8d",
-          "q-soroban-storage-types": "343a0c1d030f1d0bbdfa1331474da011e0d6ff70cd9921500161200f1b3fb071"
+          "q-sor-p23-auto-restore-extendto": "e11e615c5663a51659c7a1569655a4339f6cedda029af320e812702e3aa2ba00",
+          "q-soroban-storage-types": "9aa68b3e7a41c43e3fa196ff03b4a4e080711509f8abe0fe2836e0306ae6d4fc"
         }
       },
       {
@@ -1848,16 +1848,16 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Members agree: q-scf-build-award-cap ($150K in XLM, tranches), q-scf-v7-changes ('Current Instaward, Growth Hack ... rules must be checked separately'), and q-scf-hackathons-active (feed state only) state no Growth Hack amount, and the official rules still give $20K upfront and a dynamic $50K/$100K/$200K pool for the top 5. The note's 'Landing awaits GT-36 blind reconciliation' is stale, because q-scf-build-award-cap notes say 'GT-36 independently confirmed by processes 3290/3291'.",
+          "date": "2026-11-06",
+          "reason": "The corrected dated event feed changes no Growth Hack per-company or cohort-pool amount. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         },
         "note": "Each selected team receives $20K; the $50K/$100K/$200K performance amount is one cohort-wide pool shared among the top five, not a per-team ceiling. Re-read against the official Growth Hack rules on 2026-11-02. No member states a Growth Hack amount; q-scf-v7-changes says Growth Hack rules must be checked separately.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
-          "q-scf-hackathons-active": "9a0b6606673db77ea82de0881a496d967c72fad063cd840f7981f213f618d304",
+          "q-scf-hackathons-active": "24787b0351b84c216517ac3f5eb964e4178c09338a717f3f1e613168ceec2308",
           "q-scf-v7-changes": "e3c6dfa0b7152e11197d092a480a85b1a35a2c3baa75ab874b00302eb8a82036"
         }
       },
@@ -1960,16 +1960,16 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Members do not contradict each other, and the official Growth Hack rules re-read on 2026-11-02 still give $20K per company and a top-5 pool of $50K/$100K/$200K. The note's 'Program-menu/v7 siblings await GT-39/40 independent completion' is stale, because q-scf-v7-changes notes say 'GT-36/39/40 independently reconciled 2026-07-10'.",
+          "date": "2026-11-06",
+          "reason": "The corrected dated event feed changes no Growth Hack award basis. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         },
         "note": "$20K is per selected company; one dynamic $50K/$100K/$200K pool is shared among the top five. Re-read against the official Growth Hack rules on 2026-11-02; q-scf-v7-changes defers Growth Hack terms to the current program rules.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
-          "q-scf-hackathons-active": "9a0b6606673db77ea82de0881a496d967c72fad063cd840f7981f213f618d304",
+          "q-scf-hackathons-active": "24787b0351b84c216517ac3f5eb964e4178c09338a717f3f1e613168ceec2308",
           "q-scf-v7-changes": "e3c6dfa0b7152e11197d092a480a85b1a35a2c3baa75ab874b00302eb8a82036"
         }
       },
@@ -2003,15 +2003,15 @@
           "q-scf-rfp-tooling"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
-        "note": "As of 2026-11-02, the official SCF RFP Track page lists no open brief ('October 2026: New Q4 RFPs are coming soon.'); a 2026-10-16 handbook commit (e07b4bfc) removed the two Q3 briefs, LayerZero DVN and x402 Facilitator with Bazaar. Scout /api/rfps?status=open still marks those two briefs open and returns one synthetic scf-round-46 row (sls-096). Both cases report the official roster, flag the Scout lag, and give the #46 deadline 2026-11-09. Earlier dated state: on 2026-09-03 the official Q3 page and live feed supported two open briefs, with #46 in Submission and #45 in Panel Review.",
+        "lastChecked": "2026-11-06",
+        "note": "As of the November 5 local / November 6 UTC recheck, the official RFP Track page lists no open brief (Q4 coming soon), and Scout agrees: open=0, closed=16, activeQuarter=q4-2026. Both withdrawn Q3 briefs are closed. The synthetic round-46 row is a separate Submission window through November 9, not a brief. Both members preserve invitation gating and source-relative, dated roster reporting.",
         "memberContentSha256": {
-          "q-scf-open-rfps": "b984d262cc6823406dd1daa23adac1388a2d895e638f50c272deefe4a199e8ae",
-          "q-scf-rfp-tooling": "51c14350bea8b5a0c8be90cc58e599e4388abdf0cf4f20ce8252292b39dd0765"
+          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e",
+          "q-scf-rfp-tooling": "4d5e3891ba78550312e7a4305897a46ed5b281f7a848c3d204dbfcfbe437f189"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-open-rfps and q-scf-rfp-tooling both report the official no-brief roster ('October 2026: New Q4 RFPs are coming soon.'), the 2026-10-16 removal of LayerZero DVN and x402 Bazaar, the Scout lag with the synthetic scf-round-46 row, and the #46 deadline 2026-11-09. This is exactly the dated 2026-11-02 note.",
+          "date": "2026-11-06",
+          "reason": "Both RFP cases now say official and Scout rosters agree on zero open briefs; round 46 remains a separate submission window. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         }
       },
@@ -2091,15 +2091,15 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
-        "note": "The Q1-2026 Hummingbot/Kelp-replacement brief is closed (Scout /api/rfps on 2026-11-02: status closed, quarter q1-2026). As of 2026-11-02, the official RFP Track page lists no open brief, and the two Q3 briefs that Scout still marks open do not include it. No unverified later #41 submission, official merge, or fulfillment claim was added.",
+        "lastChecked": "2026-11-06",
+        "note": "The historical Q1-2026 Hummingbot/Kelp brief remains closed. The November 5/6 recheck finds no open brief in either the official roster or Scout. No later submission, fulfillment or merge is inferred; historical dates remain explicit.",
         "memberContentSha256": {
-          "q-scf-hummingbot-kelp-closed-rfp": "9341bb43b1a7de27f632bcdcf66011ecd12440b05820cbad5730f9e94060808f",
-          "q-scf-open-rfps": "b984d262cc6823406dd1daa23adac1388a2d895e638f50c272deefe4a199e8ae"
+          "q-scf-hummingbot-kelp-closed-rfp": "dbd0b23174008fe154facfd5675431370d0d6a622306381499eb13b71d19eb91",
+          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-hummingbot-kelp-closed-rfp keeps the dated 2026-06-25 'status: closed, quarter: q1-2026' record. q-scf-open-rfps reports the official no-brief roster and names only the two Q3 briefs as Scout-open, and neither is the Hummingbot brief, which matches the note.",
+          "date": "2026-11-06",
+          "reason": "Historical RFP finding pointers are immutable; neither the closed Hummingbot brief nor the approved current empty roster changes.",
           "verdict": "consistent"
         }
       },
@@ -2175,17 +2175,17 @@
           "q-scf-submission-lifecycle-deadlines"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "note": "Rolling interest precedes eligibility/referral and invitation to a full proposal. Only Open uses project-level community voting; Integration/RFP are panel-led.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "b42d75ea41de636513016271fa00148a5de8ec4c4637b3fd488754207e39840e",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
-          "q-scf-rfp-tooling": "51c14350bea8b5a0c8be90cc58e599e4388abdf0cf4f20ce8252292b39dd0765",
+          "q-scf-rfp-tooling": "4d5e3891ba78550312e7a4305897a46ed5b281f7a848c3d204dbfcfbe437f189",
           "q-scf-submission-lifecycle-deadlines": "b0fab3d5be0b24c6478a5062028ad6bb3968fff25bb0d867533c5dcdc8027136"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-eligibility-criteria (answer re-dated 2026-11-02 with a detailed prescreen list), q-scf-rfp-tooling (official roster now lists no open brief), and the lifecycle notes all keep rolling interest before eligibility/invitation and 'Open-track projects alone proceed to community vote'; q-scf-how-to-apply still says 'Integration and RFP are panel-only', so the note holds.",
+          "date": "2026-11-06",
+          "reason": "RFP updates preserve rolling interest, invitation and panel-led decisions; no eligibility promise is added. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         }
       },
@@ -2221,16 +2221,16 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-v7-changes notes removed the old 'consolidated into a unified Growth track' also-good line, which now aligns the notes with its answer and the cluster note ('not one unified Growth track'); the q-scf-hackathons-active refresh to 2026-11-02 does not touch the v7 program menu, and Instawards/Build cap members are unchanged.",
+          "date": "2026-11-06",
+          "reason": "The corrected dated event feed preserves separate v7 program tracks and their rules. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         },
         "note": "v7 introduced three Build tracks and post-launch pathways, not one unified Growth track. Current detailed rules control each separate program.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
-          "q-scf-hackathons-active": "9a0b6606673db77ea82de0881a496d967c72fad063cd840f7981f213f618d304",
+          "q-scf-hackathons-active": "24787b0351b84c216517ac3f5eb964e4178c09338a717f3f1e613168ceec2308",
           "q-scf-instawards": "8303a8051c776609538eaf34ae6806d41b0362e8dcf8b2ac3214e925469dc03b",
           "q-scf-v7-changes": "e3c6dfa0b7152e11197d092a480a85b1a35a2c3baa75ab874b00302eb8a82036"
         }
@@ -2351,16 +2351,16 @@
           "q-sor-p23-auto-restore-extendto"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto share the sd-078 cap and normal P23 restoration rules."
+          "date": "2026-11-06",
+          "reason": "Only the stale manual-restore source-conflict cap is removed; both cases retain P23 auto-restore and explicit exceptional manual restoration. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
+          "verdict": "consistent"
         },
         "note": "corrected; sd-007 recurrence and sd-019. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-sor-force-fast-archival-localnet": "cb8fb02afb45e8bc4096bd419cfe0b7d5bb98252da7d057fa1fd3d72b07b0761",
-          "q-sor-p23-auto-restore-extendto": "154abd5983c6d57471668358679b8aad3d734e89caacc6d14b805ffc730fec8d"
+          "q-sor-force-fast-archival-localnet": "e94a75d7c403d71666f67f12ad345b9cd118cb213c883446de4f89aa5f481a62",
+          "q-sor-p23-auto-restore-extendto": "e11e615c5663a51659c7a1569655a4339f6cedda029af320e812702e3aa2ba00"
         }
       },
       {
@@ -2577,17 +2577,17 @@
           "q-soroban-unit-testing"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Only q-soroban-publish-events changed judge-facing notes: retention is now the configurable history-retention-window (stock 120960 ledgers, about 7 days), and the sd-068/sd-069 doc caveats were added. Its answer still says failed invocations roll back contract events, which agrees with q-sor-decode-hosterror-codes, q-sor-test-event-assertion-ordering, q-soroban-unit-testing, and every clause of the note.",
+          "date": "2026-11-06",
+          "reason": "The events finding pointer is immutable; publication, rollback, last-invocation ordering and RPC retention remain distinct. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
           "verdict": "consistent"
         },
         "note": "mock_all_auths is a happy-path convenience. Exact negative-auth failures require generated try_* and diagnostic interpretation. Failed invocations roll events back. Successful nested calls contribute ordered events to the last top-level invocation. Publication and RPC retention remain separate from event-test ordering.",
         "memberContentSha256": {
           "q-sor-decode-hosterror-codes": "3e6448fc818a9fe751631cf3a543bb808868532b0f28a23183aa113e096e3c72",
           "q-sor-test-event-assertion-ordering": "d51044a8f4e118b46928b61fad4db2bd82b4200a510bfd2b723a0a7b27423191",
-          "q-soroban-publish-events": "ea9528e755b167fbce8aec46def598d54c52fcac231193cd5d40a5fa2bb35854",
+          "q-soroban-publish-events": "75a742a58d1ae24000778bba59d849982b5470bbada735e453132c357dea280b",
           "q-soroban-unit-testing": "2bf04ce9c4070deafa8d88530f053a8c57983efc9168aaa48193d3698b829d9d"
         }
       },
@@ -2600,17 +2600,17 @@
           "q-soroban-storage-types"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Independent review rv-caps (Codex gpt-6-astra high) after the golden cap backlog batch: q-sor-p23-auto-restore-extendto, q-sor-ttl-defaults-extend, q-soroban-storage-types share sd-078 attribution rules and separate restoration from extension."
+          "date": "2026-11-06",
+          "reason": "No TTL numeric setting is redated; explicit extension, P23 restoration and Temporary deletion remain separate. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
+          "verdict": "consistent"
         },
         "note": "Dated network settings, explicit extension, P23 auto-restore, and Temporary deletion remain separate concepts. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-sor-p23-auto-restore-extendto": "154abd5983c6d57471668358679b8aad3d734e89caacc6d14b805ffc730fec8d",
-          "q-sor-ttl-defaults-extend": "63a7dbe39d333f05b4196049ed6bd64fd695d8b793cbecfa15f51346cecdcfe9",
-          "q-soroban-storage-types": "343a0c1d030f1d0bbdfa1331474da011e0d6ff70cd9921500161200f1b3fb071"
+          "q-sor-p23-auto-restore-extendto": "e11e615c5663a51659c7a1569655a4339f6cedda029af320e812702e3aa2ba00",
+          "q-sor-ttl-defaults-extend": "3cc15061958fbf02d1bc89b5d2206e1c9d210968c0ce1d4ea5ee8d75b91e225a",
+          "q-soroban-storage-types": "9aa68b3e7a41c43e3fa196ff03b4a4e080711509f8abe0fe2836e0306ae6d4fc"
         }
       },
       {
@@ -2871,10 +2871,10 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): There is no contradiction: every member that gives the cap uses $150K worth of XLM. The new Integration-Track final-40% and rescind/repay terms in q-edge-scf-v7-centralization-myths conflict with no sibling. But the note says 'All cases distinguish the current SCF Build cap', and q-scf-current-round and q-edge-scf-v7-centralization-myths never state the cap (on origin/main or now).",
+          "date": "2026-11-06",
+          "reason": "Fresh phase/deadline observations change no cap-bearing case or award maximum. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         },
         "note": "As of 2026-11-02, the cap-bearing cases (q-scf-build-award-cap, q-scf-build-tracks, q-scf-how-to-apply, q-scf-vs-sdf-enterprise-fund) give the current SCF Build single-award cap as $150,000 worth of XLM and keep it apart from project-history amounts, the v7 lifecycle total, and other SDF programs. q-scf-current-round and q-edge-scf-v7-centralization-myths state no cap amount and no conflicting figure.",
@@ -2882,7 +2882,7 @@
           "q-edge-scf-v7-centralization-myths": "706a148bbad751ef83b87c21c135df26b8f1e99717fdc41c8582ea438ba55efe",
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
           "q-scf-build-tracks": "04b850dbe3a936aed2ced78c77464d8dbc0559f07aec31bad8c9bada0272a699",
-          "q-scf-current-round": "0610fcb5ca7fc423cda8ccfdb9c63a84ceb0cede41bc8de7647b7f347c6a9cdf",
+          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
           "q-scf-vs-sdf-enterprise-fund": "f9f1db26d05d329a8f340ac8d93b86d600100cac06d8abe95cb42c5cccabddc6"
         }
@@ -2896,17 +2896,17 @@
           "q-scf-total-distributed"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-scf-current-round dates SCF #46 in Submission through 2026-11-09 with #45 last concluded and #44 concluded. q-scf-round-43-results keeps 85 / 29 / $3,139,069, and q-scf-total-distributed gives only dated, basis-labeled program totals. These match the note.",
+          "date": "2026-11-06",
+          "reason": "Only the funding finding pointer changed; fixed round 43 history and dated round 46/45/44 observations are unchanged.",
           "verdict": "consistent"
         },
         "note": "SCF #43 keeps its fixed 29-project and $3,139,069 result. As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded.",
         "memberContentSha256": {
-          "q-scf-current-round": "0610fcb5ca7fc423cda8ccfdb9c63a84ceb0cede41bc8de7647b7f347c6a9cdf",
+          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
           "q-scf-round-43-results": "19d1fcc482918a6ee4f7f1151ec579d2d4836c434a4a46773c09aa71d4666d72",
-          "q-scf-total-distributed": "67b69a6066f1e125ed92c1ba4bf8d035f164159f26c723ab4f7efbf8b35c95c5"
+          "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071"
         }
       },
       {
@@ -2971,17 +2971,17 @@
           "q-x402-payment-verification"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-hist-x402-stellar-announcement keeps 2026-03-10 and the dated no-SEP rule. q-soroban-x402-auth-entry-signing gives the 2026-11-02 Varial/Albedo/Hana/HOT/Klever/OneKey/Scopuly roster with the Albedo signAuthEntry conflict, which matches the note word for word. q-x402-payment-verification and q-defi-x402-on-stellar-what date the facilitator and governance claims separately.",
+          "date": "2026-11-06",
+          "reason": "Official x402 roster now excludes Albedo; wallet capability uncertainty remains. Historical announcement and provider coverage dates do not change. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
           "verdict": "consistent"
         },
-        "note": "The 2026-03-10 announcement is historical; current facilitator, wallet, sponsorship, and verification capabilities are separately dated and do not make x402 a SEP. As of 2026-11-02 (page changed 2026-10-29), the official roster lists the Varial (formerly Freighter) Browser Extension, Varial Mobile through WalletConnect, Albedo, Hana, HOT, Klever, OneKey, and Scopuly. Varial owner docs expose extension signAuthEntry and mobile stellar_signAuthEntry, which matches the page, while Stellar Wallets Kit explicitly throws for Albedo (sd-060). Raw auth-entry capability is not tested end-to-end x402 compatibility. Wallet-owner proof of current end-to-end x402 compatibility remains unverified for Hana, HOT, Klever, OneKey, and Scopuly; Hana owner docs recommend Wallets Kit but do not establish that stronger claim. An answer that reports the earlier 'Freighter Mobile unsupported' page state as dated history is not wrong.",
+        "note": "The March 10 announcement remains historical; current facilitator, wallet and verification claims have separate dates and do not make x402 a SEP. The November 6 official roster excludes Albedo, agreeing with its Wallets Kit rejection. Varial extension/mobile support retains November 2 owner evidence. Raw auth-entry capability is distinct from tested end-to-end x402 compatibility; the latter remains unverified for Hana, HOT, Klever, OneKey and Scopuly. Provider coverage retains its earlier date.",
         "memberContentSha256": {
           "q-defi-x402-on-stellar-what": "75bb51ff5ed93a0549bd61144f28683fce0987e655e0d39223583460592ab46a",
           "q-hist-x402-stellar-announcement": "be982bf57663c5c733c0e042630477713ef3a05551e8884143eb32d7a893c289",
-          "q-soroban-x402-auth-entry-signing": "9c97a7654300fa6db3169f3156b8bee423f392fc5a399f67a3208591bab9eef3",
+          "q-soroban-x402-auth-entry-signing": "a3496674c6560c08dddbac356c8c5099e36a3493d4cc294bcf287ece5cdb9c89",
           "q-x402-payment-verification": "3022f183d44711a80942507d5d75ea6cc225d70d12929f50934c67f9dfa59ede"
         }
       },
@@ -3042,17 +3042,17 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-06",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
+          "date": "2026-11-06",
+          "reason": "Builder source total refresh from 399 to 401 does not turn a directory miss into proof a person does not exist. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
           "q-builder-content-by-person": "929de4446b8a2880d0e3572789f4fed58dbfea9097ffceafabc5e4b9c743b2dc",
           "q-builder-justin-rice-history": "aa800d231191c12fede8e0b529e859b99fe292773f20acfe54694291b2682166",
-          "q-edge-closed-world-builder-directory-miss": "e1002fa47f5d234af53fe31ce560152e9e9c8fae8d8696ed1de981e44dd4a52e",
+          "q-edge-closed-world-builder-directory-miss": "0baf5b657b328b0066500ee74cbf7babf61b6ef51016a567cf6acf37314d85a4",
           "q-edge-lumenloop-person-entity-empty": "72866be7cee8d2ab0659bec967ec48fe51739bfa179a52d286e08c52042a246c",
           "q-edge-open-world-recovery-after-narrow-miss": "c038b9734745b6112af0d813a66c1630730cea9d906cd4c35eafa8e3f68adaa3",
           "q-edge-strupey-ambiguous-stellar-history": "7048b8ac4b99cc2166c3bbeb4b64ed4afd1347945ebf35ed6cce502c223f040a",
@@ -3189,17 +3189,17 @@
           "q-eco-most-active-defi-projects"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-06",
         "note": "All four members are mutually consistent on the scout.getLeaderboard contract; the invariant graded by EVERY member is the project-vs-person boundary — the leaderboard ranks PROJECTS (with aggregate developer metrics) and is not a people directory; getBuilders answers person-level questions. Member-level grading beyond that boundary: q-tool-leaderboard-open-issues grades the metric separations (open-issue volume is a backlog signal, never activity/quality/popularity or a stand-in for stars/activity/repoScore) plus an explicit sort/range and response generatedAt/scope; q-tool-developer-leaderboard-live grades an explicit current sort/range and generatedAt without the detailed issues/stars/TVL distinctions; q-eco-most-active-defi-projects requires a visible as-of date, an explicit activity basis (as of 2026-11-02, the served meta.metricDefinitions define activity as github.commits90d, 90-day default-branch commit volume, with lastActivityAt recency as the tie-break; it is not repoScore, which is a repo-level scout.searchRepos signal), and a DeFi inclusion rule, satisfiable from live directory or research evidence rather than the leaderboard alone; q-gap-leaderboard-project-not-builder grades only the shared boundary. Verified 2026-07-28 (todo 1253 Lane B for the original trio; todo 1256 F6 for q-eco-most-active-defi-projects after its metric-conflation note was corrected to the served schema — catalog/manifest.json scout.getLeaderboard metricDefinitions). Corrected 2026-11-02: the golden audit re-read the served metricDefinitions, which now define activity as commit volume (github.commits90d) rather than latest-commit recency; q-eco-most-active-defi-projects notes carry the new definition. 2026-07-28 adversarial review (ADV-3, two passes) corrected this note: earlier revisions attributed sort/range/generatedAt, metric semantics, and the no-stored-ordering rule to every member; the opening now distinguishes cluster-wide compatibility from member-level grading.",
         "memberContentSha256": {
           "q-eco-most-active-defi-projects": "f4e8c535140558a48bc329e38d28a73ecea84faa3c43bfea707b8f29846b09bd",
-          "q-gap-leaderboard-project-not-builder": "4d67f49736a6ad03885825702652a6de65b97b584a855f8c4737791502e293a2",
+          "q-gap-leaderboard-project-not-builder": "4f53ad02512a451e3b1dd8a69b15e99c79fc4a8e5ef7265502d6d1b5ba535292",
           "q-tool-developer-leaderboard-live": "842a7ac44da42dbbdeb44968bbcd34f07255784fedbc40ad94769c4d45eec58c",
           "q-tool-leaderboard-open-issues": "2871c956fd22dca5dd2c71830540c0f765b525aa4d46a4b742cd6c650395ad0e"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All four members still agree that scout.getLeaderboard ranks projects, not people (q-gap now dates the Microvault/Noir observation to 2026-07-11). The note's q-eco clause says activity is 'latest-commit recency, not commit volume', but q-eco-most-active-defi-projects notes now say 'As of 2026-11-02 ... sort=activity as github.commits90d (90-day default-branch commit volume ...)', so the note is stale.",
+          "date": "2026-11-06",
+          "reason": "Builder source total refresh from 300 to 401 changes no project-versus-person leaderboard boundary or metric definition. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
           "verdict": "consistent"
         }
       },
@@ -3642,6 +3642,13 @@
             "observedAt": "2026-11-02",
             "httpStatus": 200,
             "note": "Synthetic row 'SCF Round #46: submissions OPEN until 2026-11-09'."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-11-06",
+            "httpStatus": 200,
+            "note": "Independent coordinator recheck confirms the same phase and November 9 date."
           }
         ],
         "datePolicy": {
@@ -3654,16 +3661,16 @@
           "q-scf-current-round"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "1daac1b6d77aeb3a9cacb5038fb2e08c00d0bed328678bdd3cc1d92717f3a721",
-          "q-scf-current-round": "0610fcb5ca7fc423cda8ccfdb9c63a84ceb0cede41bc8de7647b7f347c6a9cdf"
+          "q-edge-fresh-latest-scf-round": "7406e45cf19d9818b998f43d80bf1b733c5dc085aef422a2dd27549a7d374769",
+          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Both members got the same notes edit, which keeps '#46 is in Submission through 2026-11-09. #45 has ended' and adds a grading rule for the older November 8 citations. This matches the rule's 2026-11-02 SCF #46 Submission through 2026-11-09 and #45 Ended.",
+          "date": "2026-11-06",
+          "reason": "Fresh primary awards/detail reads preserve round 46 Submission through November 9, 45 Ended and 44 concluded. Both member goldens are unchanged; only provenance was refreshed. November 9/11 recheck triggers remain.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-02"
+        "lastChecked": "2026-11-06"
       },
       {
         "label": "Stellar base fee floor",
@@ -3767,7 +3774,7 @@
       {
         "triggerDateEvent": "Publication or state change for SCF #46/#45/#44 after the fixed SCF #43 recap",
         "requiredRecheck": "Keep SCF #43's fixed result separate. Refresh current-round and open-RFP cases after each official phase change.",
-        "disposition": "reviewed — As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded. #43 remains fixed historical truth. The RFP roster conflict is resolved: q-scf-open-rfps and q-scf-rfp-tooling report that the official RFP Track page lists no open brief ('October 2026: New Q4 RFPs are coming soon.') and flag the Scout lag (sls-096). Both give the 2026-11-09 deadline with an as-of date and a do-not-penalize caution for a dated, attributed November 8 citation. q-scf-open-rfps reverifyBy 2026-11-10 and q-scf-rfp-tooling reverifyBy 2026-11-11.",
+        "disposition": "Reviewed November 5 local / November 6 UTC: round 46 remains Submission through November 9; round 45 is the last concluded round and 44 ended. Round 43 remains fixed history. Official and Scout RFP rosters now agree on no open brief; the synthetic round is separate. The historical November 8 citation allowance remains dated. Reverify open-rfps November 10 and rfp-tooling November 11; no deadline extension.",
         "caseIds": [
           "q-edge-fresh-latest-scf-round",
           "q-scf-round-43-results",
@@ -3777,20 +3784,20 @@
           "q-scf-total-distributed"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "1daac1b6d77aeb3a9cacb5038fb2e08c00d0bed328678bdd3cc1d92717f3a721",
-          "q-scf-current-round": "0610fcb5ca7fc423cda8ccfdb9c63a84ceb0cede41bc8de7647b7f347c6a9cdf",
-          "q-scf-open-rfps": "b984d262cc6823406dd1daa23adac1388a2d895e638f50c272deefe4a199e8ae",
-          "q-scf-rfp-tooling": "51c14350bea8b5a0c8be90cc58e599e4388abdf0cf4f20ce8252292b39dd0765",
+          "q-edge-fresh-latest-scf-round": "7406e45cf19d9818b998f43d80bf1b733c5dc085aef422a2dd27549a7d374769",
+          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
+          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e",
+          "q-scf-rfp-tooling": "4d5e3891ba78550312e7a4305897a46ed5b281f7a848c3d204dbfcfbe437f189",
           "q-scf-round-43-results": "19d1fcc482918a6ee4f7f1151ec579d2d4836c434a4a46773c09aa71d4666d72",
-          "q-scf-total-distributed": "67b69a6066f1e125ed92c1ba4bf8d035f164159f26c723ab4f7efbf8b35c95c5"
+          "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-edge-fresh-latest-scf-round, q-scf-current-round, q-scf-open-rfps, and q-scf-rfp-tooling all say that as of 2026-11-02 #46 is in Submission through 2026-11-09, #45 is the last concluded round, and the official RFP page lists no open brief ('October 2026: New Q4 RFPs are coming soon.'), with Scout lag flagged; q-scf-round-43-results keeps the fixed 85/29/$3,139,069 recap. The quoted reverifyBy dates (open-rfps 2026-11-10, rfp-tooling 2026-11-11) match the cases.",
+          "date": "2026-11-06",
+          "reason": "Only the funding provenance pointer changed after independent phase-transition review. The trigger, required checks, members and November deadlines remain unchanged.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-02"
+        "lastChecked": "2026-11-06"
       },
       {
         "triggerDateEvent": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",

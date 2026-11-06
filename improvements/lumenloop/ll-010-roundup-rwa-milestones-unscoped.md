@@ -10,6 +10,8 @@ evidence:
   - Solo project 49, todo 846
   - https://github.com/lumenloop/lumenloop-backend/issues/27
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL semantic weekly roundups Jun19/May29 plus get_document research133 — Jun19 $3B and May29 $2.8B milestones still lack metric methodology/measurement scope; adjacent article5945 has separate $2B snapshot. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-010."
   - date: 2026-08-11
     evidence: "Live semantic search returned the Jun 19 and May 29 roundups with unscoped RWA milestones; issue #27 remains open."
 ---

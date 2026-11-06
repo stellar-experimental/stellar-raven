@@ -12,6 +12,8 @@ evidence:
   - 2026-08-04 exact live get_document recurrence: article 6520 still says "$61M XLM" in its short summary, while research 66 now says a "$10 million" Blend attack and that quarantine prevented full exfiltration; the two summaries still conflict on unit, affected component, completed loss, and containment status
   - https://github.com/lumenloop/lumenloop-backend/issues/24
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_document research66 and articles6520 — 6520 short summary still says $61M XLM; long summary says 61M XLM and 1M USDC from YieldBlox community pool. Research66 still broadens to Blend and says preventing full fund exfiltration. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-011."
   - date: 2026-07-11
     evidence: N2's independent on-chain/primary matrix confirms the existing amount-role and status defect: borrowed XLM and USDC, quarantined XLM, and valuation-dependent USD estimates must remain separate; the Lumenloop summaries still need those typed fields and attribution.
   - date: 2026-08-04

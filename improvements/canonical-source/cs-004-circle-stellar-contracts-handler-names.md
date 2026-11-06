@@ -19,6 +19,9 @@ evidence:
   - "Dedupe 2026-11-02: circlefin/stellar-cctp issues and PRs (state all) contain no report about handler names or this docs page. Circle publishes no public repository for developers.circle.com content; circlefin/docs-examples holds code samples only."
   - "Golden consumer: eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json answer and keyFacts tell the answerer to use the deployed handle_recv_* names amid the docs contradiction."
   - upstream issue filed 2026-11-02: https://github.com/circlefin/stellar-cctp/issues/36
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: GET Circle stellar-contracts.md; current interface source; stellar contract info interface on mainnet contract CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL — Docs still both handle_receive_*; fresh deployed interface and source both handle_recv_*. Both functions checked. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-004."
 ---
 
 ## Finding

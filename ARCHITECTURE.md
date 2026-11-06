@@ -21,9 +21,9 @@ Read [PLAN.md](PLAN.md) for scope and [README.md](README.md) for connection deta
 
 `src/server.ts` handles the Worker request.
 The canonical host is `raven.stellar.org`. `raven.stellar.buzz` and `agents.stellar.buzz` are aliases.
-[src/hosts.ts](src/hosts.ts) sends alias browser pages to the canonical host with a `308`.
-`/mcp`, `/authorize`, `/callback`, `/token`, `/register`, and `/.well-known/*` stay on the alias.
-Each host is its own OAuth issuer, and MCP clients reject a protected resource on a different origin.
+[src/hosts.ts](src/hosts.ts) sends every alias path to the canonical host with a `308`.
+MCP clients configured with an alias must reconnect at `https://raven.stellar.org/mcp`;
+their previous authorization belongs to the old issuer.
 For `/mcp`, it checks authorization in this order:
 
 1. `authenticateApiKey` accepts a named bearer credential, `Authorization: Bearer <name>:<token>`.

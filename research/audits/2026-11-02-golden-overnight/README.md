@@ -122,16 +122,16 @@ No external issue, message, deployment, or upstream source write occurs.
 
 | Finding | Observed problem | Public evidence |
 | --- | --- | --- |
-| [sd-082](../../../improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md) | Issuer locking omits other signers. | [Docs receipt](issuer-lock-receipts.json), [Core sources](issuer-lock-core-receipts.json) |
-| [sd-083](../../../improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md) | TOML ordering claims a universal syntax restriction. | [Receipt](toml-order-receipts.json), [fixture](toml-order-fixture.toml), [parser](toml-order-result.json) |
-| [sd-084](../../../improvements/stellar-docs/sd-084-authorization-sandwich-operations-are-ordered.md) | Ordered operations are called simultaneous. | [Receipt](authorization-source-receipts.json) |
-| [sd-085](../../../improvements/stellar-docs/sd-085-sac-authorization-prose-names-set-auth.md) | SAC prose uses the wrong function name. | [Receipt](authorization-source-receipts.json) |
-| [sd-086](../../../improvements/stellar-docs/sd-086-strict-send-destination-parameter-descriptions.md) | Destination descriptions name source selectors. | [Receipt](horizon-strict-send-receipts.json) |
-| [sd-087](../../../improvements/stellar-docs/sd-087-simulation-authmode-default-is-conditional.md) | OpenRPC omits the conditional invocation default. | [Receipt](late-docs-receipts.json) |
+| [sd-082](https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md) | Issuer locking omits other signers. | [Docs receipt](issuer-lock-receipts.json), [Core sources](issuer-lock-core-receipts.json) |
+| [sd-083](https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-083-toml-array-order-is-not-universal.md) | TOML ordering claims a universal syntax restriction. | [Receipt](toml-order-receipts.json), [fixture](toml-order-fixture.toml), [parser](toml-order-result.json) |
+| [sd-084](https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-084-authorization-sandwich-operations-are-ordered.md) | Ordered operations are called simultaneous. | [Receipt](authorization-source-receipts.json) |
+| [sd-085](https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-085-sac-authorization-prose-names-set-auth.md) | SAC prose uses the wrong function name. | [Receipt](authorization-source-receipts.json) |
+| [sd-086](https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-086-strict-send-destination-parameter-descriptions.md) | Destination descriptions name source selectors. | [Receipt](horizon-strict-send-receipts.json) |
+| [sd-087](https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-087-simulation-authmode-default-is-conditional.md) | OpenRPC omits the conditional invocation default. | [Receipt](late-docs-receipts.json) |
 | [sd-088](../../../improvements/stellar-docs/sd-088-ledger-header-scpvalue-nesting.md) | Heading hierarchy obscures consensus-value nesting. | [Receipt](late-docs-receipts.json) |
-| [sd-089](../../../improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md) | Proposed simulation-preview result guard. | [Receipt](tail-source-receipts.json) |
+| [sd-089](https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md) | Proposed simulation-preview result guard. | [Receipt](tail-source-receipts.json) |
 | [sd-090](../../../improvements/stellar-docs/sd-090-contract-spec-enum-encodings.md) | Proposed tagged and integer enum corrections. | [Receipt](tail-source-receipts.json) |
-| [sk-037](../../../improvements/skills/sk-037-dapp-mixed-classic-soroban-batching.md) | Proposed removal of unsupported mixed-operation batching. | [Receipt](tail-source-receipts.json) |
+| [sk-037](https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/skills/sk-037-dapp-mixed-classic-soroban-batching.md) | Proposed removal of unsupported mixed-operation batching. | [Receipt](tail-source-receipts.json) |
 
 The round also adds recurrence evidence to [sls-107](../../../improvements/stellar-light-scout/sls-107-stablecoin-issuer-of-record-and-asset-class.md).
 Its [receipt](stablecoin-issuer-recurrence-receipts.json) separates company labels from legal issuer identity.

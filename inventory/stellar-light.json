@@ -1,14 +1,17 @@
 {
-  "changelogEntryCount": 351,
+  "changelogEntryCount": 366,
   "changelogLatest": {
-    "date": "2026-11-01",
-    "summary": "The build sync reads an SCF page's siteUrls record as JSON, its object form first: a record it cannot read is could-not-check, never links-none, so a stored winner link is not dropped on a read it could not make. A DoraHacks link is dorahacks.io or a subdomain of it, never another host's /buidl/ path, and names are compared with their accents folded.",
+    "date": "2026-11-04",
+    "detail": "RFP rows carry publishedBrief when SCF published one: its title, a commit-pinned copy of the RFP Track page and the day it was read (13 of 16 rows; none was found for concentrated-liquidity-amm, soroban-vrf or ai-webide). technicalRequirements is the idea's own summary. For contract-source-verification it differs from the brief, so publishedBrief restates the brief's functional requirements (the SEP-58 fields bldimg, bldopt, source_repo, source_rev, tarball_url and tarball_sha256, and an SDF-allowlisted trusted build image) and what it rules out (fully deterministic Rust compilation as a research effort). rules.rubric lists seven criteria scored 1 to 5 and weighted 20, 20, 15, 15, 10, 10 and 10 percent, from hackmeridian.com/build; the 20 percent slot, Track Alignment for Genesis and Ecosystem Alignment for Scale, names each in byCategory. reviewSubmission's judging carries the same rubric beside its criteria. An event off DoraHacks: meta.note no longer reports a DoraHacks feed outage; its winners come from its curated roster even before Scout's stored copy holds them (each row's url the page that names the win); rules absent means its record copies no judging sentence. The Istanbul event serves its two tracks, its judging sentence from Rise In's page and its seven winners from Rise In's recap, ranked; its dates are Istanbul's (the page header prints its local-midnight start in UTC, as 18 September). A DoraHacks roster that could not be read now serves submissions null with a note, and a successful read that found none keeps []. getHackathons: a DoraHacks listing read in part is a failed read (partial true, counts.total null); an empty upcoming or active feed says no event of that status is in this feed, names any q, organizer or source filter, and says when part of the feed could not be read, not that the ecosystem is between events. meta.quarters and meta.categories are declared as the {value, label} objects they always were. getRfps q also matches a row's published brief (its title, functional requirements and out-of-scope items): q=bldimg finds contract-source-verification. The skill no longer calls open briefs continuously fundable, nor says that no open match means no SCF round covers the lane: counts.open can be 0, and meta.scfRound says whether SCF takes submissions now. The curated feed's scope is Stellar-presented hackathons and university challenges off DoraHacks, and an empty upcoming or active feed says so. getHackathon rules: a page that publishes no judging criteria now says so in rules.judgingNote, with the page and the day (the 10 listed DoraHacks events whose page has no judging section, Stellar Hacks: Real-World ZK among them, and 5 curated events whose organizer page was checked on 2026-11-04), never a bare null. The page reader, which serves a DoraHacks event's stored page as it reads it now, finds a section under a line of its own or a bold label, in Spanish or Portuguese too; takes the event's own heading over a track's, and serves sections that sit under different tracks each under its track; reads a heading that names both sections by its labelled parts; and no longer reads a list of judges as criteria or Prerequisites as requirements. Over the 20 listed DoraHacks pages, read 2026-11-04: Stellar IdeaThon Mulheres Que Codam serves its criteria (Inovação e Originalidade, Melhor apresentação, Go to market, Qualidade Técnica) and its deliverables; buildonstellarchile, give-hackathon-argentina and stellar-latam gain their submission requirements; give-hackathon-argentina serves its criteria and its requirements apart, where one section served both; ideaton2026's requirements are its event-wide Rules, not one track's. getHackathon answers 503 (could not check) when a DoraHacks listing read failed and the slug was not found, never 404; a roster DoraHacks read as empty says so in stats.winnersNote rather than that it could not be read; a roster read cut short (the page cap, or fewer rows than its own count) is a failed read, never served as whole. Build on Stellar Philippines serves its weighted criteria as rules.rubric (impact 30, technical execution on Stellar 25, UX 20, innovation 15, feasibility 10 percent; no score scale published). reviewSubmission: categoryContext states its denominator (outOf, with uncategorized beside it), and a new eventCategories gives, for each event the submission entered, the event's stored submissions, how many are categorized, its five largest categories and this submission's category among them, counted by analyzeHackathonSubmissions' category facet; it is served even when the submission has no confident category, as dorahacks.io/buidl/42765 has none.",
+    "summary": "getRfps follows SCF's RFP Track page, which names no open brief now (Q4 2026 RFPs are coming soon): activeQuarter is q4-2026, counts.open is 0 and the two Q3 briefs read closed, and meta.briefRoster gives that page and the day it was read. getHackathon serves HackMeridian 2026's weighted rubric as rules.rubric and says what Scout holds of an event off DoraHacks: submissions is null when no roster is held or none could be read, never [] for a roster no read reached. getHackathons lists the Rise In Stellar Pro Hackathon in Istanbul (19 to 20 September 2026) with its seven winners, and the University of Waterloo's Blockchain Innovation Challenge powered by Stellar (2 to 18 November 2026, active now).",
     "surfaces": [
-      "api"
+      "api",
+      "skill"
     ],
-    "type": "fixed"
+    "type": "fixed",
+    "version": "spec@1.9.122"
   },
-  "fetchedAt": "2026-11-03T15:18:13.074Z",
+  "fetchedAt": "2026-11-06T01:05:52.974Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -202,7 +205,7 @@
               "type": "string"
             },
             "codeEvidence": {
-              "description": "Indexed repos owned by this builder's GitHub account that match the query: observable facts (language, last activity), kept SEPARATE from subjective profile text. [] = no direct code evidence in the index (a weaker match, not a disqualification); null without a q/skill filter.",
+              "description": "Indexed repos owned by this builder's GitHub account that match the query: observable facts (language, last activity), kept SEPARATE from subjective profile text. [] = every repo in the index that this GitHub account owns was read and none matched (a weaker match, not a disqualification). Owners match as GitHub logins do, whole and in any case; repos GitHub reports gone are left out. null = not checked: no q/skill filter, or the code-evidence read failed (meta.failedReads names it), on every row including code-language ones; never 'none'.",
               "items": {
                 "properties": {
                   "fullName": {
@@ -254,7 +257,7 @@
               "nullable": true,
               "properties": {
                 "basis": {
-                  "description": "'profile-text' = free-text hit over a Stellar Passport builder's profile/project prose. 'repo-owner' = a CODE-DERIVED row: the query is a GitHub login that owns indexed Stellar repos but has no Passport profile, so bio/roleTitle are null and the evidence is entirely in codeEvidence (P2 builders-by-name). 'code-language' = admitted by CODE, not prose: at least one query token IS the primary language of a repo this builder owns in the index while their profile never says it (matchedFields INCLUDES 'codeEvidence', matchedTerms naming the language as indexed, proving repos in codeEvidence); every other token still had to hit the prose, so a MIXED row (one token by code, another by prose) also lists the prose fields in matchedFields and still keeps the 'code-language' basis; these candidate rows sort below all prose hits.",
+                  "description": "'profile-text' = free-text hit over a Stellar Passport builder's profile/project prose. 'repo-owner' = a CODE-DERIVED row: the query is a GitHub login that owns indexed Stellar repos but has no Passport profile, so bio/roleTitle are null and the evidence is entirely in codeEvidence (P2 builders-by-name). 'code-language' = admitted by CODE, not prose: at least one query token IS the primary language of a repo this builder owns in the index while their profile never says it (matchedFields INCLUDES 'codeEvidence', matchedTerms naming the language as indexed, proving repos in codeEvidence, null like every row when the code-evidence read failed); every other token still had to hit the prose, so a MIXED row (one token by code, another by prose) also lists the prose fields in matchedFields and still keeps the 'code-language' basis; these candidate rows sort below all prose hits.",
                   "enum": [
                     "profile-text",
                     "repo-owner",
@@ -514,7 +517,7 @@
           "type": "object"
         },
         "CompactView": {
-          "description": "Present in meta only when the request had view=compact; absent means full rows. Compact project rows (projects/search `projects`) carry exactly: id, name, slug, canonicalSlug, url, category, types, shortDescription, status, statusAsOf, deployment, tvlUSD, tvlAsOf, scfAwarded, scfTotalAwardedUSD, audits, score, via, confidence, reposCount, onchainContractsCount; deployment keeps only network, confidence only score and label. Compact repo rows (repos/search `repos`, projects/search `codeReferences`) carry exactly: fullName, url, description, primaryLanguage, stars, lastCommitAt, isArchived, activityState, project, hackathonWinner, scfAwarded, repoScore, repoScoreLabel, tier, kind, stellarEvidence, score, knowledgeNotesCount. Every key is on every row, null where there is no value.",
+          "description": "Present in meta only when the request had view=compact; absent means full rows. Compact project rows (projects/search `projects`) carry exactly: id, name, slug, canonicalSlug, url, category, types, shortDescription, status, statusAsOf, deployment, tvlUSD, tvlAsOf, tvlStale, scfAwarded, scfTotalAwardedUSD, audits, score, via, confidence, reposCount, onchainContractsCount; deployment keeps only network, confidence only score and label. Compact repo rows (repos/search `repos`, projects/search `codeReferences`) carry exactly: fullName, url, description, primaryLanguage, stars, lastCommitAt, isArchived, activityState, project, hackathonWinner, scfAwarded, repoScore, repoScoreLabel, tier, kind, stellarEvidence, score, knowledgeNotesCount. Every key is on every row, null where there is no value.",
           "properties": {
             "mode": {
               "description": "Always `compact`: this page carries compact rows.",
@@ -1067,7 +1070,7 @@
                   "type": "object"
                 },
                 "rules": {
-                  "description": "What the organizer published about submitting and judging, from the stored event page. Absent = the page was not read. A null section = the page has none (on 2026-10-05, 5 of 20 Stellar event pages had a requirements section and 6 a judging section). On an event off DoraHacks (source curated) whose record copies its judging sentence: only judgingCriteria, source and checkedOn; the other keys are absent, not known.",
+                  "description": "What the organizer published about submitting and judging. On a DoraHacks event, from its stored event page: absent = the page was not read; a null section = the page has none (on 2026-10-05, 5 of 20 Stellar event pages had a requirements section and 6 a judging section). On an event off DoraHacks (source curated), from its record: the judging sentence it copies from the organizer's page, as judgingCriteria with source and checkedOn, and rubric when the organizer publishes a weighted one; or, when that page was checked and publishes no judging criteria, judgingCriteria null with source, checkedOn and judgingNote. The other keys are absent, not known. Absent on such an event: its organizer's page was not checked (no page on record), which is not a claim that it publishes none.",
                   "properties": {
                     "checkedOn": {
                       "description": "Curated events only: the day that page was checked.",
@@ -1075,8 +1078,12 @@
                       "type": "string"
                     },
                     "judgingCriteria": {
-                      "description": "The page's judging section, in markdown. null = the page was read (readAt) and has no judging section: the organizer published no judging criteria there. It is not an unread page; an unread page has no `rules` at all.",
+                      "description": "The page's judging section, in markdown, read from the stored page by the current reader: under the event's own heading that names judging, scoring or criteria (Spanish and Portuguese too), a line of its own or a bold label; sections that sit under different tracks come each under its track's name, and a heading that names both sections serves its criteria part. null = the page was read (readAt) or checked (checkedOn) and has no judging section, as judgingNote says: the organizer published no judging criteria there. It is not an unread page; an unread page has no `rules` at all.",
                       "nullable": true,
+                      "type": "string"
+                    },
+                    "judgingNote": {
+                      "description": "Present only when judgingCriteria is null: that the page publishes no judging criteria, with the page and the day it was read or checked. A DoraHacks page's note rests on its sections as read now (a heading, a line of its own or a bold label naming judging, scoring or criteria, in English, Spanish or Portuguese; a list of judges is not criteria).",
                       "type": "string"
                     },
                     "readAt": {
@@ -1091,8 +1098,65 @@
                       "nullable": true,
                       "type": "string"
                     },
+                    "rubric": {
+                      "description": "Curated events only: the weighted rubric the organizer publishes, each criterion with its weight in percent in the page's order (not a rank), each scored scoreMin to scoreMax, with the page and day it was checked. Absent: no weighted rubric is on record for this event, which is not a claim that the organizer published none.",
+                      "properties": {
+                        "checkedOn": {
+                          "format": "date",
+                          "type": "string"
+                        },
+                        "criteria": {
+                          "items": {
+                            "properties": {
+                              "byCategory": {
+                                "description": "Present only on a slot scored under a different name in each category: one entry per category the event judges in (getHackathon tracks with kind category), with the criterion's name there and what it scores. Absent: the criterion is the same in every category.",
+                                "items": {
+                                  "properties": {
+                                    "category": {
+                                      "type": "string"
+                                    },
+                                    "criterion": {
+                                      "type": "string"
+                                    },
+                                    "scores": {
+                                      "description": "What the criterion scores, in the page's words.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "criterion": {
+                                "description": "The page's label for the criterion. A slot the page scores under a different name in each category carries a label that joins the names, as the page writes it; byCategory names each.",
+                                "type": "string"
+                              },
+                              "weightPercent": {
+                                "description": "The criterion's share of the score, in percent; a rubric's weights sum to 100.",
+                                "type": "number"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "scoreMax": {
+                          "description": "The highest score a criterion takes. Absent with scoreMin: the page publishes no score scale.",
+                          "type": "integer"
+                        },
+                        "scoreMin": {
+                          "description": "The lowest score a criterion takes. Absent with scoreMax: the page publishes no score scale.",
+                          "type": "integer"
+                        },
+                        "source": {
+                          "format": "uri",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
                     "source": {
-                      "description": "Curated events only: the page the judging sentence was checked against.",
+                      "description": "Curated events only: the page the judging sentence, or its absence, was checked against.",
                       "type": "string"
                     },
                     "submissionQuestions": {
@@ -1234,7 +1298,7 @@
               "$ref": "#/components/schemas/Meta"
             },
             "submissions": {
-              "description": "Every submission served for the event. On a DoraHacks row `award` and `awardCategory` read as on `winners`: an award its winners of different placements share is `awardCategory`, never a row's `award`.",
+              "description": "Every submission served for the event: [] = a roster read that found none. null = no roster is held (an event off DoraHacks with no curated roster) or none could be read just now (meta.note says which): not checked, never none. On a DoraHacks row `award` and `awardCategory` read as on `winners`: an award its winners of different placements share is `awardCategory`, never a row's `award`.",
               "items": {
                 "additionalProperties": true,
                 "properties": {
@@ -1249,6 +1313,7 @@
                 },
                 "type": "object"
               },
+              "nullable": true,
               "type": "array"
             },
             "tracks": {
@@ -1533,6 +1598,7 @@
                           "type": "array"
                         },
                         "summary": {
+                          "description": "What this feed shows for the selected status, naming any other filter (q, organizer, source): not a claim that no Stellar hackathon is upcoming or active elsewhere. When part of the feed could not be read (meta.warnings, partial true), it says so, counts.total is null, and the empty result is not a check.",
                           "type": "string"
                         }
                       },
@@ -1647,6 +1713,11 @@
               "nullable": true,
               "type": "string"
             },
+            "tvlStale": {
+              "description": "true = tvlAsOf is more than 14 days before this response, or missing, unparseable or in the future. Only the date is checked, not why the figure is old, and sort=tvl still orders by tvlUSD alone, stale or not. false = read within 14 days. null = no tvlUSD.",
+              "nullable": true,
+              "type": "boolean"
+            },
             "tvlUSD": {
               "description": "DefiLlama-verified TVL in USD. null = NOT TRACKED on DefiLlama; never 'zero TVL'; most non-DeFi projects are legitimately untracked. Dated by tvlAsOf.",
               "nullable": true,
@@ -1749,7 +1820,7 @@
               "type": "boolean"
             },
             "assets": {
-              "description": "Asset codes this partner issues/supports, read from their stellar.toml. NULL = we have not fetched their SEP-1 file (check tomlFetchedAt), so this is UNKNOWN and never 'issues no assets'. [] = we did fetch it and it declares no CURRENCIES.",
+              "description": "Asset codes this partner issues/supports, read from their stellar.toml. NULL = no read is recorded (tomlSourceUrl and tomlFetchedAt are not both set), so this is UNKNOWN and never 'issues no assets'; a curated code is never served here. [] = a recorded read declares no CURRENCIES.",
               "items": {
                 "type": "string"
               },
@@ -1759,7 +1830,20 @@
             "caseStudies": {
               "description": "Curated case studies. NULL = none recorded for this partner (UNKNOWN, never 'has no case studies'); currently null for every partner, as none have been curated yet.",
               "items": {
-                "additionalProperties": true,
+                "properties": {
+                  "projectSlug": {
+                    "description": "Slug in the projects directory, when the case study's project is listed there.",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "nullable": true,
+                    "type": "string"
+                  }
+                },
                 "type": "object"
               },
               "nullable": true,
@@ -1858,7 +1942,7 @@
               "type": "string"
             },
             "rampTypes": {
-              "description": "Fiat ramp directions offered. Curator-maintained: NULL = not recorded for this partner (UNKNOWN, never 'offers no ramps').",
+              "description": "Fiat ramp directions offered (deposit = on-ramp, withdraw = off-ramp). Either confirmed from the anchor's own transfer server /info during a stellar.toml read, or entered by a curator; without a recorded read (tomlSourceUrl and tomlFetchedAt both set) they are curator-entered, so never cite them as stellar.toml facts. NULL = none recorded (UNKNOWN, never 'offers no ramps'), and never inferred from SEP presence.",
               "items": {
                 "enum": [
                   "on-ramp",
@@ -1870,9 +1954,11 @@
               "type": "array"
             },
             "regions": {
+              "description": "Curated coverage regions. NULL = none recorded for this partner (UNKNOWN, never 'covers nowhere'); the region filter does not select it.",
               "items": {
                 "type": "string"
               },
+              "nullable": true,
               "type": "array"
             },
             "responseSla": {
@@ -1880,13 +1966,15 @@
               "type": "string"
             },
             "sectors": {
+              "description": "Curated sectors. NULL = none recorded for this partner (UNKNOWN, never 'serves no sector').",
               "items": {
                 "type": "string"
               },
+              "nullable": true,
               "type": "array"
             },
             "seps": {
-              "description": "SEP standards implemented (sep-6, sep-24, sep-31), read from the partner's stellar.toml. NULL = we have not fetched their SEP-1 file (check tomlFetchedAt) and therefore do not know. [] = we DID fetch it and it implements none, so [] with non-empty rampTypes is the checkable claim that the ramp is a proprietary API rather than SEP-based. That inference is only valid against [], never against null.",
+              "description": "SEP standards implemented (sep-6, sep-24, sep-31), read from the partner's stellar.toml. NULL = no read is recorded (tomlSourceUrl and tomlFetchedAt are not both set), so we do not know. [] = a recorded read implements none, so [] with non-empty rampTypes is the checkable claim that the ramp is a proprietary API rather than SEP-based. That inference is only valid against [], never against null.",
               "items": {
                 "type": "string"
               },
@@ -1894,9 +1982,11 @@
               "type": "array"
             },
             "services": {
+              "description": "Curated service tags. NULL = none recorded for this partner (UNKNOWN, never 'offers no services').",
               "items": {
                 "type": "string"
               },
+              "nullable": true,
               "type": "array"
             },
             "slug": {
@@ -1907,7 +1997,7 @@
               "type": "string"
             },
             "tomlConfidence": {
-              "description": "Deterministic trust score for toml-derived anchor facts (basis stellar-toml × freshness of tomlFetchedAt). Null when no toml was ever fetched.",
+              "description": "Deterministic trust score for toml-derived anchor facts (basis stellar-toml × freshness of tomlFetchedAt). Null when no read is recorded (tomlSourceUrl and tomlFetchedAt are not both set).",
               "nullable": true,
               "properties": {
                 "ageDays": {
@@ -1945,9 +2035,11 @@
                   "type": "number"
                 },
                 "label": {
+                  "description": "The score's band, computed with it, so not dated either: see score.",
                   "type": "string"
                 },
                 "score": {
+                  "description": "Computed when the row is served from its freshness and verification signals, so not dated itself: the ages of its inputs are freshness.lastPartnerUpdateAt and verified.lastAutoVerifyAt.",
                   "type": "number"
                 },
                 "verification": {
@@ -2126,7 +2218,7 @@
         "Project": {
           "properties": {
             "anchorProfile": {
-              "description": "Integration-oriented ramp/anchor profile joined from the partner directory (Anchor-typed rows only; null otherwise). Complements `coverage`: rampTypes says WHAT ramps exist, seps says over WHICH interop surface; `seps: []` with non-empty rampTypes means a proprietary ramp API rather than SEP-6/24. EMPTY-FIELD SEMANTICS: capability arrays fill only from VERIFIABLE sources (the anchor's stellar.toml / its own docs); when ALL of assets/seps/rampTypes are empty the anchor is `profileState: 'not-profiled'`; unknown, NOT capability-free. Never turn an empty array into a negative claim when the description asserts live corridors. `url` links the full partner profile.",
+              "description": "Integration-oriented ramp/anchor profile joined from the partner directory (Anchor-typed rows only; null otherwise). Complements `coverage`: rampTypes says WHAT ramps exist, seps says over WHICH interop surface; `seps: []` with non-empty rampTypes means a proprietary ramp API rather than SEP-6/24, and only against [], never null. NULL SEMANTICS: assets and seps come only from the anchor's stellar.toml and are null unless a read is recorded (the partner's tomlSourceUrl and tomlFetchedAt both set, `profileState: 'profiled'`); rampTypes and regions are as recorded (confirmed from the transfer server or entered by a curator) and null when none is. Null is UNKNOWN, never capability-free. `url` links the full partner profile.",
               "nullable": true,
               "properties": {
                 "asOf": {
@@ -2134,9 +2226,11 @@
                   "type": "string"
                 },
                 "assets": {
+                  "description": "From the anchor's stellar.toml. NULL = no read recorded (UNKNOWN); [] = the read found none.",
                   "items": {
                     "type": "string"
                   },
+                  "nullable": true,
                   "type": "array"
                 },
                 "country": {
@@ -2144,7 +2238,7 @@
                   "type": "string"
                 },
                 "profileState": {
-                  "description": "'profiled' = at least one capability field is verified-filled; 'not-profiled' = capabilities not yet verified for this anchor (empty arrays mean UNKNOWN, not absent).",
+                  "description": "'profiled' = the anchor's stellar.toml read is recorded, so assets and seps state what it declares; 'not-profiled' = no read is recorded: assets and seps are null (UNKNOWN), and any rampTypes are as a curator entered them.",
                   "enum": [
                     "profiled",
                     "not-profiled"
@@ -2152,6 +2246,7 @@
                   "type": "string"
                 },
                 "rampTypes": {
+                  "description": "Confirmed from the transfer server or entered by a curator. NULL = none recorded (UNKNOWN).",
                   "items": {
                     "enum": [
                       "on-ramp",
@@ -2159,18 +2254,23 @@
                     ],
                     "type": "string"
                   },
+                  "nullable": true,
                   "type": "array"
                 },
                 "regions": {
+                  "description": "NULL = none recorded (UNKNOWN).",
                   "items": {
                     "type": "string"
                   },
+                  "nullable": true,
                   "type": "array"
                 },
                 "seps": {
+                  "description": "From the anchor's stellar.toml. NULL = no read recorded (UNKNOWN); [] = the read found none.",
                   "items": {
                     "type": "string"
                   },
+                  "nullable": true,
                   "type": "array"
                 },
                 "slug": {
@@ -2558,7 +2658,7 @@
                     "type": "string"
                   },
                   "issuer": {
-                    "description": "Issuing entity as the RWA registry attributes it; null on hand-curated rows.",
+                    "description": "The issuer label the RWA registry carries for the product (getRwaAssets issuerEntity: the rwa.xyz listing's name, a brand, product line or fund as often as a legal entity), not read from the issuer's stellar.toml. Null on hand-curated rows.",
                     "nullable": true,
                     "type": "string"
                   },
@@ -2977,8 +3077,13 @@
               "nullable": true,
               "type": "string"
             },
+            "tvlStale": {
+              "description": "true = tvlAsOf is more than 14 days before this response, or missing, unparseable or in the future: cite tvlUSD with its tvlAsOf as a past reading, not today's TVL. Only the date is checked, not why the figure is old. false = read within 14 days. null = no tvlUSD.",
+              "nullable": true,
+              "type": "boolean"
+            },
             "tvlUSD": {
-              "description": "Total value locked in USD per DefiLlama, summed across the protocol's tracked components. null = NOT TRACKED on DefiLlama (never 'zero TVL'); with llamaSlugs set, null means the linked DefiLlama protocol publishes no TVL figure for Stellar (an aggregator, or a protocol DefiLlama stopped computing). Refreshed weekly; see tvlAsOf.",
+              "description": "Total value locked in USD per DefiLlama, summed across the protocol's tracked components. null = NOT TRACKED on DefiLlama (never 'zero TVL'); with llamaSlugs set, null means the linked DefiLlama protocol publishes no TVL figure for Stellar (an aggregator, or a protocol DefiLlama stopped computing). Refreshed weekly; see tvlAsOf, and tvlStale for a reading more than 14 days old.",
               "nullable": true,
               "type": "number"
             },
@@ -3067,7 +3172,7 @@
                       "type": "object"
                     },
                     "anchorProfileBasis": {
-                      "description": "Present only when the page carries anchor rows: empty-field semantics for the anchorProfile join; empty capability arrays mean not-yet-profiled (see each profile's profileState), never a negative capability claim.",
+                      "description": "Present only when the page carries anchor rows: null semantics for the anchorProfile join. assets and seps are null without a recorded stellar.toml read (see each profile's profileState), rampTypes and regions null when none is recorded; a null is never a negative capability claim.",
                       "type": "string"
                     },
                     "didYouMean": {
@@ -3181,7 +3286,7 @@
               "type": "number"
             },
             "canonical": {
-              "description": "True when surfaced as a curated canonical SDF answer for an infra/protocol query (e.g. error codes → stellar-core/Horizon/SDKs; Horizon → stellar/go). Floated to the top; meta.canonical lists them.",
+              "description": "True when surfaced as a curated canonical answer for an infra, protocol or developer-product query (e.g. error codes → stellar-core and the SDKs; Horizon → stellar/stellar-horizon; Scaffold Stellar → stellar-scaffold/cli; Stellar Lab → stellar/laboratory; smart contract examples → stellar/soroban-examples). Floated to the top; meta.canonical lists them. A query that is a full owner/name path fires no canonical entry and ranks the repo it names first; a bare name that fires one ranks the canonical repo first and repos with that exact name next (q=sep-10: stellar/stellar-protocol, then a repo named sep10); a bare name that fires none ranks the repo with that exact name first.",
               "type": "boolean"
             },
             "ciPresent": {
@@ -3273,6 +3378,14 @@
                   "items": {
                     "type": "string"
                   },
+                  "type": "array"
+                },
+                "contractInterfacePaths": {
+                  "description": "The repo-relative source file of each contractInterface entry, same order and length: contractInterfacePaths[i] is where contractInterface[i] is defined at scannedRef. Interfaces in test code (tests/, __tests__/, fixtures/, testdata/, e2e/, fuzz targets, test helpers, suites and contracts, test wasm workspaces, test files such as foo_test.rs, and test contracts inside an integration/ folder) are left out of contractInterface; one under an examples or template folder is kept, and its path says so. Only contractInterface, symbols and sdkCapabilities leave test code out; stellarProof, codeDepth, isDeployableContract and stellarDeps still read every fetched file until a measured follow-up, so a repo whose only Soroban crate is a test fixture can serve an empty contractInterface beside a cargo-sdk proof. [] when the scan that recorded paths found no interface. null when no paths were recorded: the repo was scanned before 2026-11-04, and such a scan also read integration-test, testdata, e2e and test wasm folders, so an entry may be a test fixture until the next scan.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
                   "type": "array"
                 },
                 "isDeployableContract": {
@@ -3488,6 +3601,11 @@
               },
               "type": "object"
             },
+            "renamedFrom": {
+              "description": "The renamed path the request named, when the index holds no row for it and this repo, where GitHub redirects it, stands in for it on searchRepos (issue #1901: the Stellar docs link github.com/theahaco/scaffold-stellar, now stellar-scaffold/cli). null when the repo was found under the name asked for.",
+              "nullable": true,
+              "type": "string"
+            },
             "repoScore": {
               "description": "Quality grade (0-100) = freshness + traction + hackathon/SCF/builder authority. Lead with high-score repos.",
               "maximum": 100,
@@ -3606,9 +3724,36 @@
                 {
                   "properties": {
                     "canonical": {
-                      "description": "The curated canonical SDF repo floated to the top for an infra/protocol query (e.g. error codes → stellar/stellar-core), or null when the query isn’t a canonical-routed concept.",
+                      "description": "The curated canonical repos floated to the top for an infra, protocol or developer-product query (e.g. error codes → stellar/stellar-core; Scaffold Stellar → stellar-scaffold/cli), the same on every page: the query's canonical repos the index holds, whether or not this page or a filter serves them. null when the query isn’t a canonical-routed concept.",
                       "nullable": true,
-                      "type": "string"
+                      "properties": {
+                        "note": {
+                          "type": "string"
+                        },
+                        "repos": {
+                          "description": "fullNames, in canonical priority order.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "counts": {
+                      "properties": {
+                        "eligible": {
+                          "description": "Rows the request's filters admit in the index. Equals total when truncated is false. When truncated is true: the database's count for a browse with no q whose filters all run there (language, minScore), and null for a search or an activity, capability, domain or dependsOn filter, where only ranking every row could count the matches. Never read null as zero.",
+                          "minimum": 0,
+                          "nullable": true,
+                          "type": "integer"
+                        },
+                        "truncated": {
+                          "description": "True when the ranking was cut at its candidate window: the top 200 rows by repoScore for a browse with no q, the top 600 for a search or a capability, domain or dependsOn filter. Rows past the window were never ranked, so total counts the window and paging ends at it; read eligible for the number of matching rows. False when the ranking holds every row the filters admit.",
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
                     },
                     "matchMode": {
                       "description": "How well this page matched the query, judged by its best row. strict = the best row matched every query term (other rows may match fewer; counts.total counts every row that matched at least one term, plus curated canonical and flagship repos and exact owner or name matches); partial = the best row matched some terms; corrected = the best rows matched only through a known spelling correction (e.g. strupey → stroopy), so the query token does not occur in them: verify the identity before treating them as evidence about the queried name; weak = NONE did and the rows are ranked neighbours, not matches; all = no query supplied; none = the search failed (NOT evidence of absence). Treat corrected/weak/none rows as candidates requiring verification, never as findings.",
@@ -3829,6 +3974,38 @@
               "description": "Brief slug (also the stellarlight.xyz/ideas/{id} page). Synthetic rows use 'scf-round-{n}'.",
               "type": "string"
             },
+            "publishedBrief": {
+              "description": "The brief SCF published for this idea on its RFP Track page: a commit-pinned copy of that page (the live page drops a quarter's briefs when the next arrive) and the day it was read. Absent: no published brief is linked, which is not a claim that SCF published none; always absent on synthetic scf-round rows.",
+              "properties": {
+                "checkedOn": {
+                  "format": "date",
+                  "type": "string"
+                },
+                "functionalRequirements": {
+                  "description": "The brief's functional requirements, restated short, in its order. Absent: not restated here; the brief at url has them, with its non-functional requirements, evaluation criteria and deliverables, which are not restated.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "outOfScope": {
+                  "description": "What the brief rules out of scope, restated short. Absent: not restated here.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "title": {
+                  "description": "The brief's title on the page.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
             "quarter": {
               "description": "Quarter slug (e.g. 'q1-2026'): the ?quarter= filter vocabulary. Synthetic rows carry the active quarter.",
               "type": "string"
@@ -3858,7 +4035,7 @@
               "type": "boolean"
             },
             "technicalRequirements": {
-              "description": "The sponsor's technical requirements text. Null when the brief carries none, and always null on synthetic scf-round rows.",
+              "description": "The idea's own summary of what to build, as stellarlight.xyz/ideas shows it: not the brief SCF published, and it can differ from it (some were written before the brief). The published brief is publishedBrief. Null when the idea carries none, and always null on synthetic scf-round rows.",
               "nullable": true,
               "type": "string"
             },
@@ -4107,7 +4284,11 @@
               "type": "string"
             },
             "assetType": {
-              "description": "Qualifier where the asset is not a pure peg, e.g. 'Yield Stablecoin' for Ondo's USDY. Null = a plain peg.",
+              "description": "Recorded only where the registry found the unit is not 1:1 with its peg; such rows are priced from their own market where it can be read (priceBasis). Yield Stablecoin = yield accrues to or is paid on the unit (Ondo's USDY); Treasury-Backed = a Treasury-backed bond (USDM1). Null = no qualifier recorded: the row was not classified, so null is unknown, NOT a verified plain peg and NOT 'not yield-bearing'. Filter with ?assetType=.",
+              "enum": [
+                "Yield Stablecoin",
+                "Treasury-Backed"
+              ],
               "nullable": true,
               "type": "string"
             },
@@ -4122,10 +4303,12 @@
               "type": "string"
             },
             "company": {
+              "description": "The brand the asset is marketed under, as this registry curates it (Novatti Group for AUDD, Currency One for C1USD). A display name, NOT the legal issuer: for who issues the asset, read issuerOfRecord.",
               "nullable": true,
               "type": "string"
             },
             "country": {
+              "description": "Home country code of the PEG currency (US for USD, EU for EUR), or Global, for flag display. It describes the peg, NOT the issuer's jurisdiction or place of incorporation.",
               "nullable": true,
               "type": "string"
             },
@@ -4140,6 +4323,37 @@
               "type": "string"
             },
             "issuerDomain": {
+              "description": "The asset's web domain as this registry curates it (the logo is read from its stellar.toml). Not always the issuer account's on-chain home_domain; the issuer's own toml, the source of issuerOfRecord, is at issuerOfRecordSourceUrl.",
+              "nullable": true,
+              "type": "string"
+            },
+            "issuerOfRecord": {
+              "description": "The legal issuer as the issuer publishes it: ORG_NAME in the stellar.toml at the issuer account's home_domain (from Horizon), counted only when that toml lists the account in ACCOUNTS or as a currency issuer, so both sides of the link agree (SEP-1). AUDD: AUDC PTY LTD. Set only when issuerOfRecordCheck is named; read by the 6-hourly writer, never at request time, and never derived from company. Cite it with issuerOfRecordAsOf.",
+              "nullable": true,
+              "type": "string"
+            },
+            "issuerOfRecordAsOf": {
+              "description": "When the stored check was made. A failed read does not move it, so a date well before updatedAt means the latest runs could not reach the toml. Date issuerOfRecord by this, not by updatedAt. Null = never read.",
+              "format": "date-time",
+              "nullable": true,
+              "type": "string"
+            },
+            "issuerOfRecordCheck": {
+              "description": "What the stored check of that toml found. named = it lists the account and gives an ORG_NAME (issuerOfRecord). not-named = the read completed and named no issuer: the account sets no home_domain, or a stellar.toml was read there that does not list the account or gives no ORG_NAME (issuerOfRecordNote says which); a checked absence, dated by issuerOfRecordAsOf. null = never read. A read that could not be made changes nothing, so the stored check and its date stay as they were: a network failure or a body that fails mid-read, any HTTP error, a not found too (a lapsed or parked home_domain answers the same, so it does not prove the issuer stopped issuing), a redirect off the home_domain or to http, and a body over 100 KB or one that does not read as a stellar.toml (HTML, a Not Found text, a JSON error, an empty body). A toml read that cannot answer changes nothing either: an ORG_NAME in a form the parser cannot read, or an account the toml does not list where it holds a listing the parser cannot read (a currency linked to its own toml, a code it cannot read).",
+              "enum": [
+                "named",
+                "not-named"
+              ],
+              "nullable": true,
+              "type": "string"
+            },
+            "issuerOfRecordNote": {
+              "description": "On a named check: that toml's own desc for this currency, quoted, where it names an issuing party other than issuerOfRecord (MGUSD: 'issued by Bridge on behalf of MoneyGram'), else null. On a not-named check: why no issuer of record was named.",
+              "nullable": true,
+              "type": "string"
+            },
+            "issuerOfRecordSourceUrl": {
+              "description": "The stellar.toml URL the stored check read, after same-host https redirects (https://<home_domain>/.well-known/stellar.toml unless the host moved it); re-verify there. Null when the account sets no home_domain or nothing was read yet.",
               "nullable": true,
               "type": "string"
             },
@@ -4174,6 +4388,11 @@
               "nullable": true,
               "type": "string"
             },
+            "paymentsCount24h": {
+              "description": "Count, not a dollar amount, of payment operations over the last 24 hours: Stellar Expert's lifetime payments counter diffed against our own reading of it from 20 to 28 hours earlier, the one nearest 24 hours (each row keeps two days of its six-hourly readings). Mint, redemption and peer-to-peer payments undifferentiated, not adjusted for exchange, DeFi or infrastructure activity. Null when no reading falls in that window, so also for about a day after the readings start; never a longer or shorter span, never 0 for no data.",
+              "nullable": true,
+              "type": "number"
+            },
             "peg": {
               "description": "Fiat the asset tracks (USD, JPY, ARS, …). `supply` is in THIS unit, so raw supply is NOT comparable across rows with different pegs; use marketCapUSD.",
               "nullable": true,
@@ -4199,7 +4418,7 @@
               "type": "number"
             },
             "supplyChange7d": {
-              "description": "Percent change in supply vs our snapshot ~7 days back (e.g. -5.8 means down 5.8%). Null until two snapshots exist; never 0 for 'no data'.",
+              "description": "Percent change in supply vs our snapshot measured 6 to 8 days back, the one nearest 7 days (e.g. -5.8 means down 5.8%). Null when no snapshot falls in that window, never a longer span; never 0 for 'no data'.",
               "nullable": true,
               "type": "number"
             },
@@ -4336,14 +4555,14 @@
         "name": "Stellar Light",
         "url": "https://stellarlight.xyz/scout"
       },
-      "description": "Read-only public API powering Stellar Scout. Aggregators, autonomous agents, and AI tools can call these endpoints directly without auth.\n\nAll endpoints are edge-cached. The same data is available via the @stellar-light/scout-mcp Model Context Protocol server (for human-driven clients) and via the @stellar-light/api-client TypeScript SDK (for autonomous aggregators).\n\nData sources merged behind these endpoints: the Stellarlight directory of curated Stellar projects + an indexed-and-scored GitHub repo index, Stellar Passport builder profiles, Electric Capital developer activity, Soroban audit corpus, SDF skills.stellar.org skill catalog, lumenloop ecosystem data, and primary research (SEPs, papers, dev docs, SCF Handbook). Live collection sizes are in GET /api/status (sources[]); counts are intentionally not hardcoded here to avoid drift.\n\n## Routing metadata (description vs x-routing)\nOperation `description` fields are deliberately terse purpose statements: the operation's distinctive job plus its single sharpest disambiguation, nothing else. The machine-routing vocabulary that previously lived in description prose (category/product enumerations, synonym chains, example question phrasings) lives in each operation's `x-routing` extension: `{purpose, keywords[], useWhen[], notFor[], exampleQuestions[]}`. Lexical and embedding routers should score `x-routing` as separately-weighted fields rather than concatenating it into the description (broad prose descriptions were lexically capturing question families other operations answer); `notFor` entries name the operation to prefer, as '<question shape> -> <operationId>'.\n\n## Versioning\nEvery response carries an `X-API-Version` header (currently `1`). The number bumps only on a breaking response-shape change; additive fields don't bump it. Pin to a version by asserting the header. Breaking changes are announced before they ship.\n\n## Rate limits\nRate-limit counters are kept per serverless instance (every limited response carries X-RateLimit-Scope: instance), so X-RateLimit-Remaining and -Reset describe the instance that answered, not a global window. Per-IP, per-endpoint, per-minute floors on the cost-bearing routes (typically 60 requests a minute; `/api/research` 60 a minute), advertised on every response via `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset`, and on a 429 via `Retry-After`. Cache where `Cache-Control` allows and prefer `offset` pagination over hammering. A platform whose users share one egress IP (an agent runtime, an MCP host) can ask support@stellarlight.xyz for a partner key: sent as `Authorization: Bearer <key>` or `x-api-key`, it is metered per key instead of per IP, at 1,200 requests a minute and 200,000 a day. A 503 (store or index unavailable) carries `Retry-After` in seconds. `/api/research` also answers `X-Scout-Match-Mode` (`vector` or `keyword`, the same value as `meta.matchMode`) and `Server-Timing` (our wall time in ms), and when it falls back to keyword its `meta.warnings` says why.\n\n## Pagination\nList endpoints (`/api/projects/search`, `/api/builders`, `/api/rfps`) accept `limit` + `offset`. EVERY list response carries `meta.counts` with `returned` (this page) and `total`/`matched` (all rows matching the filter, pre-slice); compare the two to tell a complete read from a truncated one, and page until `offset + returned >= total`. Two documented exceptions, both explicit rather than silent: `searchResearch` serves `total: null` with a `totalBasis` because similarity ranking has no crisp matching set, and `/api/changelog` additionally serves `returned`/`total` flat on `meta` for backward compatibility; those flat fields are DEPRECATED, read `meta.counts`.\n\n## Ordering & relevance\n`/api/projects/search` sorts by descending keyword `score` (token-overlap count) and exposes `meta.matchMode` (`strict` → `loose-1` → `majority` → `semantic`) so you know how much the query was relaxed. `semantic` means no keyword tier matched at all; the rows are vector-similarity guesses (`via: \"semantic\"`, confidence capped at medium), not keyword-confirmed answers. When `?type=` is present, TYPE DEFINES MEMBERSHIP (the full typed set, limit-independent) and q only ranks within it; matchMode reports `all` with an explicit label, because a tier would falsely claim q gated the set (sls-033). `corrected` means the rows matched ONLY through a known spelling correction (e.g. strupey → stroopy): the query token does not occur in the rows, so verify the identity before treating them as evidence about the queried name. `/api/research` sorts by descending vector-similarity `score` (0-1 cosine). Use these for cross-source ranking when merging with other aggregators.",
+      "description": "Read-only public API powering Stellar Scout. Aggregators, autonomous agents, and AI tools can call these endpoints directly without auth.\n\nAll endpoints are edge-cached. The same data is available via the @stellar-light/scout-mcp Model Context Protocol server (for human-driven clients) and via the @stellar-light/api-client TypeScript SDK (for autonomous aggregators).\n\nData sources merged behind these endpoints: the Stellarlight directory of curated Stellar projects + an indexed-and-scored GitHub repo index, Stellar Passport builder profiles, Electric Capital developer activity, Soroban audit corpus, SDF skills.stellar.org skill catalog, lumenloop ecosystem data, and primary research (SEPs, papers, dev docs, SCF Handbook). Live collection sizes are in GET /api/status (sources[]); counts are intentionally not hardcoded here to avoid drift.\n\n## Routing metadata (description vs x-routing)\nOperation `description` fields are deliberately terse purpose statements: the operation's distinctive job plus its single sharpest disambiguation, nothing else. The machine-routing vocabulary that previously lived in description prose (category/product enumerations, synonym chains, example question phrasings) lives in each operation's `x-routing` extension: `{purpose, keywords[], useWhen[], notFor[], exampleQuestions[]}`. Lexical and embedding routers should score `x-routing` as separately-weighted fields rather than concatenating it into the description (broad prose descriptions were lexically capturing question families other operations answer); `notFor` entries name the operation to prefer, as '<question shape> -> <operationId>'.\n\n## Versioning\nEvery response carries an `X-API-Version` header (currently `1`). The number bumps only on a breaking response-shape change; additive fields don't bump it. Pin to a version by asserting the header. Breaking changes are announced before they ship.\n\n## Rate limits\nRate-limit counters are kept per serverless instance (every limited response carries X-RateLimit-Scope: instance), so X-RateLimit-Remaining and -Reset describe the instance that answered, not a global window. Per-IP, per-endpoint, per-minute floors on the cost-bearing routes (typically 60 requests a minute; `/api/research` 60 a minute), advertised on every response via `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset`, and on a 429 via `Retry-After`. Cache where `Cache-Control` allows and prefer `offset` pagination over hammering. A platform whose users share one egress IP (an agent runtime, an MCP host) can ask support@stellarlight.xyz for a partner key: sent as `Authorization: Bearer <key>` or `x-api-key`, it is metered per key instead of per IP, at 1,200 requests a minute and 200,000 a day. A 503 (store or index unavailable) carries `Retry-After` in seconds. `/api/research` also answers `X-Scout-Match-Mode` (`vector` or `keyword`, the same value as `meta.matchMode`) and `Server-Timing` (our wall time in ms), and when it falls back to keyword its `meta.warnings` says why.\n\n## Pagination\nList endpoints (`/api/projects/search`, `/api/builders`, `/api/rfps`) accept `limit` + `offset`. EVERY list response carries `meta.counts` with `returned` (this page) and `total`/`matched` (all rows matching the filter, pre-slice); compare the two to tell a complete read from a truncated one, and page until `offset + returned >= total`. Two documented exceptions, both explicit rather than silent: `searchResearch` serves `total: null` with a `totalBasis` because similarity ranking has no crisp matching set, and `/api/changelog` additionally serves `returned`/`total` flat on `meta` for backward compatibility; those flat fields are DEPRECATED, read `meta.counts`. `searchRepos` ranks a capped candidate window (the top 200 rows by repoScore for a browse with no q, the top 600 for a search): when `meta.counts.truncated` is true, `total` counts that window and paging ends there, and `meta.counts.eligible` gives the number of rows the filters admit (null where only ranking every row could count them).\n\n## Ordering & relevance\n`/api/projects/search` sorts by descending keyword `score` (token-overlap count) and exposes `meta.matchMode` (`strict` → `loose-1` → `majority` → `semantic`) so you know how much the query was relaxed. `semantic` means no keyword tier matched at all; the rows are vector-similarity guesses (`via: \"semantic\"`, confidence capped at medium), not keyword-confirmed answers. When `?type=` is present, TYPE DEFINES MEMBERSHIP (the full typed set, limit-independent) and q only ranks within it; matchMode reports `all` with an explicit label, because a tier would falsely claim q gated the set (sls-033). `corrected` means the rows matched ONLY through a known spelling correction (e.g. strupey → stroopy): the query token does not occur in the rows, so verify the identity before treating them as evidence about the queried name. `/api/research` sorts by descending vector-similarity `score` (0-1 cosine). Use these for cross-source ranking when merging with other aggregators.",
       "license": {
         "identifier": "MIT",
         "name": "MIT"
       },
       "summary": "Agent-native data layer for the Stellar ecosystem: projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.9.116"
+      "version": "1.9.122"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -4574,7 +4793,7 @@
                             "type": "string"
                           },
                           "deltaUnavailable": {
-                            "description": "Non-null when snapshotDelta cannot be served, stating WHY (no differing prior snapshot recorded yet, or snapshot store unavailable); an explicit reason, never a silent omission.",
+                            "description": "Non-null when snapshotDelta cannot be served, stating WHY: no valid differing prior snapshot is stored (empty or incomplete ones are skipped), the most recent stored snapshots read hold no other set, this read found no awarded project or was truncated (it is then neither stored nor compared), or the snapshot store is unavailable; an explicit reason, never a silent omission.",
                             "nullable": true,
                             "type": "string"
                           },
@@ -4599,7 +4818,7 @@
                             "type": "object"
                           },
                           "previousSnapshot": {
-                            "description": "The most recent persisted snapshot with a DIFFERENT project set. Null when none exists yet (see deltaUnavailable).",
+                            "description": "The most recent persisted snapshot with a DIFFERENT project set whose stored slug list is non-empty and reproduces its projectSetHash: an empty or incomplete stored snapshot is never a baseline. Null when none is found (see deltaUnavailable).",
                             "nullable": true,
                             "properties": {
                               "computedAt": {
@@ -4633,7 +4852,7 @@
                             "type": "number"
                           },
                           "snapshotAsOf": {
-                            "description": "When the CURRENT projectSetHash was first observed (persisted snapshot time). computedAt is when THIS response was computed; snapshotAsOf dates the set state.",
+                            "description": "When the CURRENT projectSetHash was first observed (persisted snapshot time). computedAt is when THIS response was computed; snapshotAsOf dates the set state. Null when this read is neither stored nor compared (deltaUnavailable says why).",
                             "format": "date-time",
                             "nullable": true,
                             "type": "string"
@@ -4765,7 +4984,8 @@
                         "type": "object"
                       },
                       "hackathons": {
-                        "description": "Present for dimension=all|hackathons: cross-event rollup from the live DoraHacks feed.",
+                        "description": "Present for dimension=all|hackathons: cross-event rollup from the live DoraHacks feed. null (dimension=all only) = the DoraHacks read failed this request: unknown, never zero; meta.warnings says so and the response is not cached. dimension=hackathons answers 503 instead.",
+                        "nullable": true,
                         "properties": {
                           "byStatus": {
                             "properties": {
@@ -4816,6 +5036,13 @@
                               "type": "string"
                             },
                             "type": "array"
+                          },
+                          "warnings": {
+                            "description": "Present only when a block of a dimension=all response is null because its read failed this request (today: hackathons): what is missing, and that it is unknown, not zero.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
                           }
                         },
                         "type": "object"
@@ -4823,6 +5050,9 @@
                       "toolchain": {
                         "description": "Soroban SDK toolchain health across scanned repos: how many run supported / current / deprecated SDK versions, with the deprecated rows named. Present for dimension=all|toolchain.",
                         "properties": {
+                          "basis": {
+                            "type": "string"
+                          },
                           "byVersionStatus": {
                             "additionalProperties": {
                               "type": "integer"
@@ -4855,6 +5085,21 @@
                           "deprecatedTotal": {
                             "type": "integer"
                           },
+                          "engineeringPractice": {
+                            "description": "Repos whose latest scan recorded tree-level CI and test presence: presence facts only, not CI results.",
+                            "properties": {
+                              "ciPresent": {
+                                "type": "integer"
+                              },
+                              "reposWithPracticeFacts": {
+                                "type": "integer"
+                              },
+                              "testsPresent": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
                           "measuredRepos": {
                             "description": "How many repos byVersionStatus was actually computed over. Equal to scannedRepos when measurementComplete is true; smaller when the scan hit its cap. THIS is the denominator for any rate.",
                             "type": "integer"
@@ -4871,10 +5116,10 @@
                         "type": "object"
                       },
                       "tvl": {
-                        "description": "Present for dimension=all|tvl: DefiLlama-verified TVL rollup; null/absent projects are NOT tracked there, never 'zero TVL'.",
+                        "description": "Present for dimension=all|tvl: DefiLlama-verified TVL rollup; null/absent projects are NOT tracked there, never 'zero TVL'. Refreshed weekly; a reading older than 14 days stays in the total and is named in staleTvlUSD, staleProjects and staleWarning.",
                         "properties": {
                           "asOf": {
-                            "description": "Most recent per-project tvlAsOf refresh; null when nothing is tracked.",
+                            "description": "The NEWEST usable per-project tvlAsOf (a missing, unparseable or future date dates nothing): it dates the freshest reading, not the whole total (see oldestAsOf). Null when no summed reading has a usable date.",
                             "format": "date-time",
                             "nullable": true,
                             "type": "string"
@@ -4882,10 +5127,17 @@
                           "basis": {
                             "type": "string"
                           },
+                          "oldestAsOf": {
+                            "description": "The OLDEST usable tvlAsOf among the readings summed. Null when no summed reading has a usable date.",
+                            "format": "date-time",
+                            "nullable": true,
+                            "type": "string"
+                          },
                           "provider": {
                             "type": "string"
                           },
-                          "top10": {
+                          "staleProjects": {
+                            "description": "Every stale summed reading (tvlAsOf more than 14 days old, or missing, unparseable or in the future), largest first; [] = none.",
                             "items": {
                               "properties": {
                                 "name": {
@@ -4901,6 +5153,48 @@
                                   "nullable": true,
                                   "type": "string"
                                 },
+                                "tvlStale": {
+                                  "description": "true = tvlAsOf is more than 14 days before this response, or missing, unparseable or in the future. Only the date is checked, not why the reading is old. See staleWarning.",
+                                  "type": "boolean"
+                                },
+                                "tvlUSD": {
+                                  "type": "number"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "staleTvlUSD": {
+                            "description": "The part of totalTvlUSD from stale readings (tvlAsOf more than 14 days old, or missing, unparseable or in the future); 0 when every reading is fresh. Each figure is rounded once, so totalTvlUSD minus this is the part read within 14 days and equals the fresh rows.",
+                            "type": "number"
+                          },
+                          "staleWarning": {
+                            "description": "Non-null when any summed reading is older than 14 days: how many, the oldest date, and their share of totalTvlUSD. Null = every reading is within 14 days.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "top10": {
+                            "description": "The ten largest readings, largest first.",
+                            "items": {
+                              "properties": {
+                                "name": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "slug": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "tvlAsOf": {
+                                  "format": "date-time",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "tvlStale": {
+                                  "description": "true = tvlAsOf is more than 14 days before this response, or missing, unparseable or in the future. Only the date is checked, not why the reading is old. See staleWarning.",
+                                  "type": "boolean"
+                                },
                                 "tvlUSD": {
                                   "type": "number"
                                 }
@@ -4910,6 +5204,7 @@
                             "type": "array"
                           },
                           "totalTvlUSD": {
+                            "description": "Sum of every tracked project's last reading, stale ones included (see staleTvlUSD).",
                             "type": "number"
                           },
                           "trackedProjects": {
@@ -4924,6 +5219,24 @@
                 }
               },
               "description": "Analytics rollup"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RetryableError"
+                  }
+                }
+              },
+              "description": "The projects read behind categories, funding, tvl or gaps, the repos scan read behind toolchain (dimension=all included for both), or the DoraHacks read behind dimension=hackathons failed: an outage, NOT a zero count, total or TVL, and nothing was stored. Retry after Retry-After.",
+              "headers": {
+                "Retry-After": {
+                  "description": "Seconds to wait before resending (2).",
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              }
             }
           },
           "summary": "Cross-event Stellar ecosystem analytics rollup",
@@ -6011,6 +6324,24 @@
                 }
               },
               "description": "Cluster list"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RetryableError"
+                  }
+                }
+              },
+              "description": "The projects read behind the clusters failed: an outage, NOT an empty directory or a zero count. Retry after Retry-After. A value filter that matches nothing after a read that ran is a 200 with clusters [] and meta.advisory.",
+              "headers": {
+                "Retry-After": {
+                  "description": "Seconds to wait before resending (2).",
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              }
             }
           },
           "summary": "Topic clusters with crowdedness scores",
@@ -7007,7 +7338,7 @@
                                   "type": "object"
                                 },
                                 "codeTruth": {
-                                  "description": "TrustReport codeTruth minus the full contractInterface (interfaceSize is kept).",
+                                  "description": "TrustReport codeTruth minus the full contractInterface and its contractInterfacePaths (interfaceSize is kept).",
                                   "properties": {
                                     "codeDepth": {
                                       "nullable": true,
@@ -7084,6 +7415,11 @@
                                       "type": "boolean"
                                     },
                                     "lastCommitAt": {
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "renamedFrom": {
+                                      "description": "As on /api/repos/trust: the renamed path asked for, or null. Always null here, since competitors come from search rows.",
                                       "nullable": true,
                                       "type": "string"
                                     },
@@ -9895,7 +10231,12 @@
                             "description": "How crowded the submission's top category is across every stored submission of events whose full listing is stored: a winners-only event's winners are left out, so no share mixes them in. null when it has no confident category or is not categorized yet; categoryNote says which.",
                             "nullable": true,
                             "properties": {
+                              "outOf": {
+                                "description": "The share's denominator: the stored submissions in this scope (events whose full listing is stored) that have a category read, a confident type or none.",
+                                "type": "integer"
+                              },
                               "shareOfSubmissions": {
+                                "description": "submissions / outOf.",
                                 "nullable": true,
                                 "type": "number"
                               },
@@ -9931,6 +10272,10 @@
                                   "Yield"
                                 ],
                                 "type": "string"
+                              },
+                              "uncategorized": {
+                                "description": "The stored submissions in this scope not categorized yet, outside outOf.",
+                                "type": "integer"
                               },
                               "winners": {
                                 "type": "integer"
@@ -9973,8 +10318,85 @@
                             },
                             "type": "array"
                           },
+                          "eventCategories": {
+                            "description": "The submission's category within each event it entered, counted by analyzeHackathonSubmissions' category facet over that event's stored submissions: one entry per event, served even when the submission has no confident category of its own (thisCategory null). categories are the event's five largest, most submissions first. An event whose stored rows are its winners only, or whose winners are published in part, keeps its counts with every share null and submissions, categorized and uncategorized null, and note says why.",
+                            "items": {
+                              "properties": {
+                                "categories": {
+                                  "items": {
+                                    "properties": {
+                                      "share": {
+                                        "description": "submissions / categorized; null over incomplete rows.",
+                                        "nullable": true,
+                                        "type": "number"
+                                      },
+                                      "submissions": {
+                                        "type": "integer"
+                                      },
+                                      "type": {
+                                        "type": "string"
+                                      },
+                                      "winners": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "type": "object"
+                                  },
+                                  "type": "array"
+                                },
+                                "categorized": {
+                                  "description": "Of those, the ones with a category read (a confident type or none): every share's denominator.",
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "hackathon": {
+                                  "description": "The event's slug.",
+                                  "type": "string"
+                                },
+                                "note": {
+                                  "description": "Present only when the event's rows are incomplete: why its size and shares are not served.",
+                                  "type": "string"
+                                },
+                                "submissions": {
+                                  "description": "The event's stored submissions; null when its rows are incomplete (note).",
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "thisCategory": {
+                                  "description": "This submission's top category in the event; null when it has no confident category (categoryNote says why).",
+                                  "nullable": true,
+                                  "properties": {
+                                    "share": {
+                                      "nullable": true,
+                                      "type": "number"
+                                    },
+                                    "submissions": {
+                                      "type": "integer"
+                                    },
+                                    "type": {
+                                      "type": "string"
+                                    },
+                                    "winners": {
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "uncategorized": {
+                                  "description": "Of those, the ones not categorized yet.",
+                                  "nullable": true,
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
                           "judging": {
-                            "description": "Present only with hackathon: each of the event's judging criteria by category, in its record's words (getHackathon serves the sentence as rules.judgingCriteria), with the evidence a judge would find in the repo, or checkable false with the reason. Evidence, not a verdict: no score, no pass or fail. Categories and criteria keep the sentence's order; the order is not a rank.",
+                            "description": "Present only with hackathon: each of the event's judging criteria by category, in its record's words (getHackathon serves the sentence as rules.judgingCriteria), with the evidence a judge would find in the repo, or checkable false with the reason, and the organizer's weighted rubric (rubric) when it publishes one. Evidence, not a verdict: no score, no pass or fail; the rubric's weights are the organizer's, never a score of this repo. Categories and criteria keep the sentence's order; the order is not a rank.",
                             "properties": {
                               "categories": {
                                 "items": {
@@ -10071,6 +10493,63 @@
                                     "type": "string"
                                   },
                                   "title": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "rubric": {
+                                "description": "Curated events only: the weighted rubric the organizer publishes, each criterion with its weight in percent in the page's order (not a rank), each scored scoreMin to scoreMax, with the page and day it was checked. Absent: no weighted rubric is on record for this event, which is not a claim that the organizer published none.",
+                                "properties": {
+                                  "checkedOn": {
+                                    "format": "date",
+                                    "type": "string"
+                                  },
+                                  "criteria": {
+                                    "items": {
+                                      "properties": {
+                                        "byCategory": {
+                                          "description": "Present only on a slot scored under a different name in each category: one entry per category the event judges in (getHackathon tracks with kind category), with the criterion's name there and what it scores. Absent: the criterion is the same in every category.",
+                                          "items": {
+                                            "properties": {
+                                              "category": {
+                                                "type": "string"
+                                              },
+                                              "criterion": {
+                                                "type": "string"
+                                              },
+                                              "scores": {
+                                                "description": "What the criterion scores, in the page's words.",
+                                                "type": "string"
+                                              }
+                                            },
+                                            "type": "object"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "criterion": {
+                                          "description": "The page's label for the criterion. A slot the page scores under a different name in each category carries a label that joins the names, as the page writes it; byCategory names each.",
+                                          "type": "string"
+                                        },
+                                        "weightPercent": {
+                                          "description": "The criterion's share of the score, in percent; a rubric's weights sum to 100.",
+                                          "type": "number"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "scoreMax": {
+                                    "description": "The highest score a criterion takes. Absent with scoreMin: the page publishes no score scale.",
+                                    "type": "integer"
+                                  },
+                                  "scoreMin": {
+                                    "description": "The lowest score a criterion takes. Absent with scoreMax: the page publishes no score scale.",
+                                    "type": "integer"
+                                  },
+                                  "source": {
+                                    "format": "uri",
                                     "type": "string"
                                   }
                                 },
@@ -10997,6 +11476,24 @@
                 }
               },
               "description": "Hackathon not found. `error` itself carries the way forward (getHackathons with q, and the closest known slugs), since some clients keep only `error`."
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RetryableError"
+                  }
+                }
+              },
+              "description": "Could not check: the store did not answer, or a DoraHacks listing read failed so the slug was not looked for in every listing. An outage, NOT a not-found. Retry after Retry-After.",
+              "headers": {
+                "Retry-After": {
+                  "description": "Seconds to wait before resending.",
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              }
             }
           },
           "summary": "Get one hackathon's full detail",
@@ -11276,6 +11773,24 @@
                 }
               },
               "description": "Leaderboard + ecosystem stats"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RetryableError"
+                  }
+                }
+              },
+              "description": "The project or repo read behind the ranking failed (format=csv included): an outage, NOT an empty ranking or a zero count. Retry after Retry-After. A filter that matches nothing after a read that ran is a 200 with projects [].",
+              "headers": {
+                "Retry-After": {
+                  "description": "Seconds to wait before resending (2).",
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              }
             }
           },
           "summary": "Stellar ecosystem developer activity",
@@ -11580,6 +12095,10 @@
                         "description": "Whether the caller is eligible to submit a listing from here.",
                         "type": "boolean"
                       },
+                      "directoryUnavailable": {
+                        "description": "Present and true only when no partner search this turn could read the directory: matches is absent and the reply did not ground on directory rows. An outage, NOT an empty result: resend later, or browse GET /api/partners.",
+                        "type": "boolean"
+                      },
                       "intent": {
                         "description": "What the assistant judged the caller is trying to do.",
                         "nullable": true,
@@ -11595,10 +12114,11 @@
                               "type": "boolean"
                             },
                             "assets": {
-                              "description": "Asset codes (USDC, EURC, …) from stellar.toml CURRENCIES.",
+                              "description": "Asset codes (USDC, EURC, …) from stellar.toml CURRENCIES. NULL = no read is recorded (tomlSourceUrl and tomlFetchedAt are not both set): UNKNOWN, and a curated code is never served here.",
                               "items": {
                                 "type": "string"
                               },
+                              "nullable": true,
                               "type": "array"
                             },
                             "contactable": {
@@ -11628,29 +12148,35 @@
                               "type": "string"
                             },
                             "rampTypes": {
-                              "description": "Verified fiat-ramp capability (on-ramp / off-ramp) from the transfer server.",
+                              "description": "Fiat ramps (on-ramp / off-ramp): confirmed from the transfer server during a stellar.toml read, or entered by a curator. NULL = none recorded (UNKNOWN).",
                               "items": {
                                 "type": "string"
                               },
+                              "nullable": true,
                               "type": "array"
                             },
                             "regions": {
+                              "description": "Curated coverage regions; NULL = none recorded (UNKNOWN, never 'covers nowhere').",
                               "items": {
                                 "type": "string"
                               },
+                              "nullable": true,
                               "type": "array"
                             },
                             "sectors": {
+                              "description": "Curated sectors; NULL = none recorded (UNKNOWN, never 'serves no sector').",
                               "items": {
                                 "type": "string"
                               },
+                              "nullable": true,
                               "type": "array"
                             },
                             "seps": {
-                              "description": "SEP standards implemented (sep-6, sep-24, sep-31).",
+                              "description": "SEP standards implemented (sep-6, sep-24, sep-31), read from stellar.toml. NULL = no read is recorded; [] = a recorded read declares none.",
                               "items": {
                                 "type": "string"
                               },
+                              "nullable": true,
                               "type": "array"
                             },
                             "slug": {
@@ -11692,6 +12218,16 @@
               },
               "description": "Assistant reply (+ matches when a need was searched)"
             },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "The body is not JSON, or `messages` holds no usable chat turn."
+            },
             "429": {
               "content": {
                 "application/json": {
@@ -11725,26 +12261,50 @@
                 }
               }
             },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "An unexpected error inside this service, not a claim about the request or the data: resend later."
+            },
+            "502": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "One language model call failed: the provider erred (5xx), was overloaded, or could not be reached in time, or its output could not be read. Not a claim about the request or the data: resend later, or browse GET /api/partners now. The provider refusing our request or account is the 503 with unavailable true instead, where a resend does not help."
+            },
             "503": {
               "content": {
                 "application/json": {
                   "schema": {
-                    "description": "The AI path is not configured or is unavailable; the caller falls back to the manual form rather than erroring.",
+                    "description": "The AI path is off: no model is configured, or the provider refuses our request or account (any 4xx but 429). The caller falls back rather than erroring.",
                     "properties": {
                       "error": {
                         "description": "Human-readable reason, safe to show.",
                         "type": "string"
                       },
                       "unavailable": {
-                        "description": "Always true here: the feature is off, not the request wrong.",
+                        "description": "Always true here: the feature is off, not the request wrong. Fall back; do not retry.",
                         "type": "boolean"
                       }
                     },
+                    "required": [
+                      "error",
+                      "unavailable"
+                    ],
                     "type": "object"
                   }
                 }
               },
-              "description": "AI backend unavailable"
+              "description": "The AI path is off: no model is configured, or the provider refuses our request or account. A resend does not help, so no Retry-After is sent: browse /partners or use the listing form."
             }
           },
           "summary": "Conversational partner concierge (find OR get listed)",
@@ -11786,8 +12346,41 @@
               "application/json": {
                 "schema": {
                   "properties": {
+                    "limit": {
+                      "default": 5,
+                      "description": "Most matches to return, 1 to 10 (default 5); out-of-range values are clamped.",
+                      "maximum": 10,
+                      "minimum": 1,
+                      "type": "integer"
+                    },
                     "need": {
-                      "description": "The builder's need, in plain language",
+                      "description": "The builder's need, in plain language, up to 2,000 characters.",
+                      "maxLength": 2000,
+                      "type": "string"
+                    },
+                    "region": {
+                      "description": "Rank only partners whose recorded regions contain this text.",
+                      "type": "string"
+                    },
+                    "sector": {
+                      "description": "Rank only partners whose recorded sectors contain this text.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "Rank only partners of this type; any other value answers 400 with validTypes.",
+                      "enum": [
+                        "anchor",
+                        "on-off-ramp",
+                        "infrastructure",
+                        "tooling",
+                        "protocol",
+                        "wallet",
+                        "audit-firm",
+                        "legal",
+                        "agency",
+                        "asset-issuer",
+                        "other"
+                      ],
                       "type": "string"
                     }
                   },
@@ -11832,15 +12425,19 @@
                                   "type": "string"
                                 },
                                 "regions": {
+                                  "description": "Curated coverage regions; NULL = none recorded (UNKNOWN).",
                                   "items": {
                                     "type": "string"
                                   },
+                                  "nullable": true,
                                   "type": "array"
                                 },
                                 "sectors": {
+                                  "description": "Curated sectors; NULL = none recorded (UNKNOWN).",
                                   "items": {
                                     "type": "string"
                                   },
+                                  "nullable": true,
                                   "type": "array"
                                 },
                                 "slug": {
@@ -11910,6 +12507,42 @@
               },
               "description": "Ranked matches with reasons"
             },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/ErrorResponse"
+                      },
+                      {
+                        "properties": {
+                          "validTypes": {
+                            "description": "Present only when type was unknown: every partner type the field accepts.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    ]
+                  }
+                }
+              },
+              "description": "The body is not JSON, `need` is missing, blank or longer than 2,000 characters, or `type` names no partner type; then validTypes lists every type it accepts."
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "The model declined to rank this need: rephrase it, or use GET /api/partners filters."
+            },
             "429": {
               "content": {
                 "application/json": {
@@ -11943,26 +12576,65 @@
                 }
               }
             },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "An unexpected error inside this service, not a claim about the request or the data: resend later."
+            },
+            "502": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "One language model call failed: the provider erred (5xx), was overloaded, or could not be reached in time, or its output could not be read. Not a claim about the request or the data: resend later, or rank with GET /api/partners filters now. The provider refusing our request or account is the 503 with unavailable true instead, where a resend does not help."
+            },
             "503": {
               "content": {
                 "application/json": {
                   "schema": {
-                    "description": "The AI path is not configured or is unavailable; the caller falls back to the manual form rather than erroring.",
-                    "properties": {
-                      "error": {
-                        "description": "Human-readable reason, safe to show.",
-                        "type": "string"
+                    "oneOf": [
+                      {
+                        "description": "The AI path is off: no model is configured, or the provider refuses our request or account (any 4xx but 429). The caller falls back rather than erroring.",
+                        "properties": {
+                          "error": {
+                            "description": "Human-readable reason, safe to show.",
+                            "type": "string"
+                          },
+                          "unavailable": {
+                            "description": "Always true here: the feature is off, not the request wrong. Fall back; do not retry.",
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "error",
+                          "unavailable"
+                        ],
+                        "type": "object"
                       },
-                      "unavailable": {
-                        "description": "Always true here: the feature is off, not the request wrong.",
-                        "type": "boolean"
+                      {
+                        "$ref": "#/components/schemas/RetryableError"
                       }
-                    },
-                    "type": "object"
+                    ]
                   }
                 }
               },
-              "description": "AI backend unavailable: fall back to GET /api/partners"
+              "description": "Two cases, told apart by the body. unavailable true: the AI path is off (no model is configured, or the provider refuses our request or account); a resend does not help, so no Retry-After is sent: use GET /api/partners filters. retryAfterSeconds: the partner directory could not be read, an outage and NOT a claim that no partner matches; resend after Retry-After.",
+              "headers": {
+                "Retry-After": {
+                  "description": "Only when the directory read failed: seconds to wait, the same number as retryAfterSeconds.",
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              }
             }
           },
           "summary": "AI-rank partners against a plain-language need",
@@ -12149,6 +12821,26 @@
               },
               "description": "`{reply}` (chat mode) or `{fields}` (extract mode)"
             },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "The body is not JSON, `mode` is neither chat nor extract, or extract was sent with no transcript."
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "The model declined to read this transcript."
+            },
             "429": {
               "content": {
                 "application/json": {
@@ -12182,26 +12874,50 @@
                 }
               }
             },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "An unexpected error inside this service, not a claim about the request or the data: resend later."
+            },
+            "502": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "One language model call failed: the provider erred (5xx), was overloaded, or could not be reached in time, or its output could not be read. Not a claim about the request or the data: resend later, or use the listing form (POST /api/partners/submit-listing) now. The provider refusing our request or account is the 503 with unavailable true instead, where a resend does not help."
+            },
             "503": {
               "content": {
                 "application/json": {
                   "schema": {
-                    "description": "The AI path is not configured or is unavailable; the caller falls back to the manual form rather than erroring.",
+                    "description": "The AI path is off: no model is configured, or the provider refuses our request or account (any 4xx but 429). The caller falls back rather than erroring.",
                     "properties": {
                       "error": {
                         "description": "Human-readable reason, safe to show.",
                         "type": "string"
                       },
                       "unavailable": {
-                        "description": "Always true here: the feature is off, not the request wrong.",
+                        "description": "Always true here: the feature is off, not the request wrong. Fall back; do not retry.",
                         "type": "boolean"
                       }
                     },
+                    "required": [
+                      "error",
+                      "unavailable"
+                    ],
                     "type": "object"
                   }
                 }
               },
-              "description": "AI backend unavailable"
+              "description": "The AI path is off: no model is configured, or the provider refuses our request or account. A resend does not help, so no Retry-After is sent: use the listing form (POST /api/partners/submit-listing)."
             }
           },
           "summary": "AI onboarding helpers: interview chat + profile extraction",
@@ -12426,6 +13142,24 @@
                   }
                 }
               }
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RetryableError"
+                  }
+                }
+              },
+              "description": "The partner store could not be opened: an outage, NOT a judgment of the listing, and nothing was saved. Resend after Retry-After.",
+              "headers": {
+                "Retry-After": {
+                  "description": "Seconds to wait before resending (2).",
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              }
             }
           },
           "summary": "Submit a new-partner listing (or claim an existing one)",
@@ -12470,206 +13204,7 @@
                         "type": "object"
                       },
                       "partner": {
-                        "description": "The full partner profile: every field the live response serves. An earlier declaration covered 9 of these; Raven's drift check prompted a field-complete pass so an agent can see contact, coverage and verification exist without probing.",
-                        "properties": {
-                          "acceptingClients": {
-                            "type": "boolean"
-                          },
-                          "assets": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "caseStudies": {
-                            "items": {
-                              "properties": {
-                                "projectSlug": {
-                                  "description": "Slug in the projects directory, when the case study's project is listed there.",
-                                  "nullable": true,
-                                  "type": "string"
-                                },
-                                "title": {
-                                  "type": "string"
-                                },
-                                "url": {
-                                  "nullable": true,
-                                  "type": "string"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "type": "array"
-                          },
-                          "contactChannel": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "contactEmail": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "country": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "description": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "docsUrl": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "foundedYear": {
-                            "nullable": true,
-                            "type": "integer"
-                          },
-                          "freshness": {
-                            "description": "Row-currency signals used by matching.",
-                            "properties": {
-                              "excludeFromMatching": {
-                                "type": "boolean"
-                              },
-                              "isCurrent": {
-                                "type": "boolean"
-                              },
-                              "lastPartnerUpdateAt": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "status": {
-                                "type": "string"
-                              }
-                            },
-                            "type": "object"
-                          },
-                          "githubOrg": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "leadTime": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "logoUrl": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "partnerType": {
-                            "type": "string"
-                          },
-                          "pricingModel": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "pricingNotes": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "rampTypes": {
-                            "description": "Fiat ramps CONFIRMED from the anchor's own transfer server /info (deposit = on-ramp, withdraw = off-ramp). null = no ramp confirmed; the /info was not readable from our enrichment or reported none enabled; never inferred from SEP presence (MYKOBO serves SEP-24 but its /info is unreachable from outside, so it is null, not 'no ramps'). Same encoding on getPartner.",
-                            "items": {
-                              "enum": [
-                                "on-ramp",
-                                "off-ramp"
-                              ],
-                              "type": "string"
-                            },
-                            "nullable": true,
-                            "type": "array"
-                          },
-                          "regions": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "responseSla": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "sectors": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "seps": {
-                            "description": "SEP standards the partner implements.",
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "services": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "slug": {
-                            "type": "string"
-                          },
-                          "tagline": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "tomlFetchedAt": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "tomlSourceUrl": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "typicalEngagement": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "url": {
-                            "description": "Canonical stellarlight.xyz profile URL.",
-                            "type": "string"
-                          },
-                          "verified": {
-                            "description": "Automated verification signals. Null members mean not yet probed: absence of evidence, not a failing grade.",
-                            "properties": {
-                              "githubCommits90d": {
-                                "nullable": true,
-                                "type": "integer"
-                              },
-                              "githubLastCommitAt": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "lastAutoVerifyAt": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "onchainActive": {
-                                "nullable": true,
-                                "type": "boolean"
-                              },
-                              "onchainNote": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "scfInvolvement": {
-                                "nullable": true,
-                                "type": "string"
-                              }
-                            },
-                            "type": "object"
-                          },
-                          "websiteUrl": {
-                            "nullable": true,
-                            "type": "string"
-                          }
-                        },
-                        "type": "object"
+                        "$ref": "#/components/schemas/Partner"
                       }
                     },
                     "type": "object"
@@ -14745,6 +15280,14 @@
                             },
                             "type": "array"
                           },
+                          "contractInterfacePaths": {
+                            "description": "The repo-relative source file of each contractInterface entry, same order and length: contractInterfacePaths[i] is where contractInterface[i] is defined at scannedRef. Interfaces in test code (tests/, __tests__/, fixtures/, testdata/, e2e/, fuzz targets, test helpers, suites and contracts, test wasm workspaces, test files such as foo_test.rs, and test contracts inside an integration/ folder) are left out of contractInterface; one under an examples or template folder is kept, and its path says so. Only contractInterface, symbols and sdkCapabilities leave test code out; stellarProof, codeDepth, isDeployableContract and stellarDeps still read every fetched file until a measured follow-up, so a repo whose only Soroban crate is a test fixture can serve an empty contractInterface beside a cargo-sdk proof. [] when the scan that recorded paths found no interface. null when no paths were recorded: the repo was scanned before 2026-11-04, and such a scan also read integration-test, testdata, e2e and test wasm folders, so an entry may be a test fixture until the next scan.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true,
+                            "type": "array"
+                          },
                           "isDeployableContract": {
                             "description": "The routed repo's PRODUCT is a deployable Soroban contract. Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE: they vendor cdylib crates as runtime/fixtures, and this flag must never be read as 'Stellar Core itself is deployable'.",
                             "type": "boolean"
@@ -14884,6 +15427,11 @@
                       "q": {
                         "type": "string"
                       },
+                      "renamedFrom": {
+                        "description": "The renamed path the request named, when the index holds no row for it and this repo, where GitHub redirects it, is explained instead (issue #1901: the Stellar docs link github.com/theahaco/scaffold-stellar, now stellar-scaffold/cli). null when the repo was found under the name asked for.",
+                        "nullable": true,
+                        "type": "string"
+                      },
                       "repo": {
                         "nullable": true,
                         "type": "string"
@@ -14930,7 +15478,7 @@
                         "type": "object"
                       },
                       "routedVia": {
-                        "description": "How the repo was chosen: explicit (the `repo` param, or `q` itself is a bare owner/name; that names the repo and outranks the concept map) | canonical | knowledge-trigger (a curated trigger phrase on a knowledge note named exactly one repo, before the lexical index voted) | search. null when nothing routed.",
+                        "description": "How the repo was chosen: explicit (the `repo` param, or `q` itself is a bare owner/name; that names the repo and outranks the concept map) | renamed (that name is a renamed repo's old path the index holds no row for, so `repo` is where GitHub redirects it and `renamedFrom` is the path asked for) | canonical (the curated concept map; a developer product routes here only when the whole q is its name, in any spelling, with surface words such as repo or github ignored, so a product named inside a longer question routes by trigger or the index) | knowledge-trigger (a curated trigger phrase on a knowledge note named exactly one repo, before the lexical index voted) | search. null when nothing routed.",
                         "nullable": true,
                         "type": "string"
                       },
@@ -15367,6 +15915,14 @@
                                 },
                                 "type": "array"
                               },
+                              "contractInterfacePaths": {
+                                "description": "The repo-relative source file of each contractInterface entry (up to 60), same order and length: contractInterfacePaths[i] is where contractInterface[i] is defined at scannedRef. Interfaces in test code (tests/, __tests__/, fixtures/, testdata/, e2e/, fuzz targets, test helpers, suites and contracts, test wasm workspaces, test files such as foo_test.rs, and test contracts inside an integration/ folder) are left out of contractInterface; one under an examples or template folder is kept, and its path says so. Only contractInterface, symbols and sdkCapabilities leave test code out; stellarProof, codeDepth, isDeployableContract and stellarDeps still read every fetched file until a measured follow-up, so a repo whose only Soroban crate is a test fixture can serve an empty contractInterface beside a cargo-sdk proof. [] when the scan that recorded paths found no interface. null when no paths were recorded: the repo was scanned before 2026-11-04, and such a scan also read integration-test, testdata, e2e and test wasm folders, so an entry may be a test fixture until the next scan.",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true,
+                                "type": "array"
+                              },
                               "interfaceSize": {
                                 "type": "integer"
                               },
@@ -15428,6 +15984,11 @@
                                 "type": "boolean"
                               },
                               "lastCommitAt": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "renamedFrom": {
+                                "description": "The renamed path the request named, when the index holds no row for it and this repo, where GitHub redirects it, is served instead (issue #1901: the Stellar docs link github.com/theahaco/scaffold-stellar, now stellar-scaffold/cli). null when the repo was found under the name asked for.",
                                 "nullable": true,
                                 "type": "string"
                               },
@@ -16234,10 +16795,33 @@
                             "description": "Human label for activeQuarter (e.g. 'Q3 2026').",
                             "type": "string"
                           },
+                          "briefRoster": {
+                            "description": "The official page the open briefs were last checked against, and the day: SCF's RFP Track page, which lists the briefs open now. Each brief's status and counts.open are set by hand from it, so they hold as of checkedOn; a brief SCF opened or dropped since may not be reflected. counts.open 0 means that page named no open brief that day.",
+                            "properties": {
+                              "checkedOn": {
+                                "format": "date",
+                                "type": "string"
+                              },
+                              "source": {
+                                "format": "uri",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
                           "categories": {
-                            "description": "Every category value present in the current brief set; the category filter's live vocabulary.",
+                            "description": "Every category the category filter accepts (value) with its display label; a category can hold no brief.",
                             "items": {
-                              "type": "string"
+                              "properties": {
+                                "label": {
+                                  "description": "A fixed display name, not dated: it does not change with time.",
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
                             },
                             "type": "array"
                           },
@@ -16303,9 +16887,18 @@
                             "type": "string"
                           },
                           "quarters": {
-                            "description": "Every quarter key the quarter filter accepts, newest first.",
+                            "description": "Every quarter the quarter filter accepts (value) with its label, oldest first. A quarter can hold no brief yet.",
                             "items": {
-                              "type": "string"
+                              "properties": {
+                                "label": {
+                                  "description": "A fixed display name, not dated: it does not change with time.",
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
                             },
                             "type": "array"
                           },
@@ -16621,6 +17214,7 @@
                               "type": "string"
                             },
                             "issuerEntity": {
+                              "description": "The issuer label rwa.xyz gives the row: a brand, product line or fund as often as a legal entity ('Ondo USDY', 'Circle International'), not read from the issuer's stellar.toml. A row rwa.xyz does not list (rwaxyzListed false) carries the label of that issuer's listed rows (FOCGX carries BENJI's 'Franklin Templeton Trust'), or null when it has none. For the issuer's own statement, read the toml at evidenceUrl where the row cites one.",
                               "nullable": true,
                               "type": "string"
                             },
@@ -18059,6 +18653,19 @@
               }
             },
             {
+              "description": "Filter on the row's assetType, case-insensitive: Yield Stablecoin (e.g. USDY), Treasury-Backed (e.g. USDM1), or none for the rows with no assetType recorded. A qualifier is recorded only where the unit is not 1:1 with its peg and a row without one was not classified, so assetType=none leaves out the known yield and Treasury products but does not certify every row left as par. Unrecognized values return 400 with the valid set.",
+              "in": "query",
+              "name": "assetType",
+              "schema": {
+                "enum": [
+                  "Yield Stablecoin",
+                  "Treasury-Backed",
+                  "none"
+                ],
+                "type": "string"
+              }
+            },
+            {
               "description": "Max rows (default 50, max 100).",
               "in": "query",
               "name": "limit",
@@ -19105,7 +19712,7 @@
       }
     ]
   },
-  "openapiVersion": "1.9.116",
+  "openapiVersion": "1.9.122",
   "operationCount": 42,
   "service": "stellar-light",
   "source": {
@@ -19117,7 +19724,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.9.116",
+    "apiVersion": "1.9.122",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",

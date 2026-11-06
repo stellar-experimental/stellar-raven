@@ -11,6 +11,9 @@ evidence:
   - Raven excludes the feedback write because it is side-effecting and excludes its schema-only read because the write is unavailable
   - Raven removes complete Markdown blocks for all excluded Scout paths through one manifest-derived build-time and runtime filter
   - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellar-scout/issues/13
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh Scout SKILL.md and references/api-reference.md — Default skill still lists POST/api/feedback; reference documents encouraged submission and GET schema helper. No feedback submitted. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-019."
 ---
 
 ## Finding

@@ -14,6 +14,8 @@ evidence:
   - Solo todo 1438 item 1, solo://proj/49/scratchpad/independent-holdout--798
   - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/13
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh main develop-secure-contracts description and body — Description component trigger list remains Solidity-centric despite Stellar body/package terms; no explicit audit exclusion. Generic library-first wording does not add missing Stellar triggers. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-014."
   - date: 2026-08-11
     evidence: the current main source still has a Solidity-only component trigger list, while its body supports Stellar and names its Stellar packages. The description still frames the skill as secure-contract development without excluding audits or vulnerability review.
 probe:

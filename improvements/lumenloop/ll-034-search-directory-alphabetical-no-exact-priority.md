@@ -12,6 +12,9 @@ evidence:
   - Affected golden case: eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-blend-tvl.json
   - 2026-11-02 earlier controls: the soroswap name query placed soroswap at zero-based position 7 of 10. The xbull query placed xbull at position 1 of 2.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/48
+recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL search_directory Blend default and limit1; soroswap,xbull controls — Blend fourth behind account-demolisher/backyard/bexo; limit1 only account-demolisher. Soroswap eighth and xBull second persist. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-034."
 ---
 
 ## Finding

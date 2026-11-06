@@ -10,6 +10,9 @@ evidence:
   - "Published page: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data.md; SHA256 341dad73f10891a8e830b6e184f833ca3de467cbda35217a2238084c23243148."
   - "Case q-protocol-parallel-execution; review SHA256 90e76cc8b8a06b89658cdeda4cd21d1ac5c06eff58f7e9413924214af1e90e37; packet SHA256 2b8da6b11aa1f122e601bd2455a4a4c30da7ff0270c9bde3142a20cb409e4aa0; full source-row SHA256 62e3101dd1cec1f88a8a934208b43255b619eef12ff165c8bd75236428139ffa."
   - upstream issue filed 2026-11-03: https://github.com/stellar/stellar-docs/issues/3040
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live storage page still says any footprint overlap sequential; adjacent storage-strategies still touch router/factory. PR3055 green/BLOCKED/review-required, Nov5 followup changes adjacent touch→write. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-093"
 ---
 
 ## Finding

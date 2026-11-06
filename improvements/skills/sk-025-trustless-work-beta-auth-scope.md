@@ -18,6 +18,8 @@ evidence:
   - "2026-10-09 removal: the third-party PR 18 no longer exists. The public Trustless-Work/trustlesswork-skill repository remains accessible. A direct PR read returns HTTP 404. The contributor account SrvFernandes and its /claim comments no longer exist. This removal does not prove a deployed fix."
   - 2026-10-09 https://api.github.com/users/SrvFernandes returns HTTP 404; https://api.github.com/repos/Trustless-Work/trustlesswork-skill/issues/6/comments contains no contributor /claim comment.
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh TW beta core-concepts +constitution; Core API intro; SDK transport — Same beta host: skill forbids Bearer and requires x-api-key every request; intro permits wallet-session token; SDK constructs Authorization. Shared constitution remains broad. Deleted PR18 still404, no deployed auth acceptance tested. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-025."
   - date: 2026-10-06
     evidence: "trustlesswork-skill main 80e2467f34041b9f70e66d6c2f567fc76ba9b1bb (2026-09-27) still reproduces the conflict. trustless-work-dev/skills/api/v2/core-concepts.md line 30 still says Never Authorization: Bearer. PR 18 is not merged."
 ---

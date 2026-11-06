@@ -11,6 +11,8 @@ evidence:
   - GT-56 recurrence: current wallet comparison required separate end-user wallet, hardware-wallet, connectivity-protocol, Wallet SDK, Wallets Kit, and smart-account-tooling types; directory/module presence did not establish custody, recovery, or capability
   - upstream issue filed 2026-07-13: https://github.com/Stellar-Light/stellarlight/issues/519
 recurrences:
+  - date: 2026-11-06
+    evidence: "`/api/projects/search?type=Wallet&limit=100`; exact count/dedupe and product-kind/availability projection — Partial. 72 rows, total72, 72 distinct normalized names. 10 null productKind, 39 empty availability. Null kinds include Live smart-treasury, chainless, amulets, piggy-wallet, ibis, rehive, privy; Development haven and openzeppelin-stellar-privacy-wallet; Inactive mxlet. Exact enumeration fixed; coverage remains incomplete. No inference that empty availability means unavailable. Next: Keep residual and update counts. Next: curation signal for the named live wallets; rerun exact type set and compare coverage. Preserve MXlet as unknown absent evidence. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
   - date: 2026-07-11
     evidence: GT-56 primary process 3394 and sealed blind process 3398 independently found that Ledger and Trezor must be typed as hardware wallet products while WalletConnect is a connectivity protocol/module, and that current custody/recovery claims require product-specific sources
   - date: 2026-07-14

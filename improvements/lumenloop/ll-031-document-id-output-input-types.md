@@ -10,6 +10,8 @@ evidence:
   - 2026-10-09 current input schemas require numbers; https://api.lumenloop.com/v1/openapi.json
   - upstream issue filed 2026-10-09: https://github.com/lumenloop/lumenloop-backend/issues/46
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL search_documents exact title2+ Years of Neural Quorum Governance; document/related numeric and string10190 — Search/document emit string10190; numeric reads succeed; string get_document and get_related_projects both400 invalid_arguments Expected number, received string. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-031."
   - date: 2026-11-02
     evidence: "search_content_semantic {query: Stellar Meridian 2026 recap, types: [articles]} at 2026-11-02T17:21:51Z returned id \"13069\" as a string. get_related_projects with content_id \"13069\" returned HTTP 400 invalid_arguments \"Expected number, received string\"; the same call with the number 13069 returned success true with 5 projects. Golden case: q-ti-related-projects-from-content."
 ---

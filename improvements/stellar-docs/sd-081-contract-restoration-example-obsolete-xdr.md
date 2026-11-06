@@ -11,6 +11,9 @@ evidence:
   - "Reviewer harness 2026-11-02: tmp/rv-fu/fixtures/check-docs.mjs with @stellar/stellar-sdk 17.4.0 and local fixtures, no network submission; output line 'PASS adjacent contract-restoration parse failure confirmed' (sdk-check.log line 19)."
   - "2026-11-02 GET https://developers.stellar.org/docs/build/guides/archival/restore-data-js.md (HTTP 200) line 30 tells readers to reuse submitTx from https://developers.stellar.org/docs/build/guides/transactions/submit-transaction-wait-js.md, whose line 13 is 'import { Server, Api } from \"@stellar/stellar-sdk/rpc\";'. restore-data-js line 43 declares 'const { Api, assembleTransaction } = StellarRpc;'. Reviewer check tmp/rv-fu/fixtures/check-shared-types.mjs (TypeScript, the two code blocks combined) reports TS2440 'Import declaration conflicts with local declaration of 'Api'.' (evidence2/shared-types.log). Issue #2562 does not list this conflict."
   - "Pre-existing upstream report: https://github.com/stellar/stellar-docs/issues/2562 (open, filed 2026-07-07 by oceans404, a JS SDK snippet audit) lists restore-contract-js.mdx line 69 for the empty return type and the missing xdr import. It does not list the state-archival copy or the obsolete XDR access, the response-as-key footprint, or the missing time bounds."
+recurrences:
+  - date: 2026-11-06
+    evidence: "BOTH live restore examples retain empty return type and fail TypeScript parse1131/1128; instance LedgerKey read as entry, response used as key, missing timebounds remain. restore-data still redeclares Api imported by polling helper. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-081"
 ---
 
 ## Finding

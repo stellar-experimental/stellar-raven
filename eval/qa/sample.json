@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "75ba191f0517ffbf3fe0087da49c11aa427c03dbb245aca40bdb15b389332472",
+  "corpusContentSha256": "8e3cdbdf4465b8e007273794dcec6945ba16a49429b009c6ec0b94d0f9c82921",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -3018,7 +3018,7 @@
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?limit=200",
                 "observedAt": "2026-11-02",
-                "note": "activeQuarter q3-2026; open 2 (LayerZero DVN, x402 Facilitator); all q2-2026 briefs closed. The aggregator under check; it cannot corroborate its own open status (lag filed as improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md)."
+                "note": "activeQuarter q3-2026; open 2 (LayerZero DVN, x402 Facilitator); all q2-2026 briefs closed. The aggregator under check; it cannot corroborate its own open status (lag filed as https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md)."
               },
               {
                 "class": "A",
@@ -3044,13 +3044,13 @@
             "B 2026-11-02: gh api repos/stellar-deprecated/kelp — archived true.",
             "The 'Q2 2026 open RFPs' grading hint was stale; the replacement names no quarter. Pass 2: the open-set row is confirmed-as-of, not disputed: A and B agree no Q3 brief is open, and Scout cannot corroborate itself (q-scf-open-rfps convention). The dated 2026-06-25 history line is kept unchanged.",
             "Sibling sweep 2026-11-02: grep Hummingbot|Kelp|q2-2026|Q2 2026 → q-scf-open-rfps-live (avoid already forbids pinning Q2 2026 names; consistent), q-defi-market-making-kelp, q-scf-open-rfps, q-scf-rfp-tooling; no contradiction.",
-            "Pass 2 2026-11-02: GET https://stellarlight.xyz/api/rfps?q=hummingbot returns hummingbot-integration 'Hummingbot Integration (Trading Engine)', closed, q1-2026, defi. Pass 2 2026-11-02T17:34Z (scf-rfp proposer): rfp-track.md still reads '***October 2026: New Q4 RFPs are coming soon.***' with two empty 'Coming Soon' sections; gh api shows e07b4bfce1 (2026-10-16) is still the latest commit on the path and in the repo. Scout /api/rfps?status=open generatedAt 2026-11-02T17:29:38.076Z: activeQuarter q3-2026, open 2, syntheticRounds 1 (layerzero-dvn, x402-facilitator-bazaar). https://communityfund.stellar.org/awards: 'Deadline to submit:November 9, 2026', awardSubmission close 2026-11-09; Wayback 20261018175817 of the same page shows close 2026-11-08. Parallel web_search and Perplexity (recency month) found no published Q4 2026 brief. Scout lag filed as improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md.",
+            "Pass 2 2026-11-02: GET https://stellarlight.xyz/api/rfps?q=hummingbot returns hummingbot-integration 'Hummingbot Integration (Trading Engine)', closed, q1-2026, defi. Pass 2 2026-11-02T17:34Z (scf-rfp proposer): rfp-track.md still reads '***October 2026: New Q4 RFPs are coming soon.***' with two empty 'Coming Soon' sections; gh api shows e07b4bfce1 (2026-10-16) is still the latest commit on the path and in the repo. Scout /api/rfps?status=open generatedAt 2026-11-02T17:29:38.076Z: activeQuarter q3-2026, open 2, syntheticRounds 1 (layerzero-dvn, x402-facilitator-bazaar). https://communityfund.stellar.org/awards: 'Deadline to submit:November 9, 2026', awardSubmission close 2026-11-09; Wayback 20261018175817 of the same page shows close 2026-11-08. Parallel web_search and Perplexity (recency month) found no published Q4 2026 brief. Scout lag filed as https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md.",
             "Pass 2 independent verifier (task scf-rfp) re-derived every quoted value above from its own reads and accepted every proposed change.",
             "Pass 2 sibling sweep 2026-11-02 (.agents/rounds/2026-11-02-golden-audit.md, task scf-rfp): checked q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-how-to-apply, q-scf-submission-lifecycle-deadlines, q-scf-hackathons-active, q-defi-market-making-kelp, q-scf-vs-sdf-enterprise-fund, and the other seven scf-rfp cases. No contradiction: all give the #46 deadline 2026-11-09, and the RFP cases now share the Scout-lag plain rules and the November 8 caution."
           ],
           "rootCause": [
             "freshness-drift",
-            "improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md"
+            "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md"
           ]
         },
         "origin": "raven-next q-scf-hummingbot-kelp-closed-rfp"
@@ -3371,7 +3371,7 @@
         "avoid": [
           "Do NOT call extendTo an absolute ledger, require restorePreamble/separate retry for normal P23, restore Temporary data, or mix event retention into state TTL."
         ],
-        "notes": "Phase 3 tightened auto-restore wording against current Stellar docs: archived entries are restored before host execution only when included in the transaction restore list, usually populated by RPC simulation.\nAlso good if the answer: Gives the three-step restore/extend flow: identify entries, build footprint operation, simulate/fill fees, submit and retry the original action. | Mentions SDK `extend_ttl(min_ttl, extend_to)` / persistent `extend_ttl(&key, min_ttl, extend_to)` for proactive extension.\nGolden cites: Official state archival docs for Protocol 23 auto-restore and restore/extend workflow. | Official Soroban storage docs or SDK docs for temporary vs persistent/instance TTL behavior.\nGT-42 blind corrected the primary addendum: current normal auto-restore uses archivedSorobanEntries with restorePreamble nil.\nNumeric TTL settings are dated examples; grade the restore and extendTo formulas, the max-minus-one bound, and the re-query behavior, not one figure.\nAccurately quoting the official Stellar docs page for the simulateTransaction deep-dive guide (https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive), which still says an archived entry must be restored before submission as signaled by `restorePreamble`, is not a wrong claim while sd-078 is active; grade caps at partial for that claim unless the answer independently contradicts the golden fact. A cached or older copy of the state-archival page earns no cap, because that page has described same-transaction P23 restoration since 2026-07-27."
+        "notes": "Phase 3 tightened auto-restore wording against current Stellar docs: archived entries are restored before host execution only when included in the transaction restore list, usually populated by RPC simulation.\nAlso good if the answer: Gives the three-step restore/extend flow: identify entries, build footprint operation, simulate/fill fees, submit and retry the original action. | Mentions SDK `extend_ttl(min_ttl, extend_to)` / persistent `extend_ttl(&key, min_ttl, extend_to)` for proactive extension.\nGolden cites: Official state archival docs for Protocol 23 auto-restore and restore/extend workflow. | Official Soroban storage docs or SDK docs for temporary vs persistent/instance TTL behavior.\nGT-42 blind corrected the primary addendum: current normal auto-restore uses archivedSorobanEntries with restorePreamble nil.\nNumeric TTL settings are dated examples; grade the restore and extendTo formulas, the max-minus-one bound, and the re-query behavior, not one figure."
       },
       "tags": {
         "category": "soroban",
@@ -3475,25 +3475,36 @@
                 "note": "Initial defaults MAXIMUM_ENTRY_LIFETIME = 1'054'080; MINIMUM_PERSISTENT_ENTRY_LIFETIME = 4'096; ExtendFootprintTTLOpFrame.cpp enforces extendTo <= maxEntryTTL - 1."
               }
             ]
+          },
+          {
+            "claim": "The current simulation deep-dive guide agrees with the Protocol 23 same-transaction restoration path; its former manual-only wording no longer supports an attribution cap.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md",
+                "observedAt": "2026-11-06",
+                "note": "Since Protocol 23, you usually do not need a separate restore step. The same InvokeHostFunction transaction restores listed entries first."
+              },
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go",
+                "observedAt": "2026-11-06",
+                "note": "TestSimulateTransactionAutoRestore requires nil RestorePreamble and nonempty ArchivedSorobanEntries; the manual test skips protocols above 22."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "golden cap backlog 2026-11-02 (caps-2)",
+          "date": "2026-11-06",
+          "by": "2026-11-05 truth-maintenance coordinator; independent Astra high reviewer t2dx, docs-independent.md",
           "evidence": [
-            "A 2026-11-02T21:26:10Z: GET https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md HTTP 200 — \"When a ledger entry is archived, it needs to be restored before the transaction can be submitted. This is indicated in the `restorePreamble` field of the result.\" No Protocol 23 qualifier, no automatic-restoration or archivedSorobanEntries mention on the page.",
-            "B 2026-11-02: stellar/stellar-docs main 85d2d1b8 docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx line 171 carries the same sentence; last commits 70b9fa42 (#2979, 2026-11-02) and 700ed32d (#2941, 2026-10-22) did not change it.",
-            "E 2026-11-02T21:26:00Z: Raven stellarDocs.search_docs 'restorePreamble restore then retry archived entry Protocol 23' — hit 3 is the deep-dive page with the snippet 'When a ledger entry is archived, it needs to be restored before the transaction can be submitted.'",
-            "A 2026-11-02T21:24:12Z: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md — \"`RestoreFootprintOp` is, for the most part, no longer needed starting in Protocol 23, as archived entries included in a transaction's restore list (usually populated during transaction simulation) are automatically restored when the `InvokeHostFunctionOp` executes.\" The page fixed under sd-007 (improvements/resolved.json, resolved 2026-07-27) is correct, so a cached or older copy of it no longer backs a cap.",
-            "B 2026-11-02: stellar/stellar-rpc main c436cd7ddf simulate_transaction_test.go — manual restore test skips with \"Protocols > 22 support autorestore and generally don't require manual restoring\"; TestSimulateTransactionAutoRestore asserts require.Nil(t, response.RestorePreamble) and NotEmpty ArchivedSorobanEntries.",
-            "Outcome: the cap's old basis (a cached pre-2026-07-27 state-archival copy) ended with sd-007; a live official page (the deep-dive guide) still carries the stale flow and no active finding covers it, so the cap now names that page and finding sd-078 (shared by q-sor-p23-auto-restore-extendto, q-sor-force-fast-archival-localnet, q-sor-ttl-defaults-extend, q-soroban-storage-types).",
-            "Sibling sweep 2026-11-02: grep of eval/qa/corpus/battery for restorePreamble, Deep-Dive, and sd-007 — q-soroban-simulate-resource-fee and q-infra-simulate-transaction-howto say to handle any restorePreamble, which agrees with a fallback reading; the four cap cases above now share one wording; no contradiction.",
-            "Prior verification event: Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02) (2026-11-02); see git history."
+            "Fresh A/B checks: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md — Since Protocol 23, you usually do not need a separate restore step. The same InvokeHostFunction transaction restores listed entries first.",
+            "Fresh A/B checks: https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go — TestSimulateTransactionAutoRestore requires nil RestorePreamble and nonempty ArchivedSorobanEntries; the manual test skips protocols above 22.",
+            "Sibling sweep: q-sor-ttl-defaults-extend, q-sor-p23-auto-restore-extendto, q-sor-force-fast-archival-localnet, q-soroban-storage-types; all retain the same restoration behavior and lose only the expired sd-078 attribution cap. q-soroban-simulate-resource-fee and q-infra-simulate-transaction-howto retain conditional restorePreamble handling. No numeric TTL value or avoid clause changed."
           ],
           "rootCause": [
-            ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: partial caps follow open upstream findings)",
-            "improvements/stellar-docs/sd-078-simulate-deep-dive-restore-before-submit.md: the simulateTransaction deep-dive guide still says archived entries must be restored before submission through restorePreamble, with no Protocol 23 qualifier",
-            "improvements/resolved.json entry sd-007 (resolved 2026-07-27; the cached-copy basis of the old cap ended)"
+            "improvements/resolved.json entry sd-078: live Docs correction removes the source conflict that justified the cap."
           ]
         },
         "origin": "raven-next q-sor-p23-auto-restore-extendto"

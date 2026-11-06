@@ -64,6 +64,24 @@
         "class": "D",
         "ref": "https://x.com/lumenloop/status/2112203379225321685",
         "note": "Third-party post observed 2026-11-02: 'Full submission: Nov 8'. Evidence of the stale date in circulation, not of the deadline."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards",
+        "observedAt": "2026-11-05",
+        "note": "\"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
+        "observedAt": "2026-11-05",
+        "note": "\"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open",
+        "observedAt": "2026-11-05",
+        "note": "meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation."
       }
     ],
     "corroboration": [
@@ -141,29 +159,16 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task critic-cleanup)",
+      "date": "2026-11-05",
+      "by": "Scout Astra high author lane; independent final review assigned to t2dv; .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md",
       "evidence": [
-        "Golden audit 2026-11-02 re-verification, no gospel change: A https://communityfund.stellar.org/awards (15:49Z) — 'SCF #46 Submission Deadline to submit: November 9, 2026 ... SCF #45 Ended Deadline to submit: August 16, 2026 ... SCF #44 Ended Deadline to submit: June 14, 2026'.",
-        "A https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg (2026-11-02) — 'Panel Review November 11, 2026 - November 18, 2026 ... Notification and Award Distribution TBD - TBD' (no official notification date, time, or timezone; avoid[1] holds).",
-        "C https://stellarlight.xyz/api/rfps?status=open (2026-11-02) — meta.scfRound currentRound 46, currentPhase Submission, lastConfirmedRound 45, deadline 2026-11-09 (cites the official page, so not fully independent of A).",
-        "D 2026-11-02: r/Stellar weekly thread, @lumenloop roundup, and devgrantsdaily.com still say November 8 (stale circulation; graded by the plain November 9 keyFact rule since pass 3). No independent source asserts November 8 as the current official deadline.",
-        "Audit sibling sweep 2026-11-02: the RFP-roster correction in q-scf-open-rfps and q-scf-rfp-tooling (no open brief per the official page) does not touch round state; no conflict. reverifyBy 2026-11-12 stays event-tied: Submission closes 2026-11-09 and Panel Review opens 2026-11-11, after which avoid[0] 'say no round is in Submission' becomes possibly true.",
-        "Live A 2026-11-02: https://communityfund.stellar.org/awards shows SCF #46 in Submission with 'Deadline to submit: November 9, 2026' and SCF #45 'Ended'. The author re-read the page independently of the research lane.",
-        "Live C 2026-11-02: https://stellarlight.xyz/api/rfps?status=open titles the synthetic row 'SCF Round #46: submissions OPEN until 2026-11-09'.",
-        "The official deadline moved from 2026-11-08 to 2026-11-09 between the 2026-10-18 Wayback snapshot and 2026-11-02. #45 moved from Notification & Award Distribution to Ended.",
-        "Sibling sweep 2026-11-02: q-scf-current-round and q-edge-fresh-latest-scf-round changed together. q-scf-open-rfps and q-scf-rfp-tooling also name 2026-11-08; they are due 2026-11-12/13 and need a separate roster decision (the official RFP page now says 'New Q4 RFPs are coming soon' while Scout still lists two open Q3 briefs), recorded in .agents/TODO.md.",
-        "reverifyBy 2026-11-12 is event-triggered: Submission closes 2026-11-09 and Panel Review opens 2026-11-11.",
-        "Review reconciliation 2026-11-02 (PR #310 review findings 4 and 6): the third-party November 8 posts are now named in the notes and in truth.sources (Reddit r/Stellar weekly thread, @lumenloop status 2112203379225321685). keyFact 5 keeps one predicate; avoid[0] already traps treating #44 as current.",
-        "Gospel change (pass 3): golden.notes replaces the third-party partial-cap sentence with a plain rule. 2026-11-09 meets the deadline keyFact; a dated, attributed November 8 citation is not wrong but does not meet it. The partial-cap form for third-party claims lies outside ADR-0008.",
-        "Class A 2026-11-02T18:42Z: https://communityfund.stellar.org/awards - 'SCF #46 Submission Deadline to submit: November 9, 2026 View SCF #45 Ended Deadline to submit: August 16, 2026 View SCF #44 End[ed]'.",
-        "Class A 2026-11-02: https://web.archive.org/web/20261018175817/https://communityfund.stellar.org/awards - 'SCF #46 Submission Deadline to submit: November 8, 2026'; awardSubmission close 2026-11-08 (the pre-change page).",
-        "Class C 2026-11-02 (generatedAt 2026-11-02T17:29:38.076Z): https://stellarlight.xyz/api/rfps?status=open meta.scfRound - currentRound 46, currentPhase Submission, submissionWindow.closes 2026-11-09, verifyAt https://communityfund.stellar.org/awards (cites the official page).",
-        "Sibling sweep 2026-11-02 (pass 3): q-scf-open-rfps, q-scf-rfp-tooling, and q-scf-open-rfps-live say do not penalize a dated, attributed November 8 citation; none gates the deadline as a keyFact, so the rules agree. The SCF dateContingentTrap disposition and cluster-011 text need an orchestrator register edit to name only the RFP cases."
+        "A https://communityfund.stellar.org/awards — \"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended.",
+        "A https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg — \"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated.",
+        "C https://stellarlight.xyz/api/rfps?status=open — meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation.",
+        "Scoped sibling sweep and exact replay commands: .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md; primary matrix scout.md. November5 America/New_York observations have November6 UTC receipt timestamps. Existing reverifyBy dates retained; unrelated historical claims were not re-dated."
       ],
       "rootCause": [
-        "freshness-drift",
-        "Eval-side authoring flaw: pass 1 graded an attributed November 8 deadline with a third-party partial-cap form outside ADR-0008, unlike the plain rule in the RFP siblings."
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-scf-current-round"

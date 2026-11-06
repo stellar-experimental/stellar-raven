@@ -12,6 +12,9 @@ evidence:
   - stellar/stellar-docs main 7cb5e8a492706d2ae95bbb14be737fbf96100058 has no meetings/authors.yml, and redirects.json has no rule for /meetings/authors
   - Raven eval golden case q-builder-content-by-person, audited 2026-11-02
   - 2026-11-02 pre-existing upstream PR https://github.com/stellar/stellar-docs/pull/2945 (OPEN, opened 2026-10-22 by ElliotFriend) proposes this fix; Raven did not file a separate issue
+recurrences:
+  - date: 2026-11-06
+    evidence: "Fresh author root, kalepail and elliotfriend URLs all404; meetings200. Proposed redirect PR2945 open review-required, checks green, BLOCKED. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-064"
 ---
 
 ## Finding

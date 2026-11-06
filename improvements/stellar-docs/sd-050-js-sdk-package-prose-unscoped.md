@@ -13,6 +13,9 @@ evidence:
   - eval/qa/results/2026-09-04T05-40-51-variantA.json row q-tool-js-sdk-package copied the unscoped name and received a wrong verdict
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-terra.md records the dated recheck
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-review-opus.md records the independent review and this correction
+recurrences:
+  - date: 2026-11-06
+    evidence: "Live client-sdks line25 names unscoped stellar-sdk; npm serves deprecated13.3.0 versus scoped17.4.0. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-050"
 ---
 
 ## Finding

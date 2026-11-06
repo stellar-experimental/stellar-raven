@@ -34,6 +34,9 @@ Raven is its own OAuth authorization server, and WorkOS AuthKit handles sign-in.
 clients find and complete this flow automatically. An access token lasts 1 hour. Clients refresh
 it automatically for 90 days, then the user signs in again.
 
+If you connected through `raven.stellar.buzz` or `agents.stellar.buzz`, remove that connection
+and reconnect at `https://raven.stellar.org/mcp`. Both old hosts now redirect to the canonical host.
+
 | Page | URL |
 |---|---|
 | User guide and troubleshooting | https://raven.stellar.org/docs |

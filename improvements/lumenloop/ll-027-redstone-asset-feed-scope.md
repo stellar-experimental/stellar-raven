@@ -10,6 +10,8 @@ evidence:
   - Upstream issue filed 2026-07-13: https://github.com/lumenloop/lumenloop-backend/issues/41
   - 2026-08-11 review: issue #41 is open. It has no linked PR, checks, or reviews. Its only comment and latest timeline activity are kalepail's Raven tracking comment at 2026-07-13T22:54:36Z. `get_document({collection: "articles", id: 8068})` still says nine assets are live, with no enumerated set, unit, snapshot/current-state label, or typed as-of field.
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: LL get_document articles8068; linked primary RedStone page; Scout project page — Lumenloop still nine assets in prose with no enumerated/as-of basis. Cross-source units remain unsuitable for asserting a contradictory live numeric total; primary and Scout checked. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-027."
   - date: 2026-08-11
     evidence: Article 8068 retains the unqualified nine-asset count in prose.
 ---

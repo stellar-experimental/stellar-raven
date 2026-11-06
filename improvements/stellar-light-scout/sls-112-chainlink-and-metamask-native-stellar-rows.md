@@ -14,6 +14,9 @@ evidence:
   - "Dedupe 2026-11-02: gh issue search 'chainlink' and 'metamask' on Stellar-Light/stellarlight found closed #514 (oracle evidence) and #519 (wallet semantics) only; open #562 is a generic coverage watch."
   - ".agents/TODO.md 'File the HackMeridian upstream findings' items Q2 and Q18. Golden follow-up: TODO item 'Add golden cases for the confirmed HackMeridian gaps' (Q18 testnet oracle addresses)."
   - upstream issue filed 2026-11-02: https://github.com/Stellar-Light/stellarlight/issues/1904
+recurrences:
+  - date: 2026-11-06
+    evidence: "Resolve/search Chainlink and MetaMask; primary Chainlink Stellar feed docs and MetaMask support page — Still-repro. Both exact resolves false. Chainlink search gives third-party VRF relayer; MetaMask gives Snap/integration rows. Primary docs still identify native MetaMask Stellar and Chainlink testnet/mainnet proxy IDs `CBUF6IADAWPWIDWRTHJNINKXHG2UTIQ6TU2F2HRAXWAI7OT3KJPKK6O4` / `CDQBHEUGLDHMSUHG4IH33RJBUTMNCZOT4JIAQR4WZFRDZW6DR6S32ZLZ`. Next: Keep. Next after seed application: provider/product/network addresses and native-wallet-vs-Snap distinction, not brand-only name recall. Ledger: .agents/rounds/2026-11-05-truth-maintenance/scout.md."
 ---
 
 ## Finding

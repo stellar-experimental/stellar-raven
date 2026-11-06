@@ -10,6 +10,8 @@ evidence:
   - upstream source rechecked 2026-07-09 at lumenloop/lumenloop-skills skills commit d92c56b: the worked example still says "Today is 2026-06-08" and repeats the frozen date through every recency query
   - upstream issue filed 2026-07-09: https://github.com/lumenloop/lumenloop-skills/issues/3
 recurrences:
+  - date: 2026-11-06
+    evidence: "2026-11-06 still-repro: Fresh main stellar-ecosystem-digest full worked example — Today is2026-06-08 and frozen query bounds still repeated; no current-date substitution convention. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-007."
   - date: 2026-07-09
     evidence: current upstream stellar-ecosystem-digest still contains the literal "Today is 2026-06-08" and frozen 2026-05-09→2026-06-08 window
   - date: 2026-07-13
