@@ -115,13 +115,13 @@
         "[A] https://stellarlight.xyz/api/openapi.json (v1.9.116) paths./api/partners/match.post — \"Requires the service to have AI configured; returns 503 `unavailable:true` otherwise (fall back to GET /api/partners filters).\" (observedAt 2026-11-02; supports golden.avoid[0]: verifier modify)",
         "[C] Raven execute scout.matchPartners({need:'Mexico USDC SEP-24 off-ramp'}) and ({need:'USDC off-ramp to Mexican pesos via SEP-24'}) — \"HTTP 502 from /api/partners/match: error code: 502 (both calls, 2026-11-02T16:21Z)\" (observedAt 2026-11-02; supports golden.notes: verifier modify)",
         "[C] GET https://stellarlight.xyz/api/partners?ramps=off-ramp&q=mexico (raw) and Raven scout.getPartners({ramps:'off-ramp',q:'mexico'}) — \"counts {returned:2,total:2,filteredOut:1}; partners [Etherfuse, Bitso]; matchMode 'scored' = 'ranked by the shared partner scorer over structured capability fields'\" (observedAt 2026-11-02; supports golden.notes: verifier modify)",
-        "Upstream finding filed: improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md (status verified). Stellar Light POST /api/partners/match returns HTTP 502 instead of the documented 503 unavailable:true.",
+        "Historical November 2 finding (then verified): https://github.com/stellar-experimental/stellar-raven/blob/049fb7476f609af398b00d2812736470f4602430/improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md. Captured HTTP 502 JSON was absent from the then-published OpenAPI response contract. Provenance update November 6: PR1929 and independent live schema checks resolve that documentation omission; see .agents/rounds/2026-11-06-remaining-sweep/sls097-author.md and cross-review.md. This does not reverify current model availability or change the historical observations.",
         "Sibling sweep 2026-11-02: grep matchPartners -> q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery, q-crp-anchors-by-corridor, q-comp-finclusive-caas, q-eco-defi-projects-discovery, q-hist-remittance-corridors, q-scf-ecosystem-listing-partner-jobs; none pins a matchPartners success or a 503-only failure; no contradiction."
       ],
       "rootCause": [
         "freshness-drift",
         "Eval-side authoring flaw: fallback keyed only to the 503 status; undated success observation in answer.",
-        "improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md"
+        "https://github.com/stellar-experimental/stellar-raven/blob/049fb7476f609af398b00d2812736470f4602430/improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md"
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-11
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-024; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - P4 N2 candidate contrasts older Meridian 2026 Abu Dhabi/Yas Marina Oct 21-22 records with the current Lisbon/Convento do Beato Oct 28-29 schedule announced as a change on 2026-04-01; solo://proj/49/scratchpad/super-corpus-rebuild--585
   - https://github.com/lumenloop/lumenloop-backend/issues/33
   - 2026-08-11 review: issue #33 is open. It has no linked PR, checks, or reviews. Its only comment and latest timeline activity are kalepail's Raven tracking comment at 2026-07-13T22:54:35Z. `get_document({collection: "events", id: 1457})` returns the Lisbon schedule. Exact event lookup for "Yas Marina" is empty, and "Abu Dhabi" returns unrelated event 1212. This does not prove a deployed supersession fix or reproduce a stale Meridian row.
@@ -14,21 +15,32 @@ recurrences:
 
 ## Finding
 
-Lumenloop event retrieval can retain stale Meridian venue/date records without
-a visible supersession relation. Older Abu Dhabi/Yas Marina October 21-22 facts
-conflict with the changed Lisbon/Convento do Beato October 28-29 schedule.
+This is an event-revision/supersession metadata request. The candidate history
+contrasts Abu Dhabi/Yas Marina October 21–22 with the later Lisbon/Convento do
+Beato October 28–29 schedule, but no retained original API response proves the
+old schedule was returned as current.
+
+On 2026-11-06 old ID 1457 is unavailable, Yas Marina returns no match, and the
+Abu Dhabi result 1212 is unrelated. Current event 1819 correctly reports Lisbon,
+Convento do Beato, October 28–29. A stale Meridian venue/date claim is not
+reproduced, and an unavailable ID alone does not prove a deployed supersession
+mechanism or establish why the record disappeared.
 
 ## Evidence
 
-The P4 N2 candidate documents the old and current schedules plus the April 1
-change announcement. It is proposed pending a direct response that shows the
-stale record returned as current.
+The 2026-07-11 P4 N2 candidate recorded the schedule comparison and April 1
+change announcement, while explicitly awaiting a direct stale-as-current
+response. The 2026-11-06 exact ID, venue, and expanded semantic checks above do
+not supply that missing evidence. See the remaining-sweep receipt for their
+arguments and response hashes; retain the original scope as inconclusive.
 
 ## Recommendation
 
-Add event revision and superseded-by metadata. Search results should privilege
-the latest official schedule and label historical venue/date records as
-superseded rather than returning them as interchangeable facts.
+When the service retains multiple revisions of an event, expose source-backed
+revision/superseded-by links and prefer the latest official schedule for current
+queries. Label historical schedules with their dates and revision context.
+Do not recreate an unavailable old row solely to fill this metadata or treat
+optional revision fields as proof that current venue prose is false.
 
 ## Current verification — 2026-11-06
 

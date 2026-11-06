@@ -1,0 +1,157 @@
+{
+  "at": "2026-11-06T13:59:15.079Z",
+  "baselineCommit": "d5f3a280cc58326ff70719f30f3301ca077a4d51",
+  "heldTitleCount": 666,
+  "candidateTitleCount": 978,
+  "heldManifestSha256": "008c16e31e5a53ea221a10007ff7198d317c0f2f15bd8b0354e552fe85776e33",
+  "candidateManifestSha256": "eb532a662f5bb83f7123c094f002294211a94de92f117c3bdb940d6e09cd6de4",
+  "heldOverall": {
+    "n": 338,
+    "top1": 219,
+    "top3": 293,
+    "top5": 327,
+    "cardN": 182,
+    "cardHit5": 113
+  },
+  "candidateOverall": {
+    "n": 338,
+    "top1": 218,
+    "top3": 293,
+    "top5": 326,
+    "cardN": 182,
+    "cardHit5": 113
+  },
+  "gradeChanges": [
+    {
+      "id": "q-edge-exhaustive-defi-deep-report",
+      "lane": "cases",
+      "changes": {
+        "top5": [
+          true,
+          false
+        ]
+      }
+    },
+    {
+      "id": "q-infra-hubble-vs-rpc-layer",
+      "lane": "cases",
+      "changes": {
+        "top1": [
+          true,
+          false
+        ],
+        "any1": [
+          true,
+          false
+        ]
+      }
+    },
+    {
+      "id": "q-holdout-a-05-groth16-soroban",
+      "lane": "holdoutCases",
+      "changes": {
+        "top3": [
+          true,
+          false
+        ]
+      }
+    }
+  ],
+  "walletWitness": {
+    "id": "q-tool-wallets-kit",
+    "lane": "cases",
+    "before": {
+      "id": "q-tool-wallets-kit",
+      "expected_service": "stellarDocs",
+      "expected_any": [
+        "stellarDocs",
+        "scout",
+        "skills"
+      ],
+      "top1": true,
+      "top3": true,
+      "top5": true,
+      "cardHit5": null,
+      "any1": true,
+      "any3": true,
+      "any5": true,
+      "topHits": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "score": 455
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "service": "stellarDocs",
+          "score": 565
+        },
+        {
+          "id": "scout.vetIdea",
+          "service": "scout",
+          "score": 298
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 262
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 253
+        }
+      ]
+    },
+    "after": {
+      "id": "q-tool-wallets-kit",
+      "expected_service": "stellarDocs",
+      "expected_any": [
+        "stellarDocs",
+        "scout",
+        "skills"
+      ],
+      "top1": true,
+      "top3": true,
+      "top5": true,
+      "cardHit5": null,
+      "any1": true,
+      "any3": true,
+      "any5": true,
+      "topHits": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "score": 455
+        },
+        {
+          "id": "scout.vetIdea",
+          "service": "scout",
+          "score": 298
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 262
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 253
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 178
+        }
+      ]
+    }
+  },
+  "verdict": "retain-held-titles; no routing baseline changes",
+  "commands": [
+    "node scripts/refresh-inventory.mjs",
+    "node scripts/build-catalog.mjs --out <candidate> (isolated checkout with refreshed titles)",
+    "node eval/run-routing.mjs --gate",
+    "node eval/run-routing.mjs --manifest <candidate>"
+  ]
+}

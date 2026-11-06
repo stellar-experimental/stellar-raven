@@ -3557,6 +3557,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-096-rfp-open-briefs-after-official-withdrawal.md"
     },
     {
+      "id": "sls-097",
+      "title": "POST /api/partners/match omitted its HTTP 502 failure response from OpenAPI",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-06",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1908",
+        "https://github.com/Stellar-Light/stellarlight/pull/1929"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1929"
+      ],
+      "liveRecheck": "2026-11-06: independent GETs at 14:16:52Z and 14:19:31Z of https://stellarlight.xyz/api/openapi.json returned 200, version 1.9.122. POST /api/partners/match now documents 502 application/json ErrorResponse with required string error and GET /api/partners filters fallback, matching merged PR 1929 (56f10c0e03ca93634c26faf3432b607fecbc5cd8). The original JSON and both current handler 502 bodies validate against the live schema; negative controls fail. Independent offline pinned-handler fixtures confirm five 502 fixtures plus adjacent 503/500 behavior. This resolves the original documentation omission. No model-backed POST ran, current ranking availability is unknown, and no gateway-format repair is claimed.",
+      "reviewEvidence": "Author t2r9 and distinct reviewer t2r6 independently re-derived the documentation-only scope, live schema and handler/schema consistency; see .agents/rounds/2026-11-06-remaining-sweep/sls097-author.md and cross-review.md. Golden provenance and historical hash-preserving source links reconciled; answer and verification dates unchanged.",
+      "sourceCommit": "a73e0b25c4062ca4e3c4382e501630a631ff4656",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/a73e0b25c4062ca4e3c4382e501630a631ff4656/improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md"
+    },
+    {
       "id": "sls-098",
       "title": "The Bitso and Honey Coin partner pages label curated capabilities as verified from stellar.toml without a recorded fetch. Both pages…",
       "service": "stellar-light-scout",

@@ -1,0 +1,44 @@
+[
+  {
+    "name": "live-openapi",
+    "url": "https://stellarlight.xyz/api/openapi.json",
+    "status": 200,
+    "observedAt": "2026-11-06T14:16:52.308101+00:00",
+    "sha256": "4dd846f44ef80603d5ec7ba0ea810762f2a5b6df9235b64f19a1ede2fd00db2c"
+  },
+  {
+    "name": "main-handler",
+    "url": "https://raw.githubusercontent.com/Stellar-Light/stellarlight/b067fe79bd93cafce9070d39971ddb36420a5195/src/app/api/partners/match/route.ts",
+    "status": 200,
+    "observedAt": "2026-11-06T14:16:52.496323+00:00",
+    "sha256": "4839048cd463d5161597bf2de9b13ef27bda479cb80cb655d9a4aa0d1515123e"
+  },
+  {
+    "name": "merge-handler",
+    "url": "https://raw.githubusercontent.com/Stellar-Light/stellarlight/56f10c0e03ca93634c26faf3432b607fecbc5cd8/src/app/api/partners/match/route.ts",
+    "status": 200,
+    "observedAt": "2026-11-06T14:16:52.675508+00:00",
+    "sha256": "4839048cd463d5161597bf2de9b13ef27bda479cb80cb655d9a4aa0d1515123e"
+  },
+  {
+    "name": "original-finding",
+    "url": "https://raw.githubusercontent.com/stellar-experimental/stellar-raven/b6844fc7faccf8dfe182190967afd828383dfeca/improvements/stellar-light-scout/sls-097-partner-match-undocumented-502.md",
+    "status": 200,
+    "observedAt": "2026-11-06T14:18:27.780010+00:00",
+    "sha256": "41c4953ceeecad2e6b2977cd69868a01259a04c2ae5f62dc3242be0784fd5049"
+  },
+  {
+    "name": "merge-openapi",
+    "url": "https://raw.githubusercontent.com/Stellar-Light/stellarlight/56f10c0e03ca93634c26faf3432b607fecbc5cd8/specs/openapi.json",
+    "status": 200,
+    "observedAt": "2026-11-06T14:18:28.071207+00:00",
+    "sha256": "13e1f62a676dc5f63bc6c7dc2b38b2dc7add7ef0752198c37d51dc639626c099"
+  },
+  {
+    "name": "main-model-failure",
+    "url": "https://raw.githubusercontent.com/Stellar-Light/stellarlight/b067fe79bd93cafce9070d39971ddb36420a5195/src/lib/model-failure.ts",
+    "status": 200,
+    "observedAt": "2026-11-06T14:18:28.256162+00:00",
+    "sha256": "973b7f999382484de5ad847e32fe9aecdd71e149895f4a727e20c4a11216d6ff"
+  }
+]

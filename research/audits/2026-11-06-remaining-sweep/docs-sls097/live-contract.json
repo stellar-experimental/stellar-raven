@@ -1,0 +1,35 @@
+{
+  "url": "https://stellarlight.xyz/api/openapi.json",
+  "observedAt": "2026-11-06T14:16:52.308101+00:00",
+  "status": 200,
+  "version": "1.9.122",
+  "sha256": "4dd846f44ef80603d5ec7ba0ea810762f2a5b6df9235b64f19a1ede2fd00db2c",
+  "response502": {
+    "description": "One language model call failed: the provider erred (5xx), was overloaded, or could not be reached in time, or its output could not be read. Not a claim about the request or the data: resend later, or rank with GET /api/partners filters now. The provider refusing our request or account is the 503 with unavailable true instead, where a resend does not help.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/ErrorResponse"
+        }
+      }
+    }
+  },
+  "ErrorResponse": {
+    "type": "object",
+    "required": [
+      "error"
+    ],
+    "properties": {
+      "error": {
+        "type": "string"
+      },
+      "details": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "matchesMergeContract": true,
+  "mergeCommit": "56f10c0e03ca93634c26faf3432b607fecbc5cd8",
+  "mergeSpecSha256": "13e1f62a676dc5f63bc6c7dc2b38b2dc7add7ef0752198c37d51dc639626c099"
+}

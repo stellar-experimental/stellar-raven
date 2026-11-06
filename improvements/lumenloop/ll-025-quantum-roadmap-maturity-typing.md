@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-11
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-025; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - P4 N2 candidate reads the 2026-06-09 quantum-post-quantum roadmap as stating ML-DSA host functions and native signer support were still missing and staged for 2026/2027; solo://proj/49/scratchpad/super-corpus-rebuild--585
   - Live comparison on 2026-07-13: https://lumenloop.com/news/introducing-quantum-preparedness-plan summarizes the roadmap in present-tense/immediate language, while https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan retains the missing-today and future/expected qualifiers.
   - https://github.com/lumenloop/lumenloop-backend/issues/37
@@ -29,8 +30,8 @@ roadmap as current network functionality.
 Fresh public checks on 2026-10-09 reproduce the roadmap wording gap.
 The [Lumenloop summary](https://lumenloop.com/news/introducing-quantum-preparedness-plan) still says enterprise wallets can shift immediately.
 The [linked primary source](https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan) says the quantum-safe signer and required primitives are missing today.
-The current [CAP-0087](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md) has `Status: Accepted` and `Protocol version: TBD`.
-The [public network](https://horizon.stellar.org/) reports protocol `29`.
+At that 2026-10-09 check, [CAP-0087](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md) had `Status: Accepted` and `Protocol version: TBD`.
+The [public network](https://horizon.stellar.org/) reported protocol `29` at that check.
 This check does not infer deployment from CAP acceptance or identify a target protocol.
 
 P4 N2 captured the future-tense and staged timeline in its 2026-07-11 candidate
@@ -41,6 +42,17 @@ missing today and frames the 2026/2027 capabilities as expected or future work.
 This confirms a maturity-typing risk on that page, not the broader prevalence,
 the internal generation path, or whether newer implementation evidence exists.
 The owner-facing report is https://github.com/lumenloop/lumenloop-backend/issues/37.
+
+### Later implementation context — 2026-11-06
+
+The fresh CAP-0087 source now says `Status: Implemented` and `Protocol version: 30`.
+At 13:59Z, Horizon reports Mainnet protocol 29 and Testnet protocol 30. These
+later observations do not rewrite what the June 9 roadmap said, and CAP status
+alone does not establish Mainnet activation. Native classic-account signer
+support remains a separate future stage. The present concern is the summary's
+unqualified “immediately” wording relative to its dated source, not a claim
+that ML-DSA host functions remain unimplemented everywhere. Scope the capability
+and network to the observation date; do not generalize this one-page example.
 
 ## Recommendation
 

@@ -1,0 +1,91 @@
+
+> stellar-raven-codemode@0.1.0 eval:qa:lint
+> node eval/qa/lint-corpus.mjs --since d5f3a280cc58326ff70719f30f3301ca077a4d51 --stale --enforce-floors
+
+[lint-corpus] INFO [coverage] services: lumenloop=63, none=22, scout=143, skills=34, stellarDocs=239
+[lint-corpus] INFO [coverage] summary: cases=501; cross-service=51; NEG/soft-empty=35; VOCAB=6; scheduled=175
+[lint-corpus] WARN [avoid] q-aas-trusted-asset-list-whitelist: sourcing-guard [without-evidence,not-verified]: Do NOT label a specific asset safe or scam without cited, current evidence.
+[lint-corpus] WARN [avoid] q-asset-rwa-tokenized-freshness: sourcing-guard [not-verified]: Do NOT fabricate a number not grounded in a cited report.
+[lint-corpus] WARN [avoid] q-builder-content-by-person: sourcing-guard [without-evidence]: Do NOT attribute semantic A/V results without exact-name and source validation.
+[lint-corpus] WARN [avoid] q-builder-justin-rice-history: sourcing-guard [without-evidence]: Do NOT attribute a GitHub handle, SEP authorship, or other biography details without a source that establishes them.
+[lint-corpus] WARN [avoid] q-cctp-v2-usdc-stellar: sourcing-guard [without-evidence]: Do NOT call 2026-02-24 the Stellar launch without accessible primary evidence or merge technical support and public announcement into one date.
+[lint-corpus] WARN [avoid] q-comp-finclusive-caas: sourcing-guard [without-evidence]: Do NOT name MoneyGram, Bitso, Kado, or Nium as FinClusive partners without current primary evidence.
+[lint-corpus] WARN [avoid] q-crp-anchors-by-corridor: sourcing-guard [without-evidence]: Do NOT name a specific anchor-to-country/currency corridor pairing (e.g. 'anchor X currently serves country Y') as currently live without citing a dated source for that pairing.
+[lint-corpus] WARN [avoid] q-crp-custodial-vs-noncustodial-wallets: sourcing-guard [without-evidence]: Do NOT label a wallet custodial or non-custodial without current evidence of its control model.
+[lint-corpus] WARN [avoid] q-crp-oz-rwa-erc3643-trex: sourcing-guard [without-evidence]: Do NOT copy stale hosted signatures without checking pinned source/spec.
+[lint-corpus] WARN [avoid] q-crp-regional-offramp-mobilemoney: sourcing-guard [without-evidence]: Do NOT claim a mobile-money corridor is supported without current provider evidence.
+[lint-corpus] WARN [avoid] q-defi-allbridge-what-is: sourcing-guard [without-evidence]: Do NOT present a launch-era chain list as permanent current coverage or call XRPL a current Core route without current provider evidence.
+[lint-corpus] WARN [avoid] q-defi-bridge-evm-to-stellar-axelar: sourcing-guard [without-evidence]: Do NOT claim a MetaMask route to Stellar is safe or delivers Circle-native Stellar USDC without dated provider evidence.
+[lint-corpus] WARN [avoid] q-defi-build-staking-for-own-token: sourcing-guard [without-evidence]: Do NOT promise yield without identifying a real reward source and risks.
+[lint-corpus] WARN [avoid] q-defi-liquid-staking-whitespace: sourcing-guard [without-evidence]: Do NOT state a permanent global absence or call any XLM yield token a native LST without a validator-staking reward source.
+[lint-corpus] WARN [avoid] q-defi-named-newer-protocols: sourcing-guard [without-evidence]: Do NOT call FxDAO production-ready or JST a current Stellar-specific DeFi protocol without dated evidence.
+[lint-corpus] WARN [avoid] q-defi-perps-whitespace: sourcing-guard [without-evidence]: Do NOT call a named entrant mainnet-live without current deployment evidence.
+[lint-corpus] WARN [avoid] q-eco-defi-market-map: sourcing-guard [without-evidence]: Do NOT hard-code a timeless crowded/whitespace map, infer maturity from tags, or assert a category is empty without a strict dated search and operator verification.
+[lint-corpus] WARN [avoid] q-eco-freighter-wallet: sourcing-guard [without-evidence]: Do NOT freeze platform or feature availability without a dated official source.
+[lint-corpus] WARN [avoid] q-eco-pyusd-stellar-freshness: sourcing-guard [without-evidence]: Do NOT claim PayPal itself is the legal issuer, or state without a source and date that Paxos Trust Company, LLC issues PYUSD today.
+[lint-corpus] WARN [avoid] q-eco-pyusd-stellar-freshness: sourcing-guard [without-evidence]: Do NOT claim PYUSD is absent from Stellar or give a current supply figure without a dated source.
+[lint-corpus] WARN [avoid] q-eco-stablecoins-on-stellar: sourcing-guard [without-evidence]: Do NOT claim PayPal is PYUSD's legal issuer, or state without a source and date that Paxos Trust Company, LLC issues PYUSD today.
+[lint-corpus] WARN [avoid] q-eco-xbull-wallet: sourcing-guard [without-evidence]: Do NOT freeze star counts, broad integration/features, or current maintenance without dated evidence.
+[lint-corpus] WARN [avoid] q-edge-factcheck-soroswap-first-amm: sourcing-guard [without-evidence]: Do NOT substitute a different current TVL without a date, source, and metric scope.
+[lint-corpus] WARN [avoid] q-edge-fresh-latest-protocol-version: sourcing-guard [without-evidence]: Do NOT state a protocol version as definitively current without a dated source or staleness flag.
+[lint-corpus] WARN [avoid] q-hist-cctp-stellar-live-announcement: sourcing-guard [without-evidence]: Do NOT state May 8, 2026 as the SDF/Circle public live-announcement date without a primary source explaining a different milestone.
+[lint-corpus] WARN [avoid] q-hist-yieldblox-v2-2026-exploit: sourcing-guard [without-evidence]: Do NOT pin one exact USD loss without attributing its price basis and source.
+[lint-corpus] WARN [avoid] q-infra-rpc-provider-archive-tier: sourcing-guard [without-evidence]: Do NOT invent pricing, SLA, or provider preference without current provider-owned evidence.
+[lint-corpus] WARN [avoid] q-jutsu-cash-crypto-ramps: sourcing-guard [without-evidence]: Do NOT promise a provider supports a country without a current source.
+[lint-corpus] WARN [avoid] q-org-sdf-enterprise-fund: sourcing-guard [un-prefixed]: Do NOT attribute the MoneyGram stake to the Enterprise Fund or quote unsourced investee amounts.
+[lint-corpus] WARN [avoid] q-pc-bucketlist-vs-merkle-inclusion-proof: sourcing-guard [not-verified]: Do NOT claim an RPC/Horizon/indexer row is self-authenticating or that a compact standard proof API exists without a cited system.
+[lint-corpus] WARN [avoid] q-pc-l2-payment-channels-starlight: sourcing-guard [without-evidence]: Do NOT promote Perun local code or Centaurus Live+Unverified metadata into deployment without primary evidence.
+[lint-corpus] WARN [avoid] q-pc-protocol-upgrade-timing: sourcing-guard [without-evidence]: Do NOT invent a later protocol vote date without a dated primary source.
+[lint-corpus] WARN [avoid] q-protocol-27-cap-0071: sourcing-guard [without-evidence]: Do NOT present network status without a dated live source or freshness caveat.
+[lint-corpus] WARN [avoid] q-rwa-projects-tokenizing-stellar: sourcing-guard [without-evidence]: Do NOT freeze volatile AUM or roster counts without dated primary evidence.
+[lint-corpus] WARN [avoid] q-scf-history-soroswap: sourcing-guard [un-prefixed]: Do NOT state per-round dollar figures without sourcing them to the submissions record or communityfund.stellar.org (unsourced figures that contradict the record's 57,600 / 139,150 / 100,000 / 50,000 are wrong).
+[lint-corpus] WARN [avoid] q-scf-kale-winner-live: sourcing-guard [without-evidence]: Pins the archived first-place project without current ordered-winner evidence.
+[lint-corpus] WARN [avoid] q-scf-open-rfps: sourcing-guard [without-evidence]: Do NOT claim the withdrawn Q3 briefs are currently open without fresh evidence of their reopening.
+[lint-corpus] WARN [avoid] q-scf-passkey-rfps-live: sourcing-guard [without-evidence]: Claims a remembered passkey brief is still open without current status evidence.
+[lint-corpus] WARN [avoid] q-scf-rfp-tooling: sourcing-guard [without-evidence]: Do NOT claim the withdrawn Q3 briefs are currently open without fresh evidence of their reopening.
+[lint-corpus] WARN [avoid] q-soroban-fuzz-testing: sourcing-guard [without-evidence]: Do NOT claim a vendor's practice or finding prevalence without a source that establishes it.
+[lint-corpus] WARN [avoid] q-ti-custodial-account-generation-c-address: sourcing-guard [without-evidence]: Do NOT claim an exchange supports C addresses without a current provider source or omit muxed memo handling.
+[lint-corpus] WARN [avoid] q-ti-freighter-localhost-not-detected: sourcing-guard [without-evidence]: Do NOT lead with CSP/RPC CORS without evidence or export a secret as a workaround.
+[lint-corpus] WARN [avoid] q-ti-scaffold-stellar: sourcing-guard [without-evidence]: Do NOT freeze a crate version, template roster, config format, repository path, or npm start/dev script without an as-of/source check.
+[lint-corpus] WARN [avoid] q-tool-cctp-stellar-integration: sourcing-guard [without-evidence]: Do NOT pin Fast support/fees, copy threshold 1000 without the conflict, or infer Stellar-source Fast from receive handlers.
+[lint-corpus] WARN [avoid] q-tool-passkey-wallet-recovery: sourcing-guard [without-evidence]: Do NOT call a relayer, indexer, reverse lookup, ordinary session key, or connect flow recovery authority without exact deployed-policy evidence.
+[lint-corpus] WARN [corroboration] q-edge-doc-page-sections-soft-empty: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [corroboration] q-scf-skill-stellar-scout: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [corroboration] q-sor-doc-page-sections-followup: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [corroboration] q-sor-doc-title-discovery: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [corroboration] q-ti-explain-repo-payload-status: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [corroboration] q-ti-related-projects-from-content: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [corroboration] q-ti-scout-changelog-contract-check: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [corroboration] q-ti-vocab-project-categories-live: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [corroboration] q-ti-vocab-regions-live: possible negative claim has no corroboration (heuristic review)
+[lint-corpus] WARN [freshness] q-aas-claim-received-claimable-balances: stable golden notes or avoid items cite an "as of <date>" value; confirm it is a historical observation, not a current value
+[lint-corpus] WARN [freshness] q-anchor-endpoint-discovery: stable golden notes or avoid items cite an "as of <date>" value; confirm it is a historical observation, not a current value
+[lint-corpus] WARN [freshness] q-anchor-platform-what: stable golden notes or avoid items cite an "as of <date>" value; confirm it is a historical observation, not a current value
+[lint-corpus] WARN [freshness] q-asset-usdc-eurc-issuer: stable golden notes or avoid items cite an "as of <date>" value; confirm it is a historical observation, not a current value
+[lint-corpus] WARN [freshness] q-defi-ondo-usdy: stable golden notes or avoid items cite an "as of <date>" value; confirm it is a historical observation, not a current value
+[lint-corpus] WARN [freshness] q-pc-bucketlist-vs-merkle-inclusion-proof: stable golden notes or avoid items cite an "as of <date>" value; confirm it is a historical observation, not a current value
+[lint-corpus] WARN [freshness] q-pc-protocol-26-yardstick: stable golden notes or avoid items cite an "as of <date>" value; confirm it is a historical observation, not a current value
+[lint-corpus] WARN [key-fact] q-pc-account-activation-not-found: key fact exceeds 90 characters (112): Distinguishes the current unsponsored minimum (two base reserves) from CAP-0033 sponsored zero-balance creation.
+[lint-corpus] WARN [key-fact] q-soroban-x402-auth-entry-signing: key fact contains multiple predicates: Attributes and dates the official wallet roster instead of presenting it as independently verified.
+[lint-corpus] WARN [key-fact] q-soroban-x402-auth-entry-signing: key fact exceeds 90 characters (115): Checks the exact wallet and transport for auth-entry capability; Albedo is absent from the current official roster.
+[lint-corpus] WARN [key-fact] q-soroban-x402-auth-entry-signing: key fact exceeds 90 characters (99): Attributes and dates the official wallet roster instead of presenting it as independently verified.
+[lint-corpus] WARN [snapshot-date] q-ti-openzeppelin-relayer: key fact requires the golden snapshot date 2026-11-02: Dates any release-versus-rendered-docs mismatch (2026-11-02: v1.9.0 vs 1.8.x stable).
+[lint-corpus] WARN [snapshot-date] q-tool-flutter-mobile-sdk: key fact requires the golden snapshot date 2026-11-02: Dates any version it cites (2026-11-02 pub.dev: wallet 1.1.8, general 3.10.0).
+[lint-corpus] WARN [symmetric-caution] q-aas-claim-received-claimable-balances: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-defi-blend-alternatives: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-defi-category-funding-ratio-live: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-defi-flash-loans: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-defi-phoenix-what-is: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-defi-provide-liquidity-impermanent-loss: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-defi-soroswap-what-is: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-eco-defi-tvl-current: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-eco-hana-wallet-scf: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-eco-xbull-wallet: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-gap-related-projects-empty: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-scf-funding-by-category: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-scf-sdf-marketing-grant: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-soroban-storage-migration: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-soroban-upgradeable-storage-compat: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-tool-skill-detail-install: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] WARN [symmetric-caution] q-tw-escrow-api-auth-custody: improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes
+[lint-corpus] 0 error(s), 84 warning(s)

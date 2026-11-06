@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-11
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-023; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - P4 N2 candidate identifies the 2026-06-29 Confidential Tokens item as a Testnet developer preview with audits underway, not Mainnet approval; solo://proj/49/scratchpad/super-corpus-rebuild--585
   - https://github.com/lumenloop/lumenloop-backend/issues/39
   - 2026-08-11 review: issue #39 is open. It has no linked PR, checks, or reviews. Its only comment and latest timeline activity are kalepail's Raven tracking comment at 2026-07-13T22:54:35Z. `get_document({collection: "articles", id: 8877})` still puts Testnet, developer-preview, and audit-underway facts only in summary prose.
@@ -16,22 +17,29 @@ recurrences:
 
 ## Finding
 
-Lumenloop product-news summaries can drop the network and maturity boundary for
-Confidential Tokens. Omitting that the June 29 item is a Testnet developer
-preview with audits in progress permits an experimental feature to be presented
-as Mainnet-approved production capability.
+This is a request for optional structured network, maturity, and audit-state
+metadata on product-news records, not a reproduced false Mainnet claim.
+On 2026-11-06 article 8877's short summary explicitly says Testnet; its title
+and long summary preserve developer-preview status and audits before Mainnet.
+Expanded retrieval also preserves those boundaries. Later release news is a
+distinct event and does not make the June preview summary incorrect.
 
 ## Evidence
 
-P4 N2 supplied the dated preview/audit qualification in its 2026-07-11
-candidate evidence. This is proposed until the specific live Lumenloop summary
-is retained alongside the primary announcement.
+The 2026-07-11 P4 N2 candidate supplied primary preview/audit qualifications but
+did not retain a live Lumenloop summary that dropped them. Fresh article 8877,
+adjacent article 8916, and research 139 preserve the qualifications. Therefore
+current correct prose is not proof that a previously captured defect was fixed:
+the original alleged false-content trigger remains unsubstantiated. The fresh
+calls and receipt hashes are in the 2026-11-06 remaining-sweep report.
 
 ## Recommendation
 
-Require product-news records to carry `network`, `maturity`, `auditStatus`, and
-`asOf` fields. Generated text should lead with Testnet/preview status whenever
-that is the source's current boundary.
+Consider source-backed `network`, `maturity`, `auditStatus`, and `asOf` metadata
+where the announcement supports those fields. Preserve the existing Testnet,
+preview, and audit qualifications in generated prose; leave unknown fields
+unknown. Treat schema enrichment separately from any future concrete summary
+that incorrectly promotes preview status into Mainnet production capability.
 
 ## Current verification — 2026-11-06
 

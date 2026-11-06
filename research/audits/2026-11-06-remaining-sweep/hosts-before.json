@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-06T14:01:27.467Z",
+  "checks": [
+    {
+      "host": "raven.stellar.org",
+      "path": "/mcp",
+      "status": 401,
+      "location": null,
+      "challenge": "Bearer realm=\"OAuth\", resource_metadata=\"https://raven.stellar.org/.well-known/oauth-protected-resource/mcp\", scope=\"mcp\""
+    },
+    {
+      "host": "raven.stellar.org",
+      "path": "/.well-known/oauth-authorization-server",
+      "status": 200,
+      "location": null,
+      "challenge": null
+    },
+    {
+      "host": "raven.stellar.org",
+      "path": "/.well-known/oauth-protected-resource/mcp",
+      "status": 200,
+      "location": null,
+      "challenge": null
+    },
+    {
+      "host": "raven.stellar.buzz",
+      "path": "/mcp",
+      "status": 308,
+      "location": "https://raven.stellar.org/mcp",
+      "challenge": null
+    },
+    {
+      "host": "raven.stellar.buzz",
+      "path": "/.well-known/oauth-authorization-server",
+      "status": 308,
+      "location": "https://raven.stellar.org/.well-known/oauth-authorization-server",
+      "challenge": null
+    },
+    {
+      "host": "raven.stellar.buzz",
+      "path": "/.well-known/oauth-protected-resource/mcp",
+      "status": 308,
+      "location": "https://raven.stellar.org/.well-known/oauth-protected-resource/mcp",
+      "challenge": null
+    },
+    {
+      "host": "agents.stellar.buzz",
+      "path": "/mcp",
+      "status": 308,
+      "location": "https://raven.stellar.org/mcp",
+      "challenge": null
+    },
+    {
+      "host": "agents.stellar.buzz",
+      "path": "/.well-known/oauth-authorization-server",
+      "status": 308,
+      "location": "https://raven.stellar.org/.well-known/oauth-authorization-server",
+      "challenge": null
+    },
+    {
+      "host": "agents.stellar.buzz",
+      "path": "/.well-known/oauth-protected-resource/mcp",
+      "status": 308,
+      "location": "https://raven.stellar.org/.well-known/oauth-protected-resource/mcp",
+      "challenge": null
+    }
+  ]
+}

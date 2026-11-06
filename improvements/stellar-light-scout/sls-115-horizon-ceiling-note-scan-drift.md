@@ -1,7 +1,7 @@
 ---
 id: sls-115
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-06
 upstreamTitle: "Refresh or invalidate the Horizon ceiling answer when its scanned source changes"
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - "At that exact scannedRef, internal/ingest/main.go line 38 defines MaxSupportedProtocolVersion uint32 = 30: https://github.com/stellar/stellar-horizon/blob/597544b60c20f8536d532d32abca8462394874f3/internal/ingest/main.go#L38"
   - "The selected note cites 430a28e79b3b43c213840e45523519ca11251c0a and accurately labels its historical October 8 observation. The defect is selecting that older fact for the current-source question, not fabricating the historical value."
   - ".agents/rounds/2026-11-06-remaining-sweep/other.md and cross-review.md record author and independent live verification. This recurs after retired sls-087; its October 10 resolution remains in improvements/resolved.json."
+  - upstream issue filed 2026-11-06: https://github.com/Stellar-Light/stellarlight/issues/1933
 ---
 
 ## Finding

@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-11
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-020; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - P4 N2 live-candidate review found the indexed Zipper Protocol 27 item remains a pre-vote guide saying "mainnet vote July 8" and cannot itself establish activation; solo://proj/49/scratchpad/super-corpus-rebuild--585
   - the existing ll-015 finding independently records the linked primary source and Horizon boundary as July 8 activation, showing why schedule text must not stand in for current state
   - public guide rechecked 2026-07-13: its canonical/metadata and rendered text still describe the July 8 vote and say to prepare "before mainnet vote"; Horizon ledger 63386819 records protocol_version 27 at 2026-07-08T17:00:10Z
@@ -18,10 +19,15 @@ recurrences:
 
 ## Finding
 
-Lumenloop's Protocol 27 editorial retrieval leaves a pre-vote scheduling item as
-the available event record without a superseding activation/status record. A
-consumer can recover the July 8 vote schedule but cannot determine from that
-record whether the vote passed or when Mainnet activated.
+The exact Zipper guide retrieval still returns pre-vote article 8084 without
+an explicit link to the correct post-vote activation state. The guide alone
+cannot establish whether the July 8 vote passed or when Mainnet activated.
+
+The corpus is no longer limited to scheduling information: on 2026-11-06 a broad
+search finds post-vote research 141. Its July 9 activation date is separately
+tracked as incorrect by ll-015. The remaining request here is a source-backed
+relation from the historical guide to the current state, not a claim that no
+post-vote record exists anywhere in Lumenloop.
 
 ## Evidence
 
@@ -34,9 +40,11 @@ unknown.
 
 ## Recommendation
 
-Publish or index a post-vote record with separate `scheduledAt`, `voteResult`,
-and `activatedAt` fields, and mark the pre-vote guide as superseded for current
-status queries. Do not make a schedule alone answer a passage/activation query.
+Link the historical guide to a post-vote record backed by the correct July 8
+activation evidence. Distinguish `scheduledAt`, `voteResult`, and `activatedAt`
+where supported, and direct current-status queries to the later state without
+deleting or rewriting the historical guide. Correct research 141's wrong date
+under ll-015; merely linking an incorrect post-vote record is insufficient.
 
 ## Current verification — 2026-11-06
 

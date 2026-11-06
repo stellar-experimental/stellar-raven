@@ -1,0 +1,66 @@
+{
+  "observedAt": "2026-11-06T14:26:51.960074+00:00",
+  "checks": [
+    {
+      "name": "compile",
+      "argv": [
+        "npm",
+        "run",
+        "eval:qa:compile"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "register",
+      "argv": [
+        "npm",
+        "run",
+        "eval:qa:register"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "register-check",
+      "argv": [
+        "npm",
+        "run",
+        "eval:qa:register",
+        "--",
+        "--check"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "qa-lint",
+      "argv": [
+        "npm",
+        "run",
+        "eval:qa:lint",
+        "--",
+        "--since",
+        "d5f3a280cc58326ff70719f30f3301ca077a4d51",
+        "--stale",
+        "--enforce-floors"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "index",
+      "argv": [
+        "npm",
+        "run",
+        "improvements:index"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "improvements-lint",
+      "argv": [
+        "npm",
+        "run",
+        "improvements:lint"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

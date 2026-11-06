@@ -4,6 +4,7 @@ service: stellar-light-scout
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row sls-029; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - live Scout oracle search returns provider-level Live labels without product/network evidence tiers
   - official Band mapping plus live reads verify active mainnet relays while its published testnet contract is absent
   - RedStone public-contract mappings plus read-only simulations verify current mainnet feeds
@@ -32,6 +33,18 @@ recurrences:
 ---
 
 ## Finding
+
+The 2026-11-06 oracle search distinguishes project deployments, including DIA
+testnet versus Band/RedStone mainnet, but lacks per-feed evidence. Band, DIA,
+and RedStone have `products: null`. Lightecho has one mainnet `oracle-feed`
+product with `contractId: null` and a stale-price caution dated 2026-08-13.
+These fields do not establish whether any particular feed is updating now.
+
+Issues #514 and #742 are both closed at this check. Older recurrence entries
+correctly describe #742 as open at their observation dates; it is no longer an
+open residual tracker. No issue closure establishes a deployed per-feed fix.
+
+### Historical discovery — 2026-07-10/11
 
 Oracle discovery collapses provider identity, product family, network, and
 evidence tier into a project-level status. This makes materially different
@@ -75,7 +88,8 @@ Model oracle deployments per product and network:
 - supported feed list plus as-of/source URL;
 - separate integration/listing relationships from verified consumption.
 
-Add Band, DIA, Chainlink, RedStone, and Lightecho regression fixtures covering
-the exact distinctions above. Search summaries must not promote a provider
+Add dated Band, DIA, Chainlink, RedStone, and Lightecho fixtures using fresh
+provider/product/network evidence. The historical July feed samples above must
+not be reused as current availability checks. Search summaries must not promote a provider
 brand into a different product's deployment claim or a deployed contract into
 a currently updating feed.

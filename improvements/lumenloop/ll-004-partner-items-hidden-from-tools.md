@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-03
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-004; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - 2026-09-09T02:45:05.123Z fresh name-only listing check returned 21 authenticated tools and all three account-scoped names. At 02:45:18.924Z the same key GET /v1/me returned tools.available=21 and tools.visible=21. The anonymous control returned 18 tools and none of those names. No partner descriptions or paid operation were requested.
   - live regression re-check 2026-07-14: authenticated partner-tier GET /v1/tools returned the same 18 rows as the anonymous control and omitted list_my_research, request_research, and research_result, while same-key GET /v1/me reported tools.available=21 and tools.visible=21
   - upstream regression issue filed 2026-07-14: https://github.com/lumenloop/lumenloop-backend/issues/42
@@ -26,11 +27,15 @@ recurrences:
 
 ## Finding
 
-The authenticated tool listing intermittently omitted partner-visible names while `/v1/me` still reported those tools as available.
-The defect reproduced again on 2026-08-11 after passing checks in July.
-The 2026-09-09 check passes: authenticated discovery and account metadata both report 21 tools.
-The anonymous control exposes only 18 public tools.
-Keep this finding `reported-upstream` pending independent verification and resolution evidence for the intermittent defect.
+Authenticated discovery and account metadata disagree on the tool count in the
+2026-11-06 check: the same key returns 18 tool names while `/v1/me` reports
+21 available/visible tools. Two checks reproduced that mismatch. The anonymous
+control also returns 18 names. The historical 2026-09-09 check passed with 21.
+
+This establishes a count/scope inconsistency, not entitlement to partner details.
+A guest-scoped credential may intentionally see only public names; the count
+semantics and account scope need clarification before attributing the mismatch
+to missing partner access. No partner detail or paid account operation was run.
 
 ## Evidence
 
@@ -49,6 +54,9 @@ One fresh passing observation does not establish that the intermittent cause is 
 
 ## Recommendation
 
-Keep the authenticated listing and `/v1/me` counts consistent, and link the deployed
-fix before closing #42. Consumers should retain the count cross-check as a drift guard.
-Do not remove discovery safeguards on one passing observation.
+Define the scope of `available` and `visible` counts and make discovery consistent
+with that scope. If authenticated guest credentials intentionally list only
+public tools, expose that distinction instead of implying 21 visible results.
+If the credential is entitled to additional names, restore the matching listing.
+Keep the count cross-check as a drift guard; do not expose partner details merely
+to equalize counts or infer a fix from one passing observation.

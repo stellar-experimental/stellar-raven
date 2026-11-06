@@ -6,6 +6,7 @@ discovered: 2026-11-03
 repo: cloudflare/agents
 upstreamTitle: "createAI: string catalog models drop Anthropic adaptive thinking and effort providerOptions"
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row cs-010; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - "2026-11-03: npm view workers-ai-provider@4.0.1 deprecated returns 'Deprecated. Use createAI from agents/models/ai-sdk, or ai-search-provider for AI Search'."
   - "2026-11-03: .agents/rounds/2026-11-03-demo-createai/repro/ (npm ci --ignore-scripts && npm run repro) exited 0 with agents@0.32.0, ai@7.0.137, and @ai-sdk/anthropic@4.0.78. observed.jsonl holds the captured requests."
   - "2026-11-03: the same script with agents@0.33.0 (released 2026-11-03) produced byte-identical output."
@@ -50,15 +51,15 @@ That is the provider-native route, not the catalog `/run` route.
 In August 2026, the provider-native route did not serve `claude-fable-5` through Unified Billing for us.
 We did not repeat that check with `createAI`.
 
-### Second, lower-priority gap: stream resume has no opt-out
+### Separate declined request: stream resume opt-out
 
 The binding transport resumes every catalog stream that returns `cf-aig-run-id`.
 No public setting turns this off.
-[cloudflare/agents#2790](https://github.com/cloudflare/agents/issues/2790) already requests an opt-out.
+[cloudflare/agents#2790](https://github.com/cloudflare/agents/issues/2790) requested an opt-out; automated triage closed it `not_planned` on 2026-11-03.
 We have one more use case for it: our current `workers-ai-provider` configuration sets `resume: false`.
 We have not seen any failure that automatic resume causes.
 Our reproduction shows one inference call and one resume request, not a second inference.
-Thus we support #2790 and do not file a separate request.
+The missing control remains observable, but the request is declined rather than pending. Do not re-file it without materially new evidence.
 
 ## Evidence
 
@@ -107,8 +108,6 @@ Source lines at tag `agents@0.32.0`, unchanged on `main` at `1f3bd921`:
    Add captured-request tests for `thinking: { type: "adaptive" }` and effort `low` and `xhigh`.
 2. Until then, warn when `providerOptions.anthropic` is present on a string catalog model and the request drops it.
    Document which provider options each wire format forwards.
-3. Lower priority: add the stream-resume opt-out that #2790 requests.
-   A stream with that option must surface its connection failure without a resume request.
 
 ## Current upstream disposition — 2026-11-06
 

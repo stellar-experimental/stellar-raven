@@ -4,6 +4,7 @@ service: stellar-light-scout
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row sls-033; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - paginated q=wallet returned 164 keyword rows but independent exact raw-type projections returned 60 and then 59 Wallet-typed records within one hour
   - later snapshot contained 54 Live, 1 Development, and 4 Inactive rows with duplicate-name Stellar Passport records under different slugs
   - StellarTerm exact project response was typed DEX, not Wallet
@@ -35,6 +36,20 @@ recurrences:
 
 ## Finding
 
+Exact wallet enumeration and name deduplication now work: on 2026-11-06,
+`type=Wallet&limit=100` returns 72 rows, `total: 72`, and 72 distinct normalized
+names. The residual is metadata coverage: 10 rows have null `productKind`,
+and 39 have empty availability. Seven of the null-kind rows are labeled Live
+(smart-treasury, chainless, amulets, piggy-wallet, ibis, rehive, privy); two are
+Development and MXlet is Inactive. Missing availability means unknown, not
+unavailable. Project lifecycle alone does not establish current app availability.
+
+Issues #519 and #742 are closed. Their closure does not complete the remaining
+product-kind and source-backed platform coverage. The historical enumeration
+failure below is retained as evidence of the original scope, not a current defect.
+
+### Historical discovery — 2026-07-10/11
+
 Scout does not offer a first-class exact-type wallet enumeration with canonical
 deduplication and availability semantics. A keyword wallet query returned 164
 rows. Independent consumers paging and filtering each raw `types` array saw 60
@@ -62,19 +77,15 @@ unsafe.
 
 ## Recommendation
 
-Add exact structured filters and enumeration metadata:
+Preserve the deployed exact `type=Wallet` filter, total/count metadata, and
+current deduplication. Curate product-kind and platform-availability coverage
+with product-specific sources and observation dates. Keep unknowns explicit,
+including MXlet unless new evidence supports classification.
 
-- `type=Wallet` with server-side exact matching;
-- canonical record ID plus duplicate/alias links and default deduplication;
-- total/count and complete pagination metadata tied to `generatedAt`;
-- separate project lifecycle from per-platform app availability;
-- per-platform store URL, last-checked time, and reachable/unavailable state;
-- an explicit product kind covering end-user wallet, hardware wallet,
-  connectivity protocol, wallet-building SDK, integration kit, and smart-account
-  tooling, without collapsing one into another;
-- product-specific custody, recovery, platform, and signing-capability source
-  fields rather than inferring them from type or module membership;
-- explicit warnings when keyword/semantic results are not exact type matches.
-
-Add regression fixtures for StellarTerm (DEX, not Wallet), duplicate Stellar
-Passport records, and xBull's directory/store disagreement.
+Distinguish end-user wallets, hardware wallets, connectivity protocols,
+wallet-building SDKs, integration kits, and smart-account tooling. For known
+platform availability, provide the store/operator URL, last-checked time, and
+reachable/unavailable state. Custody, recovery, and signing capabilities require
+product-specific evidence rather than inference from type or module membership.
+Keep the historical duplicate and directory/store cases as dated regression
+fixtures; do not reintroduce an already implemented exact-enumeration request.

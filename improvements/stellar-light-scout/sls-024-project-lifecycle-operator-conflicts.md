@@ -4,6 +4,7 @@ service: stellar-light-scout
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row sls-024; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - service-owner verification issue source backlink added 2026-07-14: https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-4971116711
   - direct Scout project queries and operator-site/repository re-checks for Slender, Laina, K2 Lend, and OrbitCDP on 2026-07-10
   - 2026-07-11 live `searchProjects({q:"streaming recurring payments"})` response: all 19 returned projects were `Live`; Fluxity was `Live` plus `Unverified` with null `statusAsOf`, `statusBasis`, and `statusSourceUrl`, and empty `supportedNetworks`
@@ -46,23 +47,20 @@ This partial fix does not meet the original deployment-provenance recommendation
 
 ## Finding
 
-At discovery, Scout lifecycle labels lacked populated provenance and deployment qualifiers.
-The schema exposes `statusAsOf`, `statusBasis`, `statusSourceUrl`, and
-`supportedNetworks`, but project records left all of them null or
-empty. A consumer therefore could not tell whether `Live` means an active entity,
-an operator announcement, an accessible product surface, or verified mainnet
-deployment.
+The original lifecycle-provenance gap is filled in the 2026-11-06 population
+scan: all 1,006 projects have lifecycle date/basis, and non-unverified lifecycle
+claims have sources. Deployment qualifiers remain only partly evidenced.
+Of 104 positive deployment qualifiers, 55 lack a deployment source and 35 have
+no supported-network list. These missing fields are unknowns, not proof that
+the stated deployment is false or a network unsupported. RenderGate and CleverCon
+now carry testnet qualifiers; the earlier mainnet overstatement is no longer
+current for those rows.
 
-The label is not necessarily wrong when it conflicts with an operator surface:
-an operator page can be stale, an app can remain reachable after abandonment,
-and a project can be active without a mainnet product. The missing qualifiers
-make those distinct states indistinguishable.
-
-Scout 1.8.40's Repo `activityState` and `activitySignals` are a useful partial
-response, but they cannot replace project lifecycle provenance: `dormant` is a
-known commit older than 180 days and `unknown` has no commit date, neither a
-defunct verdict. They provide neither a project `statusBasis` nor a
-`statusSourceUrl`, nor a deployment qualifier.
+The remaining request is provenance for positive deployment claims, kept
+separate from entity lifecycle and repository activity. A `Live` organization
+or an active repository does not by itself establish a mainnet product.
+Historical discovery observations below explain the original scope and must
+not be read as today's lifecycle-field population.
 
 ## Evidence
 

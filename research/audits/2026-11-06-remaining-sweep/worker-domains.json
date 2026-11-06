@@ -1,0 +1,18 @@
+{
+  "status": 200,
+  "success": true,
+  "domains": [
+    {
+      "hostname": "agents.stellar.buzz",
+      "service": "stellar-raven-codemode",
+      "zone_name": "stellar.buzz",
+      "environment": "production"
+    },
+    {
+      "hostname": "raven.stellar.buzz",
+      "service": "stellar-raven-codemode",
+      "zone_name": "stellar.buzz",
+      "environment": "production"
+    }
+  ]
+}
