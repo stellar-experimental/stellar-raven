@@ -1,0 +1,14 @@
+{
+  "url": "https://developers.stellar.org/.well-known/agent-skills/assets/skill.md",
+  "at": "2026-11-06T18:58:35.614420+00:00",
+  "status": 200,
+  "sha256": "ff836f85491d74fcd2f2d0d1331bff502f45c8ad53b6bf351dc39a1114976b55",
+  "lines": [
+    "For fixed-supply tokens, lock the issuer. Master weight 0 disables only the master key, so first remove any other signers (or confirm their combined weight can never meet the account's thresholds):",
+    "// With no other signers, the issuer can never issue more tokens",
+    "- `transfer(from: Address, to: Address, amount: i128)`",
+    "- `symbol() -> Symbol`",
+    "> disables only the master key: any other signers whose combined weight",
+    "  confirm the master key weight is `0` and no other signers remain (or their"
+  ]
+}

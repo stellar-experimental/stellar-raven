@@ -61,6 +61,9 @@ other jobs alone. The script refuses pre-reset execution and expires after seven
 The interim release contains reviewed harness changes and findings. Preserve the
 shipped primary/fallback unless the complete study and promotion gates justify a
 change. The conditional route patch remains unreviewed and outside production.
+The later [assets pin follow-up](2026-11-06-assets-type-handoff.md) updates current
+production content only. Restore the frozen 092ce423 catalog for all remaining
+measurement arms; do not refresh that pin or import the new catalog into the study.
 
 The era uses absolute paths rooted at
 `/Users/kalepail/Desktop/stellar-raven-codemode`. Restore the exact clean frozen
