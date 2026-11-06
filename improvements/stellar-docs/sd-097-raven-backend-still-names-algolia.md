@@ -1,10 +1,12 @@
 ---
 id: sd-097
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-06
 upstreamTitle: Building with AI still describes Raven's Docs backend as Algolia
 evidence:
+  - "2026-11-06T18:41:02.769856Z ordinary live GET says Stellar Docs (via Mintlify), with no Algolia occurrence. SHA-256 6d5b6d53c7f0abe75c28c40b4d07bec3df92a87e31c722d0dfaf6094d4ab5d35."
+  - "Deployed fix: https://github.com/stellar/stellar-docs/pull/3066; root checked the merged PR, passing checks, maintainer approval and ordinary published page."
   - "2026-11-06 follow-up: https://github.com/stellar/stellar-docs/pull/3066 proposes the Mintlify wording correction; checks green, REVIEW_REQUIRED/BLOCKED, not deployed. Bot self-review is not independent maintainer acceptance. Full live/PR evidence: .agents/rounds/2026-11-06-remaining-sweep/docs.md."
   - "2026-11-06 GET https://developers.stellar.org/docs/build/building-with-ai.md returns 'Under the hood it wraps Stellar Docs (via Algolia), Lumenloop, Stellar Light, and ecosystem skills'."
   - "stellar/stellar-docs main 310030b6078a37ed5a1959da4955e516266ac897 docs/build/building-with-ai.mdx contains the same backend name."
@@ -30,7 +32,8 @@ Raven's `src/adapters/stellar-docs.ts` and `specs/stellar-docs.json` implement t
 Replace `via Algolia` with `via Mintlify`, or omit the backend name.
 Keep the source-family list and canonical Raven host unchanged.
 
-## Pending upstream patch — 2026-11-06
+## Live fix — 2026-11-06
 
-PR #3066 proposes the one-line correction and has passing checks, but still requires review.
-The ordinary deployed page still says Algolia. Recheck it after merge and deployment.
+PR #3066 merged and the ordinary deployed page now says Mintlify.
+The previous pending/deployment evidence above records the earlier observation.
+Independent retirement review is required before removal.
