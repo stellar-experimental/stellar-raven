@@ -1,0 +1,92 @@
+{
+  "contract": "historical-judge-pilot-inputs/v1",
+  "purpose": "Non-promotable judge calibration only; not current answer-quality evidence",
+  "source": "eval/local-lanes/playground-semantic/2026-11-03T19-08-40-658Z-6c8c4ee6-77c1-44ac-b8d8-6ba841bd8692-playground-semantic.json",
+  "sourceSha256": "59fde356c50b5178457072e76e88650b30f0a7202cbc19226866ccd22387875a",
+  "sourceRevision": "a44aaa4cb1615be5cf8ee2916178f03cf00cf9c0",
+  "seed": "2026-11-06-independent-judge-pilot",
+  "inputs": [
+    {
+      "id": "q-eco-nft-marketplace-whitespace",
+      "promptSha256": "c0fecb3920607232ff2a88bc0623af0ad91e191f2d4926893d680f1e2c01def0"
+    },
+    {
+      "id": "q-ti-bindings-to-nextjs-integration",
+      "promptSha256": "9fecc58c5e43ea3180aaa804703b0548d272af0ce9dcdffd57f6c33f16a8197a"
+    },
+    {
+      "id": "q-protocol-scp-consensus-algorithm",
+      "promptSha256": "5dfa78403243918b87c05efaf4f5b1bd8177f52541e4e6db2b01667bb66074ff"
+    },
+    {
+      "id": "q-comp-anchor-compliance-stack",
+      "promptSha256": "ff790c126ebdaa7f211db847c8410240c6e469484ea7be03da5715a0dac0b35c"
+    },
+    {
+      "id": "q-sor-contract-trustlines-c-address",
+      "promptSha256": "395975396ff0bc547a436ce49c4a00eb4b1498be38398259acdcb05a6d17eafe"
+    },
+    {
+      "id": "q-scf-open-rfps-live",
+      "promptSha256": "61962bd3f36f58050d72e54933fcea8054c0be9bbc659c02f1971bd7edc1bf1f"
+    },
+    {
+      "id": "q-tool-lab-what-is",
+      "promptSha256": "e91b95257d8d68d831318277c84bb3cfa68547af467842f42681c7d7c4935d3b"
+    },
+    {
+      "id": "q-defi-soroswap-what-is",
+      "promptSha256": "3e3ff904d17d9ce22d1d0ff8dce7f55cce207a7d1bffef6e698cd9f411dfe5cb"
+    },
+    {
+      "id": "q-asset-amm-fee-reserve",
+      "promptSha256": "9270940a0270f85e6d0de4dfdef4ff9eb287c2247d8ca64b17a07c2e73792834"
+    },
+    {
+      "id": "q-scf-ambassador-program",
+      "promptSha256": "cc4a25531f44df5c11c253d6308e8da2c0bbda5a18b3c09772fc761bf4fd3db5"
+    },
+    {
+      "id": "q-sep-45-contract-auth",
+      "promptSha256": "5f7fd2f53e26f87873e22045bbb62dbd0378c7cebe16ca45c8d995885992df22"
+    },
+    {
+      "id": "q-aas-burn-clawback-redemption-mechanics",
+      "promptSha256": "ae693819aa5c86b2b1a0732bed6d6d5020829bc0b5627ef738475e795346226a"
+    },
+    {
+      "id": "q-org-sdf-enterprise-fund",
+      "promptSha256": "57a0cc21c8ea2405865d8fb5ee58563687da535d5dfdaaec738c8e00f34d699e"
+    },
+    {
+      "id": "q-tool-rust-soroban-sdk",
+      "promptSha256": "7585c80415fbd5f77a127bb6b331fe57d3efcb63c1d707fcdeed20d6870ad8f2"
+    },
+    {
+      "id": "q-sep-wallet-seps-list",
+      "promptSha256": "da24c7f7a433dbf97353b14ff1aa7423fb0a1712b1eb757bf768a71a8168d750"
+    },
+    {
+      "id": "q-soroban-token-transfer-pattern",
+      "promptSha256": "da197f8490c5cf8cc4732c0c4aedc66ff18e234afb2a9f7278594f372b612b1d"
+    },
+    {
+      "id": "q-jutsu-cash-crypto-ramps",
+      "promptSha256": "7878fead26b6fe065fe2a73a49721978ee7b2aac254ac8652db535f564a24b7d"
+    },
+    {
+      "id": "q-defi-reflector-oracle",
+      "promptSha256": "551d8d7da2b5ed036c3835732d22d54152d6305f73dbf28418549d3c7626be34"
+    },
+    {
+      "id": "q-sor-confidential-tokens",
+      "promptSha256": "06da2449143e8e983e8219b25631bf15b357f4ec9adadc2b878877ea905de59a"
+    },
+    {
+      "id": "q-soroban-storage-migration",
+      "promptSha256": "ef013f8d56a58ad2b3947e9ed1d7744b70dcae6731456d2b68e5a47dc317252b"
+    }
+  ],
+  "output": "eval/local-lanes/playground-final-resolution/judge-pilot-inputs.json",
+  "outputSha256": "872adee186b2713c53d2c326c8783725d70c1118e235a662ca8a9c74504f6546"
+}

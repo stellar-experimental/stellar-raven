@@ -39,6 +39,7 @@ import {
   buildQuarantineArtifact,
   buildPlaygroundArtifactMeta,
   deriveQuarantineState,
+  playgroundClientErrorDetails,
   sanitizeGenerationCheckError,
   sha256 as contractSha256,
   treeGenerationSha256
@@ -383,7 +384,7 @@ async function readSse(body, onFrame, onParseError) {
   if (buffer.trim()) onParseError(`unterminated SSE event: ${buffer.slice(0, 300)}`);
 }
 
-async function runCase(item, { endpoint, timeoutMs, cookie, maxBudgetUsd }) {
+export async function runCase(item, { endpoint, timeoutMs, cookie, maxBudgetUsd }) {
   const started = Date.now();
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -393,6 +394,7 @@ async function runCase(item, { endpoint, timeoutMs, cookie, maxBudgetUsd }) {
   let responseStatus = null;
   let httpError = null;
   let clientError = null;
+  let clientErrorDetails = null;
   let firstFrameMs = null;
   let firstMeaningfulMs = null;
   try {
@@ -400,6 +402,8 @@ async function runCase(item, { endpoint, timeoutMs, cookie, maxBudgetUsd }) {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        // Synchronous judging can delay processing an idle socket's close event.
+        connection: "close",
         origin: new URL(endpoint).origin,
         "sec-fetch-site": "same-origin",
         cookie,
@@ -445,6 +449,7 @@ async function runCase(item, { endpoint, timeoutMs, cookie, maxBudgetUsd }) {
     }
   } catch (error) {
     clientError = error instanceof Error ? error.message : String(error);
+    clientErrorDetails = playgroundClientErrorDetails(error, responseStatus === null ? "fetch" : "stream");
   } finally {
     clearTimeout(timeout);
   }
@@ -477,7 +482,8 @@ async function runCase(item, { endpoint, timeoutMs, cookie, maxBudgetUsd }) {
     firstMeaningfulMs,
     httpError,
     sseErrors: [...errorFrames, ...sseErrors],
-    clientError
+    clientError,
+    clientErrorDetails
   };
 }
 
@@ -762,6 +768,7 @@ async function main() {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        connection: "close",
         origin: new URL(endpoint).origin,
         "sec-fetch-site": "same-origin",
         cookie
@@ -873,6 +880,7 @@ async function main() {
       httpError: run.httpError,
       sseErrors: run.sseErrors,
       clientError: run.clientError,
+      clientErrorDetails: run.clientErrorDetails,
       verdict,
       evidencePack: { packVersion: PACK_VERSION, chars: transcriptEvidence.length, sha256: transcriptEvidence ? sha256(transcriptEvidence) : null }
     };

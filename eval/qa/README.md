@@ -521,6 +521,7 @@ For an approved paid run, replace `--dry-run` with these flags:
 | `--allow-golden-drift` | Acknowledge goldens dated after the source collection |
 | `--allow-empty` | Permit a zero-row flip artifact |
 | `--dry-run` | Inspect selection and guards without paid calls |
+| `--diagnostic-source` | Re-grade eligible explicit IDs from a settled Playground source, retaining failed-answer cells; always emit a non-promotable diagnostic |
 | `--help` / `-h` | Print the parser's full usage contract |
 
 `--cases-ref` does not establish pack identity. A `p6` source still differs from a `p9` re-judge.
@@ -532,6 +533,22 @@ The flip baseline must reproduce its snapshot and share current judge identity a
 Re-judging records preflight and postflight executable identities separately from judging outcomes.
 An identity or attestation failure remains visible even when judging also fails.
 Missing grades produce `agreement: null`; they do not count as disagreements.
+
+`--diagnostic-source` permits analysis of valid saved answers in a settled shard containing
+judge errors or unsuccessful answer terminals. It requires explicit `--ids`, matching case
+inputs, recorded model provenance, and a complete, consistent cost ledger. It rejects quarantine,
+identity drift, missing costs, and unattempted rows. Failed-answer rows remain skipped observations
+in the artifact; they do not become successful answers or disappear from the selected denominator.
+Judge calls are accounted only where the source actually had an answer. This mode does not waive
+the ordinary model/rubric/pack or golden-time guards. The new artifact retains the original
+source budget and non-promotability under `meta.diagnosticSource`, sets `nonPromotable: true`
+and `summary: null`, and cannot be used to promote a model or claim an aggregate comparison.
+The source file is never edited; changing its budget/status flags is not a valid workaround.
+
+The opt-in [Gateway second judge](gateway-judge.md) uses standard Cloudflare authentication
+and a tool-free OpenAI Responses request. It has separate cash and call authorization and
+calibration. Claude remains the default measurement. The archived Codex CLI adapter is not
+supported: its documented CLI controls do not establish the required blind tool boundary.
 
 ### Flip panel annotations
 

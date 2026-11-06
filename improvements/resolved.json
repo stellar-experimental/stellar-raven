@@ -1392,6 +1392,46 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-094-gettransactions-result-meta-xdr-type.md"
     },
     {
+      "id": "sd-095",
+      "title": "The SDP Embedded Wallets guide says the private key never leaves the receiver's device. Some passkey providers synchronize credentials…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3042",
+        "https://github.com/stellar/stellar-docs/pull/3057"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3042",
+        "https://github.com/stellar/stellar-docs/pull/3057"
+      ],
+      "liveRecheck": "2026-11-06T18:41:02.995406+00:00 ordinary GET https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets.md: provider-managed private key, device-bound versus synced distinction, one-passkey lost-access warning, no device-only storage claim; SHA256 e57186a4f72e0024d276a2626068e52354bd50fbd0c4ef3a4b8ba2aee48653bf. Separate reviewer repeated Markdown/HTML/full-export checks at 18:42 UTC.",
+      "reviewEvidence": "Codex frontier gpt-6-astra/high, independent lane t35p; research/audits/2026-11-06-playground-final-resolution/handoff-retirement-review.md. Fresh live triggers, maintainer approvals, deployed merge checks, adjacent content and repo references verified. Fable unavailable due subscription quota. Resolution comments posted/read back on both upstream refs; no active golden/register refs.",
+      "sourceCommit": "5ababf34190a23badac7979f58e0823e9125efe6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/5ababf34190a23badac7979f58e0823e9125efe6/improvements/stellar-docs/sd-095-sdp-passkey-synchronization-boundary.md"
+    },
+    {
+      "id": "sd-097",
+      "title": "The Building with AI page says Raven reads Stellar Docs through Algolia. Raven now uses Mintlify Discovery for Docs search and page reads.…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-06",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3064",
+        "https://github.com/stellar/stellar-docs/pull/3066"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3064",
+        "https://github.com/stellar/stellar-docs/pull/3066"
+      ],
+      "liveRecheck": "2026-11-06T18:41:02.769856+00:00 ordinary GET https://developers.stellar.org/docs/build/building-with-ai.md: Mintlify backend, zero Algolia occurrences on the page, unchanged canonical host and source list; SHA256 6d5b6d53c7f0abe75c28c40b4d07bec3df92a87e31c722d0dfaf6094d4ab5d35. Separate reviewer repeated Markdown/HTML/full-export checks at 18:42 UTC.",
+      "reviewEvidence": "Codex frontier gpt-6-astra/high, independent lane t35p; research/audits/2026-11-06-playground-final-resolution/handoff-retirement-review.md. Fresh live triggers, maintainer approvals, deployed merge checks, adjacent content and repo references verified. Fable unavailable due subscription quota. Resolution comments posted/read back on both upstream refs; no active golden/register refs.",
+      "sourceCommit": "5ababf34190a23badac7979f58e0823e9125efe6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/5ababf34190a23badac7979f58e0823e9125efe6/improvements/stellar-docs/sd-097-raven-backend-still-names-algolia.md"
+    },
+    {
       "id": "sk-001",
       "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145,…",
       "service": "skills",

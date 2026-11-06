@@ -1,0 +1,126 @@
+{
+  "contract": "playground-judge-calibration-summary/v1",
+  "sourceSha256": "397d8f3951ea0398819c088eb2037c2a918a72b83f1c7ec648702b6a6ee0f9aa",
+  "planSha256": "fa71c054e1aaa85a5479ca972ce3807c45a33c9459652ee18090e73e2baa24c6",
+  "judgeIdentitySha256": "92dc674584eec8acc9692b72d6ade60c25da5d1cafd29d6efb5a962b966d5bff",
+  "calls": 27,
+  "knownFixturesPassed": 7,
+  "historicalPilotCount": 20,
+  "errors": 0,
+  "cashUsd": 0.416287,
+  "pilotCostUsd": {
+    "mean": 0.018488625,
+    "median": 0.019631000000000003,
+    "p90": 0.0254535,
+    "max": 0.029596
+  },
+  "rawGradeAgreement": 16,
+  "gradePairs": [
+    {
+      "id": "q-eco-nft-marketplace-whitespace",
+      "judgeA": "correct",
+      "judgeB": "correct"
+    },
+    {
+      "id": "q-ti-bindings-to-nextjs-integration",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-protocol-scp-consensus-algorithm",
+      "judgeA": "correct",
+      "judgeB": "correct"
+    },
+    {
+      "id": "q-comp-anchor-compliance-stack",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-sor-contract-trustlines-c-address",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-scf-open-rfps-live",
+      "judgeA": "partial",
+      "judgeB": "wrong"
+    },
+    {
+      "id": "q-tool-lab-what-is",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-defi-soroswap-what-is",
+      "judgeA": "wrong",
+      "judgeB": "wrong"
+    },
+    {
+      "id": "q-asset-amm-fee-reserve",
+      "judgeA": "correct",
+      "judgeB": "correct"
+    },
+    {
+      "id": "q-scf-ambassador-program",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-sep-45-contract-auth",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-aas-burn-clawback-redemption-mechanics",
+      "judgeA": "correct",
+      "judgeB": "correct"
+    },
+    {
+      "id": "q-org-sdf-enterprise-fund",
+      "judgeA": "wrong",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-tool-rust-soroban-sdk",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-sep-wallet-seps-list",
+      "judgeA": "correct",
+      "judgeB": "correct"
+    },
+    {
+      "id": "q-soroban-token-transfer-pattern",
+      "judgeA": "wrong",
+      "judgeB": "wrong"
+    },
+    {
+      "id": "q-jutsu-cash-crypto-ramps",
+      "judgeA": "wrong",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-defi-reflector-oracle",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    },
+    {
+      "id": "q-sor-confidential-tokens",
+      "judgeA": "partial",
+      "judgeB": "wrong"
+    },
+    {
+      "id": "q-soroban-storage-migration",
+      "judgeA": "partial",
+      "judgeB": "partial"
+    }
+  ],
+  "judgeA": {
+    "calls": 7,
+    "knownFixturesPassed": 7,
+    "subscriptionNotionalUsd": 0.3017528,
+    "cashUsd": 0
+  }
+}

@@ -392,9 +392,10 @@ async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, r
             calls: evalCostFrame.calls ?? null,
             reportedCalls: evalCostFrame.reportedCalls ?? null,
             models: Array.isArray(evalCostFrame.models) ? evalCostFrame.models : [],
+            logIds: Array.isArray(evalCostFrame.logIds) ? [...evalCostFrame.logIds] : [],
             error: evalCostFrame.error ?? null
           }
-        : { costUsd: null, reportedCostUsd: null, calls: null, reportedCalls: null, models: [], error: "missing-eval-cost-frame" };
+        : { costUsd: null, reportedCostUsd: null, calls: null, reportedCalls: null, models: [], logIds: [], error: "missing-eval-cost-frame" };
   const terminal = parseError ? "client-error" : done ? `done:${done.reason}` : errors.length ? "error" : `http:${responseStatus}`;
   const firstMeaningful = frames.find((f) => f.type !== "ready");
   const pass = {

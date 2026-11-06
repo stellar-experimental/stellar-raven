@@ -55,6 +55,9 @@ Ordinary Playground requests keep their existing logging settings.
 The [Gateway log API](https://developers.cloudflare.com/api/resources/ai_gateway/subresources/logs/methods/get/) defines the reported cost field.
 
 The route emits one `eval-cost` frame before stream closure, after any terminal frame.
+Its `logIds` preserve captured request identities in call order, so the operator can independently
+reconcile exact Gateway records even when answer and judge models share a gateway. Missing or
+duplicate identities still invalidate accounting; this list does not establish a settled cost.
 The runner reads through stream closure to collect this frame.
 Missing log identities, missing costs, duplicate identities, and failed requests never imply zero cost.
 Five bounded log reads permit a short reporting delay.

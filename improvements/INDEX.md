@@ -22,6 +22,7 @@ Total findings: 102
 | sk-030 | Six Lumenloop skill files still name the wallet Freighter and omit its current name, Varial. SDF announced the rename on 2026-10-29. The…   | reported-upstream | 2026-11-02 | 1           |
 | sk-031 | skills.stellar.org/skills/soroban/SKILL.md still returns the deleted soroban skill with obsolete build guidance. The source repository…     | reported-upstream | 2026-11-02 | 1           |
 | sk-038 | The assets skill equates issuer lockout with master key weight 0 in its custom SAC admin guidance. It also says setting that weight before… | reported-upstream | 2026-11-06 | 0           |
+| sk-039 | The assets skill's “SAC vs Custom Token Interface” list gives two incorrect types. transfer gives its destination as Address; SEP-41 now…   | reported-upstream | 2026-11-06 | 0           |
 
 ## stellar-light-scout
 
@@ -70,10 +71,9 @@ Total findings: 102
 | sd-091 | The simulation deep-dive example calls JSON.parse on the object returned by response.json(). A normal JSON-RPC object causes SyntaxError…   | reported-upstream | 2026-11-03 | 1           |
 | sd-092 | The pooled-account guide permits a muxed source for any operation or transaction. Core rejects muxed sources for a single…                  | reported-upstream | 2026-11-03 | 1           |
 | sd-093 | The storage page says transactions with overlapping footprints must execute sequentially. CAP-0063 defines a conflict only when at least…   | reported-upstream | 2026-11-03 | 1           |
-| sd-095 | The SDP Embedded Wallets guide says the private key never leaves the receiver's device. Some passkey providers synchronize credentials…     | reported-upstream | 2026-11-03 | 1           |
 | sd-096 | Three invented source paths redirect to pages that do not exist. The original old-page premise was incorrect; the maintainer confirmed…     | declined-upstream | 2026-11-03 | 1           |
-| sd-097 | The Building with AI page says Raven reads Stellar Docs through Algolia. Raven now uses Mintlify Discovery for Docs search and page reads.… | reported-upstream | 2026-11-06 | 0           |
 | sd-098 | The custom-account authentication guide teaches four uses of the deprecated raw Events::publish method. The contract-spec guide teaches…    | reported-upstream | 2026-11-06 | 0           |
+| sd-099 | The manual invocation example in Making cross-contract calls does not compile with soroban-sdk 28.0.0 or 29.0.1. It passes a Symbol where…  | reported-upstream | 2026-11-06 | 0           |
 
 ## lumenloop
 

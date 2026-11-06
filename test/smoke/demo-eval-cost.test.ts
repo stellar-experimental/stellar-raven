@@ -78,15 +78,15 @@ function chatResponse(model: string, format: "sse" | "json", id: string) {
 afterEach(() => vi.restoreAllMocks());
 
 describe("evaluation accounting through real provider paths", () => {
-  it("returns a complete cost receipt without exposing the Gateway log identity", async () => {
+  it("returns Gateway reconciliation IDs only in the loopback evaluation receipt", async () => {
     vi.spyOn(console, "log").mockImplementation(() => undefined);
     const f = upstream();
-    const { response, body, frames } = await request(f.testEnv, { budget: "1" });
+    const { response, frames } = await request(f.testEnv, { budget: "1" });
     expect(response.status).toBe(200);
     expect(frames).toContainEqual({ type: "token", text: "answer" });
     expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
-    expect(frames.at(-1)).toMatchObject({ type: "eval-cost", costUsd: 0.15, calls: 1, reportedCalls: 1, models: ["openai/gpt-5.6-terra"], error: null });
-    expect(body).not.toContain("private-request-log");
+    expect(frames.at(-1)).toMatchObject({ type: "eval-cost", costUsd: 0.15, calls: 1, reportedCalls: 1, models: ["openai/gpt-5.6-terra"], logIds: ["private-request-log"], error: null });
+    expect(JSON.stringify(frames.filter(frame => frame.type !== "eval-cost"))).not.toContain("private-request-log");
     expect(f.run).not.toHaveBeenCalled();
     expect(f.gatewayRun).toHaveBeenCalledTimes(1);
     expect(f.getLog).toHaveBeenCalledTimes(1);
@@ -98,7 +98,8 @@ describe("evaluation accounting through real provider paths", () => {
   it("keeps ordinary requests unlogged and omits evaluation receipts", async () => {
     vi.spyOn(console, "log").mockImplementation(() => undefined);
     const f = upstream();
-    const { frames } = await request(f.testEnv);
+    const { frames, body } = await request(f.testEnv);
+    expect(body).not.toContain("private-request-log");
     expect(frames).toContainEqual({ type: "token", text: "answer" });
     expect(frames.some((frame) => frame.type === "eval-cost")).toBe(false);
     expect(f.getLog).not.toHaveBeenCalled();
@@ -113,13 +114,13 @@ describe("evaluation accounting through real provider paths", () => {
         const f = upstream();
         f.testEnv.DEMO_MODEL_OVERRIDE = model;
         f.run.mockResolvedValueOnce(chatResponse(model, format, "private-request-log"));
-        const { frames, body } = await request(f.testEnv, { budget: "1" });
+        const { frames } = await request(f.testEnv, { budget: "1" });
         expect(frames).toContainEqual({ type: "token", text: "answer" });
         expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
         expect(frames.at(-1)).toEqual({
-          type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: ["openai/gpt-5.6-terra"], error: null
+          type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: ["openai/gpt-5.6-terra"], logIds: ["private-request-log"], error: null
         });
-        expect(body).not.toContain("private-request-log");
+        expect(JSON.stringify(frames.filter(frame => frame.type !== "eval-cost"))).not.toContain("private-request-log");
         expect(f.run).toHaveBeenCalledExactlyOnceWith(model, expect.objectContaining({ stream: true, messages: expect.any(Array) }),
           expect.objectContaining({
             returnRawResponse: true,
@@ -148,16 +149,16 @@ describe("evaluation accounting through real provider paths", () => {
       expect(f.getLog).toHaveBeenCalledExactlyOnceWith("primary-log");
       return chatResponse(model, "sse", "native-log");
     });
-    const { frames, body } = await request(f.testEnv, { budget: "1" });
+    const { frames } = await request(f.testEnv, { budget: "1" });
     expect(frames).toContainEqual({ type: "token", text: "answer" });
     expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
     expect(frames.at(-1)).toEqual({
-      type: "eval-cost", costUsd: 0.2, reportedCostUsd: 0.2, calls: 2, reportedCalls: 2, models: ["openai/gpt-5.6-terra", model], error: null
+      type: "eval-cost", costUsd: 0.2, reportedCostUsd: 0.2, calls: 2, reportedCalls: 2, models: ["openai/gpt-5.6-terra", model], logIds: ["primary-log", "native-log"], error: null
     });
     expect(f.gatewayRun).toHaveBeenCalledTimes(1);
     expect(f.run).toHaveBeenCalledTimes(1);
     expect(f.getLog.mock.calls).toEqual([["primary-log"], ["native-log"]]);
-    expect(body).not.toMatch(/primary-log|native-log/);
+    expect(JSON.stringify(frames.filter(frame => frame.type !== "eval-cost"))).not.toMatch(/primary-log|native-log/);
   });
 
   it("blocks native fallback after a response without a log identifier", async () => {
@@ -171,7 +172,7 @@ describe("evaluation accounting through real provider paths", () => {
     expect(frames).toContainEqual({ type: "error", message: "missing-or-duplicate-answer-log-id" });
     expect(frames.some((frame) => frame.type === "token")).toBe(false);
     expect(frames.at(-1)).toEqual({
-      type: "eval-cost", costUsd: null, reportedCostUsd: 0, calls: 1, reportedCalls: 0, models: [],
+      type: "eval-cost", costUsd: null, reportedCostUsd: 0, calls: 1, reportedCalls: 0, models: [], logIds: [],
       error: "missing-or-duplicate-answer-log-id"
     });
     expect(f.run).toHaveBeenCalledTimes(1);
@@ -195,7 +196,7 @@ describe("evaluation accounting through real provider paths", () => {
     expect(frames).toContainEqual({ type: "error", message });
     expect(frames.some((frame) => frame.type === "token")).toBe(false);
     expect(frames.at(-1)).toEqual({
-      type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: ["moonshotai/kimi-k3"], error: null
+      type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: ["moonshotai/kimi-k3"], logIds: ["private-request-log"], error: null
     });
     expect(f.run).toHaveBeenCalledTimes(1);
     expect(f.getLog).toHaveBeenCalledExactlyOnceWith("private-request-log");

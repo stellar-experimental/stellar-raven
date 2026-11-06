@@ -87,10 +87,11 @@ issues do not need reminders.
   PR, review/check blocker and exact live trigger. Recheck those pages after deployment;
   green checks alone do not close findings. The author-owned protocol PR2059 is behind but
   green and awaiting review; respond to substantive review without a keepalive rebase.
-- Docs continuation (2026-11-06): sd-097 now has [PR3066](https://github.com/stellar/stellar-docs/pull/3066),
-  and sd-098 has [PR3067](https://github.com/stellar/stellar-docs/pull/3067). Both await review/deployment.
-  After they ship, check the ordinary Building with AI page and all five raw-event locations;
+- Docs continuation (2026-11-06): sd-098 has [PR3067](https://github.com/stellar/stellar-docs/pull/3067)
+  awaiting review/deployment. After it ships, check all five raw-event locations;
   compile the complete event examples and compare topics/data before retiring sd-098.
+  sd-095 and sd-097 passed fresh root and independent deployed-content checks; see the
+  [resolution ledger](rounds/2026-11-06-playground-final-resolution.md) for their retirement.
   PR3053 now proposes the result.error correction for sd-091 but still has requested changes.
   Re-run success, JSON-RPC error and simulation-error fixtures after approval and deployment.
   The [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) records all current
@@ -569,19 +570,17 @@ primary on a paired 30-case semantic check, or the owner decides to stop re-chec
 
 ## Eval instruments
 
-### Harden the archived second-judge experiment before enabling it
+### Resume the Playground finals after the November 8 subscription reset
 
-The November 6 cleanup recovered the Codex adapter from the interrupted model sweep but kept
-it out of active code. Its exact implementation is preserved in
-[the original patch](../research/audits/2026-11-06-main-only-cleanup/playground-sweep.patch).
-Before integration, enforce an explicit billing/authentication contract and bounded-call or dollar
-authorization; include CLI, effort and relevant environment in comparison identity; require an
-explicit model; deny tools for the blind judge; and reject error/incomplete event streams.
-Add adversarial offline tests for each boundary. See the
-[independent review](rounds/2026-11-06-main-only-cleanup/playground-review.md).
-The existing Claude judge remains the measurement contract. No paid rerun is authorized here.
-
-Done when: a separately reviewed adapter meets those gates, or the owner retires the experiment.
+The owner chose to keep the $200 API cap and resume after the November 8 reset.
+The local one-shot restart targets 2026-11-08 at 19:05 America/New_York. Read [the resume checkpoint](rounds/2026-11-06-playground-resume.md)
+before any action: 202 m1 attempts settled, no server/reservations, 200 eligible B
+grades pending, then m2–m8 and full 1,616-cell adjudication. Preserve six quota A
+errors as attempts; no regrades or answer recollection are authorized. Independent
+continuation/owner-rollover review and the unfinished rubric audit, Astra R2 and
+conditional route reviews remain gates. Root supplies archive/schedule receipts.
+Done when both experiments have reviewed complete outcomes, any justified model
+change passes production/release gates, and owned resources are cleaned up.
 
 ### Resolve diagnostic noncompletions and judge ambiguities
 

@@ -665,6 +665,14 @@ export async function judgeCase(
     envelope = null;
   }
   const resultText = envelope?.result ?? decodeCliEvidenceText(res.stdout);
+  return judgeVerdictFromText(input, {
+    resultText, transcriptEvidence, promptSha256,
+    costUsd: validCost(envelope?.total_cost_usd) ? envelope.total_cost_usd : undefined
+  });
+}
+
+/** Shared rubric validation for CLI and host-side, tool-free API transports. */
+export function judgeVerdictFromText(input, { resultText, transcriptEvidence, promptSha256, costUsd }) {
   const verdict = extractJsonObject(resultText);
   if (!verdict || !["correct", "partial", "wrong"].includes(verdict.score)) {
     return {
@@ -675,7 +683,7 @@ export async function judgeCase(
       avoidMatches: [],
       consistencyViolations: [],
       rationale: sanitizeBoundedText(`judge returned unparseable verdict: ${String(resultText)}`, 512),
-      ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
+      ...(validCost(costUsd) ? { costUsd } : {}),
       failureClass: isProviderSafeguardEvidence(resultText) ? "provider-safeguard" : "parse",
       rubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
@@ -722,7 +730,7 @@ export async function judgeCase(
       };
   return {
     ...checkedVerdict,
-    ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
+    ...(validCost(costUsd) ? { costUsd } : {}),
     rubric: JUDGE_RUBRIC,
     packVersion: PACK_VERSION,
     promptSha256
@@ -926,6 +934,13 @@ const SELF_TEST_CANDIDATES = [
 ];
 
 export const JUDGE_SELF_TEST_CANDIDATE_COUNT = SELF_TEST_CANDIDATES.length;
+
+/** The same seven calibration inputs and expectations for an explicitly different transport. */
+export function judgeSelfTestFixture(index) {
+  if (!Number.isInteger(index) || index < 0 || index >= SELF_TEST_CANDIDATES.length) throw new Error("invalid judge self-test fixture index");
+  const candidate = SELF_TEST_CANDIDATES[index];
+  return structuredClone({ label: candidate.label, expect: candidate.expect ?? null, expectNot: candidate.expectNot ?? null, input: selfTestCandidateInput(candidate) });
+}
 
 function selfTestCandidateInput(candidate) {
   const baseCase = candidate.caseOverride ?? SELF_TEST_CASE;
