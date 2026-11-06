@@ -59,7 +59,7 @@ describe("loopback answer cost accounting", () => {
       prompt: "question", maxRetries: 0
     });
     expect(await result.text).toBe("answer");
-    expect(await accounting.finish()).toMatchObject({ costUsd: 0.15, calls: 1, reportedCalls: 1, error: null });
+    expect(await accounting.finish()).toMatchObject({ costUsd: 0.15, calls: 1, reportedCalls: 1, logIds: ["responses-log"], error: null });
     expect(run).not.toHaveBeenCalled();
     expect(getLog).toHaveBeenCalledWith("responses-log");
     expect(entries).toHaveLength(1);
@@ -93,7 +93,7 @@ describe("loopback answer cost accounting", () => {
     await f.call();
     await f.call();
     expect(await f.accounting.finish()).toMatchObject({
-      calls: 3, reportedCalls: 3, models: ["openai/gpt-6-luna", "openai/gpt-5.6-luna"], error: null
+      calls: 3, reportedCalls: 3, models: ["openai/gpt-6-luna", "openai/gpt-5.6-luna"], logIds: ["one", "two", "three"], error: null
     });
   });
   it.each(["binding", "gateway", "native"])("settles %s streams before another provider call, including fallback calls", async (transport) => {
@@ -187,7 +187,7 @@ describe("loopback answer cost accounting", () => {
     expect(response.bodyUsed).toBe(true);
     expect(response.body?.locked).toBe(false);
     expect(await f.accounting.finish()).toEqual({
-      costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: [], error: null
+      costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: [], logIds: ["error-log"], error: null
     });
     expect(f.getLog).toHaveBeenCalledExactlyOnceWith("error-log");
   });
@@ -231,7 +231,7 @@ describe("loopback answer cost accounting", () => {
       await expect(f.call()).rejects.toThrow("unsupported-answer-content-type");
       expect(cancel).toHaveBeenCalledTimes(1);
       expect(await f.accounting.finish()).toEqual({
-        costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: [], error: null
+        costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, models: [], logIds: ["unsupported-type"], error: null
       });
       expect(f.getLog).toHaveBeenCalledExactlyOnceWith("unsupported-type");
     }

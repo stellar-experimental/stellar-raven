@@ -35,6 +35,7 @@ import {
 } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { panelConfidence } from "./panel-confidence.mjs";
+import { diagnosticRejudgeSource } from "./diagnostic-rejudge-source.mjs";
 import {
   PLAYGROUND_ARTIFACT_CONTRACT,
   assertCurrentPlaygroundContract,
@@ -137,6 +138,7 @@ export function parseArgs(argv) {
   let allowGoldenDrift = false;
   let allowEmpty = false;
   let dryRun = false;
+  let diagnosticSource = false;
   let maxBudgetUsd = null;
   let maxBudgetFlags = 0;
   let claudePath;
@@ -175,6 +177,9 @@ export function parseArgs(argv) {
       allowEmpty = true;
     } else if (arg === "--dry-run") {
       dryRun = true;
+    } else if (arg === "--diagnostic-source") {
+      if (diagnosticSource) fail("--diagnostic-source may be supplied only once");
+      diagnosticSource = true;
     } else if (arg === "--max-budget-usd") {
       maxBudgetFlags += 1;
       if (maxBudgetFlags > 1) fail("--max-budget-usd must appear exactly once");
@@ -195,7 +200,7 @@ export function parseArgs(argv) {
       if (arg === "--expect-agent-binary-sha256") expectedAgentBinarySha256 = value;
       if (arg === "--expect-agent-environment-sha256") expectedAgentEnvironmentSha256 = value;
     } else if (arg === "--help" || arg === "-h") {
-      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--max-budget-usd <usd>] [--claude-path <path> --expect-agent-binary-sha256 <sha256> --expect-agent-environment-sha256 <sha256>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
+      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--max-budget-usd <usd>] [--claude-path <path> --expect-agent-binary-sha256 <sha256> --expect-agent-environment-sha256 <sha256>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--diagnostic-source] [--dry-run]");
       process.exit(0);
     } else if (arg.startsWith("--")) {
       fail(`unknown flag ${arg}`);
@@ -208,6 +213,7 @@ export function parseArgs(argv) {
   if ((ids !== undefined) === (flipsVs !== undefined)) {
     fail("provide exactly one of --ids or --flips-vs <baseline-results.json>");
   }
+  if (diagnosticSource && flipsVs !== undefined) fail("--diagnostic-source requires explicit --ids, never --flips-vs");
   if (!dryRun && maxBudgetFlags === 0) {
     fail("re-judge requires --max-budget-usd for every paid run");
   }
@@ -238,6 +244,7 @@ export function parseArgs(argv) {
     allowGoldenDrift,
     allowEmpty,
     dryRun,
+    diagnosticSource,
     maxBudgetUsd,
     claudePath,
     expectedAgentBinarySha256,
@@ -677,6 +684,7 @@ export function buildRejudgeArtifact({ baseMeta, rows, spendLedger, runState, fi
     0
   );
   return {
+    ...(baseMeta.diagnosticSource ? { nonPromotable: true, summary: null } : {}),
     meta: {
       ...baseMeta,
       resultSchema: REJUDGE_RESULT_SCHEMA,
@@ -769,6 +777,7 @@ export async function rejudgeRows({
   checkpoint,
   log = console.log,
   spendLedger = createSpendLedger(),
+  diagnosticSource = null,
   runState = {}
 }) {
   const rows = [];
@@ -777,7 +786,8 @@ export async function rejudgeRows({
     if (!kase) fail(`source cases file no longer contains selected case ${row.id}`);
 
     log(`[${index + 1}/${selectedRows.length}] ${row.id} …`);
-    if (isUngradeableSavedRow(row)) {
+    const diagnosticSkip = diagnosticSource?.ungradeableRows?.find((item) => item.id === row.id);
+    if (diagnosticSkip || isUngradeableSavedRow(row)) {
       const verdict = row.verdict?.score === "error"
         ? row.verdict
         : buildAgentErrorVerdict(row.agent?.failure);
@@ -786,7 +796,11 @@ export async function rejudgeRows({
         original: row.verdict,
         new: verdict,
         agreement: verdictAgreement(row.verdict, verdict),
-        skipped: { reason: "unsuccessful-answer" },
+        skipped: { reason: diagnosticSkip?.reason ?? "unsuccessful-answer" },
+        ...(diagnosticSkip ? { sourceTerminal: {
+          finishReason: row.finishReason ?? null, clientError: !!row.clientError,
+          httpError: !!row.httpError, sseError: !!row.sseErrors?.length
+        } } : {}),
         evidencePack: { packVersion: PACK_VERSION, chars: 0, sha256: null }
       });
       await checkpoint(rows);
@@ -894,7 +908,8 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
   const sourceResultsPath = path.resolve(process.cwd(), options.resultsPath);
   const { parsed: results, sha256: sourceResultsSha256 } = readJson(sourceResultsPath, "source results");
-  assertNotPlaygroundQuarantine(results, "source results");
+  const diagnosticSource = options.diagnosticSource ? diagnosticRejudgeSource(results) : null;
+  if (!diagnosticSource) assertNotPlaygroundQuarantine(results, "source results");
   assertCurrentPlaygroundContract(results, "source results");
   requireRows(results, "source results");
   if (results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT) {
@@ -905,6 +920,7 @@ async function main() {
   const casesMode = casesRef === undefined ? "worktree" : "revision";
   const effectiveOptions = { ...options, casesRef };
   const identity = verifySourceCases(results, sourceResultsPath, { casesRef });
+  if (diagnosticSource && !identity.guard.matches) fail("diagnostic re-judge requires identical source case inputs");
   const tuple = tupleGuard(results, options.judgeModel);
   const selection = selectRows(results, effectiveOptions, identity);
   const goldenTime = goldenTimeConsistency(results, selection.rows, identity.caseById);
@@ -919,6 +935,7 @@ async function main() {
   }
   const nonIdentical = !identity.guard.matches || !tuple.matches;
   const guards = {
+    ...(diagnosticSource ? { diagnosticSource } : {}),
     cases: identity.guard,
     casesMode,
     ...(identity.revision
@@ -978,6 +995,7 @@ async function main() {
   const resultsDir = path.join(QA_DIR, "results");
   const outPath = path.join(resultsDir, `${stamp}-rejudge.json`);
   const baseMeta = {
+      ...(diagnosticSource ? { diagnosticSource, nonPromotable: true } : {}),
       sourceResultsPath,
       sourceResultsSha256,
       ...(selection.baselinePath ? { baselinePath: selection.baselinePath, baselineSha256: selection.baselineSha256 } : {}),
@@ -1048,6 +1066,7 @@ async function main() {
       checkpoint: (completedRows) => writeCheckpoint(completedRows),
       log: (message) => console.log(message),
       spendLedger,
+      diagnosticSource,
       runState
     });
   } catch (error) {

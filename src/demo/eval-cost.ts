@@ -6,6 +6,8 @@ export type AnswerCost = {
   reportedCalls: number;
   /** Distinct Gateway-logged model ids, in first-call order: the model that actually answered. */
   models: string[];
+  /** Captured request identities for independent host-side cost reconciliation. */
+  logIds: string[];
   error: string | null;
 };
 
@@ -176,7 +178,7 @@ export function createEvalCostBinding(ai: Ai, gatewayId: string, maxBudgetUsd: n
       await settle();
       return {
         costUsd: calls === 0 || reportedCalls !== calls ? null : reportedCostUsd,
-        reportedCostUsd, calls, reportedCalls, models: [...models], error
+        reportedCostUsd, calls, reportedCalls, models: [...models], logIds: [...seen], error
       };
     }
   };
