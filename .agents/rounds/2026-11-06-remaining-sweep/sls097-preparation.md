@@ -38,3 +38,5 @@ node research/audits/2026-11-06-remaining-sweep/docs-sls097/verify-schema.mjs
 This validates the archived live contract and original/current-source fixture bodies, without claiming a fresh network observation or model availability. Final resolver removal, upstream comment readback and final cleanup review remain root/reviewer responsibilities.
 
 Cleanup: the compact archived schema fixtures replayed successfully. Own sls097 scratch subtree and finished command terminal `t2tz` were removed. Existing broader Docs sweep scratch is unchanged. Reviewer t2r6 received the stable preparation handoff.
+
+Final cleanup confirmation (2026-11-06): removed the owned external Docs clone `/tmp/raven-docs-sweep-2026-11-06` and isolated SDK fixtures `/tmp/raven-docs-sweep-sdk`; verified both paths are absent. `hc ls --all --json` confirms no child command terminals remain under t2r9. Durable compact evidence is retained. Only this preparation report was edited for final cleanup; root owns removal of the t2r9 agent terminal.
