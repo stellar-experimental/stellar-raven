@@ -303,6 +303,10 @@
       "repo": "stellar/stellar-dev-skill",
       "reason": "The canonical assets skill owns custom SAC admin and issuer lockout guidance; Docs generates a copy."
     },
+    "sk-039": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The canonical assets skill owns the SAC token-interface type summary."
+    },
     "sd-097": {
       "repo": "stellar/stellar-docs",
       "reason": "The Building with AI page owns the stale Raven backend description."
@@ -310,6 +314,10 @@
     "sd-098": {
       "repo": "stellar/stellar-docs",
       "reason": "Deprecated SDK API examples belong to the canonical Docs owner."
+    },
+    "sd-099": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The cross-contract guide owns the manual invocation example and function-name prose."
     }
   }
 }
