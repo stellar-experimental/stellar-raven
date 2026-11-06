@@ -1,10 +1,11 @@
 ---
 id: sk-038
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-06
 upstreamTitle: Qualify issuer lockout in the assets skill's custom SAC admin guidance
 evidence:
+  - "2026-11-06T18:58:35Z ordinary GET https://developers.stellar.org/.well-known/agent-skills/assets/skill.md returned HTTP 200, SHA-256 ff836f85491d74fcd2f2d0d1331bff502f45c8ad53b6bf351dc39a1114976b55. The prerequisite, complete-lockout handover warning and low/medium/high signer-threshold checklist are corrected without a query parameter. Canonical published assets also retains all three corrections. Earlier observations below are historical."
   - "2026-11-06 GET https://raw.githubusercontent.com/stellar/stellar-dev-skill/77bf4e8fc2533ac6ad680d061e89371e8474a1a8/skills/assets/SKILL.md returns the custom-admin prerequisite 'lock the issuer (master key weight 0)' and says the admin stays locked forever because nobody can sign the handover."
   - "The same source's fixed-supply example correctly says to remove other signers or check their combined weight against thresholds. Its custom-admin subsection omits that condition."
   - "2026-11-06 GET https://developers.stellar.org/docs/tokens/control-asset-access.md says master weight 0 disables only the master key. Other signers can still authorize issuance or restore the master weight when they meet the relevant thresholds."
@@ -41,10 +42,9 @@ Keep the handover-before-lockout ordering, but describe complete account lockout
 Qualify the claim that nobody can sign after setting master weight 0.
 Regenerate the Docs skill copy from the corrected source.
 
-## Remaining delivery defect, 2026-11-06
+## Delivery verified, 2026-11-06
 
-The canonical skill source and generated Docs source are corrected. The ordinary published
-Docs skill URL still serves the earlier copy. Retain this finding until that URL serves the
-corrected text without a query parameter. Invalidate or expire the stale published response;
-no further canonical wording change is requested. The observations above describe the original
-source defect and its remaining delivery path separately.
+The ordinary published Docs skill URL now serves the signer-aware prerequisite,
+complete-lockout handover warning and security checklist. Root checked each
+section without a query parameter. Independent retirement review is required
+before removing this active record. The separate interface-type defect is sk-039.
