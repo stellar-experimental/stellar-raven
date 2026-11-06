@@ -54,6 +54,19 @@ the backend's rate limits and terms.
 
 ## Improvements follow-up
 
+### Recheck sk-038 after the published Docs skill cache refreshes
+
+On 2026-11-06, canonical assets guidance and the generated Docs source are corrected, but the
+ordinary [published Docs skill](https://developers.stellar.org/.well-known/agent-skills/assets/skill.md)
+still serves old issuer-lockout wording. Query-busted requests are corrected. See
+[the continuation ledger](rounds/2026-11-06-skill-handoff.md),
+[upstream PR178](https://github.com/stellar/stellar-dev-skill/pull/178), and
+[handoff381](https://github.com/stellar-experimental/stellar-raven/issues/381).
+After an owner cache invalidation or on the next maintenance pass from 2026-11-07, fetch that
+ordinary URL without query parameters. Require complete issuer lockout, signer-aware handover,
+and the other-signer checklist. A distinct reviewer must repeat the check before retirement.
+Keep routine recurrences local; canonical wording needs no further patch.
+
 ### Recheck November 5 partial fixes after deployment or owner data jobs
 
 The [round ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding tables cover all

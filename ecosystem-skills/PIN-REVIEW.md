@@ -44,6 +44,31 @@ instructions ("ignore previous", "you must", credentials, URLs to fetch).
 
 ## Entries
 
+### 2026-11-06 — complete issuer locking and canonical Raven links
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `5aafdf96760944ee112a8325b035d5e0f78eadb8` | `sel:bf7230c02ed4` | author read all three body diffs; independent Astra high review accepted |
+
+The author read the complete official update diff from `77bf4e8fc2533ac6ad680d061e89371e8474a1a8`.
+`assets/SKILL.md` now distinguishes disabling the master key from removing every signer
+that can meet the account thresholds. It identifies medium-threshold issuance,
+high-threshold restoration of the master key, and low-threshold freezing, and preserves
+the requirement to transfer SAC administration before fully locking the issuer.
+`cross-chain/layerzero.md` adds the same other-signer qualification to its lock prerequisite.
+This supersedes the November 5 observation below that the custom-SAC-admin signer
+qualification remained incomplete upstream (sk-038).
+`standards/ecosystem.md` updates Raven links to `raven.stellar.org` and
+`stellar-experimental/stellar-raven`, matching this repository's current connection guidance.
+
+No skill or selected file is added or removed, and every other source selection is unchanged.
+The changed text contains no credential, instruction override, new Raven capability claim,
+or reference to an excluded operation or retired skill. Signing guidance remains reference
+content for the reader's environment. The mirror fetch verified all 67 selected files with
+the cache bypassed. Independent Astra high review accepted the pin and retained sk-038 for the stale ordinary
+Docs delivery path. See `.agents/rounds/2026-11-06-skill-handoff/review.md`. Author evidence
+and category impact audit are in `.agents/rounds/2026-11-06-skill-handoff/pin-author.md`.
+
 ### 2026-11-03 — stellar-dev sk-032 to sk-036 fixes
 
 | Source | Pinned commit | Selection | Reviewed |
