@@ -54,18 +54,17 @@ the backend's rate limits and terms.
 
 ## Improvements follow-up
 
-### Recheck sk-038 after the published Docs skill cache refreshes
+### Recheck sk-039 after the Docs skill copy updates
 
-On 2026-11-06, canonical assets guidance and the generated Docs source are corrected, but the
-ordinary [published Docs skill](https://developers.stellar.org/.well-known/agent-skills/assets/skill.md)
-still serves old issuer-lockout wording. Query-busted requests are corrected. See
-[the continuation ledger](rounds/2026-11-06-skill-handoff.md),
-[upstream PR178](https://github.com/stellar/stellar-dev-skill/pull/178), and
-[handoff381](https://github.com/stellar-experimental/stellar-raven/issues/381).
-After an owner cache invalidation or on the next maintenance pass from 2026-11-07, fetch that
-ordinary URL without query parameters. Require complete issuer lockout, signer-aware handover,
-and the other-signer checklist. A distinct reviewer must repeat the check before retirement.
-Keep routine recurrences local; canonical wording needs no further patch.
+The November 6 [assets handoff review](rounds/2026-11-06-assets-type-handoff.md)
+confirmed canonical PR181 and skills.stellar.org have the corrected SEP-41 types.
+The ordinary [Docs skill URL](https://developers.stellar.org/.well-known/agent-skills/assets/skill.md)
+still lists `transfer` destination `Address` and `symbol()` return `Symbol` at 18:58 UTC.
+After generation/cache refresh, or the next maintenance pass from November 7,
+require `MuxedAddress` and `String`, with `transfer_from` still using `Address`.
+No further canonical type change is requested. A distinct reviewer must repeat
+the ordinary URL check before retiring sk-039. Routine recurrences stay local.
+The earlier sk-038 signer-control delivery defect is now fixed on that ordinary URL.
 
 ### Recheck November 5 partial fixes after deployment or owner data jobs
 

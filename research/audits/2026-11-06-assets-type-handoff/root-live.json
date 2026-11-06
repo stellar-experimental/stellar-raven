@@ -1,0 +1,38 @@
+[
+  {
+    "key": "published",
+    "url": "https://skills.stellar.org/skills/assets/SKILL.md",
+    "at": "2026-11-06T18:57:29.991536+00:00",
+    "status": 200,
+    "sha256": "c88cc42460803e48f2b316311ae33bdd7f130a23b9710cd356d02fd2599f1146",
+    "relevantLines": [
+      "For fixed-supply tokens, lock the issuer. Master weight 0 disables only the master key, so first remove any other signers (or confirm their combined weight can never meet the account's thresholds):",
+      "// With no other signers, the issuer can never issue more tokens",
+      "    token.transfer(&from, &to, &amount);",
+      "- `transfer(from: Address, to: MuxedAddress, amount: i128)`",
+      "- `transfer_from(spender: Address, from: Address, to: Address, amount: i128)`",
+      "- `symbol() -> String`",
+      "> disables only the master key: any other signers whose combined weight",
+      "> threshold can restore the master key. So remove every other signer (or",
+      "  confirm the master key weight is `0` and no other signers remain (or their"
+    ]
+  },
+  {
+    "key": "canonical",
+    "url": "https://raw.githubusercontent.com/stellar/stellar-dev-skill/fb63412da70102edb527baf4cf3068f25713cd14/skills/assets/SKILL.md",
+    "at": "2026-11-06T18:57:30.184525+00:00",
+    "status": 200,
+    "sha256": "c88cc42460803e48f2b316311ae33bdd7f130a23b9710cd356d02fd2599f1146",
+    "relevantLines": [
+      "For fixed-supply tokens, lock the issuer. Master weight 0 disables only the master key, so first remove any other signers (or confirm their combined weight can never meet the account's thresholds):",
+      "// With no other signers, the issuer can never issue more tokens",
+      "    token.transfer(&from, &to, &amount);",
+      "- `transfer(from: Address, to: MuxedAddress, amount: i128)`",
+      "- `transfer_from(spender: Address, from: Address, to: Address, amount: i128)`",
+      "- `symbol() -> String`",
+      "> disables only the master key: any other signers whose combined weight",
+      "> threshold can restore the master key. So remove every other signer (or",
+      "  confirm the master key weight is `0` and no other signers remain (or their"
+    ]
+  }
+]

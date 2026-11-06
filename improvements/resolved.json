@@ -1894,6 +1894,27 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/skills/sk-037-dapp-mixed-classic-soroban-batching.md"
     },
     {
+      "id": "sk-038",
+      "title": "The assets skill equates issuer lockout with master key weight 0 in its custom SAC admin guidance. It also says setting that weight before…",
+      "service": "skills",
+      "discovered": "2026-11-06",
+      "resolved": "2026-11-06",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/381",
+        "https://github.com/stellar/stellar-dev-skill/issues/177",
+        "https://github.com/stellar/stellar-dev-skill/pull/178"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/177",
+        "https://github.com/stellar/stellar-dev-skill/pull/178"
+      ],
+      "liveRecheck": "2026-11-06T18:58:35Z ordinary GET https://developers.stellar.org/.well-known/agent-skills/assets/skill.md HTTP200 SHA256 ff836f85491d74fcd2f2d0d1331bff502f45c8ad53b6bf351dc39a1114976b55: signer-aware prerequisite, complete-lockout handover warning, and threshold checklist all corrected. Canonical published skill agrees. Independent ordinary GET18:59:10 reproduces the result; sk-039 retains the unrelated type residual.",
+      "reviewEvidence": "Independent Codex frontier gpt-6-astra/high t361: research/audits/2026-11-06-assets-type-handoff/independent-review.md. Original trigger, upstream refs, adjacent claims, goldens, repo references and source snapshot checked. Fable unavailable due quota. Resolution comments posted/read back on issue177, PR178 and handoff381.",
+      "sourceCommit": "c2f05adb6c6f8ec3d3eb4e33753e4f4128f5aaa3",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/c2f05adb6c6f8ec3d3eb4e33753e4f4128f5aaa3/improvements/skills/sk-038-assets-custom-admin-issuer-lock-signers.md"
+    },
+    {
       "id": "sls-001",
       "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but in an order agents universally read as ranking. An eval…",
       "service": "stellar-light-scout",

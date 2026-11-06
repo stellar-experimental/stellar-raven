@@ -583,3 +583,23 @@ one extended-case fifth-place result changes. Evidence and final review are reco
 
 Independent review: `.agents/rounds/2026-11-05-truth-maintenance/drift-review.md` (ACCEPT).
 The custom-SAC-admin signer qualification remains incomplete upstream and is tracked as sk-038.
+
+
+## 2026-11-06 — assets token-interface type corrections
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `ceeb2f17a0fd1da3f47e28c6a73a026883020c09` | `sel:603c9e0eebba` | root read; independent Astra/high t361 accepted |
+
+Only `assets/SKILL.md` changes. Its interface list uses `MuxedAddress` for
+`transfer` and `String` for `symbol`, adds the separate `transfer_from` signature,
+and names the `approve` argument `live_until_ledger`. The client note preserves
+the working `&Address` call and explains the untyped-conversion inference failure.
+The unchanged caller example already passed an SDK 27.0.6 compile.
+
+The full diff contains no credential, instruction override, new operation or
+new selected skill. Existing asset-signing steps remain reference content for the
+reader's environment. All other source pins and selected file hashes stay fixed;
+the two discovery directories change timestamps only. All 544 full routing rows
+and the ranked-ID dump are identical. Only the catalog evidence fingerprint moves.
+See `.agents/rounds/2026-11-06-assets-type-handoff.md` for final review and delivery.

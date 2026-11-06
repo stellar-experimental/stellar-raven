@@ -1,0 +1,18 @@
+[
+  {
+    "case": "address",
+    "started": "2026-11-06T18:59:30.627906+00:00",
+    "finished": "2026-11-06T18:59:45.458584+00:00",
+    "exit_code": 0,
+    "E0283": false,
+    "source_sha256": "c6db493a32d9b375297c18078f9901fcaf51c110405588b38e59b2ddd9359b33"
+  },
+  {
+    "case": "untyped-into",
+    "started": "2026-11-06T18:59:45.458859+00:00",
+    "finished": "2026-11-06T18:59:45.909322+00:00",
+    "exit_code": 101,
+    "E0283": true,
+    "source_sha256": "500b9f4b411287b640f6e71e0eeef9c8d127e43a5d3f6521c0a2397680951d46"
+  }
+]
