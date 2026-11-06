@@ -445,7 +445,7 @@ function readCasesAtRevision(casesPath, casesRef, repoRoot) {
   }
 }
 
-export function verifySourceCases(results, sourceResultsPath, { casesRef, repoRoot = REPO_ROOT, label = "source results" } = {}) {
+export function verifySourceCases(results, sourceResultsPath, { casesRef, repoRoot = REPO_ROOT, label = "source results", selectedIds: explicitSelectedIds } = {}) {
   const casesPath = results?.meta?.casesPath;
   const expectedCasesSha256 = results?.meta?.inputSnapshot?.casesSha256;
   if (typeof casesPath !== "string" || !casesPath) fail(`${label} meta.casesPath is required for the identity guard`);
@@ -468,7 +468,9 @@ export function verifySourceCases(results, sourceResultsPath, { casesRef, repoRo
   const sourceCases = historical ? historical.parsed : readJson(resolvedCasesPath, "source cases file").parsed;
   if (!Array.isArray(sourceCases?.cases)) fail(`source cases file ${resolvedCasesPath} is missing cases[]`);
 
-  const recordedIds = results.rows.map((row) => row.id);
+  const recordedIds = explicitSelectedIds ?? results.rows.map((row) => row.id);
+  if (!Array.isArray(recordedIds) || new Set(recordedIds).size !== recordedIds.length || recordedIds.some(id => typeof id !== "string" || !id)) fail("invalid explicit source selection");
+  if (explicitSelectedIds !== undefined && JSON.stringify(results.rows.map(row => row.id)) !== JSON.stringify(recordedIds.slice(0, results.rows.length))) fail("source rows must be an ordered prefix of explicit selection");
   const allCasesById = new Map(sourceCases.cases.map((kase) => [kase?.id, kase]));
   const selectedCases = recordedIds.map((id) => allCasesById.get(id));
   const missingCaseIds = recordedIds.filter((id) => !allCasesById.has(id));

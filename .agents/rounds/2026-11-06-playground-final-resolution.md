@@ -366,3 +366,71 @@ log ID, never by time-window or model totals. Reforecast after each model and be
 explicit maximum of two simultaneous quality shards; other models permit up to four, subject to
 the $20 buffer. Final B identity in the journal is
 `7fda47defe1f8b2984c48caf188899fc77de05916a3ae10d74d450f42357ebc7`.
+
+## First collection interruption and reviewed recovery
+
+The first safety method completed and settled. In `m1-r1-s2`, three answers were
+collected before the fourth client request failed after 1 ms without an HTTP response,
+frames, answer, cost receipt, or judge call. The original receipt remains unchanged:
+SHA-256 `9c4f5492cd659bfc334d88637ffa5e280e8a51a976b6497610526ebe0c484281`.
+It records four attempted rows and 21 unattempted cases. The journal halted new
+reservations and retained the entire $4.33 allocation; already-reserved siblings may
+finish and settle. The first three rows reconcile to ten Gateway logs totaling
+$0.02027201 answer cash and $0.1682468 Judge A subscription notional usage.
+
+The missing fourth server-start event supports a failure before dispatch, but does
+not prove zero provider reach or zero cost. The runner did not retain the underlying
+fetch exception cause, and no request-level provider identity survives for that row.
+The initial independent-review proposal to exclude and reissue this row relied on
+a stronger inference than the evidence supports; the coordinator rejected it.
+
+The recovery policy is to retain all four attempted rows, distinguish the fourth as
+a harness transport failure, keep the full $4.33 against the cash ceiling as a
+conservative budget debit rather than a claimed invoice, and run only the 21 cases
+explicitly marked unattempted under a separate bounded authorization. The second row's
+aborted answer also remains a failure despite its raw Judge A `correct` verdict.
+The canonical decision will retain the predeclared failure penalty; closeout will
+also report sensitivity to the uncertain transport cell without promoting an
+alternate winner from that sensitivity. Partial-source validation, continuation
+joins, and Judge B admission require an independently reviewed amendment before
+any new collection. No retry or new method is authorized by this status entry.
+
+### Recovery amendment — approved before continuation
+
+Astra implemented the recovery and Claude Fable 5.1/high independently reviewed it,
+including the real saved receipts. The bounded delta review approved the final prefix
+guard, explicit accounting labels and halt clearing. Known cash is reported as
+`knownCashUsd`; `ceilingConsumedUsd` includes the conservative charge. `availableUsd`
+continues to govern every reservation. The three completed sibling shards reconcile
+to 314 Gateway logs and $0.44085734 answer cash. Their raw Claude costs differed from
+the rounded ledger only by floating-point representation; validation now compares
+at the existing twelve-decimal precision. No source receipt is rewritten or rerun.
+
+The authorized continuation is `m1-r1-s2-c1`: exactly the original receipt's 21
+unattempted IDs, the same frozen answer measurement at `e800eef8`, and a separate
+$3.64 combined answer-plus-subscription-notional method cap. The full $4.33 charge
+for its parent remains consumed. Its sidecar binds the original receipt, source
+snapshot, exact known Gateway evidence and 4-plus-21 partition. It is reserved only
+after all sibling accounting is resolved, with the same sole declared Luna server
+and the existing $20 unreserved buffer. The original four rows are never retried.
+
+This amendment permits one partial recovery in the journal and one continuation of
+that parent. A further unknown-cost stop, including in the continuation or another
+model, requires a new reviewed amendment; there is no automatic recovery or chained
+continuation. The ordinary complete-source validation remains closed to partial or
+unknown-cost receipts.
+
+Judge B gains explicit admission for the original partial source and its hashed
+sidecar. It grades rows one and three, while retaining rows two and four as skipped
+failures. The new implementation identity must be frozen before any finals B call;
+the old unlaunched plans are retained separately. Only three implementation files
+change: `diagnostic-rejudge-source.mjs`, `gateway-rejudge.mjs`, and `re-judge.mjs`.
+All 27 calibration prompt hashes and the request-template hash match offline; the
+model, effort, prompt, rubric, evidence pack and API request remain unchanged.
+The clean B checkout may advance independently of the unchanged answer checkout.
+
+The offline packet generator also passed independent review, including provider-ID
+blinding and the harness-failure class. The one-model collection driver passed
+20 scheduling and mocked execution checks; its exact-log helper passed nine zero-call
+boundary checks. The driver uses the authoritative journal accounting and is limited
+to untouched ten-task models. Luna's split source remains manually coordinated.

@@ -9,7 +9,7 @@ import { pathToFileURL } from "node:url";
 import { createGatewayJudge, gatewayJudgeConfig, gatewayJudgeIdentity, GATEWAY_JUDGE_TRANSPORT } from "./gateway-judge.mjs";
 import { buildJudgePrompt, buildTranscriptEvidence, judgeSelfTestFixture, JUDGE_SELF_TEST_CANDIDATE_COUNT, JUDGE_RUBRIC } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
-import { diagnosticRejudgeSource, diagnosticAnswerProblem } from "./diagnostic-rejudge-source.mjs";
+import { diagnosticRejudgeSource, diagnosticAnswerProblem, partialRecoverySource } from "./diagnostic-rejudge-source.mjs";
 import { verifySourceCases, resolveCasesRef, goldenTimeConsistency, verdictAgreement } from "./re-judge.mjs";
 import { PLAYGROUND_ARTIFACT_CONTRACT, assertCurrentPlaygroundContract, assertNotPlaygroundQuarantine, assertPlaygroundArtifactMeta } from "../playground/artifact-contract.mjs";
 
@@ -82,10 +82,23 @@ export function prepareGatewayRejudge(plan, { identityImpl = gatewayJudgeIdentit
     const result = JSON.parse(bytes);
     assertCurrentPlaygroundContract(result);
     if (result.meta?.artifactContract !== PLAYGROUND_ARTIFACT_CONTRACT) throw new Error("Gateway second judge requires current Playground source");
-    let diagnostic = null;
-    if (plan.source.diagnostic === true) diagnostic = diagnosticRejudgeSource(result);
+    let diagnostic = null, partial = null;
+    if (plan.source.partial !== undefined) {
+      if (plan.source.diagnostic !== true || !isAbsolute(plan.source.partial?.path ?? "") || !shaPattern.test(plan.source.partial?.sha256 ?? "")) throw new Error("explicit pinned partial recovery required");
+      const recoveryBytes = readFileSync(plan.source.partial.path);
+      if (sha256(recoveryBytes) !== plan.source.partial.sha256) throw new Error("partial recovery SHA mismatch");
+      const recovery = JSON.parse(recoveryBytes), proofIdentity = recovery.gatewayProof;
+      if (recovery.receipt?.path !== plan.source.path || !isAbsolute(proofIdentity?.path ?? "") || !shaPattern.test(proofIdentity?.sha256 ?? "")) throw new Error("partial source/proof identity differs");
+      const proofBytes = readFileSync(proofIdentity.path);
+      if (sha256(proofBytes) !== proofIdentity.sha256) throw new Error("partial Gateway proof changed");
+      const proof = JSON.parse(proofBytes);
+      if (proof.accountId !== config.accountId || proof.gatewayId !== config.gatewayId) throw new Error("partial Gateway proof account differs");
+      diagnostic = partialRecoverySource(result, recovery, proof, plan.source.sha256);
+      if (JSON.stringify(plan.ids) !== JSON.stringify(diagnostic.attemptedIds)) throw new Error("partial source requires all attempted rows");
+      partial = { ...plan.source.partial, parentTaskId: recovery.parentTaskId, experimentId: recovery.experimentId, proof: proofIdentity, conservativeChargeUsd: recovery.conservativeChargeUsd };
+    } else if (plan.source.diagnostic === true) diagnostic = diagnosticRejudgeSource(result);
     else { assertNotPlaygroundQuarantine(result); assertPlaygroundArtifactMeta(result.meta); }
-    const verified = verifySourceCases(result, plan.source.path, { casesRef: resolveCasesRef(result, plan.source.casesRef) });
+    const verified = verifySourceCases(result, plan.source.path, { casesRef: resolveCasesRef(result, plan.source.casesRef), ...(partial ? { selectedIds: diagnostic.selectedIds } : {}) });
     if (!verified.guard.matches) throw new Error("source case snapshot mismatch");
     const byId = new Map(result.rows.map((row) => [row.id, row]));
     if (byId.size !== result.rows.length) throw new Error("duplicate source rows");
@@ -96,7 +109,7 @@ export function prepareGatewayRejudge(plan, { identityImpl = gatewayJudgeIdentit
       original: row.verdict ?? null, skipped: diagnostic ? diagnosticAnswerProblem(row) : null,
       sourceTerminal: { finishReason: row.finishReason ?? null, clientError: !!row.clientError, httpError: !!row.httpError, sseError: !!row.sseErrors?.length }
     }));
-    source = { path: plan.source.path, sha256: plan.source.sha256, caseSnapshot: verified.guard, diagnostic,
+    source = { path: plan.source.path, sha256: plan.source.sha256, caseSnapshot: verified.guard, diagnostic, ...(partial ? { partial } : {}),
       nonPromotable: result.nonPromotable === true, budget: structuredClone(result.budget), judge: result.meta.judge };
   }
   const calls = entries.filter((entry) => !entry.skipped);
@@ -149,6 +162,9 @@ export async function runGatewayRejudge(plan, prepared, { token, authorizedPlanS
     });
     for (const entry of prepared.entries) {
       if (prepared.source && sha256(readFileSync(prepared.source.path)) !== prepared.source.sha256) throw new Error("source-artifact-drift");
+      for (const pinned of [prepared.source?.partial, prepared.source?.partial?.proof].filter(Boolean)) {
+        if (sha256(readFileSync(pinned.path)) !== pinned.sha256) throw new Error("partial-recovery-evidence-drift");
+      }
       if (prepared.pilot && sha256(readFileSync(prepared.pilot.path)) !== prepared.pilot.sha256) throw new Error("pilot-fixture-drift");
       if (entry.skipped) {
         artifact.rows.push({ id: entry.id, original: entry.original, new: null, agreement: null, skipped: { reason: entry.skipped }, sourceTerminal: entry.sourceTerminal });
@@ -164,6 +180,9 @@ export async function runGatewayRejudge(plan, prepared, { token, authorizedPlanS
       if (judge.snapshot().stopped || calibrationPass === false || (plan.mode === "calibration" && verdict.score === "error")) throw new Error("judge-or-calibration-failed");
     }
     judge.assertIdentity();
+    for (const pinned of [prepared.source, prepared.pilot, prepared.source?.partial, prepared.source?.partial?.proof].filter(Boolean)) {
+      if (sha256(readFileSync(pinned.path)) !== pinned.sha256) throw new Error("source-evidence-drift");
+    }
     artifact.meta.status = "complete";
   } catch {
     artifact.meta.status = "incomplete";

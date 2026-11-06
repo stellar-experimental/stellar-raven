@@ -12,7 +12,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { assertPlaygroundArtifactMeta } from '../../../eval/playground/artifact-contract.mjs';
 import { isSettledJudgeRowFailure, gatewayJudgeConfig } from '../../../eval/qa/gateway-judge.mjs';
-import { diagnosticRejudgeSource, diagnosticAnswerProblem } from '../../../eval/qa/diagnostic-rejudge-source.mjs';
+import { diagnosticRejudgeSource, diagnosticAnswerProblem, partialRecoverySource, isHarnessTransportFailure } from '../../../eval/qa/diagnostic-rejudge-source.mjs';
 
 const DIRECTORY = path.dirname(fileURLToPath(import.meta.url));
 const SCALE = 1e12;
@@ -124,14 +124,17 @@ export function verifyMeasurement(journal) {
 export function accounting(journal) {
   const entries = [...journal.tasks, ...journal.external];
   const reserved = entries.filter(t => ['reserved', 'unresolved'].includes(t.state)).reduce((sum, t) => sum + units(t.methodCapUsd), 0);
-  const cash = entries.filter(t => ['settled', 'failed'].includes(t.state)).reduce((sum, t) => sum + units(t.cashUsd), 0);
+  const cash = entries.filter(t => ['settled', 'failed', 'settled-partial'].includes(t.state)).reduce((sum, t) => sum + units(t.ceilingChargeUsd ?? t.cashUsd), 0);
+  const conservative = entries.filter(t=>t.state==='settled-partial').reduce((n,t)=>n+units(t.ceilingChargeUsd),0);
+  const knownCash = entries.filter(t=>['settled','failed','settled-partial'].includes(t.state)).reduce((n,t)=>n+units(t.state==='settled-partial'?t.knownCashUsd:t.cashUsd),0);
   const apiJudgeCalls = entries.reduce((sum, t) => sum + (t.calls?.apiJudge ?? 0), 0);
   const reservedAnswerTurns = entries.filter(t => ['reserved', 'unresolved'].includes(t.state)).reduce((sum, t) => sum + (t.ids?.length ?? (t.receiptContract === 'demo-gauntlet' ? t.callIds.length : 0)), 0);
   const reservedApiJudgeCalls = journal.external.filter(t => ['reserved', 'unresolved'].includes(t.state) && t.receiptContract === 'gateway-rejudge-v1').reduce((sum, t) => sum + t.callIds.length, 0);
   const notional = entries.reduce((sum, t) => sum + units(t.subscriptionNotionalUsd ?? 0), 0);
   const answerCalls = entries.reduce((sum, t) => sum + (t.calls?.answerTurns ?? 0), 0);
   const judgeCalls = entries.reduce((sum, t) => sum + (t.calls?.judgeA ?? 0), 0);
-  return { cashCapUsd: CASH_CAP_USD, cashUsd: usd(cash), reservedUsd: usd(reserved), availableUsd: usd(units(CASH_CAP_USD) - cash - reserved), subscriptionNotionalUsd: usd(notional), answerTurns: answerCalls, judgeACalls: judgeCalls, apiJudgeCalls, reservedAnswerTurns, reservedApiJudgeCalls };
+  // Reconciled actual cash and conservative ceiling consumption are distinct.
+  return { cashCapUsd: CASH_CAP_USD, knownCashUsd: usd(knownCash), ceilingConsumedUsd: usd(cash), conservativeChargeUsd: usd(conservative), reservedUsd: usd(reserved), availableUsd: usd(units(CASH_CAP_USD) - cash - reserved), subscriptionNotionalUsd: usd(notional), answerTurns: answerCalls, judgeACalls: judgeCalls, apiJudgeCalls, reservedAnswerTurns, reservedApiJudgeCalls };
 }
 function active(journal) { return [...journal.tasks, ...journal.external].filter(t => ['reserved', 'unresolved'].includes(t.state)); }
 export function declareServer(journal, model, ownerTerminalId) {
@@ -189,13 +192,17 @@ export function commandFor(journal, task, capPath, rawOutBase) {
       '--judge-model', 'claude-sonnet-5', '--timeout-ms', '150000', '--out-dir', rawOutDir],
     instruction: 'Proposal only. Owner verifies the sole loaded server, CLI/environment, gateway and reviewed authorization before manual launch.' };
 }
-export function validateReceipt(journal, task, receipt) {
+export function validateReceipt(journal, task, receipt, partial = null) {
   if (receipt.quarantinedMeta || receipt.quarantinedRows || receipt.artifactContract?.includes('quarantine')) fail('quarantine is forensic only');
   assertPlaygroundArtifactMeta(receipt.meta);
-  diagnosticRejudgeSource(receipt);
+  if (partial) {
+    if(partial.recovery.parentTaskId!==task.id || partial.recovery.experimentId!==journal.experimentId || !same(partial.recovery.receipt,task.receipt))fail('partial task source binding differs');
+    partialRecoverySource(receipt, partial.recovery, partial.proof, partial.receiptSha256);
+  }
+  else diagnosticRejudgeSource(receipt);
   const { meta, budget, rows } = receipt;
-  if (!['complete', 'incomplete'].includes(budget?.status) || budget.missingCosts !== 0 || budget.error) fail('invalid/unknown accounting requires reconciliation');
-  if (!Array.isArray(rows) || !same(rows.map(r => r.id), task.ids) || !same(budget.selectedCaseIds, task.ids) || !Array.isArray(budget.incompleteCaseIds) || !unique(budget.incompleteCaseIds) || budget.incompleteCaseIds.some(id => !task.ids.includes(id)) || !same(budget.unattemptedCaseIds, [])) fail('receipt denominator differs or has unattempted rows');
+  if (!partial && (!['complete', 'incomplete'].includes(budget?.status) || budget.missingCosts !== 0 || budget.error)) fail('invalid/unknown accounting requires reconciliation');
+  if (!Array.isArray(rows) || !same(rows.map(r => r.id), partial ? partial.recovery.attemptedIds : task.ids) || !same(budget.selectedCaseIds, task.ids) || !Array.isArray(budget.incompleteCaseIds) || !unique(budget.incompleteCaseIds) || budget.incompleteCaseIds.some(id => !task.ids.includes(id)) || !same(budget.unattemptedCaseIds, partial ? partial.recovery.continuationIds : [])) fail('receipt denominator differs or has unattempted rows');
   if (meta.capContext.roundAuthorization.sourceFile.sha256 !== task.roundCapSha256 || meta.capContext.roundAuthorization.experimentId !== journal.experimentId) fail('receipt round authorization differs');
   if (units(meta.capContext.evaluator.maxBudgetUsd) !== units(task.methodCapUsd)) fail('receipt evaluator budget differs');
   const snapshot = meta.inputSnapshot;
@@ -205,17 +212,25 @@ export function validateReceipt(journal, task, receipt) {
   if (meta.answering.primaryModel !== task.model || meta.answering.fallbackModels.length || meta.answering.reasoningEffort.value !== task.effort || meta.answering.apiMode.effective !== (task.model.startsWith('openai/') ? 'responses' : 'chat')) fail('answer configuration differs');
   if (meta.judge.model !== journal.measurement.judgeA.model || meta.judge.rubric !== journal.measurement.judgeA.rubric || meta.judge.packVersion !== journal.measurement.judgeA.packVersion ||
       meta.judge.executable?.sha256 !== journal.measurement.judgeA.executableSha256 || meta.judge.executable?.realPath !== journal.measurement.judgeA.realPath) fail('Judge A identity differs');
-  if (units(budget.authorizedUsd) !== units(task.methodCapUsd) || !Array.isArray(budget.calls) || budget.reportedCalls !== budget.calls.length || budget.expectedCalls !== budget.calls.length) fail('method budget/call count differs');
+  if (units(budget.authorizedUsd) !== units(task.methodCapUsd) || !Array.isArray(budget.calls) || budget.reportedCalls !== budget.calls.length - (partial ? 1 : 0) || budget.expectedCalls !== budget.calls.length) fail('method budget/call count differs');
   let remaining = units(task.methodCapUsd);
   for (const call of budget.calls) {
-    if (units(call.authorizedUsd) !== remaining || units(call.costUsd) > remaining) fail('per-call authorization differs');
-    remaining -= units(call.costUsd);
+    if (units(call.authorizedUsd) !== remaining || (call.costUsd !== null && units(call.costUsd) > remaining)) fail('per-call authorization differs');
+    if (call.costUsd !== null) remaining -= units(call.costUsd);
+    else if (!partial) fail("missing call cost");
   }
   let answer = 0, judge = 0, providerCalls = 0, judgeCalls = 0, index = 0;
   const outcomes = [], logIdHashes = [];
   const previouslyUsedLogs = new Set([...journal.tasks, ...journal.external].filter(t => t.id !== task.id).flatMap(t => t.logIdHashes ?? []));
   for (const row of rows) {
     const a = budget.calls[index++], frame = row.answerCost;
+    if (partial && row.id === partial.recovery.failure.id) {
+      // The partial guard proved this sole unknown-cost final answer call; retain its failed cell.
+      outcomes.push({id:row.id,finishReason:row.finishReason,answerPresent:false,score:null,methodValid:true,
+        answerCostUsd:null,judgeACostUsd:null,gatewayModels:[],responseStatus:null,clientError:true,httpError:false,sseError:false,
+        toolFailureCount:0,adjudication:'pending',answerFailure:'harness-transport-failure'});
+      continue;
+    }
     if (a?.method !== 'answer' || a.id !== row.id || units(a.costUsd) !== units(row.costUsd)) fail('missing or inconsistent answer ledger call');
     const b = budget.calls[index]?.method === 'judge' ? budget.calls[index++] : null;
     if (b && (b.id !== row.id || units(b.costUsd) !== units(row.verdict?.costUsd))) fail('judge row cost differs from ledger');
@@ -238,7 +253,7 @@ export function validateReceipt(journal, task, receipt) {
   }
   const total = answer + judge;
   if (index !== budget.calls.length || total > units(task.methodCapUsd) || units(meta.totalAgentCostUsd) !== answer || units(meta.totalJudgeCostUsd) !== judge || units(meta.totalCostUsd) !== total || units(budget.reportedSpendUsd) !== total) fail('receipt cost sum differs or exceeds reservation');
-  return { answerUsd: usd(answer), judgeUsd: usd(judge), methodUsd: usd(total), calls: { answerTurns: rows.length, judgeA: judgeCalls, answerProviderCalls: providerCalls },
+  return { answerUsd: usd(answer), judgeUsd: usd(judge), methodUsd: usd(total), calls: { answerTurns: rows.length, judgeA: judgeCalls, answerProviderCalls: providerCalls, ...(partial ? {unknownAnswerProviderCalls:true} : {}) },
     logIdHashes, sourceRunId: required(meta.runId, 'receipt runId'), sourceStatus: budget.status, sourceNonPromotable: receipt.nonPromotable === true, incompleteIds: [...budget.incompleteCaseIds], outcomes };
 }
 export function settle(journal, taskId, receipt, receiptIdentity, subscriptionProof = null) {
@@ -269,6 +284,69 @@ export function settle(journal, taskId, receipt, receiptIdentity, subscriptionPr
   }
   return task;
 }
+function assertSubscription(journal,task,identity,proof) {
+  if (!proof || proof.contract!=='playground-claude-subscription-attestation/v1' || proof.taskId!==task.id || proof.experimentId!==journal.experimentId ||
+      proof.receiptSha256!==identity.sha256 || proof.executableSha256!==journal.measurement.judgeA.executableSha256 ||
+      proof.environmentSha256!==journal.measurement.judgeA.environmentSha256 || proof.billingMode!=='subscription' || proof.apiCredentialsExcluded!==true || !proof.reviewRef?.trim()) fail('partial subscription attestation differs');
+}
+export function loadRecoveryEvidence(identity, readBytes=readFileSync) {
+  sha(identity?.sha256,'recovery sidecar'); required(identity?.path,'recovery sidecar path');
+  const bytes=readBytes(identity.path); if(sha256(bytes)!==identity.sha256)fail('recovery sidecar changed');
+  const recovery=JSON.parse(bytes), pinned=recovery.gatewayProof;
+  sha(pinned?.sha256,'Gateway proof');required(pinned?.path,'Gateway proof path');
+  const proofBytes=readBytes(pinned.path);if(sha256(proofBytes)!==pinned.sha256)fail('Gateway proof changed');
+  return {recovery,proof:JSON.parse(proofBytes),receiptSha256:recovery.receipt?.sha256};
+}
+export function settlePartial(journal,taskId,receipt,identity,recoveryIdentity,subscriptionProof,{readBytes=readFileSync}={}) {
+  const task=journal.tasks.find(t=>t.id===taskId);
+  if (!task || task.state!=='unresolved' || task.parentTaskId || journal.tasks.some(t=>t.recovery) || active(journal).some(t=>t.id!==taskId)) fail('partial settlement requires sole unresolved original task');
+  if (!same(task.receipt,identity) || !task.launch || task.launch.rawOutDir!==path.dirname(identity.path) || path.basename(identity.path)!==`${receipt.meta?.runId}-playground-semantic.json`) fail('partial original receipt differs');
+  const partial=loadRecoveryEvidence(recoveryIdentity,readBytes), {recovery,proof}=partial;
+  if (!same(recovery.receipt,identity) || recovery.parentTaskId!==taskId || recovery.experimentId!==journal.experimentId ||
+      !same(recovery.selectedCaseIds,task.ids) || proof.gatewayId!==journal.measurement.gatewayId || proof.accountId!==journal.measurement.judgeB?.config.accountId || costMismatch(recovery.conservativeChargeUsd,task.methodCapUsd)) fail('recovery authorization differs');
+  assertSubscription(journal,task,identity,subscriptionProof);
+  const validated=validateReceipt(journal,task,receipt,partial);
+  const prior=new Set([...journal.tasks,...journal.external].filter(t=>t.id!==taskId).flatMap(t=>t.logIdHashes??[]));
+  if(validated.logIdHashes.some(id=>prior.has(id)))fail('partial Gateway identity reused');
+  Object.assign(task,validated,{state:'settled-partial',recovery:{...recoveryIdentity},attemptedIds:[...recovery.attemptedIds],continuationIds:[...recovery.continuationIds],
+    ceilingChargeUsd:task.methodCapUsd,cashUsd:null,knownCashUsd:validated.answerUsd,subscriptionNotionalUsd:validated.judgeUsd,
+    costBasis:'full-method-cap-conservative-charge-not-invoice',subscriptionAttestation:{sha256:hashJson(subscriptionProof),environmentSha256:subscriptionProof.environmentSha256,reviewRef:subscriptionProof.reviewRef}});
+  if (!active(journal).length) { journal.state='ready'; journal.halt=null; }
+  journal.events.push({type:'partial-conservatively-accounted',taskId,receiptSha256:identity.sha256,recoverySha256:recoveryIdentity.sha256,ceilingChargeUsd:task.methodCapUsd,knownCashUsd:task.knownCashUsd,reviewRef:recovery.reviewRef});
+  return task;
+}
+function costMismatch(a,b){return units(a)!==units(b);}
+export function reserveContinuation(journal,parentId,methodCapUsd,reviewRef) {
+  required(reviewRef,'continuation review');
+  const parent=journal.tasks.find(t=>t.id===parentId);
+  if (!parent || parent.state!=='settled-partial' || parent.continuationTaskId || parent.parentTaskId || active(journal).length || journal.server?.model!==parent.model) fail('continuation requires accounted partial task and sole matching server');
+  verifyMeasurement(journal);
+  const {recovery}=loadRecoveryEvidence(parent.recovery);
+  if(!same(recovery.continuationIds,parent.continuationIds)||!same([...parent.attemptedIds,...parent.continuationIds],parent.ids))fail('continuation partition changed');
+  const cases=load(path.join(journal.measurement.measurementRoot,INPUT_FILES.corpusFileSha256)).cases.filter(c=>parent.continuationIds.includes(c.id));
+  if(!same(cases.map(c=>c.id),parent.continuationIds))fail('continuation corpus selection differs');
+  const id=`${parentId}-c1`;
+  if(journal.tasks.some(t=>t.id===id))fail('continuation already exists');
+  const trial=structuredClone(journal), p=trial.tasks.find(t=>t.id===parentId);
+  const task={id,parentTaskId:parentId,recovery:{...parent.recovery},model:parent.model,effort:parent.effort,repeat:parent.repeat,shard:parent.shard,kind:parent.kind,
+    ids:[...parent.continuationIds],casesSha256:hashJson(cases),caseIdsSha256:hashJson(parent.continuationIds),state:'planned'};
+  trial.tasks.splice(trial.tasks.indexOf(p)+1,0,task);p.continuationTaskId=id;trial.state='ready';trial.halt=null;
+  reserveBatch(trial,[{taskId:id,methodCapUsd}]);
+  trial.events.push({type:'continuation-reserved',parentTaskId:parentId,taskId:id,recoverySha256:parent.recovery.sha256,reviewRef});
+  Object.assign(journal,trial);return journal.tasks.find(t=>t.id===id);
+}
+export function revalidateSettlement(journal,taskId,receipt,identity,proof,reviewRef) {
+  required(reviewRef,'settlement revalidation review');const task=journal.tasks.find(t=>t.id===taskId);
+  if(!task||task.state!=='unresolved'||!same(task.receipt,identity))fail('revalidation must name the identical unresolved receipt');
+  // Validate completely before changing state; ordinary known-cost requirements still apply.
+  validateReceipt(journal,task,receipt);assertSubscription(journal,task,identity,proof);
+  const trial=structuredClone(journal);trial.tasks.find(t=>t.id===taskId).state='reserved';
+  const result=settle(trial,taskId,receipt,identity,proof);
+  if(result.state!=='settled')fail(result.reconciliationReason);
+  trial.events.push({type:'same-receipt-revalidated',taskId,receiptSha256:identity.sha256,reviewRef});
+  if(!active(trial).length){trial.state='ready';trial.halt=null;}
+  Object.assign(journal,trial);return journal.tasks.find(t=>t.id===taskId);
+}
 function normalizedJudgeB(value) {
   const config = gatewayJudgeConfig(value.config);
   const identitySha256 = sha(value.identitySha256 ?? value.sha256, 'frozen Judge B identity');
@@ -276,13 +354,14 @@ function normalizedJudgeB(value) {
   if (model !== config.model || effort !== config.effort) fail('Judge B model/effort differs from configuration');
   return {identitySha256, model, effort, config};
 }
-export function freezeJudgeB(journal, identity, reviewRef) {
+export function freezeJudgeB(journal, identity, reviewRef, previousIdentitySha256 = null) {
   const frozen = normalizedJudgeB(identity);
   required(reviewRef, 'Judge B freeze review');
   if (journal.state !== 'ready' || active(journal).length || journal.server) fail('Judge B freeze requires no active method or server');
   if (journal.measurement.judgeB) {
-    if (!same(journal.measurement.judgeB, frozen)) fail('Judge B identity already frozen; reviewed re-freeze required');
-    return frozen;
+    if (same(journal.measurement.judgeB, frozen)) return frozen;
+    if(previousIdentitySha256!==journal.measurement.judgeB.identitySha256 || journal.external.some(e=>e.kind==='judge-b') || !same(frozen.config,journal.measurement.judgeB.config) || frozen.model!==journal.measurement.judgeB.model || frozen.effort!==journal.measurement.judgeB.effort)fail('Judge B identity already frozen; reviewed re-freeze required');
+    journal.events.push({type:'judge-b-source-amendment',previousIdentitySha256,identitySha256:frozen.identitySha256,reviewRef});
   }
   if (journal.external.some(e=>e.kind==='judge-b')) fail('cannot freeze Judge B after finals methods exist');
   journal.measurement.judgeB = frozen;
@@ -301,6 +380,13 @@ function validateExternalAllocation(journal, entry) {
   assertFrozenJudgeB(journal,entry);
   if (entry.kind === 'judge-b') {
     sha(entry.nativeSourceSha256,'native Judge B source');
+    const native=journal.tasks.find(t=>t.receipt?.sha256===entry.nativeSourceSha256);
+    if(native?.state==='settled-partial') {
+      if(!same(entry.partialSource,native.recovery)||!same(entry.rowIds,native.attemptedIds))fail('partial Judge B recovery binding differs');
+      const partial=loadRecoveryEvidence(native.recovery),raw=readPinnedReceipt(native.receipt,readFileSync);
+      validateReceipt(journal,native,raw,partial);
+      if(!same(entry.callIds,raw.rows.filter(r=>diagnosticAnswerProblem(r)===null).map(r=>r.id)))fail('partial Judge B eligibility differs');
+    } else if(entry.partialSource)fail('unexpected partial Judge B source');
     if (journal.external.some(e=>e.kind==='judge-b' && e.nativeSourceSha256===entry.nativeSourceSha256 && entry.rowIds.some(id=>e.rowIds.includes(id)))) fail('overlapping Judge B rows for one native source');
   }
   const cap = units(entry.methodCapUsd);
@@ -340,6 +426,7 @@ export function validateExternalReceipt(entry, receipt) {
     const {meta, budget, rows} = receipt;
     if (meta?.resultSchema !== entry.receiptContract || meta.runId !== entry.runId || meta.planSha256 !== entry.planSha256 || meta.judgeIdentity?.sha256 !== entry.judgeIdentitySha256 || meta.judgeModel !== entry.model || meta.judgeEffort !== entry.effort) fail('API judge receipt identity differs');
     if (entry.kind==='judge-b' && (meta.source?.sha256 !== entry.nativeSourceSha256 || !same(gatewayJudgeConfig(meta.judgeIdentity.config),gatewayJudgeConfig(entry.config)))) fail('API judge native source or frozen configuration differs');
+    if (entry.partialSource ? meta.source?.partial?.sha256!==entry.partialSource.sha256 || meta.source?.partial?.path!==entry.partialSource.path || meta.source?.budget?.status!=='invalid' || meta.source?.nonPromotable!==true : meta.source?.partial!==undefined) fail('API judge partial recovery differs');
     if (meta.mode !== (entry.kind === 'calibration' ? 'calibration' : 'rejudge')) fail('API judge method kind differs');
     if (entry.kind === 'calibration') {
       if (![7, 27].includes(entry.callIds.length) || rows.slice(0, 7).some(r => r.calibrationPass !== true)) fail('API calibration did not pass all seven fixtures');
@@ -406,6 +493,7 @@ export function settleExternal(journal, id, receipt, receiptIdentity) {
 const GRADES = ['correct', 'partial', 'wrong', 'error'];
 /** Fixed terminal table. Tool failures inside a completed answer remain diagnostics. */
 export function answerFailureClass(row) {
+  if (isHarnessTransportFailure(row)) return 'harness-transport-failure';
   if (diagnosticAnswerProblem(row) === null) return null;
   const errors = [row.clientError, row.httpError, ...(row.sseErrors ?? []), ...(row.frames ?? []).filter(f => f.type === 'error').map(f => f.message)].filter(Boolean).join('\n');
   if (row.finishReason === 'length') return 'length';
@@ -432,9 +520,18 @@ export function readFinalsMatrix(journal, selection, {readBytes = readFileSync, 
   const missing = [], nativeArtifacts = new Map();
   for (const task of expected) {
     const saved = journal.tasks.find(t => t.id === task.id);
-    if (!saved || saved.state !== 'settled' || !saved.receipt) missing.push(...task.ids.map(caseId => ({model:task.model,caseId,repeat:task.repeat})));
+    if (!saved || !['settled','settled-partial'].includes(saved.state) || !saved.receipt) missing.push(...task.ids.map(caseId => ({model:task.model,caseId,repeat:task.repeat})));
     else {
       if (saved.model !== task.model || saved.repeat !== task.repeat || !same(saved.ids, task.ids) || saved.casesSha256 !== task.casesSha256) fail('frozen task mapping differs');
+      if(saved.state==='settled-partial') {
+        const partial=loadRecoveryEvidence(saved.recovery,readBytes), continuation=journal.tasks.find(t=>t.id===saved.continuationTaskId);
+        if(!same(saved.attemptedIds,partial.recovery.attemptedIds)||!same(saved.continuationIds,partial.recovery.continuationIds)||!same([...saved.attemptedIds,...saved.continuationIds],task.ids))fail('partial matrix partition differs');
+        if(!continuation||continuation.state!=='settled'||!continuation.receipt){missing.push(...saved.continuationIds.map(caseId=>({model:task.model,caseId,repeat:task.repeat})));}
+        else {
+          if(continuation.parentTaskId!==task.id||!same(continuation.recovery,saved.recovery)||continuation.model!==task.model||continuation.effort!==task.effort||continuation.repeat!==task.repeat||!same(continuation.ids,saved.continuationIds)||continuation.caseIdsSha256!==hashJson(continuation.ids)||continuation.casesSha256!==hashJson(cases.filter(c=>continuation.ids.includes(c.id))))fail('continuation matrix mapping differs');
+          nativeArtifacts.set(continuation.id,readPinnedReceipt(continuation.receipt,readBytes));
+        }
+      }
       try { nativeArtifacts.set(task.id,readPinnedReceipt(saved.receipt,readBytes)); }
       catch(error) { if(error.code==='ENOENT' || error.message==='missing raw receipt') missing.push(...task.ids.map(caseId=>({model:task.model,caseId,repeat:task.repeat,reason:'missing-raw-receipt'}))); else throw error; }
     }
@@ -459,7 +556,8 @@ export function readFinalsMatrix(journal, selection, {readBytes = readFileSync, 
   const rows = [], runIds = new Set();
   for (const task of journal.tasks) {
     const artifact = nativeArtifacts.get(task.id);
-    const validation = validateReceipt(journal, task, artifact);
+    const partial=task.state==='settled-partial'?loadRecoveryEvidence(task.recovery,readBytes):null;
+    const validation = validateReceipt(journal, task, artifact,partial);
     if (!task.launch || task.launch.taskId !== task.id || task.launch.model !== task.model || task.launch.repeat !== task.repeat || task.launch.caseIdsSha256 !== task.caseIdsSha256 ||
         path.dirname(path.resolve(task.receipt.path)) !== task.launch.rawOutDir || path.basename(task.receipt.path) !== `${artifact.meta.runId}-playground-semantic.json` || artifact.meta.runId !== task.sourceRunId) fail('native receipt is not bound to its prelaunch output mapping');
     if (runIds.has(artifact.meta.runId)) fail('native runId reused');
@@ -468,17 +566,18 @@ export function readFinalsMatrix(journal, selection, {readBytes = readFileSync, 
       const key = cellKey(task.model, raw.id, task.repeat), b = judgeB.get(key), failure = answerFailureClass(raw);
       if (failure === null && (!b?.verdict || !GRADES.includes(b.verdict.score))) fail(`missing Judge B observation: ${task.id}/${raw.id}`);
       if (b?.verdict && !GRADES.includes(b.verdict.score)) fail('invalid raw Judge B grade');
-      if (!GRADES.includes(raw.verdict?.score)) fail('invalid raw Judge A grade');
+      if (!GRADES.includes(raw.verdict?.score) && !(partial && isHarnessTransportFailure(raw))) fail('invalid raw Judge A grade');
       const paidJudgeA = artifact.budget.calls.some(call=>call.method==='judge' && call.id===raw.id);
       const answerSha256 = sha256(raw.answer), transcriptSha256 = hashJson(raw.transcript);
       rows.push({cellId: sha256(`${journal.selectionSha256}\0${key}`), model:task.model,caseId:raw.id,repeat:task.repeat,
         methodValid:true,answerFailure:failure,score:null,adjudicated:null,reviewed:false,gradeBasis:null,reason:null,
         safety:selection.safetyCaseIds.includes(raw.id)?'unresolved':'not-applicable',
         judgeA:failure===null?raw.verdict.score:null,judgeB:failure===null?b.verdict.score:null,
-        answerCostUsd:raw.costUsd,judgeACostUsd:raw.verdict.costUsd??null,judgeBCostUsd:b?.verdict?.costUsd??null,
-        gatewayModels:[...raw.answerCost.models],latencyMs:raw.latencyMs??null,toolFailureCount:(raw.transcript??[]).filter(t=>t.isError).length,
+        answerCostUsd:raw.costUsd,judgeACostUsd:raw.verdict?.costUsd??null,judgeBCostUsd:b?.verdict?.costUsd??null,
+        gatewayModels:[...(raw.answerCost?.models??[])],latencyMs:raw.latencyMs??null,toolFailureCount:(raw.transcript??[]).filter(t=>t.isError).length,
         rawJudgeA:paidJudgeA?raw.verdict:null,sourceVerdict:raw.verdict,rawJudgeB:b?.verdict??null,judgeBSkipped:b?.skipped??(failure?{reason:'failed-answer-not-eligible'}:null),
         provenance:{taskId:task.id,launch:task.launch,nativeReceipt:task.receipt,nativeRunId:artifact.meta.runId,sourceRowId:raw.id,
+          recovery:task.recovery??null,parentTaskId:task.parentTaskId??null,sourceMethodValid:!partial,evidenceAdmission:partial?'reviewed-partial-recovery':'ordinary',
           sourceBudgetStatus:validation.sourceStatus,sourceNonPromotable:validation.sourceNonPromotable,caseIdsSha256:task.caseIdsSha256,
           corpusSha256:artifact.meta.inputSnapshot.corpusFileSha256,answerSha256,transcriptSha256,judgeBReceipt:b?.receipt??null,
           terminal:{finishReason:raw.finishReason,responseStatus:raw.responseStatus,clientError:!!raw.clientError,httpError:!!raw.httpError,sseErrors:raw.sseErrors}}
@@ -540,7 +639,7 @@ export function updateJournal(file, operation) {
 }
 function parse(argv) {
   const [command, ...rest] = argv, options = {};
-  const allowed = { plan: ['selection', 'corpus'], init: ['config', 'journal'], status: ['journal'], server: ['journal', 'model', 'owner-terminal'], 'server-stopped': ['journal'], reserve: ['journal', 'allocations', 'raw-out-dir'], settle: ['journal', 'task', 'receipt', 'subscription-attestation'], 'reserve-external': ['journal', 'allocation'], 'reserve-external-batch': ['journal', 'allocations'], 'freeze-judge-b': ['journal','identity','review-ref'], 'settle-external': ['journal', 'task', 'receipt'], matrix: ['journal', 'adjudications'] };
+  const allowed = { plan: ['selection', 'corpus'], init: ['config', 'journal'], status: ['journal'], server: ['journal', 'model', 'owner-terminal'], 'server-stopped': ['journal'], reserve: ['journal', 'allocations', 'raw-out-dir'], settle: ['journal', 'task', 'receipt', 'subscription-attestation'], 'revalidate': ['journal','task','receipt','subscription-attestation','review-ref'], 'settle-partial': ['journal','task','receipt','subscription-attestation','recovery','recovery-sha256'], 'reserve-continuation': ['journal','task','cap','review-ref','raw-out-dir'], 'reserve-external': ['journal', 'allocation'], 'reserve-external-batch': ['journal', 'allocations'], 'freeze-judge-b': ['journal','identity','review-ref','previous-identity'], 'settle-external': ['journal', 'task', 'receipt'], matrix: ['journal', 'adjudications'] };
   if (!allowed[command]) fail(`commands: ${Object.keys(allowed).join(', ')}; no launch command exists`);
   for (let i = 0; i < rest.length; i += 2) {
     const key = rest[i].replace(/^--/, '');
@@ -571,11 +670,16 @@ function main(argv) {
     return { state: journal.state, accounting: accounting(journal) };
   }
   return updateJournal(file, journal => {
-    if (command === 'freeze-judge-b') return freezeJudgeB(journal,load(required(o.identity,'--identity')),o['review-ref']);
+    if (command === 'freeze-judge-b') return freezeJudgeB(journal,load(required(o.identity,'--identity')),o['review-ref'],o['previous-identity']);
     if (command === 'server') { verifyMeasurement(journal); declareServer(journal, o.model, o['owner-terminal']); return journal.server; }
     if (command === 'server-stopped') { closeServer(journal); return null; }
     if (command === 'reserve-external-batch') return reserveExternalBatch(journal,load(required(o.allocations,'--allocations')));
     if (command === 'reserve-external') return reserveExternal(journal, load(required(o.allocation, '--allocation')));
+    if(command==='reserve-continuation') {
+      const task=reserveContinuation(journal,o.task,Number(o.cap),o['review-ref']);
+      const capPath=path.join(path.dirname(file),'caps',`${task.id}.json`);atomicJson(capPath,roundCap(journal,task));
+      return commandFor(journal,task,capPath,required(o['raw-out-dir'],'--raw-out-dir'));
+    }
     if (command === 'reserve') {
       verifyMeasurement(journal);
       const tasks = reserveBatch(journal, load(required(o.allocations, '--allocations')));
@@ -590,6 +694,8 @@ function main(argv) {
     let receipt, identity;
     try { const bytes = readFileSync(receiptPath); identity = { path: receiptPath, sha256: sha256(bytes) }; receipt = JSON.parse(bytes); }
     catch (error) { receipt = {}; identity = { path: receiptPath, sha256: null, readError: error.code ?? 'invalid-json' }; }
+    if(command==='settle-partial')return settlePartial(journal,o.task,receipt,identity,{path:path.resolve(required(o.recovery,'--recovery')),sha256:o['recovery-sha256']},load(required(o['subscription-attestation'],'--subscription-attestation')));
+    if(command==='revalidate')return revalidateSettlement(journal,o.task,receipt,identity,load(required(o['subscription-attestation'],'--subscription-attestation')),o['review-ref']);
     if (command === 'settle-external') return settleExternal(journal, o.task, receipt, identity);
     return settle(journal, o.task, receipt, identity, o['subscription-attestation'] ? load(o['subscription-attestation']) : null);
   });

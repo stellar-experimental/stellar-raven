@@ -98,3 +98,12 @@ describe('fixed-denominator model decision', () => {
   });
 
 });
+
+
+it('keeps canonical harness failure and reports matched-cell exclusion sensitivity',()=>{
+  const input=fixture();const row=input.rows.find(r=>r.model===models[0]&&r.repeat===1);grade(row,null);row.answerFailure='harness-transport-failure';
+  const result=evaluateFinals(input);expect(result.denominator).toBe(202);expect(result.summaries[models[0]].answerFailed).toBe(1);
+  expect(result.infrastructureSensitivity.denominator).toBe(201);expect(result.infrastructureSensitivity.summaries[models[0]].answerFailed).toBe(0);
+  expect(result.infrastructureSensitivity.excludedPairs).toEqual([{caseId:row.caseId,repeat:1}]);
+  expect(input.rows).toHaveLength(1616);
+});

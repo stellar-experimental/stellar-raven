@@ -114,3 +114,13 @@ describe("diagnostic re-judge admission", () => {
     expect(rows[0].new.score).toBe("error"); expect(rows[0].original.score).toBe("correct");
   });
 });
+
+
+describe('ledger precision',()=>{
+  it('accepts binary float noise at 12 decimals without changing the source',()=>{
+    const source=fixture();source.rows[0].verdict.costUsd=.044385600000000004;source.budget.calls[1].costUsd=.0443856;
+    source.budget.reportedSpendUsd=.1443856;source.budget.remainingUsd=.8556144;
+    const before=JSON.stringify(source);expect(()=>diagnosticRejudgeSource(source)).not.toThrow();expect(JSON.stringify(source)).toBe(before);
+    source.rows[0].verdict.costUsd=.0443857;expect(()=>diagnosticRejudgeSource(source)).toThrow('unaccounted');
+  });
+});

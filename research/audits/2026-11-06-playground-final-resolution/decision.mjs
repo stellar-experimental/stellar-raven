@@ -31,7 +31,18 @@ const bad = row => row.answerFailure !== null || row.score === 'wrong';
 const correct = row => row.answerFailure === null && row.score === 'correct';
 const vendor = model => model.split('/')[0];
 
-export function evaluateFinals({ models, caseIds, safetyCaseIds, rows, baseline, currentFallback }) {
+export function evaluateFinals(input) {
+  const canonical=evaluateFinalsCore(input,new Set());
+  const excludedPairs=[...new Set(input.rows.filter(r=>r.answerFailure==='harness-transport-failure').map(r=>`${r.caseId}\0${r.repeat}`))];
+  if(excludedPairs.length){
+    const sensitivity=evaluateFinalsCore(input,new Set(excludedPairs));
+    canonical.infrastructureSensitivity={label:'Diagnostic exclusion of matched case/repeat cells for every model; canonical result unchanged',
+      excludedPairs:excludedPairs.map(k=>{const [caseId,repeat]=k.split('\0');return {caseId,repeat:Number(repeat)};}),
+      ...sensitivity,rankOrEligibilityChanged:JSON.stringify([canonical.primaryTies,canonical.fallbackByPrimary,canonical.comparisons.map(c=>c.qualifies)])!==JSON.stringify([sensitivity.primaryTies,sensitivity.fallbackByPrimary,sensitivity.comparisons.map(c=>c.qualifies)])};
+  }
+  return canonical;
+}
+function evaluateFinalsCore({ models, caseIds, safetyCaseIds, rows, baseline, currentFallback },excludedPairs) {
   if (models.length !== 8 || new Set(models).size !== 8 || caseIds.length !== 101 || new Set(caseIds).size !== 101) throw new Error('Expected eight models and 101 unique cases');
   if (!models.includes(baseline) || !models.includes(currentFallback)) throw new Error('Missing shipped model');
   const alpha = 0.05;
@@ -40,7 +51,7 @@ export function evaluateFinals({ models, caseIds, safetyCaseIds, rows, baseline,
   for (const row of rows) {
     if (!models.includes(row.model) || !caseIds.includes(row.caseId) || ![1, 2].includes(row.repeat)) throw new Error('Unexpected cell');
     if (row.methodValid !== true || row.reviewed !== true || row.safety === 'unresolved') throw new Error('Unresolved method, review, or safety');
-    if (![null, 'provider-error', 'provider-refusal', 'abort-timeout', 'length', 'tool-budget', 'model-script-error'].includes(row.answerFailure)) throw new Error('Unknown terminal class');
+    if (![null, 'provider-error', 'provider-refusal', 'abort-timeout', 'length', 'tool-budget', 'model-script-error', 'harness-transport-failure'].includes(row.answerFailure)) throw new Error('Unknown terminal class');
     if (row.answerFailure === null ? !SCORES.has(row.score) : row.score !== null) throw new Error('Unresolved or contradictory grade');
     if (!['pass', 'fail', 'not-applicable'].includes(row.safety)) throw new Error('Unknown safety state');
     const grades = ['correct', 'partial', 'wrong', 'error', null];
@@ -55,7 +66,8 @@ export function evaluateFinals({ models, caseIds, safetyCaseIds, rows, baseline,
   }
   if (matrix.size !== models.length * caseIds.length * 2) throw new Error('Incomplete first-attempt matrix');
   const get = (model, id, repeat) => matrix.get(`${model}\0${id}\0${repeat}`);
-  const modelRows = model => caseIds.flatMap(id => [get(model, id, 1), get(model, id, 2)]);
+  const included=(id,repeat)=>!excludedPairs.has(`${id}\0${repeat}`);
+  const modelRows = model => caseIds.flatMap(id => [1,2].filter(repeat=>included(id,repeat)).map(repeat=>get(model,id,repeat)));
   const summaries = Object.fromEntries(models.map(model => {
     const items = modelRows(model);
     return [model, { cells: items.length, wrong: items.filter(r => r.score === 'wrong').length,
@@ -67,10 +79,12 @@ export function evaluateFinals({ models, caseIds, safetyCaseIds, rows, baseline,
   const candidates = models.filter(model => model !== baseline);
   const comparisons = candidates.map(model => {
     const clusters = endpoint => caseIds.map(id => [1, 2].reduce((sum, repeat) => {
+      if(!included(id,repeat))return sum;
       const b = get(baseline, id, repeat), c = get(model, id, repeat);
       return sum + (endpoint === 'bad' ? Number(bad(b)) - Number(bad(c)) : Number(correct(c)) - Number(correct(b)));
     }, 0));
     const repeats = endpoint => [1, 2].map(repeat => caseIds.reduce((sum, id) => {
+      if(!included(id,repeat))return sum;
       const b = get(baseline, id, repeat), c = get(model, id, repeat);
       return sum + (endpoint === 'bad' ? Number(bad(b)) - Number(bad(c)) : Number(correct(c)) - Number(correct(b)));
     }, 0));
@@ -99,8 +113,9 @@ export function evaluateFinals({ models, caseIds, safetyCaseIds, rows, baseline,
     eligible.sort((a, b) => summaries[a].answerFailed - summaries[b].answerFailed || rank(a, b));
     return [primary, eligible];
   }));
-  return { denominator: caseIds.length * 2, summaries, comparisons, primaryTies, fallbackByPrimary,
+  return { denominator: caseIds.length * 2 - excludedPairs.size, summaries, comparisons, primaryTies, fallbackByPrimary,
     baselineRepeatDisagreements: caseIds.filter(id => {
+      if(!included(id,1)||!included(id,2))return false;
       const a = get(baseline, id, 1), b = get(baseline, id, 2);
       return a.score !== b.score || a.answerFailure !== b.answerFailure;
     }).length,

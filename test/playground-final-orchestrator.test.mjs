@@ -2,10 +2,12 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, existsSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { diagnosticAnswerProblem } from '../eval/qa/diagnostic-rejudge-source.mjs';
+import { partialRecoverySource, diagnosticAnswerProblem } from '../eval/qa/diagnostic-rejudge-source.mjs';
 import { buildPlaygroundArtifactMeta, treeGenerationSha256 } from '../eval/playground/artifact-contract.mjs';
-import { accounting, closeServer, commandFor, createJournal, declareServer, plan, reserveBatch, reserveExternal, roundCap, settle, settleExternal, sha256, updateJournal, answerFailureClass, readFinalsMatrix, reserveExternalBatch, freezeJudgeB } from '../research/audits/2026-11-06-playground-final-resolution/orchestrate.mjs';
+import { accounting, closeServer, commandFor, createJournal, declareServer, plan, reserveBatch, reserveExternal, roundCap, settle, settleExternal, sha256, updateJournal, answerFailureClass, readFinalsMatrix, reserveExternalBatch, freezeJudgeB, validateReceipt, settlePartial, reserveContinuation, revalidateSettlement } from '../research/audits/2026-11-06-playground-final-resolution/orchestrate.mjs';
 
+import { prepareGatewayRejudge } from '../eval/qa/gateway-rejudge.mjs';
+import { verifySourceCases } from '../eval/qa/re-judge.mjs';
 const selection = JSON.parse(readFileSync('research/audits/2026-11-06-playground-final-resolution/selection.json'));
 const corpus = JSON.parse(readFileSync('eval/qa/cases.json'));
 const scratch = [];
@@ -135,13 +137,13 @@ describe('dated Playground plan and cash journal',()=>{
   });
   it('charges all reported method dollars unless a matching subscription proof is supplied',()=>{
     const f=fixture(),task=reserveSafety(f),r=receipt(f,task);
-    settle(f.journal,task.id,r,identity(r));expect(accounting(f.journal).cashUsd).toBe(.3);expect(accounting(f.journal).reservedUsd).toBe(0);
+    settle(f.journal,task.id,r,identity(r));expect(accounting(f.journal).knownCashUsd).toBe(.3);expect(accounting(f.journal).reservedUsd).toBe(0);
     expect(()=>settle(f.journal,task.id,r,identity(r))).toThrow('unsettled');
   });
   it('releases only verified pinned Claude notional, keeping answer cash charged',()=>{
     const f=fixture(),task=reserveSafety(f),r=receipt(f,task);
     settle(f.journal,task.id,r,identity(r),proof(f,task,r));
-    expect(accounting(f.journal).cashUsd).toBe(.1);expect(accounting(f.journal).subscriptionNotionalUsd).toBe(.2);
+    expect(accounting(f.journal).knownCashUsd).toBe(.1);expect(accounting(f.journal).subscriptionNotionalUsd).toBe(.2);
   });
   it.each(['length','refusal','judge-error','judge-error-zero'])('settles fully accounted %s outcomes without promoting them or stopping other rows',failure=>{
     const f=fixture();settleSafety(f);const task=reserveBatch(f.journal,[{taskId:'m1-r1-s1',methodCapUsd:10}])[0],r=receipt(f,task,{failure});
@@ -183,7 +185,7 @@ describe('dated Playground plan and cash journal',()=>{
     const api={meta:{resultSchema:'gateway-rejudge-v1',runId:'api-run',planSha256:S,judgeIdentity:{sha256:S,config:B_CONFIG},judgeModel:entry.model,judgeEffort:'high',mode:'rejudge',source:{sha256:S},status:'complete',selectedIds:['case'],unattemptedIds:[],unresolvedJudgeErrorIds:[]},
       budget:{schema:'gateway-judge-budget-v1',runId:'api-run',authorizedUsd:20,maxCalls:1,callsStarted:1,reportedSpendUsd:.02,totalCostUsd:.02,missingCosts:0,maxJudgeErrorRate:0,maxJudgeErrors:0,judgeErrorCount:0,stopped:null,calls:[{id:'case',promptSha256:S,status:'completed',failureClass:null,costUsd:.02,logId:'log-1',responseModel:entry.model,responseEffort:'high',gatewayLog:{id:'log-1',model:'openai/'+entry.model,provider:'openai',cached:false,customCost:false,collectLogPayload:false,statusCode:200,metadata:{role:'judge-b',runId:entry.runId,promptSha256:S}}}]},
       rows:[{id:'case',new:{score:'partial',costUsd:.02,gatewayLogId:'log-1',judgeIdentitySha256:S,model:entry.model,effort:'high'}}]};
-    settleExternal(f.journal,entry.id,api,identity(api));expect(accounting(f.journal).cashUsd).toBe(.02);expect(accounting(f.journal).reservedUsd).toBe(0);expect(accounting(f.journal).apiJudgeCalls).toBe(1);
+    settleExternal(f.journal,entry.id,api,identity(api));expect(accounting(f.journal).knownCashUsd).toBe(.02);expect(accounting(f.journal).reservedUsd).toBe(0);expect(accounting(f.journal).apiJudgeCalls).toBe(1);
     const second={...entry,id:'judge-two',runId:'api-run-two',nativeSourceSha256:'b'.repeat(64)};reserveExternal(f.journal,second);
     const broken=structuredClone(api);broken.meta.runId=second.runId;broken.meta.source.sha256=second.nativeSourceSha256;broken.budget.runId=second.runId;broken.budget.calls[0].gatewayLog.collectLogPayload=true;
     settleExternal(f.journal,second.id,broken,identity(broken));expect(f.journal.state).toBe('halted');expect(accounting(f.journal).reservedUsd).toBe(20);
@@ -192,7 +194,7 @@ describe('dated Playground plan and cash journal',()=>{
     const f=fixture(),entry={id:'prod',kind:'production-verification',reviewRef:'review',runId:'prod-run',model:'openai/gpt-5.6-terra',effort:'none',methodCapUsd:2,callIds:['rpc-simulate#1'],receiptContract:'demo-gauntlet'};
     reserveExternal(f.journal,entry);
     const r={runId:entry.runId,completion:{status:'complete',plannedTurns:1,completedTurns:1},budget:{authorizedUsd:2,reportedUsd:.1,reportedTurns:1,unknownCostTurns:0},results:[{runId:entry.runId,promptId:'rpc-simulate',repeat:1,model:entry.model,reasoningEffort:'none',evalCost:{costUsd:.1,calls:1,reportedCalls:1,models:[entry.model],logIds:['prod-log-1'],error:null},pass:{http:true,terminal:false,finalAnswer:false,latency:true,noToolFailures:true}}]};
-    settleExternal(f.journal,entry.id,r,identity(r));expect(accounting(f.journal).cashUsd).toBe(.1);expect(f.journal.external[0].outcome).toBe('failed-transport-gate');
+    settleExternal(f.journal,entry.id,r,identity(r));expect(accounting(f.journal).knownCashUsd).toBe(.1);expect(f.journal.external[0].outcome).toBe('failed-transport-gate');
   });
 
   it('retains a fully settled API judge error within its explicit allowance',()=>{
@@ -204,7 +206,7 @@ describe('dated Playground plan and cash journal',()=>{
       budget:{schema:'gateway-judge-budget-v1',runId:entry.runId,authorizedUsd:20,maxCalls:20,callsStarted:20,reportedSpendUsd:.4,totalCostUsd:.4,missingCosts:0,maxJudgeErrorRate:.05,maxJudgeErrors:1,judgeErrorCount:1,stopped:null,calls},
       rows:ids.map((id,i)=>({id,new:{score:i===0?'error':'partial',failureClass:i===0?'consistency':undefined,costUsd:.02,gatewayLogId:'log-'+i,judgeIdentitySha256:S,model:entry.model,effort:'high'}}))};
     settleExternal(f.journal,entry.id,r,identity(r));
-    expect(f.journal.state).toBe('ready');expect(accounting(f.journal).cashUsd).toBe(.4);
+    expect(f.journal.state).toBe('ready');expect(accounting(f.journal).knownCashUsd).toBe(.4);
     expect(f.journal.external[0].unresolvedJudgeErrorIds).toEqual([ids[0]]);
     expect(f.journal.external[0].adjudication).toBe('pending');
   });
@@ -282,4 +284,128 @@ describe('dated Playground plan and cash journal',()=>{
     expect(()=>reserveExternalBatch(b.journal,entries)).toThrow('cash');expect(b.journal.external).toHaveLength(1);
   });
 
+});
+
+
+function partialFixture(existing=null) {
+  const f=existing??fixture();if(!existing)settleSafety(f);
+  const task=existing?f.journal.tasks.find(t=>t.id==='m1-r1-s2'):reserveBatch(f.journal,[{taskId:'m1-r1-s2',methodCapUsd:10}])[0];
+  if(existing){f.journal.external=f.journal.external.filter(e=>e.nativeSourceSha256!==task.receipt.sha256);task.state='reserved';f.journal.server={model:task.model,ownerTerminalId:'owned',generationSha256:f.config.generationSha256,gatewayId:f.config.gatewayId};}
+  const raw=receipt(f,task), originalIds=[...task.ids];
+  raw.rows=raw.rows.slice(0,4);raw.rows[1].finishReason='abort';
+  Object.assign(raw.rows[3],{answer:'',costUsd:null,answerCost:null,responseStatus:null,httpError:null,clientError:'fetch failed',sseErrors:[],frames:[],transcript:[],verdict:null,finishReason:null});
+  raw.budget.calls=raw.budget.calls.slice(0,7);raw.budget.calls[6].costUsd=null;
+  Object.assign(raw.budget,{status:'invalid',error:'missing-reported-cost',missingCosts:1,expectedCalls:7,reportedCalls:6,reportedSpendUsd:.9,remainingUsd:9.1,
+    incompleteCaseIds:[originalIds[1],...originalIds.slice(3)],unattemptedCaseIds:originalIds.slice(4)});
+  Object.assign(raw.meta,{totalAgentCostUsd:.3,totalJudgeCostUsd:.6,totalCostUsd:.9});raw.nonPromotable=true;
+  const rawIdentity=identity(raw),attestation=proof(f,task,raw);
+  settle(f.journal,task.id,raw,rawIdentity,attestation);
+  const knownRows=raw.rows.slice(0,3).map(r=>({id:r.id,costUsd:r.costUsd,judgeCostUsd:r.verdict.costUsd,logIds:r.answerCost.logIds}));
+  const gatewayProof={accountId:B_CONFIG.accountId,gatewayId:f.journal.measurement.gatewayId,knownAnswerCashUsd:.3,knownRows:knownRows.map(r=>({id:r.id,costUsd:r.costUsd,logs:r.logIds.map(id=>({id,cost:.05,model:task.model,provider:'openai',cached:false,custom_cost:false,collect_log_payload:false}))}))};
+  const proofPath=path.join(f.dir,'gateway-proof.json'),proofBytes=JSON.stringify(gatewayProof);writeFileSync(proofPath,proofBytes);
+  const recovery={contract:'playground-partial-recovery/v1',experimentId:f.journal.experimentId,parentTaskId:task.id,reviewRef:'accepted-recovery-review',receipt:rawIdentity,
+    inputSnapshot:raw.meta.inputSnapshot,sourceBudget:raw.budget,sourceNonPromotable:true,selectedCaseIds:originalIds,attemptedIds:originalIds.slice(0,4),continuationIds:originalIds.slice(4),
+    failure:{id:originalIds[3],class:'harness-transport-failure'},conservativeChargeUsd:10,knownAnswerCashUsd:.3,knownSubscriptionNotionalUsd:.6,knownRows,gatewayProof:{path:proofPath,sha256:sha256(proofBytes)}};
+  const recoveryPath=path.join(f.dir,'partial-recovery.json'),recoveryBytes=JSON.stringify(recovery);writeFileSync(recoveryPath,recoveryBytes);
+  const recoveryIdentity={path:recoveryPath,sha256:sha256(recoveryBytes)};
+  return {...f,task,raw,rawIdentity,attestation,recovery,recoveryIdentity,gatewayProof};
+}
+describe('explicit first-attempt-preserving partial recovery',()=>{
+  it('retains four attempts, 21 unattempted, known costs and a separate full conservative charge',()=>{
+    const f=partialFixture(),before=JSON.stringify(f.raw),a=accounting(f.journal);
+    const result=settlePartial(f.journal,f.task.id,f.raw,f.rawIdentity,f.recoveryIdentity,f.attestation);
+    expect(result.state).toBe('settled-partial');expect(result.calls.answerTurns).toBe(4);expect(result.calls.judgeA).toBe(3);
+    expect(result.cashUsd).toBeNull();expect(result.knownCashUsd).toBe(.3);expect(result.ceilingChargeUsd).toBe(10);
+    const after=accounting(f.journal);expect(after.availableUsd).toBe(a.availableUsd);expect(after.conservativeChargeUsd).toBe(10);
+    expect(after).not.toHaveProperty('cashUsd');expect(after.knownCashUsd).toBe(.6);expect(after.ceilingConsumedUsd).toBe(10.3);expect(JSON.stringify(f.raw)).toBe(before);expect(f.journal.state).toBe('ready');expect(f.journal.halt).toBeNull();expect(f.journal.events.at(-1).type).toBe('partial-conservatively-accounted');
+    const next=reserveContinuation(f.journal,f.task.id,5,'reviewed continuation');
+    expect(next.ids).toEqual(f.task.ids.slice(4));expect(next.ids).toHaveLength(21);expect(next.ids).not.toContain(f.task.ids[3]);
+    expect(next.casesSha256).toBe(h(corpus.cases.filter(c=>next.ids.includes(c.id))));expect(next.caseIdsSha256).toBe(h(next.ids));
+    expect(next.consumedBefore.answerTurns).toBe(5);expect(next.consumedBefore.judgeA).toBe(4);
+    expect(()=>reserveContinuation(f.journal,f.task.id,5,'again')).toThrow();
+  });
+  it.each(['reorder','missing-cost','last-frames','last-status','last-judge','log-reuse','log-cache','bad-charge','wrong-partition','wrong-receipt','wrong-snapshot'])('rejects partial recovery %s',kind=>{
+    const f=partialFixture();
+    if(kind==='reorder')f.raw.rows.reverse();
+    if(kind==='missing-cost')f.raw.rows[0].costUsd=null;
+    if(kind==='last-frames')f.raw.rows[3].frames.push({type:'ready'});
+    if(kind==='last-status')f.raw.rows[3].responseStatus=200;
+    if(kind==='last-judge')f.raw.rows[3].verdict={score:'error'};
+    if(kind==='log-reuse')f.raw.rows[1].answerCost.logIds[0]=f.raw.rows[0].answerCost.logIds[0];
+    if(kind==='log-cache')f.gatewayProof.knownRows[0].logs[0].cached=true;
+    if(kind==='bad-charge')f.recovery.conservativeChargeUsd=1;
+    if(kind==='wrong-partition')f.recovery.continuationIds.unshift(f.raw.rows[3].id);
+    if(kind==='wrong-receipt')f.recovery.receipt={...f.recovery.receipt,sha256:S};
+    if(kind==='wrong-snapshot')f.recovery.inputSnapshot={...f.recovery.inputSnapshot,corpusFileSha256:S};
+    expect(()=>partialRecoverySource(f.raw,f.recovery,f.gatewayProof,f.rawIdentity.sha256)).toThrow();
+  });
+  it('classifies the harness shape without claiming provider reach or depending on error text',()=>{
+    const f=partialFixture();expect(answerFailureClass(f.raw.rows[3])).toBe('harness-transport-failure');
+    f.raw.rows[3].clientError='socket closed';expect(answerFailureClass(f.raw.rows[3])).toBe('harness-transport-failure');
+    expect(()=>partialRecoverySource(f.raw,f.recovery,f.gatewayProof,f.rawIdentity.sha256)).toThrow();
+    f.raw.rows[3].frames.push({type:'ready'});expect(answerFailureClass(f.raw.rows[3])).toBe('provider-error');
+  });
+  it('verifies all25 source cases without inventing rows and plans exactly two B calls',()=>{
+    const f=partialFixture();
+    const rawPath=path.join(f.dir,'raw.json'),bytes=JSON.stringify(f.raw);writeFileSync(rawPath,bytes);
+    f.recovery.receipt={path:rawPath,sha256:sha256(bytes)};
+    writeFileSync(f.recoveryIdentity.path,JSON.stringify(f.recovery));f.recoveryIdentity.sha256=h(f.recovery);
+    const p={schema:'gateway-judge-plan-v1',mode:'rejudge',allowNonIdentical:true,runId:'partial-test',out:path.join(f.dir,'out.json'),config:{...B_CONFIG,gatewayId:f.config.gatewayId},identitySha256:S,auth:{kind:'env',variable:'CF_AIG_TOKEN'},
+      source:{...f.recovery.receipt,diagnostic:true,casesRef:'worktree',partial:f.recoveryIdentity},ids:f.raw.rows.map(r=>r.id),maxCalls:2,maxBudgetUsd:3,maxJudgeErrorRate:0};
+    const prepare=()=>prepareGatewayRejudge(p,{identityImpl:()=>({sha256:S})});
+    const prepared=prepare();expect(prepared.prompts.map(r=>r.id)).toEqual([p.ids[0],p.ids[2]]);expect(prepared.entries).toHaveLength(4);
+    expect(prepared.source.budget.status).toBe('invalid');expect(prepared.source.nonPromotable).toBe(true);
+    expect(verifySourceCases(f.raw,rawPath,{selectedIds:f.task.ids}).guard.matches).toBe(true);
+    expect(verifySourceCases(f.raw,rawPath).guard.matches).toBe(false);
+    p.source.partial=undefined;expect(prepare).toThrow();p.source.partial=f.recoveryIdentity;p.ids=p.ids.slice(0,3);expect(prepare).toThrow('all attempted');
+  });
+  it.each(['reordered','non-prefix'])('independently rejects %s rows for an explicit full source selection',kind=>{
+    const f=partialFixture();
+    if(kind==='reordered') [f.raw.rows[0],f.raw.rows[1]]=[f.raw.rows[1],f.raw.rows[0]];
+    else f.raw.rows[3].id=f.task.ids[4];
+    expect(()=>verifySourceCases(f.raw,path.join(f.dir,'raw.json'),{selectedIds:f.task.ids})).toThrow('ordered prefix');
+  });
+  it('refuses continuation without the declared server or enough buffered cash',()=>{
+    const f=partialFixture();settlePartial(f.journal,f.task.id,f.raw,f.rawIdentity,f.recoveryIdentity,f.attestation);
+    const server=f.journal.server;f.journal.server=null;expect(()=>reserveContinuation(f.journal,f.task.id,5,'review')).toThrow();f.journal.server=server;
+    expect(()=>reserveContinuation(f.journal,f.task.id,180,'review')).toThrow('buffer');expect(f.journal.tasks.some(t=>t.parentTaskId)).toBe(false);
+  });
+  it('explicitly revalidates an identical known-cost receipt, never an unknown-cost partial',()=>{
+    const f=fixture(),task=reserveSafety(f),raw=receipt(f,task),id=identity(raw),auth=proof(f,task,raw);
+    task.state='unresolved';task.receipt=id;f.journal.state='halted';f.journal.halt={taskId:task.id};
+    expect(revalidateSettlement(f.journal,task.id,raw,id,auth,'decimal review').state).toBe('settled');
+    const partial=partialFixture();expect(()=>revalidateSettlement(partial.journal,partial.task.id,partial.raw,partial.rawIdentity,partial.attestation,'review')).toThrow();
+  });
+});
+
+
+it('joins recovered original4 and continuation21 into the unchanged 1616-cell matrix',()=>{
+  const f=partialFixture(completeMatrixFixture());
+  settlePartial(f.journal,f.task.id,f.raw,f.rawIdentity,f.recoveryIdentity,f.attestation);
+  f.bytes.set(f.rawIdentity.path,Buffer.from(JSON.stringify(f.raw)));
+  f.bytes.set(f.recoveryIdentity.path,readFileSync(f.recoveryIdentity.path));f.bytes.set(f.recovery.gatewayProof.path,readFileSync(f.recovery.gatewayProof.path));
+  const next=reserveContinuation(f.journal,f.task.id,10,'continuation review'),r=receipt(f,next),id=identity(r);
+  settle(f.journal,next.id,r,id,proof(f,next,r));f.bytes.set(id.path,Buffer.from(JSON.stringify(r)));closeServer(f.journal);
+  for(const task of [f.task,next]){
+    const native=task===f.task?f.raw:r,rowIds=native.rows.map(r=>r.id),callIds=native.rows.filter(r=>diagnosticAnswerProblem(r)===null).map(r=>r.id),entry=apiEntry(task,callIds,rowIds);
+    if(task===f.task)entry.partialSource=f.recoveryIdentity;
+    const b=apiArtifact(entry,native,task.receipt);
+    if(task===f.task)Object.assign(b.meta.source,{partial:f.recoveryIdentity,budget:f.raw.budget,nonPromotable:true});
+    const bid=identity(b);f.journal.external.push({...entry,state:'reserved'});settleExternal(f.journal,entry.id,b,bid);f.bytes.set(bid.path,Buffer.from(JSON.stringify(b)));
+  }
+  const matrix=readFinalsMatrix(f.journal,selection,{readBytes:f.readBytes});expect(matrix.rows).toHaveLength(1616);
+  const failed=matrix.rows.find(r=>r.caseId===f.raw.rows[3].id&&r.model===f.task.model&&r.repeat===1);
+  expect(failed.answerFailure).toBe('harness-transport-failure');expect(failed.answerCostUsd).toBeNull();expect(failed.rawJudgeA).toBeNull();
+  expect(failed.provenance.sourceBudgetStatus).toBe('invalid');expect(failed.provenance.sourceMethodValid).toBe(false);expect(failed.provenance.recovery).toEqual(f.recoveryIdentity);
+  next.ids[0]=f.raw.rows[3].id;expect(()=>readFinalsMatrix(f.journal,selection,{readBytes:f.readBytes})).toThrow('mapping');
+});
+
+it('requires explicit old identity and unchanged request configuration for pre-finals B refreeze',()=>{
+  const f=fixture(),old=f.journal.measurement.judgeB.identitySha256;
+  const changed={...f.journal.measurement.judgeB,identitySha256:'b'.repeat(64)};
+  expect(()=>freezeJudgeB(f.journal,changed,'source-only amendment','c'.repeat(64))).toThrow();
+  expect(()=>freezeJudgeB(f.journal,{...changed,config:{...changed.config,maxOutputTokens:2048}},'source-only amendment',old)).toThrow();
+  expect(freezeJudgeB(f.journal,changed,'source-only amendment',old).identitySha256).toBe('b'.repeat(64));
+  f.journal.external.push({kind:'judge-b'});
+  expect(()=>freezeJudgeB(f.journal,{...changed,identitySha256:'c'.repeat(64)},'later',changed.identitySha256)).toThrow();
 });
